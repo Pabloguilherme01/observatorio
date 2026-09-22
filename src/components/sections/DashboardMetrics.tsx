@@ -1,0 +1,194 @@
+import { Activity, Gauge, Map, Users } from 'lucide-react';
+import { observatorioData as d } from '../../data/observatorioData';
+import { formatNumber, formatPercent } from '../../utils/formatters';
+import { Card } from '../ui/Card';
+import { SectionHeader } from '../ui/SectionHeader';
+
+interface Point {
+  readonly label: string;
+  readonly value: number;
+}
+
+interface LineChartProps {
+  readonly title: string;
+  readonly description: string;
+  readonly points: readonly Point[];
+  readonly valueFormatter?: (value: number) => string;
+}
+
+function lineChartGeometry(points: readonly Point[]) {
+  const width = 620;
+  const height = 240;
+  const padX = 26;
+  const padY = 22;
+  const plotWidth = width - padX * 2;
+  const plotHeight = height - padY * 2;
+  const values = points.map(point => point.value);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const range = Math.max(maxValue - minValue, 1);
+  const yMin = minValue - range * 0.12;
+  const yMax = maxValue + range * 0.12;
+  const yearCount = Math.max(points.length - 1, 1);
+
+  const coords = points.map((point, index) => {
+    const x = padX + (plotWidth * index) / yearCount;
+    const y = padY + ((yMax - point.value) / (yMax - yMin)) * plotHeight;
+    return { ...point, x, y };
+  });
+
+  return { width, height, padX, padY, plotWidth, plotHeight, coords, yMin, yMax };
+}
+
+function LineChart({ title, description, points, valueFormatter = value => formatNumber(value) }: LineChartProps) {
+  const geometry = lineChartGeometry(points);
+  const polyline = geometry.coords.map(point => `${point.x},${point.y}`).join(' ');
+  const guides = [0, 1, 2, 3].map(index => geometry.padY + (geometry.plotHeight * index) / 3);
+
+  return (
+    <figure className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70" aria-labelledby={`${title}-caption`}>
+      <figcaption id={`${title}-caption`}>
+        <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
+        <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
+      </figcaption>
+
+      <div className="mt-4 overflow-x-auto">
+        <svg
+          viewBox={`0 0 ${geometry.width} ${geometry.height}`}
+          role="img"
+          aria-label={`${title}: ${points.map(point => `${point.label} ${valueFormatter(point.value)}`).join('; ')}`}
+          className="h-auto min-w-[560px] w-full text-sky-300"
+        >
+          <title>{title}</title>
+          <desc>{description}</desc>
+
+          {guides.map((y, index) => (
+            <line key={index} x1={geometry.padX} x2={geometry.width - geometry.padX} y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />
+          ))}
+
+          <polyline
+            points={polyline}
+            fill="none"
+            className="stroke-sky-300 light:stroke-sky-600"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {geometry.coords.map(point => (
+            <g key={point.label}>
+              <circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" />
+              <text x={point.x} y={geometry.height - 6} textAnchor="middle" className="fill-slate-500 text-[12px]">{point.label}</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+    </figure>
+  );
+}
+
+export function DashboardMetrics() {
+  const density = Number(d.indicators.find(indicator => indicator.id === 'density')?.value ?? 0);
+  const electorateShare = (d.electoral.electorate / 249_978) * 100;
+  const inclusionCount = d.electoral.socialNameCount ?? 0;
+  const indigenousElectorate = d.electoral.indigenousElectorate ?? 0;
+
+  const populationPoints = d.populationSeries
+    .filter(point => point.year >= 2022)
+    .map(point => ({ label: String(point.year), value: point.value }));
+
+  const electoratePoints: readonly Point[] = [
+    { label: '2018', value: d.electoral.electorate2018 ?? 0 },
+    { label: '2022', value: d.electoral.electorate2022 ?? 0 },
+    { label: '2024', value: d.electoral.electorate2024 ?? 0 },
+    { label: '2026', value: d.electoral.electorate },
+  ];
+
+  const metrics = [
+    {
+      label: 'População 2026',
+      value: formatNumber(249_978),
+      caption: 'estimativa IBGE',
+      icon: Users,
+    },
+    {
+      label: 'Eleitorado 2026',
+      value: formatNumber(d.electoral.electorate),
+      caption: 'snapshot da 28ª Zona',
+      icon: Activity,
+    },
+    {
+      label: 'Inclusão eleitoral',
+      value: formatNumber(inclusionCount),
+      caption: `${formatNumber(indigenousElectorate)} eleitores indígenas registrados`,
+      icon: Gauge,
+    },
+    {
+      label: 'Densidade demográfica',
+      value: `${formatNumber(density, 1)} hab/km²`,
+      caption: 'população 2026 ÷ área territorial',
+      icon: Map,
+    },
+  ] as const;
+
+  return (
+    <section id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dashboard-title">
+      <SectionHeader
+        eyebrow="Visão geral"
+        title="Os números de referência"
+        description="Indicadores principais em uma camada enxuta, com unidade, estado do dado e cálculo derivado explicitado."
+      />
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {metrics.map(({ label, value, caption, icon: Icon }) => (
+          <Card key={label}>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
+                <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{value}</div>
+                <div className="mt-1 text-xs text-slate-500">{caption}</div>
+              </div>
+              <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+        <LineChart
+          title="Crescimento populacional · 2022–2026"
+          description="Série disponível no dataset atual; 2022 é Censo e 2025/2026 são estimativas IBGE."
+          points={populationPoints}
+          valueFormatter={value => `${formatNumber(value)} hab.`}
+        />
+
+        <LineChart
+          title="Eleitorado · 2018–2026"
+          description="Snapshots do eleitorado disponíveis no modelo, com 2026 tratado como fotografia da 28ª Zona."
+          points={electoratePoints}
+          valueFormatter={value => `${formatNumber(value)} eleitores`}
+        />
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        <Card>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Crescimento 2022 → 2026</div>
+          <div className="mt-2 text-3xl font-black text-white light:text-slate-900">+10,76%</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Variação entre o Censo 2022 e a estimativa populacional 2026.</p>
+        </Card>
+
+        <Card>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Razão eleitorado/população</div>
+          <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatPercent(electorateShare, 2)}</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Relação estatística entre dois universos; não representa comparecimento.</p>
+        </Card>
+
+        <Card>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Base de cálculo</div>
+          <div className="mt-2 text-xl font-black text-white light:text-slate-900">191,817 km²</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Área territorial usada para a densidade demográfica derivada.</p>
+        </Card>
+      </div>
+    </section>
+  );
+}
