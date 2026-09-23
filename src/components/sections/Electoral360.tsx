@@ -83,6 +83,8 @@ export function Electoral360() {
     if (!normalized) return base;
     return base.filter(candidate => {
       const profile = CANDIDATE_PROFILES[candidate.sqCandidate];
+            const photoSrc = candidate.photoUrl ?? profile.photoUrl;
+            const instagramSrc = candidate.instagramUrl;
       return [
         candidate.name,
         candidate.party,
@@ -166,7 +168,7 @@ export function Electoral360() {
               <article key={candidate.sqCandidate} data-testid="candidate-card" className="overflow-hidden rounded-3xl border border-white/8 bg-white/[0.018]">
                 <div className="p-4 sm:p-5">
                   <div className="flex items-start gap-3">
-                    <CandidatePhoto name={candidateLabel} src={profile.photoUrl} />
+                    <CandidatePhoto name={candidateLabel} src={photoSrc} />
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <h4 className="text-lg font-black leading-tight text-white">{candidateLabel}</h4>
@@ -187,9 +189,9 @@ export function Electoral360() {
 
 
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {profile.instagramUrl ? (
+                    {instagramSrc ? (
                       <a
-                        href={profile.instagramUrl}
+                        href={instagramSrc}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.04] px-3 py-2 text-xs font-bold text-pink-100"
@@ -247,8 +249,8 @@ export function Electoral360() {
                         <>
                           <Info label="Origem" value="TSE · Candidatos 2026" />
                           <Info label="Identificador de captura" value={candidateSource?.id ?? 'tse-candidatos-2026'} />
-                          <Info label="Método" value="Serviço oficial DivulgaCandContas / snapshot local" />
-                          <Info label="Imagem" value="URL oficial de foto do TSE" />
+                          <Info label="Método" value="CSV TSE + redes sociais TSE + foto TSE" />
+                          <Info label="Imagem" value={candidate.photoUrl ? 'Arquivo TSE ingerido localmente' : 'Não disponível no snapshot'} />
                         </>
                       )}
                     </div>
