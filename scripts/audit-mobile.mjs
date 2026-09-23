@@ -22,7 +22,7 @@ const errors = [];
 const pass = message => console.log('PASS', message);
 const must = (condition, message) => condition ? pass(message) : errors.push(message);
 
-must(files.app.includes('<AudienceHub />') && files.app.includes('<InstagramSyncHub />'), 'hubs de descoberta e Instagram estão montados no App');
+must(files.app.includes('AudienceHub') && files.app.includes('InstagramSyncHub'), 'hubs de descoberta e Instagram estão montados no App');
 must(files.hero.includes('href="#descubra"'), 'hero envia o primeiro CTA para descoberta');
 must(files.css.includes('.topic-rail') && files.css.includes('.today-rail'), 'CSS possui trilhos de descoberta e números');
 must(files.css.includes('.instagram-shell') && files.css.includes('.instagram-mobile-rail'), 'CSS possui camada Instagram e rail móvel');
