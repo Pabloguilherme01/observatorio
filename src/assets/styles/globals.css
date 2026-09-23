@@ -10,18 +10,26 @@
 }
 
 :root {
+  --bg: #0b1117;
+  --panel: #11161e;
+  --line: rgba(255,255,255,.10);
+  --text: #e6edf3;
+  --muted: #94a3b8;
+  --blue: #8cc8f2;
+  --gold: #f5c86b;
+  --green: #70d6a0;
+  --red: #f38ba8;
+  --violet: #a78bfa;
+  --orange: #f59e0b;
   color-scheme: dark;
   font-family: var(--font-sans);
-  background: #0b1117;
-  color: #e6edf3;
+  background: var(--bg);
+  color: var(--text);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 76px;
-}
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 
 body {
   margin: 0;
@@ -30,7 +38,7 @@ body {
   background:
     radial-gradient(circle at 10% 0%, rgba(62,111,143,.10), transparent 28rem),
     radial-gradient(circle at 90% 12%, rgba(62,111,143,.07), transparent 24rem),
-    #0b1117;
+    var(--bg);
 }
 
 body::before {
@@ -47,39 +55,17 @@ body::before {
   mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
 
-button, input, select {
-  font: inherit;
-}
-
-button, a, select, input {
-  -webkit-tap-highlight-color: transparent;
-}
-
-::selection {
-  background: rgba(62, 111, 143, .35);
-}
+button, input, select { font: inherit; }
+button, a, select, input { -webkit-tap-highlight-color: transparent; }
+::selection { background: rgba(62, 111, 143, .35); }
 
 .skip-link {
-  position: fixed;
-  top: 12px;
-  left: 12px;
-  z-index: 100;
-  transform: translateY(-200%);
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: #e6edf3;
-  color: #0b1117;
-  font-weight: 700;
+  position: fixed; top: 12px; left: 12px; z-index: 100;
+  transform: translateY(-200%); padding: 10px 14px; border-radius: 12px;
+  background: #e6edf3; color: #0b1117; font-weight: 700;
 }
-
-.skip-link:focus {
-  transform: translateY(0);
-}
-
-:focus-visible {
-  outline: 3px solid #8cc8f2;
-  outline-offset: 3px;
-}
+.skip-link:focus { transform: translateY(0); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -92,38 +78,27 @@ button, a, select, input {
 }
 
 @media print {
-  :root, html.light {
-    color-scheme: light;
-  }
+  :root, html.light { color-scheme: light; }
+  body { background: #fff !important; color: #111827 !important; }
+  body::before, header, footer, button, .skip-link { display: none !important; }
+  section { break-inside: avoid; }
+  a { color: #111827 !important; text-decoration: none !important; }
+}
 
-  body {
-    background: #fff !important;
-    color: #111827 !important;
-  }
-
-  body::before,
-  header,
-  footer,
-  button,
-  .skip-link {
-    display: none !important;
-  }
-
-  section {
-    break-inside: avoid;
-  }
-
-  a {
-    color: #111827 !important;
-    text-decoration: none !important;
-  }
+html.light {
+  --bg: #f5f7fa;
+  --panel: #ffffff;
+  --line: rgba(15,23,42,.12);
+  --text: #0f172a;
+  --muted: #64748b;
+  --blue: #315a75;
 }
 
 html.light body {
   background:
     radial-gradient(circle at 10% 0%, rgba(62,111,143,.08), transparent 28rem),
-    #f5f7fa;
-  color: #0f172a;
+    var(--bg);
+  color: var(--text);
 }
 
 html.light body::before {
@@ -133,14 +108,14 @@ html.light body::before {
     linear-gradient(90deg, rgba(15,23,42,.035) 1px, transparent 1px);
 }
 
-html.light .bg-\[\#0b1117\] { background: #f5f7fa !important; }
+html.light .bg-\\[\\#0b1117\\] { background: #f5f7fa !important; }
 html.light .text-white { color: #0f172a !important; }
 html.light .text-slate-300 { color: #334155 !important; }
 html.light .text-slate-400 { color: #475569 !important; }
 html.light .text-slate-500 { color: #64748b !important; }
-html.light .border-white\/10,
-html.light .border-white\/8 { border-color: rgba(15, 23, 42, .12) !important; }
-html.light .bg-white\/\[0\.035\],
-html.light .bg-white\/\[0\.025\],
-html.light .bg-white\/\[0\.02\] { background: rgba(255,255,255,.85) !important; }
+html.light .border-white\\/10,
+html.light .border-white\\/8 { border-color: var(--line) !important; }
+html.light .bg-white\\/\\[0\\.035\\],
+html.light .bg-white\\/\\[0\\.025\\],
+html.light .bg-white\\/\\[0\\.02\\] { background: rgba(255,255,255,.85) !important; }
 html.light header { background: rgba(245,247,250,.92); }
