@@ -34,7 +34,7 @@ export function DataQualityPanel() {
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
     'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
     'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
-    'Eleitoral 360°: estado do snapshot de candidaturas = ' + tseState + '; o frontend não interpreta um placeholder como ausência de candidatos.',
+    'Candidaturas: estado do snapshot TSE = ' + tseState + '; os componentes usam a mesma captura oficial para evitar divergência com um recorte hard-coded.',
   ].filter(Boolean) as string[];
 
   return (
