@@ -8,6 +8,7 @@ const links = [
   ['Eleitorado', 'eleitorado'],
   ['Transporte', 'transporte'],
   ['Política', 'politica'],
+  ['Eleitoral 360°', 'eleitoral360'],
   ['Orçamento', 'orcamento'],
   ['Dados', 'dados'],
   ['Fontes', 'fontes'],
