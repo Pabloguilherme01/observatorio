@@ -20,7 +20,11 @@
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "audit:tse-architecture": "node scripts/audit-tse-architecture.mjs",
     "audit:usability": "node scripts/audit-usability.mjs",
-    "audit:sources": "node scripts/audit-sources.mjs"
+    "audit:sources": "node scripts/audit-sources.mjs",
+    "ingest:tse:contas": "node --experimental-strip-types scripts/tse/ingest-contas.ts",
+    "ingest:tse:pesquisas": "node --experimental-strip-types scripts/tse/ingest-pesquisas.ts",
+    "ingest:tse:processual": "node --experimental-strip-types scripts/tse/ingest-processual.ts",
+    "ingest:tse:all": "npm run ingest:tse:contas && npm run ingest:tse:pesquisas && npm run ingest:tse:processual"
   },
   "dependencies": {
     "lucide-react": "1.47.0",
