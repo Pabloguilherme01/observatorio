@@ -9,6 +9,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 interface Point { readonly label: string; readonly value: number; readonly sourceId: string; readonly referenceDate?: string; }
 interface LineChartProps { readonly title: string; readonly description: string; readonly points: readonly Point[]; readonly valueFormatter?: (value: number) => string; }
 interface TooltipState { readonly xPct: number; readonly yPct: number; readonly point: Point; }
+interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; }
 
 function lineChartGeometry(points: readonly Point[]) {
   const width = 620, height = 240, padX = 26, padY = 22;
@@ -85,7 +86,7 @@ export function DashboardMetrics() {
     { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot da 28ª Zona', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate },
     { label: 'Inclusão eleitoral', value: formatNumber(inclusionCount), caption: formatNumber(indigenousElectorate) + ' eleitores indígenas registrados', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
     { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população 2026 ÷ área territorial', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
-  ] as const;
+  ] satisfies readonly MetricDetail[];
 
   return (
     <section id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dashboard-title">
