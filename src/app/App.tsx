@@ -34,6 +34,8 @@ import { AudienceHub } from '../components/AudienceHub';
 import { QuickQuiz } from '../components/sections/QuickQuiz';
 import { InstagramSyncHub } from '../components/InstagramSyncHub';
 import { ProjectTrustPanel } from '../components/ProjectTrustPanel';
+import { ProvenanceDrawer } from '../components/ProvenanceDrawer';
+import { DataHealthPanel } from '../components/sections/DataHealthPanel';
 
 export function App() {
   return (
@@ -46,6 +48,7 @@ export function App() {
             <AudienceHub />
             <QuickQuiz />
             <ProjectTrustPanel />
+            <DataHealthPanel />
             <ExecutiveSummary />
             <FreshnessBanner />
             <SnapshotChanges />
@@ -75,6 +78,7 @@ export function App() {
           <Footer />
           <ScrollTopButton />
           <DataInspector />
+          <ProvenanceDrawer />
         </ExperienceShell>
       </ThemeProvider>
     </LanguageModeProvider>
