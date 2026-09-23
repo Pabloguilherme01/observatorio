@@ -21,7 +21,8 @@ const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 
 if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
-  if (requireSynced) errors.push('Placeholder não pode passar quando REQUIRE_TSE_SYNC=true.');
+  if (requireSynced && !isMunicipalitySnapshot) errors.push('Placeholder estadual não pode passar quando REQUIRE_TSE_SYNC=true.');
+  if (requireSynced && isMunicipalitySnapshot && state !== 'synced') errors.push('Snapshot municipal precisa estar sincronizado quando REQUIRE_TSE_SYNC=true.');
 } else if (!validSha) {
   errors.push('SHA-256 da fonte ausente ou inválido.');
 }
