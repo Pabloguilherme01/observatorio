@@ -18,6 +18,7 @@ const SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_con
 const tmpRoot = join(process.cwd(), '.tmp', 'tse-contas');
 const zipPath = join(tmpRoot, 'contas-2026.zip');
 const extractDir = join(tmpRoot, 'unzipped');
+// O ZIP possui arquivos por UF; este ingestor trabalha exclusivamente com o arquivo de Goiás.
 const outputPath = join(process.cwd(), 'generated', 'tse2026-contas.json');
 
 mkdirSync(tmpRoot, { recursive: true });
