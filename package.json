@@ -32,7 +32,8 @@
     "verify:tse:capture": "node --experimental-strip-types scripts/tse/verify-capture.ts",
     "report:axe": "node scripts/build-axe-report.mjs",
     "test:snapshot-diff": "node scripts/test-snapshot-diff.mjs",
-    "diagnose:tse:matching": "node --experimental-strip-types scripts/tse/diagnose-matching.ts"
+    "diagnose:tse:matching": "node --experimental-strip-types scripts/tse/diagnose-matching.ts",
+    "ingest:tse:candidates-local": "node --experimental-strip-types scripts/tse/ingest-candidates-local.ts"
   },
   "dependencies": {
     "lucide-react": "1.47.0",
