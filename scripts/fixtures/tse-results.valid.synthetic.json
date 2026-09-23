@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 2,
+  "environment": "official",
+  "scope": "municipality",
+  "state": "live",
+  "source": "official-tse",
+  "sourceUrl": "https://resultados.tse.jus.br",
+  "sourceFile": "TEST-FIXTURE-NOT-A-TSE-FILE.json",
+  "pleito": 3220,
+  "electionCode": 6259,
+  "turn": 1,
+  "uf": "GO",
+  "municipalityCode": "99999",
+  "municipalityName": "Águas Lindas de Goiás",
+  "cargo": "Governador",
+  "referenceDate": "2026-10-04T12:00:00-03:00",
+  "capturedAt": "2026-09-22T12:05:00-03:00",
+  "items": [
+    {
+      "municipality": "Águas Lindas de Goiás",
+      "candidateId": "TEST-001",
+      "candidate": "CANDIDATO DE TESTE",
+      "cargo": "Governador",
+      "validVotes": 10,
+      "totalVotes": 10,
+      "updatedAt": "2026-09-22T12:05:00-03:00"
+    }
+  ],
+  "integrity": {
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "signatureStatus": "not_verified",
+    "jwsVerified": false
+  }
+}
