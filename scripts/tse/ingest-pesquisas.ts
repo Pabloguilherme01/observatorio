@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { TSEPesquisasFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
-import { extractZip, findFile, downloadFile, normalizeLabel, parseDate, readCsv, sha256File, valueOf, writeJson } from './common.ts';
+import { extractZip, findFile, downloadFile, normalizeLabel, parseDate, readCsv, sha256File, sourceBasename, valueOf, writeJson } from './common.ts';
 
 const SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip';
 const tmpRoot = join(process.cwd(), '.tmp', 'tse-pesquisas');
@@ -84,7 +84,7 @@ const pesquisas = targetRows.map(row => {
       urlOriginal: SOURCE_URL,
       capturaEm: capture,
       snapshotId: sha256File(zipPath),
-      arquivoOrigem: zipPath,
+      arquivoOrigem: sourceBasename(zipPath),
     },
   };
 });
