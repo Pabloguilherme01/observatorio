@@ -45,7 +45,7 @@ export function App() {
         <ExperienceShell>
           <Header />
           <HeroCountdown />
-          <main id="main-content">
+          <main id="main-content" data-app-ready="true">
             <AudienceHub />
             <QuickQuiz />
             <ProjectTrustPanel />
