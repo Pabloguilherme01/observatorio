@@ -12,18 +12,20 @@ export function TransportCalculator() {
   const [trips, setTrips] = useState(d.transport.defaultTripsPerDay);
   const [people, setPeople] = useState(1);
   const [salary, setSalary] = useState(d.transport.minimumWageBrl);
+  const [scenarioFare, setScenarioFare] = useState<number | null>(null);
   const route = routes.find(r => r.id === routeId) ?? routes[0];
+  const effectiveFare = scenarioFare ?? route.fareBrl;
 
   const result = useMemo(
     () => calculateTransportCost({
-      fareBrl: route.fareBrl,
+      fareBrl: effectiveFare,
       tripsPerDay: trips,
       workDaysPerMonth: days,
       people,
       monthsPerYear: 12,
       salaryReferenceBrl: salary,
     }),
-    [route.fareBrl, trips, days, people, salary],
+    [effectiveFare, trips, days, people, salary],
   );
 
   const input = 'mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40';
@@ -83,6 +85,15 @@ export function TransportCalculator() {
           ))}
         </div>
 
+        <div className="mt-4 rounded-2xl border border-violet-300/10 bg-violet-300/[0.03] p-4">
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Cenário hipotético</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Simule uma tarifa sem alterar a tarifa oficial registrada. O cenário é matemático, não uma previsão ou proposta.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {[9,10,11.45,12].map(value => <button key={value} type="button" onClick={() => setScenarioFare(value)} className={`rounded-xl border px-3 py-2 text-xs font-bold ${effectiveFare === value && scenarioFare !== null ? 'border-violet-300/40 bg-violet-300/10 text-violet-200' : 'border-white/8 text-slate-400'}`}>R$ {value.toFixed(2).replace('.', ',')}</button>)}
+            <button type="button" onClick={() => setScenarioFare(null)} className="rounded-xl border border-white/8 px-3 py-2 text-xs font-bold text-slate-500">Tarifa oficial</button>
+          </div>
+        </div>
+
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs">
             <span className="text-slate-500">Peso mensal sobre a renda de referência</span>
@@ -92,12 +103,12 @@ export function TransportCalculator() {
           </div>
           <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs">
             <span className="text-slate-500">Cenário selecionado</span>
-            <strong className="mt-1 block text-lg text-white">{formatBRL(route.fareBrl)} por trecho</strong>
+            <strong className="mt-1 block text-lg text-white">{formatBRL(effectiveFare)} por trecho</strong>
           </div>
         </div>
 
         <div className="mt-4 rounded-2xl border border-sky-400/10 bg-sky-400/[0.03] p-4 text-xs leading-5 text-slate-400">
-          <strong className="text-slate-200">Cenário padrão:</strong> {formatBRL(routes[0].fareBrl)} × {d.transport.defaultTripsPerDay} × {d.transport.defaultWorkDaysPerMonth} = {formatBRL(routes[0].fareBrl * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth)}/mês e {formatBRL(routes[0].fareBrl * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth * 12)}/ano. O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados.
+          <strong className="text-slate-200">Cenário padrão:</strong> {formatBRL(routes[0].fareBrl)} × {d.transport.defaultTripsPerDay} × {d.transport.defaultWorkDaysPerMonth} = {formatBRL(routes[0].fareBrl * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth)}/mês e {formatBRL(routes[0].fareBrl * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth * 12)}/ano. O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados. Em cenário hipotético, o valor escolhido não representa tarifa oficial.
         </div>
       </Card>
     </section>
