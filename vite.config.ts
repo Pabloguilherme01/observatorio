@@ -1,11 +1,52 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  // Relative assets keep the static build valid on GitHub Pages
-  // project URLs (/observatorio/) and when the artifact is previewed elsewhere.
   base: './',
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Observatório Águas Lindas 2026',
+        short_name: 'Obs 2026',
+        description: 'Observatório público de dados eleitorais e municipais de Águas Lindas de Goiás.',
+        theme_color: '#0d1117',
+        background_color: '#0d1117',
+        display: 'standalone',
+        orientation: 'portrait-primary',
+        start_url: './',
+        scope: './',
+        icons: [
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) =>
+              ['script', 'style', 'image', 'font'].includes(request.destination),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'observatorio-static-assets',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30,
+              },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
+        cleanupOutdatedCaches: true,
+        navigateFallback: 'index.html',
+      },
+    }),
+  ],
   server: { host: '0.0.0.0', port: 5173 },
 });
