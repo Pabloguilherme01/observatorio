@@ -8,13 +8,17 @@ const tmpRoot = join(process.cwd(), '.tmp', 'tse-pesquisas');
 const zipPath = join(tmpRoot, 'pesquisas-2026.zip');
 const extractDir = join(tmpRoot, 'unzipped');
 const outputPath = join(process.cwd(), 'generated', 'tse2026-pesquisas.json');
-const MUNICIPIOS = new Map<string, string>([
+const MUNICIPIO_POR_CODIGO = new Map<string, string>([
   ['5200258', 'Águas Lindas de Goiás'],
   ['5221858', 'Valparaíso de Goiás'],
   ['5219753', 'Santo Antônio do Descoberto'],
   ['5215231', 'Novo Gama'],
   ['5217609', 'Planaltina'],
 ]);
+
+const MUNICIPIO_POR_NOME = new Map<string, string>(
+  [...MUNICIPIO_POR_CODIGO.values()].map(nome => [normalizeLabel(nome), nome]),
+);
 
 mkdirSync(tmpRoot, { recursive: true });
 if (existsSync(extractDir)) rmSync(extractDir, { recursive: true, force: true });
@@ -39,18 +43,19 @@ const municipalityValue = (row: Readonly<Record<string, string>>): string => {
     'CD_MUNICIPIO',
   ]) {
     const value = valueOf(row, [alias], false);
-    if (value) return value;
+    if (value) return value.trim();
   }
   return '';
 };
 
-const targetRows = rows.filter(row => {
+const resolveMunicipality = (row: Readonly<Record<string, string>>): string | null => {
   const raw = municipalityValue(row);
-  const normalized = normalizeLabel(raw);
-  if (MUNICIPIOS.has(raw.trim())) return true;
-  if (MUNICIPIOS.has(normalized)) return true;
-  return [...MUNICIPIOS.keys()].includes(raw.trim());
-});
+  if (!raw) return null;
+  if (MUNICIPIO_POR_CODIGO.has(raw)) return MUNICIPIO_POR_CODIGO.get(raw) ?? null;
+  return MUNICIPIO_POR_NOME.get(normalizeLabel(raw)) ?? null;
+};
+
+const targetRows = rows.filter(row => resolveMunicipality(row) !== null);
 
 const diagnostics = [...new Set(rows.map(row => municipalityValue(row)).filter(Boolean))]
   .filter(value => /AGUAS|VALPARAISO|SANTO ANTONIO|NOVO GAMA|PLANALTINA|5200258|5221858|5219753|5215231|5217609/i.test(normalizeLabel(value)))
@@ -61,7 +66,8 @@ if (targetRows.length === 0) {
   throw new Error('Nenhuma pesquisa dos municípios-alvo foi identificada. Cabeçalhos=' + headers.join(', ') + '; verifique o layout oficial antes de promover a captura.');
 }
 const pesquisas = targetRows.map(row => {
-  const municipality = valueOf(row, ['DS_DADO_MUNICIPIO']);
+  const municipality = resolveMunicipality(row);
+  if (!municipality) throw new Error('Linha de pesquisa sem município resolvível após o filtro.');
   return {
     idPesquisa: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
     registroTSE: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
