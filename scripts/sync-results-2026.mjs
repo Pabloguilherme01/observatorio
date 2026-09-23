@@ -204,6 +204,7 @@ async function main() {
   const httpState = readJsonFile(HTTP_STATE, { schemaVersion: 1, files: {} });
   const entries = [];
   const proofs = [];
+  let changed = false;
 
   for (const spec of CARGO_SPECS) {
     const electionRef = findElection(electionConfig, spec.electionCode);
@@ -226,6 +227,7 @@ async function main() {
         entries.push(pair.entry);
         proofs.push(pair.proof);
       } else {
+        changed = true;
         entries.push(entryFromPayload(pair.json, sourceFile, { ...spec, electionCode: actualElectionCode }));
         proofs.push({ sourceFile, sha256: pair.jsonSha256, jwsProofSha256: pair.proof.proofSha256, signatureStatus: 'verified', verificationMethod: 'tse-official-jwk-ed25519', verifiedAt: pair.proof.verifiedAt, algorithm: 'EdDSA', curve: 'Ed25519', kid: pair.proof.kid, keyFingerprint: pair.proof.keyFingerprint, etag: pair.jsonEtag, lastModified: pair.jsonLastModified, jwsEtag: pair.jwsEtag, jwsLastModified: pair.jwsLastModified });
         httpState.files[sourceFile] = { etag: pair.jsonEtag, lastModified: pair.jsonLastModified, jwsEtag: pair.jwsEtag, jwsLastModified: pair.jwsLastModified, capturedAt: new Date().toISOString() };
@@ -239,7 +241,10 @@ async function main() {
     }
   }
 
-  writeFileSync(HTTP_STATE, JSON.stringify({ ...httpState, schemaVersion: 1 }, null, 2) + '\n', 'utf8');
+  if (!changed && previousFeed) {
+    console.log(JSON.stringify({ valid: true, unchanged: true, state: previousFeed.state, capturedAt: previousFeed.capturedAt, entries: previousFeed.entries.length }, null, 2));
+    return;
+  }
   const now = new Date();
   const complete = entries.every(entry => entry.sectionsTotal > 0 && entry.sectionsCounted >= entry.sectionsTotal);
   const payload = {
