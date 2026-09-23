@@ -30,7 +30,9 @@
     "test:visual": "playwright test tests/visual/visual.spec.ts",
     "ingest:tse:first-batch": "node --experimental-strip-types scripts/tse/ingest-first-batch.ts",
     "verify:tse:capture": "node --experimental-strip-types scripts/tse/verify-capture.ts",
-    "report:axe": "node scripts/build-axe-report.mjs"
+    "report:axe": "node scripts/build-axe-report.mjs",
+    "test:snapshot-diff": "node scripts/test-snapshot-diff.mjs",
+    "diagnose:tse:matching": "node --experimental-strip-types scripts/tse/diagnose-matching.ts"
   },
   "dependencies": {
     "lucide-react": "1.47.0",
