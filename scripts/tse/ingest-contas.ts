@@ -2,7 +2,7 @@ import { join } from 'node:path';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { TSEContasFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
 import {
-  extractZip, findFile, downloadFile, parseCsv, parseDate, parseMoney, partialDocument, readCsv, readJson, sha256File, valueOf, writeJson,
+  extractZip, findFile, downloadFile, parseCsv, parseDate, parseMoney, partialDocument, readCsv, readJson, sha256File, sourceBasename, valueOf, writeJson,
 } from './common.ts';
 
 interface CandidateRecord {
@@ -101,7 +101,7 @@ const contas = [...byCandidate.values()]
       urlOriginal: SOURCE_URL,
       capturaEm: capture,
       snapshotId: sourceHash,
-      arquivoOrigem: zipPath,
+      arquivoOrigem: sourceBasename(zipPath),
     },
   };
 });
