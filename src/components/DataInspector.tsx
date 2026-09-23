@@ -129,7 +129,7 @@ export function DataInspector() {
               {copied ? 'Copiado' : 'Copiar'}
             </button>
             <button type="button" onClick={share} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
-              {navigator.share ? <Share2 className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
+              {typeof navigator.share === 'function' ? <Share2 className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
               Compartilhar
             </button>
           </div>
