@@ -16,12 +16,13 @@
         ],
         "screenEmulation": {
           "mobile": true,
-          "width": 768,
-          "height": 1024,
-          "deviceScaleFactor": 1,
+          "width": 600,
+          "height": 960,
+          "deviceScaleFactor": 2,
           "disabled": false
         },
-        "formFactor": "mobile"
+        "formFactor": "mobile",
+        "preset": "mobile"
       }
     },
     "assert": {
