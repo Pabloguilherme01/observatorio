@@ -125,13 +125,26 @@ export function DashboardMetrics() {
       <div className="dashboard-heading-card mb-6 rounded-[28px] border border-white/8 bg-white/[0.025] p-4 sm:p-5 light:border-slate-200 light:bg-slate-50/80">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
-        titleId="dashboard-title"
-        eyebrow={languageMode === 'simple' ? 'Números da cidade' : 'Visão geral'}
-        title={languageMode === 'simple' ? 'Os principais números' : 'Os números de referência'}
-        description={languageMode === 'simple'
-          ? 'Toque em um número para ver a fonte.'
-          : 'Indicadores principais em uma camada enxuta. Clique em um número para abrir fonte, referência e metodologia.'}
-      />
+            titleId="dashboard-title"
+            eyebrow={languageMode === 'simple' ? 'Números da cidade' : 'Visão geral'}
+            title={languageMode === 'simple' ? 'Os principais números' : 'Os números de referência'}
+            description={languageMode === 'simple'
+              ? 'Toque em um número para ver a fonte.'
+              : 'Indicadores principais em uma camada enxuta. Clique em um número para abrir fonte, referência e metodologia.'}
+          />
+          <div className="flex flex-wrap items-center gap-2" aria-label="Estado do painel">
+            <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> Dados rastreáveis</span>
+            <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Atualizado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <div>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
+          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Quatro números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
+        </div>
+      </div>
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note }) => (
