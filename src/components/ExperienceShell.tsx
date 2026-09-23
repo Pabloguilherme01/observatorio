@@ -1,4 +1,4 @@
-import { BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles, Vote, X } from 'lucide-react';
+import { ArrowRight, BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles, Vote, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';
