@@ -87,7 +87,7 @@ export function Electoral360() {
               <h3 className="text-lg font-black text-white">Perfil documental</h3>
               <p className="mt-1 text-xs leading-5 text-slate-500">
                 {hasOfficialCandidateSnapshot
-                  ? 'A captura oficial está disponível para os nomes monitorados encontrados. Este perfil mostra somente atributos efetivamente carregados desse snapshot; campos não capturados permanecem vazios.'
+                  ? 'O snapshot baseado no serviço/catálogo do TSE está disponível para os nomes monitorados encontrados. Este perfil mostra somente atributos efetivamente carregados desse snapshot; campos não capturados permanecem vazios.'
                   : 'A captura TSE ainda não está sincronizada. O perfil abaixo usa apenas o recorte editorial local e não representa o universo completo de candidaturas.'}
               </p>
             </div>
