@@ -5,6 +5,7 @@ import { App } from './app/App';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
 
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
+const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';
 const BOOT_TIMEOUT_MS = 10000;
 
 function normalizeError(value: unknown): string {
@@ -13,11 +14,11 @@ function normalizeError(value: unknown): string {
   try { return JSON.stringify(value); } catch { return 'Erro inesperado ao inicializar a aplicação.'; }
 }
 
-function persistBootError(error: unknown, source: string): string {
-  const errorId = 'BOOT-' + Date.now().toString(36).toUpperCase();
+function persistError(key: string, prefix: string, error: unknown, source: string): string {
+  const errorId = prefix + '-' + Date.now().toString(36).toUpperCase();
   const message = normalizeError(error);
   try {
-    sessionStorage.setItem(BOOT_ERROR_KEY, JSON.stringify({
+    sessionStorage.setItem(key, JSON.stringify({
       errorId, message, source, at: new Date().toISOString(), href: window.location.href,
     }));
   } catch {}
@@ -66,9 +67,12 @@ function PwaStatus() {
 
 function captureGlobalError(source: string, value: unknown): void {
   const message = normalizeError(value);
-  persistBootError(value, source);
+  const mounted = document.documentElement.dataset.observatorioMounted === 'true';
+  const errorId = mounted
+    ? persistError(RUNTIME_ERROR_KEY, 'RUNTIME', value, source)
+    : persistError(BOOT_ERROR_KEY, 'BOOT', value, source);
   console.error('[Observatório]', source, value);
-  window.dispatchEvent(new CustomEvent('observatorio:global-error', { detail: { source, message } }));
+  window.dispatchEvent(new CustomEvent('observatorio:global-error', { detail: { source, message, errorId } }));
 }
 
 const root = document.getElementById('root');
@@ -84,23 +88,48 @@ if (!root) {
   window.addEventListener('unhandledrejection', event => captureGlobalError('unhandledrejection', event.reason));
 
   let updateSW: ((reloadPage?: boolean) => Promise<void>) | undefined;
-  void import('virtual:pwa-register')
-    .then(pwa => {
-      try {
-        updateSW = pwa.registerSW({
-          immediate: true,
-          onNeedRefresh() {
-            window.dispatchEvent(new CustomEvent('observatorio:pwa-update-available'));
-          },
-        });
-      } catch (error) {
-        captureGlobalError('pwa-register', error);
-      }
-    })
-    .catch(error => captureGlobalError('pwa-module', error));
+
+  const registerPwa = () => {
+    void import('virtual:pwa-register')
+      .then(pwa => {
+        try {
+          updateSW = pwa.registerSW({
+            immediate: true,
+            onNeedRefresh() {
+              window.dispatchEvent(new CustomEvent('observatorio:pwa-update-available'));
+            },
+          });
+        } catch (error) {
+          console.warn('[Observatório][pwa] registro indisponível', error);
+        }
+      })
+      .catch(error => console.warn('[Observatório][pwa] módulo indisponível', error));
+  };
+
+  window.addEventListener('observatorio:app-mounted', registerPwa, { once: true });
 
   const onApplyUpdate = () => { if (updateSW) void updateSW(true); };
   window.addEventListener('observatorio:pwa-apply-update', onApplyUpdate);
+
+  const bootTimeout = window.setTimeout(() => {
+    if (document.documentElement.dataset.observatorioMounted !== 'true') {
+      const errorId = persistError(
+        BOOT_ERROR_KEY,
+        'BOOT',
+        new Error('Tempo limite de inicialização excedido.'),
+        'timeout',
+      );
+      root.replaceChildren();
+      reactRoot.render(
+        <BootstrapFallback
+          errorId={errorId}
+          message="A interface excedeu o limite de 10 segundos para concluir a inicialização."
+        />,
+      );
+    }
+  }, BOOT_TIMEOUT_MS);
+
+  window.addEventListener('observatorio:app-mounted', () => window.clearTimeout(bootTimeout), { once: true });
 
   try {
     console.info('[Observatório][boot] 2/4 dependências principais carregadas');
@@ -117,16 +146,8 @@ if (!root) {
     document.documentElement.dataset.observatorioMounted = 'true';
     window.dispatchEvent(new CustomEvent('observatorio:app-mounted'));
   } catch (error) {
-    const errorId = persistBootError(error, 'render');
+    const errorId = persistError(BOOT_ERROR_KEY, 'BOOT', error, 'render');
     root.replaceChildren();
     reactRoot.render(<BootstrapFallback errorId={errorId} message={normalizeError(error)} />);
   }
-
-  window.setTimeout(() => {
-    if (document.documentElement.dataset.observatorioMounted !== 'true') {
-      const errorId = persistBootError(new Error('Tempo limite de inicialização excedido.'), 'timeout');
-      root.replaceChildren();
-      reactRoot.render(<BootstrapFallback errorId={errorId} message="A interface excedeu o limite de 10 segundos para concluir a inicialização." />);
-    }
-  }, BOOT_TIMEOUT_MS);
 }
