@@ -13,11 +13,7 @@ const entries: readonly (readonly [string, string])[] = [
   ['Qualidade dos dados', 'qualidade'],
   ['Fontes e metodologia', 'fontes'],
   ['Exportação', 'exportacao'],
-  ['População 2026: 249.978', 'dashboard'],
-  ['Eleitorado: 125.062', 'eleitorado'],
-  ['Tarifa Brasília: R$ 11,43', 'transporte'],
-  ['LOA 2026: R$ 771,3 milhões', 'orcamento'],
-  ['Pesquisa GO-04133/2026', 'politica'],
+  ['Pesquisa registrada', 'politica'],
   ['HEALGO', 'saude'],
 ];
 
@@ -27,6 +23,11 @@ const normalize = (value: string) =>
     .replace(/[\u0300-\u036f]/g, '')
     .toLocaleLowerCase('pt-BR')
     .trim();
+
+const brlMillions = (value: number) => {
+  const millions = value / 1_000_000;
+  return millions.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
+};
 
 function fuzzyScore(query: string, text: string): number {
   if (!query) return 1;
@@ -88,8 +89,15 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   const filtered = useMemo(() => {
     const queryNormalized = normalize(query);
+    const fare = Number(d.indicators.find(indicator => indicator.id === 'fare')?.value ?? 0);
+    const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+    const electorate = d.electoral.electorate;
     const all: Array<readonly [string, string]> = [
       ...entries,
+      ['População 2026: ' + population.toLocaleString('pt-BR'), 'dashboard'],
+      ['Eleitorado 2026: ' + electorate.toLocaleString('pt-BR'), 'eleitorado'],
+      ['Tarifa Brasília: R$ ' + fare.toFixed(2).replace('.', ','), 'transporte'],
+      ['LOA 2026: R$ ' + brlMillions(d.budget.totalBrl), 'orcamento'],
       ...d.sources.map(source => [source.label, 'fontes'] as [string, string]),
       ...d.candidates.map(candidate => [candidate.name, 'candidaturas'] as [string, string]),
       ...d.transport.routes.map(route => [route.label, 'transporte'] as [string, string]),
