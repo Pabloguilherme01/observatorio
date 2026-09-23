@@ -55,9 +55,11 @@ function LineChart({ title, description, points, valueFormatter = value => forma
   const guides = [0, 1, 2, 3].map(index => 22 + (geometry.plotHeight * index) / 3);
 
   const showTooltip = (point: typeof geometry.coords[number]) => {
+    const xPct = (point.x / geometry.width) * 100;
+    const yPct = (point.y / geometry.height) * 100;
     setTooltip({
-      xPct: (point.x / geometry.width) * 100,
-      yPct: (point.y / geometry.height) * 100,
+      xPct: Math.min(88, Math.max(12, xPct)),
+      yPct: Math.min(88, Math.max(18, yPct)),
       label: point.label,
       value: valueFormatter(point.value),
     });
