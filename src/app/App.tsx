@@ -29,6 +29,19 @@ function Deferred({ children }: { readonly children: ReactNode }) {
   );
 }
 
+function scrollToHash(hash: string) {
+  if (!hash) return;
+  const reduceMotion = document.documentElement.classList.contains('reduced-motion')
+    || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
+  const scroll = () => document.getElementById(hash)?.scrollIntoView({
+    behavior: reduceMotion ? 'auto' : 'smooth',
+    block: 'start',
+  });
+  requestAnimationFrame(scroll);
+  requestAnimationFrame(() => requestAnimationFrame(scroll));
+}
+
 function DeferredBlock({
   loader,
   anchorIds,
@@ -41,45 +54,44 @@ function DeferredBlock({
 
   useEffect(() => {
     const initialHash = window.location.hash.slice(1);
-    if (anchorIds.includes(initialHash)) setReady(true);
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === 'undefined') {
-      setReady(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries.some(entry => entry.isIntersecting)) {
-          setReady(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '900px 0px' },
-    );
-    observer.observe(node);
+    const activate = () => setReady(true);
+    if (anchorIds.includes(initialHash)) activate();
 
     const onNavigate = (event: Event) => {
       const targetId = (event as CustomEvent<string>).detail;
-      if (anchorIds.includes(targetId)) setReady(true);
+      if (anchorIds.includes(targetId)) activate();
     };
+
     window.addEventListener('observatorio:navigate', onNavigate);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('observatorio:navigate', onNavigate);
-    };
+
+    const node = ref.current;
+    if (!node || typeof IntersectionObserver === 'undefined') {
+      activate();
+    } else {
+      const observer = new IntersectionObserver(
+        entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            activate();
+            observer.disconnect();
+          }
+        },
+        { rootMargin: '1200px 0px' },
+      );
+      observer.observe(node);
+      return () => {
+        observer.disconnect();
+        window.removeEventListener('observatorio:navigate', onNavigate);
+      };
+    }
+
+    return () => window.removeEventListener('observatorio:navigate', onNavigate);
   }, [anchorIds]);
 
   useEffect(() => {
     if (!ready) return;
     const hash = window.location.hash.slice(1);
     if (!anchorIds.includes(hash)) return;
-    const frame = window.requestAnimationFrame(() => {
-      document.getElementById(hash)?.scrollIntoView({
-        behavior: document.documentElement.classList.contains('reduced-motion')
-          || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-        block: 'start',
-      });
-    });
+    const frame = window.requestAnimationFrame(() => scrollToHash(hash));
     return () => window.cancelAnimationFrame(frame);
   }, [ready, anchorIds]);
 
@@ -103,7 +115,7 @@ export function App() {
           <main id="main-content">
             <AudienceHub />
             <ExecutiveSummary />
-            <DashboardMetrics />
+            <div id="analise" className="scroll-mt-24"><DashboardMetrics /></div>
             <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} />
             <DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} />
             <DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} />
