@@ -22,7 +22,7 @@ const errors = [];
 const pass = message => console.log('PASS', message);
 const must = (condition, message) => condition ? pass(message) : errors.push(message);
 
-must(files.app.includes('AudienceHub') && (files.app.includes('InstagramSyncHub') || files.app.includes('DeferredPublicDataGroup')), 'hubs de descoberta e Instagram estão montados no App ou em grupo diferido');
+must(files.app.includes('AudienceHub') && files.app.includes('DeferredPublicDataGroup'), 'hubs de descoberta e Instagram estão montados diretamente ou por grupo diferido');
 must(files.hero.includes('href="#descubra"'), 'hero envia o primeiro CTA para descoberta');
 must(files.hero.includes('observatorio:election-mode') && files.hero.includes('aria-pressed'), 'Modo Eleição possui controle acessível também no hero mobile');
 must(files.css.includes('.hero-mobile-election-toggle') || files.css.includes('mode-election'), 'CSS possui o controle mobile do Modo Eleição');
