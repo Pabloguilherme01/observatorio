@@ -82,6 +82,7 @@ function heightForChart(): number {
 
 export function DashboardMetrics() {
   const density = Number(d.indicators.find(indicator => indicator.id === 'density')?.value ?? 0);
+  const area = Number(d.indicators.find(indicator => indicator.id === 'area')?.value ?? 0);
   const population2022 = d.populationSeries.find(point => point.year === 2022)?.value ?? 0;
   const population2026 = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
   const populationGrowthPct = population2022 ? ((population2026 - population2022) / population2022) * 100 : 0;
@@ -100,6 +101,8 @@ export function DashboardMetrics() {
     { label: '2026', value: d.electoral.electorate },
   ];
 
+  const populationDelta = population2026 - population2022;
+
   const metrics = [
     { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', icon: Users },
     { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot da 28ª Zona', icon: Activity },
@@ -109,7 +112,7 @@ export function DashboardMetrics() {
 
   return (
     <section id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dashboard-title">
-      <SectionHeader eyebrow="Visão geral" title="Os números de referência" description="Indicadores principais em uma camada enxuta, com unidade, estado do dado e cálculo derivado explicitado." />
+      <SectionHeader titleId="dashboard-title" eyebrow="Visão geral" title="Os números de referência" description="Indicadores principais em uma camada enxuta, com unidade, estado do dado e cálculo derivado explicitado." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metrics.map(({ label, value, caption, icon: Icon }) => (
           <Card key={label}>
@@ -134,6 +137,7 @@ export function DashboardMetrics() {
         <Card>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Crescimento 2022 → 2026</div>
           <div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div>
+          <div className="mt-1 text-xs font-semibold text-slate-500">+{formatNumber(populationDelta)} habitantes</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">Variação calculada a partir dos dois pontos do dataset.</p>
         </Card>
         <Card>
@@ -143,7 +147,7 @@ export function DashboardMetrics() {
         </Card>
         <Card>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Base de cálculo</div>
-          <div className="mt-2 text-xl font-black text-white light:text-slate-900">{formatNumber(191.817, 3)} km²</div>
+          <div className="mt-2 text-xl font-black text-white light:text-slate-900">{formatNumber(area, 3)} km²</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">Área territorial usada para a densidade demográfica derivada.</p>
         </Card>
       </div>
