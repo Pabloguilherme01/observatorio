@@ -48,6 +48,7 @@ if (state !== 'not_synced') {
   if (payload.meta?.retrievalMethod === 'official_tse_open_data_csv' && !payload.meta.resourceUrl.includes('cdn.tse.jus.br')) errors.push('resourceUrl do pacote CSV oficial do TSE ausente.');
   if ((payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api' || payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy') && !payload.meta.resourceUrl.includes('divulgacandcontas.tse.jus.br/divulga/rest/')) errors.push('resourceUrl da API oficial DivulgaCandContas ausente.');
   if (payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy' && typeof payload.meta?.sourceProxyUrl !== 'string') errors.push('sourceProxyUrl do fallback de proxy ausente.');
+  if (payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy') warnings.push('Snapshot histórico foi capturado via transporte intermediário; a produção atual não depende desse transporte.');
   for (const expected of payload.watchlist ?? []) {
     if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
   }
