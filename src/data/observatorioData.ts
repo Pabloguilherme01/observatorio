@@ -2,7 +2,7 @@ import type { ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
 
 /**
- * Dataset V24, normalizado para o domínio React.
+ * Dataset V25, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília segue o valor indicado no levantamento atual (R$ 11,43);
@@ -13,7 +13,7 @@ import { sourceRegistry } from './sourceRegistry';
 export const observatorioData: ObservatoryData = {
   meta: {
     name: 'Observatório Eleitoral Águas Lindas de Goiás 2026',
-    edition: 'V24 Ultra • resiliência, interatividade e auditabilidade',
+    edition: 'V25 • dados públicos, rastreabilidade e atualização',
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
     updatedAt: '2026-09-23',
