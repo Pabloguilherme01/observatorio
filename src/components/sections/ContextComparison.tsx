@@ -4,6 +4,7 @@ import { contextualMetrics, contextualMunicipalities, type ContextMetricId } fro
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { ProvenanceTrigger } from '../ProvenanceTrigger';
+import { AccessibleRegionMap } from '../AccessibleRegionMap';
 
 function formatValue(id: ContextMetricId, value: number) {
   if (id === 'population') return value.toLocaleString('pt-BR');
@@ -72,6 +73,15 @@ export function ContextComparison() {
               </div>
             </Card>
           ))}
+        </div>
+
+        <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
+          <div className="text-xs font-bold uppercase tracking-[0.16em] text-sky-300/80">Acessibilidade demonstrável</div>
+          <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Mapa esquemático com navegação por teclado</h3>
+          <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">Este desenho é apenas uma demonstração de interação acessível. Não representa coordenadas geográficas nem distribuição territorial real.</p>
+          <div className="mt-4">
+            <AccessibleRegionMap />
+          </div>
         </div>
 
         <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 text-xs leading-5 text-slate-500">
