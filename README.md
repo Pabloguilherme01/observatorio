@@ -60,9 +60,9 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V36.0 — Observatório de Dados Cívicos e Eleitorais.
+V37.0 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V36
+### Foco V37
 - Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
 - Compartilhamento nativo de resumo e cenários de mobilidade.
 - Estados TSE explicitamente diferenciados entre capturado, desatualizado, falha e aguardando captura.
@@ -72,7 +72,7 @@ V36.0 — Observatório de Dados Cívicos e Eleitorais.
 - Contrato de produção com pleito, ambiente, escopo municipal e compatibilidade entre código de eleição, UF e cargo.
 - Estado de frescor do feed para impedir que um arquivo antigo permaneça rotulado como ao vivo.
 - Verificador isolado do simulado oficial do TSE para 22–24/09/2026, sem misturar dados simulados à produção.
-- Modo investigação como padrão para não esconder fontes e camadas documentais do primeiro acesso.
+- Visão geral como modo padrão para não esconder fontes e camadas documentais do primeiro acesso.
 - Histórico de eleitorado com fonte individual por ano e reconciliação editorial separada do consolidado.
 - Eleitoral 360° sem mistura de campos de snapshots diferentes.
 - Compartilhamento do inspetor sem âncoras falsas.
@@ -84,7 +84,7 @@ V36.0 — Observatório de Dados Cívicos e Eleitorais.
 - Estados de captura e cobertura reforçados na camada de pesquisa documental.
 - Registros políticos estáticos separados da proveniência oficial do TSE enquanto a sincronização local permanece `not_synced`.
 - Camada Evidências com cadeia explícita de fonte, captura local, hash, workflow e limitações.
-- Três modos de leitura: Visão geral, Investigação e Evidências.
+- Três modos de leitura: Visão geral, Investigação e Evidências; Visão geral é o modo padrão.
 
 ### Camadas atuais
 - Cadeia de evidências com distinção explícita entre fonte oficial e captura local
