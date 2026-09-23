@@ -1,5 +1,6 @@
 import type { ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
+import { EDITION } from '../config/version';
 
 /**
  * Dataset V37, normalizado para o domínio React.
@@ -13,7 +14,7 @@ import { sourceRegistry } from './sourceRegistry';
 export const observatorioData: ObservatoryData = {
   meta: {
     name: 'Observatório Eleitoral Águas Lindas de Goiás 2026',
-    edition: 'V36 • leitura pública + investigação + evidências',
+    edition: `${EDITION} • leitura pública + investigação + evidências`,
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
     updatedAt: '2026-09-23',
