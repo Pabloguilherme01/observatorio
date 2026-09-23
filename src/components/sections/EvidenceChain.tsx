@@ -1,16 +1,27 @@
 import { Database, FileCheck2, Fingerprint, Link2, ShieldCheck } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import generated from '../../data/generated/tse2026-candidates.json';
+import { useResultsFeed, type ResultsFeedPhase } from '../../hooks/useResultsFeed';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
 export function EvidenceChain() {
+  const { phase: resultsPhase } = useResultsFeed(300000);
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
   const editorialSource = d.sources.find(source => source.id === 'recorte-editorial-candidatos-2026');
   const candidateState = generated.meta.state;
   const candidateCaptured = Boolean(generated.meta.downloadedAt);
   const candidateHash = generated.meta.sourceFileSha256;
   const resultSource = d.sources.find(source => source.id === 'tse-resultados-2026');
+  const resultPhase: Record<ResultsFeedPhase, { label: string; detail: string }> = {
+    pre_open: { label: 'Pré-eleição', detail: 'A janela de resultados ainda não abriu.' },
+    open_waiting: { label: 'Aguardando feed', detail: 'A janela abriu, mas ainda não há arquivo oficial validado neste observatório.' },
+    live: { label: 'Feed em atualização', detail: 'O arquivo oficial foi capturado recentemente e passou pela validação local.' },
+    stale: { label: 'Feed desatualizado', detail: 'Há dados locais, mas o último arquivo ultrapassou o limite de frescor para ser tratado como ao vivo.' },
+    complete: { label: 'Feed técnico completo', detail: 'O último snapshot local foi marcado como completo pelo pipeline; isso não equivale, por si só, ao encerramento jurídico do pleito.' },
+    ended_unavailable: { label: 'Janela encerrada', detail: 'A janela operacional terminou sem um feed local válido disponível para esta camada.' },
+  };
+  const currentResultPhase = resultPhase[resultsPhase];
 
   return (
     <section id="evidencias" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="evidence-title">
@@ -62,7 +73,7 @@ export function EvidenceChain() {
             <div><strong className="text-slate-200 light:text-slate-800">Fonte:</strong> {resultSource?.institution ?? 'Tribunal Superior Eleitoral'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Município:</strong> Águas Lindas de Goiás · código 93343</div>
             <div><strong className="text-slate-200 light:text-slate-800">Integridade:</strong> JSON/JWS e contexto municipal são validados antes da publicação.</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Estado atual:</strong> a apuração oficial ainda não está aberta ao visitante; nenhum resultado é inferido.</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Estado atual:</strong> {currentResultPhase.label} — {currentResultPhase.detail}</div>
           </div>
           <a href={resultSource?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300">
             Documentação técnica TSE <FileCheck2 className="h-3.5 w-3.5" aria-hidden="true" />
