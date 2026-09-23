@@ -30,28 +30,49 @@ export function Contas360() {
         </div>
 
         {contasData.contas.length ? (
-          <div className="mt-4 overflow-x-auto rounded-2xl border border-white/8">
-            <table className="min-w-full text-left text-xs">
-              <thead className="bg-white/[0.03] text-slate-500">
-                <tr>
-                  <th scope="col" className="px-3 py-3 font-bold">Candidato</th>
-                  <th scope="col" className="px-3 py-3 font-bold">Receitas</th>
-                  <th scope="col" className="px-3 py-3 font-bold">Despesas</th>
-                  <th scope="col" className="px-3 py-3 font-bold">Saldo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contasData.contas.map(conta => (
-                  <tr key={conta.candidatoId} className="border-t border-white/8">
-                    <td className="px-3 py-3 text-white">{conta.nomeCandidato}</td>
-                    <td className="px-3 py-3 text-slate-300">{conta.receitas.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                    <td className="px-3 py-3 text-slate-300">{conta.despesas.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                    <td className="px-3 py-3 text-slate-300">{conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+          <>
+            <div className="mt-4 space-y-2 md:hidden">
+              {contasData.contas.map(conta => (
+                <details key={conta.candidatoId} className="rounded-2xl border border-white/8 bg-white/[0.02]">
+                  <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3">
+                    <span className="min-w-0">
+                      <strong className="block truncate text-sm text-white">{conta.nomeCandidato}</strong>
+                      <span className="mt-1 block text-[12px] text-slate-500">{conta.receitas.qtdDoadores} receitas · {conta.despesas.qtdFornecedores} despesas</span>
+                    </span>
+                    <span className="shrink-0 text-sm font-black text-sky-200">{conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                  </summary>
+                  <div className="grid gap-2 border-t border-white/8 p-4 sm:grid-cols-3">
+                    <Metric label="Receitas" value={conta.receitas.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
+                    <Metric label="Despesas" value={conta.despesas.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
+                    <Metric label="Saldo" value={conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
+                  </div>
+                </details>
+              ))}
+            </div>
+
+            <div className="mt-4 hidden overflow-x-auto rounded-2xl border border-white/8 md:block">
+              <table className="min-w-full text-left text-xs">
+                <thead className="bg-white/[0.03] text-slate-500">
+                  <tr>
+                    <th scope="col" className="px-3 py-3 font-bold">Candidato</th>
+                    <th scope="col" className="px-3 py-3 font-bold">Receitas</th>
+                    <th scope="col" className="px-3 py-3 font-bold">Despesas</th>
+                    <th scope="col" className="px-3 py-3 font-bold">Saldo</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {contasData.contas.map(conta => (
+                    <tr key={conta.candidatoId} className="border-t border-white/8">
+                      <td className="px-3 py-3 text-white">{conta.nomeCandidato}</td>
+                      <td className="px-3 py-3 text-slate-300">{conta.receitas.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                      <td className="px-3 py-3 text-slate-300">{conta.despesas.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                      <td className="px-3 py-3 text-slate-300">{conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
           <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
             A captura oficial de prestação de contas foi materializada para este primeiro snapshot. Não há registros de movimentação associados aos nomes monitorados nesta captura; o zero é resultado do filtro documental, não um zero atribuído ao universo completo de candidaturas.
@@ -64,4 +85,9 @@ export function Contas360() {
       </Card>
     </section>
   );
+}
+
+
+function Metric({ label, value }: { readonly label: string; readonly value: string }) {
+  return <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3"><div className="text-[11px] uppercase tracking-wide text-slate-600">{label}</div><div className="mt-1 text-sm font-bold text-white">{value}</div></div>;
 }
