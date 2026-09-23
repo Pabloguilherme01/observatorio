@@ -1,12 +1,55 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { APP_VERSION } from './src/config/version';
+import { observatorioData } from './src/data/observatorioData';
+
+const publicApiPlugin = (): Plugin => ({
+  name: 'observatorio-public-api',
+  generateBundle() {
+    const payload = {
+      schemaVersion: 1,
+      apiVersion: '1.0',
+      edition: observatorioData.meta.edition,
+      municipality: observatorioData.meta.municipality,
+      datasetUpdatedAt: observatorioData.meta.updatedAt,
+      buildGeneratedAt: new Date().toISOString(),
+      data: observatorioData,
+    };
+    this.emitFile({
+      type: 'asset',
+      fileName: 'api/v1/observatorio.json',
+      source: JSON.stringify(payload, null, 2),
+    });
+    this.emitFile({
+      type: 'asset',
+      fileName: 'api/v1/openapi.json',
+      source: JSON.stringify({
+        openapi: '3.0.3',
+        info: {
+          title: 'Observatório Águas Lindas — API pública',
+          version: APP_VERSION,
+          description: 'Snapshot público estático gerado a cada build a partir da mesma fonte usada pela interface.',
+        },
+        servers: [{ url: '/observatorio' }],
+        paths: {
+          '/api/v1/observatorio.json': {
+            get: { summary: 'Dataset consolidado da edição publicada', responses: { '200': { description: 'JSON do observatório' } } },
+          },
+          '/api/v1/openapi.json': {
+            get: { summary: 'Especificação OpenAPI', responses: { '200': { description: 'OpenAPI JSON' } } },
+          },
+        },
+      }, null, 2),
+    });
+  },
+});
 
 export default defineConfig({
   base: '/observatorio/',
   plugins: [
+    publicApiPlugin(),
     react(),
     tailwindcss(),
     VitePWA({
