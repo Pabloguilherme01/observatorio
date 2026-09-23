@@ -26,7 +26,7 @@ export function Contas360() {
         <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Estado da captura</div>
           <div className="mt-2 text-sm font-black text-white">{contasData.estado}</div>
-          <div className="mt-1 text-xs text-slate-500">{contasData.totalCandidatosComContas} candidatos com contas no snapshot local.</div>
+          <div className="mt-1 text-xs text-slate-500">{contasData.totalCandidatosComContas} registros de contas associados ao recorte nominal no snapshot local.</div>
         </div>
 
         {contasData.contas.length ? (
@@ -54,7 +54,7 @@ export function Contas360() {
           </div>
         ) : (
           <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-            A captura oficial de prestação de contas foi materializada para este primeiro snapshot. Não há registros de movimentação associados aos candidatos do recorte operacional nesta captura; o zero é resultado do filtro, não dado simulado.
+            A captura oficial de prestação de contas foi materializada para este primeiro snapshot. Não há registros de movimentação associados aos nomes monitorados nesta captura; o zero é resultado do filtro documental, não um zero atribuído ao universo completo de candidaturas.
           </div>
         )}
 
