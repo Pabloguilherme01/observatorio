@@ -19,21 +19,13 @@ const entries: readonly (readonly [string, string])[] = [
 ];
 
 const normalize = (value: string) =>
-  value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase('pt-BR')
-    .trim();
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
-const brlMillions = (value: number) => {
-  const millions = value / 1_000_000;
-  return millions.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
-};
+const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
 function fuzzyScore(query: string, text: string): number {
   if (!query) return 1;
   if (text.includes(query)) return 100 + (query.length / Math.max(text.length, 1)) * 10;
-
   let qi = 0;
   let score = 0;
   for (const char of text) {
@@ -41,9 +33,7 @@ function fuzzyScore(query: string, text: string): number {
       score += 3;
       qi += 1;
       if (qi === query.length) break;
-    } else if (qi > 0) {
-      score -= 0.15;
-    }
+    } else if (qi > 0) score -= 0.15;
   }
   return qi === query.length ? score : -Infinity;
 }
@@ -55,39 +45,40 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
 
+  const openSearch = () => {
+    openerRef.current = document.activeElement as HTMLElement | null;
+    setQuery('');
+    setActiveIndex(0);
+    const target = window.matchMedia?.('(min-width: 768px)').matches ? inputRef.current : null;
+    window.setTimeout(() => target?.focus(), 40);
+  };
+
   useEffect(() => {
     if (!open) {
       openerRef.current?.focus?.();
       return;
     }
-    openerRef.current = document.activeElement as HTMLElement | null;
-    setQuery('');
-    setActiveIndex(0);
+    openSearch();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 0);
+
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') { event.preventDefault(); onClose(); return; }
+      if (event.key === 'ArrowDown') { event.preventDefault(); setActiveIndex(index => Math.min(index + 1, Math.max(filtered.length - 1, 0))); return; }
+      if (event.key === 'ArrowUp') { event.preventDefault(); setActiveIndex(index => Math.max(index - 1, 0)); return; }
+      if (event.key === 'Home') { event.preventDefault(); setActiveIndex(0); return; }
+      if (event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filtered.length - 1, 0)); return; }
       if (event.key === 'Tab' && dialogRef.current) {
         const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href]')).filter(node => !node.hasAttribute('disabled'));
         if (!focusable.length) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
+        const first = focusable[0], last = focusable[focusable.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
-      if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        setActiveIndex(index => Math.min(index + 1, Math.max(filtered.length - 1, 0)));
-      }
-      if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        setActiveIndex(index => Math.max(index - 1, 0));
-      }
     };
+
     window.addEventListener('keydown', handleKey);
     return () => {
-      window.clearTimeout(focusTimer);
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKey);
     };
@@ -136,7 +127,6 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
       ...d.transport.routes.map(route => [route.label, 'transporte'] as [string, string]),
       ...d.indicators.map(indicator => [indicator.label, 'dashboard'] as [string, string]),
     ];
-
     return all
       .filter(([label], index, array) => array.findIndex(item => item[0] === label) === index)
       .map(([label, id]) => ({ label, id, score: fuzzyScore(queryNormalized, normalize(label)) }))
@@ -150,65 +140,81 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   }, [activeIndex, filtered.length]);
 
   useEffect(() => {
-    const active = document.querySelector<HTMLElement>(`[data-search-index="${activeIndex}"]`);
-    active?.scrollIntoView({ block: 'nearest' });
+    document.querySelector<HTMLElement>(`[data-search-index="${activeIndex}"]`)?.scrollIntoView({ block: 'nearest' });
   }, [activeIndex]);
 
   if (!open) return null;
 
+  const selectResult = (id: string) => {
+    onClose();
+    window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: document.documentElement.classList.contains('reduced-motion') ? 'auto' : 'smooth', block: 'start' });
+      window.history.replaceState(null, '', '#' + id);
+      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+    }, 60);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 p-4 pt-[12vh] backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="search-modal-title" onMouseDown={onClose}>
-      <div ref={dialogRef} className="w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-[#101821] shadow-2xl" onMouseDown={event => event.stopPropagation()}>
-        <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4">
-          <Search className="h-5 w-5 text-slate-400" aria-hidden="true" />
+    <div className="search-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="search-modal-title" onMouseDown={onClose}>
+      <div ref={dialogRef} className="search-modal-panel" onMouseDown={event => event.stopPropagation()}>
+        <div className="search-modal-head">
+          <div className="search-modal-icon"><Search className="h-5 w-5" aria-hidden="true" /></div>
           <div className="min-w-0 flex-1">
-            <h2 id="search-modal-title" className="sr-only">Buscar no observatório</h2>
+            <div className="flex items-center gap-2">
+              <h2 id="search-modal-title" className="text-sm font-black text-white">Buscar no Observatório</h2>
+              <span className="search-mode-hint">Digite e escolha</span>
+            </div>
             <input
               ref={inputRef}
               value={query}
               onChange={event => setQuery(event.target.value)}
               onKeyDown={event => {
                 if (event.key === 'Enter' && filtered[activeIndex]) {
-                  window.location.hash = filtered[activeIndex].id;
-                  onClose();
+                  event.preventDefault();
+                  selectResult(filtered[activeIndex].id);
                 }
               }}
-              placeholder="Buscar seção, fonte ou indicador…"
-              className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
+              placeholder="Ex.: orçamento, transporte, eleitorado, HEAL…"
+              className="search-modal-input"
               aria-label="Buscar seção, fonte ou indicador"
               aria-controls="search-results"
+              autoComplete="off"
+              inputMode="search"
             />
           </div>
-          <button type="button" onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white" aria-label="Fechar busca">
-            <X className="h-4 w-4" aria-hidden="true" />
-          </button>
+          <button type="button" onClick={onClose} className="search-modal-close" aria-label="Fechar busca"><X className="h-5 w-5" aria-hidden="true" /></button>
         </div>
-        {quickAnswer && <div className="mx-2 mt-2 rounded-2xl border border-sky-300/15 bg-sky-300/[0.05] p-4">
-          <div className="text-[11px] font-bold uppercase tracking-widest text-sky-300/80">Resposta rápida</div>
+
+        {quickAnswer && <div className="search-quick-answer">
+          <div className="search-kicker">Resposta rápida</div>
           <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
-          <div className="mt-1 text-xl font-black text-sky-300">{quickAnswer.value}</div>
-          <a href={'#' + quickAnswer.id} onClick={onClose} className="mt-2 inline-flex min-h-10 items-center text-xs font-bold text-slate-300 hover:text-white">Abrir dado e fonte →</a>
+          <div className="mt-1 text-2xl font-black text-sky-300">{quickAnswer.value}</div>
+          <button type="button" onClick={() => selectResult(quickAnswer.id)} className="mt-3 search-quick-action">Abrir dado e fonte</button>
+          <span className="mt-2 block text-[10px] text-slate-600">Fonte: {quickAnswer.sourceId}</span>
         </div>}
-        <div className="flex items-center justify-between px-4 py-2 text-[11px] text-slate-500">
+
+        <div className="search-meta">
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
-          <span>↑↓ navegar · Enter abrir · Esc fechar</span>
+          <span>Setas navegar · Enter abrir · Esc fechar</span>
         </div>
-        <div id="search-results" className="max-h-[55vh] overflow-auto p-2" role="list" aria-label="Resultados da busca">
+
+        <div id="search-results" className="search-results" role="listbox" aria-label="Resultados da busca">
           {filtered.map((item, index) => (
-            <a
+            <button
               key={item.label + '-' + item.id}
-              href={'#' + item.id}
-              onMouseEnter={() => setActiveIndex(index)}
-              onClick={onClose}
+              type="button"
               data-search-index={index}
-              className={'block rounded-2xl px-4 py-3 text-sm transition ' + (activeIndex === index ? 'bg-white/10 text-white' : 'text-slate-200 hover:bg-white/5')}
-              aria-current={activeIndex === index ? 'true' : undefined}
+              onMouseEnter={() => setActiveIndex(index)}
+              onClick={() => selectResult(item.id)}
+              className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
+              role="option"
+              aria-selected={activeIndex === index}
             >
-              {item.label}
-              <span className="ml-2 text-xs text-slate-500">#{item.id}</span>
-            </a>
+              <span className="min-w-0 text-left"><strong>{item.label}</strong><small>#{item.id}</small></span>
+              <span className="search-result-enter">↵</span>
+            </button>
           ))}
-          {!filtered.length && <div className="px-4 py-8 text-center text-sm text-slate-500">Nenhum resultado encontrado.</div>}
+          {!filtered.length && <div className="search-empty">Nenhum resultado encontrado.</div>}
         </div>
       </div>
     </div>
