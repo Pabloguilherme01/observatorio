@@ -996,72 +996,60 @@ button,a{touch-action:manipulation}
   .mobile-bottom-nav button span { font-size: 8px; letter-spacing: -.01em; }
 }
 
-/* Mobile visual recovery v4: flat, clean, no oversized glass effects */
-@media(max-width:767px){
-  body{
-    background:#0b1117!important;
-  }
-  .hero-shell{
-    background:#0b1117!important;
-    box-shadow:none!important;
-  }
-  .hero-shell:before{
-    display:none!important;
-  }
-  .hero-shell .hero-badges > *{
-    box-shadow:none!important;
-  }
-  .hero-shell .hero-kpis > div,
-  .metric-interactive > div,
-  .candidate-card,
-  .summary-stat,
-  .summary-evidence,
-  .today-card,
-  .topic-card,
-  .shortcut-card,
-  .shortcut-list-row,
-  .shortcut-result-row{
-    box-shadow:none!important;
-    background:rgba(255,255,255,.025)!important;
-  }
-  .hero-shell h1{
-    text-wrap:balance;
-    max-width:13ch!important;
-  }
-  .hero-shell .hero-kpis > div{
-    display:flex!important;
-    min-height:76px!important;
-    padding:12px 13px!important;
-  }
-  .hero-shell .hero-kpis > div > div:nth-child(2){
-    text-align:left!important;
-  }
-  .hero-shell .mt-5.flex.flex-wrap{
-    display:flex!important;
-    flex-wrap:wrap!important;
-  }
-  .hero-shell .mt-5.flex.flex-wrap > a{
-    flex:1 1 150px!important;
-  }
-  .mobile-bottom-nav{
-    background:#0b1117!important;
-    backdrop-filter:none!important;
-    -webkit-backdrop-filter:none!important;
-    box-shadow:0 -1px 0 rgba(255,255,255,.08)!important;
-  }
-  .mobile-bottom-nav button.is-active{
-    background:rgba(125,211,252,.08)!important;
-  }
-  .mobile-bottom-nav button.is-active::before{
-    box-shadow:none!important;
-  }
+/* Mobile final system v2026-09 */
+@media (max-width: 767px){
+  :root{--mobile-page-gutter:16px;--mobile-nav-height:68px;--mobile-card-radius:18px}
+  body{overflow-x:hidden;background:#0b1117!important}
+  main{overflow-x:clip}
+  main>section{padding-left:0;padding-right:0;border-color:rgba(255,255,255,.06)!important}
+  .hero-shell{padding:22px var(--mobile-page-gutter) 28px;background:#0b1117!important;box-shadow:none!important}
+  .hero-shell:before{display:none!important}
+  .hero-shell h1{font-size:clamp(2rem,10.2vw,2.65rem)!important;line-height:.98!important;max-width:13ch!important;text-wrap:balance}
+  .hero-shell p{font-size:15px;line-height:1.48}
+  .hero-shell .hero-badges{gap:7px;margin-bottom:14px}
+  .hero-shell .hero-badges>*{box-shadow:none!important}
+  .hero-shell .mt-5.flex.flex-wrap{display:flex!important;flex-wrap:wrap!important;gap:8px!important;margin-top:18px}
+  .hero-shell .mt-5.flex.flex-wrap>a{flex:1 1 150px;min-width:0;width:auto}
+  .hero-shell .hero-kpis{display:grid!important;grid-template-columns:1fr;margin-top:14px;gap:8px}
+  .hero-shell .hero-kpis>div{display:flex!important;min-height:76px!important;padding:12px 13px!important;background:rgba(255,255,255,.025)!important;box-shadow:none!important}
+  .hero-shell .hero-kpis>div>div:nth-child(2){text-align:left!important}
+  .hero-shell .hero-secondary-round{display:none!important}
+  .metric-interactive>div,.candidate-card,.summary-stat,.summary-evidence,.today-card,.topic-card,.shortcut-card,.shortcut-list-row,.shortcut-result-row{min-width:0;box-shadow:none!important;background:rgba(255,255,255,.025)!important;border-color:rgba(255,255,255,.085)!important}
+  .metric-interactive>div,.today-card,.topic-card,.candidate-card,.summary-stat{border-radius:var(--mobile-card-radius)!important}
+  .metric-interactive>div{min-height:138px;padding:15px!important}
+  .metric-interactive>div .text-3xl{font-size:clamp(1.7rem,8vw,2.15rem);letter-spacing:-.045em}
+  .today-card{min-height:156px;padding:15px}
+  .topic-card{min-width:156px;min-height:138px;padding:12px}
+  .summary-stat{min-height:110px}
+  .candidate-card{border-radius:20px!important}
+  .shortcut-grid{grid-template-columns:1fr}
+  .shortcut-card,.shortcut-list-row{min-height:58px;padding:12px 13px}
+  .shortcut-content{padding:12px;gap:15px}
+  .command-panel,.search-modal-panel{max-width:calc(100vw - 16px);max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain}
+  .command-overlay{padding:8px}
+  .language-toggle-v2{position:sticky;top:4px;z-index:20;padding:4px;border-radius:16px;background:rgba(11,17,23,.94);box-shadow:0 8px 24px rgba(0,0,0,.14);backdrop-filter:blur(14px)}
+  .language-toggle-v2 button{min-height:44px;padding:6px 8px}
+  .language-toggle-v2 button span{font-size:10px}.language-toggle-v2 button small{font-size:8px}
+  .mobile-bottom-nav{grid-template-columns:repeat(6,minmax(0,1fr));min-height:68px;padding-top:5px;background:#0b1117!important;backdrop-filter:none!important;box-shadow:0 -1px 0 rgba(255,255,255,.08)!important}
+  .mobile-bottom-nav button{min-width:0;min-height:54px;padding-inline:4px;border:1px solid transparent}
+  .mobile-bottom-nav button span{font-size:clamp(8px,2.2vw,10px)}
+  .mobile-bottom-nav button.is-active{background:rgba(125,211,252,.08)!important}
+  .reading-progress{height:3px;box-shadow:none}
+  table{max-width:100%;border-radius:16px}
+  pre{max-width:100%;overflow-x:auto}
 }
-@media(max-width:390px){
-  .hero-shell h1{
-    font-size:2rem!important;
-    max-width:12ch!important;
-  }
-  .hero-shell .hero-kpis > div{
-    min-height:72px!important;
-  }
+@media (max-width: 390px){
+  :root{--mobile-page-gutter:14px}
+  .hero-shell{padding:18px var(--mobile-page-gutter) 24px}
+  .hero-shell h1{font-size:1.95rem!important;max-width:12ch!important}
+  .hero-shell .mt-5.flex.flex-wrap{flex-direction:column}
+  .hero-shell .mt-5.flex.flex-wrap>a{flex:1 1 auto;width:100%}
+  .hero-shell .hero-kpis>div{min-height:72px!important}
+  .metric-interactive>div{min-height:132px}
+  .mobile-bottom-nav{gap:1px;padding-left:3px;padding-right:3px}
+  .mobile-bottom-nav button{min-height:52px;padding-inline:2px;border-radius:11px}
+  .mobile-bottom-nav button span{font-size:8px;letter-spacing:-.01em}
+}
+@media (prefers-reduced-motion: reduce){
+  .metric-interactive>div,.candidate-card,.summary-stat,.summary-evidence,.today-card,.topic-card,.shortcut-card,.shortcut-list-row,.shortcut-result-row,.mobile-bottom-nav button,.language-toggle-v2 button{transition:none!important}
 }
