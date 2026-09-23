@@ -29,7 +29,7 @@ must(files.instagram.includes('navigator.canShare') && files.instagram.includes(
 must(files.trust.includes('Propor correção') && files.trust.includes('Compromisso editorial'), 'camada pública de correções e compromisso editorial disponível');
 must(files.css.includes('min-height: 44px') || files.css.includes('min-height:44px'), 'controles mobile preservam alvo de toque de 44px');
 must(files.css.includes('env(safe-area-inset-bottom)'), 'barra móvel considera safe-area');
-must(files.css.includes('@media (max-width: 380px)'), 'existe ajuste dedicado para telas muito pequenas');
+must(/@media\s*\(max-width:\s*380px\)/.test(files.css), 'existe ajuste dedicado para telas muito pequenas');
 must(files.css.includes('scroll-snap-type'), 'rails móveis usam snap para descoberta por gesto');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
