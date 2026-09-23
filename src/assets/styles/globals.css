@@ -397,3 +397,48 @@ html.light .instagram-shell {
   .instagram-shell { padding: 13px; border-radius: 20px; }
   .instagram-mobile-rail { grid-auto-columns: minmax(260px, 91vw); }
 }
+
+/* V41 trust + low-cognitive-load mobile */
+.trust-shell {
+  border: 1px solid rgba(140,200,242,.10);
+  border-radius: 28px;
+  padding: 20px;
+  background: rgba(255,255,255,.022);
+}
+.trust-card {
+  min-width: 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 14px;
+  background: rgba(255,255,255,.018);
+}
+.trust-card strong { display:block; margin-top:8px; color:#e6edf3; font-size:13px; }
+.trust-card p { margin-top:5px; color:#718096; font-size:11px; line-height:1.55; }
+.freshness-pill {
+  min-width: 190px;
+  border:1px solid rgba(140,200,242,.12);
+  border-radius:16px;
+  padding:10px 12px;
+  background:rgba(140,200,242,.04);
+}
+html.light .trust-shell,
+html.light .trust-card {
+  border-color: rgba(15,23,42,.09);
+  background: rgba(255,255,255,.72);
+}
+html.light .trust-card strong { color:#0f172a; }
+html.light .freshness-pill { border-color:rgba(49,90,117,.15); background:rgba(49,90,117,.05); }
+
+@media (max-width:767px) {
+  .trust-shell { padding:16px; border-radius:24px; }
+  .freshness-pill { min-width:0; }
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] > :nth-child(4) { display:none; }
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] > div { padding:10px; }
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] > div > div:nth-child(2) { font-size:1rem; }
+}
+@media (max-width:520px) {
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] { grid-template-columns:1fr; }
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] > div { display:grid; grid-template-columns:1fr auto; gap:4px 10px; align-items:center; }
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] > div > div:nth-child(3) { grid-column:2; font-size:10px; }
+}
