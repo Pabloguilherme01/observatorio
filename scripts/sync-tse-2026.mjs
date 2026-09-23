@@ -114,7 +114,7 @@ function parseJsonPayload(raw) {
     const arrayStart = raw.indexOf('[');
     const arrayEnd = raw.lastIndexOf(']');
     if (arrayStart >= 0 && arrayEnd > arrayStart) return JSON.parse(raw.slice(arrayStart, arrayEnd + 1));
-    throw new Error('Resposta do proxy não contém JSON reconhecível.');
+    throw new Error('Resposta oficial não contém JSON reconhecível.');
   }
 }
 
