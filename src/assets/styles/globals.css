@@ -299,6 +299,7 @@ html.light .mode-evidence #eleitoral360::before {
 }
 
 @media (max-width: 767px) {
+  .hero-mobile-election-toggle { display: inline-flex; }
   .label-secondary { display: none; }
   .hero-secondary-round { display: none !important; }
   .hero-second-round-note { display: block !important; }
