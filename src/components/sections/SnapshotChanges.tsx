@@ -1,5 +1,6 @@
 import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from 'lucide-react';
 import generated from '../../data/generated/tse2026-candidates.json';
+import snapshotBatch from '../../data/generated/snapshot-diff.json';
 
 export function SnapshotChanges() {
   const diff = generated.diff;
@@ -61,6 +62,18 @@ export function SnapshotChanges() {
               <span>{generated.meta.state === 'not_synced' ? 'Nenhuma comparação é declarada antes da primeira captura TSE validada.' : 'Nenhuma alteração registrada entre os snapshots comparados.'}</span>
             </div>
           )}
+        </div>
+        <div className="mt-4 rounded-2xl border border-white/8 bg-black/10 p-4">
+          <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-600">Datasets TSE enriquecidos</div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            {snapshotBatch.datasets.map(dataset => (
+              <div key={dataset.fonte} className="rounded-xl border border-white/8 px-3 py-3">
+                <div className="text-xs font-bold text-slate-300">{dataset.fonte}</div>
+                <div className="mt-1 text-[11px] text-slate-500">{dataset.firstCapture ? "linha de base" : String(dataset.added) + " novos · " + String(dataset.changed) + " alterados · " + String(dataset.removed) + " removidos"}</div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-[11px] leading-5 text-slate-600">Primeiro snapshot é tratado como linha de base. Alterações temporais só são contabilizadas a partir da captura seguinte.</p>
         </div>
         <div className="mt-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
           <Database className="h-3.5 w-3.5" aria-hidden="true" /> {generated.meta.source} · {generated.meta.scope} · {generated.meta.snapshotId}
