@@ -185,9 +185,6 @@ export function Electoral360() {
                     </div>
                   )}
 
-                      <strong className="text-slate-200">Local:</strong> {profile.localConnection}
-                    </div>
-                  )}
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {profile.instagramUrl ? (
