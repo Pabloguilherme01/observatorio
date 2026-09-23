@@ -6,15 +6,17 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="application-name" content="Observatório Águas Lindas 2026" />
-    <meta name="apple-mobile-web-app-title" content="Observatório Águas Lindas 2026" />
+    <meta name="apple-mobile-web-app-title" content="Observatório 2026" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="keywords" content="Águas Lindas de Goiás, dados eleitorais 2026, eleitorado, orçamento municipal, transporte, saneamento, transparência pública" />
-    <meta name="theme-color" content="#0d1117" />
+    <meta name="theme-color" content="#0b1117" />
     <meta name="color-scheme" content="dark light" />
     <meta name="description" content="Observatório de Águas Lindas de Goiás 2026: dados eleitorais, demográficos, saúde, saneamento, orçamento e mobilidade, com fontes rastreáveis." />
     <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="manifest" href="/observatorio/manifest.webmanifest" />
     <link rel="sitemap" type="application/xml" href="/observatorio/sitemap.xml" />
     <link rel="canonical" href="https://pabloguilherme01.github.io/observatorio/" />
+    <link rel="icon" href="/observatorio/pwa-192.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/observatorio/pwa-192.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:url" content="https://pabloguilherme01.github.io/observatorio/" />
@@ -22,12 +24,7 @@
     <meta property="og:title" content="Observatório Eleitoral — Águas Lindas de Goiás 2026" />
     <meta property="og:description" content="Dados públicos, fontes rastreáveis, contexto comparativo e caminhos oficiais para aprofundar a fiscalização cívica." />
     <meta property="og:image" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
-    <meta property="og:image:url" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
-    <meta property="og:image:secure_url" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
     <meta property="og:image:alt" content="Observatório Eleitoral de Águas Lindas de Goiás 2026" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/svg+xml" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
     <meta name="twitter:title" content="Observatório Eleitoral — Águas Lindas de Goiás 2026" />
@@ -47,53 +44,6 @@
           if (themeColor) themeColor.content = theme === "light" ? "#f5f7fa" : "#0b1117";
         } catch {}
       })();
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "WebSite",
-            "@id": "https://pabloguilherme01.github.io/observatorio/#website",
-            "name": "Observatório Eleitoral — Águas Lindas de Goiás 2026",
-            "url": "https://pabloguilherme01.github.io/observatorio/",
-            "inLanguage": "pt-BR",
-            "description": "Painel público com dados eleitorais, demográficos, saúde, saneamento, orçamento e mobilidade."
-          },
-          {
-            "@type": "Dataset",
-            "@id": "https://pabloguilherme01.github.io/observatorio/#dataset",
-            "name": "Observatório Eleitoral — Águas Lindas de Goiás 2026",
-            "description": "Conjunto editorial de dados públicos municipais e eleitorais, com fontes, datas de referência, cálculos derivados e limitações metodológicas explicitadas.",
-            "url": "https://pabloguilherme01.github.io/observatorio/",
-            "inLanguage": "pt-BR",
-            "isAccessibleForFree": true,
-            "temporalCoverage": "2010/2026",
-            "spatialCoverage": {
-              "@type": "Place",
-              "name": "Águas Lindas de Goiás, Goiás, Brasil"
-            },
-            "creator": {
-              "@type": "Organization",
-              "name": "Observatório Eleitoral — Águas Lindas de Goiás"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Observatório Eleitoral — Águas Lindas de Goiás"
-            },
-            "variableMeasured": [
-              "População",
-              "Eleitorado",
-              "Mobilidade",
-              "Saneamento",
-              "Saúde",
-              "Educação",
-              "Orçamento público"
-            ],
-            "dateModified": "2026-09-23"
-          }
-        ]
-      }
     </script>
   </head>
   <body>
