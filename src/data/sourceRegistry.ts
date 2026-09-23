@@ -9,7 +9,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-07-01',
     publishedAt: '2026-08-28',
-    note: 'Estimativas municipais com referência em 1º de julho de 2026.',
+    note: 'Estimativas municipais com referência em 1º de julho de 2026. O IBGE publica a estimativa municipal de 2026 e informa a metodologia e a base territorial utilizada.',
   },
   {
     id: 'ibge-cidades-2026',
