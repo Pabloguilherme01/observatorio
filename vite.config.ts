@@ -1,4 +1,5 @@
 import { defineConfig, type Plugin } from 'vite';
+import { existsSync, readFileSync } from 'node:fs';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -26,6 +27,11 @@ const publicApiPlugin = (): Plugin => ({
     });
     this.emitFile({
       type: 'asset',
+      fileName: 'api/v1/_meta/health.json',
+      source: JSON.stringify(DATA_HEALTH, null, 2),
+    });
+    this.emitFile({
+      type: 'asset',
       fileName: 'api/v1/health.json',
       source: JSON.stringify({
         schemaVersion: 1,
@@ -49,6 +55,19 @@ const publicApiPlugin = (): Plugin => ({
         })),
       }, null, 2),
     });
+    const moduleFiles = [
+      ['contas.json', 'generated/tse2026-contas.json'],
+      ['pesquisas.json', 'generated/tse2026-pesquisas.json'],
+      ['processual.json', 'generated/tse2026-processual.json'],
+    ] as const;
+    for (const [publicName, sourcePath] of moduleFiles) {
+      if (!existsSync(sourcePath)) continue;
+      this.emitFile({
+        type: 'asset',
+        fileName: 'api/v1/' + publicName,
+        source: readFileSync(sourcePath, 'utf8'),
+      });
+    }
     this.emitFile({
       type: 'asset',
       fileName: 'api/v1/openapi.json',
@@ -72,6 +91,18 @@ const publicApiPlugin = (): Plugin => ({
           },
           '/api/v1/sources.json': {
             get: { summary: 'Registro de fontes do observatório', responses: { '200': { description: 'Fontes e metadados de referência' } } },
+          },
+          '/api/v1/contas.json': {
+            get: { summary: 'Prestação de contas eleitorais 2026', responses: { '200': { description: 'Snapshot documental das contas capturadas' } } },
+          },
+          '/api/v1/pesquisas.json': {
+            get: { summary: 'Pesquisas eleitorais 2026', responses: { '200': { description: 'Snapshot documental das pesquisas capturadas' } } },
+          },
+          '/api/v1/processual.json': {
+            get: { summary: 'Processual eleitoral 2026', responses: { '200': { description: 'Snapshot documental dos processos capturados' } } },
+          },
+          '/api/v1/_meta/health.json': {
+            get: { summary: 'Data health dos indicadores', responses: { '200': { description: 'Dimensões técnicas do dataset' } } },
           },
         },
       }, null, 2),
