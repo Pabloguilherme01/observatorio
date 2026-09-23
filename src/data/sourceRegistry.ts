@@ -122,6 +122,16 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
   },
   {
+    id: 'inep-ideb-2025',
+    label: 'INEP — Resultados do Ideb 2025',
+    institution: 'INEP',
+    url: 'https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025',
+    nature: 'official',
+    referenceDate: '2025-12-31',
+    publishedAt: '2026-08-05',
+    note: 'Página oficial dos resultados 2005–2025. A faixa municipal usada no dataset aguarda conferência do valor pontual na tabela oficial.',
+  },
+  {
     id: 'inei-2023',
     label: 'INEP — Indicadores educacionais',
     institution: 'INEP',
