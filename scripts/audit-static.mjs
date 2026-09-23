@@ -60,6 +60,8 @@ const mainSource = read('src/main.tsx');
 must(mainSource.includes("import { App } from './app/App'") && mainSource.includes("import { ErrorBoundary } from './components/system/ErrorBoundary'"), 'bootstrap principal não depende de import dinâmico para montar o React');
 must(mainSource.includes('BOOT_TIMEOUT_MS = 10000') && mainSource.includes('observatorioMounted'), 'bootstrap possui timeout de segurança e marcador de montagem');
 must(mainSource.includes('[Observatório][boot] 1/4') && mainSource.includes('[Observatório][boot] 4/4'), 'bootstrap possui logs de diagnóstico por etapa');
+must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includes("observatorio:last-boot-error"), 'diagnóstico separa erros de boot e runtime');
+must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
 const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
