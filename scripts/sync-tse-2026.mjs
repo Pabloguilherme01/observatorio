@@ -67,7 +67,7 @@ function sha256(path) {
 }
 
 function normalize(value = '') {
-  return value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
 }
 
 function matchesAlias(candidateName, aliases) {
