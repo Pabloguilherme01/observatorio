@@ -9,9 +9,22 @@
     "sourceFileSha256": "0000000000000000000000000000000000000000000000000000000000000000",
     "sourceRows": 0,
     "matchedRows": 0,
-    "state": "not_synced"
+    "state": "not_synced",
+    "workflowRunId": "not-captured",
+    "gitCommit": "not-captured"
   },
-  "watchlist": ["Keké", "Anderson Teodoro", "Zé da Imperial", "Baiano dos Cocos", "Cambão", "Abadyas Damasceno", "Pábio Mossoró", "Felipe Galdino", "Ribeiro do Túlio", "André do Premium"],
+  "watchlist": [
+    "Keké",
+    "Anderson Teodoro",
+    "Zé da Imperial",
+    "Baiano dos Cocos",
+    "Cambão",
+    "Abadyas Damasceno",
+    "Pábio Mossoró",
+    "Felipe Galdino",
+    "Ribeiro do Túlio",
+    "André do Premium"
+  ],
   "matched": [],
   "diff": {
     "state": "not_synced",
