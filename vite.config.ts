@@ -4,7 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: './',
+  // GitHub Pages project site: https://pabloguilherme01.github.io/observatorio/
+  base: '/observatorio/',
   plugins: [
     react(),
     tailwindcss(),
