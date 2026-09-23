@@ -12,6 +12,7 @@ export function TransportCalculator() {
   const [trips, setTrips] = useState(d.transport.defaultTripsPerDay);
   const [people, setPeople] = useState(1);
   const [salary, setSalary] = useState(d.transport.minimumWageBrl);
+  const [shareStatus, setShareStatus] = useState('');
   const route = routes.find(r => r.id === routeId) ?? routes[0];
 
   const result = useMemo(
@@ -34,9 +35,15 @@ export function TransportCalculator() {
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Simulador de bolso · Águas Lindas', text, url: window.location.href + '#transporte' });
+        setShareStatus('Compartilhado');
+        window.setTimeout(() => setShareStatus(''), 1800);
         return;
       }
-      await navigator.clipboard?.writeText(text);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+        setShareStatus('Link copiado');
+        window.setTimeout(() => setShareStatus(''), 1800);
+      }
     } catch {
       // O compartilhamento pode ser cancelado pelo usuário.
     }
@@ -102,6 +109,7 @@ export function TransportCalculator() {
               <button type="button" onClick={share} className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">
                 <Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar cenário
               </button>
+              {shareStatus && <div className="mt-2 text-[11px] font-semibold text-emerald-300" role="status" aria-live="polite">{shareStatus}</div>}
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4 light:bg-white">
               <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
