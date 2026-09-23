@@ -1,0 +1,43 @@
+name: Sincronização TSE enriquecida
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '27 8 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Ingerir contas
+        run: npm run ingest:tse:contas
+      - name: Ingerir pesquisas
+        run: npm run ingest:tse:pesquisas
+      - name: Ingerir processual
+        run: npm run ingest:tse:processual
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Commit snapshots
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- generated/tse2026-contas.json generated/tse2026-pesquisas.json generated/tse2026-processual.json; then
+            echo "Nenhum snapshot novo."
+            exit 0
+          fi
+          git add generated/tse2026-contas.json generated/tse2026-pesquisas.json generated/tse2026-processual.json
+          git commit -m "data(tse): atualizar snapshots eleitorais enriquecidos"
+          git push
