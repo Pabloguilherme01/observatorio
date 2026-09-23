@@ -50,13 +50,18 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const filteredLengthRef = useRef(0);
+  const focusTimerRef = useRef<number | null>(null);
 
   const openSearch = () => {
     openerRef.current = document.activeElement as HTMLElement | null;
     setQuery('');
     setActiveIndex(0);
     const target = window.matchMedia?.('(min-width: 768px)').matches ? inputRef.current : null;
-    window.setTimeout(() => target?.focus(), 40);
+    if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
+    focusTimerRef.current = window.setTimeout(() => {
+      focusTimerRef.current = null;
+      target?.focus();
+    }, 40);
   };
 
   const mobileModeHint = typeof window !== 'undefined' && window.matchMedia?.('(max-width: 767px)').matches;
@@ -90,6 +95,10 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKey);
+      if (focusTimerRef.current) {
+        window.clearTimeout(focusTimerRef.current);
+        focusTimerRef.current = null;
+      }
     };
   }, [open, onClose]);
 
