@@ -19,12 +19,17 @@ function readStoredTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  root.classList.toggle('light', theme === 'light');
+  root.style.colorScheme = theme;
+}
+
 export function ThemeProvider({ children }: { readonly children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(readStoredTheme);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('light', theme === 'light');
-    document.documentElement.style.colorScheme = theme;
+    applyTheme(theme);
 
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, theme);
@@ -32,6 +37,15 @@ export function ThemeProvider({ children }: { readonly children: ReactNode }) {
       // Storage may be unavailable in private/restricted contexts.
     }
   }, [theme]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.localStorage.getItem(THEME_STORAGE_KEY)) return;
+
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = () => setTheme(media.matches ? 'dark' : 'light');
+    media.addEventListener?.('change', onChange);
+    return () => media.removeEventListener?.('change', onChange);
+  }, []);
 
   const value = useMemo(() => ({
     theme,
