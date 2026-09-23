@@ -56,10 +56,10 @@ export function PoliticalResearch() {
           : 'A interface usa apenas registros municipais do snapshot oficial. Instagram e foto só entram quando declarados na base do TSE.'}
       />
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-lg font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">GO · município</div></div>
-        <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">{hasLocalCandidates ? 'registros municipais no snapshot' : 'nenhum registro municipal validado nesta captura'}</div></div>
-        <div className="rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Regra</div><div className="mt-2 text-sm font-black text-amber-100">Município antes do nome</div><div className="mt-1 text-xs text-slate-500">evita misturar candidaturas estaduais</div></div>
+      <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
+        <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · município</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">{hasLocalCandidates ? 'registros municipais no snapshot' : 'nenhum registro municipal validado nesta captura'}</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Critério</div><div className="mt-2 text-sm font-black text-amber-100">Recorte municipal</div><div className="mt-1 text-xs text-slate-500">sem misturar registros estaduais</div></div>
       </div>
 
       {!hasLocalCandidates ? (
@@ -92,12 +92,13 @@ function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
           <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-sky-300/15 bg-sky-300/[0.05] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-sky-200">{candidate.office}</span><Badge tone="info">{candidate.status}</Badge></div>
           <h3 className="mt-3 text-xl font-black text-white">{candidate.name}</h3>
           <p className="mt-1 text-xs text-slate-500">{candidate.party} · nº {candidate.ballotNumber}</p>
+          {mode === 'simple' ? <span className="mt-2 inline-flex rounded-full border border-sky-300/10 bg-sky-300/[0.04] px-2 py-1 text-[10px] font-bold text-sky-200">Dados básicos</span> : <span className="technical-detail mt-2 inline-flex rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold text-slate-400">Registro + fonte + snapshot</span>}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-px border-y border-white/8 bg-white/8">
         <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Município</span><strong>{candidate.municipality}</strong></div>
-        <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Snapshot</span><strong>{candidate.snapshotDate}</strong></div>
-        <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Status</span><strong>{candidate.status}</strong></div>
+        <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Data</span><strong>{candidate.snapshotDate}</strong></div>
+        <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Situação</span><strong>{candidate.status}</strong></div>
         <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Fonte</span><strong>TSE · {candidate.sourceId}</strong></div>
       </div>
       <div className="flex flex-wrap gap-2 p-4">
