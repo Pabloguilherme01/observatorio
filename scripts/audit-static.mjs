@@ -63,6 +63,10 @@ must(candidates.coverage === 'watchlist', 'snapshot de candidaturas deixa explí
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed'].includes(candidates.meta.state), 'estado do snapshot de candidaturas pertence ao contrato conhecido');
 must(candidates.meta.state === 'not_synced' || Number(candidates.meta.sourceRows) >= 0, 'captura TSE só é considerada material quando o estado não é not_synced');
 const electoral360 = read('src/components/sections/Electoral360.tsx');
+const candidateProfiles = read('src/data/candidateProfiles.ts');
+must(candidateProfiles.includes('LOCAL_CANDIDATE_IDS') && candidateProfiles.includes('EXCLUDED_FROM_LOCAL_RECORTE_IDS'), 'recorte local de candidaturas é explícito e auditável');
+must(candidateProfiles.includes('90002547004') && candidateProfiles.includes('90002549161') && candidateProfiles.includes('90002537423') && candidateProfiles.includes('90002543768') && candidateProfiles.includes('90002543113') && candidateProfiles.includes('90002544890') && candidateProfiles.includes('90002543127'), 'os sete candidatos do recorte local estão cadastrados');
+must(candidateProfiles.includes('90002547039') && candidateProfiles.includes('90002546223') && candidateProfiles.includes('90002547032'), 'os três IDs excluídos do recorte local estão registrados');
 must(electoral360.includes('Eleições Gerais de 2026') && electoral360.includes('prefeito e vereador não estão em disputa neste ano'), 'Eleitoral 360 declara explicitamente o escopo das Eleições Gerais 2026');
 must(!electoral360.includes('cinco municípios do recorte operacional'), 'Eleitoral 360 não mantém o antigo recorte textual de cinco municípios');
 for (const file of ['generated/tse2026-processual.json', 'src/data/generated/processual-snapshot.json', 'public/api/v1/processual.json']) {
