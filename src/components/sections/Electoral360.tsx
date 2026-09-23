@@ -54,7 +54,7 @@ export function Electoral360() {
         titleId="electoral360-title"
         eyebrow="Eleitoral 360°"
         title="Da fotografia ao perfil documental"
-        description="Cada perfil usa uma única origem de snapshot. O observatório não mistura atributos de uma captura TSE com patrimônio ou escolaridade de um recorte editorial diferente."
+        description="Este módulo acompanha as Eleições Gerais de 2026. O universo eleitoral do pleito inclui Presidente, Governador, Senador, Deputado Federal e Deputado Estadual; prefeito e vereador não estão em disputa neste ano."
       />
 
       <div className="grid gap-4 sm:grid-cols-4">
@@ -76,7 +76,7 @@ export function Electoral360() {
         <Card>
           <UserRound className="h-5 w-5 text-amber-300" aria-hidden="true" />
           <div className="mt-3 text-3xl font-black text-white">{electoral360Snapshot.matchedCandidates.length}</div>
-          <div className="text-xs text-slate-500">correspondências na captura TSE</div>
+          <div className="text-xs text-slate-500">nomes do recorte encontrados no TSE</div>
         </Card>
       </div>
 
@@ -87,7 +87,7 @@ export function Electoral360() {
               <h3 className="text-lg font-black text-white">Perfil documental</h3>
               <p className="mt-1 text-xs leading-5 text-slate-500">
                 {hasOfficialCandidateSnapshot
-                  ? 'A captura oficial está disponível. Este perfil mostra somente atributos efetivamente carregados desse snapshot; campos não capturados permanecem vazios.'
+                  ? 'A captura oficial está disponível para os nomes monitorados encontrados. Este perfil mostra somente atributos efetivamente carregados desse snapshot; campos não capturados permanecem vazios.'
                   : 'A captura TSE ainda não está sincronizada. O perfil abaixo usa apenas o recorte editorial local e não representa o universo completo de candidaturas.'}
               </p>
             </div>
@@ -95,7 +95,7 @@ export function Electoral360() {
           </div>
 
           <div className="mb-3 mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">
-            <strong className="text-amber-200">{hasOfficialCandidateSnapshot ? 'Fonte operacional: TSE' : 'Fonte operacional: recorte editorial local'}</strong>{' '}
+            <strong className="text-amber-200">{hasOfficialCandidateSnapshot ? 'Fonte operacional: TSE' : 'Fonte operacional: watchlist editorial local'}</strong>{' '}
             · estado do snapshot: {stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}. A ausência da captura local não equivale à ausência de candidaturas na fonte oficial.
           </div>
 
@@ -175,7 +175,7 @@ export function Electoral360() {
           <Card>
             <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte operacional</div>
             <p className="mt-2 text-xs leading-5 text-slate-500">
-              A watchlist é um recorte para cruzamento com o universo de Goiás; não representa o universo completo e não deve ser lida como lista exaustiva.
+              A watchlist é um recorte nominal para cruzamento com o universo oficial de Goiás. Ela não representa o universo completo de candidaturas e não deve ser lida como lista exaustiva.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {electoral360Snapshot.localWatchlist.map(name => (
@@ -193,9 +193,9 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas capturadas' : 'Candidaturas do recorte local'}</h3>
+            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas do recorte encontradas no TSE' : 'Candidaturas do recorte local'}</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais estão identificados como recorte editorial.'}
+              {hasOfficialCandidateSnapshot ? 'Busca por identidade, nome, partido, cargo ou situação dentro dos nomes monitorados encontrados na captura TSE.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais estão identificados como recorte editorial.'}
             </p>
           </div>
           {hasOfficialCandidateSnapshot && (
