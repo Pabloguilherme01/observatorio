@@ -15,6 +15,7 @@ import { DataExportActions } from '../components/DataExportActions';
 import { EvidenceMap } from '../components/sections/EvidenceMap';
 import { ThemeProvider } from '../context/ThemeContext';
 import { DataInsights } from '../components/sections/DataInsights';
+import { PublicDataPulse } from '../components/sections/PublicDataPulse';
 
 export function App() {
   return (
@@ -31,6 +32,7 @@ export function App() {
         <PoliticalResearch />
         <BudgetSection />
         <Central2026 />
+        <PublicDataPulse />
         <DataQualityPanel />
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
           <DataExportActions />
