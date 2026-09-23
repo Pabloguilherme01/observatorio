@@ -13,7 +13,7 @@ import { sourceRegistry } from './sourceRegistry';
 export const observatorioData: ObservatoryData = {
   meta: {
     name: 'Observatório Eleitoral Águas Lindas de Goiás 2026',
-    edition: 'V35 • leitura pública + investigação + evidências',
+    edition: 'V36 • leitura pública + investigação + evidências',
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
     updatedAt: '2026-09-23',
