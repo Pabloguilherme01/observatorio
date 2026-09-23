@@ -39,7 +39,7 @@ function LineChart({ title, description, points, valueFormatter = value => forma
         <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
         <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
       </figcaption>
-      <div className="relative mt-4 overflow-x-auto pb-1" onMouseLeave={() => setTooltip(null)}>
+      <div className="relative mt-4 overflow-visible pb-1" onMouseLeave={() => setTooltip(null)}>
         <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto w-full max-w-full overflow-visible" preserveAspectRatio="xMidYMid meet">
           <title>{title}</title><desc>{description}</desc>
           {guides.map((y, index) => <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />)}
