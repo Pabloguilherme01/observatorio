@@ -914,6 +914,13 @@ button,a{touch-action:manipulation}
 }
 
 
+.quiz-progress-wrap{display:flex;align-items:center;gap:10px;min-width:0}
+.quiz-progress{display:inline-flex;align-items:center;justify-content:center;min-height:36px;min-width:74px;padding:6px 10px;border:1px solid rgba(167,139,250,.16);border-radius:999px;background:rgba(167,139,250,.06);font-size:11px;font-weight:900;color:#c4b5fd}
+.quiz-progress-track{width:min(220px,28vw);height:4px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.07)}
+.quiz-progress-track span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#7dd3fc,#c4b5fd);transition:width .25s ease}
+@media(max-width:767px){.quiz-progress-wrap{width:100%;justify-content:flex-start}.quiz-progress-track{flex:1;width:auto;max-width:none}}
+@media(prefers-reduced-motion:reduce){.quiz-progress-track span{transition:none!important}}
+
 /* Language mode UX polish v2026-09 */
 .language-toggle-v2 button{
   min-height:44px;
