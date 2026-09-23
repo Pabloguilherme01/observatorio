@@ -190,7 +190,7 @@ export function InstagramSyncHub() {
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => generate(false)} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-xs font-black text-slate-950">
+                <button type="button" onClick={() => generate(false)} aria-label={format === 'story' ? 'Baixar Story' : 'Baixar Feed'} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-xs font-black text-slate-950">
                   <Download className="h-4 w-4" aria-hidden="true" /> Baixar {format === 'story' ? 'Story' : 'Feed'}
                 </button>
                 <button type="button" onClick={() => generate(true)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
