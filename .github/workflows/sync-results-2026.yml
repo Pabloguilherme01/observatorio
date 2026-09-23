@@ -62,7 +62,7 @@ jobs:
           if ! test -f public/data/tse-results.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data/tse-results.json
+          git add public/data/tse-results.json public/data/tse-results-http-state.json
           git diff --cached --quiet && exit 0
           git commit -m "data: sync official TSE results snapshot"
           git push

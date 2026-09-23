@@ -105,6 +105,9 @@ export function DashboardMetrics() {
           </button>
         ))}
       </div>
+      <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">
+        <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> população e eleitorado são universos diferentes e podem ter datas de referência diferentes. A razão eleitorado/população é um cálculo estatístico; não mede comparecimento às urnas.
+      </div>
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <LineChart title="Crescimento populacional · 2022–2026" description="2022 é Censo; 2025/2026 são estimativas IBGE." points={populationPoints} valueFormatter={value => formatNumber(value) + ' hab.'} />
         <LineChart title="Eleitorado · 2018–2026" description="Snapshots disponíveis no modelo; 2026 é fotografia da 28ª Zona." points={electoratePoints} valueFormatter={value => formatNumber(value) + ' eleitores'} />
