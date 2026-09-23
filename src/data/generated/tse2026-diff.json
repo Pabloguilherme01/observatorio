@@ -1,9 +1,188 @@
 {
-  "schemaVersion": 1,
-  "state": "not_synced",
-  "added": 0,
+  "state": "first_capture",
+  "added": 10,
   "removed": 0,
   "changed": 0,
-  "records": [],
-  "note": "Arquivo de controle inicial. Será substituído pela primeira sincronização TSE validada."
+  "records": [
+    {
+      "key": "90002547004",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002547004",
+        "ballotNumber": 44360,
+        "name": "ABADYAS DAMASCENO",
+        "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
+        "party": "UNIÃO",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Abadyas Damasceno"
+      }
+    },
+    {
+      "key": "90002549161",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002549161",
+        "ballotNumber": 25789,
+        "name": "ANDERSON TEODORO",
+        "fullName": "ANDERSON TEODORO DA CUNHA DOURADO",
+        "party": "PRD",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Anderson Teodoro"
+      }
+    },
+    {
+      "key": "90002547039",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002547039",
+        "ballotNumber": 44333,
+        "name": "ANDRÉ DO PREMIUM",
+        "fullName": "ANDRE LUIZ GOMES GONTIJO",
+        "party": "UNIÃO",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "André do Premium"
+      }
+    },
+    {
+      "key": "90002537423",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002537423",
+        "ballotNumber": 20070,
+        "name": "BAIANO DOS COCOS",
+        "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
+        "party": "PODE",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Baiano dos Cocos"
+      }
+    },
+    {
+      "key": "90002543768",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002543768",
+        "ballotNumber": 22133,
+        "name": "FELIPE GALDINO",
+        "fullName": "FELIPE DE MOURA GALDINO FERNANDES",
+        "party": "PL",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Felipe Galdino"
+      }
+    },
+    {
+      "key": "90002543113",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002543113",
+        "ballotNumber": 33777,
+        "name": "KEKE DA VULKANIC",
+        "fullName": "CLERISTON ROCHA DA TRINDADE",
+        "party": "MOBILIZA",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Keké"
+      }
+    },
+    {
+      "key": "90002546223",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002546223",
+        "ballotNumber": 15456,
+        "name": "PABIO MOSSORÓ",
+        "fullName": "PABIO CORREIA LOPES",
+        "party": "MDB",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Pábio Mossoró"
+      }
+    },
+    {
+      "key": "90002544890",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002544890",
+        "ballotNumber": 45007,
+        "name": "RIBEIRO DO TÚLLIO",
+        "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
+        "party": "PSDB",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Ribeiro do Túlio"
+      }
+    },
+    {
+      "key": "90002547032",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002547032",
+        "ballotNumber": 44555,
+        "name": "WILDE CAMBÃO",
+        "fullName": "WILDE LOPES RORIZ",
+        "party": "UNIÃO",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Cambão"
+      }
+    },
+    {
+      "key": "90002543127",
+      "type": "added",
+      "after": {
+        "sqCandidate": "90002543127",
+        "ballotNumber": 33070,
+        "name": "ZÉ DA IMPERIAL",
+        "fullName": "JOSE BARBOSA DA SILVA",
+        "party": "MOBILIZA",
+        "office": "DEPUTADO ESTADUAL",
+        "status": "Deferido",
+        "federation": null,
+        "generationDate": null,
+        "generationTime": null,
+        "candidateIdKind": "tse_api_id",
+        "watchlistName": "Zé da Imperial"
+      }
+    }
+  ]
 }
