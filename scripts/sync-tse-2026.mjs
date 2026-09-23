@@ -196,6 +196,12 @@ async function main() {
 
     if (!rowsRead) throw new Error('Snapshot inválido: nenhum registro de candidato foi lido.');
 
+    const normalizedMatches = allMatches.map(candidate => normalize(candidate.name));
+    const missingWatchlist = WATCHLIST.filter(name => !normalizedMatches.some(match => match.includes(normalize(name))));
+    if (missingWatchlist.length) {
+      throw new Error('Captura TSE incompleta; watchlist sem correspondência: ' + missingWatchlist.join(', '));
+    }
+
     const previous = loadPrevious();
     const diff = diffRecords(previous?.matched ?? [], allMatches);
     const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
