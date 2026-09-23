@@ -15,6 +15,7 @@ interface MetricDetail { readonly label: string; readonly value: string; readonl
 function lineChartGeometry(points: readonly Point[]) {
   const width = 620, height = 240, padX = 26, padY = 22;
   const plotWidth = width - padX * 2, plotHeight = height - padY * 2;
+  if (!points.length) return { width, height, plotHeight, coords: [] as Array<Point & { x: number; y: number }> };
   const values = points.map(point => point.value);
   const minValue = Math.min(...values), maxValue = Math.max(...values), range = Math.max(maxValue - minValue, 1);
   const yMin = minValue - range * 0.12, yMax = maxValue + range * 0.12, yearCount = Math.max(points.length - 1, 1);
