@@ -19,7 +19,7 @@ function trackedUrl(anchor: string) {
   const url = new URL(window.location.origin + window.location.pathname);
   url.searchParams.set('utm_source', 'instagram');
   url.searchParams.set('utm_medium', 'organic');
-  url.searchParams.set('utm_campaign', 'observatorio-v43');
+  url.searchParams.set('utm_campaign', 'observatorio-v44');
   url.hash = anchor;
   return url.toString();
 }
@@ -148,11 +148,11 @@ export function InstagramSyncHub() {
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
               <Camera className="h-3.5 w-3.5" aria-hidden="true" /> Distribuição social
             </div>
-            <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Instagram conectado ao fluxo de dados</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Escolha um dado, gere um Story ou Post, copie uma legenda factual e use o compartilhamento nativo do celular quando disponível.</p>
+            <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Distribuição no Instagram</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Gere uma peça, copie a legenda e abra seu Instagram. No celular, o compartilhamento nativo reduz passos.</p>
           </div>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
-            Abrir Instagram <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          <a href="https://www.instagram.com/pablo.builds.ia?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
+            @pablo.builds.ia <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
 
