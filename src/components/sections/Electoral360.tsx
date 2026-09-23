@@ -1,4 +1,4 @@
-import { CheckCircle2, Database, ExternalLink, History, Instagram, Search, Share2, ShieldAlert, UserRound } from 'lucide-react';
+import { Camera, CheckCircle2, Database, ExternalLink, History, Search, Share2, ShieldAlert, UserRound } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { electoral360Diff, electoral360Modules, electoral360Snapshot } from '../../data/electoral360';
 import { CANDIDATE_PROFILES, EXCLUDED_FROM_LOCAL_RECORTE_IDS } from '../../data/candidateProfiles';
@@ -192,7 +192,7 @@ export function Electoral360() {
                         className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.04] px-3 py-2 text-xs font-bold text-pink-100"
                         aria-label={'Instagram declarado no TSE de ' + candidateLabel}
                       >
-                        <Instagram className="h-4 w-4" aria-hidden="true" />
+                        <Camera className="h-4 w-4" aria-hidden="true" />
                         Instagram declarado
                       </a>
                     ) : (
