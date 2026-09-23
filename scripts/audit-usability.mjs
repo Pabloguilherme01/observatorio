@@ -75,6 +75,7 @@ for (const [id, label] of [
   ['fontes', 'verificação de fontes'],
   ['acao', 'ação cívica oficial'],
   ['quiz', 'retenção/aprendizado'],
+  ['descubra', 'descoberta inicial'],
   ['exportacao', 'exportação'],
 ]) {
   if (!ids.has(id)) fail('Jornada pública sem etapa: ' + label + ' (#' + id + ')');
@@ -94,6 +95,10 @@ for (const [component, label] of [
   if (!app.includes('<' + component)) fail('Camada de ' + label + ' não está montada no App: ' + component);
 }
 pass('camadas de descoberta, retenção, qualidade, evidências, ação, exportação e compartilhamento montadas');
+
+const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
+if (!mobileNav.includes('Navegação rápida no celular') || !mobileNav.includes('observatorio:search')) fail('Navegação mobile rotulada ou busca mobile ausente');
+else pass('navegação mobile rotulada e integrada à busca');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
