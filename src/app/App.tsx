@@ -32,6 +32,7 @@ import { CivicActionHub } from '../components/sections/CivicActionHub';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
 import { InstagramSyncHub } from '../components/InstagramSyncHub';
+import { ProjectTrustPanel } from '../components/ProjectTrustPanel';
 
 export function App() {
   return (
@@ -43,6 +44,7 @@ export function App() {
           <main id="main-content">
             <AudienceHub />
             <InstagramSyncHub />
+            <ProjectTrustPanel />
             <ExecutiveSummary />
             <FreshnessBanner />
             <SnapshotChanges />
