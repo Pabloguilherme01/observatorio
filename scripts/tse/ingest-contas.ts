@@ -55,7 +55,7 @@ for (const row of receitas) {
   bucket.receitas.total += value;
   bucket.receitas.lista.push({
     nome: valueOf(row, ['NM_DOADOR', 'NM_DOADOR_ORIGINARIO']),
-    cpfCnpjParcial: partialDocument(valueOf(row, ['CPF_CNPJ_DOADOR', 'CPF_CNPJ_DOADOR_ORIGINARIO'], false)),
+    cpfCnpjParcial: partialDocument(valueOf(row, ['CPF_CNPJ_DOADOR', 'CPF_CNPJ_DOADOR_ORIGINARIO'], false)) || 'Não informado',
     valor: value,
     data: parseDate(valueOf(row, ['DT_RECEITA', 'DT_LANCAMENTO'])),
     tipo,
@@ -70,7 +70,7 @@ for (const row of despesas) {
   bucket.despesas.total += value;
   bucket.despesas.lista.push({
     nome: valueOf(row, ['NM_FORNECEDOR', 'NM_FORNECEDOR_ORIGINARIO']),
-    cnpj: partialDocument(valueOf(row, ['CPF_CNPJ_FORNECEDOR', 'CPF_CNPJ_FORNECEDOR_ORIGINARIO'], false)),
+    cnpj: partialDocument(valueOf(row, ['CPF_CNPJ_FORNECEDOR', 'CPF_CNPJ_FORNECEDOR_ORIGINARIO'], false)) || 'Não informado',
     valor: value,
     tipoDespesa: valueOf(row, ['DS_TIPO_DESPESA', 'DS_TIPO_DESPESA_FINALIDADE'], false) || 'Não informado',
     data: parseDate(valueOf(row, ['DT_DESPESA', 'DT_LANCAMENTO'])),
