@@ -185,8 +185,6 @@ export function Electoral360() {
                     </div>
                   )}
 
-                  {languageMode === 'simple' && (
-                    <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2 text-xs text-slate-400">
                       <strong className="text-slate-200">Local:</strong> {profile.localConnection}
                     </div>
                   )}
@@ -201,7 +199,7 @@ export function Electoral360() {
                         aria-label={'Instagram informado no registro de ' + candidateLabel}
                       >
                         <Camera className="h-4 w-4" aria-hidden="true" />
-                        Instagram declarado
+                        Instagram informado
                       </a>
                     ) : (
                       <span className="inline-flex min-h-11 items-center rounded-xl border border-white/8 px-3 py-2 text-xs font-semibold text-slate-500">
