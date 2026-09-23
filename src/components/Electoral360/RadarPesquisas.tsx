@@ -33,7 +33,7 @@ export function RadarPesquisas() {
               <article key={pesquisa.idPesquisa} className="rounded-2xl border border-white/8 p-4">
                 <strong className="text-sm text-white">{pesquisa.idPesquisa}</strong>
                 <p className="mt-1 text-xs text-slate-400">{pesquisa.instituto} · {pesquisa.municipio}/{pesquisa.uf}</p>
-                <p className="mt-2 text-xs text-slate-500">Amostra {pesquisa.amostra} · margem {pesquisa.margemErro}% · confiança {pesquisa.nivelConfianca}%</p>
+                <p className="mt-2 text-xs text-slate-500">Amostra {pesquisa.amostra}{pesquisa.margemErro !== undefined ? ` · margem ${pesquisa.margemErro}%` : ' · margem: não informada no CSV principal'}{pesquisa.nivelConfianca !== undefined ? ` · confiança ${pesquisa.nivelConfianca}%` : ' · confiança: não informada no CSV principal'}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {pesquisa.questionarioUrl && <a href={pesquisa.questionarioUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center rounded-xl border border-white/10 px-3 py-2 text-[11px] font-bold text-slate-300">Questionário</a>}
                   {pesquisa.notaFiscalUrl && <a href={pesquisa.notaFiscalUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center rounded-xl border border-white/10 px-3 py-2 text-[11px] font-bold text-slate-300">Nota fiscal</a>}
