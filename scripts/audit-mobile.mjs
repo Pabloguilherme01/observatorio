@@ -8,6 +8,7 @@ const files = {
   app: read('src/app/App.tsx'),
   hero: read('src/components/sections/HeroCountdown.tsx'),
   css: read('src/assets/styles/globals.css'),
+  header: read('src/components/layout/Header.tsx'),
   audience: read('src/components/AudienceHub.tsx'),
   share: read('src/components/ShareDataButton.tsx'),
   instagram: read('src/components/InstagramSyncHub.tsx'),
