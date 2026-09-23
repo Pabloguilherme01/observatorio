@@ -34,6 +34,9 @@ jobs:
       - name: Static consistency audit
         run: npm run audit:static
 
+      - name: Accessibility and contrast audit
+        run: npm run audit:a11y
+
       - name: Typecheck
         run: npm run typecheck
 
