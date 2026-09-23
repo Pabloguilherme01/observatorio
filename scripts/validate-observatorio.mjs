@@ -69,6 +69,38 @@ else fail('Tarifa Brasília não está em R$ 11,45.');
 if (text.includes("state: 'not_synced'")) pass('Snapshot TSE local continua explícito como não sincronizado.');
 else pass('Snapshot TSE local já não está em placeholder.');
 
+
+const numericChecks = [
+  ['eleitorado atual', electorate],
+  ['população 2026', Number(text.match(/year:\s*2026,\s*value:\s*([0-9]+)/)?.[1] ?? 0)],
+  ['orçamento total 2026', Number(text.match(/totalBrl:\s*([0-9_\.]+)/)?.[1]?.replaceAll('_', '') ?? 0)],
+  ['tarifa Brasília', Number(text.match(/id:\s*'brasilia'[\\s\\S]*?fareBrl:\s*([0-9.]+)/)?.[1] ?? 0)],
+];
+for (const [label, value] of numericChecks) {
+  if (!Number.isFinite(value) || value <= 0) fail(label + ' possui valor numérico inválido: ' + value);
+  else pass(label + ' possui valor numérico positivo.');
+}
+
+const electorate2024 = Number(text.match(/electorate2024:\s*([0-9]+)/)?.[1] ?? 0);
+const electorate2026 = electorate;
+if (electorate2024 && electorate2026 && electorate2026 < electorate2024) {
+  fail('eleitorado 2026 ficou abaixo do snapshot 2024 sem justificativa no contrato.');
+} else if (electorate2024 && electorate2026) {
+  pass('evolução do eleitorado 2024 → 2026 não apresenta regressão estrutural.');
+}
+
+const healthBeds = [
+  Number(text.match(/openingReportedBeds:\s*([0-9]+)/)?.[1] ?? 0),
+  Number(text.match(/currentStatedWardBeds:\s*([0-9]+)/)?.[1] ?? 0),
+  Number(text.match(/currentStatedIcuBeds:\s*([0-9]+)/)?.[1] ?? 0),
+  Number(text.match(/plannedBeds:\s*([0-9]+)/)?.[1] ?? 0),
+].filter(Boolean);
+if (healthBeds.length === 4 && healthBeds[3] < healthBeds[1] + healthBeds[2]) {
+  fail('capacidade planejada do HEAL está abaixo da soma das capacidades correntes declaradas.');
+} else if (healthBeds.length === 4) {
+  pass('capacidade planejada do HEAL é coerente com as capacidades correntes declaradas.');
+}
+
 const failed = checks.filter(check => !check.ok);
 console.log(JSON.stringify({ valid: failed.length === 0, checks }, null, 2));
 if (failed.length) process.exit(1);
