@@ -28,8 +28,11 @@ const PATHS: Readonly<Record<string, string>> = {
 export function AccessibleRegionMap({ ariaDescribedBy, regions = DEFAULT_REGIONS }: AccessibleRegionMapProps) {
   const titleId = useId();
   const descId = useId();
+  const tooltipId = useId();
   const [selected, setSelected] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
   const selectedRegion = regions.find(region => region.id === selected);
+  const focusedRegion = regions.find(region => region.id === hovered);
 
   const selectRegion = (region: RegionDatum) => setSelected(region.id);
 
@@ -50,7 +53,10 @@ export function AccessibleRegionMap({ ariaDescribedBy, regions = DEFAULT_REGIONS
         className="h-auto w-full max-w-xl"
       >
         <title id={titleId}>Mapa esquemático de regiões de Águas Lindas</title>
-        <desc id={descId}>Representação esquemática. Posições relativas não correspondem a coordenadas geográficas. Os perímetros são fictícios e servem apenas para demonstrar a interação acessível.</desc>
+        <desc id={descId}>
+          Representação esquemática. Posições relativas não correspondem a coordenadas geográficas.
+          Os perímetros são fictícios e servem apenas para demonstrar a interação acessível.
+        </desc>
         {regions.map(region => (
           <path
             key={region.id}
@@ -70,14 +76,29 @@ export function AccessibleRegionMap({ ariaDescribedBy, regions = DEFAULT_REGIONS
             type="button"
             data-testid="region-option"
             aria-pressed={selected === region.id}
+            aria-describedby={hovered === region.id ? tooltipId : undefined}
             aria-label={region.name + ': ' + region.population.toLocaleString('pt-BR') + ' habitantes'}
             onClick={() => selectRegion(region)}
+            onMouseEnter={() => setHovered(region.id)}
+            onMouseLeave={() => setHovered(null)}
+            onFocus={() => setHovered(region.id)}
+            onBlur={() => setHovered(null)}
             onKeyDown={event => handleRegionKeyDown(event, region)}
             className="min-h-11 rounded-xl border border-white/10 px-3 py-2 text-left text-xs font-bold text-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-300"
           >
             {region.name}
           </button>
         ))}
+      </div>
+
+      <div
+        id={tooltipId}
+        role="tooltip"
+        className="mt-2 min-h-5 text-xs text-slate-500"
+      >
+        {focusedRegion
+          ? focusedRegion.name + ': ' + focusedRegion.note
+          : 'Selecione ou passe o foco por uma região para ver seu contexto.'}
       </div>
 
       <div className="sr-only" aria-live="polite">
