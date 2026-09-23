@@ -1,3 +1,35 @@
+export type ElectoralModuleStatus = 'captured' | 'cataloged' | 'pending';
+
+export interface Electoral360Module {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly status: ElectoralModuleStatus;
+  readonly frequency: string;
+  readonly sourceId: string;
+  readonly datasetUrl: string;
+  readonly refreshUrl?: string;
+}
+
+export interface ElectoralCandidateSnapshot {
+  readonly sqCandidate: string;
+  readonly ballotNumber: number;
+  readonly name: string;
+  readonly party: string;
+  readonly office: string;
+  readonly status: string;
+  readonly snapshotDate: string;
+  readonly sourceId: string;
+}
+
+export interface Electoral360Snapshot {
+  readonly capturedAt: string;
+  readonly captureMode: 'static-local' | 'github-actions';
+  readonly candidateUniverseScope: 'GO';
+  readonly localWatchlist: readonly string[];
+  readonly matchedCandidates: readonly ElectoralCandidateSnapshot[];
+}
+
 export type ElectoralSyncState = 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
 
 export interface ElectoralSnapshotMeta {
