@@ -92,7 +92,9 @@ for (const [component, label] of [
   ['DataExportActions', 'exportação'],
   ['InstagramSyncHub', 'compartilhamento'],
 ]) {
-  if (!app.includes('<' + component)) fail('Camada de ' + label + ' não está montada no App: ' + component);
+  if (!app.includes(component) || (!app.includes('<' + component) && !app.includes('Lazy' + component))) {
+    fail('Camada de ' + label + ' não está montada no App: ' + component);
+  }
 }
 pass('camadas de descoberta, retenção, qualidade, evidências, ação, exportação e compartilhamento montadas');
 
