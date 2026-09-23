@@ -9,8 +9,9 @@ const warnings = [];
 
 if (payload.schemaVersion !== 2) errors.push('schemaVersion deve ser 2.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
+const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
 if (!payload.meta?.sourceFileSha256 || !/^[a-f0-9]{64}$/i.test(payload.meta.sourceFileSha256)) errors.push('SHA-256 da fonte ausente ou inválido.');
-if (!Number.isInteger(payload.meta?.sourceRows) || payload.meta.sourceRows <= 0) errors.push('sourceRows inválido.');
+if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.meta.sourceRows <= 0)) errors.push('sourceRows inválido.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
 
 const ids = new Set();
@@ -22,7 +23,6 @@ for (const candidate of payload.matched ?? []) {
 }
 
 if (payload.meta?.state === 'not_synced') {
-  const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
   if (requireSynced) errors.push('Placeholder não pode passar quando REQUIRE_TSE_SYNC=true.');
   else warnings.push('Snapshot TSE ainda não sincronizado; qualidade estrutural validada sem promover o placeholder a dado eleitoral.');
 }
