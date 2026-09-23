@@ -1,6 +1,20 @@
 import type { ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
 import { EDITION } from '../config/version';
+import generatedCandidates from './generated/tse2026-candidates.json';
+
+const generatedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt
+  ? generatedCandidates.meta.downloadedAt.slice(0, 10)
+  : '2026-09-23';
+
+const candidateSnapshots: ObservatoryData['candidates'] = generatedCandidates.matched.map(candidate => ({
+  name: candidate.name,
+  party: candidate.party ?? undefined,
+  ballotNumber: candidate.ballotNumber ?? undefined,
+  status: candidate.status ?? 'Não informado',
+  sourceId: 'tse-candidatos-2026',
+  snapshotDate: generatedCandidateSnapshotDate,
+}));
 
 /**
  * Dataset V39, normalizado para o domínio React.
@@ -91,10 +105,7 @@ export const observatorioData: ObservatoryData = {
     },
   ],
 
-  candidates: [
-    { name: 'Keké da Vulkanic', party: 'MOBILIZA', ballotNumber: 33777, status: 'Aguardando julgamento', occupation: 'Vendedor pracista / representante', education: 'Superior completo', declaredAssetsBrl: 270700, sourceId: 'recorte-editorial-candidatos-2026', snapshotDate: '2026-09-22' },
-    { name: 'Anderson Teodoro', party: 'PRD', ballotNumber: 25789, status: 'Deferido', occupation: 'Vereador', education: 'Superior incompleto', declaredAssetsBrl: 990000, sourceId: 'recorte-editorial-candidatos-2026', snapshotDate: '2026-09-22' },
-  ],
+  candidates: candidateSnapshots,
 
   transport: {
     routes: [
