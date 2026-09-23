@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-const path = new URL(process.env.RESULTS_FEED_FILE ?? '../public/data/tse-results.json', import.meta.url);
+const path = resolve(process.cwd(), process.env.RESULTS_FEED_FILE ?? 'public/data/tse-results.json');
 const requireFeed = process.env.REQUIRE_RESULTS_FEED === 'true';
 
 if (!existsSync(path)) {
