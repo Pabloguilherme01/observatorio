@@ -3,6 +3,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
+import { SIMULATION_CONTEXT } from '../../data/resultsConfig';
 import generated from '../../data/generated/tse2026-candidates.json';
 
 export function DataQualityPanel() {
@@ -70,7 +71,7 @@ export function DataQualityPanel() {
           {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
         </div>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
         <Card className="p-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
           <div className="mt-2 text-2xl font-black text-white">{d.sources.length}</div>
@@ -94,6 +95,12 @@ export function DataQualityPanel() {
           <div className="mt-2 text-base font-black text-white">Fonte oficial preparada</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">A integração de totalização ao vivo permanece separada do snapshot local. Quando existir, o feed precisa informar eleição, turno, UF, município, cargo, arquivo-fonte e estado de captura antes de aparecer como resultado.</p>
           {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Simulado oficial TSE</div>
+          <div className="mt-2 text-base font-black text-white">22–24/09 · 9h–12h e 14h–17h</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Validação técnica isolada da produção. O ambiente de simulado usa pleito 17801 e códigos próprios; nenhum dado simulado entra no feed oficial.</p>
+          <a href={SIMULATION_CONTEXT.docsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Ver documentação dos simulados TSE</a>
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Regra editorial</div>
