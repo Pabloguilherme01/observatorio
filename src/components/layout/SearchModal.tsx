@@ -72,7 +72,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
       }
       if (event.key === 'ArrowDown') {
         event.preventDefault();
-        setActiveIndex(index => Math.min(index + 1, Math.max(filtered.length - 1, 0)));
+        setActiveIndex(index => index + 1);
       }
       if (event.key === 'ArrowUp') {
         event.preventDefault();
