@@ -26,6 +26,8 @@ const processoPath = findFile(extractDir, /processo.*eleitoral.*\.csv$/i);
 const decisaoPath = findFile(decisionsExtractDir, /decis.*\.csv$/i);
 const processos = readCsv(processoPath);
 const decisoes = readCsv(decisaoPath);
+const processMunicipalitySamples = [...new Set(processos.map(row => valueOf(row, ['NM_MUNICIPIO', 'MUNICIPIO'], false)).filter(value => /AGUAS|VALPARAISO|SANTO ANTONIO|NOVO GAMA|PLANALTINA/i.test(normalizeLabel(value))))].slice(0, 20);
+console.log('[TSE] municípios processuais candidatos:', processMunicipalitySamples.join(' | ') || 'nenhum');
 const capture = new Date().toISOString();
 const hash = sha256Files([zipPath, decisionsZipPath]);
 
