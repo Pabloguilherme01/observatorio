@@ -27,6 +27,12 @@ export function Header() {
 
   const openCommands = () => window.dispatchEvent(new CustomEvent('observatorio:command'));
 
+  useEffect(() => {
+    const openSearchFromMobile = () => setSearchOpen(true);
+    window.addEventListener('observatorio:search', openSearchFromMobile);
+    return () => window.removeEventListener('observatorio:search', openSearchFromMobile);
+  }, []);
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/82 backdrop-blur-xl light:bg-[#f5f7fa]/90">
