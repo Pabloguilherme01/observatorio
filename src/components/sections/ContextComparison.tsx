@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { contextualMetrics, contextualMunicipalities, type ContextMetricId } from '../../data/contextualComparison';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { ProvenanceTrigger } from '../ProvenanceTrigger';
 
 function formatValue(id: ContextMetricId, value: number) {
   if (id === 'population') return value.toLocaleString('pt-BR');
@@ -52,9 +53,12 @@ export function ContextComparison() {
               <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">{place.name}</div>
               <div className="mt-3 text-3xl font-black tabular-nums text-white light:text-slate-900">{formatValue(metric.id, place.values[metric.id])}</div>
               <div className="mt-1 text-xs text-slate-500">IBGE · {metric.year}</div>
-              <a href={place.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                Ver ficha do município <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <ProvenanceTrigger valueId="populacao-aguas-lindas" />
+                <a href={place.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
+                  Ver ficha do município <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                </a>
+              </div>
             </Card>
           ))}
         </div>
