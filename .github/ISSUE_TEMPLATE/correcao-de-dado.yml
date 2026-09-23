@@ -1,0 +1,30 @@
+name: Correção de dado
+description: Reporte um valor, fonte, data ou cálculo que precisa de revisão.
+title: "[Correção] "
+labels: ["correcao"]
+body:
+  - type: input
+    id: pagina
+    attributes:
+      label: Seção ou indicador
+      placeholder: "Ex.: Eleitorado 2026"
+    validations:
+      required: true
+  - type: textarea
+    id: problema
+    attributes:
+      label: O que precisa ser corrigido?
+      description: Descreva o dado atual e por que ele parece incorreto.
+    validations:
+      required: true
+  - type: textarea
+    id: evidencia
+    attributes:
+      label: Fonte ou evidência
+      description: Informe a URL oficial ou documento que sustenta a correção.
+    validations:
+      required: true
+  - type: input
+    id: referencia
+    attributes:
+      label: Data/ano de referência
