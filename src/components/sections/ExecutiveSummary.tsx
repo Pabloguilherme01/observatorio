@@ -144,36 +144,25 @@ export function ExecutiveSummary() {
           </div>
         </div>
 
-        <div className="mt-3 grid gap-3 md:grid-cols-3">
-          <Card className="p-4">
-            <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Como ler</div>
-            <p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-600">
-              {languageMode === 'simple'
-                ? 'Confira a data e a fonte antes de comparar números.'
-                : 'Comece pelos valores com data clara. “Atual” e “histórico” não são a mesma coisa.'}
-            </p>
-          </Card>
-          <Card className="p-4">
-            <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Simuladores</div>
-            <p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-600">
-              {languageMode === 'simple'
-                ? 'Um cenário calculado não é um fato observado.'
-                : 'Use os simuladores para testar cenários. O resultado calculado não vira automaticamente um fato observado.'}
-            </p>
-          </Card>
-          <Card className="p-4">
-            <div className="flex items-start gap-2">
-              <CircleHelp className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
-              <p className="text-sm leading-6 text-slate-300 light:text-slate-600">
-                {languageMode === 'simple' ? (
-                  <>Dados locais atualizados em <strong className="text-white light:text-slate-900">{formatDate(d.meta.updatedAt)}</strong>. Cada indicador tem sua própria data.</>
-                ) : (
-                  <>Atualização local do conjunto: <strong className="text-white light:text-slate-900">{formatDate(d.meta.updatedAt)}</strong>. População estimada: {population?.value.toLocaleString('pt-BR') ?? '—'} em {population ? population.referenceDate.split('-').reverse().join('/') : '—'}.</>
-                )}
-              </p>
-            </div>
-          </Card>
-        </div>
+        {languageMode === 'technical' && (
+          <div className="mt-3 grid gap-3 md:grid-cols-3">
+            <Card className="summary-evidence">
+              <span>Como ler</span>
+              <strong>Data + fonte</strong>
+              <p className="mt-1">Use a data e a origem antes de comparar indicadores.</p>
+            </Card>
+            <Card className="summary-evidence">
+              <span>Simulações</span>
+              <strong>Cenário ≠ fato</strong>
+              <p className="mt-1">Resultados calculados ficam separados dos dados observados.</p>
+            </Card>
+            <Card className="summary-evidence">
+              <span>Atualização</span>
+              <strong>{formatDate(d.meta.updatedAt)}</strong>
+              <p className="mt-1">Cada indicador pode ter uma data de referência diferente.</p>
+            </Card>
+          </div>
+        )}
       </div>
     </section>
   );
