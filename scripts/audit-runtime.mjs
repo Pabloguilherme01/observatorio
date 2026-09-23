@@ -29,7 +29,13 @@ else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 const main = read('src/main.tsx');
 if (main.includes('observatorioMounted') && main.includes('observatorio:last-runtime-error')) pass('bootstrap possui marcador de montagem e diagnóstico runtime.');
 else fail('bootstrap perdeu marcadores de resiliência.');
-if (main.includes('function MountSignal') && main.includes('<MountSignal />') && main.includes("observatorio:app-mounted")) pass('sinal de montagem React é emitido por componente após o commit.');
+const mountSignalBlock = main.match(/function MountSignal\(\) \{[\s\S]*?\n\}/)?.[0] ?? '';
+if (
+  main.includes('<MountSignal />')
+  && mountSignalBlock.includes("document.documentElement.dataset.observatorioMounted = 'true'")
+  && mountSignalBlock.includes("window.dispatchEvent(new CustomEvent('observatorio:app-mounted'))")
+  && main.includes('window.addEventListener(\'observatorio:app-mounted\', registerPwa')
+) pass('sinal de montagem React é emitido por efeito pós-commit antes do PWA.');
 else fail('sinal de montagem React não está protegido por efeito pós-commit.');
 
 const tseSync = read('scripts/sync-tse-2026.mjs');
