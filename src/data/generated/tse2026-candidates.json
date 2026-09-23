@@ -15,7 +15,8 @@
     "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
     "captureTransport": "historical_third_party_reader",
-    "filterNote": "A captura existente é estadual e não carrega município de candidatura em cada registro. Por isso, os registros estaduais não são tratados como candidaturas de Águas Lindas sem evidência municipal."
+    "filterNote": "A captura existente é estadual e não carrega município de candidatura em cada registro. Por isso, os registros estaduais não são tratados como candidaturas de Águas Lindas sem evidência municipal.",
+    "sourceFileSha256": null
   },
   "coverage": "municipality_required",
   "watchlist": [],
