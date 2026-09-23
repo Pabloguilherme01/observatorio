@@ -48,7 +48,7 @@ export const ContasCandidatoSchema = z.object({
 
 export const TSEContasFileSchema = z.object({
   versao: z.literal('1.0.0'),
-  estado: z.enum(['not_ingested', 'synced', 'stale', 'failed']),
+  estado: z.enum(['not_ingested', 'first_capture', 'synced', 'stale', 'failed']),
   geradoEm: z.string().datetime(),
   sourceUrl: z.string().url(),
   sourceHash: z.string().min(8),
@@ -78,7 +78,7 @@ export const PesquisaEleitoralSchema = z.object({
 });
 export const TSEPesquisasFileSchema = z.object({
   versao: z.literal('1.0.0'),
-  estado: z.enum(['not_ingested', 'synced', 'stale', 'failed']),
+  estado: z.enum(['not_ingested', 'first_capture', 'synced', 'stale', 'failed']),
   geradoEm: z.string().datetime(),
   sourceUrl: z.string().url(),
   sourceHash: z.string().min(8),
@@ -108,7 +108,7 @@ export const ProcessoEleitoralSchema = z.object({
 });
 export const TSEProcessualFileSchema = z.object({
   versao: z.literal('1.0.0'),
-  estado: z.enum(['not_ingested', 'synced', 'stale', 'failed']),
+  estado: z.enum(['not_ingested', 'first_capture', 'synced', 'stale', 'failed']),
   geradoEm: z.string().datetime(),
   sourceUrl: z.string().url(),
   sourceHash: z.string().min(8),
