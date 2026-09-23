@@ -5,7 +5,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'ibge-estimativas-2026',
     label: 'IBGE — Estimativas da População 2026',
     institution: 'IBGE',
-    url: 'https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-population.html',
+    url: 'https://www.ibge.gov.br/estatisticas/sociais/populacao/9103-estimativas-de-populacao.html',
     nature: 'official',
     referenceDate: '2026-07-01',
     publishedAt: '2026-08-28',
