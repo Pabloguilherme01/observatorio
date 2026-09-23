@@ -2,7 +2,7 @@ import { BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 
-const RECENT_KEY = 'observatorio-recent-sections-v32', FAVORITES_KEY = 'observatorio-favorite-sections-v32', REDUCED_KEY = 'observatorio-reduced-motion-v32', FAST_MODE_KEY = 'observatorio-fast-reading-v33-default-investigation';
+const RECENT_KEY = 'observatorio-recent-sections-v34', FAVORITES_KEY = 'observatorio-favorite-sections-v34', REDUCED_KEY = 'observatorio-reduced-motion-v34', FAST_MODE_KEY = 'observatorio-fast-reading-v33-default-investigation';
 
 function readList(key: string): string[] { try { const value = JSON.parse(localStorage.getItem(key) ?? '[]'); return Array.isArray(value) ? value.filter(item => typeof item === 'string') : []; } catch { return []; } }
 function jump(id: string) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); window.history.replaceState(null, '', '#' + id); window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id })); }
