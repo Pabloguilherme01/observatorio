@@ -8,6 +8,9 @@ import { formatCurrency } from '../../utils/formatters';
 
 export function PoliticalResearch() {
   const hasGenerated = electoral360Snapshot.matchedCandidates.length > 0;
+  const snapshotLabel = hasGenerated && electoral360Snapshot.capturedAt
+    ? `snapshot local validado em ${new Date(electoral360Snapshot.capturedAt).toLocaleDateString('pt-BR')}`
+    : 'recorte editorial local de 22/09/2026';
   const candidates = hasGenerated
     ? electoral360Snapshot.matchedCandidates.map(candidate => ({
         name: candidate.name,
