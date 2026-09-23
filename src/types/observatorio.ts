@@ -68,6 +68,7 @@ export interface ElectionPoll {
   readonly results: readonly PollResult[];
   readonly nonePct?: number;
   readonly notSurePct?: number;
+  readonly unclassifiedPct?: number;
   readonly officialMarginErrorPct?: number;
   readonly theoreticalMarginErrorPct?: number;
   readonly confidenceLevelPct?: number;
