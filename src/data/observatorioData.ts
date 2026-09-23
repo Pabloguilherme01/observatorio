@@ -2,6 +2,7 @@ import type { ISODate, ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
 import { EDITION } from '../config/version';
 import generatedCandidates from './generated/tse2026-candidates.json';
+import { LOCAL_CANDIDATE_IDS, CANDIDATE_PROFILES } from './candidateProfiles';
 
 const rawGeneratedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt?.slice(0, 10);
 const generatedCandidateSnapshotDate: ISODate =
@@ -9,14 +10,22 @@ const generatedCandidateSnapshotDate: ISODate =
     ? (rawGeneratedCandidateSnapshotDate as ISODate)
     : '2026-09-23';
 
-const candidateSnapshots: ObservatoryData['candidates'] = generatedCandidates.matched.map(candidate => ({
-  name: candidate.name,
-  party: candidate.party ?? undefined,
-  ballotNumber: candidate.ballotNumber ?? undefined,
-  status: candidate.status ?? 'Não informado',
-  sourceId: 'tse-candidatos-2026',
-  snapshotDate: generatedCandidateSnapshotDate,
-}));
+const candidateSnapshots: ObservatoryData['candidates'] = generatedCandidates.matched
+  .filter(candidate => LOCAL_CANDIDATE_IDS.includes(candidate.sqCandidate as typeof LOCAL_CANDIDATE_IDS[number]))
+  .map(candidate => {
+    const profile = CANDIDATE_PROFILES[candidate.sqCandidate];
+    return {
+      name: candidate.name,
+      party: candidate.party ?? undefined,
+      ballotNumber: candidate.ballotNumber ?? undefined,
+      status: candidate.status ?? 'Não informado',
+      occupation: profile?.occupation,
+      education: profile?.education,
+      declaredAssetsBrl: profile?.declaredAssetsBrl ?? undefined,
+      sourceId: 'tse-candidatos-2026',
+      snapshotDate: generatedCandidateSnapshotDate,
+    };
+  });
 
 /**
  * Dataset V44, normalizado para o domínio React.
