@@ -214,3 +214,87 @@ button, a, input, select, textarea { max-width: 100%; }
   .hero-shell { padding-left: 12px; padding-right: 12px; }
   .hero-shell h1 { font-size: clamp(1.85rem, 11vw, 2.2rem); }
 }
+
+
+/* Mobile component normalization: avoid nested overflow and preserve readable density. */
+@media (max-width: 767px) {
+  main > section,
+  main > div,
+  .discovery-shell,
+  .summary-evidence,
+  .candidate-card,
+  .candidate-overview-card,
+  .metric-interactive,
+  .metric-interactive > div,
+  .today-card,
+  figure {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  main > section {
+    scroll-margin-top: 88px;
+  }
+
+  .grid > * {
+    min-width: 0;
+  }
+
+  table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table-scroll,
+  [data-table-scroll],
+  .overflow-x-auto {
+    max-width: 100%;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  pre,
+  code {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  svg {
+    max-width: 100%;
+  }
+
+  .chart-axis-label {
+    font-size: 10px;
+  }
+
+  .command-panel,
+  .search-modal-panel {
+    max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+
+  .command-panel {
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (max-width: 390px) {
+  .text-3xl { font-size: 1.65rem; }
+  .text-2xl { font-size: 1.35rem; }
+
+  .today-card,
+  .candidate-card,
+  .summary-stat,
+  .summary-evidence {
+    border-radius: 16px;
+  }
+
+  .language-toggle-v2 button {
+    min-width: 0;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
