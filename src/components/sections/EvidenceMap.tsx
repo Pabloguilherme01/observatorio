@@ -8,6 +8,7 @@ export function EvidenceMap() {
   return (
     <section id="fontes" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="fontes-title">
       <SectionHeader
+        titleId="fontes-title"
         eyebrow="Rastreabilidade"
         title="Mapa de evidências"
         description="Cada bloco aponta para a fonte utilizada, preservando a diferença entre dado oficial, fonte secundária e cálculo próprio."
