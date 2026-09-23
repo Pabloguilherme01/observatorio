@@ -66,6 +66,8 @@ export const PesquisaEleitoralSchema = z.object({
   pagante: z.string().optional(),
   municipio: z.string().min(1),
   uf: z.string().length(2),
+  abrangenciaDetectada: z.string().optional(),
+  criterioMunicipio: z.enum(['codigo', 'nome_exato', 'abrangencia_textual']).optional(),
   dataRegistro: z.string(),
   periodoColeta: z.object({ inicio: z.string(), fim: z.string() }),
   amostra: z.number().int().positive(),
