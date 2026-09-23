@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowRight, Wallet } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBRL } from '../../lib/transport';
+import { formatBudgetCurrency } from '../../utils/formatters';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { MethodologyFooter } from '../MethodologyFooter';
@@ -26,12 +27,12 @@ export function BudgetImpact() {
           {rows.map(([label, amount]) => (
             <div key={label} className="rounded-2xl border border-white/8 p-4">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Wallet className="h-4 w-4 text-sky-300" />{label}</div>
-              <div className="mt-3 text-2xl font-black text-white">{formatBRL(amount)}</div>
+              <div className="mt-3 text-2xl font-black text-white">{formatBudgetCurrency(amount)}</div>
               <div className="mt-1 text-xs text-slate-500">{formatBRL(amount / population)} por habitante, usando população estimada de 2026</div>
             </div>
           ))}
         </div>
-        <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4"><div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte analítico</div><div className="mt-1 text-lg font-black text-white">{formatBRL(shownTotal)}</div><p className="mt-1 text-xs leading-5 text-slate-500">As 3 funções exibidas representam {shownShare.toFixed(1).replace(".", ",")}% da LOA 2026 de {formatBRL(d.budget.totalBrl)}. Não são o orçamento inteiro e não devem ser somadas a unidades ou órgãos.</p></div><div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+        <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4"><div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte analítico</div><div className="mt-1 text-lg font-black text-white">{formatBudgetCurrency(shownTotal)}</div><p className="mt-1 text-xs leading-5 text-slate-500">As 3 funções exibidas representam {shownShare.toFixed(1).replace(".", ",")}% da LOA 2026 de {formatBudgetCurrency(d.budget.totalBrl)}. Não são o orçamento inteiro e não devem ser somadas a unidades ou órgãos.</p></div><div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span className="rounded-full border border-white/8 px-3 py-1.5">Receita/Despesa → Função</span><ArrowRight className="h-4 w-4" aria-hidden="true" /><span className="rounded-full border border-white/8 px-3 py-1.5">Função → denominador</span><ArrowDown className="h-4 w-4" aria-hidden="true" /><span className="rounded-full border border-white/8 px-3 py-1.5">interpretação pelo leitor</span>
         </div>
         <MethodologyFooter source={source} denominator="população estimada de 2026 para o cálculo per capita" formula="valor da função ÷ população 2026" limitations="Alocação orçamentária não é execução financeira nem mede, isoladamente, resultado do serviço." />
