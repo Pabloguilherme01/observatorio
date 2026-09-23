@@ -88,7 +88,7 @@ export function valueOf(row: Record<string, string>, aliases: readonly string[],
     const value = row[alias];
     if (value != null && value !== '') return value;
   }
-  if (required) throw new Error('Coluna obrigatória ausente. Esperado um dos aliases: ' + aliases.join(', '));
+  if (required) throw new Error('Coluna obrigatória ausente. Esperado um dos aliases: ' + aliases.join(', ') + '. Headers disponíveis: ' + Object.keys(row).sort().join(', '));
   return '';
 }
 
