@@ -1,14 +1,14 @@
 import { join } from 'node:path';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { TSEPesquisasFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
-import { extractZip, findFile, downloadFile, parseDate, readCsv, sha256File, valueOf, writeJson } from './common.ts';
+import { extractZip, findFile, downloadFile, normalizeLabel, parseDate, readCsv, sha256File, valueOf, writeJson } from './common.ts';
 
 const SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip';
 const tmpRoot = join(process.cwd(), '.tmp', 'tse-pesquisas');
 const zipPath = join(tmpRoot, 'pesquisas-2026.zip');
 const extractDir = join(tmpRoot, 'unzipped');
 const outputPath = join(process.cwd(), 'generated', 'tse2026-pesquisas.json');
-const municipios = new Set(['Águas Lindas de Goiás', 'Valparaíso de Goiás', 'Santo Antônio do Descoberto', 'Novo Gama', 'Planaltina']);
+const municipios = new Set(['Águas Lindas de Goiás', 'Valparaíso de Goiás', 'Santo Antônio do Descoberto', 'Novo Gama', 'Planaltina'].map(normalizeLabel));
 
 mkdirSync(tmpRoot, { recursive: true });
 if (existsSync(extractDir)) rmSync(extractDir, { recursive: true, force: true });
@@ -20,7 +20,7 @@ const pesquisaPath = findFile(extractDir, /pesquisa.*\.csv$/i);
 const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
 
-const targetRows = rows.filter(row => municipios.has(valueOf(row, ['DS_DADO_MUNICIPIO'], false)));
+const targetRows = rows.filter(row => municipios.has(normalizeLabel(valueOf(row, ['DS_DADO_MUNICIPIO'], false))));
 const pesquisas = targetRows.map(row => {
   const municipality = valueOf(row, ['DS_DADO_MUNICIPIO']);
   return {
