@@ -1,4 +1,5 @@
 import { Activity, CalendarClock, CircleHelp, ExternalLink, Share2, Wallet } from 'lucide-react';
+import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -17,6 +18,7 @@ export function ExecutiveSummary() {
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
   const population = d.populationSeries.find(point => point.year === 2026);
   const electorate = d.electoral;
+  const [shareStatus, setShareStatus] = useState('');
   const share = async () => {
     const text = [
       'Observatório Eleitoral Águas Lindas 2026',
@@ -26,11 +28,17 @@ export function ExecutiveSummary() {
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Observatório Eleitoral — Águas Lindas 2026', text, url: window.location.href });
+        setShareStatus('Compartilhado');
+        window.setTimeout(() => setShareStatus(''), 1800);
         return;
       }
-      await navigator.clipboard?.writeText(text + ' ' + window.location.href);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text + ' ' + window.location.href);
+        setShareStatus('Link copiado');
+        window.setTimeout(() => setShareStatus(''), 1800);
+      }
     } catch {
-      // O compartilhamento pode ser cancelado pelo usuário.
+      // O usuário pode cancelar o diálogo de compartilhamento; não tratamos cancelamento como erro.
     }
   };
 
@@ -46,11 +54,12 @@ export function ExecutiveSummary() {
             titleId="executive-summary-title"
             eyebrow="Comece aqui"
             title="Resumo de leitura"
-            description="Quatro pontos para entender o painel antes de entrar nos detalhes. Os números preservam a data de referência e a natureza do dado."
+            description="Cinco pontos para entender o painel antes de entrar nos detalhes. Os números preservam a data de referência e a natureza do dado."
           />
           <button type="button" onClick={share} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
             <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
           </button>
+          {shareStatus && <span className="self-center text-[11px] font-semibold text-emerald-300" role="status" aria-live="polite">{shareStatus}</span>}
         </div>
 
         <div className="grid gap-3 lg:grid-cols-[1.35fr_.65fr]">

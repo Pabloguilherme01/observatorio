@@ -35,8 +35,8 @@ export function App() {
         <Header />
         <HeroCountdown />
         <main id="main-content">
-          <DiscoveryHub />
           <ExecutiveSummary />
+          <DiscoveryHub />
           <FreshnessBanner />
           <ResultsLiveBanner />
           <DashboardMetrics />
