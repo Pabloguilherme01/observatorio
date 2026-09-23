@@ -23,7 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Validate results feed
+      - name: Validate production results feed contract
+        run: npm run validate:results
+      - name: Validate synthetic results contract fixture
+        env:
+          RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
+          REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
 
       - name: Typecheck
