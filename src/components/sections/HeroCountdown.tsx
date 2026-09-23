@@ -90,7 +90,9 @@ export function HeroCountdown() {
 
 
           <div className="election-mode-actions sr-only" aria-hidden="true">Modo Eleição · acesso rápido</div>
-          <button type="button" className="hero-election-entry mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-white/5" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: true }))} aria-pressed={false} aria-label="Ativar Modo Eleição"><Vote className="h-4 w-4" aria-hidden="true" /><span>Modo Eleição</span><span className="text-slate-500">ativar</span></button>
+          {!electionMode && languageMode === 'technical' && (
+            <button type="button" className="hero-election-entry mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-300 transition hover:bg-white/5" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: true }))} aria-pressed={false} aria-label="Ativar Modo Eleição"><Vote className="h-4 w-4" aria-hidden="true" /><span>Modo Eleição</span><span className="text-slate-500">ativar</span></button>
+          )}
           {electionMode && (
             <div className="hero-election-quick mt-3 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-3">
               <button type="button" className="hero-mobile-election-toggle inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 py-2 text-xs font-black text-amber-100 transition hover:bg-amber-300/[0.08]" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: false }))} aria-pressed={true} aria-label="Desativar Modo Eleição">
