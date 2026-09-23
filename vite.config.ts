@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  // GitHub Pages project site: https://pabloguilherme01.github.io/observatorio/
   base: '/observatorio/',
   plugins: [
     react(),
@@ -19,29 +18,29 @@ export default defineConfig({
         background_color: '#0d1117',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: './',
-        scope: './',
-        icons: [],
+        start_url: '/observatorio/',
+        scope: '/observatorio/',
+        icons: [
+          { src: '/observatorio/pwa-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
+          { src: '/observatorio/pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
+        ],
       },
+      includeAssets: ['pwa-192.svg', 'pwa-512.svg'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         runtimeCaching: [
           {
-            urlPattern: ({ request }) =>
-              ['script', 'style', 'image', 'font'].includes(request.destination),
+            urlPattern: ({ request }) => ['script', 'style', 'image', 'font'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
               cacheName: 'observatorio-static-assets',
-              expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 * 30,
-              },
+              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],
         cleanupOutdatedCaches: true,
-        navigateFallback: 'index.html',
+        navigateFallback: '/observatorio/index.html',
       },
     }),
   ],
