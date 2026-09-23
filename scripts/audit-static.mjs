@@ -42,7 +42,7 @@ must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'p
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
 must(vite.includes('offline.html') && vite.includes('NetworkFirst'), 'PWA possui página offline e cache NetworkFirst');
 must(appSource.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente');
-must(read('src/components/sections/HeroCountdown.tsx').includes('DivulgaCandContas') && read('src/components/sections/HeroCountdown.tsx').includes('Pardal'), 'Modo Eleição expõe caminhos cívicos oficiais');
+must(read('src/components/sections/HeroCountdown.tsx').includes('electionMode') && read('src/components/sections/HeroCountdown.tsx').includes('observatorio:election-mode'), 'Modo Eleição mantém o controle do estado no hero');
 
 const pkgScripts = packageJson.scripts ?? {};
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
