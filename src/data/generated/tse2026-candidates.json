@@ -14,9 +14,9 @@
     "gitCommit": "bb775200165ace569b658999a9f2205b613ff146",
     "schemaVersion": 2,
     "state": "first_capture",
-    "retrievalMethod": "official_tse_divulgacandcontas_api_via_reader_proxy",
+    "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
-    "sourceProxyUrl": "https://r.jina.ai/https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos"
+    "captureTransport": "historical_third_party_reader"
   },
   "coverage": "watchlist",
   "watchlist": [
