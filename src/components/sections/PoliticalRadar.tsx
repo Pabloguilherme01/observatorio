@@ -12,7 +12,7 @@ export function PoliticalRadar() {
   const candidateOptions = [...new Set(poll.results.map(result => result.label))];
 
   const [selectedCandidate, setSelectedCandidate] = useState<string>(() => {
-    if (typeof window === 'undefined') return candidateOptions[0] ?? '';
+    if (typeof window === 'undefined') return '';
     try {
       const stored = window.localStorage.getItem(RADAR_STORAGE_KEY);
       return stored && candidateOptions.includes(stored) ? stored : '';
@@ -54,6 +54,7 @@ export function PoliticalRadar() {
               onChange={event => setSelectedCandidate(event.target.value)}
               aria-label="Selecionar nome da pesquisa para destacar no radar"
             >
+              <option value="">Nenhum foco selecionado</option>
               {candidateOptions.map(option => <option key={option} value={option}>{option}</option>)}
             </select>
           </label>
