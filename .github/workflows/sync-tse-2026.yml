@@ -26,19 +26,36 @@ jobs:
         with:
           node-version: 22
 
-      - name: Sync candidate snapshot
-        run: node scripts/sync-tse-2026.mjs
+      - name: Install
+        run: npm install --no-audit --no-fund
 
-      - name: Validate generated snapshot
+      - name: Capture official municipal candidate snapshot
+        run: npm run sync:tse
+
+      - name: Validate municipal TSE snapshot
         env:
           REQUIRE_TSE_SYNC: 'true'
-        run: node scripts/validate-tse-2026.mjs
+        run: npm run validate:tse
 
-      - name: Commit validated snapshot
+      - name: Validate observatory data contracts
+        run: npm run validate:observatorio
+
+      - name: Audit static consistency
+        run: npm run audit:static
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Production build
+        run: npm run build
+
+      - name: Commit validated municipal snapshot
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history
-          git diff --cached --quiet && exit 0
-          git commit -m "data: sync TSE 2026 candidate snapshot"
+          git diff --cached --quiet && echo "No candidate snapshot change." && exit 0
+          git commit -m "data: sync municipal TSE 2026 candidate snapshot"
           git push
