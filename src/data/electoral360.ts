@@ -1,40 +1,38 @@
-export type ElectoralModuleStatus = 'captured' | 'cataloged' | 'pending';
+import generated from './generated/tse2026-candidates.json';
+import type { ElectoralCandidateSnapshot, Electoral360Module, Electoral360Snapshot } from '../types/electoral360';
 
-export interface Electoral360Module {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly status: ElectoralModuleStatus;
-  readonly frequency: string;
-  readonly sourceId: string;
-  readonly datasetUrl: string;
-  readonly refreshUrl?: string;
-}
+const generatedData = generated as {
+  meta: {
+    snapshotId: string;
+    downloadedAt: string;
+    state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
+  };
+  watchlist: string[];
+  matched: Array<{
+    sqCandidate: string;
+    ballotNumber: number | null;
+    name: string;
+    party: string | null;
+    office: string | null;
+    status: string | null;
+  }>;
+  diff: {
+    state: string;
+    added: number;
+    removed: number;
+    changed: number;
+    records: unknown[];
+  };
+};
 
-export interface ElectoralCandidateSnapshot {
-  readonly ballotNumber: number;
-  readonly name: string;
-  readonly party: string;
-  readonly office: string;
-  readonly status: string;
-  readonly snapshotDate: string;
-  readonly sourceId: string;
-}
-
-export interface Electoral360Snapshot {
-  readonly capturedAt: string;
-  readonly captureMode: 'static-local' | 'github-actions';
-  readonly candidateUniverseScope: 'GO';
-  readonly localWatchlist: readonly string[];
-  readonly matchedCandidates: readonly ElectoralCandidateSnapshot[];
-}
+const candidateStatus = generatedData.meta.state === 'not_synced' ? 'pending' : 'captured';
 
 export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'Cadastro, cargo, partido, situação, bens, redes, histórico e propostas. O snapshot automatizado filtra Goiás e cruza a lista local monitorada.',
-    status: 'captured',
+    description: 'Cadastro, cargo, partido, situação, bens, redes, histórico e propostas. O recorte automatizado utiliza identidade SQ_CANDIDATO e preserva o manifesto do snapshot.',
+    status: candidateStatus,
     frequency: '4x ao dia',
     sourceId: 'tse-candidatos-2026',
     datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
@@ -42,11 +40,11 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'electorate',
     title: 'Eleitorado',
-    description: 'Perfil do eleitorado, locais de votação e seções eleitorais para o recorte municipal.',
-    status: 'captured',
-    frequency: 'sob demanda',
+    description: 'Perfil do eleitorado, locais de votação e seções eleitorais para o recorte municipal. Catálogo oficial identificado; snapshot eleitoral municipal segue como próxima ingestão.',
+    status: 'cataloged',
+    frequency: 'conforme base oficial',
     sourceId: 'tse-eleitorado-2026',
-    datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2026',
+    datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/groups/eleitorado-2026',
   },
   {
     id: 'research',
@@ -60,11 +58,11 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'accounts',
     title: 'Contas eleitorais',
-    description: 'Prestação de contas de candidatos, CNPJ de campanha e extratos bancários.',
+    description: 'Prestação de contas, CNPJ de campanha e movimentações publicadas pelo TSE. A camada deve ser tratada como série temporal, não como valor único.',
     status: 'cataloged',
-    frequency: 'conforme geração do arquivo',
+    frequency: 'conforme publicação',
     sourceId: 'tse-contas-2026',
-    datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/prestacao-de-contas-eleitorais-2026',
+    datasetUrl: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/tse-disponibiliza-dados-da-prestacao-de-contas-parcial-das-campanhas-eleitorais',
   },
   {
     id: 'pardal',
@@ -87,39 +85,20 @@ export const electoral360Modules: readonly Electoral360Module[] = [
 ];
 
 export const electoral360Snapshot: Electoral360Snapshot = {
-  capturedAt: '2026-09-22',
-  captureMode: 'static-local',
+  capturedAt: generatedData.meta.downloadedAt,
+  captureMode: generatedData.meta.state === 'not_synced' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
-  localWatchlist: [
-    'Keké',
-    'Anderson Teodoro',
-    'Zé da Imperial',
-    'Baiano dos Cocos',
-    'Cambão',
-    'Abadyas Damasceno',
-    'Pábio Mossoró',
-    'Felipe Galdino',
-    'Ribeiro do Túlio',
-    'André do Premium',
-  ],
-  matchedCandidates: [
-    {
-      ballotNumber: 33777,
-      name: 'Keké da Vulkanic',
-      party: 'MOBILIZA',
-      office: 'Deputado Estadual',
-      status: 'Aguardando julgamento',
-      snapshotDate: '2026-09-22',
-      sourceId: 'tse-candidatos-2026',
-    },
-    {
-      ballotNumber: 25789,
-      name: 'Anderson Teodoro',
-      party: 'PRD',
-      office: 'Deputado Estadual',
-      status: 'Deferido',
-      snapshotDate: '2026-09-22',
-      sourceId: 'tse-candidatos-2026',
-    },
-  ],
+  localWatchlist: generatedData.watchlist,
+  matchedCandidates: generatedData.matched.map(candidate => ({
+    sqCandidate: candidate.sqCandidate,
+    ballotNumber: candidate.ballotNumber ?? 0,
+    name: candidate.name,
+    party: candidate.party ?? '—',
+    office: candidate.office ?? '—',
+    status: candidate.status ?? '—',
+    snapshotDate: generatedData.meta.downloadedAt.slice(0, 10),
+    sourceId: 'tse-candidatos-2026',
+  })),
 };
+
+export const electoral360Diff = generatedData.diff;
