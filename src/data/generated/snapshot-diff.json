@@ -1,12 +1,12 @@
 {
   "version": 1,
   "generatedAt": "2026-09-23T10:46:20.531Z",
-  "firstCapture": false,
+  "firstCapture": true,
   "datasets": [
     {
       "fonte": "contas",
-      "state": "changed",
-      "firstCapture": false,
+      "state": "first_capture",
+      "firstCapture": true,
       "added": 0,
       "removed": 10,
       "changed": 0,
@@ -296,8 +296,8 @@
     },
     {
       "fonte": "pesquisas",
-      "state": "unchanged",
-      "firstCapture": false,
+      "state": "first_capture",
+      "firstCapture": true,
       "added": 0,
       "removed": 0,
       "changed": 0,
@@ -306,8 +306,8 @@
     },
     {
       "fonte": "processual",
-      "state": "changed",
-      "firstCapture": false,
+      "state": "first_capture",
+      "firstCapture": true,
       "added": 63,
       "removed": 0,
       "changed": 0,
