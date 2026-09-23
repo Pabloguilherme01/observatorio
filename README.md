@@ -30,6 +30,7 @@ npm run dev
 ## Verificação
 
 ```bash
+npm run audit:static
 npm run typecheck
 npm run validate:observatorio
 npm run validate:tse
@@ -39,7 +40,7 @@ npm run sync:results
 npm run build
 ```
 
-O CI executa typecheck e build a cada push/PR. O deploy do GitHub Pages publica o diretório `dist`.
+O CI executa auditoria estática, contratos de dados, typecheck e build a cada push/PR. O deploy do GitHub Pages publica o diretório `dist`.
 
 ## Princípios de dados
 
@@ -60,7 +61,12 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V37.0 — Observatório de Dados Cívicos e Eleitorais.
+V38.0 — Observatório de Dados Cívicos e Eleitorais.
+
+### Foco V38
+- Hierarquia inicial reforçada no hero com indicadores de referência, acesso direto às evidências e identificação explícita da última atualização local.
+- Atalhos de descoberta mantidos navegáveis na Visão geral, sem apontar para seções ocultas.
+- Auditoria estática versionada no CI para detectar regressões de edição, URL base, PWA, navegação, proveniência e estados de snapshot.
 
 ### Foco V37
 - Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
