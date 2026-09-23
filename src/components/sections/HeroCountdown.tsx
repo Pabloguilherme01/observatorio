@@ -51,8 +51,9 @@ export function HeroCountdown() {
               : 'Cada indicador separa valor, data de referência, origem, natureza do dado e limitações.'}
           </p>
           <div className="reading-mode-switch mt-4 inline-flex rounded-2xl border border-white/10 bg-white/[0.02] p-1" role="group" aria-label="Modo de leitura">
-            <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'simple' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Leitura simples</button>
-            <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'technical' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Detalhes técnicos</button>
+            <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'simple' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Simples</button>
+            <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'technical' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Técnico</button>
+            <button type="button" onClick={() => setLanguageMode('quick')} aria-pressed={languageMode === 'quick'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'quick' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Rápido</button>
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
             <a href="#descubra" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
