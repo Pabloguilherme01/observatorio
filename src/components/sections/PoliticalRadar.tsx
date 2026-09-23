@@ -4,8 +4,9 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { SectionHeader } from '../ui/SectionHeader';
+import { STORAGE_NAMESPACE } from '../../config/version';
 
-const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection-v37';
+const RADAR_STORAGE_KEY = `${STORAGE_NAMESPACE}-political-radar-selection`;
 
 export function PoliticalRadar() {
   const poll = d.polls[0];
