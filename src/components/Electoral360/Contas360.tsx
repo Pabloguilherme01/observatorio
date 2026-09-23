@@ -54,7 +54,7 @@ export function Contas360() {
           </div>
         ) : (
           <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-            A captura oficial de prestação de contas ainda não foi materializada neste snapshot. O pipeline já está preparado para ingeri-la sem preencher a interface com dados simulados.
+            A captura oficial de prestação de contas foi materializada para este primeiro snapshot. Não há registros de movimentação associados aos candidatos do recorte operacional nesta captura; o zero é resultado do filtro, não dado simulado.
           </div>
         )}
 
