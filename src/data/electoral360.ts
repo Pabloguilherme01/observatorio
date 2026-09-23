@@ -44,7 +44,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
     status: 'cataloged',
     frequency: 'conforme base oficial',
     sourceId: 'tse-eleitorado-2026',
-    datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/groups/eleitorado-2026',
+    datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2026',
   },
   {
     id: 'research',
