@@ -3,7 +3,7 @@ import { sourceRegistry } from './sourceRegistry';
 import { EDITION } from '../config/version';
 
 /**
- * Dataset V37, normalizado para o domínio React.
+ * Dataset V39, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília usa a tarifa atual publicada pela UTB (R$ 11,45);
