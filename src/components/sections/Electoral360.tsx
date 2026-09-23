@@ -183,9 +183,9 @@ export function Electoral360() {
 
                   {languageMode === 'technical' && (
                     <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                      <Info label="Patrimônio declarado" value={profile.declaredAssetsBrl == null ? 'Não informado' : profile.declaredAssetsBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
-                      <Info label="Escolaridade" value={profile.education} />
-                      <Info label="Ocupação" value={profile.occupation} />
+                      <Info label="Patrimônio declarado" value={candidate.declaredAssetsBrl == null ? 'Não informado no snapshot' : candidate.declaredAssetsBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
+                      <Info label="Escolaridade" value={candidate.education ?? 'Não informado no snapshot'} />
+                      <Info label="Ocupação" value={candidate.occupation ?? 'Não informado no snapshot'} />
                     </div>
                   )}
 
@@ -236,8 +236,8 @@ export function Electoral360() {
                       Mais dados
                     </summary>
                     <div className="grid gap-2 border-t border-white/8 p-4 sm:grid-cols-2">
-                      <Info label="Nome completo" value={profile.fullName} />
-                      <Info label="Naturalidade" value={profile.naturalidade} />
+                      <Info label="Nome completo" value={candidate.fullName ?? candidate.name} />
+                      <Info label="Naturalidade" value={candidate.naturalidade ?? 'Não informado no snapshot'} />
                       <Info label="SQ_CANDIDATO" value={candidate.sqCandidate} />
                       <Info label="Snapshot" value={candidate.snapshotDate} />
                       <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 sm:col-span-2">
@@ -253,6 +253,7 @@ export function Electoral360() {
                           <Info label="Identificador de captura" value={candidateSource?.id ?? 'tse-candidatos-2026'} />
                           <Info label="Método" value="CSV TSE + redes sociais TSE + foto TSE" />
                           <Info label="Imagem" value={candidate.photoUrl ? 'Arquivo TSE ingerido localmente' : 'Não disponível no snapshot'} />
+                          <Info label="Bens" value={candidate.declaredAssetsBrl != null ? 'Dados TSE ingeridos' : 'Bens ainda não ingeridos'} />
                         </>
                       )}
                     </div>
