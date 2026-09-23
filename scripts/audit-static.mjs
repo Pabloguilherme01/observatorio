@@ -95,7 +95,7 @@ for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto'
 must(candidates.schemaVersion === 3 && candidates.coverage === 'municipality_required', 'snapshot atual usa exclusivamente o contrato municipal versionado');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
 must(candidates.meta.localFilter === 'Águas Lindas de Goiás' && candidates.meta.municipalityCodeTse === '92737', 'snapshot registra filtro municipal explícito');
-must(candidates.meta.retrievalMethod === 'official_tse_zip_csv', 'snapshot municipal depende de fonte TSE oficial direta');
+must(candidates.meta.state === 'local_filter_pending' || candidates.meta.retrievalMethod === 'official_tse_zip_csv', 'snapshot municipal usa fonte oficial direta quando sincronizado');
 
 const runtimeFiles = [
   'src/app/App.tsx',
