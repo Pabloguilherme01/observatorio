@@ -34,7 +34,9 @@ jobs:
         run: npm run audit:mobile
       - name: Validate data contracts
         run: npm run validate:observatorio
-      - name: Validate TSE snapshot structure
+      - name: Validate TSE snapshot — production gate
+        env:
+          REQUIRE_TSE_SYNC: 'true'
         run: npm run validate:tse
       - name: Validate results feed
         run: npm run validate:results
