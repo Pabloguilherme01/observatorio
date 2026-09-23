@@ -1,7 +1,7 @@
 import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
-import { EDITION } from '../../config/version';
+import { EDITION, STORAGE_NAMESPACE } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -33,7 +33,7 @@ export function HeroCountdown() {
   const { mode: languageMode, setMode: setLanguageMode } = useLanguageMode();
   const [electionMode, setElectionMode] = useState(false);
   useEffect(() => {
-    const sync = () => setElectionMode(localStorage.getItem('observatorio-v42-election-mode') === '1');
+    const sync = () => setElectionMode(localStorage.getItem(`${STORAGE_NAMESPACE}-election-mode`) === '1');
     sync();
     window.addEventListener('observatorio:election-mode-changed', sync);
     return () => window.removeEventListener('observatorio:election-mode-changed', sync);
