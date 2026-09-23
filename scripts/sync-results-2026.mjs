@@ -1,11 +1,12 @@
 import { createHash } from 'node:crypto';
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { request } from 'node:https';
 import { resolve } from 'node:path';
 import { verifyCompactJws } from './verify-jws.mjs';
 
 const BASE = 'https://resultados.tse.jus.br/oficial';
 const OUTPUT = resolve(process.cwd(), 'public/data/tse-results.json');
+const HTTP_STATE = resolve(process.cwd(), 'public/data/tse-results-http-state.json');
 const PLEITO = 3220;
 const UF = 'go';
 const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
@@ -141,31 +142,42 @@ function entryFromPayload(payload, sourceFile, spec) {
   };
 }
 
-async function fetchPair(jsonUrl, jwsUrl, label) {
-  const [jsonResponse, jwsResponse] = await Promise.all([
-    httpGet(jsonUrl, { Accept: 'application/json' }),
-    httpGet(jwsUrl, { Accept: 'text/plain' }),
-  ]);
+function readJsonFile(path, fallback) {
+  if (!existsSync(path)) return fallback;
+  try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return fallback; }
+}
 
+async function fetchPair(jsonUrl, jwsUrl, label, sourceFile, previousEntry, previousProof, httpState) {
+  const previousHttp = httpState.files?.[sourceFile] ?? {};
+  const jsonHeaders = { Accept: 'application/json', ...(previousHttp.etag ? { 'If-None-Match': previousHttp.etag } : {}), ...(previousHttp.lastModified ? { 'If-Modified-Since': previousHttp.lastModified } : {}) };
+  const jwsHeaders = { Accept: 'text/plain', ...(previousHttp.jwsEtag ? { 'If-None-Match': previousHttp.jwsEtag } : {}), ...(previousHttp.jwsLastModified ? { 'If-Modified-Since': previousHttp.jwsLastModified } : {}) };
+  let [jsonResponse, jwsResponse] = await Promise.all([httpGet(jsonUrl, jsonHeaders), httpGet(jwsUrl, jwsHeaders)]);
   if (jsonResponse.status === 404 || jwsResponse.status === 404) {
     const error = new Error(`${label}: arquivo ainda não disponível (HTTP 404)`);
     error.code = 'NOT_READY';
     throw error;
   }
-
+  if (jsonResponse.status === 304 && jwsResponse.status === 304) {
+    if (!previousEntry || !previousProof) throw new Error(`${label}: TSE retornou 304 sem snapshot local verificado para reaproveitar.`);
+    return { unchanged: true, entry: previousEntry, proof: previousProof };
+  }
+  if (jsonResponse.status === 304 || jwsResponse.status === 304) {
+    [jsonResponse, jwsResponse] = await Promise.all([httpGet(jsonUrl, { Accept: 'application/json' }), httpGet(jwsUrl, { Accept: 'text/plain' })]);
+  }
   const json = parseJson(label + ' JSON', jsonResponse);
   if (jwsResponse.status !== 200) throw new Error(`${label} JWS: HTTP ${jwsResponse.status}`);
-
   const proof = verifyCompactJws(jwsResponse.body);
   if (!proof.valid) throw new Error(`${label}: assinatura JWS inválida`);
   if (stableStringify(proof.payload) !== stableStringify(json)) throw new Error(`${label}: payload JWS difere do JSON correspondente`);
-
   return {
+    unchanged: false,
     json,
     proof,
     jsonSha256: sha256(jsonResponse.body),
-    etag: jsonResponse.headers.etag ?? null,
-    lastModified: jsonResponse.headers['last-modified'] ?? null,
+    jsonEtag: jsonResponse.headers.etag ?? null,
+    jsonLastModified: jsonResponse.headers['last-modified'] ?? null,
+    jwsEtag: jwsResponse.headers.etag ?? null,
+    jwsLastModified: jwsResponse.headers['last-modified'] ?? null,
   };
 }
 
@@ -187,6 +199,9 @@ async function main() {
   const municipality = findMunicipality(municipalityConfig);
   if (String(municipality.cd) !== MUNICIPALITY_CODE) throw new Error('Código municipal resolvido diverge de 93343.');
 
+  mkdirSync(resolve(process.cwd(), 'public/data'), { recursive: true });
+  const previousFeed = readJsonFile(OUTPUT, null);
+  const httpState = readJsonFile(HTTP_STATE, { schemaVersion: 1, files: {} });
   const entries = [];
   const proofs = [];
 
@@ -204,22 +219,17 @@ async function main() {
     const sourceFile = `${UF}${MUNICIPALITY_CODE}-${cargoSegment}-e${electionSegment}-u.json`;
     const basePath = `${BASE}/${cycle}/${actualElectionCode}/dados/${UF}/${sourceFile}`;
     try {
-      const pair = await fetchPair(basePath, basePath.replace(/\.json$/, '.jws'), spec.cargo);
-      entries.push(entryFromPayload(pair.json, sourceFile, { ...spec, electionCode: actualElectionCode }));
-      proofs.push({
-        sourceFile,
-        sha256: pair.jsonSha256,
-        jwsProofSha256: pair.proof.proofSha256,
-        signatureStatus: 'verified',
-        verificationMethod: 'tse-official-jwk-ed25519',
-        verifiedAt: pair.proof.verifiedAt,
-        algorithm: 'EdDSA',
-        curve: 'Ed25519',
-        kid: pair.proof.kid,
-        keyFingerprint: pair.proof.keyFingerprint,
-        etag: pair.etag,
-        lastModified: pair.lastModified,
-      });
+      const previousEntry = previousFeed?.entries?.find(entry => entry.sourceFile === sourceFile);
+      const previousProof = previousFeed?.integrity?.files?.find(file => file.sourceFile === sourceFile);
+      const pair = await fetchPair(basePath, basePath.replace(/\.json$/, '.jws'), spec.cargo, sourceFile, previousEntry, previousProof, httpState);
+      if (pair.unchanged) {
+        entries.push(pair.entry);
+        proofs.push(pair.proof);
+      } else {
+        entries.push(entryFromPayload(pair.json, sourceFile, { ...spec, electionCode: actualElectionCode }));
+        proofs.push({ sourceFile, sha256: pair.jsonSha256, jwsProofSha256: pair.proof.proofSha256, signatureStatus: 'verified', verificationMethod: 'tse-official-jwk-ed25519', verifiedAt: pair.proof.verifiedAt, algorithm: 'EdDSA', curve: 'Ed25519', kid: pair.proof.kid, keyFingerprint: pair.proof.keyFingerprint, etag: pair.jsonEtag, lastModified: pair.jsonLastModified, jwsEtag: pair.jwsEtag, jwsLastModified: pair.jwsLastModified });
+        httpState.files[sourceFile] = { etag: pair.jsonEtag, lastModified: pair.jsonLastModified, jwsEtag: pair.jwsEtag, jwsLastModified: pair.jwsLastModified, capturedAt: new Date().toISOString() };
+      }
     } catch (error) {
       if (error?.code === 'NOT_READY' && ALLOW_PENDING) {
         console.log(JSON.stringify({ valid: true, pending: true, cargo: spec.cargo, reason: error.message }, null, 2));
@@ -229,7 +239,7 @@ async function main() {
     }
   }
 
-  mkdirSync(resolve(process.cwd(), 'public/data'), { recursive: true });
+  writeFileSync(HTTP_STATE, JSON.stringify({ ...httpState, schemaVersion: 1 }, null, 2) + '\n', 'utf8');
   const now = new Date();
   const complete = entries.every(entry => entry.sectionsTotal > 0 && entry.sectionsCounted >= entry.sectionsTotal);
   const payload = {
