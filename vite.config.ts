@@ -60,6 +60,14 @@ const publicApiPlugin = (): Plugin => ({
       ['pesquisas.json', 'generated/tse2026-pesquisas.json'],
       ['processual.json', 'generated/tse2026-processual.json'],
     ] as const;
+    const moduleStates = Object.fromEntries(
+      moduleFiles.map(([publicName, sourcePath]) => {
+        if (!existsSync(sourcePath)) return [publicName.replace('.json', ''), 'missing'];
+        const payload = JSON.parse(readFileSync(sourcePath, 'utf8')) as { readonly estado?: string };
+        return [publicName.replace('.json', ''), payload.estado ?? 'unknown'];
+      }),
+    );
+
     for (const [publicName, sourcePath] of moduleFiles) {
       if (!existsSync(sourcePath)) continue;
       this.emitFile({
@@ -93,13 +101,28 @@ const publicApiPlugin = (): Plugin => ({
             get: { summary: 'Registro de fontes do observatório', responses: { '200': { description: 'Fontes e metadados de referência' } } },
           },
           '/api/v1/contas.json': {
-            get: { summary: 'Prestação de contas eleitorais 2026', responses: { '200': { description: 'Snapshot documental das contas capturadas' } } },
+            get: {
+              summary: 'Prestação de contas eleitorais 2026',
+              deprecated: moduleStates.contas === 'not_ingested',
+              'x-data-state': moduleStates.contas,
+              responses: { '200': { description: 'Snapshot documental das contas; estado de captura é declarado no JSON.' } },
+            },
           },
           '/api/v1/pesquisas.json': {
-            get: { summary: 'Pesquisas eleitorais 2026', responses: { '200': { description: 'Snapshot documental das pesquisas capturadas' } } },
+            get: {
+              summary: 'Pesquisas eleitorais 2026',
+              deprecated: moduleStates.pesquisas === 'not_ingested',
+              'x-data-state': moduleStates.pesquisas,
+              responses: { '200': { description: 'Snapshot documental das pesquisas; estado de captura é declarado no JSON.' } },
+            },
           },
           '/api/v1/processual.json': {
-            get: { summary: 'Processual eleitoral 2026', responses: { '200': { description: 'Snapshot documental dos processos capturados' } } },
+            get: {
+              summary: 'Processual eleitoral 2026',
+              deprecated: moduleStates.processual === 'not_ingested',
+              'x-data-state': moduleStates.processual,
+              responses: { '200': { description: 'Snapshot documental processual; estado de captura é declarado no JSON.' } },
+            },
           },
           '/api/v1/_meta/health.json': {
             get: { summary: 'Data health dos indicadores', responses: { '200': { description: 'Dimensões técnicas do dataset' } } },
