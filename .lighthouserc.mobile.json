@@ -19,7 +19,7 @@
           "mobile": true,
           "width": 412,
           "height": 915,
-          "deviceScaleFactor": 1,
+          "deviceScaleFactor": 2,
           "disabled": false
         },
         "formFactor": "mobile"
