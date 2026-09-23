@@ -1,4 +1,4 @@
-import { lazy, Suspense, type ComponentType, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { HeroCountdown } from '../components/sections/HeroCountdown';
@@ -18,7 +18,7 @@ const loadElectionGroup = () => import('../components/sections/DeferredElectionG
 const loadPublicDataGroup = () => import('../components/sections/DeferredPublicDataGroup');
 const loadEvidenceGroup = () => import('../components/sections/DeferredEvidenceGroup');
 
-function Deferred({ children }: { readonly children: React.ReactNode }) {
+function Deferred({ children }: { readonly children: ReactNode }) {
   return (
     <Suspense fallback={
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-hidden="true">
@@ -59,7 +59,7 @@ function DeferredBlock({
 
   if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
 
-  const Component = lazy(loader);
+  const Component = useMemo(() => lazy(loader), [loader]);
   return (
     <div ref={ref}>
       <Deferred><Component /></Deferred>
