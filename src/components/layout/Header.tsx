@@ -62,14 +62,14 @@ export function Header() {
             <button type="button" onClick={toggle} className="min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
-            <button type="button" onClick={() => setMenuOpen(value => !value)} className="min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white lg:hidden" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>
+            <button type="button" onClick={() => setMenuOpen(value => !value)} className="hidden min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white sm:flex lg:hidden" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>
               {menuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
             </button>
           </div>
         </div>
 
-        {menuOpen && <nav id="mobile-navigation" className="border-t border-white/10 px-4 py-2 lg:hidden" aria-label="Navegação móvel">
-          <div className="grid gap-1"><div className="px-1 py-2 sm:hidden"><LanguageModeToggle /></div>
+        {menuOpen && <nav id="mobile-navigation" className="border-t border-white/10 px-4 py-2 sm:hidden lg:hidden" aria-label="Navegação móvel">
+          <div className="grid gap-1">
             {primaryNavigation.map(item => item && <a key={item.id} href={'#' + item.id} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')} aria-current={activeSection === item.id ? 'location' : undefined}>{item.label}</a>)}
           </div>
           <details className="mobile-secondary-nav mt-2 border-t border-white/10 pt-2">
