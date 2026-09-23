@@ -493,3 +493,10 @@ button,a{touch-action:manipulation}
   .shortcut-card small,.shortcut-list-row small{font-size:10px}
   .shortcut-footer{padding:9px 12px}
 }
+
+
+/* Mobile interaction: search stays closed and does not force keyboard focus. */
+@media (max-width:767px){
+  .command-overlay input:focus{scroll-margin-bottom:calc(var(--mobile-nav-height) + 16px)}
+  .mobile-bottom-nav button,.quick-dock button,.shortcut-row,.command-item button{touch-action:manipulation;-webkit-tap-highlight-color:rgba(125,211,252,.12)}
+}
