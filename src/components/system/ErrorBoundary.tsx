@@ -17,6 +17,9 @@ export class ErrorBoundary extends Component<Props, State> {
   public static getDerivedStateFromError(error: unknown): State {
     const message = error instanceof Error ? error.message : 'Erro inesperado ao carregar a aplicação.';
     const errorId = 'UI-' + Date.now().toString(36).toUpperCase();
+    try {
+      sessionStorage.setItem('observatorio:last-ui-error', JSON.stringify({ errorId, message, at: new Date().toISOString() }));
+    } catch {}
     return { hasError: true, message, errorId };
   }
 
@@ -47,7 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-3 text-left">
             <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">Código do erro</div>
             <code className="mt-1 block text-xs font-bold text-slate-300">{this.state.errorId || 'UI-UNKNOWN'}</code>
-            {import.meta.env.DEV && this.state.message && <pre className="mt-2 max-h-32 overflow-auto text-xs text-slate-500">{this.state.message}</pre>}
+            {this.state.message && <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap text-left text-xs text-slate-500">{this.state.message}</pre>}
           </div>
           <button type="button" onClick={this.handleReload} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
             <RefreshCw className="h-4 w-4" aria-hidden="true" />
