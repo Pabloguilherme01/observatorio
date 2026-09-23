@@ -52,17 +52,17 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-1">
-            <button type="button" onClick={openCommands} className="hidden items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-2.5 py-2 text-xs font-semibold text-slate-400 hover:bg-white/5 hover:text-white md:flex" aria-label="Abrir central de comandos">
-              <Command className="h-4 w-4" aria-hidden="true" /><span>Comandos</span><kbd>⌘K</kbd>
+            <button type="button" onClick={openCommands} className="hidden min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-2.5 py-2 text-xs font-semibold text-slate-400 hover:bg-white/5 hover:text-white md:flex" aria-label="Abrir atalhos e navegação">
+              <Command className="h-4 w-4" aria-hidden="true" /><span>Atalhos</span><kbd>⌘K</kbd>
             </button>
-            <button type="button" onClick={() => setSearchOpen(true)} className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Abrir busca">
+            <button type="button" onClick={() => setSearchOpen(true)} className="min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Abrir busca">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="hidden sm:block"><LanguageModeToggle /></div>
-            <button type="button" onClick={toggle} className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
+            <button type="button" onClick={toggle} className="min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
-            <button type="button" onClick={() => setMenuOpen(value => !value)} className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white lg:hidden" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>
+            <button type="button" onClick={() => setMenuOpen(value => !value)} className="min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white lg:hidden" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>
               {menuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
             </button>
           </div>
