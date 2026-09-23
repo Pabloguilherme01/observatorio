@@ -57,6 +57,27 @@ jobs:
           test -f public/api/v1/contas.json
           test -f public/api/v1/pesquisas.json
           test -f public/api/v1/processual.json
+  diagnostic:
+    name: 3.5 · Diagnóstico TSE
+    needs: build
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Diagnosticar matching municipal
+        run: npm run diagnose:tse:matching
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tse-matching-diagnostic
+          path: reports/diagnostico-tse-matching.json
+
   build:
     name: 3 · Build de produção
     needs: ingest
@@ -167,7 +188,7 @@ jobs:
   final-report:
     name: Consolidated validation report
     if: always()
-    needs: [typecheck, ingest, build, lighthouse, e2e, axe]
+    needs: [typecheck, ingest, build, diagnostic, lighthouse, e2e, axe]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -187,7 +208,8 @@ jobs:
               build: '${{ needs.build.result }}',
               lighthouse: '${{ needs.lighthouse.result }}',
               e2e: '${{ needs.e2e.result }}',
-              axe: '${{ needs.axe.result }}'
+              axe: '${{ needs.axe.result }}',
+              diagnostic: '${{ needs.diagnostic.result }}'
             },
             evidence: {
               lighthouseScores: null,
