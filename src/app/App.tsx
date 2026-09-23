@@ -108,7 +108,9 @@ function DeferredBlock({
 
 export function App() {
   return (
-    <LanguageModeProvider>
+    <>
+      <a className="skip-link" href="#main-content">Pular para o conteúdo principal</a>
+      <LanguageModeProvider>
       <ThemeProvider>
         <ExperienceShell>
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
@@ -128,6 +130,7 @@ export function App() {
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
         </ExperienceShell>
       </ThemeProvider>
-    </LanguageModeProvider>
+      </LanguageModeProvider>
+    </>
   );
 }
