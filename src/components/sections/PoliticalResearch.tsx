@@ -1,4 +1,4 @@
-import { ExternalLink, Instagram as InstagramIcon, MapPin, MessageCircle, Share2, ShieldCheck } from 'lucide-react';
+import { ExternalLink, MapPin, MessageCircle, Share2, ShieldCheck } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -103,7 +103,7 @@ function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
         <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Fonte</span><strong>TSE · {candidate.sourceId}</strong></div>
       </div>
       <div className="flex flex-wrap gap-2 p-4">
-        {hasInstagram ? <a href={candidate.instagramUrl!} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.06] px-3 py-2 text-xs font-bold text-pink-100" aria-label={'Abrir Instagram de ' + candidate.name}><InstagramIcon className="h-4 w-4" aria-hidden="true" /> Instagram</a> : <span className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-500"><InstagramIcon className="h-4 w-4" aria-hidden="true" /> Instagram não informado</span>}
+        {hasInstagram ? <a href={candidate.instagramUrl!} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.06] px-3 py-2 text-xs font-bold text-pink-100" aria-label={'Abrir Instagram de ' + candidate.name}><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram</a> : <span className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-500"><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram não informado</span>}
         <button type="button" onClick={() => shareCandidate(candidate, 'whatsapp')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-2 text-xs font-bold text-emerald-200"><MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp</button>
         <button type="button" onClick={() => shareCandidate(candidate, 'native')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
         <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-slate-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> TSE</a>
