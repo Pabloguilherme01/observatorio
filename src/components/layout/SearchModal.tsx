@@ -1,6 +1,6 @@
 import { Search, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatCurrency } from '../../utils/formatters';
+import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const entries: readonly (readonly [string, string])[] = [
@@ -97,7 +97,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
-    if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatCurrency(Math.round(d.budget.totalBrl)), id: 'orcamento', sourceId: d.budget.sourceId };
+    if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
     if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
