@@ -1,9 +1,10 @@
-import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
 import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
   if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
@@ -28,6 +29,7 @@ export function HeroCountdown() {
   const electorate = d.electoral.electorate;
   const loa = d.budget.totalBrl;
   const updatedAt = formatDate(d.meta.updatedAt);
+  const { mode: languageMode, setMode: setLanguageMode } = useLanguageMode();
 
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
@@ -44,7 +46,9 @@ export function HeroCountdown() {
             Águas Lindas de Goiás <span className="text-slate-400">2026</span>
           </h1>
           <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
-            Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.
+            {languageMode === 'simple'
+              ? 'Uma leitura pública da cidade: números, fontes e datas ficam visíveis para você conferir de onde veio cada informação.'
+              : 'Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.'}
           </p>
           <div className="mt-7 flex flex-wrap gap-2">
             <a href="#dashboard" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
@@ -67,7 +71,7 @@ export function HeroCountdown() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{electorate.toLocaleString('pt-BR')}</div>
-              <div className="mt-1 text-[10px] text-slate-600">snapshot local</div>
+              <div className="mt-1 text-[10px] text-slate-600">{languageMode === 'simple' ? 'foto do eleitorado' : 'snapshot local'}</div>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">LOA 2026</div>
@@ -81,6 +85,14 @@ export function HeroCountdown() {
             </div>
           </div>
 
+          <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70" aria-label="Escolha a linguagem da interface">
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500"><Languages className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Linguagem</div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Explicação simples</button>
+              <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Detalhes técnicos</button>
+            </div>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">{languageMode === 'simple' ? 'Termos técnicos ganham explicação direta.' : 'O vocabulário técnico e as camadas metodológicas ficam em primeiro plano.'}</p>
+          </div>
           <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70" aria-label="Escolha a camada de leitura">
             <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada de leitura</div>
             <div className="mt-2 flex flex-wrap gap-2">
