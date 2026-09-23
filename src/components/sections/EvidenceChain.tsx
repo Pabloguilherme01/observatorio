@@ -1,27 +1,34 @@
 import { Database, FileCheck2, Fingerprint, Link2, ShieldCheck } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import generated from '../../data/generated/tse2026-candidates.json';
-import { useResultsFeed, type ResultsFeedPhase } from '../../hooks/useResultsFeed';
+import { RESULTS_WINDOW } from '../../data/resultsConfig';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
 export function EvidenceChain() {
-  const { phase: resultsPhase } = useResultsFeed(300000);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(Date.now()), 60000);
+    return () => window.clearInterval(timer);
+  }, []);
+  const resultsPhase = now < new Date(RESULTS_WINDOW.start).getTime()
+    ? 'pre_open'
+    : now > new Date(RESULTS_WINDOW.end).getTime()
+      ? 'ended_unavailable'
+      : 'open_waiting';
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
   const editorialSource = d.sources.find(source => source.id === 'recorte-editorial-candidatos-2026');
   const candidateState = generated.meta.state;
   const candidateCaptured = Boolean(generated.meta.downloadedAt);
   const candidateHash = generated.meta.sourceFileSha256;
   const resultSource = d.sources.find(source => source.id === 'tse-resultados-2026');
-  const resultPhase: Record<ResultsFeedPhase, { label: string; detail: string }> = {
+  const resultPhase = {
     pre_open: { label: 'Pré-eleição', detail: 'A janela de resultados ainda não abriu.' },
-    open_waiting: { label: 'Aguardando feed', detail: 'A janela abriu, mas ainda não há arquivo oficial validado neste observatório.' },
-    live: { label: 'Feed em atualização', detail: 'O arquivo oficial foi capturado recentemente e passou pela validação local.' },
-    stale: { label: 'Feed desatualizado', detail: 'Há dados locais, mas o último arquivo ultrapassou o limite de frescor para ser tratado como ao vivo.' },
-    complete: { label: 'Feed técnico completo', detail: 'O último snapshot local foi marcado como completo pelo pipeline; isso não equivale, por si só, ao encerramento jurídico do pleito.' },
-    ended_unavailable: { label: 'Janela encerrada', detail: 'A janela operacional terminou sem um feed local válido disponível para esta camada.' },
-  };
-  const currentResultPhase = resultPhase[resultsPhase];
+    open_waiting: { label: 'Janela aberta', detail: 'O estado detalhado do feed oficial aparece no painel de resultados; esta camada não faz uma segunda consulta à rede.' },
+    ended_unavailable: { label: 'Janela encerrada', detail: 'A janela operacional terminou; o estado do último feed continua indicado no painel de resultados.' },
+  } as const;
+  const currentResultPhase = resultPhase[resultsPhase as keyof typeof resultPhase];
 
   return (
     <section id="evidencias" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="evidence-title">
