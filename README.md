@@ -9,6 +9,7 @@ Aplicação web de dados públicos e contexto municipal, construída com Vite + 
 - TypeScript strict
 - Tailwind CSS v4
 - Lucide React
+- vite-plugin-pwa + Workbox
 - GitHub Pages via GitHub Actions
 
 ## Estrutura
@@ -54,4 +55,4 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V22.1 — hardening de publicação, acessibilidade, recuperação de runtime, exportação, SEO e UX.
+V24 Ultra — resiliência PWA/offline, estado persistido, gráficos SVG interativos, busca fuzzy, simulador HEALGO, perfil eleitoral visual, exportação e acessibilidade.
