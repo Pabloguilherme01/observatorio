@@ -1,3 +1,4 @@
+@import "tailwindcss";
 :root{--mobile-touch:44px;--surface:#111923;--surface-strong:#151f2b;--line:rgba(255,255,255,.08);--muted:#718096}
 html{scroll-padding-top:88px;scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 body{overscroll-behavior-y:none}
