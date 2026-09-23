@@ -88,3 +88,18 @@ body{overscroll-behavior-y:none}
  .summary-mode-pill{order:3;width:100%;justify-content:center}
  .summary-stat-value{font-size:1.55rem}
 }
+
+@media(max-width:640px){
+ .discovery-shell{padding-left:0;padding-right:0}
+ .discovery-shell>div:first-child h2{font-size:1.6rem}
+ .topic-rail{gap:8px}
+ .topic-card{min-width:156px;padding:12px;border-radius:18px}
+ .topic-card .mt-auto{padding-top:10px}
+ .today-card{padding:14px;border-radius:18px}
+ .today-card strong{font-size:1.45rem;overflow-wrap:anywhere}
+ .today-card .inline-flex{min-height:42px}
+ .language-toggle-v2{border-radius:14px}
+ .language-toggle-v2 button{min-height:42px}
+ .mobile-bottom-nav{gap:2px}
+ .mobile-bottom-nav button{font-size:9px}
+}
