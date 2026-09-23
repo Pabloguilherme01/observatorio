@@ -59,9 +59,9 @@ export function ElectoralProfile() {
       <Card>
         <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Conferência cadastral</div>
         <div className="mt-3 text-3xl font-black text-white">{formatNumber(d.electoral.zoneVsTseDifference ?? 0)}</div>
-        <p className="mt-1 text-sm text-slate-400">diferença entre 125.062 na 28ª Zona e 125.501 no consolidado usado no modelo.</p>
-        <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-amber-100"><strong>Nota:</strong> a diferença é mantida como dado de auditoria; não é “erro” presumido sem reconciliação entre os arquivos e os universos.</div>
-        <div className="mt-4 text-xs text-slate-500">Indígenas: 941 pessoas no Censo · 33 registros eleitorais informados no material de origem.</div>
+        <p className="mt-1 text-sm text-slate-400">diferença entre 125.062 na 28ª Zona e 125.501 no consolidado mantido como reconciliação editorial.</p>
+        <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-amber-100"><strong>Nota:</strong> a diferença é mantida como dado de auditoria. O valor consolidado está marcado como reconciliação editorial e não como nova captura oficial independente.</div>
+        <div className="mt-4 text-xs text-slate-500">Fonte do consolidado: reconciliação editorial local. Indígenas: 941 pessoas no Censo · 33 registros eleitorais informados no material de origem.</div>
       </Card>
     </div>
   </section>;

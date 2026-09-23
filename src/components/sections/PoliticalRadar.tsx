@@ -5,7 +5,7 @@ import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { SectionHeader } from '../ui/SectionHeader';
 
-const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection-v31';
+const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection-v33';
 
 export function PoliticalRadar() {
   const poll = d.polls[0];

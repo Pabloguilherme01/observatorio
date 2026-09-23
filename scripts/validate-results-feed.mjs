@@ -5,7 +5,7 @@ const path = resolve(process.cwd(), process.env.RESULTS_FEED_FILE ?? 'public/dat
 const requireFeed = process.env.REQUIRE_RESULTS_FEED === 'true';
 
 if (!existsSync(path)) {
-  const beforeWindow = Date.now() < new Date('2026-09-30T00:00:00-03:00').getTime();
+  const beforeWindow = Date.now() < new Date('2026-10-04T17:00:00-03:00').getTime();
   const message = beforeWindow
     ? 'Feed TSE ainda não presente; a ausência é esperada antes da janela oficial de resultados.'
     : 'Feed TSE ausente.';
@@ -46,10 +46,19 @@ if (!Array.isArray(payload.items)) fail('items deve ser array.');
 if (payload.environment === 'official' && typeof payload.sourceUrl === 'string' && !payload.sourceUrl.startsWith('https://resultados.tse.jus.br')) fail('feed de produção deve apontar para resultados.tse.jus.br.');
 if (payload.integrity !== undefined) {
   if (!payload.integrity || typeof payload.integrity !== 'object') fail('integrity inválido.');
-  const { sha256, jwsVerified } = payload.integrity ?? {};
+  const { sha256, jwsVerified, signatureStatus, verificationMethod, verifiedAt, algorithm, keyFingerprint, proofSha256 } = payload.integrity ?? {};
   if (sha256 !== undefined && (typeof sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(sha256))) fail('integrity.sha256 inválido.');
   if (jwsVerified !== undefined && typeof jwsVerified !== 'boolean') fail('integrity.jwsVerified deve ser booleano.');
-  if (payload.integrity.signatureStatus !== undefined && !['verified', 'not_verified', 'unavailable'].includes(payload.integrity.signatureStatus)) fail('integrity.signatureStatus inválido.');
+  if (signatureStatus !== undefined && !['verified', 'not_verified', 'unavailable'].includes(signatureStatus)) fail('integrity.signatureStatus inválido.');
+  if (verificationMethod !== undefined && verificationMethod !== 'jws-node-crypto') fail('integrity.verificationMethod inválido.');
+  if (verifiedAt !== undefined && !Number.isFinite(Date.parse(verifiedAt))) fail('integrity.verifiedAt inválido.');
+  if (algorithm !== undefined && (typeof algorithm !== 'string' || !algorithm.trim())) fail('integrity.algorithm inválido.');
+  if (keyFingerprint !== undefined && (typeof keyFingerprint !== 'string' || !/^[a-f0-9]{64}$/i.test(keyFingerprint))) fail('integrity.keyFingerprint inválido.');
+  if (proofSha256 !== undefined && (typeof proofSha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(proofSha256))) fail('integrity.proofSha256 inválido.');
+  if (jwsVerified === true && (signatureStatus !== 'verified' || verificationMethod !== 'jws-node-crypto' || !verifiedAt || !algorithm || !keyFingerprint || !proofSha256)) {
+    fail('assinatura JWS marcada como verificada sem prova criptográfica completa.');
+  }
+  if (signatureStatus === 'verified' && jwsVerified !== true) fail('signatureStatus=verified exige jwsVerified=true.');
 }
 
 for (const [index, item] of (payload.items ?? []).entries()) {

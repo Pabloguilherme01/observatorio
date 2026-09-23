@@ -35,6 +35,11 @@ export interface ResultsFeed {
     readonly sha256?: string;
     readonly jwsVerified?: boolean;
     readonly signatureStatus?: 'verified' | 'not_verified' | 'unavailable';
+    readonly verificationMethod?: 'jws-node-crypto';
+    readonly verifiedAt?: string;
+    readonly algorithm?: string;
+    readonly keyFingerprint?: string;
+    readonly proofSha256?: string;
   };
 }
 
@@ -79,7 +84,6 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   if (!electionCodeMatchesCargo(payload.electionCode as number, payload.uf as string, payload.cargo as string)) return false;
   if (payload.uf !== OFFICIAL_RESULTS_CONTEXT.uf) return false;
   if (typeof payload.municipalityName !== 'string' || payload.municipalityName.trim() !== 'Águas Lindas de Goiás') return false;
-  if (typeof payload.municipalityName !== 'string' || !payload.municipalityName.trim()) return false;
   if (typeof payload.cargo !== 'string' || !payload.cargo.trim()) return false;
   if (!isIsoDate(payload.referenceDate) || !isIsoDate(payload.capturedAt)) return false;
 
@@ -93,6 +97,12 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
     if (integrity.sha256 !== undefined && (typeof integrity.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.sha256))) return false;
     if (integrity.jwsVerified !== undefined && typeof integrity.jwsVerified !== 'boolean') return false;
     if (integrity.signatureStatus !== undefined && !['verified', 'not_verified', 'unavailable'].includes(integrity.signatureStatus as string)) return false;
+    if (integrity.verificationMethod !== undefined && integrity.verificationMethod !== 'jws-node-crypto') return false;
+    if (integrity.verifiedAt !== undefined && !isIsoDate(integrity.verifiedAt)) return false;
+    if (integrity.algorithm !== undefined && (typeof integrity.algorithm !== 'string' || !integrity.algorithm.trim())) return false;
+    if (integrity.keyFingerprint !== undefined && (typeof integrity.keyFingerprint !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.keyFingerprint))) return false;
+    if (integrity.proofSha256 !== undefined && (typeof integrity.proofSha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.proofSha256))) return false;
+    if (integrity.jwsVerified === true && (integrity.signatureStatus !== 'verified' || integrity.verificationMethod !== 'jws-node-crypto' || !integrity.verifiedAt || !integrity.algorithm || !integrity.keyFingerprint)) return false;
   }
 
   return payload.items.every(item => {

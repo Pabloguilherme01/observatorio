@@ -13,7 +13,7 @@ import { sourceRegistry } from './sourceRegistry';
 export const observatorioData: ObservatoryData = {
   meta: {
     name: 'Observatório Eleitoral Águas Lindas de Goiás 2026',
-    edition: 'V32 • simulado TSE, frescor e integridade de feed',
+    edition: 'V33 • investigação, proveniência e integridade verificável',
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
     updatedAt: '2026-09-23',
@@ -32,6 +32,7 @@ export const observatorioData: ObservatoryData = {
     electorate: 125062,
     snapshotDate: '2026-07-15',
     tseConsolidated: 125501,
+    consolidatedSourceId: 'reconciliacao-eleitorado-2026',
     ageGroups: [
       { id: 'under24', label: 'Até 24 anos', voters: 24265, sharePct: 19.4 },
       { id: '25to59', label: '25–59 anos', voters: 86928, sharePct: 69.5 },
@@ -43,8 +44,11 @@ export const observatorioData: ObservatoryData = {
     indigenousPopulation: 941,
     indigenousElectorate: 33,
     electorate2018: 95200,
+    electorate2018SourceId: 'tse-eleitorado-2018',
     electorate2022: 107255,
+    electorate2022SourceId: 'tse-eleitorado-2022',
     electorate2024: 121788,
+    electorate2024SourceId: 'tse-eleitorado-2024',
     zoneVsTseDifference: 125501 - 125062,
     turnout2024Pct: 78.17,
     abstention2024Pct: 21.83,

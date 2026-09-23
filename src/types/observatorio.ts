@@ -38,6 +38,7 @@ export interface ElectoralSnapshot {
   readonly electorate: number;
   readonly snapshotDate: ISODate;
   readonly tseConsolidated?: number;
+  readonly consolidatedSourceId?: string;
   readonly ageGroups: readonly AgeGroup[];
   readonly womenPct?: number;
   readonly menPct?: number;
@@ -45,8 +46,11 @@ export interface ElectoralSnapshot {
   readonly indigenousPopulation?: number;
   readonly indigenousElectorate?: number;
   readonly electorate2018?: number;
+  readonly electorate2018SourceId?: string;
   readonly electorate2022?: number;
+  readonly electorate2022SourceId?: string;
   readonly electorate2024?: number;
+  readonly electorate2024SourceId?: string;
   readonly zoneVsTseDifference?: number;
   readonly turnout2024Pct: number;
   readonly abstention2024Pct: number;

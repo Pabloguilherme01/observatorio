@@ -71,6 +71,31 @@ export function DataQualityPanel() {
           {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
         </div>
       </div>
+      <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
+        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Frescor por domínio</div>
+        <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Referência de cada camada, sem fingir atualização automática</h3>
+        <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">A data abaixo é a referência ou publicação registrada na ficha da fonte. Ela não significa que a fonte tenha sido consultada em tempo real durante cada visita.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            ['Eleitorado 2026', 'tse-eleitorado-2026'],
+            ['Candidaturas', 'tse-candidatos-2026'],
+            ['Pesquisas', 'tse-pesquisas-2026'],
+            ['Orçamento', 'loa-2026'],
+            ['Saúde / HEAL', 'healgo'],
+            ['População', 'ibge-estimativas-2026'],
+          ].map(([label, sourceId]) => {
+            const source = d.sources.find(item => item.id === sourceId);
+            const date = source?.referenceDate ?? source?.publishedAt;
+            return (
+              <a key={sourceId} href={source?.url} target="_blank" rel="noopener noreferrer" className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 transition hover:border-sky-300/20 light:border-slate-200 light:bg-white">
+                <div className="text-xs font-bold text-slate-400">{label}</div>
+                <div className="mt-2 text-sm font-black text-white light:text-slate-900">{date ? formatDate(date) : 'sem data registrada'}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-wide text-slate-600">{source?.nature ?? 'fonte não encontrada'}</div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
         <Card className="p-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
