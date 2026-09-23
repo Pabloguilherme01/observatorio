@@ -6,6 +6,7 @@ export const ProvenanceSchema = z.object({
   capturaEm: z.string().datetime(),
   snapshotId: z.string().min(8),
   arquivoOrigem: z.string().min(1),
+  urlsComplementares: z.array(z.string().url()).optional(),
 });
 
 export const DoadorSchema = z.object({
