@@ -9,6 +9,7 @@ import { LanguageModeProvider } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
+import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
 
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
@@ -110,12 +111,12 @@ export function App() {
     <LanguageModeProvider>
       <ThemeProvider>
         <ExperienceShell>
-          <Header />
-          <HeroCountdown />
+          <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Resumo inicial"><HeroCountdown /></SectionErrorBoundary>
           <main id="main-content">
-            <AudienceHub />
-            <ExecutiveSummary />
-            <div id="analise" className="scroll-mt-24"><DashboardMetrics /></div>
+            <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
+            <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
+            <SectionErrorBoundary label="Dashboard"><div id="analise" className="scroll-mt-24"><DashboardMetrics /></div></SectionErrorBoundary>
             <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} />
             <DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} />
             <DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} />
@@ -123,8 +124,8 @@ export function App() {
             <DeferredBlock loader={loadTrustGroup} anchorIds={['principios']} />
             <DeferredBlock loader={loadEvidenceGroup} anchorIds={['qualidade', 'evidencias', 'fontes']} />
           </main>
-          <ScrollTopButton />
-          <DataInspector />
+          <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
         </ExperienceShell>
       </ThemeProvider>
     </LanguageModeProvider>
