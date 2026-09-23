@@ -66,6 +66,9 @@ test.describe('WCAG 2.2 AA · axe-core runtime', () => {
     await page.waitForSelector('main[data-app-ready="true"]');
     await hydrateDeferredSections(page);
 
+    const dashboard = page.locator('#dashboard');
+    await dashboard.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
     const trigger = page.getByTestId('provenance-trigger').first();
     await trigger.scrollIntoViewIfNeeded();
     await trigger.click();
