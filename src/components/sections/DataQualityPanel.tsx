@@ -10,6 +10,16 @@ export function DataQualityPanel() {
   const historical = d.indicators.filter(i => i.status === 'historical').length;
   const officialSources = d.sources.filter(source => source.nature === 'official').length;
   const secondarySources = d.sources.filter(source => source.nature === 'secondary').length;
+  const poll = d.polls[0];
+  const pollNamedPct = poll.results.reduce((sum, result) => sum + result.percentage, 0);
+  const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
+  const pollGapPct = Math.max(0, 100 - pollCoveredPct);
+  const warnings = [
+    pollGapPct > 0 ? 'Pesquisa: ' + pollGapPct.toFixed(2).replace('.', ',') + ' p.p. estão fora das categorias publicadas.' : null,
+    d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
+    'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
+    'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
+  ].filter(Boolean) as string[];
 
   return (
     <section id="qualidade" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="quality-title">
@@ -35,6 +45,15 @@ export function DataQualityPanel() {
           <div className="mt-3 text-3xl font-black text-white">{historical}</div>
           <div className="text-xs text-slate-500">indicadores históricos</div>
         </Card>
+      </div>
+      <div className="mt-4 rounded-3xl border border-amber-400/15 bg-amber-400/[0.04] p-5 light:border-amber-300/50 light:bg-amber-50">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-amber-200 light:text-amber-700">
+          <TriangleAlert className="h-4 w-4" aria-hidden="true" />
+          Alertas de integridade
+        </div>
+        <div className="mt-3 space-y-2">
+          {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
+        </div>
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <Card className="p-4">
