@@ -151,3 +151,9 @@ html.light .command-panel input{color:#0f172a}
 html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 @media (max-width:640px){.quick-dock{right:10px;bottom:10px;left:10px;justify-content:space-around}.quick-dock button{flex:1;justify-content:center}.quick-dock-label{display:none}.command-overlay{padding:7vh 10px 16px}.command-panel{border-radius:20px}.discovery-shell{border-radius:24px;padding:18px}}
 @media (prefers-reduced-motion:reduce){.discovery-card,.quick-dock button{transition:none}}
+
+
+.chart-axis-label { display: block; }
+@media (max-width: 767px) {
+  .chart-axis-label { display: none; }
+}
