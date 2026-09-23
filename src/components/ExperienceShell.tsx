@@ -2,7 +2,7 @@ import { BusFront, Command, Compass, Droplets, Keyboard, LayoutDashboard, Search
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 
-const RECENT_KEY = 'observatorio-recent-sections-v29', FAVORITES_KEY = 'observatorio-favorite-sections-v29', REDUCED_KEY = 'observatorio-reduced-motion-v29', FAST_MODE_KEY = 'observatorio-fast-reading-v29';
+const RECENT_KEY = 'observatorio-recent-sections-v30', FAVORITES_KEY = 'observatorio-favorite-sections-v30', REDUCED_KEY = 'observatorio-reduced-motion-v30', FAST_MODE_KEY = 'observatorio-fast-reading-v30';
 const quick = navigation.slice(0, 6);
 
 function readList(key: string): string[] { try { const value = JSON.parse(localStorage.getItem(key) ?? '[]'); return Array.isArray(value) ? value.filter(item => typeof item === 'string') : []; } catch { return []; } }
