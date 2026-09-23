@@ -28,7 +28,7 @@ export function DeferredSection({ id, label, component: Component, minHeight = 3
         setLoaded(true);
         observer.disconnect();
       },
-      { rootMargin: '1000px 0px' },
+      { rootMargin: '600px 0px' },
     );
 
     observer.observe(node);
