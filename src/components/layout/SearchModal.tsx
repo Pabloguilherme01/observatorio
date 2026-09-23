@@ -12,31 +12,62 @@ const entries: readonly (readonly [string, string])[] = [
   ['Orçamento', 'orcamento'],
   ['Qualidade dos dados', 'qualidade'],
   ['Fontes e metodologia', 'fontes'],
-  ['Eleitorado: 125.062', 'eleitorado'],
+  ['Exportação', 'exportacao'],
   ['População 2026: 249.978', 'dashboard'],
-  ['Tarifa Brasília: R$ 11,45', 'transporte'],
+  ['Eleitorado: 125.062', 'eleitorado'],
+  ['Tarifa Brasília: R$ 11,43', 'transporte'],
   ['LOA 2026: R$ 771,3 milhões', 'orcamento'],
   ['Pesquisa GO-04133/2026', 'politica'],
+  ['HEALGO', 'saude'],
 ];
 
-const dataEntries = [
-  ...d.sources.map(source => [source.label, 'fontes'] as const),
-  ...d.candidates.map(candidate => [candidate.name, 'candidaturas'] as const),
-  ...d.transport.routes.map(route => [route.label, 'transporte'] as const),
-];
+const normalize = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('pt-BR')
+    .trim();
+
+function fuzzyScore(query: string, text: string): number {
+  if (!query) return 1;
+  if (text.includes(query)) return 100 + (query.length / Math.max(text.length, 1)) * 10;
+
+  let qi = 0;
+  let score = 0;
+  for (const char of text) {
+    if (char === query[qi]) {
+      score += 3;
+      qi += 1;
+      if (qi === query.length) break;
+    } else if (qi > 0) {
+      score -= 0.15;
+    }
+  }
+  return qi === query.length ? score : -Infinity;
+}
 
 export function SearchModal({ open, onClose }: { readonly open: boolean; readonly onClose: () => void }) {
   const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!open) return;
     setQuery('');
+    setActiveIndex(0);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 0);
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setActiveIndex(index => Math.min(index + 1, 99));
+      }
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setActiveIndex(index => Math.max(index - 1, 0));
+      }
     };
     window.addEventListener('keydown', handleKey);
     return () => {
@@ -47,23 +78,31 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   }, [open, onClose]);
 
   const filtered = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase('pt-BR');
-    return [...entries, ...dataEntries].filter(([label], index, all) =>
-      all.findIndex(item => item[0] === label) === index &&
-      label.toLocaleLowerCase('pt-BR').includes(normalized),
-    );
+    const queryNormalized = normalize(query);
+    const all: Array<[string, string]> = [
+      ...entries,
+      ...d.sources.map(source => [source.label, 'fontes'] as [string, string]),
+      ...d.candidates.map(candidate => [candidate.name, 'candidaturas'] as [string, string]),
+      ...d.transport.routes.map(route => [route.label, 'transporte'] as [string, string]),
+      ...d.indicators.map(indicator => [indicator.label, 'dashboard'] as [string, string]),
+    ];
+
+    return all
+      .filter(([label], index, array) => array.findIndex(item => item[0] === label) === index)
+      .map(([label, id]) => ({ label, id, score: fuzzyScore(queryNormalized, normalize(label)) }))
+      .filter(item => Number.isFinite(item.score))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 30);
   }, [query]);
+
+  useEffect(() => {
+    if (activeIndex >= filtered.length) setActiveIndex(Math.max(filtered.length - 1, 0));
+  }, [activeIndex, filtered.length]);
 
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 p-4 pt-[12vh] backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="search-modal-title"
-      onMouseDown={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 p-4 pt-[12vh] backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="search-modal-title" onMouseDown={onClose}>
       <div className="w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-[#101821] shadow-2xl" onMouseDown={event => event.stopPropagation()}>
         <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4">
           <Search className="h-5 w-5 text-slate-400" aria-hidden="true" />
@@ -73,9 +112,16 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               ref={inputRef}
               value={query}
               onChange={event => setQuery(event.target.value)}
+              onKeyDown={event => {
+                if (event.key === 'Enter' && filtered[activeIndex]) {
+                  window.location.hash = filtered[activeIndex].id;
+                  onClose();
+                }
+              }}
               placeholder="Buscar seção, fonte ou indicador…"
               className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
               aria-label="Buscar seção, fonte ou indicador"
+              aria-controls="search-results"
             />
           </div>
           <button type="button" onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white" aria-label="Fechar busca">
@@ -84,18 +130,20 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
         </div>
         <div className="flex items-center justify-between px-4 py-2 text-[11px] text-slate-500">
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
-          <span>Esc para fechar</span>
+          <span>↑↓ navegar · Enter abrir · Esc fechar</span>
         </div>
-        <div className="max-h-[55vh] overflow-auto p-2" role="listbox" aria-label="Resultados da busca">
-          {filtered.map(([label, id]) => (
+        <div id="search-results" className="max-h-[55vh] overflow-auto p-2" role="list" aria-label="Resultados da busca">
+          {filtered.map((item, index) => (
             <a
-              key={label + '-' + id}
-              href={'#' + id}
+              key={item.label + '-' + item.id}
+              href={'#' + item.id}
+              onMouseEnter={() => setActiveIndex(index)}
               onClick={onClose}
-              className="block rounded-2xl px-4 py-3 text-sm text-slate-200 transition hover:bg-white/5 hover:text-white"
+              className={'block rounded-2xl px-4 py-3 text-sm transition ' + (activeIndex === index ? 'bg-white/10 text-white' : 'text-slate-200 hover:bg-white/5')}
+              aria-current={activeIndex === index ? 'true' : undefined}
             >
-              {label}
-              <span className="ml-2 text-xs text-slate-500">#{id}</span>
+              {item.label}
+              <span className="ml-2 text-xs text-slate-500">#{item.id}</span>
             </a>
           ))}
           {!filtered.length && <div className="px-4 py-8 text-center text-sm text-slate-500">Nenhum resultado encontrado.</div>}
