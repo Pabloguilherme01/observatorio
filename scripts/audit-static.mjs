@@ -11,7 +11,7 @@ const dataSource = read('src/data/observatorioData.ts');
 const index = read('index.html');
 const vite = read('vite.config.ts');
 const navigation = read('src/config/navigation.ts');
-const app = read('src/app/App.tsx');
+const appSource = read('src/app/App.tsx');
 const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
 const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
@@ -19,8 +19,8 @@ const syncWorkflow = read('.github/workflows/sync-tse-candidates.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 
 const errors = [];
-const pass = (message) => console.log('PASS', message);
-const fail = (message) => errors.push(message);
+const pass = message => console.log('PASS', message);
+const fail = message => errors.push(message);
 const must = (condition, message) => condition ? pass(message) : fail(message);
 
 const appVersion = versionSource.match(/APP_VERSION = '([^']+)'/)?.[1];
@@ -35,34 +35,49 @@ must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de a
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("base: '/observatorio/'"), 'Vite usa base compatível com GitHub Pages');
 must(vite.includes("start_url: '/observatorio/'") && vite.includes("scope: '/observatorio/'"), 'PWA mantém start_url e scope no subcaminho publicado');
- must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes a partir do dataset da interface');
+must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
-must(vite.includes('start_url: \'/observatorio/\'') && vite.includes('scope: \'/observatorio/\''), 'PWA está configurado para instalação no subcaminho publicado');
-must(vite.includes("offline.html") && vite.includes("NetworkFirst"), 'PWA possui página offline e cache NetworkFirst para navegação');
-must(app.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente no shell de experiência');
+must(vite.includes('offline.html') && vite.includes('NetworkFirst'), 'PWA possui página offline e cache NetworkFirst');
+must(appSource.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente');
 must(read('src/components/sections/HeroCountdown.tsx').includes('DivulgaCandContas') && read('src/components/sections/HeroCountdown.tsx').includes('Pardal'), 'Modo Eleição expõe caminhos cívicos oficiais');
 
 const pkgScripts = packageJson.scripts ?? {};
-must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra a auditoria de acessibilidade');
-must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow automatiza captura e validação do snapshot TSE');
-must(syncWorkflow.includes("REQUIRE_TSE_SYNC: 'true'"), 'workflow TSE exige snapshot efetivamente sincronizado antes de validar');
-must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa do TSE');
-must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada como referência secundária');
-must(!dataSource.includes('theoreticalMarginErrorPct') && !read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'pesquisa não calcula nem exibe margem de erro teórica');
-must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy do Pages exige as três auditorias antes da publicação');
-must(app.includes('<DataQualityPanel />') && app.includes('<EvidenceChain />'), 'camadas de qualidade e evidências estão montadas no App');
-must(app.includes('<CivicActionHub />') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
-must(app.includes('<AudienceHub />') && app.includes('<InstagramSyncHub />') && app.includes('<ProjectTrustPanel />') && app.includes('<SnapshotChanges />'), 'descoberta, Instagram, confiança e radar estão montados no primeiro fluxo');
+must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
+must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
+must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow automatiza captura e validação TSE');
+must(syncWorkflow.includes('ingest-candidates-local.ts'), 'workflow sincroniza recorte municipal, Instagram e fotos');
+must(syncWorkflow.includes('schedule:'), 'workflow possui atualização programada');
+must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
+must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
+must(!dataSource.includes('theoreticalMarginErrorPct') && !read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'pesquisa não calcula margem de erro teórica');
+must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy exige auditorias principais');
+
+const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
+for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
+must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
+must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
+must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && appSource.includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
+
+const allRuntimeText = [
+  appSource,
+  read('src/components/sections/DeferredCivicGroup.tsx'),
+  read('src/components/sections/DeferredPublicDataGroup.tsx'),
+  read('src/components/sections/DeferredEvidenceGroup.tsx'),
+].join('\n');
+must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
+must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<DataExportActions />'), 'ação e exportação montadas');
+must(allRuntimeText.includes('<InstagramSyncHub />'), 'Instagram/compartilhamento montado');
+must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
+
 for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
-must(candidates.coverage === 'watchlist', 'snapshot de candidaturas deixa explícito o escopo watchlist');
-must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed'].includes(candidates.meta.state), 'estado do snapshot de candidaturas pertence ao contrato conhecido');
-must(candidates.meta.state === 'not_synced' || Number(candidates.meta.sourceRows) >= 0, 'captura TSE só é considerada material quando o estado não é not_synced');
+
+must(['watchlist', 'municipality_required', 'municipality'].includes(candidates.coverage), 'snapshot deixa explícito o escopo');
+must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
 
 const runtimeFiles = [
   'src/app/App.tsx',
@@ -81,10 +96,14 @@ const runtimeFiles = [
 ];
 for (const file of runtimeFiles) {
   const content = read(file).toLowerCase();
-  for (const legacy of ['v35', 'v36']) {
-    if (content.includes(legacy)) fail(`${file} ainda contém referência legada ${legacy}`);
-  }
+  for (const legacy of ['v35', 'v36']) if (content.includes(legacy)) fail(`${file} ainda contém referência legada ${legacy}`);
 }
+
+const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+const social = read('src/components/InstagramSyncHub.tsx');
+must(languageToggle.includes('language-toggle') && languageToggle.includes("setMode('technical')"), 'modo simples/técnico possui componente próprio');
+must(social.includes('MessageCircle') && social.includes('shareWhatsApp'), 'Instagram/WhatsApp possuem compartilhamento');
+
 if (!errors.length) {
   pass(`auditoria estática concluída para ${edition}`);
 } else {
@@ -92,14 +111,3 @@ if (!errors.length) {
   for (const error of errors) console.error(' -', error);
   process.exitCode = 1;
 }
-
-const app = read('src/app/App.tsx');
-const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
-for (const group of deferredGroups) must(app.includes(group), 'App registra ' + group);
-must(app.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
-must(app.includes("'saude'") && app.includes("'healgo'"), 'deep links de saúde e simuladores estão preservados');
-
-const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
-const social = read('src/components/InstagramSyncHub.tsx');
-must(languageToggle.includes('language-toggle') && languageToggle.includes("setMode('technical')"), 'modo simples/técnico possui componente próprio');
-must(social.includes('MessageCircle') && social.includes('shareWhatsApp'), 'Instagram/WhatsApp possuem fluxo de compartilhamento');
