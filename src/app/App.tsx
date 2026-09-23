@@ -21,7 +21,6 @@ import { SnapshotChanges } from '../components/sections/SnapshotChanges';
 import { ElectionTimeline } from '../components/sections/ElectionTimeline';
 import { DataInspector } from '../components/DataInspector';
 import { ExperienceShell } from '../components/ExperienceShell';
-import { DiscoveryHub } from '../components/DiscoveryHub';
 import { DemographicDynamic } from '../components/sections/DemographicDynamic';
 import { BudgetImpact } from '../components/sections/BudgetImpact';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
@@ -31,44 +30,45 @@ import { EvidenceChain } from '../components/sections/EvidenceChain';
 import { ContextComparison } from '../components/sections/ContextComparison';
 import { CivicActionHub } from '../components/sections/CivicActionHub';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
+import { AudienceHub } from '../components/AudienceHub';
 
 export function App() {
   return (
     <LanguageModeProvider>
       <ThemeProvider>
         <ExperienceShell>
-        <Header />
-        <HeroCountdown />
-        <main id="main-content">
-          <ExecutiveSummary />
-          <CivicActionHub />
-          <DiscoveryHub />
-          <FreshnessBanner />
-          <ResultsLiveBanner />
-          <DashboardMetrics />
-          <ContextComparison />
-          <ElectoralProfile />
-          <DemographicDynamic />
-          <TransportCalculator />
-          <DataInsights />
-          <SanitationHealthSection />
-          <PoliticalRadar />
-          <PoliticalResearch />
-          <ElectionTimeline />
-          <SnapshotChanges />
-          <Electoral360 />
-          <BudgetSection />
-          <BudgetImpact />
-          <Central2026 />
-          <PublicDataPulse />
-          <DataQualityPanel />
-          <EvidenceChain />
-          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6"><DataExportActions /></div>
-          <EvidenceMap />
-        </main>
-        <Footer />
-        <ScrollTopButton />
-        <DataInspector />
+          <Header />
+          <HeroCountdown />
+          <main id="main-content">
+            <AudienceHub />
+            <ExecutiveSummary />
+            <FreshnessBanner />
+            <SnapshotChanges />
+            <ResultsLiveBanner />
+            <DashboardMetrics />
+            <ContextComparison />
+            <ElectoralProfile />
+            <DemographicDynamic />
+            <TransportCalculator />
+            <DataInsights />
+            <SanitationHealthSection />
+            <PoliticalRadar />
+            <PoliticalResearch />
+            <ElectionTimeline />
+            <Electoral360 />
+            <CivicActionHub />
+            <BudgetSection />
+            <BudgetImpact />
+            <Central2026 />
+            <PublicDataPulse />
+            <DataQualityPanel />
+            <EvidenceChain />
+            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6"><DataExportActions /></div>
+            <EvidenceMap />
+          </main>
+          <Footer />
+          <ScrollTopButton />
+          <DataInspector />
         </ExperienceShell>
       </ThemeProvider>
     </LanguageModeProvider>
