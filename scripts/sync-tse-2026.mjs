@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createWriteStream } from 'node:fs';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -12,7 +13,7 @@ const WATCHLIST = ['Keké', 'Anderson Teodoro', 'Zé da Imperial', 'Baiano dos C
 
 function download(url, destination) {
   return new Promise((resolve, reject) => {
-    const file = require('node:fs').createWriteStream(destination);
+    const file = createWriteStream(destination);
     request(url, response => {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
         file.close();
