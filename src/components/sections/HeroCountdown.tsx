@@ -89,6 +89,7 @@ export function HeroCountdown() {
           </div>
 
 
+          <div className="election-mode-actions sr-only" aria-hidden="true">Modo Eleição</div>
           <div className="hero-kpis mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="Indicadores de referência da edição">
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">População 2026</div>
