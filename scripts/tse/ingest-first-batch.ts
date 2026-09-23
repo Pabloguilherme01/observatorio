@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
-import { basename, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
+import { basename, join } from 'node:path';
 import { TSEContasFileSchema, TSEPesquisasFileSchema, TSEProcessualFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
 import { listFiles, readJson, writeJson } from './common.ts';
 
