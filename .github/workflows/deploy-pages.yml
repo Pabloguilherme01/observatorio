@@ -93,7 +93,7 @@ jobs:
           printf '%s' "$page" | grep -F 'id="root"'
           manifest="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest)"
           printf '%s' "$manifest" | grep -F 'Observatório Águas Lindas 2026'
-          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v3'
+          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v4'
 
           asset_js="$(printf '%s' "$page" | grep -oE 'src="[^"]+\.js"' | head -n 1 | cut -d'"' -f2)"
           asset_css="$(printf '%s' "$page" | grep -oE 'href="[^"]+\.css"' | head -n 1 | cut -d'"' -f2)"
