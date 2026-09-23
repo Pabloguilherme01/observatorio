@@ -23,7 +23,9 @@ jobs:
         run: npm install
       - name: Validate data contracts
         run: npm run validate:observatorio
-      - name: Validate TSE snapshot
+      - name: Validate TSE architecture isolation
+        run: npm run audit:tse-architecture
+      - name: Validate versioned TSE snapshot contract
         env:
           REQUIRE_TSE_SYNC: 'true'
         run: npm run validate:tse
