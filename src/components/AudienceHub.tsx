@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BusFront, Droplets, Landmark, RefreshCw, Users, WalletCards } from 'lucide-react';
+import { ArrowRight, BarChart3, Brain, BusFront, Droplets, Landmark, RefreshCw, Users, WalletCards } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
 import generated from '../data/generated/tse2026-candidates.json';
 import { formatDate } from '../utils/formatters';
@@ -161,6 +161,24 @@ export function AudienceHub() {
               <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-5 rounded-3xl border border-violet-300/10 bg-violet-300/[0.035] p-4 sm:p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-violet-200/80"><Brain className="h-3.5 w-3.5" aria-hidden="true" /> Aprenda em 60 segundos</div>
+              <strong className="mt-2 block text-base text-white">Teste o que você entendeu sobre os dados</strong>
+              <p className="mt-1 text-xs leading-5 text-slate-500">Cinco perguntas, explicações e fonte de cada resposta. Sem ranking entre pessoas.</p>
+            </div>
+            <button type="button" onClick={() => {
+              window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }));
+              window.setTimeout(() => {
+                document.getElementById('quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                window.history.replaceState(null, '', '#quiz');
+              }, 40);
+            }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300/20 bg-violet-300/10 px-4 py-2 text-xs font-black text-violet-100 hover:bg-violet-300/15">
+              Começar quiz <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
