@@ -201,3 +201,325 @@ body{overscroll-behavior-y:none}
   .today-card { flex-basis: min(84vw, 300px); }
   .summary-evidence, .summary-stat, .candidate-card, .today-card { border-radius: 16px; }
 }
+
+
+/* Mobile UI refresh 2026-09: consolidated visual layer */
+@media (max-width: 767px) {
+  :root {
+    --mobile-page-gutter: 16px;
+    --mobile-nav-height: 74px;
+    --mobile-radius: 18px;
+    --mobile-panel: rgba(17, 25, 35, .82);
+    --mobile-panel-strong: rgba(20, 30, 42, .96);
+  }
+
+  body {
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
+    background:
+      radial-gradient(circle at 50% -10%, rgba(56,189,248,.09), transparent 34%),
+      #0b1117;
+  }
+
+  .site-header {
+    min-height: 62px;
+    background: rgba(8, 13, 19, .88) !important;
+    border-bottom-color: rgba(148, 163, 184, .12) !important;
+  }
+
+  .site-header-inner {
+    min-height: 62px;
+    padding-inline: var(--mobile-page-gutter);
+  }
+
+  .site-brand {
+    max-width: 48vw;
+  }
+
+  .site-brand span:first-child {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .site-brand span:last-child {
+    margin-top: 4px;
+    font-size: 7.5px;
+    letter-spacing: .14em;
+  }
+
+  .site-header-actions {
+    gap: 4px;
+  }
+
+  .site-icon-button,
+  .site-tools-button {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    border-radius: 13px !important;
+  }
+
+  .mobile-tools-sheet {
+    padding: 12px var(--mobile-page-gutter) 14px;
+    background: rgba(8,13,19,.97);
+  }
+
+  .mobile-tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .mobile-tool-action {
+    min-height: 46px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    border: 1px solid rgba(125,211,252,.12);
+    border-radius: 14px;
+    background: rgba(125,211,252,.06);
+    color: #dff7ff;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .hero-shell {
+    padding: 34px var(--mobile-page-gutter) 30px;
+  }
+
+  .hero-shell h1 {
+    max-width: 100%;
+    font-size: clamp(2.2rem, 10.8vw, 3rem);
+    line-height: .98;
+    letter-spacing: -.045em;
+  }
+
+  .hero-shell p {
+    max-width: 42ch;
+    font-size: 15px;
+    line-height: 1.58;
+    color: #a8b6c8;
+  }
+
+  .hero-shell .hero-kpis {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .hero-shell .hero-kpis > div {
+    padding: 14px;
+    border-radius: 17px;
+    background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+  }
+
+  main > section,
+  main > div {
+    scroll-margin-top: 76px;
+  }
+
+  main > section > div:first-child,
+  main > div > section > div:first-child {
+    padding-inline: var(--mobile-page-gutter);
+  }
+
+  .today-rail,
+  .topic-rail,
+  .mobile-rail {
+    margin-inline: calc(var(--mobile-page-gutter) * -1);
+    padding-inline: var(--mobile-page-gutter);
+  }
+
+  .today-card,
+  .topic-card,
+  .candidate-card,
+  .summary-stat,
+  .summary-evidence {
+    border-radius: var(--mobile-radius);
+    box-shadow: 0 12px 30px rgba(0,0,0,.12);
+  }
+
+  .today-card {
+    flex-basis: min(82vw, 314px);
+    padding: 15px;
+    background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+  }
+
+  .today-card strong {
+    font-size: 1.48rem;
+    letter-spacing: -.035em;
+  }
+
+  .candidate-card {
+    padding: 14px !important;
+    background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+  }
+
+  .candidate-card .grid {
+    gap: 8px !important;
+  }
+
+  .candidate-data-card {
+    border-radius: 14px;
+    background: rgba(255,255,255,.025);
+  }
+
+  .summary-stat {
+    padding: 13px;
+    background: rgba(255,255,255,.025);
+  }
+
+  .summary-stat-value {
+    font-size: 1.65rem;
+  }
+
+  .search-modal-backdrop,
+  .command-overlay {
+    padding: env(safe-area-inset-top, 10px) 8px calc(12px + env(safe-area-inset-bottom,0px));
+  }
+
+  .search-modal-panel,
+  .command-panel {
+    width: 100%;
+    max-height: calc(100dvh - 20px);
+    margin-top: 2vh;
+    border-radius: 22px;
+    background: linear-gradient(180deg, #121b25, #0c131b);
+    box-shadow: 0 24px 70px rgba(0,0,0,.5);
+  }
+
+  .search-modal-head {
+    padding: 10px;
+  }
+
+  .search-modal-input {
+    font-size: 16px;
+  }
+
+  .mobile-bottom-nav {
+    min-height: var(--mobile-nav-height);
+    padding: 6px 6px max(7px, env(safe-area-inset-bottom,0px));
+    gap: 4px;
+    background: rgba(7, 12, 18, .96);
+    border-top: 1px solid rgba(148,163,184,.12);
+    box-shadow: 0 -14px 36px rgba(0,0,0,.24);
+  }
+
+  .mobile-bottom-nav button {
+    min-height: 54px;
+    padding: 6px 3px;
+    border-radius: 14px;
+    gap: 4px;
+    color: #7f8da1;
+    font-size: 9px;
+  }
+
+  .mobile-bottom-nav button.is-active {
+    color: #e8f8ff;
+    border-color: rgba(125,211,252,.16);
+    background: linear-gradient(180deg, rgba(125,211,252,.15), rgba(125,211,252,.055));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+  }
+
+  .mobile-bottom-search {
+    color: #b7c8d9 !important;
+  }
+
+  .mobile-bottom-more {
+    color: #e5f5ff !important;
+    background: rgba(255,255,255,.045) !important;
+  }
+
+  .quick-dock {
+    display: none !important;
+  }
+
+  table {
+    font-size: 11px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px;
+  }
+
+  .reading-progress {
+    height: 3px;
+  }
+}
+
+@media (max-width: 430px) {
+  :root {
+    --mobile-page-gutter: 15px;
+  }
+
+  .hero-shell {
+    padding-top: 28px;
+  }
+
+  .hero-shell h1 {
+    font-size: clamp(2rem, 10.6vw, 2.55rem);
+  }
+
+  .hero-shell p {
+    font-size: 14px;
+  }
+
+  .today-card {
+    flex-basis: min(84vw, 296px);
+  }
+
+  .language-toggle-v2 button small {
+    display: none;
+  }
+
+  .language-toggle-v2 button {
+    grid-template-columns: 1fr;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 380px) {
+  :root {
+    --mobile-page-gutter: 13px;
+    --mobile-nav-height: 72px;
+  }
+
+  .site-brand {
+    max-width: 44vw;
+  }
+
+  .site-brand span:first-child {
+    font-size: 13px;
+  }
+
+  .site-icon-button,
+  .site-tools-button {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+  }
+
+  .hero-shell h1 {
+    font-size: clamp(1.86rem, 10.5vw, 2.25rem);
+  }
+
+  .hero-shell p {
+    font-size: 13.5px;
+  }
+
+  .mobile-bottom-nav {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .mobile-bottom-nav button {
+    min-height: 52px;
+    font-size: 8px;
+    border-radius: 12px;
+  }
+}
