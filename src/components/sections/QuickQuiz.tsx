@@ -52,6 +52,46 @@ export function QuickQuiz() {
       anchor: 'fontes',
       sourceLabel: 'Mapa de evidências',
     },
+    {
+      prompt: 'O que diferencia um dado observado de um cálculo derivado?',
+      options: ['O observado vem da fonte; o derivado é calculado a partir de outros dados', 'O derivado é sempre mais importante', 'Não existe diferença entre os dois'],
+      answer: 0,
+      explanation: 'O projeto identifica quando um valor é reproduzido da fonte e quando resulta de uma operação calculada pelo observatório.',
+      anchor: 'qualidade',
+      sourceLabel: 'Qualidade dos dados',
+    },
+    {
+      prompt: 'Por que a data de referência importa ao comparar dois indicadores?',
+      options: ['Porque os indicadores podem representar momentos diferentes', 'Porque a data muda automaticamente o valor para melhor', 'Porque toda data é apenas informativa'],
+      answer: 0,
+      explanation: 'Dois números podem ser corretos e ainda assim não serem diretamente comparáveis se representam períodos diferentes.',
+      anchor: 'fontes',
+      sourceLabel: 'Fontes e metodologia',
+    },
+    {
+      prompt: 'O que fazer quando um registro ainda não tem evidência municipal suficiente?',
+      options: ['Mantê-lo como pendente e não tratá-lo como registro local validado', 'Inferir o município pelo nome', 'Publicá-lo como confirmado para completar a lista'],
+      answer: 0,
+      explanation: 'Quando falta evidência municipal, o observatório preserva o estado pendente em vez de transformar uma correspondência estadual em fato local.',
+      anchor: 'candidaturas',
+      sourceLabel: 'Candidaturas locais',
+    },
+    {
+      prompt: 'Para que serve um link para a fonte oficial?',
+      options: ['Permitir a conferência do registro original', 'Substituir a necessidade de ler a metodologia', 'Transformar uma estimativa em resultado'],
+      answer: 0,
+      explanation: 'A fonte oficial permite que a pessoa confira o dado diretamente na instituição responsável pela publicação original.',
+      anchor: 'fontes',
+      sourceLabel: 'Mapa de evidências',
+    },
+    {
+      prompt: 'O que uma fonte secundária representa no catálogo do projeto?',
+      options: ['Um material de apoio que não substitui a fonte oficial quando ela existe', 'Uma fonte automaticamente mais precisa', 'Um resultado eleitoral'],
+      answer: 0,
+      explanation: 'Fontes secundárias podem ajudar no contexto, mas são identificadas separadamente das fontes oficiais.',
+      anchor: 'fontes',
+      sourceLabel: 'Mapa de evidências',
+    },
   ], []);
 
   const [step, setStep] = useState(0);
@@ -84,10 +124,15 @@ export function QuickQuiz() {
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-200/80">Aprendizado rápido</div>
             <h2 id="quiz-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">1 minuto para testar o que você entendeu</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Cinco perguntas curtas. Cada resposta explica a regra e aponta para a área correspondente do observatório.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Dez perguntas curtas. Cada resposta explica uma regra de leitura e aponta para a área correspondente do observatório.</p>
           </div>
-          {!finished && <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${questions.length}`}>
-            <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(questions.length).padStart(2, '0')}</span>
+          {!finished && <div className="quiz-progress-wrap">
+            <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${questions.length}`}>
+              <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(questions.length).padStart(2, '0')}</span>
+            </div>
+            <div className="quiz-progress-track" aria-hidden="true">
+              <span style={{ width: (((step + 1) / questions.length) * 100) + '%' }} />
+            </div>
           </div>}
         </div>
 
