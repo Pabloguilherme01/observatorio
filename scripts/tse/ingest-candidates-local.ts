@@ -12,20 +12,26 @@ const WORK = join(ROOT, '.tmp', 'tse-candidates-local');
 const CAND_ZIP = join(WORK, 'candidatos.zip');
 const SOCIAL_ZIP = join(WORK, 'redes.zip');
 const PHOTO_ZIP = join(WORK, 'fotos.zip');
+const COMPLEMENT_ZIP = join(WORK, 'complementar.zip');
+const ASSETS_ZIP = join(WORK, 'bens.zip');
 const CAND_EXTRACT = join(WORK, 'candidatos');
 const SOCIAL_EXTRACT = join(WORK, 'redes');
 const PHOTO_EXTRACT = join(WORK, 'fotos');
+const COMPLEMENT_EXTRACT = join(WORK, 'complementar');
+const ASSETS_EXTRACT = join(WORK, 'bens');
 
 const CAND_SOURCE = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip';
 const SOCIAL_SOURCE = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/rede_social_candidato_2026.zip';
 const PHOTO_SOURCE = 'https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip';
+const COMPLEMENT_SOURCE = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand_complementar/consulta_cand_complementar_2026.zip';
+const ASSETS_SOURCE = 'https://cdn.tse.jus.br/estatistica/sead/odsele/bem_candidato/bem_candidato_2026.zip';
 
 const INPUT = join(ROOT, 'src', 'data', 'generated', 'tse2026-candidates.json');
 const API_OUTPUT = join(ROOT, 'public', 'api', 'v1', 'candidatos.json');
 const PUBLIC_PHOTO_DIR = join(ROOT, 'public', 'img', 'candidatos');
 
 mkdirSync(WORK, { recursive: true });
-for (const dir of [CAND_EXTRACT, SOCIAL_EXTRACT, PHOTO_EXTRACT]) {
+for (const dir of [CAND_EXTRACT, SOCIAL_EXTRACT, PHOTO_EXTRACT, COMPLEMENT_EXTRACT, ASSETS_EXTRACT]) {
   if (existsSync(dir)) rmSync(dir, { recursive: true, force: true });
 }
 mkdirSync(PUBLIC_PHOTO_DIR, { recursive: true });
@@ -65,6 +71,33 @@ function watchlisted(row: Readonly<Record<string, string>>) {
 }
 
 const localRows = candidateRows.filter(row => isLocal(row) && watchlisted(row));
+
+await downloadFile(COMPLEMENT_SOURCE, COMPLEMENT_ZIP);
+extractZip(COMPLEMENT_ZIP, COMPLEMENT_EXTRACT);
+const complementPath = findFile(COMPLEMENT_EXTRACT, /consulta_cand_complementar.*GO.*\\.csv$/i);
+const complementRows = readCsv(complementPath);
+
+const complementByCandidate = new Map<string, Readonly<Record<string, string>>>();
+for (const row of complementRows) {
+  const sq = valueOf(row, sqKeys, false);
+  if (sq) complementByCandidate.set(sq, row);
+}
+
+await downloadFile(ASSETS_SOURCE, ASSETS_ZIP);
+extractZip(ASSETS_ZIP, ASSETS_EXTRACT);
+const assetsPath = findFile(ASSETS_EXTRACT, /bem_candidato.*GO.*\\.csv$/i);
+const assetRows = readCsv(assetsPath);
+
+const assetsByCandidate = new Map<string, number>();
+for (const row of assetRows) {
+  const sq = valueOf(row, sqKeys, false);
+  if (!sq) continue;
+  const rawValue = valueOf(row, ['VR_BEM_CANDIDATO', 'VR_BEM'], false);
+  if (!rawValue) continue;
+  const value = Number(rawValue.replace(/\\./g, '').replace(',', '.'));
+  if (Number.isFinite(value)) assetsByCandidate.set(sq, (assetsByCandidate.get(sq) ?? 0) + value);
+}
+
 
 await downloadFile(SOCIAL_SOURCE, SOCIAL_ZIP);
 extractZip(SOCIAL_ZIP, SOCIAL_EXTRACT);
@@ -114,6 +147,8 @@ const merged = localRows.map(row => {
     photoUrl = '/observatorio/img/candidatos/' + sqCandidate + '.jpg';
   }
 
+  const complement = complementByCandidate.get(sqCandidate);
+  const assets = assetsByCandidate.get(sqCandidate);
   return {
     sqCandidate,
     ballotNumber: Number(valueOf(row, ballotKeys, false)) || null,
@@ -132,6 +167,10 @@ const merged = localRows.map(row => {
     photoUrl,
     instagramUrl: instagramByCandidate.get(sqCandidate) ?? null,
     sourceResource: CAND_SOURCE,
+    occupation: valueOf(complement ?? {}, ['DS_OCUPACAO', 'NM_OCUPACAO'], false) || null,
+    education: valueOf(complement ?? {}, ['DS_GRAU_INSTRUCAO', 'DS_ESCOLARIDADE'], false) || null,
+    naturalidade: valueOf(complement ?? {}, ['NM_MUNICIPIO_NASCIMENTO', 'NM_NATURALIDADE'], false) || null,
+    declaredAssetsBrl: assets ?? null,
   };
 });
 
@@ -156,6 +195,9 @@ const snapshot = {
     municipalityCodeIbge: TARGET_IBGE_CODE,
     socialSourceUrl: SOCIAL_SOURCE,
     photoSourceUrl: PHOTO_SOURCE,
+    socialSourceUrl: SOCIAL_SOURCE,
+    complementarySourceUrl: COMPLEMENT_SOURCE,
+    assetsSourceUrl: ASSETS_SOURCE,
     mediaAvailable: photoAvailable,
   },
   coverage: 'municipality',
