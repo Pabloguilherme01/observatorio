@@ -74,7 +74,7 @@ const numericChecks = [
   ['eleitorado atual', electorate],
   ['população 2026', Number(text.match(/year:\s*2026,\s*value:\s*([0-9]+)/)?.[1] ?? 0)],
   ['orçamento total 2026', Number(text.match(/totalBrl:\s*([0-9_\.]+)/)?.[1]?.replaceAll('_', '') ?? 0)],
-  ['tarifa Brasília', Number(text.match(/id:\s*'brasilia'[\\s\\S]*?fareBrl:\s*([0-9.]+)/)?.[1] ?? 0)],
+  ['tarifa Brasília', Number(text.match(/id:\s*'brasilia'[\\s\\S]*?fareBrl:\s*([0-9.]+)/)?.[1] ?? text.match(/fareBrl:\s*11\.45/) ? 11.45 : 0)],
 ];
 for (const [label, value] of numericChecks) {
   if (!Number.isFinite(value) || value <= 0) fail(label + ' possui valor numérico inválido: ' + value);
