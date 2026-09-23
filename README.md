@@ -61,7 +61,15 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V38.0 — Observatório de Dados Cívicos e Eleitorais.
+V39.0 — Observatório de Dados Cívicos e Eleitorais.
+
+### Foco V39
+- Camada de linguagem simples/técnica com preferência persistida no navegador.
+- Contexto comparativo descritivo com municípios do Entorno do DF e anos-base preservados.
+- Hub “Como usar” com SIC, Câmara, Transparência municipal, TCMGO e MPGO.
+- Compartilhamento direto no WhatsApp e preview social com imagem Open Graph.
+- Exportação do dataset normalizado em JSON além do CSV.
+- Auditoria estática ampliada para validar as novas camadas e o cartão social.
 
 ### Foco V38
 - Hierarquia inicial reforçada no hero com indicadores de referência, acesso direto às evidências e identificação explícita da última atualização local.
