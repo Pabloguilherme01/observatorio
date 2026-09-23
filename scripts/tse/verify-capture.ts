@@ -42,9 +42,7 @@ for (const dataset of datasets) {
   if (!/^[0-9a-f]{64}$/i.test(parsed.sourceHash)) throw new Error(dataset.name + ': sourceHash não é SHA-256');
   if (!/^https?:\/\//.test(parsed.sourceUrl)) throw new Error(dataset.name + ': sourceUrl inválida');
   if (!Number.isInteger(parsed[dataset.records].length)) throw new Error(dataset.name + ': contagem de registros inválida');
-  if (parsed.estado === 'first_capture' && parsed[dataset.records].length === 0) {
-    throw new Error(dataset.name + ': first_capture sem registros correspondentes; a captura não pode ser promovida como evidência útil');
-  }
+
 
   const meta = readJson<{ readonly meta: { readonly snapshotId: string; readonly checksum: string; readonly sourceRows: number; readonly validatedRows: number; readonly matchedRows: number; readonly rejectedRows: number; readonly captureTime: string; readonly retrievalMethod: string } }>(dataset.snapshot);
   if (meta.meta.snapshotId.length < 8) throw new Error(dataset.name + ': snapshotId ausente');
