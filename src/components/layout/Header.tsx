@@ -15,6 +15,7 @@ export function Header() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [searchOpen, setSearchOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const updatedAt = formatDate(d.meta.updatedAt);
 
   useEffect(() => {
     const updateObserver = () => {
@@ -25,7 +26,7 @@ export function Header() {
         if (visible?.target.id) setActiveSection(visible.target.id);
       }, { rootMargin: '-16% 0px -70% 0px', threshold: [0.1, 0.25, 0.5] });
       nodes.forEach(node => observer.observe(node));
-      const updatedAt = formatDate(d.meta.updatedAt);\n\n  return () => observer.disconnect();
+      return () => observer.disconnect();
     };
     return updateObserver();
   }, []);
@@ -47,7 +48,12 @@ export function Header() {
 
           <nav className="hidden flex-1 items-center justify-center gap-1 xl:flex" aria-label="Navegação principal">
             {primaryNavigation.map(item => (
-              <a key={item.id} href={'#' + item.id} className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')} aria-current={activeSection === item.id ? 'location' : undefined}
+              <a
+                key={item.id}
+                href={'#' + item.id}
+                className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
+                aria-current={activeSection === item.id ? 'location' : undefined}
+              >
                 {item.shortLabel}
               </a>
             ))}
@@ -55,7 +61,10 @@ export function Header() {
 
           <div className="site-header-status hidden lg:flex items-center gap-1.5 rounded-full border border-sky-300/10 bg-sky-300/[0.035] px-2.5 py-1.5 text-[10px] font-bold text-slate-500" aria-label={'Dados atualizados em ' + updatedAt}>
             <CalendarDays className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" />
-            <span>Atualizado {updatedAt}</span>\n          </div>\n\n          <div className="site-header-actions ml-auto flex items-center gap-1">
+            <span>Atualizado {updatedAt}</span>
+          </div>
+
+          <div className="site-header-actions ml-auto flex items-center gap-1">
             <button type="button" onClick={() => setSearchOpen(true)} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -75,7 +84,10 @@ export function Header() {
               <div className="mobile-tools-mode">
                 <div className="mobile-tools-meta">
                   <span className="mobile-tools-label">Leitura</span>
-                  <span className="mobile-tools-updated"><CalendarDays className="h-3 w-3" aria-hidden="true" />Atualizado {updatedAt}</span>
+                  <span className="mobile-tools-updated">
+                    <CalendarDays className="h-3 w-3" aria-hidden="true" />
+                    Atualizado {updatedAt}
+                  </span>
                 </div>
                 <LanguageModeToggle />
               </div>
