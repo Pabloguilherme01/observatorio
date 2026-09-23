@@ -123,12 +123,12 @@ export const observatorioData: ObservatoryData = {
   },
 
   education: {
-    ideb2025Range: [5.9, 6.2],
+    ideb2025Range: [5.7, 6.2],
     basicEducationEnrollments2025: 58138,
     municipalBasicEducationEnrollments2025: 23847,
     technicalEptEnrollments2025: 493,
-    sourceId: 'pee-go-educacao-2025',
-    note: 'Matrículas de 2025 verificadas na Base de Dados Educacionais de Goiás. A faixa do Ideb 2025 permanece pendente de conferência do valor municipal pontual no INEP.',
+    sourceId: 'qedu-ideb-2025',
+    note: 'A faixa 5,7–6,2 é a referência secundária registrada no levantamento de origem (QEdu). O INEP confirma a publicação dos resultados de 2025, mas o valor municipal pontual de Águas Lindas ainda não foi materializado neste snapshot; a faixa não deve ser apresentada como nota municipal oficial.',
   },
 
   health: {
