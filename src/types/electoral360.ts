@@ -25,12 +25,20 @@ export interface ElectoralCandidateSnapshot {
 export interface Electoral360Snapshot {
   readonly capturedAt: string;
   readonly captureMode: 'static-local' | 'github-actions';
-  readonly candidateUniverseScope: 'GO';
+  readonly candidateUniverseScope: 'GO' | 'Águas Lindas de Goiás';
   readonly localWatchlist: readonly string[];
   readonly matchedCandidates: readonly ElectoralCandidateSnapshot[];
 }
 
-export type ElectoralSyncState = 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
+export type ElectoralSyncState =
+  | 'first_capture'
+  | 'synced'
+  | 'unchanged'
+  | 'changed'
+  | 'stale'
+  | 'failed'
+  | 'not_synced'
+  | 'local_filter_pending';
 
 export interface ElectoralSnapshotMeta {
   readonly snapshotId: string;
