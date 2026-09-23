@@ -65,7 +65,7 @@ export function EvidenceChain() {
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
             <div><strong className="text-slate-200 light:text-slate-800">SHA-256 da fonte:</strong> {candidateHash ? <code className="break-all">{candidateHash}</code> : 'não registrado — nenhuma captura local validada'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Workflow:</strong> {generated.meta.workflowRunId ?? 'não capturado'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Commit:</strong> {'gitCommit' in generated.meta && typeof generated.meta.gitCommit === 'string' ? generated.meta.gitCommit : 'não capturado'}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Commit:</strong> {'gitCommit' in (generated.meta as unknown as Record<string, unknown>) && typeof (generated.meta as unknown as Record<string, unknown>).gitCommit === 'string' ? String((generated.meta as unknown as Record<string, unknown>).gitCommit) : 'não capturado'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Registros da fonte lidos:</strong> {generated.meta.sourceRows.toLocaleString('pt-BR')}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Registros acompanhados:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')}</div>
           </div>
