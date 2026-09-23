@@ -32,6 +32,8 @@ jobs:
         run: npm run sync:tse
 
       - name: Validate synchronized contract
+        env:
+          REQUIRE_TSE_SYNC: 'true'
         run: npm run validate:tse
 
       - name: Commit snapshot when changed
