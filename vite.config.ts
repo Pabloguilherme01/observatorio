@@ -105,7 +105,7 @@ export default defineConfig({
           { src: '/observatorio/pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
         ],
       },
-      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html']
+      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         navigateFallback: '/observatorio/index.html',
