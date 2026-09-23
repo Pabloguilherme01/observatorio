@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { TSEProcessualFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
-import { extractZip, findFile, downloadFile, normalizeLabel, parseDate, readCsv, readJson, sha256Files, valueOf, writeJson } from './common.ts';
+import { extractZip, findFile, downloadFile, normalizeLabel, parseDate, readCsv, readJson, sha256Files, sourceBasename, valueOf, writeJson } from './common.ts';
 
 interface CandidateRecord {
   readonly sqCandidate: string;
@@ -141,7 +141,8 @@ const outputRows = processos
         urlOriginal: SOURCE_URL,
         capturaEm: capture,
         snapshotId: hash,
-        arquivoOrigem: zipPath,
+        arquivoOrigem: sourceBasename(zipPath),
+      urlsComplementares: [PARTS_SOURCE_URL, DECISIONS_SOURCE_URL],
       },
     };
   })
