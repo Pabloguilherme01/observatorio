@@ -90,4 +90,4 @@ jobs:
           printf '%s' "$page" | grep -F 'Observatório Eleitoral — Águas Lindas de Goiás 2026'
           printf '%s' "$page" | grep -F 'id="root"'
           curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest | grep -F 'Observatório Águas Lindas 2026'
-          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v2'
+          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v3'
