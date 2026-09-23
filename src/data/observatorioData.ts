@@ -74,7 +74,7 @@ export const observatorioData: ObservatoryData = {
       notSurePct: 10.25,
       unclassifiedPct: 7.75,
       theoreticalMarginErrorPct: 4.9,
-      sourceId: 'tse-eleicoes-2026',
+      sourceId: 'tse-pesquisas-2026',
       note: 'Os 4,9 pontos são aproximação teórica para amostra de 400; não substituem a ficha técnica oficial.',
     },
   ],
