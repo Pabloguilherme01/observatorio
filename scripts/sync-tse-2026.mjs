@@ -201,6 +201,7 @@ function loadPrevious() {
       payload?.schemaVersion !== 3
       || payload?.coverage !== 'municipality_required'
       || !Array.isArray(payload?.matched)
+      || !['first_capture', 'synced', 'unchanged', 'changed'].includes(payload?.meta?.state)
     ) return null;
     return payload;
   } catch {
@@ -308,6 +309,20 @@ async function main() {
 
     const diff = diffRecords(previous?.matched ?? [], matched);
     const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
+    if (state === 'unchanged') {
+      console.log(JSON.stringify({
+        valid: true,
+        state,
+        sourceRows,
+        municipalityRows,
+        matched: matched.length,
+        missingWatchlist,
+        retrievalMethod: 'official_tse_zip_csv',
+        changed: false,
+      }, null, 2));
+      return;
+    }
+
     const now = new Date();
     const snapshotId = 'tse-candidatos-2026-local-' + now.toISOString().replace(/[:.]/g, '-');
 
