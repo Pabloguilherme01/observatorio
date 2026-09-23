@@ -6,6 +6,13 @@ import { RESULTS_WINDOW } from '../../data/resultsConfig';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
+function captureLabel(value: string | undefined) {
+  if (!value) return 'não registrada';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' });
+}
+
 export function EvidenceChain() {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -29,6 +36,7 @@ export function EvidenceChain() {
     ended_unavailable: { label: 'Janela encerrada', detail: 'A janela operacional terminou; o estado do último feed continua indicado no painel de resultados.' },
   } as const;
   const currentResultPhase = resultPhase[resultsPhase as keyof typeof resultPhase];
+  const unresolved = generated.diff?.unresolved ?? 0;
 
   return (
     <section id="evidencias" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="evidence-title">
@@ -47,10 +55,11 @@ export function EvidenceChain() {
           <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Fonte oficial separada do recorte</h3>
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
             <div><strong className="text-slate-200 light:text-slate-800">Fonte:</strong> {candidateSource?.label ?? 'TSE — Candidatos 2026'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Captura local:</strong> {candidateCaptured ? 'realizada' : 'ainda não realizada'}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Captura local:</strong> {candidateCaptured ? captureLabel(generated.meta.downloadedAt) : 'ainda não realizada'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Estado:</strong> {candidateState}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Registros lidos:</strong> {generated.meta.sourceRows.toLocaleString('pt-BR')} · encontrados no recorte estadual: {(generated.meta.originalMatchedRows ?? 0).toLocaleString('pt-BR')}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Validados em Águas Lindas:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')} · pendentes: {unresolved.toLocaleString('pt-BR')}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Cobertura:</strong> watchlist de {generated.watchlist.length} nomes, não universo completo.</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Recorte mostrado:</strong> {d.candidates.length} registro{d.candidates.length === 1 ? '' : 's'} editorial{d.candidates.length === 1 ? '' : 'is'}.</div>
           </div>
           <a href={editorialSource?.url ?? candidateSource?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300">
             Abrir fonte de referência <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
@@ -63,11 +72,11 @@ export function EvidenceChain() {
           </div>
           <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Prova material da captura</h3>
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
-            <div><strong className="text-slate-200 light:text-slate-800">SHA-256 da fonte:</strong> {candidateHash ? <code className="break-all">{candidateHash}</code> : 'não registrado — nenhuma captura local validada'}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">SHA-256 da fonte:</strong> {candidateHash ? <code className="break-all">{candidateHash}</code> : 'não registrado nesta captura'}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Método:</strong> {generated.meta.retrievalMethod.replaceAll('_', ' ')}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Transporte:</strong> {generated.meta.captureTransport?.replaceAll('_', ' ') ?? 'não informado'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Workflow:</strong> {generated.meta.workflowRunId ?? 'não capturado'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Commit:</strong> {'gitCommit' in (generated.meta as unknown as Record<string, unknown>) && typeof (generated.meta as unknown as Record<string, unknown>).gitCommit === 'string' ? String((generated.meta as unknown as Record<string, unknown>).gitCommit) : 'não capturado'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Registros da fonte lidos:</strong> {generated.meta.sourceRows.toLocaleString('pt-BR')}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Registros acompanhados:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')}</div>
           </div>
         </Card>
 
@@ -89,7 +98,7 @@ export function EvidenceChain() {
       </div>
 
       <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
-        <strong className="text-amber-200 light:text-amber-800">Regra de interpretação:</strong> uma fonte oficial não transforma automaticamente um recorte local em snapshot oficial. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige evidência material registrada nesta aplicação.
+        <strong className="text-amber-200 light:text-amber-800">Regra de interpretação:</strong> uma fonte oficial não transforma automaticamente um recorte local em snapshot municipal. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige município comprovado no registro e evidência material da captura.
       </div>
     </section>
   );

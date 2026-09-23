@@ -1,5 +1,5 @@
 import { join, basename } from 'node:path';
-import { existsSync, mkdirSync, readdirSync, copyFileSync, rmSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, copyFileSync, rmSync } from 'node:fs';
 import { extractZip, findFile, downloadFile, normalizeLabel, readCsv, readJson, sourceBasename, sha256File, valueOf, writeJson } from './common.ts';
 
 const ROOT = process.cwd();
@@ -25,6 +25,32 @@ const OUTPUT = join(ROOT, 'src', 'data', 'generated', 'tse2026-candidates.json')
 const API_OUTPUT = join(ROOT, 'public', 'api', 'v1', 'candidatos.json');
 const PUBLIC_PHOTO_DIR = join(ROOT, 'public', 'img', 'candidatos');
 
+const WATCHLIST_FALLBACK = [
+  'Keké',
+  'Anderson Teodoro',
+  'Zé da Imperial',
+  'Baiano dos Cocos',
+  'Cambão',
+  'Abadyas Damasceno',
+  'Pábio Mossoró',
+  'Felipe Galdino',
+  'Ribeiro do Túlio',
+  'André do Premium',
+];
+
+const WATCHLIST_ALIASES: Record<string, readonly string[]> = {
+  'Keké': ['KEKE', 'KEKE DA VULKANIC'],
+  'Anderson Teodoro': ['ANDERSON TEODORO'],
+  'Zé da Imperial': ['ZE DA IMPERIAL', 'JOSE IMPERIAL'],
+  'Baiano dos Cocos': ['BAIANO DOS COCOS', 'BAIANO DO COCOS', 'BAIANO COCOS'],
+  'Cambão': ['CAMBAO', 'WILDE CAMBAO'],
+  'Abadyas Damasceno': ['ABADYAS DAMASCENO'],
+  'Pábio Mossoró': ['PABIO MOSSORO'],
+  'Felipe Galdino': ['FELIPE GALDINO'],
+  'Ribeiro do Túlio': ['RIBEIRO DO TULIO', 'RIBEIRO DO TULLIO', 'RIBEIRO TULLIO'],
+  'André do Premium': ['ANDRE DO PREMIUM'],
+};
+
 mkdirSync(WORK, { recursive: true });
 for (const dir of [CAND_EXTRACT, SOCIAL_EXTRACT, PHOTO_EXTRACT]) {
   if (existsSync(dir)) rmSync(dir, { recursive: true, force: true });
@@ -37,7 +63,8 @@ const current = readJson<{
   matched: readonly Record<string, unknown>[];
 }>(INPUT);
 
-const currentWatchlist = new Set(current.watchlist.map(normalizeLabel));
+const watchlist = current.watchlist.length ? [...current.watchlist] : WATCHLIST_FALLBACK;
+const currentWatchlist = new Set(watchlist.map(normalizeLabel));
 
 await downloadFile(CAND_SOURCE, CAND_ZIP);
 extractZip(CAND_ZIP, CAND_EXTRACT);
@@ -61,8 +88,14 @@ function isLocal(row: Readonly<Record<string, string>>) {
 function watchlisted(row: Readonly<Record<string, string>>) {
   const urn = normalizeLabel(valueOf(row, urnKeys, false));
   const sq = valueOf(row, sqKeys, false);
-  return Boolean(sq && current.matched.some(item => String(item.sqCandidate ?? '') === sq)) ||
-    Boolean(urn && currentWatchlist.has(urn));
+  if (sq && current.matched.some(item => String(item.sqCandidate ?? '') === sq)) return true;
+  if (!urn) return false;
+
+  return [...currentWatchlist].some(name => {
+    if (urn === name) return true;
+    const aliases = WATCHLIST_ALIASES[name] ?? [name];
+    return aliases.some(alias => normalizeLabel(alias) === urn);
+  });
 }
 
 const localRows = candidateRows.filter(row => isLocal(row) && watchlisted(row));
@@ -142,7 +175,9 @@ const snapshot = {
     source: 'TSE — Candidatos 2026',
     sourceUrl: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
     sourceFileSha256: sha256File(CAND_ZIP),
+    sourceHashKind: 'source_zip',
     sourceRows: candidateRows.length,
+    originalMatchedRows: current.meta.originalMatchedRows ?? current.matched.length,
     matchedRows: merged.length,
     state: 'synced',
     downloadedAt: new Date().toISOString(),
@@ -153,7 +188,9 @@ const snapshot = {
     socialSourceUrl: SOCIAL_SOURCE,
     photoSourceUrl: PHOTO_SOURCE,
     mediaAvailable: photoAvailable,
+    filterNote: 'Recorte municipal validado pelo código TSE/IBGE e pelos campos de município do arquivo oficial.',
   },
+  watchlist,
   coverage: 'municipality',
   matched: merged,
 };
