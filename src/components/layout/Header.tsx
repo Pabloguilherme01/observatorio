@@ -9,6 +9,7 @@ const links = [
   ['Transporte', 'transporte'],
   ['Política', 'politica'],
   ['Orçamento', 'orcamento'],
+  ['Dados', 'dados'],
   ['Fontes', 'fontes'],
 ] as const;
 
