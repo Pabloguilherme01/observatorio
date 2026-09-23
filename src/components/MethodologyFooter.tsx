@@ -14,7 +14,7 @@ export function MethodologyFooter({ source, referenceDate, denominator, formula,
     <aside className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50">
       <div className="font-bold uppercase tracking-[0.14em] text-slate-400 light:text-slate-600">Metodologia</div>
       <div className="mt-2 grid gap-1 sm:grid-cols-2">
-        <div>Fonte primária/registrada: <strong className="text-slate-300 light:text-slate-700">{source.institution}</strong></div>
+        <div>Fonte registrada: <strong className="text-slate-300 light:text-slate-700">{source.institution}</strong></div>
         <div>Data de referência: <strong className="text-slate-300 light:text-slate-700">{referenceDate ?? source.referenceDate ?? 'não informada'}</strong></div>
         {denominator && <div>Denominador: <strong className="text-slate-300 light:text-slate-700">{denominator}</strong></div>}
         {formula && <div>Fórmula: <strong className="text-slate-300 light:text-slate-700">{formula}</strong></div>}
