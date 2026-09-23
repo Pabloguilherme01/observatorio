@@ -14,6 +14,7 @@ for (const item of cases) {
     await page.waitForLoadState('networkidle');
 
     const timer = page.locator('[role="timer"]');
+    const masks = (await timer.count()) > 0 ? [timer] : [];
 
     if (item.name === 'provenance') {
       const trigger = page.getByTestId('provenance-trigger').first();
@@ -28,7 +29,7 @@ for (const item of cases) {
       fullPage: true,
       maxDiffPixelRatio: 0.001,
       animations: 'disabled',
-      mask: timer.count() ? [timer] : [],
+      mask: masks,
     });
   });
 }
