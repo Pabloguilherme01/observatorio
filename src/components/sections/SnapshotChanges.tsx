@@ -1,6 +1,18 @@
 import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from 'lucide-react';
 import generated from '../../data/generated/tse2026-candidates.json';
-import snapshotBatch from '../../data/generated/snapshot-diff.json';
+import rawSnapshotBatch from '../../data/generated/snapshot-diff.json';
+
+interface SnapshotBatchDataset {
+  readonly fonte: string;
+  readonly firstCapture: boolean;
+  readonly added: number;
+  readonly changed: number;
+  readonly removed: number;
+}
+interface SnapshotBatch {
+  readonly datasets: readonly SnapshotBatchDataset[];
+}
+const snapshotBatch = rawSnapshotBatch as SnapshotBatch;
 
 export function SnapshotChanges() {
   const diff = generated.diff;
