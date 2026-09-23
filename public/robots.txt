@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pabloguilherme01.github.io/observatorio/sitemap.xml
