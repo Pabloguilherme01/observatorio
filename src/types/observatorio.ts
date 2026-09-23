@@ -78,7 +78,6 @@ export interface ElectionPoll {
   readonly notSurePct?: number;
   readonly unclassifiedPct?: number;
   readonly officialMarginErrorPct?: number;
-  readonly theoreticalMarginErrorPct?: number;
   readonly confidenceLevelPct?: number;
   readonly sourceId: string;
   readonly judicialContext?: {
