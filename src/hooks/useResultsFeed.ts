@@ -66,9 +66,15 @@ export function useResultsFeed(intervalMs = 300000) {
       setChecking(true);
       try {
         const response = await fetch(FEED_URL, { cache: 'no-store' });
-        if (!response.ok) return;
+        if (!response.ok) {
+          if (active) setData(current => current?.state === 'complete' ? current : null);
+          return;
+        }
         const payload: unknown = await response.json();
-        if (!active || !isValidResultsFeed(payload)) return;
+        if (!active || !isValidResultsFeed(payload)) {
+          if (active) setData(current => current?.state === 'complete' ? current : null);
+          return;
+        }
         setData(payload);
       } catch {
         // Missing or invalid feed is expected outside the official results window.
