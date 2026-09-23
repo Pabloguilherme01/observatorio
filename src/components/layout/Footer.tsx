@@ -17,7 +17,7 @@ export function Footer() {
           <a href="#acao" className="transition hover:text-sky-300">Como usar</a>
           <a href="#principios" className="transition hover:text-sky-300">Princípios e correções</a>
           <a href="https://github.com/Pabloguilherme01/observatorio" target="_blank" rel="noopener noreferrer" className="transition hover:text-sky-300">Código-fonte</a>
-          <a href="https://www.instagram.com/pablo.builds.ia?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="font-bold text-sky-300 transition hover:text-sky-200">@pablo.builds.ia</a>
+          <a href="https://www.instagram.com/pablo.builds.ia?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="font-bold text-sky-300 transition hover:text-sky-200">Projeto: @pablo.builds.ia</a>
           <span>Dados e cálculos com proveniência identificada.</span>
         </div>
       </div>
