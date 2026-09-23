@@ -6,7 +6,11 @@ import { formatNumber, formatPercent } from '../../utils/formatters';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
-const LEGACY_SEWER_REFERENCE_2017 = 2.9;
+const sewerHistory = [
+  { year: 2017, value: 2.9 }, { year: 2018, value: 19.0 }, { year: 2019, value: 39.2 },
+  { year: 2020, value: 42.5 }, { year: 2021, value: 46.2 }, { year: 2022, value: 72.0 },
+  { year: 2023, value: 80.8 }, { year: 2024, value: d.sanitation.publicSewerServicePct },
+] as const;
 
 function MetricBar({ label, value, emphasis = false }: { readonly label: string; readonly value: number; readonly emphasis?: boolean }) {
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null);
@@ -51,32 +55,20 @@ function MetricBar({ label, value, emphasis = false }: { readonly label: string;
 }
 
 function SewerCurve() {
-  const points = [
-    { x: 32, y: 184, label: '2017', value: LEGACY_SEWER_REFERENCE_2017 },
-    { x: 588, y: 44, label: '2024', value: d.sanitation.publicSewerServicePct },
-  ] as const;
-
+  const max = Math.max(...sewerHistory.map(point => point.value));
+  const min = Math.min(...sewerHistory.map(point => point.value));
+  const points = sewerHistory.map((point, index) => ({ ...point, x: 32 + (index * 560) / (sewerHistory.length - 1), y: 20 + ((max - point.value) / Math.max(max - min, 1)) * 125 }));
   return (
     <figure className="mt-6 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
-      <figcaption>
-        <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Curva histórica destacada</div>
-        <p className="mt-1 text-sm text-slate-400 light:text-slate-600">2,9% → 84,8% conforme a referência mantida no dataset legado.</p>
-      </figcaption>
-
-      <svg viewBox="0 0 620 220" className="mt-4 h-auto w-full" role="img" aria-label="Curva histórica de 2,9 por cento em 2017 para 84,8 por cento em 2024">
-        <title>Curva histórica de saneamento</title>
-        <desc>Referência histórica do dataset legado, com 2,9% em 2017 e 84,8% em 2024. Os indicadores de coleta e tratamento possuem denominadores diferentes e não devem ser inferidos a partir desta linha.</desc>
-        <line x1="32" y1="194" x2="588" y2="194" className="stroke-slate-700/40 light:stroke-slate-300" strokeWidth="1" />
-        <polyline points={`${points[0].x},${points[0].y} ${points[1].x},${points[1].y}`} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="5" strokeLinecap="round" />
-        {points.map(point => (
-          <g key={point.label}>
-            <circle cx={point.x} cy={point.y} r="7" className="fill-sky-300 light:fill-sky-600" />
-            <text x={point.x} y={point.y - 14} textAnchor="middle" className="fill-slate-400 text-[12px] light:fill-slate-600">{String(point.value).replace('.', ',')}%</text>
-            <text x={point.x} y="214" textAnchor="middle" className="fill-slate-500 text-[12px]">{point.label}</text>
-          </g>
-        ))}
+      <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Série histórica · esgoto</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Atendimento por rede pública, 2017–2024.</p></figcaption>
+      <svg viewBox="0 0 620 220" className="mt-4 h-auto w-full" role="img" aria-label="Série histórica do atendimento por rede pública de esgoto entre 2017 e 2024">
+        <title>Atendimento por rede pública de esgoto, 2017 a 2024</title>
+        <desc>{sewerHistory.map(point => `${point.year}: ${String(point.value).replace('.', ',')} por cento`).join('; ')}.</desc>
+        <line x1="32" y1="170" x2="592" y2="170" className="stroke-slate-700/40 light:stroke-slate-300" strokeWidth="1" />
+        <polyline points={points.map(point => `${point.x},${point.y}`).join(' ')} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+        {points.map(point => <g key={point.year} tabIndex={0} role="img" aria-label={`${point.year}: ${String(point.value).replace('.', ',')}%`}><circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" /><text x={point.x} y={point.y - 12} textAnchor="middle" className="fill-slate-400 text-[10px] light:fill-slate-600">{String(point.value).replace('.', ',')}%</text><text x={point.x} y="194" textAnchor="middle" className="fill-slate-500 text-[10px]">{point.year}</text></g>)}
       </svg>
-      <p className="mt-2 text-[11px] leading-5 text-amber-200/80 light:text-amber-700">Leitura metodológica: esta linha reproduz a referência 2017→2024 do dataset do observatório; ela não deve ser interpretada como uma série homogênea de coleta, tratamento ou população atendida sem a ficha técnica correspondente.</p>
+      <p className="mt-2 text-[11px] leading-5 text-amber-200/80 light:text-amber-700">Metodologia: série histórica do indicador de atendimento por rede pública. Coleta e tratamento possuem denominadores próprios.</p>
     </figure>
   );
 }
@@ -90,8 +82,7 @@ export function SanitationHealthSection() {
   const pressure = useMemo(() => {
     const attendancePerBed = d.health.firstYearAttendancesAtLeast / Math.max(plannedBeds, 1);
     const reductionPct = (1 - attendancePerBed / (d.health.firstYearAttendancesAtLeast / d.health.openingReportedBeds)) * 100;
-    const status = attendancePerBed > 2000 ? 'Crítico' : attendancePerBed > 1200 ? 'Alta pressão' : 'Sustentável';
-    return { attendancePerBed, reductionPct, status };
+    return { attendancePerBed, reductionPct };
   }, [plannedBeds]);
 
   return (
@@ -199,7 +190,7 @@ export function SanitationHealthSection() {
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Atendimentos/leito</span><strong className="mt-1 block text-lg text-white light:text-slate-900">{formatNumber(Math.round(pressure.attendancePerBed))}</strong></div>
               <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Redução teórica da pressão</span><strong className="mt-1 block text-lg text-white light:text-slate-900">-{formatNumber(pressure.reductionPct, 1)}%</strong></div>
-              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Faixa calculada</span><strong className="mt-1 block text-lg text-white light:text-slate-900">{pressure.status}</strong></div>
+              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Indicador derivado</span><strong className="mt-1 block text-lg text-white light:text-slate-900">atendimentos/leito</strong></div>
             </div>
           </div>
 
