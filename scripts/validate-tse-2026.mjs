@@ -11,9 +11,9 @@ const isMunicipalitySnapshot = payload.schemaVersion === 3 && payload.coverage =
 if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('schemaVersion deve ser 2 ou 3.');
 if (isMunicipalitySnapshot) {
   if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter municipal ausente ou divergente.');
-  if (payload.meta?.municipalityCodeTse !== '92737') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
-  if (payload.meta?.retrievalMethod !== 'official_tse_zip_csv') errors.push('snapshot municipal deve usar official_tse_zip_csv.');
-  if (payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot municipal não informa explicitamente o recorte monitorado.');
+  if (state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '92737') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
+  if (state !== 'local_filter_pending' && payload.meta?.retrievalMethod !== 'official_tse_zip_csv') errors.push('snapshot municipal sincronizado deve usar official_tse_zip_csv.');
+  if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot municipal não informa explicitamente o recorte monitorado.');
 }
 
 if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist no contrato estadual antigo.');
