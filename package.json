@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "audit:static": "node scripts/audit-static.mjs",
     "sync:tse": "node scripts/sync-tse-2026.mjs",
     "validate:tse": "node scripts/validate-tse-2026.mjs",
     "validate:observatorio": "node scripts/validate-observatorio.mjs",
