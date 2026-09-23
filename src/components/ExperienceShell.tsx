@@ -57,7 +57,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       if (event.key === '?') { event.preventDefault(); openerRef.current = document.activeElement as HTMLElement; setHelpOpen(true); return; }
       if (event.key.toLowerCase() === 'g') { pendingG.current = true; window.setTimeout(() => { pendingG.current = false; }, 900); return; }
       if (pendingG.current) {
-        const map: Record<string, NavigationId> = { d:'dashboard',e:'eleitorado',t:'transporte',p:'politica',x:'eleitoral360',o:'orcamento',a:'dados',q:'qualidade',f:'fontes',l:'linha-do-tempo' };
+        const map: Record<string, NavigationId> = { d:'dashboard',e:'eleitorado',t:'transporte',p:'politica',x:'eleitoral360',o:'orcamento',a:'dados',q:'qualidade',f:'fontes',v:'evidencias',l:'linha-do-tempo' };
         const id = map[event.key.toLowerCase()]; pendingG.current = false; if (id) { event.preventDefault(); jump(id); remember(id); }
       }
     };
