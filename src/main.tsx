@@ -194,7 +194,8 @@ if (!root) {
         <PwaInstallPrompt />
       </StrictMode>,
     );
-    console.info('[Observatório][boot] 4/4 React render() concluído em ' + Math.round(performance.now() - bootStartedAt) + 'ms');  } catch (error) {
+    console.info('[Observatório][boot] 4/4 React render() concluído em ' + Math.round(performance.now() - bootStartedAt) + 'ms');
+  } catch (error) {
     const errorId = persistError(BOOT_ERROR_KEY, 'BOOT', error, 'render');
     root.replaceChildren();
     reactRoot.render(<BootstrapFallback errorId={errorId} message={normalizeError(error)} />);
