@@ -1,5 +1,6 @@
 import generated from './generated/tse2026-candidates.json';
 import type { Electoral360Module, Electoral360Snapshot } from '../types/electoral360';
+import { CANDIDATE_PROFILES, LOCAL_CANDIDATE_IDS } from './candidateProfiles';
 
 const generatedData = generated as {
   meta: {
