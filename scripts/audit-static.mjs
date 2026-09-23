@@ -59,9 +59,10 @@ must(app.includes('LazyAudienceHub') && app.includes('LazyInstagramSyncHub') && 
 for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
-must(candidates.coverage === 'watchlist', 'snapshot de candidaturas deixa explícito o escopo watchlist');
+must(['watchlist', 'municipality'].includes(candidates.coverage), 'snapshot de candidaturas declara seu escopo de cobertura');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed'].includes(candidates.meta.state), 'estado do snapshot de candidaturas pertence ao contrato conhecido');
 must(candidates.meta.state === 'not_synced' || Number(candidates.meta.sourceRows) >= 0, 'captura TSE só é considerada material quando o estado não é not_synced');
+must(candidates.coverage !== 'municipality' || (candidates.meta.municipalityFilter === 'Águas Lindas de Goiás' && candidates.meta.municipalityCodeTse === '92737'), 'snapshot municipal usa filtro e código TSE documentados');
 const electoral360 = read('src/components/sections/Electoral360.tsx');
 const candidateProfiles = read('src/data/candidateProfiles.ts');
 must(candidateProfiles.includes('LOCAL_CANDIDATE_IDS') && candidateProfiles.includes('EXCLUDED_FROM_LOCAL_RECORTE_IDS'), 'recorte local de candidaturas é explícito e auditável');
