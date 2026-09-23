@@ -1,10 +1,10 @@
 import generated from './generated/tse2026-candidates.json';
-import type { ElectoralCandidateSnapshot, Electoral360Module, Electoral360Snapshot } from '../types/electoral360';
+import type { Electoral360Module, Electoral360Snapshot } from '../types/electoral360';
 
 const generatedData = generated as {
   meta: {
     snapshotId: string;
-    downloadedAt: string;
+    downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
   };
   watchlist: string[];
@@ -26,6 +26,7 @@ const generatedData = generated as {
 };
 
 const candidateStatus = generatedData.meta.state === 'not_synced' ? 'pending' : 'captured';
+const snapshotDate = generatedData.meta.downloadedAt ? generatedData.meta.downloadedAt.slice(0, 10) : '—';
 
 export const electoral360Modules: readonly Electoral360Module[] = [
   {
@@ -85,7 +86,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
 ];
 
 export const electoral360Snapshot: Electoral360Snapshot = {
-  capturedAt: generatedData.meta.downloadedAt,
+  capturedAt: generatedData.meta.downloadedAt ?? '',
   captureMode: generatedData.meta.state === 'not_synced' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
   localWatchlist: generatedData.watchlist,
@@ -96,7 +97,7 @@ export const electoral360Snapshot: Electoral360Snapshot = {
     party: candidate.party ?? '—',
     office: candidate.office ?? '—',
     status: candidate.status ?? '—',
-    snapshotDate: generatedData.meta.downloadedAt.slice(0, 10),
+    snapshotDate,
     sourceId: 'tse-candidatos-2026',
   })),
 };
