@@ -56,3 +56,11 @@ body{overscroll-behavior-y:none}
  .candidate-data-card strong{font-size:11px}
  .search-meta span:last-child{font-size:9px}
 }
+@media(max-width:380px){
+ .candidate-card{border-radius:20px}
+ .candidate-card h3{font-size:17px;line-height:1.2}
+ .candidate-data-card{padding:9px;border-radius:14px}
+ .candidate-data-card strong{font-size:10.5px}
+ .mobile-bottom-nav button{min-height:46px}
+ .search-modal-panel{margin-top:2vh;border-radius:20px}
+}
