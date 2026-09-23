@@ -352,3 +352,48 @@ html.light .topic-card:hover {
 @media (prefers-reduced-motion:reduce) {
   .topic-card { transition: none; }
 }
+
+
+/* V40 social distribution + mobile performance */
+main > section {
+  content-visibility: auto;
+  contain-intrinsic-size: 650px;
+}
+.instagram-shell {
+  border: 1px solid rgba(140,200,242,.12);
+  border-radius: 28px;
+  padding: 20px;
+  background: radial-gradient(circle at 95% 0%, rgba(62,111,143,.13), transparent 25rem), rgba(255,255,255,.025);
+}
+.instagram-mobile-rail {
+  display: grid;
+  gap: 1rem;
+}
+.instagram-mobile-column {
+  min-width: 0;
+}
+html.light .instagram-shell {
+  border-color: rgba(15,23,42,.09);
+  background: rgba(255,255,255,.72);
+}
+@media (max-width:767px) {
+  main > section { contain-intrinsic-size: 560px; }
+  .instagram-shell { padding: 16px; border-radius: 24px; }
+  .instagram-mobile-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(280px, 88vw);
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .instagram-mobile-rail::-webkit-scrollbar { display: none; }
+  .instagram-mobile-column { scroll-snap-align: start; }
+}
+@media (max-width:380px) {
+  .instagram-shell { padding: 13px; border-radius: 20px; }
+  .instagram-mobile-rail { grid-auto-columns: minmax(260px, 91vw); }
+}
