@@ -21,6 +21,8 @@ jobs:
           node-version: 22
       - name: Install
         run: npm install
+      - name: Audit practical usability and links
+        run: npm run audit:usability
       - name: Validate data contracts
         run: npm run validate:observatorio
       - name: Validate TSE architecture isolation
