@@ -43,11 +43,11 @@ export function isResultsWindowOpen(now = Date.now()) {
 }
 
 function getResultsFeedPhase(data: ResultsFeed | null, now = Date.now()): ResultsFeedPhase {
-  if (data?.state === 'live') return 'live';
   if (data?.state === 'complete') return 'complete';
   if (now < RESULTS_WINDOW_START) return 'pre_open';
-  if (now <= RESULTS_WINDOW_END) return 'open_waiting';
-  return 'ended_unavailable';
+  if (now > RESULTS_WINDOW_END) return 'ended_unavailable';
+  if (data?.state === 'live') return 'live';
+  return 'open_waiting';
 }
 
 function isIsoDate(value: unknown): value is string {
