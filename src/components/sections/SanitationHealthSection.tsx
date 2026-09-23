@@ -124,15 +124,24 @@ export function SanitationHealthSection() {
 
           <div className="mt-6 space-y-4">
             <MetricBar label="Acesso à água" value={d.sanitation.waterAccessPct} emphasis />
-            <MetricBar label="Serviço público de esgoto" value={d.sanitation.publicSewerServicePct} emphasis />
-            <MetricBar label="Coleta de esgoto" value={d.sanitation.sewerCollectionPct} />
-            <MetricBar label="Tratado / gerado" value={d.sanitation.sewerTreatmentOfGeneratedPct} />
-            <MetricBar label="Do coletado, quanto é tratado" value={d.sanitation.collectedSewerTreatedPct} />
+            <MetricBar label="Acesso ao serviço público de esgoto" value={d.sanitation.publicSewerServicePct} emphasis />
+            <MetricBar label="Coleta do esgoto gerado" value={d.sanitation.sewerCollectionPct} />
+            <MetricBar label="Tratamento do esgoto gerado" value={d.sanitation.sewerTreatmentOfGeneratedPct} />
+            <MetricBar label="Do esgoto coletado, quanto é tratado" value={d.sanitation.collectedSewerTreatedPct} />
           </div>
 
           <SewerCurve />
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                    <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 light:border-slate-200 light:bg-slate-50/70">
+            <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Outra definição, outro ano-base</div>
+            <div className="mt-2 flex items-end gap-3">
+              <strong className="text-2xl font-black text-white light:text-slate-900">{formatPercent(Number(d.indicators.find(item => item.id === 'adequate-sewerage')?.value ?? 0), 2)}</strong>
+              <span className="text-xs leading-5 text-slate-500">esgotamento sanitário adequado · IBGE · 2022</span>
+            </div>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outra data. Ele não é a mesma coisa que os percentuais de serviço, coleta e tratamento do SINISA 2024.</p>
+          </div>
+
+<div className="mt-5 grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
               <strong className="block text-white light:text-slate-900">{formatPercent(d.sanitation.waterDistributionLossPct, 1)}</strong>
               <span className="text-xs text-slate-500">perdas na distribuição de água</span>
