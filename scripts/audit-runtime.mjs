@@ -23,7 +23,7 @@ for (const file of files) {
 }
 
 const app = read('src/app/App.tsx');
-if (app.includes('IntersectionObserver') && app.includes('rootMargin: \'600px 0px\'')) pass('carregamento diferido mantém margem de pré-carregamento.');
+if (app.includes('IntersectionObserver') && app.includes('rootMargin: \'320px 0px\'')) pass('carregamento diferido mantém margem de pré-carregamento otimizada.');
 else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 
 const main = read('src/main.tsx');
