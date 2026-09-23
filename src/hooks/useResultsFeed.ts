@@ -110,7 +110,10 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   if (capturedAt > Date.now() + 5 * 60 * 1000) return false;
   if (!Array.isArray(payload.entries)) return false;
 
-  if (payload.state !== 'pending' && (!payload.integrity || payload.integrity.allVerified !== true)) return false;
+  if (payload.state !== 'pending') {
+    const integrityValue = payload.integrity;
+    if (!integrityValue || typeof integrityValue !== 'object' || (integrityValue as Record<string, unknown>).allVerified !== true) return false;
+  }
 
   if (payload.integrity !== undefined) {
     if (!payload.integrity || typeof payload.integrity !== 'object') return false;
@@ -124,7 +127,7 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   return payload.entries.every(entry => {
     if (!entry || typeof entry !== 'object') return false;
     const row = entry as Record<string, unknown>;
-    if (!Number.isInteger(row.electionCode) || row.electionCode < 1) return false;
+    if (!Number.isInteger(row.electionCode) || (row.electionCode as number) < 1) return false;
     if (typeof row.cargo !== 'string' || !row.cargo.trim()) return false;
     if (typeof row.sourceFile !== 'string' || !row.sourceFile.trim()) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
