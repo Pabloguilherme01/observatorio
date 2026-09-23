@@ -204,7 +204,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
           <div className="mt-1 text-2xl font-black text-sky-300">{quickAnswer.value}</div>
           <button type="button" onClick={() => selectResult(quickAnswer.id)} className="mt-3 search-quick-action">Abrir dado e fonte</button>
-          <span className="mt-2 block text-[10px] text-slate-600">Fonte: {quickAnswer.sourceId}</span>
+          <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
 
         <div className="search-meta">
