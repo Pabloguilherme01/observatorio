@@ -24,6 +24,8 @@ const must = (condition, message) => condition ? pass(message) : errors.push(mes
 
 must(files.app.includes('<AudienceHub />') && files.app.includes('<InstagramSyncHub />'), 'hubs de descoberta e Instagram estão montados no App');
 must(files.hero.includes('href="#descubra"'), 'hero envia o primeiro CTA para descoberta');
+must(files.hero.includes('observatorio:election-mode') && files.hero.includes('aria-pressed'), 'Modo Eleição possui controle acessível também no hero mobile');
+must(files.css.includes('.hero-mobile-election-toggle'), 'CSS possui o controle mobile do Modo Eleição');
 must(files.css.includes('.topic-rail') && files.css.includes('.today-rail'), 'CSS possui trilhos de descoberta e números');
 must(files.css.includes('.instagram-shell') && files.css.includes('.instagram-mobile-rail'), 'CSS possui camada Instagram e rail móvel');
 must(files.instagram.includes('navigator.canShare') && files.instagram.includes('1080'), 'kit Instagram suporta compartilhamento de arquivo e formatos sociais');
