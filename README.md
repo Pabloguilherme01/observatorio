@@ -35,6 +35,7 @@ npm run validate:observatorio
 npm run validate:tse
 npm run validate:results
 npm run test:jws
+npm run sync:results
 npm run build
 ```
 
@@ -59,9 +60,9 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V33.0 — Observatório de Dados Cívicos e Eleitorais.
+V34.0 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V33
+### Foco V34
 - Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
 - Compartilhamento nativo de resumo e cenários de mobilidade.
 - Estados TSE explicitamente diferenciados entre capturado, desatualizado, falha e aguardando captura.
@@ -75,7 +76,12 @@ V33.0 — Observatório de Dados Cívicos e Eleitorais.
 - Histórico de eleitorado com fonte individual por ano e reconciliação editorial separada do consolidado.
 - Eleitoral 360° sem mistura de campos de snapshots diferentes.
 - Compartilhamento do inspetor sem âncoras falsas.
-- Verificador JWS com prova criptográfica explícita e contrato de integridade que impede alegações de assinatura sem evidência.
+- Verificador JWS EdDSA/Ed25519 alinhado ao manual oficial do TSE 2026, com `kid` e chave pública oficial fixados.
+- Feed de resultados V3 agregado por cargo, com uma prova JWS por arquivo e validação exata do host, município e cargo.
+- Pipeline automático de resultados preparado para JSON + JWS, comparação dos payloads e snapshot em `public/data/tse-results.json`.
+- Scheduler do primeiro e eventual segundo turno respeitando a janela local de Brasília e sem publicar dados antes dos arquivos oficiais existirem.
+- Código municipal de Águas Lindas validado pela configuração TSE como `93343`.
+- Estados de captura e cobertura reforçados na camada de pesquisa documental.
 
 ### Camadas atuais
 - Dashboard municipal e eleitoral
@@ -93,6 +99,8 @@ V33.0 — Observatório de Dados Cívicos e Eleitorais.
 
 ### Estado da sincronização eleitoral
 A automação de candidatos do TSE está preparada para ler o arquivo de Goiás e produzir um snapshot de watchlist com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas.
+
+A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
 
 ### Limitações editoriais
 - Dados de anos-base diferentes não são tratados como uma série homogênea sem indicação explícita.
