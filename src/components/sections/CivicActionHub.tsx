@@ -42,8 +42,8 @@ const actions = [
     icon: SearchCheck,
     title: 'Consultar candidaturas e contas',
     description: 'O TSE disponibiliza o DivulgaCandContas para consultar candidaturas, situação de registro e informações de contas eleitorais.',
-    href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
-    cta: 'Abrir página oficial das Eleições 2026',
+    href: 'https://divulgacandcontas.tse.jus.br/divulga/#/',
+    cta: 'Abrir DivulgaCandContas',
   },
   {
     icon: Smartphone,
