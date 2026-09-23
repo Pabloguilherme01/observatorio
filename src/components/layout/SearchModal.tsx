@@ -50,6 +50,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -60,6 +61,14 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 0);
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
+      if (event.key === 'Tab' && dialogRef.current) {
+        const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href]')).filter(node => !node.hasAttribute('disabled'));
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
       if (event.key === 'ArrowDown') {
         event.preventDefault();
         setActiveIndex(index => Math.min(index + 1, 99));
@@ -103,7 +112,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 p-4 pt-[12vh] backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="search-modal-title" onMouseDown={onClose}>
-      <div className="w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-[#101821] shadow-2xl" onMouseDown={event => event.stopPropagation()}>
+      <div ref={dialogRef} className="w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-[#101821] shadow-2xl" onMouseDown={event => event.stopPropagation()}>
         <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4">
           <Search className="h-5 w-5 text-slate-400" aria-hidden="true" />
           <div className="min-w-0 flex-1">
