@@ -132,6 +132,11 @@ export const electoral360Snapshot: Electoral360Snapshot = {
     photoUrl: candidate.photoUrl,
     instagramUrl: candidate.instagramUrl,
     sourceResource: candidate.sourceResource,
+    fullName: candidate.fullName,
+    occupation: candidate.occupation,
+    education: candidate.education,
+    naturalidade: candidate.naturalidade,
+    declaredAssetsBrl: candidate.declaredAssetsBrl,
   })),
 };
 
