@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check, WifiOff } from 'lucide-react';
+import { Check, RefreshCw, WifiOff, X } from 'lucide-react';
 
 interface DataUpdatedMessage {
   readonly type: 'DATA_UPDATED';
@@ -16,8 +16,7 @@ export function DataUpdateToast() {
       if (!data || typeof data !== 'object') return;
       const messageData = data as Partial<DataUpdatedMessage>;
       if (messageData.type !== 'DATA_UPDATED') return;
-      setMessage('Dados atualizados em segundo plano');
-      window.setTimeout(() => setMessage(null), 2600);
+      setMessage('Dados atualizados em segundo plano · recarregue para aplicar');
     };
 
     const onOffline = () => setOffline(true);
@@ -48,10 +47,22 @@ export function DataUpdateToast() {
         </div>
       )}
       {message && (
-        <div className="rounded-2xl border border-emerald-400/20 bg-slate-950/95 px-4 py-3 text-xs text-slate-200 shadow-2xl backdrop-blur-md">
-          <div className="flex items-center gap-2 font-bold">
-            <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" />
-            {message}
+        <div className="rounded-2xl border border-emerald-400/20 bg-slate-950/95 px-4 py-3 text-xs text-slate-200 shadow-2xl backdrop-blur-md" role="status">
+          <div className="flex items-start gap-3">
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
+            <div className="min-w-0 flex-1">
+              <div className="font-bold">{message}</div>
+              <button
+                type="button"
+                className="mt-2 inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] font-bold text-slate-200"
+                onClick={() => window.location.reload()}
+              >
+                <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" /> Recarregar
+              </button>
+            </div>
+            <button type="button" aria-label="Fechar aviso de atualização" className="rounded-lg p-1.5 text-slate-500" onClick={() => setMessage(null)}>
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
           </div>
         </div>
       )}
