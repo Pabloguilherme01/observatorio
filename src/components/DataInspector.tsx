@@ -27,6 +27,7 @@ export { dispatchInspect };
 export function DataInspector() {
   const [data, setData] = useState<InspectorDetail | null>(null);
   const [copied, setCopied] = useState(false);
+  const [actionError, setActionError] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -36,6 +37,7 @@ export function DataInspector() {
       openerRef.current = document.activeElement as HTMLElement | null;
       setData(event.detail);
       setCopied(false);
+      setActionError(false);
     };
     window.addEventListener('observatorio:inspect-data', onInspect);
     return () => window.removeEventListener('observatorio:inspect-data', onInspect);
@@ -81,20 +83,40 @@ export function DataInspector() {
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const ok = document.execCommand('copy');
+        area.remove();
+        if (!ok) throw new Error('copy-failed');
+      }
       setCopied(true);
+      setActionError(false);
       window.setTimeout(() => setCopied(false), 1800);
     } catch {
       setCopied(false);
+      setActionError(true);
     }
   };
 
   const share = async () => {
     const shareData = { title: data.label, text, url: window.location.href.split('#')[0] };
-    if (navigator.share) {
-      await navigator.share(shareData).catch(() => undefined);
-    } else {
-      await copy();
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setActionError(false);
+      } else {
+        await copy();
+      }
+    } catch (error) {
+      if ((error as DOMException)?.name !== 'AbortError') setActionError(true);
     }
   };
 
@@ -132,6 +154,7 @@ export function DataInspector() {
             </div>
           )}
 
+          {actionError && <p className="text-xs text-amber-300" role="status">Não foi possível concluir a ação. Tente novamente.</p>}
           <div className="flex flex-wrap gap-2">
             {source?.url && (
               <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200">
