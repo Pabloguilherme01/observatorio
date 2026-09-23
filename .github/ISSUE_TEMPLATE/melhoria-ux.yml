@@ -1,0 +1,17 @@
+name: Melhoria de usabilidade
+description: Sugira uma melhoria de leitura, acessibilidade ou navegação.
+title: "[UX] "
+labels: ["ux"]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Problema observado
+    validations:
+      required: true
+  - type: textarea
+    id: proposta
+    attributes:
+      label: Proposta de melhoria
+    validations:
+      required: true
