@@ -44,7 +44,7 @@ must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanç
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
 
 const appVersionMatch = files.version.match(/APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]/);
-must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('43.'), 'versão do aplicativo sincronizada com a camada mobile');
+must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('44.'), 'versão V44 sincronizada com a camada mobile');
 
 const app = files.app;
 must(app.includes('IntersectionObserver') && app.includes("rootMargin: '900px 0px'"), 'seções abaixo da dobra usam carregamento diferido');
