@@ -5,7 +5,7 @@ import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { SectionHeader } from '../ui/SectionHeader';
 
-const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection-v30';
+const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection-v31';
 
 export function PoliticalRadar() {
   const poll = d.polls[0];
@@ -101,7 +101,7 @@ export function PoliticalRadar() {
         <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Checklist IA / 72h</div>
         <div className="mt-4 space-y-3">
           <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><strong className="block text-white">Rotulagem</strong><p className="mt-1 text-xs leading-5 text-slate-400">Conteúdo sintético usado em propaganda deve identificar explicitamente a manipulação e a tecnologia utilizada.</p></div></div>
-          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><strong className="block text-white">Janela especial</strong><p className="mt-1 text-xs leading-5 text-slate-400">Novos conteúdos sintéticos com imagem, voz ou manifestação de candidato ou pessoa pública têm vedação de publicação/republicação no intervalo definido pelo TSE.</p></div></div>
+          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><strong className="block text-white">Janela especial · 2026</strong><p className="mt-1 text-xs leading-5 text-slate-400">Para o 1º turno, a janela indicada pelo TSE vai de 01/10 às 08h até 05/10 às 17h. Para eventual 2º turno, de 22/10 às 08h até 26/10 às 17h. A regra alcança novos conteúdos sintéticos com imagem, voz ou manifestação de candidato ou pessoa pública nos termos da norma eleitoral.</p><a href="https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-755-de-2-de-marco-de-2026" target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Ver Resolução TSE nº 23.755/2026</a></div></div>
           <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><FileSearch className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" /><div><strong className="block text-white">Prestação de contas</strong><p className="mt-1 text-xs leading-5 text-slate-400">A consulta oficial permite acompanhar bens, arrecadação, despesas e movimentação financeira. O snapshot parcial cobre fatos até 08/09/2026.</p></div></div>
         </div>
       </Card>
