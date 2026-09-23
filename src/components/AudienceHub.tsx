@@ -184,30 +184,26 @@ export function AudienceHub() {
           </div>
         )}
 
-        <div className="mt-5 rounded-3xl border border-violet-300/10 bg-violet-300/[0.035] p-4 sm:p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-violet-200/80">
-                <Brain className="h-3.5 w-3.5" aria-hidden="true" /> Aprenda em 60 segundos
+        {mode === 'technical' && (
+          <div className="mt-5 rounded-2xl border border-violet-300/10 bg-violet-300/[0.035] p-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-200/80">Leitura guiada</div>
+                <strong className="mt-1 block text-sm text-white">Teste o que entendeu</strong>
               </div>
-              <strong className="mt-2 block text-base text-white">Quer testar o que entendeu?</strong>
-              <p className="mt-1 text-xs leading-5 text-slate-500">Cinco perguntas rápidas, com explicação e fonte. Sem ranking.</p>
+              <button type="button" onClick={() => {
+                window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }));
+                window.setTimeout(() => {
+                  document.getElementById('quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  window.history.replaceState(null, '', '#quiz');
+                  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'quiz' }));
+                }, 40);
+              }} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-violet-300/20 bg-violet-300/10 px-3 py-2 text-xs font-black text-violet-100">
+                Quiz <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
             </div>
-            <button type="button" onClick={() => {
-              window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }));
-              window.setTimeout(() => {
-                document.getElementById('quiz')?.scrollIntoView({
-                  behavior: document.documentElement.classList.contains('reduced-motion') ? 'auto' : 'smooth',
-                  block: 'start',
-                });
-                window.history.replaceState(null, '', '#quiz');
-                window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'quiz' }));
-              }, 40);
-            }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300/20 bg-violet-300/10 px-4 py-2 text-xs font-black text-violet-100 hover:bg-violet-300/15">
-              Começar <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
