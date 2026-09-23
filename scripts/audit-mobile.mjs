@@ -10,6 +10,7 @@ const files = {
   css: read('src/assets/styles/globals.css'),
   audience: read('src/components/AudienceHub.tsx'),
   share: read('src/components/ShareDataButton.tsx'),
+  instagram: read('src/components/InstagramSyncHub.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
 };
@@ -22,6 +23,7 @@ must(files.app.includes('<AudienceHub />') && files.app.includes('<InstagramSync
 must(files.hero.includes('href="#descubra"'), 'hero envia o primeiro CTA para descoberta');
 must(files.css.includes('.topic-rail') && files.css.includes('.today-rail'), 'CSS possui trilhos de descoberta e números');
 must(files.css.includes('.instagram-shell') && files.css.includes('.instagram-mobile-rail'), 'CSS possui camada Instagram e rail móvel');
+must(files.instagram.includes('navigator.canShare') && files.instagram.includes('1080'), 'kit Instagram suporta compartilhamento de arquivo e formatos sociais');
 must(files.css.includes('min-height: 44px') || files.css.includes('min-height:44px'), 'controles mobile preservam alvo de toque de 44px');
 must(files.css.includes('env(safe-area-inset-bottom)'), 'barra móvel considera safe-area');
 must(files.css.includes('@media (max-width: 380px)'), 'existe ajuste dedicado para telas muito pequenas');
