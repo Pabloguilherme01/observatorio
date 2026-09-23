@@ -58,14 +58,17 @@ function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
 
-function findElection(config, electionCode) {
-  for (const pleito of config.pl ?? []) {
-    if (String(pleito.cd) !== String(PLEITO)) continue;
-    for (const election of pleito.e ?? []) {
-      if (String(election.cd) === String(electionCode) && Number(election.t ?? 1) === TURN) return election;
-    }
-  }
-  throw new Error(`Eleição ${electionCode} / turno ${TURN} não encontrada no ele-c.json.`);
+function findElection(config, firstTurnCode) {
+  const pleito = (config.pl ?? []).find(item => String(item.cd) === String(PLEITO));
+  if (!pleito) throw new Error(`Pleito ${PLEITO} não encontrado no ele-c.json.`);
+  const first = (pleito.e ?? []).find(election => String(election.cd) === String(firstTurnCode) && Number(election.t ?? 1) === 1);
+  if (!first) throw new Error(`Eleição base ${firstTurnCode} não encontrada no ele-c.json.`);
+  if (TURN === 1) return { election: first, electionCode: Number(first.cd) };
+  const secondCode = String(first.cdt2 ?? '').trim();
+  if (!secondCode) throw new Error(`Eleição ${firstTurnCode} não informa código de segundo turno no ele-c.json.`);
+  const second = (pleito.e ?? []).find(election => String(election.cd) === secondCode && Number(election.t ?? 0) === 2);
+  if (!second) throw new Error(`Eleição de segundo turno ${secondCode} não encontrada no ele-c.json.`);
+  return { election: second, electionCode: Number(second.cd) };
 }
 
 function findMunicipality(config) {
@@ -181,19 +184,21 @@ async function main() {
   const proofs = [];
 
   for (const spec of CARGO_SPECS) {
-    const election = findElection(electionConfig, spec.electionCode);
+    const electionRef = findElection(electionConfig, spec.electionCode);
+    const election = electionRef.election;
     const configuredCargo = (election.abr ?? []).flatMap(item => item.cp ?? []).find(item => String(item.cd) === String(spec.cargoCode));
     if (!configuredCargo || normalize(configuredCargo.ds) !== normalize(spec.cargo)) {
       throw new Error(`Configuração TSE incompatível para ${spec.cargo}: código ${spec.cargoCode}.`);
     }
 
-    const electionSegment = pad(spec.electionCode);
+    const actualElectionCode = electionRef.electionCode;
+    const electionSegment = pad(actualElectionCode);
     const cargoSegment = 'c' + String(spec.cargoCode).padStart(4, '0');
     const sourceFile = `${UF}${MUNICIPALITY_CODE}-${cargoSegment}-e${electionSegment}-u.json`;
     const basePath = `${BASE}/${cycle}/${spec.electionCode}/dados/${UF}/${sourceFile}`;
     try {
       const pair = await fetchPair(basePath, basePath.replace(/\.json$/, '.jws'), spec.cargo);
-      entries.push(entryFromPayload(pair.json, sourceFile, spec));
+      entries.push(entryFromPayload(pair.json, sourceFile, { ...spec, electionCode: actualElectionCode }));
       proofs.push({
         sourceFile,
         sha256: pair.jsonSha256,
