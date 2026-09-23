@@ -89,5 +89,23 @@ jobs:
           page="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/)"
           printf '%s' "$page" | grep -F 'Observatório Eleitoral — Águas Lindas de Goiás 2026'
           printf '%s' "$page" | grep -F 'id="root"'
-          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest | grep -F 'Observatório Águas Lindas 2026'
+          manifest="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest)"
+          printf '%s' "$manifest" | grep -F 'Observatório Águas Lindas 2026'
           curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v3'
+
+          asset_js="$(printf '%s' "$page" | grep -oE 'src="[^"]+\.js"' | head -n 1 | cut -d'"' -f2)"
+          asset_css="$(printf '%s' "$page" | grep -oE 'href="[^"]+\.css"' | head -n 1 | cut -d'"' -f2)"
+          test -n "$asset_js"
+          test -n "$asset_css"
+          case "$asset_js" in
+            http*) js_url="$asset_js" ;;
+            /*) js_url="https://pabloguilherme01.github.io$asset_js" ;;
+            *) js_url="https://pabloguilherme01.github.io/observatorio/$asset_js" ;;
+          esac
+          case "$asset_css" in
+            http*) css_url="$asset_css" ;;
+            /*) css_url="https://pabloguilherme01.github.io$asset_css" ;;
+            *) css_url="https://pabloguilherme01.github.io/observatorio/$asset_css" ;;
+          esac
+          curl -fsSL --retry 3 --max-time 20 "$js_url" | grep -F 'Não foi possível iniciar a interface' >/dev/null
+          curl -fsSL --retry 3 --max-time 20 "$css_url" | grep -F 'pwa-update-banner' >/dev/null
