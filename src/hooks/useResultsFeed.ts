@@ -77,6 +77,7 @@ export function useResultsFeed(intervalMs = 300000) {
         }
         setData(payload);
       } catch {
+        if (active) setData(current => current?.state === 'complete' ? current : null);
         // Missing or invalid feed is expected outside the official results window.
       } finally {
         if (active) setChecking(false);
