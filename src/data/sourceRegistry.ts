@@ -132,7 +132,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     note: 'Página oficial dos resultados 2005–2025. A faixa municipal usada no dataset aguarda conferência do valor pontual na tabela oficial.',
   },
   {
-    id: 'inei-2023',
+    id: 'inep-2023',
     label: 'INEP — Indicadores educacionais',
     institution: 'INEP',
     url: 'https://www.gov.br/inep/pt-br',
