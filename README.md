@@ -55,4 +55,24 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V24 Ultra — resiliência PWA/offline, estado persistido, gráficos SVG interativos, busca fuzzy, simulador HEALGO, perfil eleitoral visual, exportação e acessibilidade.
+V27 — Observatório de Dados Cívicos e Eleitorais.
+
+### Camadas atuais
+- Dashboard municipal e eleitoral
+- Eleitorado e perfil demográfico
+- Calculadora de mobilidade e custo relativo à renda
+- Saneamento e saúde com cálculos derivados explicitados
+- Candidaturas e Eleitoral 360° com proveniência de snapshots
+- Linha do tempo eleitoral baseada em fontes oficiais
+- Orçamento, exportação e mapa de evidências
+- Central de qualidade, fontes e inspeção de dados
+- PWA com cache local para recursos da aplicação
+
+### Estado da sincronização eleitoral
+A automação de candidatos do TSE está preparada para capturar o universo de Goiás e produzir snapshots com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas.
+
+### Limitações editoriais
+- Dados de anos-base diferentes não são tratados como uma série homogênea sem indicação explícita.
+- Cálculos derivados são identificados como derivados.
+- Denúncias, processos e situações cadastrais são apresentados de forma descritiva, sem inferência de culpa ou mérito.
+- O observatório não produz ranking, recomendação eleitoral ou previsão de resultado.
