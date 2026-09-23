@@ -81,12 +81,12 @@ export function DashboardMetrics() {
     { label: '2026', value: d.electoral.electorate, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
   ];
   const populationDelta = population2026 - population2022;
-  const metricDetails = [
+  const metricDetails: readonly MetricDetail[] = [
     { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
     { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot da 28ª Zona', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate },
     { label: 'Inclusão eleitoral', value: formatNumber(inclusionCount), caption: formatNumber(indigenousElectorate) + ' eleitores indígenas registrados', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
     { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população 2026 ÷ área territorial', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
-  ] satisfies readonly MetricDetail[];
+  ];
 
   return (
     <section id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dashboard-title">
