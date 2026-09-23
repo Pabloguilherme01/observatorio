@@ -228,6 +228,11 @@ async function main() {
       },
     };
 
+    if (state === 'unchanged') {
+      console.log(JSON.stringify({ state, snapshotId, rowsRead, matched: allMatches.length, added: 0, removed: 0, changed: 0 }));
+      return;
+    }
+
     const json = JSON.stringify(payload, null, 2) + '\n';
     writeFileSync(OUTPUT, json, 'utf8');
     writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '\n', 'utf8');
