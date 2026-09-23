@@ -101,11 +101,11 @@ export default defineConfig({
         categories: ['public-services', 'education'],
         prefer_related_applications: false,
         icons: [
-          { src: '/observatorio/pwa-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-          { src: '/observatorio/pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
+          { src: '/observatorio/pwa-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: '/observatorio/pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
         ],
       },
-      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
+      includeAssets: ['pwa-192.png', 'pwa-512.png', 'og-cover.png', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         navigateFallback: '/observatorio/index.html',
