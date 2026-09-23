@@ -41,9 +41,15 @@ export function PublicDataPulse() {
               <span className="text-[10px] text-slate-500">EPT técnica</span>
             </div>
           </div>
-          <p className="mt-4 text-xs leading-5 text-slate-500">
-            Os resultados municipais do Ideb 2025 já foram publicados pelo Inep. Este snapshot ainda não materializou a extração municipal pontual; por isso a faixa local não é tratada como dado municipal oficial até a captura correspondente.
-          </p>
+          <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-200">Ideb 2025 · referência secundária</span>
+              <strong className="text-lg text-white">{education?.ideb2025Range?.map(value => value.toFixed(1).replace('.', ',')).join('–')}</strong>
+            </div>
+            <p className="mt-2 text-xs leading-5 text-slate-400">
+              Faixa registrada no levantamento de origem com referência ao QEdu. O Inep confirma a publicação dos resultados municipais de 2025, mas o ponto municipal oficial ainda não foi materializado neste snapshot; por isso esta faixa não é apresentada como nota municipal oficial.
+            </p>
+          </div>
         </Card>
 
         <Card>
