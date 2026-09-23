@@ -35,6 +35,8 @@ test.describe('Observatório · jornada E2E', () => {
   });
 
   test('navega pelo AccessibleRegionMap por teclado', async ({ page }) => {
+    await page.locator('#contexto').scrollIntoViewIfNeeded();
+    await expect(page.locator('#contexto')).toBeVisible();
     const map = page.getByTestId('accessible-region-map');
     await map.scrollIntoViewIfNeeded();
     await map.getByTestId('region-option').first().focus();
@@ -69,6 +71,8 @@ test.describe('Observatório · jornada E2E', () => {
   });
 
   test('módulos TSE comunicam honestamente seu estado de captura', async ({ page }) => {
+    await page.locator('#eleitoral360').scrollIntoViewIfNeeded();
+    await expect(page.locator('#eleitoral360')).toBeVisible();
     for (const id of ['contas', 'pesquisas', 'processual']) {
       const section = page.locator('#' + id);
       await section.scrollIntoViewIfNeeded();
