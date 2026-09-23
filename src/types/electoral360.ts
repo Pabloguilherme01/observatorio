@@ -20,6 +20,12 @@ export interface ElectoralCandidateSnapshot {
   readonly status: string;
   readonly snapshotDate: string;
   readonly sourceId: string;
+  readonly municipality?: string;
+  readonly municipalityCodeTse?: string;
+  readonly municipalityCodeIbge?: string;
+  readonly photoUrl?: string | null;
+  readonly instagramUrl?: string | null;
+  readonly sourceResource?: string;
 }
 
 export interface Electoral360Snapshot {
