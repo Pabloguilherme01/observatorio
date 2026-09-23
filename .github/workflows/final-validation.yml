@@ -95,21 +95,31 @@ jobs:
           npm run build
           nohup npm run preview -- --host 127.0.0.1 --port 4173 >/tmp/preview.log 2>&1 &
           for i in {1..30}; do curl -fsS http://127.0.0.1:4173/observatorio/ >/dev/null && break; sleep 2; done
-      - name: Lighthouse mobile
-        run: npx lhci autorun --config=.lighthouserc.mobile.json || { echo '::error::Lighthouse mobile violou score ou budget.'; exit 1; }
-      - name: Lighthouse tablet
-        run: npx lhci autorun --config=.lighthouserc.tablet.json || { echo '::error::Lighthouse tablet violou score ou budget.'; exit 1; }
-      - name: Lighthouse desktop
-        run: npx lhci autorun --config=.lighthouserc.json || { echo '::error::Lighthouse desktop violou score ou budget.'; exit 1; }
-      - run: node scripts/collect-lighthouse-scores.mjs
-      - uses: actions/upload-artifact@v4
+      - name: Lighthouse suites
+        id: lighthouse-suite
+        shell: bash
+        run: |
+          set +e
+          status=0
+          npx lhci autorun --config=.lighthouserc.mobile.json || status=1
+          npx lhci autorun --config=.lighthouserc.tablet.json || status=1
+          npx lhci autorun --config=.lighthouserc.json || status=1
+          node scripts/collect-lighthouse-scores.mjs || status=1
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" -ne 0 ]; then
+            echo '::error::Uma ou mais suítes Lighthouse violaram score ou budget.'
+          fi
+          exit "$status"
+      - name: Upload Lighthouse evidence
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: .lighthouseci
 
   e2e:
     name: 5 · Playwright E2E + visual
-    needs: lighthouse
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -132,7 +142,7 @@ jobs:
 
   axe:
     name: 6 · axe-core runtime
-    needs: e2e
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
