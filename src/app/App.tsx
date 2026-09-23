@@ -46,9 +46,13 @@ function performHashScroll(hash: string) {
 function navigateToHash(hash: string) {
   if (!hash) return;
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
-  window.requestAnimationFrame(() => {
-    performHashScroll(hash);
-  });
+}
+
+function scrollToHashWhenReady(hash: string, attempts = 0) {
+  if (!hash) return;
+  if (performHashScroll(hash)) return;
+  if (attempts >= 8) return;
+  window.requestAnimationFrame(() => scrollToHashWhenReady(hash, attempts + 1));
 }
 
 function DeferredBlock({
@@ -96,18 +100,6 @@ function DeferredBlock({
     return () => window.removeEventListener('observatorio:navigate', onNavigate);
   }, [anchorIds]);
 
-  useEffect(() => {
-    if (!ready) return;
-    const hash = window.location.hash.slice(1);
-    if (!anchorIds.includes(hash)) return;
-    const frame = window.requestAnimationFrame(() => {
-      // O App já anunciou a navegação. Quando o bloco tardio monta, apenas
-      // completa a rolagem, sem disparar o evento novamente.
-      performHashScroll(hash);
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [ready, anchorIds]);
-
   const Component = useMemo(() => lazy(loader), [loader]);
 
   if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
@@ -123,11 +115,19 @@ export function App() {
   useEffect(() => {
     const navigateFromLocation = () => {
       const hash = window.location.hash.slice(1);
-      if (hash) navigateToHash(hash);
+      if (hash) scrollToHashWhenReady(hash);
+    };
+    const onNavigate = (event: Event) => {
+      const hash = (event as CustomEvent<string>).detail;
+      if (hash) scrollToHashWhenReady(hash);
     };
     navigateFromLocation();
     window.addEventListener('hashchange', navigateFromLocation);
-    return () => window.removeEventListener('hashchange', navigateFromLocation);
+    window.addEventListener('observatorio:navigate', onNavigate);
+    return () => {
+      window.removeEventListener('hashchange', navigateFromLocation);
+      window.removeEventListener('observatorio:navigate', onNavigate);
+    };
   }, []);
 
   return (

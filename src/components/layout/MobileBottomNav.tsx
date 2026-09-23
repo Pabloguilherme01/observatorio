@@ -26,13 +26,6 @@ function sectionToTab(id: string) {
 function jump(id: string) {
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
-  window.requestAnimationFrame(() => {
-    const target = document.getElementById(id);
-    if (!target) return;
-    const reduceMotion = document.documentElement.classList.contains('reduced-motion')
-      || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  });
 }
 
 export function MobileBottomNav() {

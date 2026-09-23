@@ -158,10 +158,8 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   const selectResult = (id: string) => {
     onClose();
-    window.setTimeout(() => {
-      window.history.replaceState(null, '', '#' + id);
-      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
-    }, 60);
+    window.history.replaceState(null, '', '#' + id);
+    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
   };
 
   return (
