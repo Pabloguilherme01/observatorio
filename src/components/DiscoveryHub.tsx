@@ -25,7 +25,7 @@ export function DiscoveryHub() {
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map(({ id, title, description, icon: Icon }) => {
             const item = navigation.find(nav => nav.id === id);
-            return <button key={id} type="button" onClick={() => go(id)} className="discovery-card">
+            return <button key={id} type="button" onClick={() => go(id)} className="discovery-card group" aria-label={item ? `${title}: ${item.description}` : title}>
               <span className="grid h-10 w-10 place-items-center rounded-2xl bg-sky-300/10 text-sky-200"><Icon className="h-5 w-5" aria-hidden="true" /></span>
               <span className="mt-4 flex items-center justify-between gap-2 text-left">
                 <strong>{title}</strong><ArrowRight className="h-4 w-4 shrink-0 text-slate-600 transition group-hover:text-sky-300" />
