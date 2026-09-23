@@ -8,19 +8,22 @@ export function ResultsLiveBanner() {
 
   if (phase === 'pre_open') return null;
 
-  if (!data || data.state === 'pending') {
+  if (!data || data.state === 'pending' || phase === 'stale') {
     const ended = phase === 'ended_unavailable';
+    const stale = phase === 'stale';
     return (
       <section className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite">
         <div className="mb-4 flex flex-col gap-3 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
             <div>
-              <strong className="block text-sm text-slate-100">{ended ? 'Feed oficial não capturado localmente' : 'Resultados oficiais · aguardando arquivo TSE'}</strong>
+              <strong className="block text-sm text-slate-100">{stale ? 'Resultados oficiais · feed desatualizado' : ended ? 'Feed oficial não capturado localmente' : 'Resultados oficiais · aguardando arquivo TSE'}</strong>
               <span className="text-xs leading-5 text-slate-500">
-                {ended
-                  ? 'A janela prevista terminou sem um feed oficial validado neste observatório.'
-                  : 'Nenhum resultado é inferido ou preenchido manualmente; o painel só acende quando o arquivo oficial passa pela validação local.'}
+                {stale
+                  ? `O último arquivo recebido foi capturado em ${data?.capturedAt ? new Date(data.capturedAt).toLocaleString('pt-BR') : 'horário desconhecido'}. O observatório mantém os dados sem rotulá-los como ao vivo até nova captura válida.`
+                  : ended
+                    ? 'A janela prevista terminou sem um feed oficial validado neste observatório.'
+                    : 'Nenhum resultado é inferido ou preenchido manualmente; o painel só acende quando o arquivo oficial passa pela validação local.'}
               </span>
             </div>
           </div>
@@ -36,7 +39,11 @@ export function ResultsLiveBanner() {
   const detail = data.items.length
     ? `${data.items.length} registros recebidos`
     : 'Nenhum registro municipal no feed atual';
-  const integrity = data.integrity?.jwsVerified === true ? 'assinatura JWS verificada' : 'arquivo validado pelo contrato local';
+  const integrity = data.integrity?.jwsVerified === true || data.integrity?.signatureStatus === 'verified'
+    ? 'assinatura verificada'
+    : data.integrity?.signatureStatus === 'unavailable'
+      ? 'assinatura não disponível'
+      : 'contrato local validado';
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite">
