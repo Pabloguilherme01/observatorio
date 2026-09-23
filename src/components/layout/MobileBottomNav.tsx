@@ -36,10 +36,17 @@ export function MobileBottomNav() {
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
     observed.forEach(node => observer.observe(node));
+    const onNavigate = (event: Event) => {
+      const id = (event as CustomEvent<string>).detail;
+      if (observedIds.includes(id)) setActiveSection(id);
+      else if (thematicIds.has(id)) setActiveSection('descubra');
+    };
     window.addEventListener('hashchange', updateFromHash);
+    window.addEventListener('observatorio:navigate', onNavigate);
     return () => {
       observer.disconnect();
       window.removeEventListener('hashchange', updateFromHash);
+      window.removeEventListener('observatorio:navigate', onNavigate);
     };
   }, []);
 
