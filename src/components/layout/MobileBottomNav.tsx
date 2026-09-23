@@ -1,9 +1,10 @@
-import { Compass, FileSearch, Home, Menu, Search } from 'lucide-react';
+import { Compass, FileSearch, Home, Menu, Search, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const items = [
   { id: 'dashboard', label: 'Início', icon: Home },
   { id: 'descubra', label: 'Explorar', icon: Compass },
+  { id: 'instagram', label: 'Compartilhar', icon: Zap },
   { id: 'fontes', label: 'Fontes', icon: FileSearch },
 ] as const;
 
@@ -19,8 +20,8 @@ export function MobileBottomNav() {
   const [activeSection, setActiveSection] = useState('dashboard');
 
   useEffect(() => {
-    const observedIds = ['dashboard', 'descubra', 'fontes'];
-    const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'dados', 'qualidade', 'evidencias', 'acao', 'instagram']);
+    const observedIds = ['dashboard', 'descubra', 'instagram', 'fontes'];
+    const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'dados', 'qualidade', 'evidencias', 'acao']);
     const allObservedIds = [...observedIds, ...thematicIds];
     const observed = allObservedIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const updateFromHash = () => {
