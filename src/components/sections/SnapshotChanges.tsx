@@ -1,4 +1,4 @@
-import { Activity, ArrowDownRight, ArrowUpRight, Database, Minus } from 'lucide-react';
+import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from 'lucide-react';
 import generated from '../../data/generated/tse2026-candidates.json';
 
 export function SnapshotChanges() {
@@ -24,7 +24,28 @@ export function SnapshotChanges() {
           <Metric icon={ArrowDownRight} label="Removidos" value={diff.removed} />
           <Metric icon={Activity} label="Alterados" value={diff.changed} />
         </div>
-        <div className="mt-5 rounded-2xl border border-white/8 bg-black/10 p-4">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
+            <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-600">Captura local</div>
+            <strong className="mt-2 block text-sm text-white">
+              {generated.meta.downloadedAt
+                ? new Date(generated.meta.downloadedAt).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
+                : 'Não registrada'}
+            </strong>
+            <p className="mt-1 text-xs leading-5 text-slate-500">
+              {generated.meta.matchedRows} registros da watchlist encontrados em {generated.meta.sourceRows} registros processados.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
+            <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-600">Cobertura</div>
+            <strong className="mt-2 block text-sm text-white">Recorte editorial · watchlist</strong>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Não representa o universo completo de candidaturas. A base oficial permanece disponível no TSE.</p>
+            <a href={generated.meta.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">
+              Abrir fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+        <div className="mt-4 rounded-2xl border border-white/8 bg-black/10 p-4">
           {hasChanges ? (
             <div className="text-sm text-slate-300">Existem diferenças no snapshot atual. Abra o Eleitoral 360° para consultar os registros afetados.</div>
           ) : (
