@@ -1,4 +1,4 @@
-import { Copy, Download, Image as ImageIcon } from 'lucide-react';
+import { Braces, Copy, Download, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
@@ -49,6 +49,12 @@ export function DataExportActions() {
     window.setTimeout(() => setStatus(''), 1800);
   };
 
+  const exportJson = () => {
+    const payload = { edition: d.meta.edition, datasetVersion: EDITION, generatedAt: new Date().toISOString(), data: d };
+    downloadBlob(`observatorio-aguas-lindas-${EDITION.toLowerCase()}.json`, JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+    flash(`JSON ${EDITION} exportado`);
+  };
+
   const exportCsv = () => {
     downloadBlob(`observatorio-aguas-lindas-${EDITION.toLowerCase()}.csv`, toCsv(rows), 'text/csv;charset=utf-8');
     flash(`CSV ${EDITION} exportado`);
@@ -97,9 +103,10 @@ export function DataExportActions() {
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados e exportação</div>
           <h3 className="mt-2 text-xl font-black text-white">Leve os dados para fora da aplicação</h3>
-          <p className="mt-1 text-sm text-slate-400">CSV com categoria, unidade, status, fonte e data de referência; metadados JSON e card 1080×1920.</p>
+          <p className="mt-1 text-sm text-slate-400">CSV com categoria, unidade, status, fonte e data de referência; JSON do dataset normalizado; metadados e card 1080×1920.</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
           <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
           <button type="button" onClick={exportStory} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><ImageIcon className="h-4 w-4" aria-hidden="true" />Story</button>
           <button type="button" onClick={copyMetadata} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
