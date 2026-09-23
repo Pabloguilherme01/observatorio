@@ -127,6 +127,9 @@ export default defineConfig({
         ],
         cleanupOutdatedCaches: true,
         navigateFallback: 'index.html',
+        clientsClaim: true,
+        skipWaiting: true,
+
       },
     }),
   ],
