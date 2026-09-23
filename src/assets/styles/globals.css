@@ -203,3 +203,243 @@ body{overscroll-behavior-y:none}
 }
 
 .isCompactViewport{min-width:0;max-width:100%;}
+
+
+/* Mobile UX hardening v2026-09
+   Keep this block last so it wins over legacy mobile overrides. */
+:root{
+  --mobile-page-gutter:16px;
+  --mobile-nav-height:74px;
+}
+html,body,#root{min-width:0;max-width:100%;overflow-x:hidden}
+body{-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
+img,svg,video,canvas{max-width:100%;height:auto}
+button,a,input,select,textarea{font:inherit}
+button,a{touch-action:manipulation}
+
+@media (max-width:767px){
+  .mx-auto.max-w-7xl,
+  .mx-auto.max-w-6xl,
+  .mx-auto.max-w-5xl{
+    width:100%;
+    max-width:100%;
+    padding-left:var(--mobile-page-gutter);
+    padding-right:var(--mobile-page-gutter);
+  }
+
+  main > section{
+    scroll-margin-top:74px;
+  }
+
+  .site-header,
+  .site-header-inner{
+    min-height:58px;
+  }
+
+  .site-header-inner{
+    padding-left:var(--mobile-page-gutter);
+    padding-right:var(--mobile-page-gutter);
+  }
+
+  .site-brand{
+    min-width:0;
+    max-width:58vw;
+  }
+  .site-brand span:first-child,
+  .site-brand span:last-child{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .hero-shell{
+    padding:28px var(--mobile-page-gutter) 34px;
+  }
+  .hero-shell > div{
+    min-width:0;
+  }
+  .hero-shell h1{
+    max-width:none;
+    font-size:clamp(2rem,9.6vw,2.8rem);
+    line-height:1.02;
+    letter-spacing:-.035em;
+    overflow-wrap:anywhere;
+  }
+  .hero-shell p{
+    max-width:none;
+    font-size:15px;
+    line-height:1.55;
+  }
+  .hero-shell .hero-badges{
+    margin-right:-2px;
+    padding-right:2px;
+  }
+  .hero-shell .hero-kpis{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+  .hero-shell .hero-kpis > div{
+    padding:12px 13px;
+  }
+
+  .grid{
+    min-width:0;
+  }
+  .grid > *{
+    min-width:0;
+  }
+
+  .rounded-3xl,
+  .rounded-2xl{
+    max-width:100%;
+  }
+
+  .text-6xl,
+  .text-5xl,
+  .text-4xl{
+    overflow-wrap:anywhere;
+  }
+
+  .metric-interactive{
+    width:100%;
+  }
+  .metric-interactive > div{
+    min-width:0;
+    height:auto;
+  }
+
+  .today-rail,
+  .topic-rail,
+  .mobile-rail{
+    margin-right:calc(var(--mobile-page-gutter) * -1);
+    padding-right:var(--mobile-page-gutter);
+    padding-left:0;
+  }
+
+  .today-card{
+    flex-basis:min(82vw,300px);
+  }
+
+  .search-modal-backdrop,
+  .command-overlay{
+    padding-top:max(8px,env(safe-area-inset-top));
+    padding-bottom:max(12px,env(safe-area-inset-bottom));
+  }
+
+  .search-modal-panel,
+  .command-panel{
+    width:100%;
+    max-width:100%;
+    max-height:calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    margin-top:0;
+    border-radius:20px;
+  }
+
+  .search-results{
+    max-height:52dvh;
+  }
+
+  .mobile-bottom-nav{
+    left:0;
+    right:0;
+    bottom:0;
+    width:100%;
+    min-height:var(--mobile-nav-height);
+    padding-left:5px;
+    padding-right:5px;
+    padding-bottom:max(6px,env(safe-area-inset-bottom));
+    padding-top:6px;
+    box-sizing:border-box;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+  }
+
+  .mobile-bottom-nav button{
+    min-width:0;
+    min-height:54px;
+    padding:5px 2px;
+    gap:3px;
+    border-radius:13px;
+  }
+
+  .mobile-bottom-nav button span{
+    font-size:9px;
+    letter-spacing:-.01em;
+  }
+
+  .section-header,
+  [aria-labelledby]{
+    min-width:0;
+  }
+
+  table{
+    display:block;
+    width:100%;
+    max-width:100%;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  pre{
+    max-width:100%;
+    overflow:auto;
+    white-space:pre;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  [role="dialog"]{
+    max-width:calc(100vw - 16px);
+  }
+
+  input,select,textarea{
+    min-width:0;
+  }
+
+  .candidate-card,
+  .summary-stat,
+  .summary-evidence,
+  .today-card,
+  .topic-card{
+    min-width:0;
+  }
+}
+
+@media (max-width:390px){
+  :root{
+    --mobile-page-gutter:14px;
+    --mobile-nav-height:72px;
+  }
+
+  .mobile-bottom-nav button{
+    min-height:52px;
+    border-radius:12px;
+  }
+  .mobile-bottom-nav button span{
+    font-size:8px;
+  }
+
+  .hero-shell{
+    padding-top:24px;
+    padding-bottom:30px;
+  }
+
+  .hero-shell h1{
+    font-size:clamp(1.85rem,10vw,2.25rem);
+  }
+}
+
+/* Prevent accidental horizontal growth from utility-generated children. */
+@media (max-width:767px){
+  .flex:not(.hero-badges):not(.today-rail):not(.topic-rail):not(.mobile-rail){
+    min-width:0;
+  }
+  .flex > *{
+    min-width:0;
+  }
+  .truncate,
+  .line-clamp-1,
+  .line-clamp-2,
+  .line-clamp-3{
+    min-width:0;
+  }
+}
