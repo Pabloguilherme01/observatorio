@@ -443,3 +443,8 @@ button,a{touch-action:manipulation}
     min-width:0;
   }
 }
+
+.pwa-update-banner{position:fixed;left:12px;right:12px;bottom:88px;z-index:70;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid rgba(125,211,252,.16);border-radius:16px;background:rgba(12,19,27,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 18px 44px rgba(0,0,0,.28);color:#dcefff;font-size:12px;font-weight:750}
+.pwa-update-button{min-height:40px;min-width:86px;padding:0 12px;border:0;border-radius:11px;background:#a5e8ff;color:#071019;font-size:12px;font-weight:900}
+@media(min-width:768px){.pwa-update-banner{left:auto;right:18px;bottom:18px;max-width:420px}}
+@media(max-width:380px){.pwa-update-banner{bottom:82px;left:9px;right:9px;font-size:11px}.pwa-update-button{min-width:78px}}
