@@ -3,7 +3,7 @@ name: Sync TSE 2026
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3,9,15,21 * * *'
+    - cron: '0 */4 * * *'
 
 concurrency:
   group: tse-sync-2026
