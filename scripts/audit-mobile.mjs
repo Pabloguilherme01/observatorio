@@ -14,6 +14,7 @@ const files = {
   trust: read('src/components/ProjectTrustPanel.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
+  index: read('index.html'),
 };
 
 const errors = [];
@@ -33,7 +34,9 @@ must(files.css.includes('scroll-snap-type'), 'rails móveis usam snap para desco
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-must(files.version.includes("APP_VERSION = '41.0.0'"), 'versão V41 sincronizada com a camada mobile');
+must(files.version.includes("APP_VERSION = '42.0.0'"), 'versão V42 sincronizada com a camada mobile');
+must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
+must(files.index.includes('apple-mobile-web-app-capable'), 'metadados de instalação iOS estão presentes');
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
