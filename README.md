@@ -70,6 +70,7 @@ V40.0 — Observatório de Dados Cívicos e Eleitorais.
 - Compartilhamento individual por dado via Web Share API, fallback de cópia e WhatsApp.
 - Trilhos horizontais mobile-first com scroll-snap para navegação por toque.
 - Auditoria estática específica para mobile e integração dessa checagem ao CI.
+- Kit de distribuição para Instagram com Story 1080×1920, Post 1080×1350, legenda, UTM e Web Share com arquivo.
 
 ### Foco V39
 - Camada de linguagem simples/técnica com preferência persistida no navegador.
