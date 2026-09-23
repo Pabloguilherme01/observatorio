@@ -1,4 +1,5 @@
 import { Search, X } from 'lucide-react';
+import { observatorioData as d } from '../../data/observatorioData';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const entries = [
@@ -9,6 +10,13 @@ const entries = [
   ['Pesquisas', 'politica'],
   ['Orçamento', 'orcamento'],
   ['Fontes e metodologia', 'fontes'],
+, ['Eleitorado: 125.062', 'eleitorado'], ['População 2026: 249.978', 'dashboard'], ['Tarifa Brasília: R$ 11,45', 'transporte'], ['LOA 2026: R$ 771,3 milhões', 'orcamento'], ['Pesquisa GO-04133/2026', 'politica'], ['Fontes e metodologia', 'fontes'],
+];
+
+const dataEntries = [
+  ...d.sources.map(source => [source.label, 'fontes'] as const),
+  ...d.candidates.map(candidate => [candidate.name, 'politica'] as const),
+  ...d.transport.routes.map(route => [route.label, 'transporte'] as const),
 ];
 
 export function SearchModal({ open, onClose }: { readonly open: boolean; readonly onClose: () => void }) {
@@ -24,7 +32,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     return () => window.removeEventListener('keydown', handleKey);
   }, [open, onClose]);
 
-  const filtered = useMemo(() => entries.filter(([label]) => label.toLowerCase().includes(query.toLowerCase())), [query]);
+  const filtered = useMemo(() => [...entries, ...dataEntries].filter(([label], index, all) => all.findIndex(item => item[0] === label) === index && label.toLowerCase().includes(query.trim().toLowerCase())), [query]);
   if (!open) return null;
 
   return (
