@@ -111,7 +111,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     }
     if (q.includes('ideb')) {
       const range = d.education?.ideb2025Range;
-      return range ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education.sourceId } : null;
+      return range && d.education ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education.sourceId } : null;
     }
     if (q.includes('heal') || q.includes('hospital')) {
       const total = (d.health?.currentStatedWardBeds ?? 0) + (d.health?.currentStatedIcuBeds ?? 0);

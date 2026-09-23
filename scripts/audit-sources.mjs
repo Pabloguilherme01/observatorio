@@ -8,23 +8,42 @@ const urls = [...new Set([...sourceText.matchAll(/url:\s*'(https?:\/\/[^']+)'/g)
 const results = [];
 const concurrency = 4;
 
-async function check(url) {
+const MAX_ATTEMPTS = 2;
+
+async function attempt(url) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
-  const started = Date.now();
   try {
-    const response = await fetch(url, {
+    return await fetch(url, {
       method: 'GET',
       redirect: 'follow',
       signal: controller.signal,
       headers: { 'user-agent': 'observatorio-aguas-lindas-source-audit/1.0' },
     });
-    results.push({ url, status: response.status, ms: Date.now() - started });
-  } catch (error) {
-    results.push({ url, status: null, ms: Date.now() - started, error: error instanceof Error ? error.message : String(error) });
   } finally {
     clearTimeout(timeout);
   }
+}
+
+async function check(url) {
+  const started = Date.now();
+  let lastError = null;
+  for (let attemptNumber = 1; attemptNumber <= MAX_ATTEMPTS; attemptNumber++) {
+    try {
+      const response = await attempt(url);
+      // 429/5xx may be transient — retry once before reporting.
+      if ((response.status === 429 || response.status >= 500) && attemptNumber < MAX_ATTEMPTS) {
+        lastError = `HTTP ${response.status}`;
+        continue;
+      }
+      results.push({ url, status: response.status, ms: Date.now() - started });
+      return;
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : String(error);
+      if (attemptNumber < MAX_ATTEMPTS) continue;
+    }
+  }
+  results.push({ url, status: null, ms: Date.now() - started, error: lastError ?? 'unknown error' });
 }
 
 for (let index = 0; index < urls.length; index += concurrency) {
