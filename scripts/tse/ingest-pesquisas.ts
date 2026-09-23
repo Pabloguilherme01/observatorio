@@ -21,7 +21,7 @@ const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
 
 const pesquisas = rows.map(row => {
-  const municipality = valueOf(row, ['NM_UE']);
+  const municipality = valueOf(row, ['NM_UE'], false);
   return {
     idPesquisa: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
     registroTSE: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
