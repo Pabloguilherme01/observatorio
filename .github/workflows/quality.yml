@@ -42,6 +42,5 @@ jobs:
         run: npm run typecheck
       - name: Verify JWS implementation
         run: npm run test:jws
-
       - name: Build
         run: npm run build
