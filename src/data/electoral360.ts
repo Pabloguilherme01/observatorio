@@ -7,7 +7,7 @@ const generatedData = generated as {
     downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced' | 'local_filter_pending';
   };
-  coverage: 'watchlist' | 'municipality_required';
+  coverage: 'watchlist' | 'municipality_required' | 'municipality';
   watchlist: string[];
   matched: Array<{
     sqCandidate: string;
@@ -16,6 +16,9 @@ const generatedData = generated as {
     party: string | null;
     office: string | null;
     status: string | null;
+    municipality?: string | null;
+    photoUrl?: string | null;
+    instagramUrl?: string | null;
   }>;
   diff: {
     state: string;
@@ -26,21 +29,9 @@ const generatedData = generated as {
   };
 };
 
-const candidateStatus = (() => {
-  switch (generatedData.meta.state) {
-    case 'first_capture':
-    case 'synced':
-    case 'unchanged':
-    case 'changed':
-      return 'captured' as const;
-    case 'stale':
-    case 'failed':
-    case 'local_filter_pending':
-    case 'not_synced':
-    default:
-      return 'pending' as const;
-  }
-})();
+const candidateStatus = ['first_capture', 'synced', 'unchanged', 'changed'].includes(generatedData.meta.state)
+  ? ('captured' as const)
+  : ('pending' as const);
 
 const snapshotDate = generatedData.meta.downloadedAt ? generatedData.meta.downloadedAt.slice(0, 10) : '—';
 
@@ -48,7 +39,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'A lista pública mostra apenas candidaturas com vínculo municipal comprovado com Águas Lindas de Goiás. Dados pessoais e eleitorais ficam separados por fonte e data.',
+    description: 'A lista pública mostra apenas candidaturas filtradas para Águas Lindas de Goiás. Redes sociais e fotos são mantidas como atributos separados da identidade eleitoral.',
     status: candidateStatus,
     frequency: 'conforme captura oficial',
     sourceId: 'tse-candidatos-2026',
@@ -75,7 +66,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'accounts',
     title: 'Contas eleitorais',
-    description: 'Prestação de contas, CNPJ de campanha e movimentações publicadas pelo TSE. A camada deve ser tratada como série temporal.',
+    description: 'Prestação de contas, CNPJ de campanha e movimentações publicadas pelo TSE.',
     status: 'cataloged',
     frequency: 'conforme publicação',
     sourceId: 'tse-contas-2026',
