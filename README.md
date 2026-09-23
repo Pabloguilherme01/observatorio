@@ -62,7 +62,13 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V39.0 — Observatório de Dados Cívicos e Eleitorais.
+V40.0 — Observatório de Dados Cívicos e Eleitorais.
+
+### Foco V40
+- Hub de descoberta no primeiro terço da página, com trilhas por assunto, leitura de 5 minutos e radar de atualização.
+- Compartilhamento individual por dado via Web Share API, fallback de cópia e WhatsApp.
+- Trilhos horizontais mobile-first com scroll-snap para navegação por toque.
+- Auditoria estática específica para mobile e integração dessa checagem ao CI.
 
 ### Foco V39
 - Camada de linguagem simples/técnica com preferência persistida no navegador.
