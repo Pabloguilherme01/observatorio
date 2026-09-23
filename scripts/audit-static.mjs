@@ -35,6 +35,7 @@ must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de a
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("base: '/observatorio/'"), 'Vite usa base compatível com GitHub Pages');
 must(vite.includes("start_url: '/observatorio/'") && vite.includes("scope: '/observatorio/'"), 'PWA mantém start_url e scope no subcaminho publicado');
+ must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json"), 'build gera API pública versionada a partir do dataset da interface');
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
