@@ -1,10 +1,11 @@
-import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
 import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import { useEffect, useState } from 'react';
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
   if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
@@ -30,6 +31,14 @@ export function HeroCountdown() {
   const loa = d.budget.totalBrl;
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode: languageMode, setMode: setLanguageMode } = useLanguageMode();
+  const [electionMode, setElectionMode] = useState(false);
+  useEffect(() => {
+    const sync = () => setElectionMode(localStorage.getItem('observatorio-v42-election-mode') === '1');
+    sync();
+    window.addEventListener('observatorio:election-mode-changed', sync);
+    return () => window.removeEventListener('observatorio:election-mode-changed', sync);
+  }, []);
+  const toggleElectionMode = () => window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: !electionMode }));
 
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
@@ -60,9 +69,21 @@ export function HeroCountdown() {
             <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
               <Command className="h-4 w-4" aria-hidden="true" /> Central de comandos
             </button>
+            <button type="button" onClick={toggleElectionMode} aria-pressed={electionMode} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-4 py-2.5 text-sm font-bold text-amber-100 transition hover:bg-amber-300/[0.10]">
+              <Vote className="h-4 w-4" aria-hidden="true" /> {electionMode ? 'Sair do Modo Eleição' : 'Modo Eleição'}
+            </button>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Indicadores de referência da edição">
+          <div className="election-mode-actions mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.045] p-4" aria-label="Ações cívicas prioritárias">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-200">Modo Eleição · acesso rápido</div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              <a href="https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">e-Título · local e serviços</a>
+              <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">DivulgaCandContas</a>
+              <a href="https://www.tse.jus.br/servicos-eleitorais/servicos/pardal" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">Pardal</a>
+            </div>
+          </div>
+
+          <div className="hero-kpis mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Indicadores de referência da edição">
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">População 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{population.toLocaleString('pt-BR')}</div>
