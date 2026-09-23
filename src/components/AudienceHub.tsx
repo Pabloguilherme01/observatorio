@@ -48,9 +48,11 @@ export function AudienceHub() {
 
   const shareUrl = window.location.origin + window.location.pathname;
   const modeHint = useMemo(
-    () => mode === 'simple'
-      ? 'Números claros. Toque para ver a fonte.'
-      : 'Valores, método, data e fonte ficam disponíveis em cada dado.',
+    () => mode === 'technical'
+      ? 'Valores, método, data e fonte ficam disponíveis em cada dado.'
+      : mode === 'summary'
+        ? 'Os principais assuntos e números, sem a camada técnica.'
+        : 'Números claros. Toque para ver a fonte.',
     [mode],
   );
 
@@ -76,7 +78,7 @@ export function AudienceHub() {
               </span>
               <span className="mt-3 block text-sm font-black text-white">{label}</span>
               <span className="mt-1 block text-xs leading-5 text-slate-500">
-                {mode === 'simple' ? simple : description}
+                {mode === 'technical' ? description : simple}
               </span>
               {mode === 'technical' && (
                 <span className="technical-detail mt-2 block text-[10px] leading-4 text-slate-600">Fonte, data e método disponíveis.</span>
@@ -121,7 +123,7 @@ export function AudienceHub() {
           <div className="mb-3 flex items-end justify-between gap-2">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Hoje</div>
-              <p className="mt-1 text-xs text-slate-500">{mode === 'simple' ? 'Quatro números para começar.' : 'Quatro números com acesso à fonte.'}</p>
+              <p className="mt-1 text-xs text-slate-500">{mode === 'technical' ? 'Quatro números com acesso à fonte.' : mode === 'summary' ? 'Os quatro números principais.' : 'Quatro números para começar.'}</p>
             </div>
           </div>
 
@@ -129,7 +131,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">LOA 2026</span>
               <strong className="mt-2 block text-2xl font-black text-white">{brl(d.budget.totalBrl)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'orçamento' : 'previsto para 2026'}</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'previsto para 2026' : 'orçamento'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#orcamento" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
                 {mode === 'technical' && <ShareDataButton title="LOA 2026 · Águas Lindas" text={'A LOA 2026 prevê ' + brl(d.budget.totalBrl) + ' para Águas Lindas de Goiás.'} url={shareUrl + '#orcamento'} compact />}
@@ -139,7 +141,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Eleitorado</span>
               <strong className="mt-2 block text-2xl font-black text-white">{d.electoral.electorate.toLocaleString('pt-BR')}</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'eleitores' : 'snapshot local'}</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'snapshot local' : 'eleitores'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#eleitorado" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
                 {mode === 'technical' && <ShareDataButton title="Eleitorado 2026 · Águas Lindas" text={'O snapshot local usado pelo Observatório registra ' + d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores em Águas Lindas de Goiás.'} url={shareUrl + '#eleitorado'} compact />}
@@ -149,7 +151,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Transporte</span>
               <strong className="mt-2 block text-2xl font-black text-white">{brl(fare)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'por trecho' : 'por trecho · Brasília'}</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'por trecho · Brasília' : 'por trecho'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#transporte" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Calcular</a>
                 {mode === 'technical' && <ShareDataButton title="Transporte · Águas Lindas → Brasília" text={'A tarifa de referência considerada pelo Observatório é ' + brl(fare) + ' por trecho para Brasília.'} url={shareUrl + '#transporte'} compact />}
@@ -159,7 +161,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Saneamento</span>
               <strong className="mt-2 block text-2xl font-black text-white">{sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'esgoto' : 'serviço público de esgoto'}</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'serviço público de esgoto' : 'esgoto'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#saude" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
                 {mode === 'technical' && <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado.'} url={shareUrl + '#saude'} compact />}

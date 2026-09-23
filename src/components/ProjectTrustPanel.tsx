@@ -18,7 +18,7 @@ export function ProjectTrustPanel() {
               <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> Confiança e método
             </div>
             <h2 id="principles-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Como conferir os dados</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode === 'simple' ? 'Cada número tem fonte e data. Veja a origem antes de tirar uma conclusão.' : 'Fonte, data, natureza do dado e limitações acompanham a leitura. O projeto organiza informação pública e não substitui os órgãos oficiais.'}</p>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode !== 'technical' ? 'Cada número tem fonte e data. Veja a origem antes de tirar uma conclusão.' : 'Fonte, data, natureza do dado e limitações acompanham a leitura. O projeto organiza informação pública e não substitui os órgãos oficiais.'}</p>
           </div>
           {mode === 'technical' && <div className="freshness-pill">
             <span className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Edição / atualização</span>
@@ -30,22 +30,22 @@ export function ProjectTrustPanel() {
           <div className="trust-card">
             <CheckCircle2 className="h-4 w-4 text-emerald-300" aria-hidden="true" />
             <strong>Veja o dado</strong>
-            <p>{mode === 'simple' ? 'Número ou cálculo, sem misturar os dois.' : 'Números e cálculos ficam identificados como observados ou derivados.'}</p>
+            <p>{mode !== 'technical' ? 'Número ou cálculo, sem misturar os dois.' : 'Números e cálculos ficam identificados como observados ou derivados.'}</p>
           </div>
           <div className="trust-card">
             <CheckCircle2 className="h-4 w-4 text-emerald-300" aria-hidden="true" />
             <strong>Confira a fonte</strong>
-            <p>{mode === 'simple' ? 'Abra a referência quando quiser conferir.' : `${official} fontes catalogadas como oficiais nesta edição.`}</p>
+            <p>{mode !== 'technical' ? 'Abra a referência quando quiser conferir.' : `${official} fontes catalogadas como oficiais nesta edição.`}</p>
           </div>
           <div className="trust-card">
             <CheckCircle2 className="h-4 w-4 text-emerald-300" aria-hidden="true" />
             <strong>Entenda a limitação</strong>
-            <p>{mode === 'simple' ? 'Dados podem ter datas de referência diferentes.' : 'Snapshots diferentes não são misturados como se fossem a mesma fotografia.'}</p>
+            <p>{mode !== 'technical' ? 'Dados podem ter datas de referência diferentes.' : 'Snapshots diferentes não são misturados como se fossem a mesma fotografia.'}</p>
           </div>
           <div className="trust-card">
             <GitPullRequest className="h-4 w-4 text-sky-300" aria-hidden="true" />
             <strong>Encontrou um erro?</strong>
-            <p>{mode === 'simple' ? 'Envie a fonte para análise.' : 'Envie uma correção com a fonte ou evidência para análise do projeto.'}</p>
+            <p>{mode !== 'technical' ? 'Envie a fonte para análise.' : 'Envie uma correção com a fonte ou evidência para análise do projeto.'}</p>
             <a href={correctionUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">
               Propor correção <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
             </a>

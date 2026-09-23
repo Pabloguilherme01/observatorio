@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { STORAGE_NAMESPACE } from '../config/version';
 
-type LanguageMode = 'simple' | 'technical';
+type LanguageMode = 'summary' | 'simple' | 'technical';
 
 interface LanguageModeContextValue {
   readonly mode: LanguageMode;
@@ -15,7 +15,7 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
   const [mode, setModeState] = useState<LanguageMode>(() => {
     try {
       const value = localStorage.getItem(STORAGE_KEY);
-      return value === 'technical' ? 'technical' : 'simple';
+      return value === 'technical' || value === 'summary' ? value : 'simple';
     } catch {
       return 'simple';
     }

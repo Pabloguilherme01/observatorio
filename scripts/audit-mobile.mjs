@@ -59,6 +59,14 @@ must(files.header.includes('desktop-theme-toggle') && files.header.includes('mob
 must(files.css.includes('.mobile-tools-actions') && files.css.includes('.desktop-theme-toggle'), 'CSS possui sistema dedicado para ferramentas móveis');
 must(files.css.includes('overflow-x:hidden') && files.css.includes('overflow-x:clip'), 'contenção horizontal mobile está ativa');
 must(files.css.includes('--mobile-nav-height:66px'), 'altura da navegação inferior mobile está consolidada');
+const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+must(languageToggle.includes("setMode('summary')") && languageToggle.includes("setMode('simple')") && languageToggle.includes("setMode('technical')"), 'os três modos de leitura estão disponíveis no mobile');
+const quiz = read('src/components/sections/QuickQuiz.tsx');
+const quizPrompts = (quiz.match(/prompt:\s*'/g) || []).length;
+must(quizPrompts >= 10, 'quiz possui pelo menos dez perguntas');
+must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual ligado ao total de perguntas');
+must(read('src/components/InstagramSyncHub.tsx').includes('wa.me/?text='), 'WhatsApp contextual está integrado ao fluxo social');
+
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
   errors.forEach(error => console.error(' - ' + error));
@@ -66,7 +74,3 @@ if (errors.length) {
 } else {
   pass('auditoria mobile estática concluída');
 }
-
-
-must(read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('simple')") && read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('technical')"), 'alternância simples/técnico está disponível no mobile');
-must(read('src/components/InstagramSyncHub.tsx').includes('wa.me/?text='), 'WhatsApp contextual está integrado ao fluxo social');
