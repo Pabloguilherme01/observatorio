@@ -6,7 +6,6 @@ import { dispatchInspect } from '../DataInspector';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
-const statusLabel = { captured: 'Capturado', cataloged: 'Catalogado', pending: 'Pendente' } as const;
 const stateLabel: Record<string,string> = { first_capture:'Primeiro snapshot',synced:'Sincronizado',unchanged:'Sem alterações',changed:'Dados alterados',stale:'Desatualizado',failed:'Falha na sincronização',not_synced:'Ainda não sincronizado' };
 
 export function Electoral360() {
@@ -30,7 +29,7 @@ export function Electoral360() {
     <div className="mt-4 grid gap-4 lg:grid-cols-[1.2fr_.8fr]">
       <Card>
         <div className="flex items-start justify-between gap-4"><div><h3 className="text-lg font-black text-white">Perfil documental</h3><p className="mt-1 text-xs leading-5 text-slate-500">Quando o snapshot TSE estiver sincronizado, este perfil passa a usar a captura validada. Até lá, os registros locais da edição permanecem identificados como recorte editorial e não representam o universo completo de candidaturas.</p></div><FileText className="h-5 w-5 text-sky-300"/></div>
-        <div className="mb-3 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">Recorte local: estes registros são usados enquanto o snapshot oficial do TSE permanece <strong className="text-amber-200">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state).toLowerCase()}</strong>. Isso não equivale à lista completa de candidaturas.</div><div className="mt-4 flex flex-wrap gap-2">{d.candidates.map(candidate=><button key={candidate.name} type="button" onClick={()=>setSelectedName(candidate.name)} className={`rounded-xl border px-3 py-2 text-xs font-bold ${candidate.name===fallback.name?'border-sky-300/40 bg-sky-300/10 text-sky-200':'border-white/10 text-slate-400'}`}>{candidate.name}</button>)}</div>
+        <div className="mb-3 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">Recorte local: estes registros são usados enquanto o snapshot oficial do TSE permanece <strong className="text-amber-200">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state).toLowerCase()}</strong>. Isso não equivale à lista completa de candidaturas.</div><div className="mt-4 flex flex-wrap gap-2">{d.candidates.map(candidate=><button key={candidate.name} type="button" onClick={()=>setSelectedName(candidate.name)} className={`rounded-xl border px-3 py-2 text-xs font-bold ${candidate.name===selectedName?'border-sky-300/40 bg-sky-300/10 text-sky-200':'border-white/10 text-slate-400'}`}>{candidate.name}</button>)}</div>
         {!fallback ? <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Selecione um registro para abrir o perfil documental. Nenhum nome é pré-selecionado.</div> : <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <Info label="Identidade" value={fallback.name} />
           <Info label="Situação" value={profileCandidate?.status ?? fallback.status} />
