@@ -143,3 +143,74 @@ html, body, #root { max-width:100%; overflow-x:hidden; }
   .hero-shell .hero-kpis .text-lg{font-size:1.05rem;}
 }
 
+
+
+/* Mobile stability layer: keep layout inside viewport and preserve safe-area. */
+html { min-width: 0; }
+body { min-width: 0; }
+#root { width: 100%; min-width: 0; }
+img, svg, video, canvas { max-width: 100%; }
+button, a, input, select, textarea { max-width: 100%; }
+
+.mobile-bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: none;
+  min-height: 58px;
+  padding: 6px 8px max(6px, env(safe-area-inset-bottom, 0px));
+  align-items: stretch;
+  justify-content: space-around;
+  gap: 4px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: rgba(9,14,20,.92);
+}
+.mobile-bottom-nav button {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 46px;
+  padding: 6px 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 12px;
+  color: #94a3b8;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mobile-bottom-nav button span { overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+@media (max-width: 767px) {
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  .mobile-bottom-nav { display: flex; }
+  .quick-dock { display: none !important; }
+  .sticky.top-0 { isolation: isolate; }
+  .hero-shell { overflow: clip; }
+  .hero-shell .grid { min-width: 0; }
+  .hero-shell .hero-kpis > div,
+  .candidate-data-card,
+  .today-card,
+  .summary-stat,
+  .search-result-row { min-width: 0; }
+  .hero-shell h1,
+  .hero-shell p,
+  .hero-shell a,
+  .hero-shell button { overflow-wrap: anywhere; }
+  .command-overlay,
+  .search-modal-backdrop { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+}
+
+@media (max-width: 390px) {
+  .mobile-bottom-nav { padding-left: 4px; padding-right: 4px; gap: 2px; }
+  .mobile-bottom-nav button { min-height: 48px; font-size: 8px; border-radius: 10px; }
+  .hero-shell { padding-left: 12px; padding-right: 12px; }
+  .hero-shell h1 { font-size: clamp(1.85rem, 11vw, 2.2rem); }
+}
