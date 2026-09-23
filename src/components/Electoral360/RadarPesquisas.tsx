@@ -43,7 +43,7 @@ export function RadarPesquisas() {
           </div>
         ) : (
           <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-            A captura TSE de pesquisas ainda não foi materializada neste snapshot. O pipeline preserva o catálogo oficial como origem.
+            O primeiro snapshot oficial foi materializado. O CSV principal do TSE contém registros, mas nenhum deles correspondeu aos cinco municípios do recorte operacional nesta captura; por isso a interface não inventa pesquisas locais.
           </div>
         )}
 
