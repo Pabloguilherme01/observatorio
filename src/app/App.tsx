@@ -7,8 +7,6 @@ import { ThemeProvider } from '../context/ThemeContext';
 import { ExperienceShell } from '../components/ExperienceShell';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
-import { QuickQuiz } from '../components/sections/QuickQuiz';
-import { ProjectTrustPanel } from '../components/ProjectTrustPanel';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
 
@@ -17,6 +15,7 @@ const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup')
 const loadElectionGroup = () => import('../components/sections/DeferredElectionGroup');
 const loadPublicDataGroup = () => import('../components/sections/DeferredPublicDataGroup');
 const loadEvidenceGroup = () => import('../components/sections/DeferredEvidenceGroup');
+const loadTrustGroup = () => import('../components/sections/DeferredTrustGroup');
 
 function Deferred({ children }: { readonly children: ReactNode }) {
   return (
@@ -103,14 +102,13 @@ export function App() {
           <HeroCountdown />
           <main id="main-content">
             <AudienceHub />
-            <QuickQuiz />
-            <ProjectTrustPanel />
             <ExecutiveSummary />
             <DashboardMetrics />
             <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} />
             <DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} />
             <DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} />
             <DeferredBlock loader={loadPublicDataGroup} anchorIds={['dados', 'instagram']} />
+            <DeferredBlock loader={loadTrustGroup} anchorIds={['principios']} />
             <DeferredBlock loader={loadEvidenceGroup} anchorIds={['qualidade', 'evidencias', 'fontes']} />
           </main>
           <ScrollTopButton />
