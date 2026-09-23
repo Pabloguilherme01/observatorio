@@ -1,8 +1,9 @@
 export const RESULTS_FEED_URL = '/observatorio/data/tse-results.json';
 
 export const RESULTS_WINDOW = {
-  start: '2026-09-30T00:00:00-03:00',
+  start: '2026-10-04T17:00:00-03:00',
   end: '2026-10-26T23:59:59-03:00',
+  note: 'Janela pública de resultados; a preparação técnica do feed ocorre antes dela, sem exibir alerta de apuração ao visitante.',
 } as const;
 
 export const RESULTS_LIVE_MAX_AGE_MS = 15 * 60 * 1000;
