@@ -50,14 +50,6 @@ if (!isDate(payload.capturedAt)) fail('capturedAt inválida.');
 if (Date.parse(payload.capturedAt) > Date.now() + 5 * 60 * 1000) fail('capturedAt está no futuro.');
 if (!Array.isArray(payload.entries)) fail('entries deve ser array.');
 
-const expectedCargoCodes = new Map([
-  ['Presidente', 6257],
-  ['Governador', 6259],
-  ['Senador', 6259],
-  ['Deputado Federal', 6259],
-  ['Deputado Estadual', 6259],
-]);
-
 for (const [index, entry] of (payload.entries ?? []).entries()) {
   if (!entry || typeof entry !== 'object') {
     fail(`entry ${index} inválida.`);
