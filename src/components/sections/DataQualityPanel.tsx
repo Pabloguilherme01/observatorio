@@ -16,6 +16,7 @@ export function DataQualityPanel() {
   const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
   const pollGapPct = Math.max(0, 100 - pollCoveredPct);
   const tseState = generated.meta.state;
+  const tseReady = tseState !== 'not_synced';
   const warnings = [
     pollGapPct > 0 ? 'Pesquisa: ' + pollGapPct.toFixed(2).replace('.', ',') + ' p.p. estão fora das categorias publicadas.' : null,
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
@@ -58,7 +59,7 @@ export function DataQualityPanel() {
           {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
         </div>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-4">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
           <div className="mt-2 text-2xl font-black text-white">{d.sources.length}</div>
