@@ -20,7 +20,8 @@
     "audit:mobile": "node scripts/audit-mobile.mjs",
     "audit:tse-architecture": "node scripts/audit-tse-architecture.mjs",
     "audit:usability": "node scripts/audit-usability.mjs",
-    "audit:sources": "node scripts/audit-sources.mjs"
+    "audit:sources": "node scripts/audit-sources.mjs",
+    "audit:pwa": "node scripts/audit-pwa.mjs"
   },
   "dependencies": {
     "lucide-react": "1.47.0",
