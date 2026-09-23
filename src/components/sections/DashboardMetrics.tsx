@@ -84,7 +84,7 @@ export function DashboardMetrics() {
     { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
     { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot da 28ª Zona', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate },
     { label: 'Inclusão eleitoral', value: formatNumber(inclusionCount), caption: formatNumber(indigenousElectorate) + ' eleitores indígenas registrados', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população 2026 ÷ área territorial', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', status: 'derivado', note: 'Estimativa 2026 dividida pela área territorial.' },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população 2026 ÷ área territorial', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
   ] as const;
 
   return (
