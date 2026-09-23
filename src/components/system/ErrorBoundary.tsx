@@ -3,6 +3,7 @@ import { RefreshCw, TriangleAlert } from 'lucide-react';
 
 interface Props {
   readonly children: ReactNode;
+  readonly fallback?: ReactNode;
 }
 
 interface State {
@@ -24,6 +25,16 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: unknown, info: ErrorInfo): void {
+    const componentStack = info.componentStack?.trim() || '';
+    try {
+      const previous = sessionStorage.getItem('observatorio:last-ui-error');
+      const payload = previous ? JSON.parse(previous) : {};
+      sessionStorage.setItem('observatorio:last-ui-error', JSON.stringify({
+        ...payload,
+        message: error instanceof Error ? error.message : String(error),
+        componentStack,
+      }));
+    } catch {}
     if (import.meta.env.DEV) {
       console.error('Observatório: erro de renderização', error, info);
     }
@@ -35,6 +46,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render(): ReactNode {
     if (!this.state.hasError) return this.props.children;
+    if (this.props.fallback) return this.props.fallback;
 
     return (
       <main className="grid min-h-screen place-items-center bg-[#0b1117] px-6 py-16 text-white">
