@@ -32,8 +32,10 @@ function Deferred({ children }: { readonly children: ReactNode }) {
 
 function DeferredBlock({
   loader,
+  anchorIds,
 }: {
   readonly loader: () => Promise<{ default: ComponentType }>;
+  readonly anchorIds: readonly string[];
 }) {
   const [ready, setReady] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -54,8 +56,31 @@ function DeferredBlock({
       { rootMargin: '900px 0px' },
     );
     observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
+
+    const onNavigate = (event: Event) => {
+      const targetId = (event as CustomEvent<string>).detail;
+      if (anchorIds.includes(targetId)) setReady(true);
+    };
+    window.addEventListener('observatorio:navigate', onNavigate);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('observatorio:navigate', onNavigate);
+    };
+  }, [anchorIds]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const hash = window.location.hash.slice(1);
+    if (!anchorIds.includes(hash)) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(hash)?.scrollIntoView({
+        behavior: document.documentElement.classList.contains('reduced-motion')
+          || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [ready, anchorIds]);
 
   if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
 
@@ -80,11 +105,11 @@ export function App() {
             <ProjectTrustPanel />
             <ExecutiveSummary />
             <DashboardMetrics />
-            <DeferredBlock loader={loadContextGroup} />
-            <DeferredBlock loader={loadCivicGroup} />
-            <DeferredBlock loader={loadElectionGroup} />
-            <DeferredBlock loader={loadPublicDataGroup} />
-            <DeferredBlock loader={loadEvidenceGroup} />
+            <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte']} />
+            <DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} />
+            <DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} />
+            <DeferredBlock loader={loadPublicDataGroup} anchorIds={['dados', 'instagram']} />
+            <DeferredBlock loader={loadEvidenceGroup} anchorIds={['qualidade', 'evidencias', 'fontes']} />
           </main>
           <ScrollTopButton />
           <DataInspector />
