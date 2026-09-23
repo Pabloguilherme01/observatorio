@@ -22,7 +22,6 @@
           "disabled": false
         },
         "formFactor": "mobile",
-        "preset": "mobile"
       }
     },
     "assert": {
