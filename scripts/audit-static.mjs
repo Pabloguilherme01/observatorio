@@ -91,3 +91,8 @@ if (!errors.length) {
   for (const error of errors) console.error(' -', error);
   process.exitCode = 1;
 }
+
+const app = read('src/app/App.tsx');
+const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
+for (const group of deferredGroups) must(app.includes(group), 'App registra ' + group);
+must(app.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');

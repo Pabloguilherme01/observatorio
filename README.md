@@ -63,9 +63,9 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V43.2 — Observatório de Dados Cívicos e Eleitorais.
+V43.3 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V43.2
+### Foco V43.3
 - Navegação programática respeita a preferência de redução de movimento também em interações móveis e atalhos internos.
 - Barra de progresso de leitura usa requestAnimationFrame para reduzir atualizações de estado durante rolagem.
 - theme-color acompanha o tema claro/escuro no navegador e no PWA, inclusive na primeira pintura.
@@ -74,6 +74,8 @@ V43.2 — Observatório de Dados Cívicos e Eleitorais.
 - Busca devolve foco ao controle que a abriu.
 - Navegação inferior mobile usa aria-current="location".
 - A camada de candidaturas não exibe links vazios quando uma referência não possui URL.
+- Seções abaixo da dobra são carregadas em grupos somente quando se aproximam da viewport, reduzindo o JavaScript inicial.
+- Navegação por âncora, hash direto e atalhos continuam funcionando mesmo com o carregamento diferido.
 
 ### Foco V41
 - Camada pública de confiança com método, atualização e canal de correção por evidência.
