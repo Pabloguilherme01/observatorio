@@ -1,11 +1,13 @@
-import type { ObservatoryData } from '../types/observatorio';
+import type { ISODate, ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
 import { EDITION } from '../config/version';
 import generatedCandidates from './generated/tse2026-candidates.json';
 
-const generatedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt
-  ? generatedCandidates.meta.downloadedAt.slice(0, 10)
-  : '2026-09-23';
+const rawGeneratedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt?.slice(0, 10);
+const generatedCandidateSnapshotDate: ISODate =
+  rawGeneratedCandidateSnapshotDate && /^\d{4}-\d{2}-\d{2}$/.test(rawGeneratedCandidateSnapshotDate)
+    ? (rawGeneratedCandidateSnapshotDate as ISODate)
+    : '2026-09-23';
 
 const candidateSnapshots: ObservatoryData['candidates'] = generatedCandidates.matched.map(candidate => ({
   name: candidate.name,
@@ -17,7 +19,7 @@ const candidateSnapshots: ObservatoryData['candidates'] = generatedCandidates.ma
 }));
 
 /**
- * Dataset V42, normalizado para o domínio React.
+ * Dataset V43, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília usa a tarifa atual publicada pela UTB (R$ 11,45);

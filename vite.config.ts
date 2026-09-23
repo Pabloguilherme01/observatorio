@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { APP_VERSION } from './src/config/version';
 import { observatorioData } from './src/data/observatorioData';
+import { sourceRegistry } from './src/data/sourceRegistry';
 
 const publicApiPlugin = (): Plugin => ({
   name: 'observatorio-public-api',
@@ -24,6 +25,30 @@ const publicApiPlugin = (): Plugin => ({
     });
     this.emitFile({
       type: 'asset',
+      fileName: 'api/v1/health.json',
+      source: JSON.stringify({
+        schemaVersion: 1,
+        status: 'ok',
+        appVersion: APP_VERSION,
+        edition: observatorioData.meta.edition,
+        datasetUpdatedAt: observatorioData.meta.updatedAt,
+        buildGeneratedAt: new Date().toISOString(),
+        publicPath: '/observatorio/',
+      }, null, 2),
+    });
+    this.emitFile({
+      type: 'asset',
+      fileName: 'api/v1/sources.json',
+      source: JSON.stringify({
+        schemaVersion: 1,
+        generatedAt: new Date().toISOString(),
+        sources: sourceRegistry.map(({ id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, nature }) => ({
+          id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, nature,
+        })),
+      }, null, 2),
+    });
+    this.emitFile({
+      type: 'asset',
       fileName: 'api/v1/openapi.json',
       source: JSON.stringify({
         openapi: '3.0.3',
@@ -39,6 +64,12 @@ const publicApiPlugin = (): Plugin => ({
           },
           '/api/v1/openapi.json': {
             get: { summary: 'Especificação OpenAPI', responses: { '200': { description: 'OpenAPI JSON' } } },
+          },
+          '/api/v1/health.json': {
+            get: { summary: 'Estado do build publicado', responses: { '200': { description: 'Metadados do build e dataset' } } },
+          },
+          '/api/v1/sources.json': {
+            get: { summary: 'Registro de fontes do observatório', responses: { '200': { description: 'Fontes e metadados de referência' } } },
           },
         },
       }, null, 2),

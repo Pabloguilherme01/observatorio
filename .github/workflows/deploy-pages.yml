@@ -62,3 +62,22 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+  verify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify published site and public API
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5 6 7 8; do
+            page="$(curl -fsSL --max-time 20 https://pabloguilherme01.github.io/observatorio/ || true)"
+            if printf '%s' "$page" | grep -Fq "Observatório Eleitoral — Águas Lindas de Goiás 2026"; then break; fi
+            sleep 3
+          done
+          printf '%s' "$page" | grep -F "Observatório Eleitoral — Águas Lindas de Goiás 2026"
+          health="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/health.json)"
+          printf '%s' "$health" | grep -F '"status": "ok"'
+          openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
+          printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'

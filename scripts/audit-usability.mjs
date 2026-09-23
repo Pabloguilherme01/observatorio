@@ -111,7 +111,7 @@ for (const [needle, label] of [
   ['safe-area-inset-bottom', 'safe-area mobile'],
   ['scroll-snap-type', 'rails mobile'],
   ['max-width:380px', 'telas muito pequenas'],
-  ['min-height: 44px', 'alvo de toque'],
+  ['min-height: 44px', 'alvo de toque mobile'],
 ]) {
   if (!css.includes(needle)) fail('Camada visual/acessível ausente: ' + label);
 }
