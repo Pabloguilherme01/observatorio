@@ -122,6 +122,5 @@ export const electoral360Snapshot: Electoral360Snapshot = {
   })),
 };
 
-export { CANDIDATE_PROFILES };
 
 export const electoral360Diff = generatedData.diff;
