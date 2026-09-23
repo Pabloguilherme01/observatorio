@@ -359,7 +359,6 @@ html.light .topic-card:hover {
 main > section {
   content-visibility: auto;
   contain-intrinsic-size: 720px;
-  contain: layout paint style;
 }
 .instagram-shell {
   border: 1px solid rgba(140,200,242,.12);
