@@ -92,9 +92,9 @@ export function DashboardMetrics() {
   const populationDelta = population2026 - population2022;
   const metricDetails: readonly MetricDetail[] = [
     { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', simpleExplanation: 'Quantas pessoas moram na cidade, segundo a estimativa usada.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
-    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot da 28ª Zona', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate },
-    { label: 'Nome social', value: formatNumber(inclusionCount), caption: 'eleitores no snapshot eleitoral', simpleExplanation: 'Registros com nome social no recorte usado.', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população 2026 ÷ área territorial', simpleExplanation: 'Média de habitantes por km² calculada a partir dos dados.', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
+    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot TSE', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate },
+    { label: 'Nome social', value: formatNumber(inclusionCount), caption: 'registros no snapshot', simpleExplanation: 'Registros com nome social.', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'cálculo: população ÷ área', simpleExplanation: 'Média de habitantes por km².', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
   ];
 
   return (
@@ -140,7 +140,7 @@ export function DashboardMetrics() {
 
       {languageMode === 'simple' ? (
         <div className="simple-detail mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] px-4 py-3 text-xs leading-5 text-slate-300 light:text-slate-600">
-          As datas podem ser diferentes entre os indicadores. Toque em um número para conferir a fonte.
+          Cada número tem sua própria data. Toque para conferir a fonte.
         </div>
       ) : (
         <div className="technical-detail mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">
@@ -151,13 +151,13 @@ export function DashboardMetrics() {
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <LineChart
           title="Crescimento populacional · 2022–2026"
-          description={languageMode === 'simple' ? 'Veja como a população mudou.' : '2022 é Censo; 2025/2026 são estimativas IBGE.'}
+          description={languageMode === 'simple' ? 'Veja a mudança da população.' : '2022 é Censo; 2025/2026 são estimativas IBGE.'}
           points={populationPoints}
           valueFormatter={value => formatNumber(value) + ' hab.'}
         />
         <LineChart
           title="Eleitorado · 2018–2026"
-          description={languageMode === 'simple' ? 'Veja como o eleitorado mudou.' : 'Snapshots disponíveis no modelo; 2026 é fotografia da 28ª Zona.'}
+          description={languageMode === 'simple' ? 'Veja a mudança do eleitorado.' : 'Snapshots disponíveis no modelo; 2026 é fotografia da 28ª Zona.'}
           points={electoratePoints}
           valueFormatter={value => formatNumber(value) + ' eleitores'}
         />
@@ -173,16 +173,16 @@ export function DashboardMetrics() {
         </button>
         <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Razão eleitorado/população', value: formatPercent(electorateShare, 2), sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, status: 'derivado', note: 'Relação estatística entre dois universos; não representa comparecimento.' })}>
           <Card>
-            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{languageMode === 'simple' ? 'Relação estatística' : 'Razão eleitorado/população'}</div>
+            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{languageMode === 'simple' ? 'Relação' : 'Razão eleitorado/população'}</div>
             <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatPercent(electorateShare, 2)}</div>
-            <p className="mt-1 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Toque para entender' : 'Clique para metodologia.'}</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Toque para entender o cálculo' : 'Clique para metodologia.'}</p>
           </Card>
         </button>
         <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Área territorial', value: formatNumber(area, 3) + ' km²', sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01' })}>
           <Card>
             <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{languageMode === 'simple' ? 'Área da cidade' : 'Base de cálculo'}</div>
             <div className="mt-2 text-xl font-black text-white light:text-slate-900">{formatNumber(area, 3)} km²</div>
-            <p className="mt-1 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Usada para calcular a densidade' : 'Área territorial usada para a densidade derivada.'}</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Usada no cálculo da densidade' : 'Área territorial usada para a densidade derivada.'}</p>
           </Card>
         </button>
       </div>
