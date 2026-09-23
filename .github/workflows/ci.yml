@@ -31,6 +31,9 @@ jobs:
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
 
+      - name: Static consistency audit
+        run: npm run audit:static
+
       - name: Typecheck
         run: npm run typecheck
 
