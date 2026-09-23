@@ -29,7 +29,7 @@ const dateModified = index.match(/"dateModified": "([^"]+)"/)?.[1];
 
 must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sincronizados');
 must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da versão');
-must(namespace?.includes(edition ?? '__missing__'), 'namespace de armazenamento identifica a edição');
+must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("base: '/observatorio/'"), 'Vite usa base compatível com GitHub Pages');
 must(vite.includes("start_url: '/observatorio/'") && vite.includes("scope: '/observatorio/'"), 'PWA mantém start_url e scope no subcaminho publicado');
