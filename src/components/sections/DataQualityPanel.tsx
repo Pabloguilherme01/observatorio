@@ -16,7 +16,16 @@ export function DataQualityPanel() {
   const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
   const pollGapPct = Math.max(0, 100 - pollCoveredPct);
   const tseState = generated.meta.state;
-  const tseReady = tseState !== 'not_synced';
+  const tsePresentation = {
+    first_capture: { label: 'Capturado', tone: 'text-emerald-300' },
+    synced: { label: 'Sincronizado', tone: 'text-emerald-300' },
+    unchanged: { label: 'Sem alterações', tone: 'text-emerald-300' },
+    changed: { label: 'Alterado', tone: 'text-amber-300' },
+    stale: { label: 'Desatualizado', tone: 'text-amber-300' },
+    failed: { label: 'Falha na sincronização', tone: 'text-rose-300' },
+    not_synced: { label: 'Aguardando captura', tone: 'text-amber-300' },
+  } as const;
+  const tseStatus = tsePresentation[tseState as keyof typeof tsePresentation] ?? { label: 'Estado desconhecido', tone: 'text-slate-300' };
   const tseCapturedAt = generated.meta.downloadedAt ? new Date(generated.meta.downloadedAt) : null;
   const resultsSource = d.sources.find(source => source.id === 'tse-resultados-2026');
   const warnings = [
@@ -74,7 +83,7 @@ export function DataQualityPanel() {
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Snapshot TSE</div>
-          <div className={`mt-2 text-base font-black ${tseReady ? 'text-emerald-300' : 'text-amber-300'}`}>{tseReady ? 'Sincronizado' : 'Aguardando captura'}</div>
+          <div className={`mt-2 text-base font-black ${tseStatus.tone}`}>{tseStatus.label}</div>
           <p className="mt-1 text-xs text-slate-500">Estado local: {tseState}. Isso não representa ausência de candidaturas na fonte oficial.</p>
           <div className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
             {tseCapturedAt ? `captura ${tseCapturedAt.toLocaleDateString('pt-BR')} ${tseCapturedAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : 'sem horário de captura'}
