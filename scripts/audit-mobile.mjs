@@ -28,8 +28,9 @@ must(files.css.includes('.topic-rail') && files.css.includes('.today-rail'), 'CS
 must(files.css.includes('.instagram-shell') && files.css.includes('.instagram-mobile-rail'), 'CSS possui camada Instagram e rail móvel');
 must(files.instagram.includes('navigator.canShare') && files.instagram.includes('1080'), 'kit Instagram suporta compartilhamento de arquivo e formatos sociais');
 must(files.trust.includes('Propor correção') && files.trust.includes('Compromisso editorial'), 'camada pública de correções e compromisso editorial disponível');
-must(files.css.includes('min-height: 44px') || files.css.includes('min-height:44px'), 'controles mobile preservam alvo de toque de 44px');
+must(files.css.includes('min-height: 48px') || files.css.includes('min-height:48px'), 'controles mobile preservam alvo de toque de 48px');
 must(files.css.includes('env(safe-area-inset-bottom)'), 'barra móvel considera safe-area');
+must(files.css.includes('min-height: 56px'), 'navegação inferior mobile possui alvo de toque ampliado');
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css), 'existe ajuste dedicado para telas muito pequenas');
 must(files.css.includes('scroll-snap-type'), 'rails móveis usam snap para descoberta por gesto');
 must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('observatorio:navigate'), 'barra mobile identifica Explorar e acompanha navegação temática');
