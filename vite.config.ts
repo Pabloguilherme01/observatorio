@@ -27,7 +27,7 @@ export default defineConfig({
           { src: '/observatorio/pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
         ],
       },
-      includeAssets: ['pwa-192.svg', 'pwa-512.svg'],
+      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         runtimeCaching: [
@@ -36,7 +36,17 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: `observatorio-static-assets-${APP_VERSION}`,
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: `observatorio-pages-${APP_VERSION}`,
+              networkTimeoutSeconds: 3,
+              expiration: { maxEntries: 12, maxAgeSeconds: 60 * 60 * 24 * 7 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
