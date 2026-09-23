@@ -68,6 +68,8 @@ export function AudienceHub() {
           ))}
         </div>
 
+        <div className="mt-4 technical-detail rounded-2xl border border-white/8 bg-white/[0.018] px-4 py-3 text-xs text-slate-500">Modo técnico: dataset atualizado em {formatDate(d.meta.updatedAt)} · estado da captura de candidaturas: {snapshotState} · referências e metodologia ficam disponíveis nos detalhes de cada dado.</div>
+
         <div className="mt-5 grid gap-4 lg:grid-cols-[1.45fr_.55fr]">
           <div className="rounded-3xl border border-white/8 bg-black/10 p-4 sm:p-5">
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">5 minutos para entender Águas Lindas</div>
@@ -151,7 +153,7 @@ export function AudienceHub() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <div className="technical-detail mt-5 grid gap-3 sm:grid-cols-3">
           {[
             ['Fonte oficial', mode === 'simple' ? 'A fonte aparece junto do dado.' : 'Cada dado aponta para a instituição, data e referência usada.'],
             ['Explicação simples', mode === 'simple' ? 'Texto curto e direto.' : 'A camada técnica preserva método, fonte e contexto.'],
