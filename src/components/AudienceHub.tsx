@@ -142,7 +142,7 @@ export function AudienceHub() {
               <strong className="mt-2 block text-2xl font-black text-white">{sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
               <span className="mt-1 block text-xs text-slate-500">acesso ao serviço público de esgoto</span>
               <div className="mt-3 flex flex-wrap gap-2">
-                <a href="#saneamento" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Entender o indicador</a>
+                <a href="#saude" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Entender o indicador</a>
                 <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado pelo Observatório.'} url={shareUrl + '#saude'} compact />
               </div>
             </div>
