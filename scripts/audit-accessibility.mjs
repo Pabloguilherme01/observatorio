@@ -35,6 +35,7 @@ must(css.includes('prefers-reduced-motion'), 'redução de movimento está conte
 must(css.includes('min-height: 44px') || css.includes('min-height:44px'), 'controles móveis usam alvo de toque confortável');
 must(/@media\s*\(max-width:\s*380px\)/.test(css), 'há ajuste dedicado para telas muito estreitas');
 must(hero.includes('aria-pressed'), 'alternância de linguagem informa estado ao leitor de tela');
+must(hero.includes('observatorio:election-mode') && hero.includes('aria-label'), 'Modo Eleição expõe estado e ação de forma acessível');
 must(comparison.includes('role=\"tablist\"') && comparison.includes('aria-selected'), 'abas de contexto têm semântica acessível');
 must(dashboard.includes('role=\"img\"') && dashboard.includes('aria-label'), 'gráficos principais possuem alternativa textual');
 must(app.includes('<LanguageModeProvider>'), 'modo de linguagem está integrado na aplicação');
