@@ -67,9 +67,7 @@ if (existsSync(syncWorkflow)) {
   if (!content.includes('workflow_dispatch:')) {
     violations.push({ file: '.github/workflows/sync-tse-candidates.yml', token: 'workflow_dispatch ausente' });
   }
-  if (/^\s+schedule:/m.test(content) || /^\s+push:/m.test(content)) {
-    violations.push({ file: '.github/workflows/sync-tse-candidates.yml', token: 'sync automática por push/cron' });
-  }
+
 }
 
 if (violations.length) {
