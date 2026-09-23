@@ -42,7 +42,7 @@ if (state === 'not_synced' && !requireSynced) {
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
 
 if (state !== 'not_synced') {
-  const normalize = value => String(value ?? '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+  const normalize = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
   const names = payload.matched.map(candidate => normalize(candidate.name));
   for (const expected of payload.watchlist ?? []) {
     const normalizedExpected = normalize(expected);
