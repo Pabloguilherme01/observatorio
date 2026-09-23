@@ -1,6 +1,8 @@
 name: Sync TSE candidates
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '30 03 * * *'
@@ -14,6 +16,7 @@ concurrency:
 
 jobs:
   sync:
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, 'data: sync TSE 2026 candidate snapshot')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
