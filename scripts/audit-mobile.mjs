@@ -40,7 +40,7 @@ must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-must(files.version.includes("APP_VERSION = '43.4.0'"), 'versão V43.4 sincronizada com a camada mobile');
+must(files.version.includes("APP_VERSION = '43.5.0'"), 'versão V43.4 sincronizada com a camada mobile');
 const app = read('src/app/App.tsx');
 must(app.includes('IntersectionObserver') && app.includes('rootMargin: \'900px 0px\''), 'seções abaixo da dobra usam carregamento diferido');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
@@ -59,3 +59,6 @@ if (errors.length) {
   pass('auditoria mobile estática concluída');
 }
 
+
+must(read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('simple')") && read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('technical')"), 'alternância simples/técnico está disponível no mobile');
+must(read('src/components/InstagramSyncHub.tsx').includes('wa.me/?text='), 'WhatsApp contextual está integrado ao fluxo social');

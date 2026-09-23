@@ -1,4 +1,4 @@
-import { Camera, Check, Download, ExternalLink, Share2, Sparkles } from 'lucide-react';
+import { Camera, Check, Download, ExternalLink, MessageCircle, Share2, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
@@ -101,6 +101,8 @@ export function InstagramSyncHub() {
     trackedUrl(item.anchor)
   ), [item]);
 
+  const shareWhatsApp = () => { window.open('https://wa.me/?text=' + encodeURIComponent(caption), '_blank', 'noopener,noreferrer'); };
+
   const copyCaption = async () => {
     try {
       await navigator.clipboard.writeText(caption);
@@ -191,6 +193,7 @@ export function InstagramSyncHub() {
                 <button type="button" onClick={() => generate(true)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
                   <Share2 className="h-4 w-4" aria-hidden="true" /> Enviar para compartilhar
                 </button>
+                <button type="button" onClick={shareWhatsApp} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/[0.06] px-4 py-2 text-xs font-bold text-emerald-200 hover:border-emerald-300/25"><MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp</button>
                 <button type="button" onClick={copyCaption} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
                   {status === 'Legenda copiada' ? <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" /> : <Share2 className="h-4 w-4 text-sky-300" aria-hidden="true" />} {status || 'Copiar legenda'}
                 </button>

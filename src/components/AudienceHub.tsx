@@ -3,6 +3,7 @@ import { observatorioData as d } from '../data/observatorioData';
 import generated from '../data/generated/tse2026-candidates.json';
 import { formatDate } from '../utils/formatters';
 import { ShareDataButton } from './ShareDataButton';
+import { useLanguageMode } from '../context/LanguageModeContext';
 
 type Topic = {
   readonly id: string;
@@ -25,6 +26,7 @@ function brl(value: number) {
 }
 
 export function AudienceHub() {
+  const { mode } = useLanguageMode();
   const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
   const sanitationPct = d.sanitation.publicSewerServicePct;
   const fare = d.transport.routes[0]?.fareBrl ?? 0;
@@ -47,7 +49,7 @@ export function AudienceHub() {
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">Descoberta</div>
             <h2 id="audience-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">O que você quer descobrir?</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Escolha um assunto e vá direto ao dado, à explicação e à fonte. A leitura continua documental e sem ranking eleitoral.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Escolha um assunto e vá direto ao dado.</p>
           </div>
           <a href="#mudancas-snapshot" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white">
             <RefreshCw className="h-4 w-4 text-sky-300" aria-hidden="true" />
@@ -60,7 +62,7 @@ export function AudienceHub() {
             <button key={id} type="button" onClick={() => go(id)} className="topic-card group">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-sky-300/10 text-sky-200"><Icon className="h-5 w-5" aria-hidden="true" /></span>
               <span className="mt-3 block text-sm font-black text-white">{label}</span>
-              <span className="mt-1 block text-xs leading-5 text-slate-500">{description}</span>
+              <span className="mt-1 block text-xs leading-5 text-slate-500">{mode === 'simple' ? description.replace(/\.$/, '') : description + ' · fonte e metodologia disponíveis'}</span>
               <span className="mt-auto flex items-center gap-1 pt-4 text-[10px] font-bold uppercase tracking-wider text-sky-300/70">Abrir <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
             </button>
           ))}
@@ -151,9 +153,9 @@ export function AudienceHub() {
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {[
-            ['Fonte oficial', 'Cada dado pode apontar para a instituição e a referência usada.'],
-            ['Explicação simples', 'O modo de linguagem reduz jargão sem esconder a metodologia.'],
-            ['Compartilhável', 'Cada assunto pode ser aberto por âncora e compartilhado como unidade de informação.'],
+            ['Fonte oficial', mode === 'simple' ? 'A fonte aparece junto do dado.' : 'Cada dado aponta para a instituição, data e referência usada.'],
+            ['Explicação simples', mode === 'simple' ? 'Texto curto e direto.' : 'A camada técnica preserva método, fonte e contexto.'],
+            ['Compartilhável', mode === 'simple' ? 'Compartilhe o assunto com a fonte.' : 'Cada assunto pode ser aberto por âncora e compartilhado com rastreabilidade.'],
           ].map(([title, description], index) => (
             <div key={title} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
               <div className="text-[10px] font-black uppercase tracking-widest text-sky-300/70">0{index + 1}</div>

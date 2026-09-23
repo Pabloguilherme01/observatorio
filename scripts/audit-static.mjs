@@ -98,3 +98,8 @@ const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredE
 for (const group of deferredGroups) must(app.includes(group), 'App registra ' + group);
 must(app.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 must(app.includes("'saude'") && app.includes("'healgo'"), 'deep links de saúde e simuladores estão preservados');
+
+const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+const social = read('src/components/InstagramSyncHub.tsx');
+must(languageToggle.includes('language-toggle') && languageToggle.includes("setMode('technical')"), 'modo simples/técnico possui componente próprio');
+must(social.includes('MessageCircle') && social.includes('shareWhatsApp'), 'Instagram/WhatsApp possuem fluxo de compartilhamento');
