@@ -1,0 +1,216 @@
+name: Final Validation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: final-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck:
+    name: 1 · Typecheck + static QA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Static QA
+        run: |
+          set -euo pipefail
+          npm run audit:static || { echo '::error::Static QA falhou.'; exit 1; }
+          npm run audit:usability || { echo '::error::Usability audit falhou.'; exit 1; }
+          npm run typecheck || { echo '::error::TypeScript strict falhou.'; exit 1; }
+
+  ingest:
+    name: 2 · Primeiro batch TSE
+    needs: typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Detectar e materializar first capture
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -q '"estado": "not_ingested"' generated/tse2026-contas.json && grep -q '"estado": "not_ingested"' generated/tse2026-pesquisas.json && grep -q '"estado": "not_ingested"' generated/tse2026-processual.json; then
+            npm run ingest:tse:first-batch || { echo '::error::Primeiro batch TSE falhou. Verifique headers CSV, checksum ou schema Zod.'; exit 1; }
+          else
+            echo 'Snapshots já materializados; validação continua sem recriar baseline.'
+          fi
+          npm run verify:tse:capture || { echo '::error::Proveniência/checksum da captura TSE inválidos.'; exit 1; }
+      - name: Verificar APIs
+        run: |
+          test -f public/api/v1/contas.json
+          test -f public/api/v1/pesquisas.json
+          test -f public/api/v1/processual.json
+      - name: Commit da primeira captura
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- generated public/api/v1 src/data/generated; then
+            echo 'Nenhum snapshot novo para commit.'
+            exit 0
+          fi
+          git add generated public/api/v1 src/data/generated
+          git commit -m 'data(tse): materializar first capture V44'
+          git push origin 'HEAD:${{ github.event.pull_request.head.ref }}'
+
+  build:
+    name: 3 · Build de produção
+    needs: ingest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run verify:tse:capture
+      - name: Build
+        run: npm run build || { echo '::error::Build V44 falhou.'; exit 1; }
+      - run: test -f dist/api/v1/contas.json && test -f dist/api/v1/pesquisas.json && test -f dist/api/v1/processual.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-build
+          path: dist
+
+  lighthouse:
+    name: 4 · Lighthouse budgets
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: Run preview
+        run: |
+          npm run build
+          nohup npm run preview -- --host 127.0.0.1 --port 4173 >/tmp/preview.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/observatorio/ >/dev/null && break; sleep 2; done
+      - name: Lighthouse mobile
+        run: npx lhci autorun --config=.lighthouserc.mobile.json || { echo '::error::Lighthouse mobile violou score ou budget.'; exit 1; }
+      - name: Lighthouse tablet
+        run: npx lhci autorun --config=.lighthouserc.tablet.json || { echo '::error::Lighthouse tablet violou score ou budget.'; exit 1; }
+      - name: Lighthouse desktop
+        run: npx lhci autorun --config=.lighthouserc.json || { echo '::error::Lighthouse desktop violou score ou budget.'; exit 1; }
+      - run: node scripts/collect-lighthouse-scores.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci
+
+  e2e:
+    name: 5 · Playwright E2E + visual
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: E2E
+        run: npx playwright test tests/e2e/observatorio.spec.ts || { echo '::error::Playwright E2E falhou em um dos cinco viewports.'; exit 1; }
+      - name: Visual regression
+        run: npx playwright test tests/visual/visual.spec.ts || { echo '::error::Visual regression falhou. Atualize snapshots apenas com justificativa.'; exit 1; }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-results
+          path: test-results
+
+  axe:
+    name: 6 · axe-core runtime
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: axe-core
+        run: npx playwright test tests/e2e/accessibility.spec.ts || { echo '::error::axe-core encontrou violações WCAG.'; exit 1; }
+      - name: Consolidar HTML
+        if: always()
+        run: node scripts/build-axe-report.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: axe-report
+          path: test-results
+
+  final-report:
+    name: Consolidated validation report
+    if: always()
+    needs: [typecheck, ingest, build, lighthouse, e2e, axe]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: validation-artifacts
+      - name: Build validation-report.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const report = {
+            generatedAt: new Date().toISOString(),
+            gates: {
+              typecheck: '${{ needs.typecheck.result }}',
+              ingest: '${{ needs.ingest.result }}',
+              build: '${{ needs.build.result }}',
+              lighthouse: '${{ needs.lighthouse.result }}',
+              e2e: '${{ needs.e2e.result }}',
+              axe: '${{ needs.axe.result }}'
+            },
+            success: ['typecheck','ingest','build','lighthouse','e2e','axe'].every(key => {
+              const values = { typecheck: '${{ needs.typecheck.result }}', ingest: '${{ needs.ingest.result }}', build: '${{ needs.build.result }}', lighthouse: '${{ needs.lighthouse.result }}', e2e: '${{ needs.e2e.result }}', axe: '${{ needs.axe.result }}' };
+              return values[key] === 'success';
+            })
+          };
+          const lh = 'validation-artifacts/lighthouse-report/lighthouse-scores.json';
+          if (fs.existsSync(lh)) report.lighthouseEvidence = JSON.parse(fs.readFileSync(lh,'utf8'));
+          fs.writeFileSync('validation-report.json', JSON.stringify(report,null,2) + '\n');
+          console.log(JSON.stringify(report,null,2));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: validation-report.json
+      - name: Enforce consolidated gate
+        run: |
+          set -euo pipefail
+          jq -e '.success == true' validation-report.json >/dev/null || { echo '::error::Validação consolidada falhou. Nenhum merge deve ser feito enquanto houver gate vermelho.'; exit 1; }
