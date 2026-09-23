@@ -112,8 +112,11 @@ export const observatorioData: ObservatoryData = {
 
   education: {
     ideb2025Range: [5.9, 6.2],
-    sourceId: 'inep-ideb-2025',
-    note: 'Faixa informada no prompt V23; o valor municipal pontual deve ser conferido na tabela oficial do INEP antes de ser apresentado como nota única.',
+    basicEducationEnrollments2025: 58138,
+    municipalBasicEducationEnrollments2025: 23847,
+    technicalEptEnrollments2025: 493,
+    sourceId: 'pee-go-educacao-2025',
+    note: 'Matrículas de 2025 verificadas na Base de Dados Educacionais de Goiás. A faixa do Ideb 2025 permanece pendente de conferência do valor municipal pontual no INEP.',
   },
 
   health: {
@@ -126,6 +129,17 @@ export const observatorioData: ObservatoryData = {
     plannedBeds: 298,
     sourceIds: ['healgo', 'healgo-200k'],
   },
+
+  budgetUpdates: [
+    {
+      date: '2026-08-13',
+      law: 'Lei 1.900/2026',
+      title: 'Escola em Tempo Integral',
+      amountBrl: 1_657_103.90,
+      description: 'Crédito adicional especial para criação do projeto atividade Escola em Tempo Integral no orçamento de 2026.',
+      sourceId: 'lei-1900-2026',
+    },
+  ],
 
   budget: {
     year: 2026,
@@ -180,5 +194,8 @@ export const observatorioData: ObservatoryData = {
     { id: 'water-related-deaths', label: 'Óbitos por doenças relacionadas à água', value: 3, unit: 'óbitos', status: 'historical', referenceDate: '2024-01-01', sourceId: 'sinisa-2024' },
     { id: 'water-related-hospitalizations', label: 'Internações por doenças relacionadas à água', value: 427, unit: 'internações', status: 'historical', referenceDate: '2024-01-01', sourceId: 'sinisa-2024' },
     { id: 'companies-new', label: 'Empresas novas no recorte', value: 25848, unit: 'empresas', status: 'snapshot', referenceDate: '2026-01-01', sourceId: 'caged-sebrae-2026' },
+    { id: 'basic-enrollments-2025', label: 'Matrículas na educação básica 2025', value: 58138, unit: 'matrículas', status: 'historical', referenceDate: '2025-12-31', sourceId: 'pee-go-educacao-2025' },
+    { id: 'municipal-enrollments-2025', label: 'Matrículas municipais 2025', value: 23847, unit: 'matrículas', status: 'historical', referenceDate: '2025-12-31', sourceId: 'pee-go-educacao-2025' },
+    { id: 'ept-technical-2025', label: 'EPT técnica articulada ao Ensino Médio', value: 493, unit: 'matrículas', status: 'historical', referenceDate: '2025-12-31', sourceId: 'pee-go-ept-2025' },
   ],
 };
