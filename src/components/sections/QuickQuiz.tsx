@@ -12,48 +12,17 @@ type Question = {
 
 export function QuickQuiz() {
   const questions = useMemo<readonly Question[]>(() => [
-    {
-      prompt: 'Para interpretar um número público corretamente, o que vale conferir junto com ele?',
-      options: ['Fonte e data de referência', 'A cor do gráfico', 'Somente o valor absoluto'],
-      answer: 0,
-      explanation: 'A fonte e a data ajudam a identificar de onde veio o dado e qual período ou fotografia ele representa.',
-      anchor: 'fontes',
-      sourceLabel: 'Mapa de evidências',
-    },
-    {
-      prompt: 'Um snapshot do eleitorado representa melhor qual ideia?',
-      options: ['Uma fotografia de uma base em determinada data', 'Uma previsão de voto', 'O resultado final da eleição'],
-      answer: 0,
-      explanation: 'O observatório trata snapshots como fotografias de uma base e evita transformá-los em previsão ou resultado eleitoral.',
-      anchor: 'eleitorado',
-      sourceLabel: 'Perfil eleitoral',
-    },
-    {
-      prompt: 'Como ler a LOA 2026 dentro do observatório?',
-      options: ['Como orçamento previsto para o exercício', 'Como gasto já executado integralmente', 'Como uma pesquisa de opinião'],
-      answer: 0,
-      explanation: 'A LOA é uma peça orçamentária de planejamento. O observatório separa valores previstos de valores efetivamente executados quando essa distinção é relevante.',
-      anchor: 'orcamento',
-      sourceLabel: 'Orçamento',
-    },
-    {
-      prompt: 'Por que dois números podem não ser comparáveis diretamente?',
-      options: ['Porque podem ter datas, universos ou metodologias diferentes', 'Porque um número maior é sempre melhor', 'Porque gráficos diferentes usam cores diferentes'],
-      answer: 0,
-      explanation: 'Datas de referência, denominadores e metodologias podem mudar o significado de uma comparação.',
-      anchor: 'principios',
-      sourceLabel: 'Princípios e correções',
-    },
-    {
-      prompt: 'Onde conferir as fontes catalogadas pelo projeto?',
-      options: ['No Mapa de evidências', 'Apenas no rodapé do navegador', 'Somente nas redes sociais'],
-      answer: 0,
-      explanation: 'O Mapa de evidências reúne instituição, natureza do dado, datas de referência e o link utilizado pelo observatório.',
-      anchor: 'fontes',
-      sourceLabel: 'Mapa de evidências',
-    },
+    { prompt: 'Para ler um número público, o que deve vir junto dele?', options: ['Fonte e data', 'Só o número', 'A cor do gráfico'], answer: 0, explanation: 'Fonte e data mostram de onde veio o dado e qual período ele representa.', anchor: 'fontes', sourceLabel: 'Fontes' },
+    { prompt: 'Um snapshot do eleitorado é melhor entendido como:', options: ['Uma fotografia da base em uma data', 'Uma previsão do resultado', 'Uma pesquisa de intenção de voto'], answer: 0, explanation: 'Snapshot é uma fotografia de uma base. Não é previsão nem resultado.', anchor: 'eleitorado', sourceLabel: 'Eleitorado' },
+    { prompt: 'A LOA 2026 mostra principalmente:', options: ['Planejamento orçamentário do exercício', 'Gasto já pago em 100%', 'Pesquisa de opinião'], answer: 0, explanation: 'A LOA é uma peça de planejamento. Ela não deve ser confundida com execução financeira.', anchor: 'orcamento', sourceLabel: 'Orçamento' },
+    { prompt: 'Por que dois números podem não ser comparáveis diretamente?', options: ['Datas, universos ou métodos podem ser diferentes', 'O número maior sempre é melhor', 'As cores dos gráficos mudam'], answer: 0, explanation: 'Sem mesma data, universo e metodologia, uma comparação pode ser enganosa.', anchor: 'principios', sourceLabel: 'Princípios' },
+    { prompt: 'O que significa “primeiro snapshot” no histórico?', options: ['É a linha de base', 'É um dado inventado', 'É o resultado final da eleição'], answer: 0, explanation: 'A primeira captura cria a linha de base. Diffs temporais reais começam na captura seguinte.', anchor: 'mudancas-snapshot', sourceLabel: 'Snapshots' },
+    { prompt: 'Em 2026, quais cargos estão em disputa?', options: ['Presidente, governador, senador e deputados', 'Prefeito e vereador', 'Somente senador'], answer: 0, explanation: 'As Eleições Gerais de 2026 abrangem presidente, governadores, senadores, deputados federais e deputados estaduais ou distritais.', anchor: 'politica', sourceLabel: 'Eleições' },
+    { prompt: 'Um indicador calculado pelo observatório deve ser lido como:', options: ['Resultado derivado de outros dados', 'Dado oficial isolado da fonte', 'Previsão eleitoral'], answer: 0, explanation: 'Indicadores derivados usam valores de uma ou mais fontes e têm método próprio.', anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
+    { prompt: 'Qual é a melhor forma de compartilhar um número?', options: ['Levar o link e a fonte junto', 'Enviar só o número', 'Recortar apenas o gráfico'], answer: 0, explanation: 'O link permite que outra pessoa confira a fonte, a data e o contexto.', anchor: 'acao', sourceLabel: 'Como usar' },
+    { prompt: 'Quando o observatório diz “não informado pela fonte”, isso significa:', options: ['A fonte consultada não informou o campo', 'O projeto inventou um valor', 'O candidato não possui o dado'], answer: 0, explanation: 'A interface diferencia ausência de informação de um zero ou de um valor estimado.', anchor: 'eleitoral360', sourceLabel: 'Eleitoral 360°' },
+    { prompt: 'Qual regra vale para a leitura eleitoral deste projeto?', options: ['Dados e fontes, sem ranking automático', 'Escolher o melhor candidato', 'Prever quem vai vencer'], answer: 0, explanation: 'O observatório organiza dados públicos e contexto sem atribuir ranking, escolha ou previsão.', anchor: 'principios', sourceLabel: 'Princípios' },
   ], []);
-
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -84,10 +53,13 @@ export function QuickQuiz() {
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-200/80">Aprendizado rápido</div>
             <h2 id="quiz-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">1 minuto para testar o que você entendeu</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Cinco perguntas curtas. Cada resposta explica a regra e aponta para a área correspondente do observatório.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Dez perguntas curtas. Cada resposta explica a regra e aponta para a área correspondente.</p>
           </div>
-          {!finished && <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${questions.length}`}>
-            <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(questions.length).padStart(2, '0')}</span>
+          {!finished && <div className="quiz-progress-wrap">
+            <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${questions.length}`}>
+              <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(questions.length).padStart(2, '0')}</span>
+            </div>
+            <div className="quiz-progress-bar" aria-hidden="true"><span style={{ width: (((step + 1) / questions.length) * 100) + '%' }} /></div>
           </div>}
         </div>
 
