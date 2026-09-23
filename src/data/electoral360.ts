@@ -62,7 +62,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
     status: 'cataloged',
     frequency: 'conforme publicação',
     sourceId: 'tse-contas-2026',
-    datasetUrl: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/tse-disponibiliza-dados-da-prestacao-de-contas-parcial-das-campanhas-eleitorais',
+    datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/prestacao-de-contas-eleitorais-2026',
   },
   {
     id: 'pardal',
