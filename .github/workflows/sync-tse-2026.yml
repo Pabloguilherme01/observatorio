@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '0 3,9,15,21 * * *'
 
+concurrency:
+  group: tse-sync-2026
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -14,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -23,11 +29,14 @@ jobs:
       - name: Sync candidate snapshot
         run: node scripts/sync-tse-2026.mjs
 
-      - name: Commit snapshot
+      - name: Validate generated snapshot
+        run: node scripts/validate-tse-2026.mjs
+
+      - name: Commit validated snapshot
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/generated/tse2026-candidates.json
+          git add src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history
           git diff --cached --quiet && exit 0
           git commit -m "data: sync TSE 2026 candidate snapshot"
           git push
