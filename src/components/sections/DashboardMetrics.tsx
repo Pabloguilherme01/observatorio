@@ -37,48 +37,37 @@ function lineChartGeometry(points: readonly Point[]) {
     return { ...point, x, y };
   });
 
-  return { width, height, padX, padY, plotWidth, plotHeight, coords, yMin, yMax };
+  return { width, height, padX, plotHeight, coords };
 }
 
 function LineChart({ title, description, points, valueFormatter = value => formatNumber(value) }: LineChartProps) {
   const geometry = lineChartGeometry(points);
-  const polyline = geometry.coords.map(point => `${point.x},${point.y}`).join(' ');
-  const guides = [0, 1, 2, 3].map(index => geometry.padY + (geometry.plotHeight * index) / 3);
+  const polyline = geometry.coords.map(point => point.x + ',' + point.y).join(' ');
+  const guides = [0, 1, 2, 3].map(index => 22 + (geometry.plotHeight * index) / 3);
 
   return (
-    <figure className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70" aria-labelledby={`${title}-caption`}>
-      <figcaption id={`${title}-caption`}>
+    <figure className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70" aria-labelledby={title + '-caption'}>
+      <figcaption id={title + '-caption'}>
         <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
         <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
       </figcaption>
-
       <div className="mt-4 overflow-x-auto">
         <svg
-          viewBox={`0 0 ${geometry.width} ${geometry.height}`}
+          viewBox={'0 0 ' + geometry.width + ' ' + heightForChart()}
           role="img"
-          aria-label={`${title}: ${points.map(point => `${point.label} ${valueFormatter(point.value)}`).join('; ')}`}
-          className="h-auto min-w-[560px] w-full text-sky-300"
+          aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')}
+          className="h-auto min-w-[560px] w-full"
         >
           <title>{title}</title>
           <desc>{description}</desc>
-
           {guides.map((y, index) => (
-            <line key={index} x1={geometry.padX} x2={geometry.width - geometry.padX} y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />
+            <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />
           ))}
-
-          <polyline
-            points={polyline}
-            fill="none"
-            className="stroke-sky-300 light:stroke-sky-600"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
+          <polyline points={polyline} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
           {geometry.coords.map(point => (
             <g key={point.label}>
               <circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" />
-              <text x={point.x} y={geometry.height - 6} textAnchor="middle" className="fill-slate-500 text-[12px]">{point.label}</text>
+              <text x={point.x} y="234" textAnchor="middle" className="fill-slate-500 text-[12px]">{point.label}</text>
             </g>
           ))}
         </svg>
@@ -87,9 +76,16 @@ function LineChart({ title, description, points, valueFormatter = value => forma
   );
 }
 
+function heightForChart(): number {
+  return 240;
+}
+
 export function DashboardMetrics() {
   const density = Number(d.indicators.find(indicator => indicator.id === 'density')?.value ?? 0);
-  const electorateShare = (d.electoral.electorate / 249_978) * 100;
+  const population2022 = d.populationSeries.find(point => point.year === 2022)?.value ?? 0;
+  const population2026 = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+  const populationGrowthPct = population2022 ? ((population2026 - population2022) / population2022) * 100 : 0;
+  const electorateShare = population2026 ? (d.electoral.electorate / population2026) * 100 : 0;
   const inclusionCount = d.electoral.socialNameCount ?? 0;
   const indigenousElectorate = d.electoral.indigenousElectorate ?? 0;
 
@@ -105,40 +101,15 @@ export function DashboardMetrics() {
   ];
 
   const metrics = [
-    {
-      label: 'População 2026',
-      value: formatNumber(249_978),
-      caption: 'estimativa IBGE',
-      icon: Users,
-    },
-    {
-      label: 'Eleitorado 2026',
-      value: formatNumber(d.electoral.electorate),
-      caption: 'snapshot da 28ª Zona',
-      icon: Activity,
-    },
-    {
-      label: 'Inclusão eleitoral',
-      value: formatNumber(inclusionCount),
-      caption: `${formatNumber(indigenousElectorate)} eleitores indígenas registrados`,
-      icon: Gauge,
-    },
-    {
-      label: 'Densidade demográfica',
-      value: `${formatNumber(density, 1)} hab/km²`,
-      caption: 'população 2026 ÷ área territorial',
-      icon: Map,
-    },
+    { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', icon: Users },
+    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot da 28ª Zona', icon: Activity },
+    { label: 'Inclusão eleitoral', value: formatNumber(inclusionCount), caption: formatNumber(indigenousElectorate) + ' eleitores indígenas registrados', icon: Gauge },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população 2026 ÷ área territorial', icon: Map },
   ] as const;
 
   return (
     <section id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dashboard-title">
-      <SectionHeader
-        eyebrow="Visão geral"
-        title="Os números de referência"
-        description="Indicadores principais em uma camada enxuta, com unidade, estado do dado e cálculo derivado explicitado."
-      />
-
+      <SectionHeader eyebrow="Visão geral" title="Os números de referência" description="Indicadores principais em uma camada enxuta, com unidade, estado do dado e cálculo derivado explicitado." />
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metrics.map(({ label, value, caption, icon: Icon }) => (
           <Card key={label}>
@@ -155,37 +126,24 @@ export function DashboardMetrics() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <LineChart
-          title="Crescimento populacional · 2022–2026"
-          description="Série disponível no dataset atual; 2022 é Censo e 2025/2026 são estimativas IBGE."
-          points={populationPoints}
-          valueFormatter={value => `${formatNumber(value)} hab.`}
-        />
-
-        <LineChart
-          title="Eleitorado · 2018–2026"
-          description="Snapshots do eleitorado disponíveis no modelo, com 2026 tratado como fotografia da 28ª Zona."
-          points={electoratePoints}
-          valueFormatter={value => `${formatNumber(value)} eleitores`}
-        />
+        <LineChart title="Crescimento populacional · 2022–2026" description="Série disponível no dataset atual; 2022 é Censo e 2025/2026 são estimativas IBGE." points={populationPoints} valueFormatter={value => formatNumber(value) + ' hab.'} />
+        <LineChart title="Eleitorado · 2018–2026" description="Snapshots do eleitorado disponíveis no modelo, com 2026 tratado como fotografia da 28ª Zona." points={electoratePoints} valueFormatter={value => formatNumber(value) + ' eleitores'} />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
         <Card>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Crescimento 2022 → 2026</div>
-          <div className="mt-2 text-3xl font-black text-white light:text-slate-900">+10,76%</div>
-          <p className="mt-1 text-xs leading-5 text-slate-500">Variação entre o Censo 2022 e a estimativa populacional 2026.</p>
+          <div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Variação calculada a partir dos dois pontos do dataset.</p>
         </Card>
-
         <Card>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Razão eleitorado/população</div>
           <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatPercent(electorateShare, 2)}</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">Relação estatística entre dois universos; não representa comparecimento.</p>
         </Card>
-
         <Card>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Base de cálculo</div>
-          <div className="mt-2 text-xl font-black text-white light:text-slate-900">191,817 km²</div>
+          <div className="mt-2 text-xl font-black text-white light:text-slate-900">{formatNumber(191.817, 3)} km²</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">Área territorial usada para a densidade demográfica derivada.</p>
         </Card>
       </div>
