@@ -87,6 +87,21 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     };
   }, [open, onClose]);
 
+  const quickAnswer = useMemo(() => {
+    const q = normalize(query);
+    if (!q || q.length < 4) return null;
+    const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+    if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
+    if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
+    if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: 'R$ ' + d.budget.totalBrl.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), id: 'orcamento', sourceId: d.budget.sourceId };
+    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saneamento', sourceId: 'sinisa-2024' };
+    if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
+      const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
+      return route ? { title: 'Tarifa de referência para Brasília', value: route.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por trecho', id: 'transporte', sourceId: route.sourceId } : null;
+    }
+    return null;
+  }, [query]);
+
   const filtered = useMemo(() => {
     const queryNormalized = normalize(query);
     const fare = Number(d.indicators.find(indicator => indicator.id === 'fare')?.value ?? 0);
@@ -145,6 +160,12 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
+        {quickAnswer && <div className="mx-2 mt-2 rounded-2xl border border-sky-300/15 bg-sky-300/[0.05] p-4">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-sky-300/80">Resposta rápida</div>
+          <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
+          <div className="mt-1 text-xl font-black text-sky-300">{quickAnswer.value}</div>
+          <a href={'#' + quickAnswer.id} onClick={onClose} className="mt-2 inline-flex min-h-10 items-center text-xs font-bold text-slate-300 hover:text-white">Abrir dado e fonte →</a>
+        </div>}
         <div className="flex items-center justify-between px-4 py-2 text-[11px] text-slate-500">
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
           <span>↑↓ navegar · Enter abrir · Esc fechar</span>
