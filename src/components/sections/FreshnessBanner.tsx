@@ -2,8 +2,9 @@ import { Clock3, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
+import { STORAGE_NAMESPACE } from '../../config/version';
 
-const VISIT_KEY = 'observatorio-last-visit-v37';
+const VISIT_KEY = `${STORAGE_NAMESPACE}-last-visit`;
 
 export function FreshnessBanner() {
   const [previousVisit, setPreviousVisit] = useState<string | null>(null);
