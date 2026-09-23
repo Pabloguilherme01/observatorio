@@ -17,6 +17,8 @@ const ZIP_URLS = [
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
 const API_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos';
 const WATCHLIST = ['Keké', 'Anderson Teodoro', 'Zé da Imperial', 'Baiano dos Cocos', 'Cambão', 'Abadyas Damasceno', 'Pábio Mossoró', 'Felipe Galdino', 'Ribeiro do Túlio', 'André do Premium'];
+const MUNICIPALITY_CODE = '92737';
+const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
 
 const WATCHLIST_ALIASES = {
   'Keké': ['KEKE', 'KEKE DA VULKANIC'],
