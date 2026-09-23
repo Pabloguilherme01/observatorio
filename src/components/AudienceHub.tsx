@@ -49,8 +49,8 @@ export function AudienceHub() {
   const shareUrl = window.location.origin + window.location.pathname;
   const modeHint = useMemo(
     () => mode === 'simple'
-      ? 'Você vê só o necessário. Fonte e detalhes ficam no botão de cada dado.'
-      : 'Você vê método, referência e contexto sem esconder a leitura principal.',
+      ? 'Números claros. Toque para ver a fonte.'
+      : 'Valores, método, data e fonte ficam disponíveis em cada dado.',
     [mode],
   );
 
@@ -64,7 +64,7 @@ export function AudienceHub() {
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{modeHint}</p>
           </div>
           <a href="#mudancas-snapshot" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white">
-            <RefreshCw className="h-4 w-4 text-sky-300" aria-hidden="true" /> O que mudou?
+            <RefreshCw className="h-4 w-4 text-sky-300" aria-hidden="true" /> Mudanças
           </a>
         </div>
 
@@ -136,16 +136,16 @@ export function AudienceHub() {
           <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Hoje no Observatório</div>
-              <p className="mt-1 text-xs text-slate-500">Abra, entenda e compartilhe um dado.</p>
+              <p className="mt-1 text-xs text-slate-500">Um número por vez, sem excesso de informação.</p>
             </div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">dados + fonte</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">{mode === 'simple' ? '4 números' : 'dados + fonte'}</span>
           </div>
 
           <div className="today-rail">
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">LOA 2026</span>
               <strong className="mt-2 block text-2xl font-black text-white">{brl(d.budget.totalBrl)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">orçamento total informado</span>
+              <span className="mt-1 block text-xs text-slate-500">previsto para 2026</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#orcamento" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
                 <ShareDataButton title="LOA 2026 · Águas Lindas" text={'A LOA 2026 prevê ' + brl(d.budget.totalBrl) + ' para Águas Lindas de Goiás. Veja fonte e detalhes no Observatório.'} url={shareUrl + '#orcamento'} compact />
@@ -155,7 +155,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Eleitorado</span>
               <strong className="mt-2 block text-2xl font-black text-white">{d.electoral.electorate.toLocaleString('pt-BR')}</strong>
-              <span className="mt-1 block text-xs text-slate-500">snapshot local de 2026</span>
+              <span className="mt-1 block text-xs text-slate-500">eleitores no snapshot</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#eleitorado" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
                 <ShareDataButton title="Eleitorado 2026 · Águas Lindas" text={'O snapshot local usado pelo Observatório registra ' + d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores em Águas Lindas de Goiás.'} url={shareUrl + '#eleitorado'} compact />
@@ -165,7 +165,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Transporte</span>
               <strong className="mt-2 block text-2xl font-black text-white">{brl(fare)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">trecho de referência para Brasília</span>
+              <span className="mt-1 block text-xs text-slate-500">por trecho para Brasília</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#transporte" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Calcular</a>
                 <ShareDataButton title="Transporte · Águas Lindas → Brasília" text={'A tarifa de referência considerada pelo Observatório é ' + brl(fare) + ' por trecho para Brasília. Veja o cálculo completo.'} url={shareUrl + '#transporte'} compact />
@@ -175,7 +175,7 @@ export function AudienceHub() {
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Saneamento</span>
               <strong className="mt-2 block text-2xl font-black text-white">{sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
-              <span className="mt-1 block text-xs text-slate-500">acesso ao serviço público de esgoto</span>
+              <span className="mt-1 block text-xs text-slate-500">serviço público de esgoto</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#saude" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Entender</a>
                 <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado pelo Observatório.'} url={shareUrl + '#saude'} compact />
