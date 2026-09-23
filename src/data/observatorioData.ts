@@ -2,7 +2,7 @@ import type { ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
 
 /**
- * Snapshot inicial do V22, normalizado para o novo domínio React.
+ * Dataset V24, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília segue o valor indicado no levantamento atual (R$ 11,43);
