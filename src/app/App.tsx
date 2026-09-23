@@ -31,6 +31,7 @@ import { ContextComparison } from '../components/sections/ContextComparison';
 import { CivicActionHub } from '../components/sections/CivicActionHub';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
+import { QuickQuiz } from '../components/sections/QuickQuiz';
 import { InstagramSyncHub } from '../components/InstagramSyncHub';
 import { ProjectTrustPanel } from '../components/ProjectTrustPanel';
 
@@ -43,6 +44,7 @@ export function App() {
           <HeroCountdown />
           <main id="main-content">
             <AudienceHub />
+            <QuickQuiz />
             <ProjectTrustPanel />
             <ExecutiveSummary />
             <FreshnessBanner />
