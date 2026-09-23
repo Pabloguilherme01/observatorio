@@ -41,7 +41,7 @@ export function Header() {
     <>
       <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95">
         <div className="site-header-inner mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:px-6">
-          <a href="#dashboard" className="site-brand min-w-0 shrink-0" aria-label="Observatório, início">
+          <a href="#dashboard" className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
             <span className="block truncate text-[13px] font-black tracking-tight text-white light:text-slate-900">Observatório</span>
             <span className="block truncate text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500">Águas Lindas · 2026</span>
           </a>
@@ -69,7 +69,7 @@ export function Header() {
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="hidden md:block"><LanguageModeToggle /></div>
-            <button type="button" onClick={toggle} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
+            <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
             <button type="button" onClick={() => setToolsOpen(value => !value)} className="site-tools-button min-h-11 min-w-11 rounded-xl border border-white/10 bg-white/[0.025] p-2 text-slate-300 hover:bg-white/5 md:hidden" aria-expanded={toolsOpen} aria-controls="mobile-tools" aria-label={toolsOpen ? 'Fechar ferramentas' : 'Abrir ferramentas'}>
@@ -91,10 +91,16 @@ export function Header() {
                 </div>
                 <LanguageModeToggle />
               </div>
-              <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:command')); setToolsOpen(false); }} className="mobile-tool-action">
-                <Command className="h-4 w-4" aria-hidden="true" />
-                <span>Explorar todas as áreas</span>
-              </button>
+              <div className="mobile-tools-actions">
+                <button type="button" onClick={() => { toggle(); setToolsOpen(false); }} className="mobile-tool-action">
+                  {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
+                  <span>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</span>
+                </button>
+                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:command')); setToolsOpen(false); }} className="mobile-tool-action">
+                  <Command className="h-4 w-4" aria-hidden="true" />
+                  <span>Explorar áreas</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
