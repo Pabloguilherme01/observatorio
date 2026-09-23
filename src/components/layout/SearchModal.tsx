@@ -100,7 +100,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: 'R$ ' + d.budget.totalBrl.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), id: 'orcamento', sourceId: d.budget.sourceId };
-    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saneamento', sourceId: 'sinisa-2024' };
+    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
       return route ? { title: 'Tarifa de referência para Brasília', value: route.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por trecho', id: 'transporte', sourceId: route.sourceId } : null;
@@ -111,7 +111,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     }
     if (q.includes('ideb')) {
       const range = d.education?.ideb2025Range;
-      return range ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'educacao', sourceId: d.education.sourceId } : null;
+      return range ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education.sourceId } : null;
     }
     if (q.includes('heal') || q.includes('hospital')) {
       const total = (d.health?.currentStatedWardBeds ?? 0) + (d.health?.currentStatedIcuBeds ?? 0);
