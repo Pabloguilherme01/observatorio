@@ -196,8 +196,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/denuncias-eleitorais',
     nature: 'official',
     note: 'Conjunto de denúncias registradas no Pardal, com frequência de atualização diária. Registro de denúncia não equivale a comprovação de irregularidade.',
-  },,
-
+  },
   {
     id: 'tse-candidatos-2026',
     label: 'TSE — Candidatos 2026 / dados abertos',
@@ -214,4 +213,4 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     note: 'Processos eleitorais, assuntos, decisões e recursos referentes ao pleito de 2026.',
   },
-
+];
