@@ -113,6 +113,10 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-build
+          path: dist
       - name: Run preview
         run: |
           nohup npm run preview -- --host 127.0.0.1 --port 4173 >/tmp/preview.log 2>&1 &
