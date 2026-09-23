@@ -70,10 +70,15 @@ export function PoliticalRadar() {
           <strong className="text-slate-300">Recorte temporal:</strong> este painel contém um único snapshot de pesquisa, com coleta em {poll.collectionDate}. Não há série temporal suficiente neste conjunto para afirmar tendência de alta ou queda entre pesquisas.
         </div>
 
-        <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400">
-          <strong className="text-amber-200">Situação da divulgação:</strong> há decisão judicial datada de 17/09/2026, com reprodução pública localizada em 20/09/2026, sobre publicações que reproduziram esta pesquisa. O texto público localizado confirma a indisponibilização de publicações específicas e admite nova divulgação desde que as informações exigidas sejam apresentadas de forma clara e legível. Este cartão trata os percentuais como <strong className="text-slate-200">snapshot histórico</strong>, não como atualização de setembro.
-          <a href="https://www.jusbrasil.com.br/jurisprudencia/tre-go/7355108574/inteiro-teor-7355108583" target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Ver inteiro teor reproduzido publicamente</a>
-        </div>
+        {poll.judicialContext && (() => {
+          const legalSource = d.sources.find(source => source.id === poll.judicialContext?.sourceId);
+          return (
+            <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400">
+              <strong className="text-amber-200">Contexto jurídico da divulgação:</strong> decisão de {poll.judicialContext.referenceDate.split('-').reverse().join('/')} relacionada a <strong className="text-slate-200">{poll.judicialContext.scope === 'specific_disclosures' ? 'publicações específicas do resultado' : 'esta pesquisa'}</strong>. {poll.judicialContext.summary} O painel preserva os percentuais como <strong className="text-slate-200">snapshot histórico</strong>, não como atualização de setembro.
+              {legalSource?.url && <a href={legalSource.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Abrir fonte documental</a>}
+            </div>
+          );
+        })()}
 
         <div className="mt-4 space-y-2">
           {poll.results.map(r => (
