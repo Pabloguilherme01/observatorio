@@ -1,3 +1,60 @@
+import { Search, X } from 'lucide-react';
+import { observatorioData as d } from '../../data/observatorioData';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+const entries: readonly (readonly [string, string])[] = [
+  ['Dashboard', 'dashboard'],
+  ['Perfil eleitoral', 'eleitorado'],
+  ['Transporte', 'transporte'],
+  ['Saneamento e saúde', 'saude'],
+  ['Pesquisas', 'politica'],
+  ['Candidaturas', 'candidaturas'],
+  ['Orçamento', 'orcamento'],
+  ['Qualidade dos dados', 'qualidade'],
+  ['Fontes e metodologia', 'fontes'],
+  ['Exportação', 'exportacao'],
+  ['Pesquisa registrada', 'politica'],
+  ['HEALGO', 'saude'],
+  ['Resumo de leitura', 'resumo'],
+];
+
+const normalize = (value: string) =>
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
+
+const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
+
+function fuzzyScore(query: string, text: string): number {
+  if (!query) return 1;
+  if (text.includes(query)) return 100 + (query.length / Math.max(text.length, 1)) * 10;
+  let qi = 0;
+  let score = 0;
+  for (const char of text) {
+    if (char === query[qi]) {
+      score += 3;
+      qi += 1;
+      if (qi === query.length) break;
+    } else if (qi > 0) score -= 0.15;
+  }
+  return qi === query.length ? score : -Infinity;
+}
+
+export function SearchModal({ open, onClose }: { readonly open: boolean; readonly onClose: () => void }) {
+  const [query, setQuery] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+
+  const openSearch = () => {
+    openerRef.current = document.activeElement as HTMLElement | null;
+    setQuery('');
+    setActiveIndex(0);
+    const target = window.matchMedia?.('(min-width: 768px)').matches ? inputRef.current : null;
+    window.setTimeout(() => target?.focus(), 40);
+  };
+
+  const mobileModeHint = typeof window !== 'undefined' && window.matchMedia?.('(max-width: 767px)').matches;
+
 
   useEffect(() => {
     if (!open) {
