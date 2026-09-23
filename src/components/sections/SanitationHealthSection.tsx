@@ -61,13 +61,21 @@ function SewerCurve() {
   return (
     <figure className="mt-6 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
       <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Série histórica · esgoto</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Atendimento por rede pública, 2017–2024.</p></figcaption>
-      <svg viewBox="0 0 620 220" className="mt-4 h-auto w-full" role="img" aria-label="Série histórica do atendimento por rede pública de esgoto entre 2017 e 2024">
+      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label="Série histórica do atendimento por rede pública de esgoto entre 2017 e 2024">
         <title>Atendimento por rede pública de esgoto, 2017 a 2024</title>
         <desc>{sewerHistory.map(point => `${point.year}: ${String(point.value).replace('.', ',')} por cento`).join('; ')}.</desc>
         <line x1="32" y1="170" x2="592" y2="170" className="stroke-slate-700/40 light:stroke-slate-300" strokeWidth="1" />
         <polyline points={points.map(point => `${point.x},${point.y}`).join(' ')} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-        {points.map(point => <g key={point.year} tabIndex={0} role="img" aria-label={`${point.year}: ${String(point.value).replace('.', ',')}%`}><circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" /><text x={point.x} y={point.y - 12} textAnchor="middle" className="fill-slate-400 text-[10px] light:fill-slate-600">{String(point.value).replace('.', ',')}%</text><text x={point.x} y="194" textAnchor="middle" className="fill-slate-500 text-[10px]">{point.year}</text></g>)}
+        {points.map(point => <g key={point.year} tabIndex={0} role="img" aria-label={`${point.year}: ${String(point.value).replace('.', ',')}%`}><circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" /><text x={point.x} y={point.y - 12} textAnchor="middle" className="label-secondary fill-slate-400 text-[10px] light:fill-slate-600">{String(point.value).replace('.', ',')}%</text><text x={point.x} y="194" textAnchor="middle" className="label-secondary fill-slate-500 text-[10px]">{point.year}</text></g>)}
       </svg>
+      <div className="table-compact-mobile mt-3 grid gap-2 md:hidden">
+        {sewerHistory.map(point => (
+          <div key={point.year} className="flex items-center justify-between rounded-xl border border-white/8 px-3 py-2 light:border-slate-200">
+            <span className="text-xs font-semibold text-slate-500">{point.year}</span>
+            <strong className="text-xs text-slate-200 light:text-slate-700">{String(point.value).replace('.', ',')}%</strong>
+          </div>
+        ))}
+      </div>
       <p className="mt-2 text-[11px] leading-5 text-amber-200/80 light:text-amber-700">Metodologia: série histórica do indicador de atendimento por rede pública. Coleta e tratamento possuem denominadores próprios.</p>
     </figure>
   );
@@ -142,6 +150,15 @@ export function SanitationHealthSection() {
               <h3 className="mt-2 text-xl font-black text-white light:text-slate-900">Pressão de demanda e capacidade</h3>
             </div>
             <HeartPulse className="h-5 w-5 text-rose-300" aria-hidden="true" />
+          </div>
+
+          <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50">
+            <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Como ler os números de leitos</div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">164</strong><span className="mt-1 block text-xs text-slate-500">referência reportada na inauguração</span></div>
+              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">85</strong><span className="mt-1 block text-xs text-slate-500">32 enfermaria + 53 UTI, explicitados no portal atual</span></div>
+              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">298</strong><span className="mt-1 block text-xs text-slate-500">planejamento registrado no dataset, não capacidade instalada</span></div>
+            </div>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
