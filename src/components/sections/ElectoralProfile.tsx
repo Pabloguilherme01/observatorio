@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { FingerprintPattern, UserRound, UsersRound } from '../../components/icons.mjs';
+import { FingerprintPattern, UserRound, UsersRound } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber } from '../../utils/formatters';
 import { Card } from '../ui/Card';

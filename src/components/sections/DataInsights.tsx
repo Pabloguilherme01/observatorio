@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, Brain, CheckCircle2, HeartPulse, Route, Users, XCircle } from '../../components/icons.mjs';
+import { ArrowRight, Brain, CheckCircle2, HeartPulse, Route, Users, XCircle } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { dispatchInspect } from '../DataInspector';
 import { Card } from '../ui/Card';

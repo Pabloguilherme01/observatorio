@@ -1,4 +1,4 @@
-import { Database, FileCheck2, FingerprintPattern, Link2, ShieldCheck } from '../../components/icons.mjs';
+import { Database, FileCheck2, FingerprintPattern, Link2, ShieldCheck } from '../../components/icons';
 import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import generated from '../../data/generated/tse2026-candidates.json';

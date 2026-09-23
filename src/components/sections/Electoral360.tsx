@@ -1,4 +1,4 @@
-import { CheckCircle2, Database, ExternalLink, FileText, History, Search, ShieldAlert, UserRound } from '../../components/icons.mjs';
+import { CheckCircle2, Database, ExternalLink, FileText, History, Search, ShieldAlert, UserRound } from '../../components/icons';
 import { useMemo, useState } from 'react';
 import { electoral360Diff, electoral360Modules, electoral360Snapshot } from '../../data/electoral360';
 import { observatorioData as d } from '../../data/observatorioData';

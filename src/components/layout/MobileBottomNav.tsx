@@ -1,4 +1,4 @@
-import { Compass, FileSearch, Home, Menu, Search } from '../../components/icons.mjs';
+import { Compass, FileSearch, Home, Menu, Search } from '../../components/icons';
 import { useEffect, useState } from 'react';
 
 const items = [

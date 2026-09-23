@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, RotateCcw } from '../../components/icons.mjs';
+import { ArrowRight, CheckCircle2, RotateCcw } from '../../components/icons';
 import { useMemo, useState } from 'react';
 
 type Question = {

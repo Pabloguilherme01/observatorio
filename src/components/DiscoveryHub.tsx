@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Database, Search, Sparkles } from '../components/icons.mjs';
+import { ArrowRight, BarChart3, Database, Search, Sparkles } from '../components/icons';
 import { navigation } from '../config/navigation';
 
 const cards = [

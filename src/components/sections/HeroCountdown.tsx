@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from '../../components/icons.mjs';
+import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
 import { useEffect, useState } from 'react';

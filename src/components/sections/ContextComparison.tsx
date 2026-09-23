@@ -1,4 +1,4 @@
-import { ExternalLink } from '../../components/icons.mjs';
+import { ExternalLink } from '../../components/icons';
 import { useState } from 'react';
 import { contextualMetrics, contextualMunicipalities, type ContextMetricId } from '../../data/contextualComparison';
 import { Card } from '../ui/Card';

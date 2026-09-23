@@ -1,5 +1,5 @@
 import type { SourceRef } from '../types/observatorio';
-import { ExternalLink } from '../components/icons.mjs';
+import { ExternalLink } from '../components/icons';
 
 interface Props {
   readonly source: SourceRef;

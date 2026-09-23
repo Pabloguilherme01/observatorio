@@ -1,33 +1,62 @@
-// Gera src/components/icons.d.mts com re-export explícito dos ícones lucide-react usados no app.
-// Garante tree-shaking real (evita bundle completo do pacote de ícones).
-import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import fs from 'node:fs';
 import { execSync } from 'node:child_process';
 
-const grep = execSync(`grep -rho "from 'lucide-react'" -B0 src || true`, { encoding: 'utf8' });
-const raw = execSync(`grep -rn "from 'lucide-react'" src`, { encoding: 'utf8' });
+// 1) coleta nomes importados de '../../components/icons' em todo src
+const raw = execSync(`grep -rhno "import {[^}]*} from '[^']*components/icons'" src || true`, { encoding: 'utf8' });
 const names = new Set();
 for (const line of raw.split('\n')) {
-  const m = line.match(/import\s*{([^}]*)}\s*from\s*'lucide-react'/);
+  const m = line.match(/import \{([^}]*)\} from/);
   if (m) for (const n of m[1].split(',')) { const t = n.trim().split(/\s+as\s+/)[0]; if (t) names.add(t); }
 }
-const kebab = (n) => n.replace(/([a-z0-9])([A-Z])/g, '$1-$2').replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z])(\d)/g, '$1-$2').toLowerCase();
-const iconsDir = 'node_modules/lucide-react/dist/esm/icons';
-const resolved = [];
-for (const name of [...names].sort()) {
-  let k = kebab(name);
-  if (!existsSync(`${iconsDir}/${k}.mjs`)) {
-    // aliases comuns do lucide
-    const alias = { CheckCircle2: 'circle-check-big', XCircle: 'circle-x', AlertTriangle: 'triangle-alert', CircleHelp: 'circle-question-mark' }[name];
-    if (alias && existsSync(`${iconsDir}/${alias}.mjs`)) k = alias;
-  }
-  if (!existsSync(`${iconsDir}/${k}.mjs`)) { console.error('NÃO RESOLVIDO:', name, '->', k); process.exitCode = 1; continue; }
-  resolved.push({ name, k });
+
+
+// garantias de nomes usados indiretamente (theme toggle etc.)
+for (const extra of ['Moon', 'Sun']) { if (!names.has(extra)) names.add(extra); }
+
+// 2) aliases de nomes depreciados -> exportação via "as"
+const alias = {
+  AlertTriangle: 'TriangleAlert',
+  BarChart3: 'ChartColumnBig',
+  Building2: 'Building2',
+  CheckCircle2: 'CircleCheckBig',
+  CircleHelp: 'CircleQuestionMark',
+  FileBarChart2: 'FileChartColumn',
+  FileJson: 'FileJson',
+  Filter: 'Funnel',
+  Grid3X3: 'Grid3x3',
+  HelpCircle: 'CircleHelp',
+  FileCheck2: 'FileCheckCorner',
+  FileQuestion: 'FileQuestionMark',
+  History: 'RotateCcwClock',
+  Home: 'House',
+  Loader2: 'LoaderCircle',
+  MoreHorizontal: 'Ellipsis',
+  PieChart: 'ChartPie',
+  XCircle: 'CircleX',
+};
+
+// 3) valida contra as exports reais do pacote
+const dts = fs.readFileSync('node_modules/lucide-react/dist/lucide-react.d.ts', 'utf8');
+const expClause = dts.match(/export \{([^}]*)\}/)[1];
+const exported = new Map(); // publicName -> originalName
+for (const part of expClause.split(',')) {
+  const p = part.trim(); if (!p) continue;
+  const [orig, pub] = p.split(/\s+as\s+/).map(s => s.trim());
+  exported.set(pub || orig, orig);
 }
-const out = [
-  '// Arquivo gerado por scripts/gen-icon-barrel.mjs — não editar manualmente.',
-  '// Re-export explícito para garantir tree-shaking do lucide-react.',
-  ...resolved.map(({ name, k }) => `export { ${name} } from 'lucide-react/dist/esm/icons/${k}';`),
-  '',
-].join('\n');
-writeFileSync('src/components/icons.d.mts', out);
-console.log(`OK: ${resolved.length} ícones em src/components/icons.d.mts`);
+
+const lines = [];
+const problems = [];
+for (const name of [...names].sort((a,b)=>a.localeCompare(b))) {
+  if (exported.has(name)) {
+    lines.push(`  ${name},`);
+  } else if (alias[name] && exported.has(alias[name])) {
+    lines.push(`  ${alias[name]} as ${name},`);
+  } else {
+    problems.push(name);
+  }
+}
+if (problems.length) { console.error('NÃO RESOLVIDOS:', problems.join(', ')); process.exit(1); }
+const out = `// Barrel de ícones lucide-react com re-export explícito (tree-shaking real).\n// Gerado por scripts/gen-icon-barrel.mjs — não editar manualmente.\nexport {\n${lines.join('\n')}\n} from 'lucide-react';\n`;
+fs.writeFileSync('src/components/icons.ts', out);
+console.log(`OK: ${lines.length} ícones em src/components/icons.ts`);

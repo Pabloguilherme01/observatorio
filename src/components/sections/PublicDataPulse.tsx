@@ -1,4 +1,4 @@
-import { BookOpen, CalendarClock, Database, ExternalLink, Landmark, ShieldAlert } from '../../components/icons.mjs';
+import { BookOpen, CalendarClock, Database, ExternalLink, Landmark, ShieldAlert } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';

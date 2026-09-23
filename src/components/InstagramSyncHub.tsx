@@ -1,4 +1,4 @@
-import { Camera, Check, Download, ExternalLink, Share2, Sparkles } from '../components/icons.mjs';
+import { Camera, Check, Download, ExternalLink, Share2, Sparkles } from '../components/icons';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';

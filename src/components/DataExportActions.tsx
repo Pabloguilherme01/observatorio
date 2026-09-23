@@ -1,4 +1,4 @@
-import { Braces, Copy, Download, ExternalLink, Image as ImageIcon } from '../components/icons.mjs';
+import { Braces, Copy, Download, ExternalLink, Image as ImageIcon } from '../components/icons';
 import { useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';

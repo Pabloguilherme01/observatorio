@@ -1,4 +1,4 @@
-import { Search, X } from '../../components/icons.mjs';
+import { Search, X } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useEffect, useMemo, useRef, useState } from 'react';
 

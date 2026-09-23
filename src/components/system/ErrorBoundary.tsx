@@ -1,5 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { RefreshCw, TriangleAlert } from '../../components/icons.mjs';
+import { RefreshCw, TriangleAlert } from '../../components/icons';
 
 interface Props {
   readonly children: ReactNode;

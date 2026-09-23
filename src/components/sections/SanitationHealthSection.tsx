@@ -1,4 +1,4 @@
-import { Droplets, HeartPulse, TriangleAlert } from '../../components/icons.mjs';
+import { Droplets, HeartPulse, TriangleAlert } from '../../components/icons';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';

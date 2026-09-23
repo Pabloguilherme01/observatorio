@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Brain, BusFront, Droplets, Landmark, RefreshCw, Users, WalletCards } from '../components/icons.mjs';
+import { ArrowRight, BarChart3, Brain, BusFront, Droplets, Landmark, RefreshCw, Users, WalletCards } from '../components/icons';
 import { observatorioData as d } from '../data/observatorioData';
 import generated from '../data/generated/tse2026-candidates.json';
 import { formatDate } from '../utils/formatters';

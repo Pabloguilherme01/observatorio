@@ -1,4 +1,4 @@
-import { CalendarDays, ExternalLink, MapPin, MessageCircle, ShieldAlert } from '../../components/icons.mjs';
+import { CalendarDays, ExternalLink, MapPin, MessageCircle, ShieldAlert } from '../../components/icons';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 

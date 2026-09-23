@@ -1,4 +1,4 @@
-import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from '../../components/icons.mjs';
+import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from '../../components/icons';
 import generated from '../../data/generated/tse2026-candidates.json';
 
 export function SnapshotChanges() {

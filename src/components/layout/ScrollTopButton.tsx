@@ -1,4 +1,4 @@
-import { ArrowUp } from '../../components/icons.mjs';
+import { ArrowUp } from '../../components/icons';
 import { useEffect, useState } from 'react';
 
 export function ScrollTopButton() {

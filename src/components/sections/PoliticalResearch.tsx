@@ -1,4 +1,4 @@
-import { Database, ExternalLink } from '../../components/icons.mjs';
+import { Database, ExternalLink } from '../../components/icons';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';

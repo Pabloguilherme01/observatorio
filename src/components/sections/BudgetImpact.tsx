@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, Wallet } from '../../components/icons.mjs';
+import { ArrowDown, ArrowRight, Wallet } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBRL } from '../../lib/transport';
 import { Card } from '../ui/Card';

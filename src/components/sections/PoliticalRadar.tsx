@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AlertTriangle, FileSearch, ShieldCheck } from '../../components/icons.mjs';
+import { AlertTriangle, FileSearch, ShieldCheck } from '../../components/icons';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';

@@ -1,4 +1,4 @@
-import { ArrowRight, BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles, Vote, X } from '../components/icons.mjs';
+import { ArrowRight, BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles, Vote, X } from '../components/icons';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';

@@ -1,4 +1,4 @@
-import { Check, Share2 } from '../components/icons.mjs';
+import { Check, Share2 } from '../components/icons';
 import { useState } from 'react';
 
 interface ShareDataButtonProps {

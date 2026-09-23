@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Clipboard, ExternalLink, Link2, Share2, X } from '../components/icons.mjs';
+import { Check, Clipboard, ExternalLink, Link2, Share2, X } from '../components/icons';
 import { observatorioData as d } from '../data/observatorioData';
 
 type InspectorDetail = {

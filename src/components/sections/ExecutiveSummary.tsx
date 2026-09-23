@@ -1,4 +1,4 @@
-import { Activity, CalendarClock, CircleHelp, ExternalLink, Share2, Wallet } from '../../components/icons.mjs';
+import { Activity, CalendarClock, CircleHelp, ExternalLink, Share2, Wallet } from '../../components/icons';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
