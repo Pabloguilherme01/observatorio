@@ -35,12 +35,21 @@ function scrollToHash(hash: string) {
   const reduceMotion = document.documentElement.classList.contains('reduced-motion')
     || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
-  const scroll = () => document.getElementById(hash)?.scrollIntoView({
-    behavior: reduceMotion ? 'auto' : 'smooth',
-    block: 'start',
-  });
+  let attempts = 0;
+  const scroll = () => {
+    const target = document.getElementById(hash);
+    if (target) {
+      target.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+      return;
+    }
+    if (attempts >= 12) return;
+    attempts += 1;
+    window.setTimeout(scroll, 80);
+  };
   requestAnimationFrame(scroll);
-  requestAnimationFrame(() => requestAnimationFrame(scroll));
 }
 
 function DeferredBlock({
@@ -108,6 +117,16 @@ function DeferredBlock({
 }
 
 export function App() {
+  useEffect(() => {
+    const navigateFromLocation = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) scrollToHash(hash);
+    };
+    navigateFromLocation();
+    window.addEventListener('hashchange', navigateFromLocation);
+    return () => window.removeEventListener('hashchange', navigateFromLocation);
+  }, []);
+
   return (
     <>
       <a className="skip-link" href="#main-content">Pular para o conteúdo principal</a>
