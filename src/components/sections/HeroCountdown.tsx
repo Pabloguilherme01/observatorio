@@ -21,7 +21,7 @@ export function HeroCountdown() {
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
       <div className="mb-6 flex flex-wrap gap-2">
-        <Badge>V29 • experiência interativa</Badge>
+        <Badge>V30 • experiência interativa</Badge>
         <Badge>Dados públicos</Badge>
         <Badge>Fontes rastreáveis</Badge>
         <Badge>Sem ranking automático</Badge>
