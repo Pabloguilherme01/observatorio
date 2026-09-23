@@ -39,8 +39,8 @@ jobs:
         run: npm run audit:tse-architecture
       - name: Validate data contracts
         run: npm run validate:observatorio
-      - name: Validate runtime-sensitive data invariants
-        run: npm run validate:observatorio
+      - name: Audit runtime hardening
+        run: npm run audit:runtime
       - name: Validate results feed
         run: npm run validate:results
       - name: Typecheck
