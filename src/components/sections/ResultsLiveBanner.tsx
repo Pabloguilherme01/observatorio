@@ -40,7 +40,7 @@ export function ResultsLiveBanner() {
     ? `${data.items.length} registros recebidos`
     : 'Nenhum registro municipal no feed atual';
   const integrity = data.integrity?.jwsVerified === true && data.integrity?.signatureStatus === 'verified' && data.integrity?.verificationMethod === 'jws-node-crypto'
-    ? 'assinatura JWS verificada'
+    ? 'assinatura JWS verificada com chave configurada'
     : data.integrity?.signatureStatus === 'not_verified'
       ? 'assinatura não verificada'
       : data.integrity?.signatureStatus === 'unavailable'
