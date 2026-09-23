@@ -1,22 +1,20 @@
 name: Quality
 
 on:
-  workflow_run:
-    workflows: ["Sync TSE candidates"]
-    types: [completed]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
 
 jobs:
   quality:
-    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout current main after TSE sync
+      - name: Checkout
         uses: actions/checkout@v5
-        with:
-          ref: main
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
