@@ -126,8 +126,14 @@ export function HeroCountdown() {
           </div>
           <div className="hero-secondary-round rounded-2xl border border-white/10 bg-white/[0.035] p-4">
             <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-white"><CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />2º turno · 25/10 · se houver</div>
-            <Timer value={secondRound} />
-            <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">Calendário oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
+            {languageMode === 'technical' ? (
+              <>
+                <Timer value={secondRound} />
+                <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">Calendário oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
+              </>
+            ) : (
+              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">Ver calendário oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
+            )}
           </div>
         </div>
       </div>
