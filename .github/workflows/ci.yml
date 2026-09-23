@@ -37,6 +37,9 @@ jobs:
       - name: Accessibility and contrast audit
         run: npm run audit:a11y
 
+      - name: Mobile UX audit
+        run: npm run audit:mobile
+
       - name: Typecheck
         run: npm run typecheck
 
