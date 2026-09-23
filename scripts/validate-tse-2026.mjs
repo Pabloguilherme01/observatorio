@@ -8,6 +8,7 @@ const errors = [];
 const warnings = [];
 
 if (payload.schemaVersion !== 2) errors.push('schemaVersion deve ser 2.');
+if (payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist neste sincronizador.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
 const state = payload.meta?.state;
