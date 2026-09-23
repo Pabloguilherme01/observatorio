@@ -24,8 +24,7 @@ const candidateSnapshots: ObservatoryData['candidates'] = generatedCandidates.ma
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília usa a tarifa atual publicada pela UTB (R$ 11,45);
  * - abstenção de 2024 fica separada de votos brancos e nulos;
- * - margem de erro da pesquisa de 400 entrevistas é tratada como teórica,
- *   não como margem oficial, enquanto a ficha técnica não a informar.
+ * - margem de erro não é calculada pelo observatório; a interface só exibe valor oficial quando disponível na fonte registrada.
  */
 export const observatorioData: ObservatoryData = {
   meta: {
@@ -94,7 +93,6 @@ export const observatorioData: ObservatoryData = {
       nonePct: 15.5,
       notSurePct: 10.25,
       unclassifiedPct: 7.75,
-      theoreticalMarginErrorPct: 4.9,
       sourceId: 'tse-pesquisas-2026',
       judicialContext: {
         status: 'decision_related',
@@ -103,7 +101,7 @@ export const observatorioData: ObservatoryData = {
         scope: 'specific_disclosures',
         summary: 'Decisão judicial reconheceu irregularidade formal na divulgação de publicações específicas da pesquisa e admitiu nova divulgação com as informações exigidas. O contexto não deve ser apresentado como anulação automática do levantamento.',
       },
-      note: 'Os 4,9 pontos são aproximação teórica para amostra de 400; não substituem a ficha técnica oficial.',
+      note: 'A margem de erro não é calculada pelo observatório. O painel só deve exibir esse campo quando a ficha técnica oficial registrada estiver materializada no snapshot.'
     },
   ],
 
