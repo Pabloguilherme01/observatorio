@@ -3,8 +3,8 @@ import { useCountdown } from '../../hooks/useCountdown';
 import { Badge } from '../ui/Badge';
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
-  if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300">{completedLabel}</div>;
-  return <div className="grid grid-cols-4 gap-2 text-center" aria-live="polite">
+  if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
+  return <div className="grid grid-cols-4 gap-2 text-center" role="timer" aria-live="off">
     {[['Dias', value.days], ['Horas', value.hours], ['Min', value.minutes], ['Seg', value.seconds]].map(([label, amount]) => (
       <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] px-2 py-3">
         <div className="text-xl font-bold tabular-nums text-white">{String(amount).padStart(2, '0')}</div>
