@@ -207,11 +207,15 @@ export function DashboardMetrics() {
       {languageMode === 'technical' && (
         <>
           <div className="technical-detail mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300/80">Contexto quantitativo</div>
                 <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Indicadores adicionais</h3>
-                <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Mais números para análise. Cada cartão mantém ano-base, fonte e possibilidade de abrir o inspetor.</p>
+                <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Agrupados por tema para reduzir a carga visual. Cada valor mantém ano-base, fonte e inspetor.</p>
+              </div>
+              <div className="dashboard-technical-key" aria-label="Como interpretar os cartões">
+                <span><i className="dashboard-dot" /> observação</span>
+                <span><i className="dashboard-dot dashboard-dot-derived" /> derivação/cálculo</span>
               </div>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
