@@ -17,6 +17,8 @@ export function DataQualityPanel() {
   const pollGapPct = Math.max(0, 100 - pollCoveredPct);
   const tseState = generated.meta.state;
   const tseReady = tseState !== 'not_synced';
+  const tseCapturedAt = generated.meta.downloadedAt ? new Date(generated.meta.downloadedAt) : null;
+  const resultsSource = d.sources.find(source => source.id === 'tse-resultados-2026');
   const warnings = [
     pollGapPct > 0 ? 'Pesquisa: ' + pollGapPct.toFixed(2).replace('.', ',') + ' p.p. estão fora das categorias publicadas.' : null,
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
@@ -59,7 +61,7 @@ export function DataQualityPanel() {
           {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
         </div>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <Card className="p-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
           <div className="mt-2 text-2xl font-black text-white">{d.sources.length}</div>
@@ -74,6 +76,15 @@ export function DataQualityPanel() {
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Snapshot TSE</div>
           <div className={`mt-2 text-base font-black ${tseReady ? 'text-emerald-300' : 'text-amber-300'}`}>{tseReady ? 'Sincronizado' : 'Aguardando captura'}</div>
           <p className="mt-1 text-xs text-slate-500">Estado local: {tseState}. Isso não representa ausência de candidaturas na fonte oficial.</p>
+          <div className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
+            {tseCapturedAt ? `captura ${tseCapturedAt.toLocaleDateString('pt-BR')} ${tseCapturedAt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : 'sem horário de captura'}
+          </div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Apuração 2026</div>
+          <div className="mt-2 text-base font-black text-white">Fonte oficial preparada</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">A integração de totalização ao vivo permanece separada do snapshot local e deve usar a distribuição oficial do TSE.</p>
+          {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Regra editorial</div>
