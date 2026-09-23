@@ -75,7 +75,7 @@ function DeferredBlock({
             observer.disconnect();
           }
         },
-        { rootMargin: '1200px 0px' },
+        { rootMargin: '900px 0px' },
       );
       observer.observe(node);
       return () => {
