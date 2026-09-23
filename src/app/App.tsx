@@ -22,6 +22,8 @@ import { ElectionTimeline } from '../components/sections/ElectionTimeline';
 import { DataInspector } from '../components/DataInspector';
 import { ExperienceShell } from '../components/ExperienceShell';
 import { DiscoveryHub } from '../components/DiscoveryHub';
+import { DemographicDynamic } from '../components/sections/DemographicDynamic';
+import { BudgetImpact } from '../components/sections/BudgetImpact';
 
 export function App() {
   return (
@@ -33,6 +35,7 @@ export function App() {
           <DiscoveryHub />
           <DashboardMetrics />
           <ElectoralProfile />
+          <DemographicDynamic />
           <TransportCalculator />
           <DataInsights />
           <SanitationHealthSection />
@@ -42,6 +45,7 @@ export function App() {
           <SnapshotChanges />
           <Electoral360 />
           <BudgetSection />
+          <BudgetImpact />
           <Central2026 />
           <PublicDataPulse />
           <DataQualityPanel />
