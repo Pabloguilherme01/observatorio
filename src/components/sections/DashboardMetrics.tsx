@@ -82,9 +82,9 @@ export function DashboardMetrics() {
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
   const populationPoints = d.populationSeries.filter(p => p.year >= 2022).map(p => ({ label: String(p.year), value: p.value, sourceId: p.sourceId, referenceDate: p.referenceDate }));
   const electoratePoints: readonly Point[] = [
-    { label: '2018', value: d.electoral.electorate2018 ?? 0, sourceId: d.electoral.sourceId },
-    { label: '2022', value: d.electoral.electorate2022 ?? 0, sourceId: d.electoral.sourceId },
-    { label: '2024', value: d.electoral.electorate2024 ?? 0, sourceId: d.electoral.sourceId },
+    { label: '2018', value: d.electoral.electorate2018 ?? 0, sourceId: d.electoral.electorate2018SourceId ?? d.electoral.sourceId, referenceDate: '2018-09-01' },
+    { label: '2022', value: d.electoral.electorate2022 ?? 0, sourceId: d.electoral.electorate2022SourceId ?? d.electoral.sourceId, referenceDate: '2022-09-01' },
+    { label: '2024', value: d.electoral.electorate2024 ?? 0, sourceId: d.electoral.electorate2024SourceId ?? d.electoral.sourceId, referenceDate: '2024-08-01' },
     { label: '2026', value: d.electoral.electorate, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
   ];
   const populationDelta = population2026 - population2022;
