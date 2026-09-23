@@ -174,7 +174,8 @@ async function main() {
   const cycle = String(pleitoConfig.c ?? '').trim();
   if (!cycle) throw new Error('Ciclo eleitoral ausente no ele-c.json.');
 
-  const municipalityConfigUrl = `${BASE}/${cycle}/6259/config/mun-e${pad(6259)}-cm.json`;
+  const stateElectionRef = findElection(electionConfig, 6259);
+  const municipalityConfigUrl = `${BASE}/${cycle}/${stateElectionRef.electionCode}/config/mun-e${pad(stateElectionRef.electionCode)}-cm.json`;
   const municipalityResponse = await httpGet(municipalityConfigUrl, { Accept: 'application/json' });
   const municipalityConfig = parseJson('configuração de municípios', municipalityResponse);
   const municipality = findMunicipality(municipalityConfig);
@@ -195,7 +196,7 @@ async function main() {
     const electionSegment = pad(actualElectionCode);
     const cargoSegment = 'c' + String(spec.cargoCode).padStart(4, '0');
     const sourceFile = `${UF}${MUNICIPALITY_CODE}-${cargoSegment}-e${electionSegment}-u.json`;
-    const basePath = `${BASE}/${cycle}/${spec.electionCode}/dados/${UF}/${sourceFile}`;
+    const basePath = `${BASE}/${cycle}/${actualElectionCode}/dados/${UF}/${sourceFile}`;
     try {
       const pair = await fetchPair(basePath, basePath.replace(/\.json$/, '.jws'), spec.cargo);
       entries.push(entryFromPayload(pair.json, sourceFile, { ...spec, electionCode: actualElectionCode }));
