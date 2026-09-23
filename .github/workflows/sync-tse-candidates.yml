@@ -2,6 +2,8 @@ name: Sync TSE candidates
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
 
 permissions:
   contents: write
@@ -28,21 +30,27 @@ jobs:
       - name: Sync official TSE candidate snapshot directly
         run: npm run sync:tse
 
+      - name: Filter local municipality and ingest official media
+        run: npm run ingest:tse:candidates-local
+
       - name: Validate directly captured TSE snapshot
         env:
           REQUIRE_TSE_SYNC: 'true'
         run: npm run validate:tse
 
+      - name: Static audit of local candidate media
+        run: npm run audit:static
+
       - name: Commit snapshot when changed
         shell: bash
         run: |
-          if git diff --quiet -- src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history; then
+          if git diff --quiet -- src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history public/api/v1/candidatos.json public/img/candidatos; then
             echo "No candidate snapshot change."
             exit 0
           fi
 
           git config user.name "observatorio-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history
+          git add src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history public/api/v1/candidatos.json public/img/candidatos
           git commit -m "data: sync TSE 2026 candidate snapshot"
           git push
