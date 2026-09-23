@@ -1,0 +1,48 @@
+name: Seed visual baselines
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  seed:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Seed only when baselines are absent
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          snapshots=(tests/visual/__snapshots__/*)
+          if [ ${#snapshots[@]} -gt 0 ]; then
+            echo 'Baselines já existem; nada a fazer.'
+            exit 0
+          fi
+          npx playwright test tests/visual/visual.spec.ts --update-snapshots
+      - name: Commit baselines
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet -- tests/visual/__snapshots__; then
+            echo 'Nenhum baseline novo.'
+            exit 0
+          fi
+          git add tests/visual/__snapshots__
+          git commit -m 'test(visual): seed V44 screenshot baselines'
+          git push origin 'HEAD:${{ github.event.pull_request.head.ref }}'
