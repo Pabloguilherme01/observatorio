@@ -40,6 +40,12 @@ must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
+const searchModal = read('src/components/layout/SearchModal.tsx');
+const dashboardMetrics = read('src/components/sections/DashboardMetrics.tsx');
+must(searchModal.includes("role=\"combobox\"") && searchModal.includes('aria-activedescendant') && searchModal.includes('filteredLengthRef'), 'busca usa semântica combobox e evita closure stale na navegação por teclado');
+must(dashboardMetrics.includes('Ver dados em tabela') && dashboardMetrics.includes('<table'), 'gráficos principais possuem alternativa explícita em tabela acessível');
+must(index.includes('id="boot-fallback"') && index.includes('obs-skeleton') && index.includes('Recarregar'), 'fallback inicial combina skeleton e recuperação explícita');
+
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
 must(appSource.includes('skip-link') && appSource.includes('Pular para o conteúdo principal'), 'navegação por teclado possui atalho de salto para o conteúdo');
 must(vite.includes('offline.html') && vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui página offline, cache rápido de documento e NetworkFirst para API');
