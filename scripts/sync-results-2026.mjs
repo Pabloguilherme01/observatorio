@@ -245,6 +245,7 @@ async function main() {
     console.log(JSON.stringify({ valid: true, unchanged: true, state: previousFeed.state, capturedAt: previousFeed.capturedAt, entries: previousFeed.entries.length }, null, 2));
     return;
   }
+  writeFileSync(HTTP_STATE, JSON.stringify({ ...httpState, schemaVersion: 1 }, null, 2) + '\n', 'utf8');
   const now = new Date();
   const complete = entries.every(entry => entry.sectionsTotal > 0 && entry.sectionsCounted >= entry.sectionsTotal);
   const payload = {
