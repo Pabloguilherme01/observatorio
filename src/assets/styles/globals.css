@@ -443,3 +443,34 @@ button,a{touch-action:manipulation}
     min-width:0;
   }
 }
+
+/* Shortcut center */
+.shortcut-header{padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.015)}
+.shortcut-search{display:flex;align-items:center;gap:10px;min-height:48px;padding:5px 8px 5px 12px;border:1px solid rgba(125,211,252,.12);border-radius:16px;background:rgba(0,0,0,.12)}
+.shortcut-search:focus-within{border-color:rgba(125,211,252,.3);box-shadow:0 0 0 3px rgba(125,211,252,.06)}
+.shortcut-header-meta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;padding:0 2px;color:#64748b;font-size:10px;font-weight:700}
+.shortcut-content{display:grid;gap:18px;padding:14px}
+.shortcut-section{min-width:0}
+.shortcut-section-title{margin-bottom:8px;color:#7dd3fc;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.shortcut-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.shortcut-card,.shortcut-list-row{width:100%;min-width:0;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025);color:#dbeafe;text-align:left;touch-action:manipulation}
+.shortcut-card:hover,.shortcut-list-row:hover{border-color:rgba(125,211,252,.18);background:rgba(125,211,252,.05)}
+.shortcut-card-featured{border-color:rgba(125,211,252,.16);background:linear-gradient(135deg,rgba(125,211,252,.09),rgba(255,255,255,.025))}
+.shortcut-card strong,.shortcut-list-row strong,.shortcut-result-row strong{display:block;font-size:12px;font-weight:900}
+.shortcut-card small,.shortcut-list-row small,.shortcut-result-row small{display:block;margin-top:3px;color:#718096;font-size:10px;line-height:1.35}
+.shortcut-list{display:grid;gap:6px}
+.shortcut-result-row{display:flex;min-width:0;align-items:center;gap:6px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.02)}
+.shortcut-result-row>button:first-child{display:flex;flex:1;min-width:0;align-items:center;gap:10px;min-height:52px;padding:8px 10px;text-align:left}
+.shortcut-result-icon{display:grid;min-width:34px;min-height:34px;place-items:center;border-radius:11px;background:rgba(125,211,252,.08);color:#bae6fd}
+.favorite-btn{display:grid;place-items:center;min-width:42px;min-height:42px;margin-right:5px;border-radius:12px;color:#64748b;touch-action:manipulation}
+.favorite-btn:hover,.favorite-btn:focus-visible{background:rgba(255,255,255,.06);color:#bae6fd}
+.shortcut-footer{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-top:1px solid var(--line);color:#59677a;font-size:9px}
+.shortcut-footer span{padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.035)}
+@media(max-width:767px){
+ .command-panel{border-radius:20px}
+ .shortcut-content{padding:12px}
+ .shortcut-grid{grid-template-columns:1fr}
+ .shortcut-card,.shortcut-list-row{min-height:58px;padding:12px 13px}
+ .shortcut-header-meta{font-size:9px}
+ .shortcut-footer{font-size:8px}
+}
