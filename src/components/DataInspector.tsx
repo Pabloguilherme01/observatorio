@@ -31,6 +31,7 @@ export function DataInspector() {
   const closeRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const copyTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const onInspect = (event: WindowEventMap['observatorio:inspect-data']) => {
@@ -40,7 +41,13 @@ export function DataInspector() {
       setActionError(false);
     };
     window.addEventListener('observatorio:inspect-data', onInspect);
-    return () => window.removeEventListener('observatorio:inspect-data', onInspect);
+    return () => {
+      window.removeEventListener('observatorio:inspect-data', onInspect);
+      if (copyTimerRef.current) {
+        window.clearTimeout(copyTimerRef.current);
+        copyTimerRef.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -99,7 +106,11 @@ export function DataInspector() {
       }
       setCopied(true);
       setActionError(false);
-      window.setTimeout(() => setCopied(false), 1800);
+      if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+      copyTimerRef.current = window.setTimeout(() => {
+        copyTimerRef.current = null;
+        setCopied(false);
+      }, 1800);
     } catch {
       setCopied(false);
       setActionError(true);
