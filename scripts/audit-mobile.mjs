@@ -40,7 +40,7 @@ must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-must(files.version.includes("APP_VERSION = '43.0.0'"), 'versão V43 sincronizada com a camada mobile');
+must(files.version.includes("APP_VERSION = '43.1.0'"), 'versão V43 sincronizada com a camada mobile');
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
 must(files.index.includes('apple-mobile-web-app-capable'), 'metadados de instalação iOS estão presentes');
 
