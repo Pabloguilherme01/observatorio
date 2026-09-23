@@ -1,5 +1,6 @@
 import { Search, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
+import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -23,6 +24,7 @@ const normalize = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
 const sourceLabel = (sourceId: string) => d.sources.find(source => source.id === sourceId)?.label ?? sourceId;
+const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? 'Seção do observatório';
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
@@ -157,7 +159,6 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const selectResult = (id: string) => {
     onClose();
     window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: document.documentElement.classList.contains('reduced-motion') ? 'auto' : 'smooth', block: 'start' });
       window.history.replaceState(null, '', '#' + id);
       window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
     }, 60);
@@ -203,7 +204,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <div className="search-kicker">Resposta rápida</div>
           <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
           <div className="mt-1 text-2xl font-black text-sky-300">{quickAnswer.value}</div>
-          <button type="button" onClick={() => selectResult(quickAnswer.id)} className="mt-3 search-quick-action">Abrir dado e fonte</button>
+          <button type="button" onClick={() => selectResult(quickAnswer.id)} className="mt-3 search-quick-action">Abrir seção e contexto</button>
           <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
 
@@ -225,11 +226,11 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               role="option"
               aria-selected={activeIndex === index}
             >
-              <span className="min-w-0 text-left"><strong>{item.label}</strong><small>#{item.id}</small></span>
+              <span className="min-w-0 text-left"><strong>{item.label}</strong><small>{destinationLabel(item.id)}</small></span>
               <span className="search-result-enter">↵</span>
             </button>
           ))}
-          {!filtered.length && <div className="search-empty">Nenhum resultado encontrado. Tente termos como orçamento, eleitorado, transporte ou saneamento.</div>}
+          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente orçamento, eleitorado, transporte, saneamento ou HEAL.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
         </div>
       </div>
     </div>

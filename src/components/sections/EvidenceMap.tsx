@@ -1,8 +1,17 @@
 import { ExternalLink } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
-import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
+
+function natureLabel(nature: string) {
+  if (nature === 'official') return 'Fonte oficial';
+  if (nature === 'secondary') return 'Fonte secundária';
+  return 'Fonte registrada';
+}
+
+function dateLabel(value: string | undefined) {
+  return value ? formatDate(value) : 'Data de referência não registrada';
+}
 
 export function EvidenceMap() {
   return (
@@ -11,8 +20,9 @@ export function EvidenceMap() {
         titleId="fontes-title"
         eyebrow="Rastreabilidade"
         title="Mapa de evidências"
-        description="Cada bloco aponta para a fonte utilizada, preservando a diferença entre dado oficial, fonte secundária e cálculo próprio."
+        description="Cada cartão identifica a instituição, a natureza da fonte e as datas disponíveis. Acesse a origem original para conferir o contexto completo."
       />
+
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {d.sources.map(source => (
           <a
@@ -21,20 +31,29 @@ export function EvidenceMap() {
             target="_blank"
             rel="noopener noreferrer"
             title={'Abrir fonte: ' + source.label}
-            className="group rounded-2xl border border-white/8 bg-white/[0.025] p-4 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-white/[0.04]"
+            className="source-card group"
           >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-xs font-bold text-white">{source.label}</div>
-                <div className="mt-1 text-[11px] text-slate-500">{source.institution} · {source.nature}</div>
+            <div className="source-card-header">
+              <div className="min-w-0">
+                <div className="source-card-title">{source.label}</div>
+                <div className="source-card-institution">{source.institution}</div>
               </div>
-              <ExternalLink className="h-4 w-4 shrink-0 text-slate-600 group-hover:text-sky-300" aria-hidden="true" />
+              <span className="source-card-icon" aria-hidden="true">
+                <ExternalLink className="h-4 w-4" />
+              </span>
             </div>
-            <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-              {source.referenceDate && <span>Referência {formatDate(source.referenceDate)}</span>}
-              {source.publishedAt && <span>Publicado {formatDate(source.publishedAt)}</span>}
+
+            <div className="source-card-meta">
+              <span className={'source-nature source-nature-' + source.nature}>{natureLabel(source.nature)}</span>
+              <span>{dateLabel(source.referenceDate ?? source.publishedAt)}</span>
             </div>
-            {source.note && <p className="mt-3 text-xs leading-5 text-slate-500">{source.note}</p>}
+
+            {source.note && <p className="source-card-note">{source.note}</p>}
+
+            <div className="source-card-footer">
+              <span>Conferir fonte original</span>
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </div>
           </a>
         ))}
       </div>
