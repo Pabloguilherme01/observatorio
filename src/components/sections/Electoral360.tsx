@@ -105,7 +105,7 @@ export function Electoral360() {
         title="Quem está no recorte local"
         description={languageMode === 'simple'
           ? '7 nomes com vínculo eleitoral comprovado com Águas Lindas. Veja foto, número, partido, situação e os dados principais. Abra “mais dados” para detalhes.'
-          : 'Camada técnica para o recorte local: os registros brutos do TSE permanecem preservados, mas a interface exibe apenas os nomes com vínculo eleitoral local documentado. Não é uma lista completa de candidaturas de Goiás.'}
+          : 'Eleições Gerais de 2026: o pleito inclui Governador, Senador, Deputado Federal e Deputado Estadual, entre outros cargos nacionais e estaduais; prefeito e vereador não estão em disputa em 2026. Os registros brutos do TSE permanecem preservados, mas a interface exibe apenas os nomes com vínculo eleitoral local documentado.'}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
