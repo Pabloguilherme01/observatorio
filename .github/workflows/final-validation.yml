@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: final-validation-${{ github.event.pull_request.number || github.ref }}
@@ -44,36 +44,19 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
-      - name: Detectar e materializar first capture
+      - name: Verificar first capture TSE
         shell: bash
         run: |
           set -euo pipefail
-          if grep -q '"estado": "not_ingested"' generated/tse2026-contas.json && grep -q '"estado": "not_ingested"' generated/tse2026-pesquisas.json && grep -q '"estado": "not_ingested"' generated/tse2026-processual.json; then
-            npm run ingest:tse:first-batch || { echo '::error::Primeiro batch TSE falhou. Verifique headers CSV, checksum ou schema Zod.'; exit 1; }
-          else
-            echo 'Snapshots já materializados; validação continua sem recriar baseline.'
-          fi
-          npm run verify:tse:capture || { echo '::error::Proveniência/checksum da captura TSE inválidos.'; exit 1; }
+          npm run verify:tse:capture || {
+            echo '::error::Snapshots TSE ausentes, incompletos ou sem proveniência válida.'
+            exit 1
+          }
       - name: Verificar APIs
         run: |
           test -f public/api/v1/contas.json
           test -f public/api/v1/pesquisas.json
           test -f public/api/v1/processual.json
-      - name: Commit da primeira captura
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          if git diff --quiet -- generated public/api/v1 src/data/generated; then
-            echo 'Nenhum snapshot novo para commit.'
-            exit 0
-          fi
-          git add generated public/api/v1 src/data/generated
-          git commit -m 'data(tse): materializar first capture V44'
-          git push origin 'HEAD:${{ github.event.pull_request.head.ref }}'
-
   build:
     name: 3 · Build de produção
     needs: ingest
