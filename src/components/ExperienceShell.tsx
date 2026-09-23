@@ -109,7 +109,17 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); localStorage.setItem(RECENT_KEY, JSON.stringify(next)); return next; }); };
   const toggleFavorite = (id: string) => { setFavorites(current => { const next = current.includes(id) ? current.filter(item => item !== id) : [...current,id].slice(-6); localStorage.setItem(FAVORITES_KEY, JSON.stringify(next)); return next; }); };
-  const results = useMemo(() => { const normalized = query.trim().toLocaleLowerCase('pt-BR'); if (!normalized) return navigation; return navigation.filter(item => [item.label,item.description,item.shortcut].some(value => value.toLocaleLowerCase('pt-BR').includes(normalized))); }, [query]);
+  const quickLinks = useMemo(() => {
+    const priority = ['dashboard', 'descubra', 'eleitorado', 'transporte', 'orcamento', 'dados', 'fontes'];
+    return priority.map(id => navigation.find(item => item.id === id)).filter(Boolean);
+  }, []);
+  const recentItems = useMemo(() => recent.slice(0, 4).map(id => navigation.find(item => item.id === id)).filter(Boolean), [recent]);
+  const favoriteItems = useMemo(() => favorites.map(id => navigation.find(item => item.id === id)).filter(Boolean), [favorites]);
+  const results = useMemo(() => {
+    const normalized = query.trim().toLocaleLowerCase('pt-BR');
+    if (!normalized) return navigation;
+    return navigation.filter(item => [item.label,item.description,item.shortcut].some(value => value.toLocaleLowerCase('pt-BR').includes(normalized)));
+  }, [query]);
 
   return <>
     <div className="reading-progress" style={{ width: progress + '%' }} aria-hidden="true" />
