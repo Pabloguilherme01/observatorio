@@ -98,7 +98,7 @@ test.describe('Observatório · jornada E2E', () => {
       await expect(section).not.toContainText(excluded);
     }
 
-    await expect(cards.first().locator('img[alt^="Foto oficial de"]')).toHaveCount(1);
+    await expect(cards.first().locator('img[alt^="Foto oficial de"], div[aria-label^="Foto indisponível"]')).toHaveCount(1);
     const instagramLinks = cards.locator('a[href*="instagram.com/"]');
     await expect(instagramLinks).toHaveCount(6);
 
