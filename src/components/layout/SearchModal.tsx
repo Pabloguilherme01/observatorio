@@ -59,7 +59,8 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     setActiveIndex(0);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 0);
+    const shouldAutoFocus = window.matchMedia?.('(pointer: fine)').matches ?? false;
+    const focusTimer = shouldAutoFocus ? window.setTimeout(() => inputRef.current?.focus(), 0) : 0;
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
       if (event.key === 'Tab' && dialogRef.current) {
@@ -70,6 +71,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
         else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
+      if (document.activeElement !== inputRef.current && !shouldAutoFocus) return;
       if (event.key === 'ArrowDown') {
         event.preventDefault();
         setActiveIndex(index => index + 1);
