@@ -1070,3 +1070,10 @@ button,a{touch-action:manipulation}
   .dashboard-kpi-card{min-height:142px!important}
   .dashboard-kpi-card:before{opacity:.6}
 }
+
+
+.dashboard-technical-key{display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:#64748b;font-size:10px;font-weight:800}
+.dashboard-technical-key span{display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.07);border-radius:999px;padding:5px 8px;background:rgba(255,255,255,.02)}
+.dashboard-dot{display:inline-block;width:7px;height:7px;border-radius:999px;background:#7dd3fc}
+.dashboard-dot-derived{background:#fbbf24}
+@media(max-width:767px){.dashboard-technical-key{width:100%}.dashboard-technical-key span{flex:1;justify-content:center}}
