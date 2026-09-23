@@ -1,10 +1,10 @@
-import { Compass, FileSearch, Home, Menu, Search, Zap } from 'lucide-react';
+import { BookOpen, Compass, FileSearch, Home, Menu, Search } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const items = [
   { id: 'dashboard', label: 'Início', icon: Home },
   { id: 'descubra', label: 'Explorar', icon: Compass },
-  { id: 'instagram', label: 'Compartilhar', icon: Zap },
+  { id: 'dados', label: 'Dados', icon: BookOpen },
   { id: 'fontes', label: 'Fontes', icon: FileSearch },
 ] as const;
 
@@ -20,33 +20,39 @@ export function MobileBottomNav() {
   const [activeSection, setActiveSection] = useState('dashboard');
 
   useEffect(() => {
-    const observedIds = ['dashboard', 'descubra', 'instagram', 'fontes'];
-    const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'dados', 'qualidade', 'evidencias', 'acao']);
+    const observedIds = ['dashboard', 'descubra', 'dados', 'fontes'];
+    const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'candidaturas', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'qualidade', 'evidencias', 'acao', 'instagram']);
     const allObservedIds = [...observedIds, ...thematicIds];
     const observed = allObservedIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+
     const updateFromHash = () => {
       const id = window.location.hash.replace('#', '');
       if (observedIds.includes(id)) setActiveSection(id);
-      else if (thematicIds.has(id)) setActiveSection('descubra');
+      else if (thematicIds.has(id)) setActiveSection(id === 'dados' ? 'dados' : 'descubra');
     };
+
     updateFromHash();
-    if (!observed.length) return () => window.removeEventListener('hashchange', updateFromHash);
 
     const observer = new IntersectionObserver(entries => {
       const visible = entries
         .filter(entry => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target.id) setActiveSection(thematicIds.has(visible.target.id) ? 'descubra' : visible.target.id);
+      if (!visible?.target.id) return;
+      const id = visible.target.id;
+      setActiveSection(observedIds.includes(id) ? id : id === 'dados' ? 'dados' : id === 'fontes' ? 'fontes' : 'descubra');
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
     observed.forEach(node => observer.observe(node));
+
     const onNavigate = (event: Event) => {
       const id = (event as CustomEvent<string>).detail;
       if (observedIds.includes(id)) setActiveSection(id);
-      else if (thematicIds.has(id)) setActiveSection('descubra');
+      else setActiveSection(id === 'dados' ? 'dados' : 'descubra');
     };
+
     window.addEventListener('hashchange', updateFromHash);
     window.addEventListener('observatorio:navigate', onNavigate);
+
     return () => {
       observer.disconnect();
       window.removeEventListener('hashchange', updateFromHash);
@@ -57,13 +63,7 @@ export function MobileBottomNav() {
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular">
       {items.map(({ id, label, icon: Icon }) => (
-        <button
-          key={id}
-          type="button"
-          onClick={() => jump(id)}
-          className={activeSection === id ? 'is-active' : ''}
-          aria-current={activeSection === id ? 'location' : undefined}
-        >
+        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'location' : undefined}>
           <Icon className="h-4 w-4" aria-hidden="true" />
           <span>{label}</span>
         </button>
