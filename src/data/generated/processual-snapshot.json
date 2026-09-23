@@ -1,25 +1,2043 @@
 {
   "meta": {
     "fonte": "processual",
-    "snapshotId": "processual-20260923103759708-ac91753c89d2",
+    "snapshotId": "processual-20260923104620531-318e65abf88b",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-    "checksum": "ac91753c89d29eedb021c5ebbe31d2351e1a670956af586083dd1941ebd20d9a",
+    "checksum": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
     "sourceRows": 70759,
-    "validatedRows": 0,
-    "matchedRows": 0,
+    "validatedRows": 63,
+    "matchedRows": 63,
     "rejectedRows": 0,
-    "captureTime": "2026-09-23T10:37:59.708Z",
+    "captureTime": "2026-09-23T10:46:20.531Z",
     "retrievalMethod": "official_tse_zip_csv",
-    "state": "first_capture",
-    "baseline": true
+    "state": "synced",
+    "baseline": false
   },
   "data": {
     "versao": "1.0.0",
-    "estado": "first_capture",
-    "geradoEm": "2026-09-23T10:37:59.708Z",
+    "estado": "synced",
+    "geradoEm": "2026-09-23T10:46:20.531Z",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-    "sourceHash": "ac91753c89d29eedb021c5ebbe31d2351e1a670956af586083dd1941ebd20d9a",
-    "totalProcessos": 0,
-    "processos": []
+    "sourceHash": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+    "totalProcessos": 63,
+    "processos": [
+      {
+        "numeroProcesso": "0600058-28.2026.6.09.0019",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Banner/Cartaz/Faixa",
+        "candidatoId": "90002547032",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-18T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-14T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600058-28.2026.6.09.0019",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600079-74.2026.6.09.0028",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Alto-falante/Amplificador de Som",
+        "candidatoId": "90002543127",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-07T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-08T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600079-74.2026.6.09.0028",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600040-89.2026.6.09.0024",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Alto-falante/Amplificador de Som",
+        "candidatoId": "90002547039",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-16T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-07T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-09T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-16T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600040-89.2026.6.09.0024",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600051-36.2026.6.09.0019",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Banner/Cartaz/Faixa",
+        "candidatoId": "90002547032",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-04T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-06T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-10T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600051-36.2026.6.09.0019",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600074-52.2026.6.09.0028",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Banner/Cartaz/Faixa",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-10T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-30T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-01T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-10T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600074-52.2026.6.09.0028",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600285-75.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Extempor�nea/Antecipada",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-07-30T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-05-01T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-05-04T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-06-11T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-06-19T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-07-30T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600285-75.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602071-57.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-12T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-12T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602071-57.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600332-49.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Extempor�nea/Antecipada",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-07-28T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-05-15T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-05-15T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-06-08T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-06-19T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-07-28T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600332-49.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601586-57.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Extempor�nea/Antecipada",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-25T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-18T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-25T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601586-57.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601240-09.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002547039",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-31T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-11T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-31T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601240-09.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601262-67.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002547032",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-01T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-11T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-01T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601262-67.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602682-10.2026.6.09.0000",
+        "classe": "DIREITO DE RESPOSTA",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Divulga��o de Not�cia Sabidamente Falsa",
+        "candidatoId": "90002543127",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-18T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602682-10.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602652-72.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-18T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-15T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-16T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-17T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602652-72.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602674-33.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Deep Fake",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-18T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-17T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602674-33.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601771-95.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Pesquisa Eleitoral - Registro de Pesquisa Eleitoral",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-08T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-08T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-08T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601771-95.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601107-64.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-09T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-09T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-09T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601107-64.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601601-26.2026.6.09.0000",
+        "classe": "CUMPRIMENTO DE SENTEN�A",
+        "assunto": "Execu��o - Cumprimento de Senten�a",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-08T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-20T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-08T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601601-26.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601603-93.2026.6.09.0000",
+        "classe": "DIREITO DE RESPOSTA",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002543127",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-16T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-29T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-11T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-16T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601603-93.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601085-06.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002543768",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-04T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-09T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-04T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601085-06.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601214-11.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-24T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-10T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-24T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601214-11.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600598-36.2026.6.09.0000",
+        "classe": "CUMPRIMENTO DE SENTEN�A",
+        "assunto": "Execu��o - Cumprimento de Senten�a",
+        "candidatoId": "90002547039",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-09T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-07-30T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-13T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-23T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-09T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-09T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-09T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600598-36.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602764-41.2026.6.09.0000",
+        "classe": "DIREITO DE RESPOSTA",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Divulga��o de Not�cia Sabidamente Falsa",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-22T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-22T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602764-41.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601144-91.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002544890",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-27T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-10T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-27T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601144-91.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601404-71.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-24T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-12T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-24T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601404-71.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600441-63.2026.6.09.0000",
+        "classe": "CUMPRIMENTO DE SENTEN�A",
+        "assunto": "Execu��o - Cumprimento de Senten�a",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-08-24T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-06-23T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-06-26T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-07-10T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-04T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-12T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-17T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-24T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-24T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600441-63.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602528-89.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002543768",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-13T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602528-89.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601708-70.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Pesquisa Eleitoral - Registro de Pesquisa Eleitoral",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-17T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-02T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-02T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-17T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601708-70.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601721-69.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-03T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-02T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-03T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601721-69.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600652-02.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002537423",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-07T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-05T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-29T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-07T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600652-02.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602564-34.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-13T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602564-34.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600858-16.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002543127",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-01T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-08T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-01T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600858-16.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601645-45.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-16T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-26T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-29T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-16T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601645-45.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602433-59.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002547032",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-13T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602433-59.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601746-82.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Pesquisa Eleitoral - Registro de Pesquisa Eleitoral",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-04T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-04T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-04T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601746-82.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601796-11.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002544890",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-09T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-09T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601796-11.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602740-13.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-22T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-22T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602740-13.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602727-14.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602727-14.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602723-74.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-22T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-19T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-22T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602723-74.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602724-59.2026.6.09.0000",
+        "classe": "DIREITO DE RESPOSTA",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Divulga��o de Not�cia Sabidamente Falsa",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-20T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-19T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602724-59.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602728-96.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602728-96.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602722-89.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Redes Sociais",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-19T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602722-89.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602725-44.2026.6.09.0000",
+        "classe": "DIREITO DE RESPOSTA",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-20T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-19T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602725-44.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601226-25.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002547004",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-01T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-11T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-01T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601226-25.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600282-23.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Extempor�nea/Antecipada",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-06-17T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-04-29T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-04-30T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-05-22T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-06-17T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600282-23.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602750-57.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602750-57.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602753-12.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Redes Sociais",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602753-12.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602752-27.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002547039",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602752-27.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602757-49.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-22T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-22T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602757-49.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602122-68.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002547039",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-12T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-12T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602122-68.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602213-61.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002537423",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-12T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-12T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602213-61.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602318-38.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002547004",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-13T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602318-38.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600852-09.2026.6.09.0000",
+        "classe": "REGISTRO DE CANDIDATURA",
+        "assunto": "Registro de Candidatura - RRC - Candidato",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-02T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-08T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-02T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600852-09.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601604-78.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Divulga��o de Not�cia Sabidamente Falsa",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-15T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-02T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-07T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-15T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-15T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601604-78.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0601606-48.2026.6.09.0000",
+        "classe": "REPRESENTA��O",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Internet",
+        "candidatoId": "90002549161",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-04T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-22T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-08-25T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-04T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0601606-48.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602587-77.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-13T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602587-77.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602438-81.2026.6.09.0000",
+        "classe": "PRESTA��O DE CONTAS ELEITORAIS",
+        "assunto": "Cargo - Deputado Estadual",
+        "candidatoId": "90002543127",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-13T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-13T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602438-81.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0602743-65.2026.6.09.0000",
+        "classe": "DIREITO DE RESPOSTA",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Divulga��o de Not�cia Sabidamente Falsa",
+        "candidatoId": "90002543113",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-22T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-22T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0602743-65.2026.6.09.0000",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600065-20.2026.6.09.0019",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Banner/Cartaz/Faixa",
+        "candidatoId": "90002547032",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-20T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-20T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600065-20.2026.6.09.0019",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600077-07.2026.6.09.0028",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Bem P�blico",
+        "candidatoId": "90002544890",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-15T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-02T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-04T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-15T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600077-07.2026.6.09.0028",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600073-67.2026.6.09.0028",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Bem P�blico",
+        "candidatoId": "90002544890",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-10T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-08-27T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-08-31T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-10T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600073-67.2026.6.09.0028",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600038-82.2026.6.09.0004",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Banner/Cartaz/Faixa",
+        "candidatoId": "90002546223",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-18T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-05T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-07T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600038-82.2026.6.09.0004",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600049-51.2026.6.09.0024",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Banner/Cartaz/Faixa",
+        "candidatoId": "90002547039",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-21T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-21T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600049-51.2026.6.09.0024",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      },
+      {
+        "numeroProcesso": "0600060-95.2026.6.09.0019",
+        "classe": "NOT�CIA DE IRREGULARIDADE EM PROPAGANDA ELEITORAL",
+        "assunto": "Propaganda Pol�tica - Propaganda Eleitoral - Alto-falante/Amplificador de Som",
+        "candidatoId": "90002547032",
+        "escopo": "GO · processos associados à watchlist operacional",
+        "status": "0",
+        "ultimaMovimentacaoEm": "2026-09-18T12:00:00.000Z",
+        "timeline": [
+          {
+            "data": "2026-09-15T12:00:00.000Z",
+            "tipo": "DISTRIBUICAO",
+            "descricao": "Processo presente no arquivo oficial do PJE 2026 e ligado à watchlist por registro de partes."
+          },
+          {
+            "data": "2026-09-16T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          },
+          {
+            "data": "2026-09-18T12:00:00.000Z",
+            "tipo": "DECISAO",
+            "descricao": "Movimentação registrada no arquivo oficial."
+          }
+        ],
+        "pjeUrl": "https://consultaunificadapje.tse.jus.br/#/public/resultado/0600060-95.2026.6.09.0019",
+        "proveniencia": {
+          "fonte": "TSE - Processual 2026",
+          "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
+          "arquivoOrigem": "/home/runner/work/observatorio/observatorio/.tmp/tse-processual/processual-2026.zip"
+        }
+      }
+    ]
   }
 }

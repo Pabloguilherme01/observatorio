@@ -1,7 +1,7 @@
 {
   "versao": "1.0.0",
-  "estado": "first_capture",
-  "geradoEm": "2026-09-23T10:37:59.708Z",
+  "estado": "synced",
+  "geradoEm": "2026-09-23T10:46:20.531Z",
   "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
   "sourceHash": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
   "totalPesquisas": 0,
