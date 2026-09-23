@@ -8,16 +8,16 @@ interface Props {
 interface State {
   readonly hasError: boolean;
   readonly message: string;
+  readonly errorId: string;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  public state: State = { hasError: false, message: '' };
+  public state: State = { hasError: false, message: '', errorId: '' };
 
   public static getDerivedStateFromError(error: unknown): State {
-    return {
-      hasError: true,
-      message: error instanceof Error ? error.message : 'Erro inesperado ao carregar a aplicação.',
-    };
+    const message = error instanceof Error ? error.message : 'Erro inesperado ao carregar a aplicação.';
+    const errorId = 'UI-' + Date.now().toString(36).toUpperCase();
+    return { hasError: true, message, errorId };
   }
 
   public componentDidCatch(error: unknown, info: ErrorInfo): void {
@@ -42,11 +42,13 @@ export class ErrorBoundary extends Component<Props, State> {
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-sky-300">Observatório · recuperação</p>
           <h1 className="mt-2 text-2xl font-black">Não foi possível montar esta página</h1>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-400">
-            O conteúdo está publicado, mas ocorreu um erro durante a inicialização da interface. Recarregue para tentar novamente.
+            O conteúdo está publicado, mas ocorreu um erro durante a inicialização da interface. Tente recarregar. Se o problema persistir, informe o código abaixo para facilitar a análise.
           </p>
-          {this.state.message && import.meta.env.DEV && (
-            <pre className="mt-4 overflow-auto rounded-2xl bg-black/30 p-3 text-left text-xs text-slate-500">{this.state.message}</pre>
-          )}
+          <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-3 text-left">
+            <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">Código do erro</div>
+            <code className="mt-1 block text-xs font-bold text-slate-300">{this.state.errorId || 'UI-UNKNOWN'}</code>
+            {import.meta.env.DEV && this.state.message && <pre className="mt-2 max-h-32 overflow-auto text-xs text-slate-500">{this.state.message}</pre>}
+          </div>
           <button type="button" onClick={this.handleReload} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
             <RefreshCw className="h-4 w-4" aria-hidden="true" />
             Recarregar
