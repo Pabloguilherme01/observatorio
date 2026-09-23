@@ -118,52 +118,51 @@ export function AudienceHub() {
           </div>
         )}
         <div className="mt-5">
-          <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+          <div className="mb-3 flex items-end justify-between gap-2">
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Hoje no Observatório</div>
-              <p className="mt-1 text-xs text-slate-500">Um número por vez, sem excesso de informação.</p>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Hoje</div>
+              <p className="mt-1 text-xs text-slate-500">{mode === 'simple' ? 'Quatro números para começar.' : 'Quatro números com acesso à fonte.'}</p>
             </div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">{mode === 'simple' ? '4 números' : 'dados + fonte'}</span>
           </div>
 
           <div className="today-rail">
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">LOA 2026</span>
               <strong className="mt-2 block text-2xl font-black text-white">{brl(d.budget.totalBrl)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">previsto para 2026</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'orçamento' : 'previsto para 2026'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#orcamento" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
-                <ShareDataButton title="LOA 2026 · Águas Lindas" text={'A LOA 2026 prevê ' + brl(d.budget.totalBrl) + ' para Águas Lindas de Goiás. Veja fonte e detalhes no Observatório.'} url={shareUrl + '#orcamento'} compact />
+                {mode === 'technical' && <ShareDataButton title="LOA 2026 · Águas Lindas" text={'A LOA 2026 prevê ' + brl(d.budget.totalBrl) + ' para Águas Lindas de Goiás.'} url={shareUrl + '#orcamento'} compact />}
               </div>
             </div>
 
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Eleitorado</span>
               <strong className="mt-2 block text-2xl font-black text-white">{d.electoral.electorate.toLocaleString('pt-BR')}</strong>
-              <span className="mt-1 block text-xs text-slate-500">eleitores no snapshot</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'eleitores' : 'snapshot local'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#eleitorado" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
-                <ShareDataButton title="Eleitorado 2026 · Águas Lindas" text={'O snapshot local usado pelo Observatório registra ' + d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores em Águas Lindas de Goiás.'} url={shareUrl + '#eleitorado'} compact />
+                {mode === 'technical' && <ShareDataButton title="Eleitorado 2026 · Águas Lindas" text={'O snapshot local usado pelo Observatório registra ' + d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores em Águas Lindas de Goiás.'} url={shareUrl + '#eleitorado'} compact />}
               </div>
             </div>
 
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Transporte</span>
               <strong className="mt-2 block text-2xl font-black text-white">{brl(fare)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">por trecho para Brasília</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'por trecho' : 'por trecho · Brasília'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#transporte" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Calcular</a>
-                <ShareDataButton title="Transporte · Águas Lindas → Brasília" text={'A tarifa de referência considerada pelo Observatório é ' + brl(fare) + ' por trecho para Brasília. Veja o cálculo completo.'} url={shareUrl + '#transporte'} compact />
+                {mode === 'technical' && <ShareDataButton title="Transporte · Águas Lindas → Brasília" text={'A tarifa de referência considerada pelo Observatório é ' + brl(fare) + ' por trecho para Brasília.'} url={shareUrl + '#transporte'} compact />}
               </div>
             </div>
 
             <div className="today-card">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Saneamento</span>
               <strong className="mt-2 block text-2xl font-black text-white">{sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
-              <span className="mt-1 block text-xs text-slate-500">serviço público de esgoto</span>
+              <span className="mt-1 block text-xs text-slate-500">{mode === 'simple' ? 'esgoto' : 'serviço público de esgoto'}</span>
               <div className="mt-3 flex flex-wrap gap-2">
-                <a href="#saude" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Entender</a>
-                <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado pelo Observatório.'} url={shareUrl + '#saude'} compact />
+                <a href="#saude" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
+                {mode === 'technical' && <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado.'} url={shareUrl + '#saude'} compact />}
               </div>
             </div>
           </div>
