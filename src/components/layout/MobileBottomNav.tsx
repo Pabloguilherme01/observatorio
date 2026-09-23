@@ -20,7 +20,7 @@ function sectionToTab(id: string) {
   if (id === 'descubra') return 'descubra';
   if (id === 'dados') return 'dados';
   if (id === 'fontes') return 'fontes';
-  return thematicIds.has(id) ? 'descubra' : 'descubra';
+  return 'descubra';
 }
 
 function jump(id: string) {
@@ -44,7 +44,8 @@ export function MobileBottomNav() {
 
     const observe = () => {
       if (!observer) return;
-      ['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds].forEach(id => {
+      const ids = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
+      ids.forEach(id => {
         const node = document.getElementById(id);
         if (node) observer.observe(node);
       });
@@ -55,7 +56,7 @@ export function MobileBottomNav() {
 
     const onNavigate = (event: Event) => {
       setActiveSection(sectionToTab((event as CustomEvent<string>).detail));
-      requestAnimationFrame(observe);
+      window.requestAnimationFrame(observe);
     };
 
     window.addEventListener('hashchange', updateFromHash);
