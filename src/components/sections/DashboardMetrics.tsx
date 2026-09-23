@@ -183,7 +183,7 @@ export function DashboardMetrics() {
       </div>
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note }) => (
+        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature }) => (
           <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note })} className="metric-interactive text-left">
             <Card className="dashboard-kpi-card">
               <div className="flex items-start justify-between gap-4">
