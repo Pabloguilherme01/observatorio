@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
+import { basename, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { TSEContasFileSchema, TSEPesquisasFileSchema, TSEProcessualFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
 import { listFiles, readJson, writeJson } from './common.ts';
@@ -75,7 +75,7 @@ const files = {
 } as const;
 
 for (const path of Object.values(files)) {
-  if (existsSync(path)) copyFileSync(path, join(BACKUP_DIR, path.split('/').at(-1) ?? 'backup.json'));
+  if (existsSync(path)) copyFileSync(path, join(BACKUP_DIR, basename(path) || 'backup.json'));
 }
 
 function runIngest(scriptPath: string): void {
@@ -270,7 +270,7 @@ try {
   console.log('[TSE] primeiro batch concluído com schemas Zod e snapshots verificáveis.');
 } catch (error) {
   for (const [key, path] of Object.entries(files)) {
-    const backup = join(BACKUP_DIR, path.split('/').at(-1) ?? 'backup.json');
+    const backup = join(BACKUP_DIR, basename(path) || 'backup.json');
     if (existsSync(backup)) copyFileSync(backup, path);
     console.error('[TSE] falha no batch ' + key + ':', error);
   }
