@@ -137,6 +137,14 @@ function findCandidateArray(value, depth = 0) {
   return null;
 }
 
+function isMunicipalityCandidate(value) {
+  if (!value || typeof value !== 'object') return false;
+  const municipalityCode = firstScalar(value, ['cdMunicipio','CD_MUNICIPIO','cdMunicipioTse','CD_MUNICIPIO_TSE','nrMunicipio','NR_MUNICIPIO']);
+  const municipalityName = firstString(value, ['nmMunicipio','NM_MUNICIPIO','nomeMunicipio']);
+  return String(municipalityCode ?? '') === MUNICIPALITY_CODE ||
+    normalize(String(municipalityName ?? '')) === MUNICIPALITY_NORMALIZED;
+}
+
 function collectStrings(value, output = [], depth = 0) {
   if (depth > 5 || value == null) return output;
   if (typeof value === 'string') {
@@ -321,6 +329,10 @@ async function main() {
       const parsedApi = parseJsonPayload(rawApi);
       const records = findCandidateArray(parsedApi);
       if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
+      const localRecords = records.filter(isMunicipalityCandidate);
+      if (localRecords.length) {
+        records.splice(0, records.length, ...localRecords);
+      }
       sourceFileSha256 = createHash('sha256').update(rawApi, 'utf8').digest('hex');
       sourceRows = records.length;
       retrievalMethod = 'official_tse_divulgacandcontas_api';
