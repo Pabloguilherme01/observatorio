@@ -6,6 +6,7 @@ import { dispatchInspect } from '../DataInspector';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import { ProvenanceTrigger } from '../ProvenanceTrigger';
 
 interface Point { readonly label: string; readonly value: number; readonly sourceId: string; readonly referenceDate?: string; }
 interface LineChartProps { readonly title: string; readonly description: string; readonly points: readonly Point[]; readonly valueFormatter?: (value: number) => string; }
@@ -103,7 +104,7 @@ export function DashboardMetrics() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note }) => (
           <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note })} className="text-left">
-            <Card><div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div><div className="mt-3 text-3xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-xs text-slate-500">{caption}</div><div className="mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">{languageMode === 'simple' ? simpleExplanation : 'Fonte e método detalhados no inspetor.'}</div><div className="mt-2 inline-flex rounded-full border border-white/8 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">{referenceDate ? `ref. ${referenceDate.split('-').reverse().join('/')}` : 'sem referência'}</div><div className="mt-2 text-[10px] font-bold uppercase tracking-wide text-sky-300/70">Abrir detalhes</div></div><Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" /></div></Card>
+            <Card><div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div><div className="mt-3 text-3xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-xs text-slate-500">{caption}</div><div className="mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">{languageMode === 'simple' ? simpleExplanation : 'Fonte e método detalhados no inspetor.'}</div><div className="mt-2 inline-flex rounded-full border border-white/8 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">{referenceDate ? `ref. ${referenceDate.split('-').reverse().join('/')}` : 'sem referência'}</div><div className="mt-3"><ProvenanceTrigger valueId={sourceId === 'ibge-estimativas-2026' ? 'populacao-aguas-lindas' : sourceId === 'tse-eleitorado-2026' ? 'eleitorado-2026' : sourceId} /></div></div><Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" /></div></Card>
           </button>
         ))}
       </div>
