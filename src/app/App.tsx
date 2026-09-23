@@ -17,32 +17,39 @@ import { ThemeProvider } from '../context/ThemeContext';
 import { DataInsights } from '../components/sections/DataInsights';
 import { PublicDataPulse } from '../components/sections/PublicDataPulse';
 import { Electoral360 } from '../components/sections/Electoral360';
+import { SnapshotChanges } from '../components/sections/SnapshotChanges';
+import { ExperienceShell } from '../components/ExperienceShell';
+import { DiscoveryHub } from '../components/DiscoveryHub';
 
 export function App() {
   return (
     <ThemeProvider>
-      <Header />
-      <HeroCountdown />
-      <main id="main-content">
-        <DashboardMetrics />
-        <ElectoralProfile />
-        <TransportCalculator />
-        <DataInsights />
-        <SanitationHealthSection />
-        <PoliticalRadar />
-        <PoliticalResearch />
-        <Electoral360 />
-        <BudgetSection />
-        <Central2026 />
-        <PublicDataPulse />
-        <DataQualityPanel />
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-          <DataExportActions />
-        </div>
-        <EvidenceMap />
-      </main>
-      <Footer />
-      <ScrollTopButton />
+      <ExperienceShell>
+        <Header />
+        <HeroCountdown />
+        <main id="main-content">
+          <DiscoveryHub />
+          <DashboardMetrics />
+          <ElectoralProfile />
+          <TransportCalculator />
+          <DataInsights />
+          <SanitationHealthSection />
+          <PoliticalRadar />
+          <PoliticalResearch />
+          <SnapshotChanges />
+          <Electoral360 />
+          <BudgetSection />
+          <Central2026 />
+          <PublicDataPulse />
+          <DataQualityPanel />
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+            <DataExportActions />
+          </div>
+          <EvidenceMap />
+        </main>
+        <Footer />
+        <ScrollTopButton />
+      </ExperienceShell>
     </ThemeProvider>
   );
 }
