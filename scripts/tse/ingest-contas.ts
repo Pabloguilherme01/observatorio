@@ -28,8 +28,8 @@ extractZip(zipPath, extractDir);
 
 const candidateSnapshot = readJson<CandidateSnapshot>('src/data/generated/tse2026-candidates.json');
 const watchlist = new Map(candidateSnapshot.matched.map(candidate => [candidate.sqCandidate, candidate]));
-const receitasPath = findFile(extractDir, /receitas.*candidato.*\.csv$/i);
-const despesasPath = findFile(extractDir, /despesas.*candidato.*\.csv$/i);
+const receitasPath = findFile(extractDir, /receitas.*candidato.*_GO\.csv$/i);
+const despesasPath = findFile(extractDir, /despesas.*candidato.*_GO\.csv$/i);
 const receitas = readCsv(receitasPath);
 const despesas = readCsv(despesasPath);
 
