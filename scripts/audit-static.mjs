@@ -52,6 +52,7 @@ must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run
 must(syncWorkflow.includes("REQUIRE_TSE_SYNC: 'true'"), 'workflow TSE exige snapshot efetivamente sincronizado antes de validar');
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa do TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada como referência secundária');
+must(!dataSource.includes('theoreticalMarginErrorPct') && !read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'pesquisa não calcula nem exibe margem de erro teórica');
 must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy do Pages exige as três auditorias antes da publicação');
 must(app.includes('<DataQualityPanel />') && app.includes('<EvidenceChain />'), 'camadas de qualidade e evidências estão montadas no App');
 must(app.includes('<CivicActionHub />') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
@@ -96,3 +97,4 @@ const app = read('src/app/App.tsx');
 const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
 for (const group of deferredGroups) must(app.includes(group), 'App registra ' + group);
 must(app.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
+must(app.includes("'saude'") && app.includes("'healgo'"), 'deep links de saúde e simuladores estão preservados');
