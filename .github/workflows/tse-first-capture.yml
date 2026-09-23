@@ -30,13 +30,29 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - name: Detectar se o primeiro capture já existe
+        id: state
+        shell: bash
+        run: |
+          set -euo pipefail
+          if jq -e '
+            .estado == "first_capture" or .estado == "synced"
+          ' generated/tse2026-contas.json >/dev/null &&
+             jq -e '.estado == "first_capture" or .estado == "synced"' generated/tse2026-pesquisas.json >/dev/null &&
+             jq -e '.estado == "first_capture" or .estado == "synced"' generated/tse2026-processual.json >/dev/null; then
+            echo 'skip=true' >> "$GITHUB_OUTPUT"
+            echo 'Snapshots TSE já materializados; bootstrap não altera a linha de base.'
+          else
+            echo 'skip=false' >> "$GITHUB_OUTPUT"
+          fi
       - name: Executar primeiro batch oficial TSE
+        if: steps.state.outputs.skip != 'true'
         run: |
           set -euo pipefail
           npm run ingest:tse:first-batch
           npm run verify:tse:capture
       - name: Commit first capture
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && steps.state.outputs.skip != 'true'
         shell: bash
         run: |
           set -euo pipefail
