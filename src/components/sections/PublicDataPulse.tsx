@@ -42,7 +42,7 @@ export function PublicDataPulse() {
             </div>
           </div>
           <p className="mt-4 text-xs leading-5 text-slate-500">
-            Os números de matrículas são de 2025. A faixa de Ideb 2025 continua separada porque o valor municipal pontual ainda precisa ser conferido na tabela oficial do INEP.
+            Os resultados municipais do Ideb 2025 já foram publicados pelo Inep. Este snapshot ainda não materializou a extração municipal pontual; por isso a faixa local não é tratada como dado municipal oficial até a captura correspondente.
           </p>
         </Card>
 
