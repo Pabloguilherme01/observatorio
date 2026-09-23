@@ -84,6 +84,8 @@ const root = document.getElementById('root');
 if (!root) {
   document.body.innerHTML = '<main style="padding:24px;font-family:system-ui">Elemento #root não encontrado.</main>';
 } else {
+  const reactRoot = createRoot(root);
+
   window.addEventListener('error', event => captureGlobalError('window.error', event.error ?? event.message));
   window.addEventListener('unhandledrejection', event => captureGlobalError('unhandledrejection', event.reason));
 
@@ -111,7 +113,7 @@ if (!root) {
         import('./components/system/ErrorBoundary'),
       ]);
 
-      createRoot(root).render(
+      reactRoot.render(
         <StrictMode>
           <ErrorBoundary>
             <App />
@@ -122,7 +124,7 @@ if (!root) {
     } catch (error) {
       const errorId = persistBootError(error, 'bootstrap');
       root.replaceChildren();
-      createRoot(root).render(<BootstrapFallback errorId={errorId} message={normalizeError(error)} />);
+      reactRoot.render(<BootstrapFallback errorId={errorId} message={normalizeError(error)} />);
     }
   })();
 }
