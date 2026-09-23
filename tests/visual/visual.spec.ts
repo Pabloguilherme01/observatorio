@@ -1,35 +1,51 @@
 import { test, expect } from '@playwright/test';
 
-const cases = [
-  { name: 'home', path: '/' },
-  { name: 'provenance', path: '/' },
-  { name: 'comparador', path: '/#contexto' },
-  { name: 'eleitoral360', path: '/#eleitoral360' },
-] as const;
-
-for (const item of cases) {
-  test('visual · ' + item.name, async ({ page }) => {
-    await page.goto(item.path);
+test.describe('Visual regression · 5 viewports', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
     await page.waitForSelector('main[data-app-ready="true"]');
-    await page.waitForLoadState('networkidle');
+  });
 
-    const timer = page.locator('[role="timer"]');
-    const masks = (await timer.count()) > 0 ? [timer] : [];
-
-    if (item.name === 'provenance') {
-      const trigger = page.getByTestId('provenance-trigger').first();
-      await trigger.scrollIntoViewIfNeeded();
-      await trigger.click();
-      await expect(page.getByRole('dialog')).toBeVisible();
-      await expect(page.getByTestId('provenance-drawer')).toHaveScreenshot('provenance.png', { maxDiffPixelRatio: 0.001, animations: 'disabled' });
-      return;
-    }
-
-    await expect(page).toHaveScreenshot(item.name + '.png', {
-      fullPage: true,
+  test('home', async ({ page }) => {
+    await expect(page).toHaveScreenshot('home.png', {
       maxDiffPixelRatio: 0.001,
       animations: 'disabled',
-      mask: masks,
+      fullPage: true,
     });
   });
-}
+
+  test('provenance', async ({ page }) => {
+    const trigger = page.getByTestId('provenance-trigger').first();
+    await trigger.scrollIntoViewIfNeeded();
+    await trigger.click();
+
+    const drawer = page.getByTestId('provenance-drawer');
+    await expect(drawer).toBeVisible();
+    await expect(drawer).toHaveScreenshot('provenance.png', {
+      maxDiffPixelRatio: 0.001,
+      animations: 'disabled',
+    });
+  });
+
+  test('comparador', async ({ page }) => {
+    await page.goto('/#contexto');
+    await page.waitForSelector('main[data-app-ready="true"]');
+    await expect(page.locator('#contexto')).toBeVisible();
+    await expect(page).toHaveScreenshot('comparador.png', {
+      maxDiffPixelRatio: 0.001,
+      animations: 'disabled',
+      fullPage: true,
+    });
+  });
+
+  test('eleitoral360', async ({ page }) => {
+    await page.goto('/#eleitoral360');
+    await page.waitForSelector('main[data-app-ready="true"]');
+    await expect(page.locator('#eleitoral360')).toBeVisible();
+    await expect(page).toHaveScreenshot('eleitoral360.png', {
+      maxDiffPixelRatio: 0.001,
+      animations: 'disabled',
+      fullPage: true,
+    });
+  });
+});
