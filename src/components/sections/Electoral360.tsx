@@ -83,8 +83,6 @@ export function Electoral360() {
     if (!normalized) return base;
     return base.filter(candidate => {
       const profile = CANDIDATE_PROFILES[candidate.sqCandidate];
-            const photoSrc = candidate.photoUrl ?? profile.photoUrl;
-            const instagramSrc = candidate.instagramUrl;
       return [
         candidate.name,
         candidate.party,
@@ -106,8 +104,10 @@ export function Electoral360() {
         eyebrow="Eleitoral 360°"
         title="Quem está no recorte local"
         description={languageMode === 'simple'
-          ? '7 nomes com vínculo eleitoral local documentado. Veja o essencial e abra “Mais dados” para detalhes.'
-          : 'Eleições Gerais de 2026: o pleito inclui Governador, Senador, Deputado Federal e Deputado Estadual, entre outros cargos nacionais e estaduais; prefeito e vereador não estão em disputa em 2026. Os registros brutos do TSE permanecem preservados, mas a interface exibe apenas os nomes com vínculo eleitoral local documentado.'}
+          ? 'Veja o essencial. Abra “Mais dados” para detalhes.'
+          : languageMode === 'quick'
+            ? 'Foto, partido, número e situação. Sem texto longo. Toque para ver mais.'
+            : 'Eleições Gerais de 2026: o pleito inclui Governador, Senador, Deputado Federal e Deputado Estadual, entre outros cargos nacionais e estaduais; prefeito e vereador não estão em disputa em 2026. Os registros brutos do TSE permanecem preservados, mas a interface exibe apenas os nomes com vínculo eleitoral local documentado.'}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -143,7 +143,7 @@ export function Electoral360() {
         <div>
           <h3 className="text-lg font-black text-white">Candidaturas</h3>
           <p className="mt-1 text-xs text-slate-500">
-            {languageMode === 'simple' ? 'Procure por nome, partido ou número.' : 'A busca também considera nome completo, ocupação, escolaridade e descrição do vínculo local.'}
+            {languageMode === 'technical' ? 'A busca considera nome completo, ocupação, escolaridade e descrição do vínculo local.' : 'Procure por nome, partido ou número.'}
           </p>
         </div>
         <label className="flex min-h-11 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400">
@@ -164,6 +164,8 @@ export function Electoral360() {
             const profile = CANDIDATE_PROFILES[candidate.sqCandidate];
             if (!profile) return null;
             const candidateLabel = candidate.name.replace(/\s+/g, ' ').trim();
+            const photoSrc = candidate.photoUrl ?? profile.photoUrl;
+            const instagramSrc = candidate.instagramUrl;
             return (
               <article key={candidate.sqCandidate} data-testid="candidate-card" className="overflow-hidden rounded-3xl border border-white/8 bg-white/[0.018]">
                 <div className="p-4 sm:p-5">
