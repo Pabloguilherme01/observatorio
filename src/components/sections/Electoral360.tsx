@@ -4,6 +4,9 @@ import { electoral360Diff, electoral360Modules, electoral360Snapshot } from '../
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { Contas360 } from '../Electoral360/Contas360';
+import { RadarPesquisas } from '../Electoral360/RadarPesquisas';
+import { TimelineProcessual } from '../Electoral360/TimelineProcessual';
 
 const stateLabel: Record<string, string> = {
   first_capture: 'Primeiro snapshot',
@@ -182,6 +185,10 @@ export function Electoral360() {
           </Card>
         </div>
       </div>
+
+      <Contas360 />
+      <RadarPesquisas />
+      <TimelineProcessual />
 
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
