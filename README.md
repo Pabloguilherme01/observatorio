@@ -132,7 +132,7 @@ V41.0 — Observatório de Dados Cívicos e Eleitorais.
 - PWA com cache local para recursos da aplicação
 
 ### Estado da sincronização eleitoral
-A automação de candidatos do TSE está preparada para ler o arquivo de Goiás e produzir um snapshot de watchlist com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas.
+A automação de candidatos do TSE está preparada para ler o arquivo de Goiás e produzir um snapshot de watchlist com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas. O workflow `.github/workflows/sync-tse-candidates.yml` pode ser acionado manualmente e roda diariamente para baixar o pacote oficial, validar o contrato e publicar somente mudanças verificadas.
 
 A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
 
