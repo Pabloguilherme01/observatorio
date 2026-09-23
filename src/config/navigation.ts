@@ -1,5 +1,6 @@
 export const navigation = [
   { id: 'dashboard', label: 'Dashboard', shortLabel: 'Dashboard', description: 'Visão geral', shortcut: 'G D' },
+  { id: 'contexto', label: 'Contexto', shortLabel: 'Contexto', description: 'Comparações descritivas', shortcut: 'G C' },
   { id: 'eleitorado', label: 'Eleitorado', shortLabel: 'Eleitorado', description: 'Perfil eleitoral', shortcut: 'G E' },
   { id: 'demografia', label: 'Demografia', shortLabel: 'Demografia', description: 'Séries populacionais', shortcut: 'G M' },
   { id: 'transporte', label: 'Transporte', shortLabel: 'Transporte', description: 'Mobilidade e tarifas', shortcut: 'G T' },
@@ -11,6 +12,7 @@ export const navigation = [
   { id: 'dados', label: 'Dados', shortLabel: 'Dados', description: 'Atualizações públicas', shortcut: 'G A' },
   { id: 'qualidade', label: 'Qualidade', shortLabel: 'Qualidade', description: 'Integridade e proveniência', shortcut: 'G Q' },
   { id: 'evidencias', label: 'Evidências', shortLabel: 'Evidências', description: 'Cadeia de proveniência', shortcut: 'G V' },
+  { id: 'acao', label: 'Como usar', shortLabel: 'Ação', description: 'Canais oficiais de participação', shortcut: 'G A' },
   { id: 'fontes', label: 'Fontes', shortLabel: 'Fontes', description: 'Mapa de evidências', shortcut: 'G F' },
 ] as const;
 
