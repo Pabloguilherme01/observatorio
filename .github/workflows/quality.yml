@@ -38,6 +38,9 @@ jobs:
           RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
+      - name: Snapshot diff fixture
+        run: npm run test:snapshot-diff
+
       - name: Typecheck
         run: npm run typecheck
       - name: Verify JWS implementation
