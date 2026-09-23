@@ -5,6 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { APP_VERSION } from './src/config/version';
 import { observatorioData } from './src/data/observatorioData';
 import { sourceRegistry } from './src/data/sourceRegistry';
+import { DATA_HEALTH } from './src/data/dataHealth';
 
 const publicApiPlugin = (): Plugin => ({
   name: 'observatorio-public-api',
@@ -34,6 +35,7 @@ const publicApiPlugin = (): Plugin => ({
         datasetUpdatedAt: observatorioData.meta.updatedAt,
         buildGeneratedAt: new Date().toISOString(),
         publicPath: '/observatorio/',
+        dataHealth: DATA_HEALTH,
       }, null, 2),
     });
     this.emitFile({
@@ -85,6 +87,9 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
       manifest: {
         name: 'Observatório Águas Lindas 2026',
         short_name: 'Obs 2026',
@@ -102,33 +107,10 @@ export default defineConfig({
         ],
       },
       includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
-      workbox: {
+      injectManifest: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
-        runtimeCaching: [
-          {
-            urlPattern: ({ request }) => ['script', 'style', 'image', 'font'].includes(request.destination),
-            handler: 'CacheFirst',
-            options: {
-              cacheName: `observatorio-static-assets-${APP_VERSION}`,
-              expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            urlPattern: ({ request }) => request.mode === 'navigate',
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: `observatorio-pages-${APP_VERSION}`,
-              networkTimeoutSeconds: 3,
-              expiration: { maxEntries: 12, maxAgeSeconds: 60 * 60 * 24 * 7 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
-        cleanupOutdatedCaches: true,
-        navigateFallback: 'index.html',
       },
-    }),
+    })
   ],
   server: { host: '0.0.0.0', port: 5173 },
 });
