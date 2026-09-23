@@ -17,7 +17,7 @@ export function RadarPesquisas() {
           <div>
             <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Pesquisas eleitorais</div>
             <h3 id="pesquisas-title" className="mt-1 text-lg font-black text-white">Radar documental</h3>
-            <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">Registro, instituto, contratante, amostra, metodologia e documentos originais. Sem médias ou agregações.</p>
+            <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">Pesquisas registradas no TSE cuja abrangência declarada inclui Águas Lindas. Sem média ou ranking.</p>
           </div>
           <ShareDataButton title="Radar de pesquisas 2026" text="Radar documental de pesquisas eleitorais no Observatório." url={url} />
         </div>
@@ -33,7 +33,16 @@ export function RadarPesquisas() {
               <article key={pesquisa.idPesquisa} className="rounded-2xl border border-white/8 p-4">
                 <strong className="text-sm text-white">{pesquisa.idPesquisa}</strong>
                 <p className="mt-1 text-xs text-slate-400">{pesquisa.instituto} · {pesquisa.municipio}/{pesquisa.uf}</p>
-                <p className="mt-2 text-xs text-slate-500">Amostra {pesquisa.amostra}{pesquisa.margemErro !== undefined ? ` · margem ${pesquisa.margemErro}%` : ' · margem: não informada no CSV principal'}{pesquisa.nivelConfianca !== undefined ? ` · confiança ${pesquisa.nivelConfianca}%` : ' · confiança: não informada no CSV principal'}</p>
+                {pesquisa.criterioMunicipio && pesquisa.criterioMunicipio !== 'nome_exato' && (
+                  <p className="mt-1 text-[11px] text-sky-200/80">Identificação: {pesquisa.criterioMunicipio === 'codigo' ? 'código do município' : 'texto de abrangência declarado no registro'}</p>
+                )}
+                <p className="mt-2 text-xs text-slate-500">Amostra {pesquisa.amostra}{pesquisa.margemErro !== undefined ? ` · margem ${pesquisa.margemErro}%` : ' · margem: não informada'}{pesquisa.nivelConfianca !== undefined ? ` · confiança ${pesquisa.nivelConfianca}%` : ' · confiança: não informada'}</p>
+                {pesquisa.abrangenciaDetectada && (
+                  <details className="mt-3 rounded-xl border border-white/8 bg-white/[0.02] p-3">
+                    <summary className="cursor-pointer text-[11px] font-bold text-slate-400">Detalhe da abrangência</summary>
+                    <p className="mt-2 text-[11px] leading-5 text-slate-500">{pesquisa.abrangenciaDetectada}</p>
+                  </details>
+                )}
                 <div className="mt-3 flex flex-wrap gap-2">
                   {pesquisa.questionarioUrl && <a href={pesquisa.questionarioUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center rounded-xl border border-white/10 px-3 py-2 text-[11px] font-bold text-slate-300">Questionário</a>}
                   {pesquisa.notaFiscalUrl && <a href={pesquisa.notaFiscalUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center rounded-xl border border-white/10 px-3 py-2 text-[11px] font-bold text-slate-300">Nota fiscal</a>}
