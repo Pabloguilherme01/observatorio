@@ -63,7 +63,14 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V40.0 — Observatório de Dados Cívicos e Eleitorais.
+V41.0 — Observatório de Dados Cívicos e Eleitorais.
+
+### Foco V41
+- Camada pública de confiança com método, atualização e canal de correção por evidência.
+- CTAs para serviços eleitorais oficiais: e-Título, Pardal e página de Eleições 2026/DivulgaCandContas.
+- Hierarquia mobile mais enxuta no hero, preservando os três indicadores centrais e reduzindo ruído secundário.
+- Quiz ampliado para cinco perguntas usando dados já presentes no dataset.
+- Auditorias estática e mobile reforçadas para as novas camadas.
 
 ### Foco V40
 - Hub de descoberta no primeiro terço da página, com trilhas por assunto, leitura de 5 minutos e radar de atualização.
