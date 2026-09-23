@@ -13,7 +13,7 @@ function brl(value: number) {
 export function ExecutiveSummary() {
   const poll = d.polls[0];
   const brasiliaRoute = d.transport.routes.find(route => route.id === 'brasilia');
-  const groupedUnknown = (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
+  const groupedUnknown = (poll?.nonePct ?? 0) + (poll?.notSurePct ?? 0);
   const monthlyPerPerson = (brasiliaRoute?.fareBrl ?? 0)
     * d.transport.defaultTripsPerDay
     * d.transport.defaultWorkDaysPerMonth;
