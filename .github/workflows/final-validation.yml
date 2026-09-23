@@ -91,6 +91,8 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run verify:tse:capture
+      - name: Ingestir recorte municipal e mídia oficial do TSE
+        run: npm run ingest:tse:candidates-local
       - name: Build
         run: npm run build || { echo '::error::Build V44 falhou.'; exit 1; }
       - run: test -f dist/api/v1/contas.json && test -f dist/api/v1/pesquisas.json && test -f dist/api/v1/processual.json
@@ -113,7 +115,6 @@ jobs:
       - run: npm install --no-audit --no-fund
       - name: Run preview
         run: |
-          npm run build
           nohup npm run preview -- --host 127.0.0.1 --port 4173 >/tmp/preview.log 2>&1 &
           for i in {1..30}; do curl -fsS http://127.0.0.1:4173/observatorio/ >/dev/null && break; sleep 2; done
       - name: Lighthouse suites
@@ -150,6 +151,10 @@ jobs:
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-build
+          path: dist
       - run: npx playwright install --with-deps chromium
       - name: E2E
         run: npx playwright test tests/e2e || { echo '::error::Playwright E2E/mobile UX falhou.'; exit 1; }
