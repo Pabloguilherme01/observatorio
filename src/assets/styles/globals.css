@@ -182,7 +182,6 @@ html.light .civic-action-card { box-shadow: 0 10px 40px rgba(15,23,42,.05); }
 
 .mode-overview #demografia,
 .mode-overview #insights,
-.mode-overview #mudancas-snapshot,
 .mode-overview #orcamento-impacto,
 .mode-overview #exportacao {
   display: none !important;
@@ -262,4 +261,94 @@ html.light .mode-evidence #eleitoral360::before {
 }
 @media (min-width: 768px) {
   .table-compact-mobile { display: none; }
+}
+
+
+/* V40 discovery + mobile reading */
+.topic-rail {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: .75rem;
+}
+.topic-card {
+  display: flex;
+  min-height: 164px;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 14px;
+  text-align: left;
+  background: rgba(255,255,255,.025);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.topic-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(140,200,242,.22);
+  background: rgba(255,255,255,.045);
+}
+.today-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .75rem;
+}
+.today-card {
+  min-width: 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 22px;
+  padding: 15px;
+  background: rgba(255,255,255,.02);
+}
+html.light .topic-card,
+html.light .today-card {
+  border-color: rgba(15,23,42,.09);
+  background: rgba(255,255,255,.70);
+}
+html.light .topic-card:hover {
+  border-color: rgba(49,90,117,.20);
+  background: rgba(255,255,255,.95);
+}
+
+@media (max-width:1100px) and (min-width:768px) {
+  .topic-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .today-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width:767px) {
+  .hero-shell { padding-top: 2rem !important; padding-bottom: 2.25rem !important; }
+  .hero-badges > :nth-child(n+3) { display: none; }
+  .hero-trust-line { display: none; }
+  .topic-rail,
+  .today-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: minmax(188px, 82%);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .topic-rail::-webkit-scrollbar,
+  .today-rail::-webkit-scrollbar { display: none; }
+  .topic-card,
+  .today-card { scroll-snap-align: start; }
+  .topic-card { min-height: 154px; }
+  .today-card { min-width: 0; }
+}
+
+@media (max-width:380px) {
+  .hero-shell { padding-left: 14px !important; padding-right: 14px !important; }
+  .hero-shell h1 { font-size: 2.05rem !important; }
+  #descubra { padding-left: 10px; padding-right: 10px; }
+  #descubra > div { padding: 14px; border-radius: 22px; }
+  .topic-rail,
+  .today-rail { grid-auto-columns: minmax(176px, 88%); }
+  .quick-dock { left: 6px; right: 6px; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .topic-card { transition: none; }
 }
