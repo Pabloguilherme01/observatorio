@@ -60,7 +60,7 @@ export function HeroCountdown() {
           </div>
 
           <div className="election-mode-actions mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.045] p-4" aria-label="Ações cívicas prioritárias">
-            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-200">Modo Eleição · acesso rápido</div>
+            <div className="text-[11px] font-black uppercase tracking-[0.16em] text-amber-200">Modo Eleição · acesso rápido</div>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
               <a href="https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">e-Título · local e serviços</a>
               <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">DivulgaCandContas</a>
