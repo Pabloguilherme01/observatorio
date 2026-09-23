@@ -18,17 +18,26 @@ export function Header() {
   const updatedAt = formatDate(d.meta.updatedAt);
 
   useEffect(() => {
-    const updateObserver = () => {
-      const nodes = navigation.map(item => document.getElementById(item.id)).filter(Boolean) as HTMLElement[];
-      if (!nodes.length) return undefined;
-      const observer = new IntersectionObserver(entries => {
-        const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible?.target.id) setActiveSection(visible.target.id);
-      }, { rootMargin: '-16% 0px -70% 0px', threshold: [0.1, 0.25, 0.5] });
-      nodes.forEach(node => observer.observe(node));
-      return () => observer.disconnect();
+    if (typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.id) setActiveSection(visible.target.id);
+    }, { rootMargin: '-16% 0px -70% 0px', threshold: [0.1, 0.25, 0.5] });
+
+    const observeSections = () => {
+      navigation.forEach(item => {
+        const node = document.getElementById(item.id);
+        if (node) observer.observe(node);
+      });
     };
-    return updateObserver();
+
+    observeSections();
+    const onNavigate = () => window.requestAnimationFrame(observeSections);
+    window.addEventListener('observatorio:navigate', onNavigate);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('observatorio:navigate', onNavigate);
+    };
   }, []);
 
   useEffect(() => {
