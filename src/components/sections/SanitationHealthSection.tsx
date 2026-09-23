@@ -64,8 +64,8 @@ function SewerCurve() {
   }));
   return (
     <figure className="mt-6 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
-      <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Série histórica · esgoto</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Atendimento por rede pública, 2017–2024.</p></figcaption>
-      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label="Série histórica do atendimento por rede pública de esgoto entre 2017 e 2024, em escala de 0 a 100 por cento">
+      <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Histórico · atendimento por rede pública</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Indicador histórico de acesso ao serviço público de esgoto, 2017–2024.</p></figcaption>
+      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label="Histórico do atendimento por rede pública de esgoto entre 2017 e 2024, em escala de 0 a 100 por cento. Não é série de tratamento efetivo.">
         <title>Atendimento por rede pública de esgoto, 2017 a 2024</title>
         <desc>{sewerHistory.map(point => `${point.year}: ${String(point.value).replace('.', ',')} por cento`).join('; ')}.</desc>
         {[0, 50, 100].map(value => {
@@ -86,7 +86,7 @@ function SewerCurve() {
           </div>
         ))}
       </div>
-      <p className="mt-2 text-[11px] leading-5 text-amber-200/80 light:text-amber-700">Metodologia: série histórica do indicador de atendimento por rede pública. Coleta e tratamento possuem denominadores próprios.</p>
+      <p className="mt-2 text-[11px] leading-5 text-amber-200/80 light:text-amber-700">Como ler: este gráfico mostra atendimento por rede pública. Coleta, tratamento e esgotamento adequado usam definições e anos-base diferentes; não compare as curvas como se fossem a mesma métrica.</p>
     </figure>
   );
 }
@@ -138,7 +138,7 @@ export function SanitationHealthSection() {
               <strong className="text-2xl font-black text-white light:text-slate-900">{formatPercent(Number(d.indicators.find(item => item.id === 'adequate-sewerage')?.value ?? 0), 2)}</strong>
               <span className="text-xs leading-5 text-slate-500">esgotamento sanitário adequado · IBGE · 2022</span>
             </div>
-            <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outra data. Ele não é a mesma coisa que os percentuais de serviço, coleta e tratamento do SINISA 2024.</p>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outro ano-base. Leia-o separadamente dos percentuais SINISA 2024.</p>
           </div>
 
 <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -178,6 +178,7 @@ export function SanitationHealthSection() {
               <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">85</strong><span className="mt-1 block text-xs text-slate-500">32 enfermaria + 53 UTI, explicitados no portal atual</span></div>
               <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">298</strong><span className="mt-1 block text-xs text-slate-500">planejamento registrado no dataset, não capacidade instalada</span></div>
             </div>
+            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O snapshot não documenta, por si só, a causa da diferença entre 164 e 85; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">

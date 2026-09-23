@@ -107,7 +107,7 @@ export function App() {
             <ProjectTrustPanel />
             <ExecutiveSummary />
             <DashboardMetrics />
-            <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte']} />
+            <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} />
             <DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} />
             <DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} />
             <DeferredBlock loader={loadPublicDataGroup} anchorIds={['dados', 'instagram']} />

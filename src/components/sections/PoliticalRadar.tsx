@@ -65,7 +65,7 @@ export function PoliticalRadar() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem exibida abaixo: cálculo teórico para a amostra, não margem oficial declarada.</div>
+        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem de erro: <strong className="text-slate-300">não informada nesta camada</strong>. O observatório não calcula uma margem própria.</div>
         <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500">
           <strong className="text-slate-300">Recorte temporal:</strong> este painel contém um único snapshot de pesquisa, com coleta em {poll.collectionDate}. Não há série temporal suficiente neste conjunto para afirmar tendência de alta ou queda entre pesquisas.
         </div>
@@ -98,7 +98,7 @@ export function PoliticalRadar() {
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Nenhum</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">NS/NR</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Não classificado</span></div>
-          <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">±{poll.theoreticalMarginErrorPct?.toFixed(1).replace('.', ',')} pp</strong><span className="text-slate-500">teórico</span></div>
+          <div className="rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-3"><strong className="block text-amber-100">Não informada</strong><span className="text-slate-500">margem oficial no snapshot</span></div>
         </div>
         <p className="mt-4 text-xs leading-5 text-slate-500">As respostas publicadas no snapshot somam 92,25%; os 7,75 pontos restantes ficam explicitamente como “não classificados” para evitar completar a distribuição por inferência.</p>
       </Card>
