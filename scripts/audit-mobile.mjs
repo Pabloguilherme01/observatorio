@@ -40,13 +40,15 @@ must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-must(files.version.includes("APP_VERSION = '43.3.0'"), 'versão V43 sincronizada com a camada mobile');
+must(files.version.includes("APP_VERSION = '43.4.0'"), 'versão V43.4 sincronizada com a camada mobile');
 const app = read('src/app/App.tsx');
 must(app.includes('IntersectionObserver') && app.includes('rootMargin: \'900px 0px\''), 'seções abaixo da dobra usam carregamento diferido');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
+must(app.includes("'saude'") && app.includes("'healgo'"), 'âncoras de saúde e simulador permanecem navegáveis após code splitting');
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
 must(files.index.includes('apple-mobile-web-app-capable') && files.index.includes('apple-mobile-web-app-title'), 'metadados de instalação iOS estão presentes');
 must(files.mobileNav.includes("aria-current={activeSection === id ? 'location'"), 'navegação inferior usa estado de localização acessível');
+must(!read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'interface mobile não exibe margem de erro teórica');
 must(read('src/components/ExperienceShell.tsx').includes("behavior: reduceMotion ? 'auto' : 'smooth'"), 'navegação programática respeita redução de movimento');
 
 if (errors.length) {
