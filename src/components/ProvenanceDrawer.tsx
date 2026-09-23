@@ -69,24 +69,33 @@ export function ProvenanceDrawer() {
     };
   }, [request]);
 
-  const provenance = useMemo(() => {
+  const provenance: ProvenanceData | undefined = useMemo(() => {
     if (!request) return undefined;
     const registered = getProvenance(request.valueId);
-    if (registered) return registered;
-    const sourceId = request.valueId;
-    const source = observatorioData.sources.find(item => item.id === sourceId);
-    if (!source) return request.fallback;
+    if (registered) return { ...registered, ...request.fallback };
+
+    const source = observatorioData.sources.find(item => item.id === request.valueId);
+    const fallback = request.fallback;
+    if (!source && !fallback?.fonte) return undefined;
+
     return {
       valueId: request.valueId,
-      fonte: source.label,
-      fonteUrl: source.url,
-      referencia: source.referenceDate ?? 'sem data registrada',
-      publicacao: source.publishedAt,
-      capturadoEm: observatorioData.meta.updatedAt,
-      tipo: source.nature === 'official' ? 'OFICIAL' : source.nature === 'secondary' ? 'SECUNDARIO' : source.nature === 'derived' ? 'DERIVADO' : 'SECUNDARIO',
-      limitacoes: source.note ? [source.note] : undefined,
-      ...request.fallback,
-    } satisfies ProvenanceData;
+      fonte: fallback?.fonte ?? source?.label ?? 'Fonte não registrada',
+      fonteUrl: fallback?.fonteUrl ?? source?.url ?? 'https://dadosabertos.tse.jus.br/',
+      referencia: fallback?.referencia ?? source?.referenceDate ?? 'sem data registrada',
+      publicacao: fallback?.publicacao ?? source?.publishedAt,
+      capturadoEm: fallback?.capturadoEm ?? observatorioData.meta.updatedAt,
+      tipo: fallback?.tipo ?? (source?.nature === 'official'
+        ? 'OFICIAL'
+        : source?.nature === 'derived'
+          ? 'DERIVADO'
+          : 'SECUNDARIO'),
+      checksum: fallback?.checksum,
+      transformacao: fallback?.transformacao,
+      limitacoes: fallback?.limitacoes ?? (source?.note ? [source.note] : undefined),
+      snapshotId: fallback?.snapshotId,
+      rawUrl: fallback?.rawUrl,
+    };
   }, [request]);
 
   if (!request || !provenance) return null;
@@ -128,7 +137,7 @@ export function ProvenanceDrawer() {
   };
 
   return (
-    <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="provenance-title">
+    <div data-testid="provenance-drawer" className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="provenance-title">
       <button className="command-backdrop" type="button" aria-label="Fechar proveniência" onClick={() => setRequest(null)} />
       <article ref={drawerRef} className="command-panel max-w-xl">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
