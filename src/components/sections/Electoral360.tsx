@@ -31,7 +31,7 @@ export function Electoral360() {
         <div className="flex items-start justify-between gap-4"><div><h3 className="text-lg font-black text-white">Perfil documental</h3><p className="mt-1 text-xs leading-5 text-slate-500">Quando o snapshot TSE estiver sincronizado, este perfil passa a usar a captura validada. Até lá, os dois registros locais da edição continuam identificados como snapshot do observatório.</p></div><FileText className="h-5 w-5 text-sky-300"/></div>
         <div className="mt-4 flex flex-wrap gap-2">{d.candidates.map(candidate=><button key={candidate.name} type="button" onClick={()=>setSelectedName(candidate.name)} className={`rounded-xl border px-3 py-2 text-xs font-bold ${candidate.name===fallback.name?'border-sky-300/40 bg-sky-300/10 text-sky-200':'border-white/10 text-slate-400'}`}>{candidate.name}</button>)}</div>
         {fallback && <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <Info label="Identidade" value={profileCandidate?.fullName ?? fallback.name} />
+          <Info label="Identidade" value={fallback.name} />
           <Info label="Situação" value={profileCandidate?.status ?? fallback.status} />
           <Info label="Partido" value={profileCandidate?.party ?? fallback.party ?? 'Não informado'} />
           <Info label="Número" value={String(profileCandidate?.ballotNumber ?? fallback.ballotNumber ?? 'Não informado')} />
