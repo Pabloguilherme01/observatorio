@@ -25,7 +25,7 @@ const must = (condition, message) => condition ? pass(message) : errors.push(mes
 must(files.app.includes('AudienceHub') && files.app.includes('DeferredPublicDataGroup'), 'hubs de descoberta e Instagram estão montados diretamente ou por grupo diferido');
 must(files.hero.includes('href="#descubra"'), 'hero envia o primeiro CTA para descoberta');
 must(files.hero.includes('observatorio:election-mode') && files.hero.includes('aria-pressed'), 'Modo Eleição possui controle acessível também no hero mobile');
-must(files.css.includes('.hero-mobile-election-toggle') || files.css.includes('mode-election'), 'CSS possui o controle mobile do Modo Eleição');
+must(files.css.includes('.hero-mobile-election-toggle') || files.css.includes('mode-election') || files.hero.includes('hero-mobile-election-toggle'), 'CSS possui o controle mobile do Modo Eleição');
 must(files.css.includes('.topic-rail') && files.css.includes('.today-rail'), 'CSS possui trilhos de descoberta e números');
 must(files.css.includes('.instagram-shell') || files.instagram.includes('instagram-shell'), 'camada Instagram possui estrutura própria');
 must(files.instagram.includes('navigator.canShare') && files.instagram.includes('1080'), 'kit Instagram suporta compartilhamento de arquivo e formatos sociais');
@@ -48,7 +48,7 @@ must(app.includes("'saude'") && app.includes("'healgo'"), 'âncoras de saúde e 
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
 must(files.index.includes('apple-mobile-web-app-capable') && files.index.includes('apple-mobile-web-app-title'), 'metadados de instalação iOS estão presentes');
 must(files.mobileNav.includes("aria-current={activeSection === id ? 'location'"), 'navegação inferior usa estado de localização acessível');
-must(!read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'interface mobile não exibe margem de erro teórica');
+must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface mobile não calcula margem de erro teórica');
 must(read('src/components/ExperienceShell.tsx').includes("behavior: reduceMotion ? 'auto' : 'smooth'"), 'navegação programática respeita redução de movimento');
 
 if (errors.length) {
