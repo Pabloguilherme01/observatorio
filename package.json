@@ -1,7 +1,7 @@
 {
   "name": "observatorio-aguas-lindas",
   "private": true,
-  "version": "30.0.0",
+  "version": "31.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "sync:tse": "node scripts/sync-tse-2026.mjs",
     "validate:tse": "node scripts/validate-tse-2026.mjs",
-    "validate:observatorio": "node scripts/validate-observatorio.mjs"
+    "validate:observatorio": "node scripts/validate-observatorio.mjs",
+    "validate:results": "node scripts/validate-results-feed.mjs"
   },
   "dependencies": {
     "lucide-react": "1.47.0",

@@ -30,6 +30,8 @@ jobs:
         run: npm run validate:observatorio
       - name: Validate TSE snapshot structure
         run: npm run validate:tse
+      - name: Validate results feed
+        run: npm run validate:results
       - name: Typecheck
         run: npm run typecheck
       - name: Build

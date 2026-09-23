@@ -217,6 +217,7 @@ async function main() {
         schemaVersion: 2,
         state,
       },
+      coverage: 'watchlist',
       watchlist: WATCHLIST,
       matched: allMatches,
       diff: {

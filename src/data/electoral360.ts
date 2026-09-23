@@ -7,6 +7,7 @@ const generatedData = generated as {
     downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
   };
+  coverage: 'watchlist';
   watchlist: string[];
   matched: Array<{
     sqCandidate: string;
