@@ -128,3 +128,19 @@ html, body, #root { max-width:100%; overflow-x:hidden; }
   .hero-shell .hero-badges { gap:6px; }
   .hero-shell .hero-badges > * { max-width:100%; }
 }
+
+@media(max-width:640px){
+  .hero-shell .grid.lg\\:grid-cols-\\[1\\.12fr_\\.88fr\\]{grid-template-columns:1fr}
+  .hero-shell .hero-badges{max-width:100%;}
+  .hero-shell .hero-kpis>div{min-width:0;}
+  .hero-shell .grid.gap-3.sm\\:grid-cols-2.lg\\:grid-cols-1{grid-template-columns:1fr;}
+  .hero-secondary-round{display:none;}
+  .hero-shell .hero-election-quick{padding:8px;}
+}
+@media(max-width:380px){
+  .hero-shell{padding-top:24px;padding-bottom:28px;}
+  .hero-shell h1{font-size:2rem;}
+  .hero-shell .hero-kpis{margin-top:16px;}
+  .hero-shell .hero-kpis>div{padding:12px;}
+  .hero-shell .hero-kpis .text-lg{font-size:1.05rem;}
+}
