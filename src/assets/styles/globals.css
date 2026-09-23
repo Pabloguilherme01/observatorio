@@ -479,3 +479,18 @@ html.light .mode-election #acao::before {
   background: #fff;
   color: #7a5a10;
 }
+
+
+/* V42 UX density */
+.hero-preferences > summary { list-style: none; }
+.hero-preferences > summary::-webkit-details-marker { display: none; }
+.hero-preferences > summary::after { content: "＋"; float: right; color: #718096; }
+.hero-preferences[open] > summary::after { content: "−"; }
+.mobile-secondary-nav > summary { list-style: none; }
+.mobile-secondary-nav > summary::-webkit-details-marker { display: none; }
+.mobile-secondary-nav > summary::after { content: "＋"; float: right; color: #718096; }
+.mobile-secondary-nav[open] > summary::after { content: "−"; }
+.trust-card p { font-size: 12px; }
+@media (max-width: 520px) {
+  .hero-shell .grid[aria-label="Indicadores de referência da edição"] { grid-template-columns: 1fr; }
+}
