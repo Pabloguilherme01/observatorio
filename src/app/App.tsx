@@ -31,6 +31,7 @@ import { ContextComparison } from '../components/sections/ContextComparison';
 import { CivicActionHub } from '../components/sections/CivicActionHub';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
+import { InstagramSyncHub } from '../components/InstagramSyncHub';
 
 export function App() {
   return (
@@ -41,6 +42,7 @@ export function App() {
           <HeroCountdown />
           <main id="main-content">
             <AudienceHub />
+            <InstagramSyncHub />
             <ExecutiveSummary />
             <FreshnessBanner />
             <SnapshotChanges />
