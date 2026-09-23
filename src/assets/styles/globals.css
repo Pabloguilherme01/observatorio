@@ -173,22 +173,58 @@ html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after
   .chart-axis-label { display: none; }
 }
 
-.fast-reading #demografia,
-.fast-reading #candidaturas,
-.fast-reading #dados,
-.fast-reading #orcamento,
-.fast-reading #orcamento-impacto,
-.fast-reading #eleitoral360,
-.fast-reading #fontes,
-.fast-reading #insights,
-.fast-reading #linha-do-tempo,
-.fast-reading #mudancas-snapshot,
-.fast-reading #exportacao {
+.mode-overview #demografia,
+.mode-overview #insights,
+.mode-overview #eleitoral360,
+.mode-overview #mudancas-snapshot,
+.mode-overview #orcamento-impacto,
+.mode-overview #dados,
+.mode-overview #exportacao {
   display: none !important;
 }
 
-.fast-reading #qualidade {
+.mode-overview #qualidade {
   padding-top: 3rem;
+}
+
+.mode-evidence #qualidade,
+.mode-evidence #fontes,
+.mode-evidence #candidaturas,
+.mode-evidence #eleitoral360 {
+  position: relative;
+}
+
+.mode-evidence #qualidade::before,
+.mode-evidence #fontes::before,
+.mode-evidence #candidaturas::before,
+.mode-evidence #eleitoral360::before {
+  content: "CAMADA DE EVIDÊNCIA";
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  z-index: 2;
+  border: 1px solid rgba(140,200,242,.18);
+  border-radius: 999px;
+  padding: 4px 9px;
+  background: rgba(11,17,23,.90);
+  color: #8cc8f2;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+.mode-evidence #qualidade,
+.mode-evidence #fontes {
+  box-shadow: 0 0 0 1px rgba(140,200,242,.08), 0 20px 70px rgba(62,111,143,.08);
+}
+
+html.light .mode-evidence #qualidade::before,
+html.light .mode-evidence #fontes::before,
+html.light .mode-evidence #candidaturas::before,
+html.light .mode-evidence #eleitoral360::before {
+  background: rgba(255,255,255,.96);
+  color: #315a75;
+  border-color: rgba(49,90,117,.18);
 }
 
 @media (max-width: 640px) {
