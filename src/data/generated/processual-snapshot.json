@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "fonte": "processual",
+    "snapshotId": "processual-20260923103759708-ac91753c89d2",
+    "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+    "checksum": "ac91753c89d29eedb021c5ebbe31d2351e1a670956af586083dd1941ebd20d9a",
+    "sourceRows": 70759,
+    "validatedRows": 0,
+    "matchedRows": 0,
+    "rejectedRows": 0,
+    "captureTime": "2026-09-23T10:37:59.708Z",
+    "retrievalMethod": "official_tse_zip_csv",
+    "state": "first_capture",
+    "baseline": true
+  },
+  "data": {
+    "versao": "1.0.0",
+    "estado": "first_capture",
+    "geradoEm": "2026-09-23T10:37:59.708Z",
+    "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
+    "sourceHash": "ac91753c89d29eedb021c5ebbe31d2351e1a670956af586083dd1941ebd20d9a",
+    "totalProcessos": 0,
+    "processos": []
+  }
+}

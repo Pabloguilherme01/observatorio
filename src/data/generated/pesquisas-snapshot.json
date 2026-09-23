@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "fonte": "pesquisas",
+    "snapshotId": "pesquisas-20260923103759708-6cb162fb7558",
+    "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+    "checksum": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
+    "sourceRows": 68772,
+    "validatedRows": 0,
+    "matchedRows": 0,
+    "rejectedRows": 0,
+    "captureTime": "2026-09-23T10:37:59.708Z",
+    "retrievalMethod": "official_tse_zip_csv",
+    "state": "first_capture",
+    "baseline": true
+  },
+  "data": {
+    "versao": "1.0.0",
+    "estado": "first_capture",
+    "geradoEm": "2026-09-23T10:37:59.708Z",
+    "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+    "sourceHash": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
+    "totalPesquisas": 0,
+    "pesquisas": []
+  }
+}
