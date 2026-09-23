@@ -10,6 +10,7 @@ export const navigation = [
   { id: 'orcamento-impacto', label: 'Impacto fiscal', shortLabel: 'Impacto', description: 'Orçamento por denominador', shortcut: 'G I' },
   { id: 'dados', label: 'Dados', shortLabel: 'Dados', description: 'Atualizações públicas', shortcut: 'G A' },
   { id: 'qualidade', label: 'Qualidade', shortLabel: 'Qualidade', description: 'Integridade e proveniência', shortcut: 'G Q' },
+  { id: 'evidencias', label: 'Evidências', shortLabel: 'Evidências', description: 'Cadeia de proveniência', shortcut: 'G V' },
   { id: 'fontes', label: 'Fontes', shortLabel: 'Fontes', description: 'Mapa de evidências', shortcut: 'G F' },
 ] as const;
 

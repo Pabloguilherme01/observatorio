@@ -27,6 +27,7 @@ import { BudgetImpact } from '../components/sections/BudgetImpact';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { FreshnessBanner } from '../components/sections/FreshnessBanner';
 import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
+import { EvidenceChain } from '../components/sections/EvidenceChain';
 
 export function App() {
   return (
@@ -55,6 +56,7 @@ export function App() {
           <Central2026 />
           <PublicDataPulse />
           <DataQualityPanel />
+          <EvidenceChain />
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6"><DataExportActions /></div>
           <EvidenceMap />
         </main>

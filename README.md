@@ -60,9 +60,9 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V34.0 — Observatório de Dados Cívicos e Eleitorais.
+V36.0 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V34
+### Foco V36
 - Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
 - Compartilhamento nativo de resumo e cenários de mobilidade.
 - Estados TSE explicitamente diferenciados entre capturado, desatualizado, falha e aguardando captura.
@@ -82,8 +82,12 @@ V34.0 — Observatório de Dados Cívicos e Eleitorais.
 - Scheduler do primeiro e eventual segundo turno respeitando a janela local de Brasília e sem publicar dados antes dos arquivos oficiais existirem.
 - Código municipal de Águas Lindas validado pela configuração TSE como `93343`.
 - Estados de captura e cobertura reforçados na camada de pesquisa documental.
+- Registros políticos estáticos separados da proveniência oficial do TSE enquanto a sincronização local permanece `not_synced`.
+- Camada Evidências com cadeia explícita de fonte, captura local, hash, workflow e limitações.
+- Três modos de leitura: Visão geral, Investigação e Evidências.
 
 ### Camadas atuais
+- Cadeia de evidências com distinção explícita entre fonte oficial e captura local
 - Dashboard municipal e eleitoral
 - Eleitorado e perfil demográfico
 - Calculadora de mobilidade e custo relativo à renda

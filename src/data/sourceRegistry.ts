@@ -259,6 +259,15 @@ export const sourceRegistry: readonly SourceRef[] = [
     note: 'Base com candidatos, informações complementares, bens, coligações, vagas, redes sociais, histórico e propostas. O catálogo informa atualização quatro vezes ao dia.',
   },
   {
+    id: 'recorte-editorial-candidatos-2026',
+    label: 'Recorte editorial — registros políticos acompanhados em 22/09/2026',
+    institution: 'Observatório Eleitoral Águas Lindas de Goiás',
+    url: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
+    nature: 'secondary',
+    referenceDate: '2026-09-22',
+    note: 'Recorte editorial local baseado em consulta pública ao catálogo oficial de Candidatos 2026. Não é snapshot automatizado, não representa o universo completo e não deve ser confundido com uma captura local validada do TSE.',
+  },
+  {
     id: 'tse-processual-2026',
     label: 'TSE — Processual 2026',
     institution: 'Tribunal Superior Eleitoral',
