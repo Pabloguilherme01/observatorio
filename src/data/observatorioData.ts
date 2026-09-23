@@ -109,6 +109,12 @@ export const observatorioData: ObservatoryData = {
     note: 'Os indicadores têm bases e denominadores distintos; não somar cobertura, coleta e tratamento como se fossem a mesma métrica.',
   },
 
+  education: {
+    ideb2025Range: [5.9, 6.2],
+    sourceId: 'inep-ideb-2025',
+    note: 'Faixa informada no prompt V23; o valor municipal pontual deve ser conferido na tabela oficial do INEP antes de ser apresentado como nota única.',
+  },
+
   health: {
     hospitalName: 'Hospital Estadual de Águas Lindas Ronaldo Ramos Caiado Filho (HEAL)',
     openingReportedBeds: 164,
