@@ -56,13 +56,13 @@ export function useResultsFeed(intervalMs = 300000) {
 
   useEffect(() => {
     let active = true;
-    if (!isResultsWindowOpen()) {
-      setData(null);
-      setChecking(false);
-      return undefined;
-    }
+    setData(current => current ?? null);
 
     const fetchFeed = async () => {
+      if (!isResultsWindowOpen()) {
+        setChecking(false);
+        return;
+      }
       setChecking(true);
       try {
         const response = await fetch(FEED_URL, { cache: 'no-store' });
@@ -82,7 +82,7 @@ export function useResultsFeed(intervalMs = 300000) {
       if (isResultsWindowOpen()) void fetchFeed();
     };
 
-    void fetchFeed();
+    if (isResultsWindowOpen()) void fetchFeed();
     const timer = window.setInterval(refresh, intervalMs);
     document.addEventListener('visibilitychange', refresh);
     return () => {
