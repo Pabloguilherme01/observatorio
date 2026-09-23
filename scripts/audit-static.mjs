@@ -15,7 +15,7 @@ const appSource = read('src/app/App.tsx');
 const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
 const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
-const syncWorkflow = read('.github/workflows/sync-tse-candidates.yml');
+const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 
 const errors = [];
@@ -49,10 +49,11 @@ must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v
 const pkgScripts = packageJson.scripts ?? {};
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
-must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow automatiza captura e validação TSE');
-must(syncWorkflow.includes('ingest-candidates-local.ts'), 'workflow sincroniza recorte municipal, Instagram e fotos');
-must(syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização manual segura');
- must(!syncWorkflow.includes('schedule:'), 'workflow TSE não bloqueia qualidade com cron automático');
+must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação municipal');
+must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
+must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
+must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')), 'não existem dois workflows concorrentes para a mesma captura TSE');
+must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 'pipeline antigo de ingestão municipal removido após consolidação');
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
 must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
@@ -91,8 +92,10 @@ for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto'
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
 
-must(['watchlist', 'municipality_required', 'municipality'].includes(candidates.coverage), 'snapshot deixa explícito o escopo');
+must(candidates.schemaVersion === 3 && candidates.coverage === 'municipality_required', 'snapshot atual usa exclusivamente o contrato municipal versionado');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
+must(candidates.meta.localFilter === 'Águas Lindas de Goiás' && candidates.meta.municipalityCodeTse === '92737', 'snapshot registra filtro municipal explícito');
+must(candidates.meta.retrievalMethod === 'official_tse_zip_csv', 'snapshot municipal depende de fonte TSE oficial direta');
 
 const runtimeFiles = [
   'src/app/App.tsx',
@@ -114,6 +117,59 @@ for (const file of runtimeFiles) {
   const content = read(file).toLowerCase();
   for (const legacy of ['v35', 'v36']) if (content.includes(legacy)) fail(`${file} ainda contém referência legada ${legacy}`);
 }
+
+
+function collectFiles(target) {
+  const absolute = path.join(root, target);
+  if (!fs.existsSync(absolute)) return [];
+  const entries = fs.readdirSync(absolute, { withFileTypes: true });
+  const output = [];
+  for (const entry of entries) {
+    const full = path.join(absolute, entry.name);
+    if (entry.isDirectory()) output.push(...collectFiles(path.relative(root, full)));
+    else if (/\.(mjs|js|ts|tsx)$/.test(entry.name)) output.push(full);
+  }
+  return output;
+}
+
+const scriptFiles = collectFiles('scripts');
+const missingLocalImports = [];
+for (const file of scriptFiles) {
+  const source = fs.readFileSync(file, 'utf8');
+  const imports = [
+    ...source.matchAll(/from\s+['"]((?:\.\.?\/)[^'"]+)['"]/g),
+    ...source.matchAll(/import\(\s*['"]((?:\.\.?\/)[^'"]+)['"]\s*\)/g),
+  ].map(match => match[1]);
+
+  for (const specifier of imports) {
+    const base = path.resolve(path.dirname(file), specifier);
+    const candidates = [
+      base,
+      base + '.mjs',
+      base + '.js',
+      base + '.ts',
+      base + '.tsx',
+      path.join(base, 'index.mjs'),
+      path.join(base, 'index.js'),
+      path.join(base, 'index.ts'),
+    ];
+    if (!candidates.some(fs.existsSync)) {
+      missingLocalImports.push(path.relative(root, file) + ' -> ' + specifier);
+    }
+  }
+}
+if (missingLocalImports.length) {
+  for (const item of missingLocalImports) fail('import local quebrado: ' + item);
+} else {
+  pass('scripts não possuem imports locais apontando para arquivos inexistentes');
+}
+
+if (!fs.existsSync(path.join(root, 'package-lock.json'))) {
+  console.warn('WARN package-lock.json ausente; CI continua usando npm install até a lockfile ser gerada.');
+} else {
+  pass('package-lock.json está versionado para instalações reprodutíveis');
+}
+
 
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
 const social = read('src/components/InstagramSyncHub.tsx');
