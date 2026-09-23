@@ -62,6 +62,7 @@ export function SanitationHealthSection() {
   return (
     <section id="saude" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="saude-title">
       <SectionHeader
+        titleId="saude-title"
         eyebrow="Saneamento + saúde"
         title="Capacidade, cobertura e pressão de demanda"
         description="Os dois painéis preservam os denominadores e as datas de referência para que cobertura sanitária e capacidade hospitalar não sejam interpretadas como métricas intercambiáveis."
