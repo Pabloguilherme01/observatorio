@@ -12,14 +12,15 @@ const DIFF_OUTPUT = join(OUTPUT_DIR, 'tse2026-diff.json');
 const HISTORY_DIR = join(OUTPUT_DIR, 'history');
 const ZIP_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip';
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
+const API_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos';
 const WATCHLIST = ['Keké', 'Anderson Teodoro', 'Zé da Imperial', 'Baiano dos Cocos', 'Cambão', 'Abadyas Damasceno', 'Pábio Mossoró', 'Felipe Galdino', 'Ribeiro do Túlio', 'André do Premium'];
 
 const WATCHLIST_ALIASES = {
-  'Keké': ['KEKE'],
+  'Keké': ['KEKE', 'KEKE DA VULKANIC'],
   'Anderson Teodoro': ['ANDERSON TEODORO'],
   'Zé da Imperial': ['ZE DA IMPERIAL', 'JOSE IMPERIAL'],
   'Baiano dos Cocos': ['BAIANO DOS COCOS', 'BAIANO DO COCOS', 'BAIANO COCOS'],
-  'Cambão': ['CAMBAO'],
+  'Cambão': ['CAMBAO', 'WILDE CAMBAO'],
   'Abadyas Damasceno': ['ABADYAS DAMASCENO'],
   'Pábio Mossoró': ['PABIO MOSSORO'],
   'Felipe Galdino': ['FELIPE GALDINO'],
@@ -62,7 +63,98 @@ function sha256(path) {
 }
 
 function normalize(value = '') {
-  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+  return value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+}
+
+function matchesAlias(candidateName, aliases) {
+  const candidateTokens = normalize(candidateName).split(' ').filter(Boolean);
+  return aliases.some(alias => {
+    const aliasTokens = normalize(alias).split(' ').filter(Boolean);
+    if (!aliasTokens.length || aliasTokens.length > candidateTokens.length) return false;
+    for (let start = 0; start <= candidateTokens.length - aliasTokens.length; start += 1) {
+      if (aliasTokens.every((token, index) => candidateTokens[start + index] === token)) return true;
+    }
+    return false;
+  });
+}
+
+function downloadText(url, destination, attempt = 1) {
+  try {
+    execFileSync('curl', [
+      '--fail',
+      '--location',
+      '--http1.1',
+      '--retry', '2',
+      '--retry-delay', '2',
+      '--retry-all-errors',
+      '--connect-timeout', '30',
+      '--max-time', '120',
+      '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/153 Safari/537.36',
+      '--header', 'Accept: application/json, text/plain, */*',
+      '--header', 'Referer: https://divulgacandcontas.tse.jus.br/divulga/',
+      '--output', destination,
+      url,
+    ], { stdio: 'inherit' });
+    return readFileSync(destination, 'utf8');
+  } catch (error) {
+    rmSync(destination, { force: true });
+    if (attempt >= 2) throw new Error('Falha ao consultar API oficial do DivulgaCandContas: ' + (error instanceof Error ? error.message : String(error)));
+    const waitMs = 2000 * attempt;
+    console.warn('[TSE API] tentativa ' + attempt + ' falhou. Nova tentativa em ' + waitMs + 'ms.');
+    return sleep(waitMs).then(() => downloadText(url, destination, attempt + 1));
+  }
+}
+
+function findCandidateArray(value, depth = 0) {
+  if (!value || depth > 4) return null;
+  if (Array.isArray(value)) {
+    if (value.some(item => item && typeof item === 'object' && ('nomeUrna' in item || 'nomeCompleto' in item || 'NM_URNA_CANDIDATO' in item))) return value;
+    for (const item of value) {
+      const nested = findCandidateArray(item, depth + 1);
+      if (nested) return nested;
+    }
+    return null;
+  }
+  if (typeof value === 'object') {
+    for (const child of Object.values(value)) {
+      const nested = findCandidateArray(child, depth + 1);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
+function apiCandidateToRecord(item) {
+  const sq = item?.id ?? item?.sqCandidato ?? item?.sqCandidate ?? item?.SQ_CANDIDATO;
+  const name = item?.nomeUrna ?? item?.nome_urna ?? item?.NM_URNA_CANDIDATO ?? item?.nome ?? '';
+  return {
+    sqCandidate: sq == null ? '' : String(sq),
+    ballotNumber: item?.numero ?? item?.nrCandidato ?? item?.NR_CANDIDATO ?? null,
+    name: String(name),
+    fullName: item?.nomeCompleto ?? item?.NM_CANDIDATO ?? null,
+    party: item?.partido?.sigla ?? item?.partido?.sgPartido ?? item?.sgPartido ?? item?.siglaPartido ?? null,
+    office: item?.cargo?.nome ?? item?.cargo?.descricao ?? item?.descricaoCargo ?? 'DEPUTADO ESTADUAL',
+    status: item?.descricaoSituacao ?? item?.descricaoSituacaoCandidato ?? item?.situacao ?? item?.status ?? null,
+    federation: item?.federacao?.nome ?? item?.nomeFederacao ?? item?.nmFederacao ?? null,
+    generationDate: item?.dtGeracao ?? item?.dataGeracao ?? null,
+    generationTime: item?.hhGeracao ?? null,
+  };
+}
+
+function selectWatchlist(records) {
+  const matches = [];
+  const seen = new Set();
+  for (const item of records) {
+    const record = apiCandidateToRecord(item);
+    if (!record.sqCandidate || !record.name) continue;
+    const matchedWatchName = WATCHLIST.find(name => matchesAlias(record.name, WATCHLIST_ALIASES[name] ?? [normalize(name)]));
+    if (!matchedWatchName) continue;
+    if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte: ' + record.sqCandidate);
+    seen.add(record.sqCandidate);
+    record.watchlistName = matchedWatchName;
+    matches.push(record);
+  }
+  return matches;
 }
 
 function parseCsvLineStreaming(filePath, onRow) {
@@ -187,49 +279,68 @@ async function main() {
   mkdirSync(HISTORY_DIR, { recursive: true });
   const work = mkdtempSync(join(tmpdir(), 'tse-2026-'));
   const zip = join(work, 'consulta_cand_2026.zip');
+  const apiJson = join(work, 'divulgacandcontas-2026-go-deputado-estadual.json');
   const extracted = join(work, 'csv');
   mkdirSync(extracted);
 
   try {
-    await download(ZIP_URL, zip);
-    const sourceFileSha256 = sha256(zip);
-    execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
-    const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
-    if (!csvPath) throw new Error('Arquivo de candidatos de GO não encontrado no pacote TSE.');
+    let sourceFileSha256;
+    let sourceRows;
+    let retrievalMethod;
+    let resourceUrl;
+    let allMatches = [];
 
-    let header;
-    let rowsRead = 0;
-    const allMatches = [];
-    const seen = new Set();
+    try {
+      await download(ZIP_URL, zip);
+      sourceFileSha256 = sha256(zip);
+      retrievalMethod = 'official_tse_open_data_csv';
+      resourceUrl = ZIP_URL;
+      execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
+      const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
+      if (!csvPath) throw new Error('Arquivo de candidatos de GO não encontrado no pacote TSE.');
 
-    await parseCsvLineStreaming(csvPath, row => {
-      if (!header) {
-        header = Object.fromEntries(row.map((name, index) => [name.replace(/^\uFEFF/, '').trim(), index]));
-        return;
-      }
-      rowsRead += 1;
-      const candidateName = normalize(row[header.NM_URNA_CANDIDATO] || row[header.NM_CANDIDATO] || '');
-      const matchedWatchName = WATCHLIST.find(name => (WATCHLIST_ALIASES[name] ?? [normalize(name)])
-        .some(alias => {
-          const aliasTokens = normalize(alias).split(' ').filter(Boolean);
-          const candidateTokens = candidateName.split(' ').filter(Boolean);
-          if (!aliasTokens.length || aliasTokens.length > candidateTokens.length) return false;
-          return aliasTokens.every((token, index) => candidateTokens[index] === token);
-        }));
-      if (!matchedWatchName) return;
-      const record = toRecord(row, header);
-      record.watchlistName = matchedWatchName;
-      if (!record.sqCandidate) throw new Error('Registro monitorado sem SQ_CANDIDATO.');
-      if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte: ' + record.sqCandidate);
-      seen.add(record.sqCandidate);
-      allMatches.push(record);
-    });
+      let header;
+      let rowsRead = 0;
+      const seen = new Set();
+      await parseCsvLineStreaming(csvPath, row => {
+        if (!header) {
+          header = Object.fromEntries(row.map((name, index) => [name.replace(/^\uFEFF/, '').trim(), index]));
+          return;
+        }
+        rowsRead += 1;
+        const candidateName = normalize(row[header.NM_URNA_CANDIDATO] || row[header.NM_CANDIDATO] || '');
+        const matchedWatchName = WATCHLIST.find(name => matchesAlias(candidateName, WATCHLIST_ALIASES[name] ?? [normalize(name)]));
+        if (!matchedWatchName) return;
+        const record = toRecord(row, header);
+        record.watchlistName = matchedWatchName;
+        if (!record.sqCandidate) throw new Error('Registro monitorado sem SQ_CANDIDATO.');
+        if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte: ' + record.sqCandidate);
+        seen.add(record.sqCandidate);
+        allMatches.push(record);
+      });
+      sourceRows = rowsRead;
+    } catch (cdnError) {
+      console.warn('[TSE] Pacote oficial CDN indisponível; usando fallback oficial DivulgaCandContas:', cdnError.message);
+      const rawApi = await downloadText(API_URL, apiJson);
+      const parsedApi = JSON.parse(rawApi);
+      const records = findCandidateArray(parsedApi);
+      if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
+      sourceFileSha256 = createHash('sha256').update(rawApi, 'utf8').digest('hex');
+      sourceRows = records.length;
+      retrievalMethod = 'official_tse_divulgacandcontas_api';
+      resourceUrl = API_URL;
+      allMatches = selectWatchlist(records);
+    }
 
-    if (!rowsRead) throw new Error('Snapshot inválido: nenhum registro de candidato foi lido.');
+    if (!sourceRows) throw new Error('Snapshot inválido: nenhum registro de candidato foi lido.');
 
     const missingWatchlist = WATCHLIST.filter(name => !allMatches.some(candidate => candidate.watchlistName === name));
     if (missingWatchlist.length) {
       throw new Error('Captura TSE incompleta; watchlist sem correspondência: ' + missingWatchlist.join(', '));
+    }
+
+    if (!allMatches.length || allMatches.length !== WATCHLIST.length) {
+      throw new Error('Recorte TSE inválido: esperado ' + WATCHLIST.length + ' candidatos e recebido ' + allMatches.length + '.');
     }
 
     const previous = loadPrevious();
@@ -246,14 +357,15 @@ async function main() {
         scope: 'GO',
         downloadedAt: now.toISOString(),
         sourceFileSha256,
-        sourceRows: rowsRead,
+        sourceHashKind: retrievalMethod === 'official_tse_divulgacandcontas_api' ? 'api_response_utf8' : 'source_zip',
+        sourceRows,
         matchedRows: allMatches.length,
         workflowRunId: process.env.GITHUB_RUN_ID || undefined,
         gitCommit: process.env.GITHUB_SHA || undefined,
         schemaVersion: 2,
         state,
-        retrievalMethod: 'official_tse_open_data_csv',
-        resourceUrl: ZIP_URL,
+        retrievalMethod,
+        resourceUrl,
       },
       coverage: 'watchlist',
       watchlist: WATCHLIST,
@@ -268,7 +380,7 @@ async function main() {
     };
 
     if (state === 'unchanged') {
-      console.log(JSON.stringify({ state, snapshotId, rowsRead, matched: allMatches.length, added: 0, removed: 0, changed: 0 }));
+      console.log(JSON.stringify({ state, snapshotId, sourceRows, matched: allMatches.length, retrievalMethod, added: 0, removed: 0, changed: 0 }));
       return;
     }
 
@@ -281,8 +393,9 @@ async function main() {
     console.log(JSON.stringify({
       state,
       snapshotId,
-      rowsRead,
+      sourceRows,
       matched: allMatches.length,
+      retrievalMethod,
       added: payload.diff.added,
       removed: payload.diff.removed,
       changed: payload.diff.changed,
