@@ -58,6 +58,7 @@ body::before {
 
 button, input, select { font: inherit; }
 button, a, select, input { -webkit-tap-highlight-color: transparent; }
+button, select, input[type='range'], [role='button'] { touch-action: manipulation; }
 ::selection { background: rgba(62, 111, 143, .35); }
 
 .skip-link {
@@ -357,7 +358,8 @@ html.light .topic-card:hover {
 /* V40 social distribution + mobile performance */
 main > section {
   content-visibility: auto;
-  contain-intrinsic-size: 650px;
+  contain-intrinsic-size: 720px;
+  contain: layout paint style;
 }
 .instagram-shell {
   border: 1px solid rgba(140,200,242,.12);
@@ -377,7 +379,7 @@ html.light .instagram-shell {
   background: rgba(255,255,255,.72);
 }
 @media (max-width:767px) {
-  main > section { contain-intrinsic-size: 560px; }
+  main > section { contain-intrinsic-size: 620px; }
   .instagram-shell { padding: 16px; border-radius: 24px; }
   .instagram-mobile-rail {
     display: grid;
@@ -441,4 +443,40 @@ html.light .freshness-pill { border-color:rgba(49,90,117,.15); background:rgba(4
   .hero-shell .grid[aria-label="Indicadores de referência da edição"] { grid-template-columns:1fr; }
   .hero-shell .grid[aria-label="Indicadores de referência da edição"] > div { display:grid; grid-template-columns:1fr auto; gap:4px 10px; align-items:center; }
   .hero-shell .grid[aria-label="Indicadores de referência da edição"] > div > div:nth-child(3) { grid-column:2; font-size:10px; }
+}
+
+
+/* V42.1 election mode: compact, neutral and reversible */
+.election-mode-actions { display: none; }
+.mode-election .election-mode-actions { display: block; }
+.mode-election .hero-secondary-round { display: none !important; }
+.mode-election .hero-kpis > :nth-child(3) { display: none; }
+.mode-election #demografia,
+.mode-election #orcamento,
+.mode-election #orcamento-impacto,
+.mode-election #instagram,
+.mode-election #exportacao,
+.mode-election #central-2026 { display: none !important; }
+.mode-election #acao {
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(245,200,107,.16), 0 22px 70px rgba(245,200,107,.06);
+}
+.mode-election #acao::before {
+  content: "ACESSO CÍVICO";
+  position: absolute;
+  top: -11px;
+  right: 20px;
+  z-index: 2;
+  border: 1px solid rgba(245,200,107,.18);
+  border-radius: 999px;
+  padding: 4px 9px;
+  background: #0b1117;
+  color: #f5c86b;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+html.light .mode-election #acao::before {
+  background: #fff;
+  color: #7a5a10;
 }
