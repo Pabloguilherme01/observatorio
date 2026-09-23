@@ -40,7 +40,7 @@ export function Electoral360() {
           <Info label="Bens declarados" value={fallback.declaredAssetsBrl ? fallback.declaredAssetsBrl.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) : 'Não informado'} />
           <Info label="Snapshot" value={fallback.snapshotDate} />
         </div>}
-        {fallback && <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">{['Bens','Contas','Redes','Pesquisas','Processos','Propostas','Histórico','Alterações'].map(tab=><button key={tab} type="button" onClick={()=>dispatchInspect({label:`${fallback?.name ?? 'Candidato'} · ${tab}`,value:'Módulo documental',status:'catalogado',note:'Este módulo está no mapa de dados do Eleitoral 360°. A ausência de captura local não é interpretada como ausência do registro.'})} className="rounded-xl border border-white/8 p-3 text-left text-xs font-bold text-slate-400 hover:border-sky-300/20"><span className="block text-slate-600">Abrir</span>{tab}</button>)}</div>
+        {fallback && <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">{['Bens','Contas','Redes','Pesquisas','Processos','Propostas','Histórico','Alterações'].map(tab=><button key={tab} type="button" onClick={()=>dispatchInspect({label:`${fallback?.name ?? 'Candidato'} · ${tab}`,value:'Módulo documental',status:'catalogado',note:'Este módulo está no mapa de dados do Eleitoral 360°. A ausência de captura local não é interpretada como ausência do registro.'})} className="rounded-xl border border-white/8 p-3 text-left text-xs font-bold text-slate-400 hover:border-sky-300/20"><span className="block text-slate-600">Abrir</span>{tab}</button>)}</div>}
       </Card>
 
       <div className="space-y-4">
