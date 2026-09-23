@@ -34,6 +34,7 @@ npm run typecheck
 npm run validate:observatorio
 npm run validate:tse
 npm run validate:results
+npm run test:jws
 npm run build
 ```
 
@@ -58,9 +59,9 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V32.0 — Observatório de Dados Cívicos e Eleitorais.
+V33.0 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V32
+### Foco V33
 - Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
 - Compartilhamento nativo de resumo e cenários de mobilidade.
 - Estados TSE explicitamente diferenciados entre capturado, desatualizado, falha e aguardando captura.
@@ -70,6 +71,11 @@ V32.0 — Observatório de Dados Cívicos e Eleitorais.
 - Contrato de produção com pleito, ambiente, escopo municipal e compatibilidade entre código de eleição, UF e cargo.
 - Estado de frescor do feed para impedir que um arquivo antigo permaneça rotulado como ao vivo.
 - Verificador isolado do simulado oficial do TSE para 22–24/09/2026, sem misturar dados simulados à produção.
+- Modo investigação como padrão para não esconder fontes e camadas documentais do primeiro acesso.
+- Histórico de eleitorado com fonte individual por ano e reconciliação editorial separada do consolidado.
+- Eleitoral 360° sem mistura de campos de snapshots diferentes.
+- Compartilhamento do inspetor sem âncoras falsas.
+- Verificador JWS com prova criptográfica explícita e contrato de integridade que impede alegações de assinatura sem evidência.
 
 ### Camadas atuais
 - Dashboard municipal e eleitoral
