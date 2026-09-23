@@ -1,4 +1,4 @@
-import { CalendarClock, CircleAlert, ShieldAlert } from 'lucide-react';
+import { CalendarClock, ExternalLink } from 'lucide-react';
 import { useCountdown } from '../../hooks/useCountdown';
 import { Badge } from '../ui/Badge';
 
@@ -23,15 +23,16 @@ function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<type
 
 export function HeroCountdown() {
   const election = useCountdown('2026-10-04T08:00:00-03:00');
-  const radar = useCountdown('2026-09-23T00:00:00-03:00');
+  const secondRound = useCountdown('2026-10-25T08:00:00-03:00');
 
   return (
     <section className="relative overflow-hidden border-b border-white/10 px-4 py-14 sm:px-6 lg:px-8" aria-labelledby="hero-title">
       <div className="mx-auto max-w-7xl">
         <div className="mb-5 flex flex-wrap gap-2">
-          <Badge>V22 • React</Badge>
+          <Badge>V22.1 • React</Badge>
           <Badge>Dados públicos</Badge>
           <Badge>Fontes rastreáveis</Badge>
+          <Badge>Sem ranking automático</Badge>
         </div>
         <div className="grid gap-8 lg:grid-cols-[1.3fr_.7fr] lg:items-end">
           <div>
@@ -56,16 +57,15 @@ export function HeroCountdown() {
               </div>
               <Timer value={election} />
             </div>
-            <div className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.05] p-4">
-              <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-amber-200">
-                <ShieldAlert className="h-4 w-4" aria-hidden="true" />
-                Marco editorial · 23/09
+            <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+              <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-white">
+                <CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />
+                2º turno · 25/10 · se houver
               </div>
-              <Timer value={radar} />
-              <p className="mt-2 flex gap-1.5 text-xs leading-5 text-slate-400">
-                <CircleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                Marcador editorial. Não substitui os prazos jurídicos oficiais.
-              </p>
+              <Timer value={secondRound} />
+              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">
+                Calendário oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </div>
