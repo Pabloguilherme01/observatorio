@@ -116,9 +116,9 @@ export function DataQualityPanel() {
           </div>
         </Card>
         <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Apuração 2026</div>
-          <div className="mt-2 text-base font-black text-white">Fonte oficial preparada</div>
-          <p className="mt-1 text-xs leading-5 text-slate-500">A integração de totalização ao vivo permanece separada do snapshot local. Quando existir, o feed precisa informar eleição, turno, UF, município, cargo, arquivo-fonte e estado de captura antes de aparecer como resultado.</p>
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Pipeline de resultados</div>
+          <div className="mt-2 text-base font-black text-white">JWS Ed25519 preparado</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão V34 resolve o código municipal 93343 a partir da configuração oficial, baixa os pares JSON/JWS, compara os payloads e publica o feed somente com provas de assinatura da chave oficial fixada do TSE.</p>
           {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
         </Card>
         <Card className="p-4">
