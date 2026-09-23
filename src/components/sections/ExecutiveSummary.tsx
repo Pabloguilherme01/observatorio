@@ -15,6 +15,8 @@ export function ExecutiveSummary() {
     * d.transport.defaultTripsPerDay
     * d.transport.defaultWorkDaysPerMonth;
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
+  const population = d.populationSeries.find(point => point.year === 2026);
+  const electorate = d.electoral;
 
   return (
     <section
@@ -47,6 +49,7 @@ export function ExecutiveSummary() {
                   <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
                   <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.registrationNumber}</span>
                   <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.pollster}</span>
+                  <span className="rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-2.5 py-1 text-amber-200 light:border-amber-300/50 light:bg-amber-50 light:text-amber-800">divulgação com cautela</span>
                 </div>
                 {source?.url && (
                   <a href={source.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
@@ -61,10 +64,10 @@ export function ExecutiveSummary() {
             <Card className="p-4">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
                 <CalendarClock className="h-4 w-4 text-sky-300" aria-hidden="true" />
-                Base populacional
+                Eleitorado
               </div>
-              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">249.978</div>
-              <div className="text-xs text-slate-500">estimativa IBGE · referência 01/07/2026</div>
+              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div>
+              <div className="text-xs text-slate-500">snapshot TSE · referência {electorate.snapshotDate.split('-').reverse().join('/')}</div>
             </Card>
 
             <Card className="p-4">
@@ -96,7 +99,7 @@ export function ExecutiveSummary() {
               <CircleHelp className="mt-0.5 h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
               <p className="text-sm leading-6 text-slate-300 light:text-slate-600">
                 Atualização local do conjunto: <strong className="text-white light:text-slate-900">{formatDate(d.meta.updatedAt)}</strong>.
-                A apuração eleitoral ao vivo é uma camada distinta e deve usar a distribuição oficial do TSE.
+                População estimada: {population?.value.toLocaleString('pt-BR') ?? '—'} em {population ? population.referenceDate.split('-').reverse().join('/') : '—'}. A apuração eleitoral ao vivo é uma camada distinta e deve usar a distribuição oficial do TSE.
               </p>
             </div>
           </Card>
