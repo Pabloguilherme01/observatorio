@@ -28,7 +28,7 @@ const WATCHLIST_ALIASES = {
   'Abadyas Damasceno': ['ABADYAS DAMASCENO'],
   'Pábio Mossoró': ['PABIO MOSSORO'],
   'Felipe Galdino': ['FELIPE GALDINO'],
-  'Ribeiro do Túlio': ['RIBEIRO DO TULIO'],
+  'Ribeiro do Túlio': ['RIBEIRO DO TULIO', 'RIBEIRO DO TULLIO', 'RIBEIRO TULLIO'],
   'André do Premium': ['ANDRE DO PREMIUM'],
 };
 
@@ -42,11 +42,9 @@ function download(url, destination, attempt = 1) {
       '--fail',
       '--location',
       '--http1.1',
-      '--retry', '3',
-      '--retry-delay', '2',
-      '--retry-all-errors',
-      '--connect-timeout', '30',
-      '--max-time', '240',
+      '--retry', '0',
+      '--connect-timeout', '20',
+      '--max-time', '90',
       '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/153 Safari/537.36',
       '--header', 'Accept: application/zip, application/octet-stream;q=0.9, */*;q=0.8',
       '--output', destination,
@@ -54,12 +52,10 @@ function download(url, destination, attempt = 1) {
     ], { stdio: 'inherit' });
   } catch (error) {
     rmSync(destination, { force: true });
-    if (attempt >= 3) {
-      throw new Error('Falha ao baixar pacote TSE após ' + attempt + ' tentativas via curl: ' + (error instanceof Error ? error.message : String(error)));
+    if (attempt >= 1) {
+      throw new Error('Falha ao baixar pacote TSE via curl: ' + (error instanceof Error ? error.message : String(error)));
     }
-    const waitMs = 2000 * 2 ** (attempt - 1);
-    console.warn('[TSE] tentativa ' + attempt + ' via curl falhou. Nova tentativa em ' + waitMs + 'ms.');
-    return sleep(waitMs).then(() => download(url, destination, attempt + 1));
+    return download(url, destination, attempt + 1);
   }
 }
 function sha256(path) {
