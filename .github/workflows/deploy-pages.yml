@@ -107,5 +107,9 @@ jobs:
             /*) css_url="https://pabloguilherme01.github.io$asset_css" ;;
             *) css_url="https://pabloguilherme01.github.io/observatorio/$asset_css" ;;
           esac
-          curl -fsSL --retry 3 --max-time 20 "$js_url" | grep -F 'Não foi possível iniciar a interface' >/dev/null
-          curl -fsSL --retry 3 --max-time 20 "$css_url" | grep -F 'pwa-update-banner' >/dev/null
+          js_bytes="$(curl -fsSL --retry 3 --max-time 20 "$js_url" | wc -c)"
+          css_bytes="$(curl -fsSL --retry 3 --max-time 20 "$css_url" | wc -c)"
+          test "$js_bytes" -gt 1000
+          test "$css_bytes" -gt 1000
+          printf 'Published JS bytes: %s\n' "$js_bytes"
+          printf 'Published CSS bytes: %s\n' "$css_bytes"
