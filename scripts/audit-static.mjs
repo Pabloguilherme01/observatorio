@@ -56,6 +56,12 @@ must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5
 must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
 must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy exige auditorias principais');
 
+const mainSource = read('src/main.tsx');
+must(mainSource.includes("import { App } from './app/App'") && mainSource.includes("import { ErrorBoundary } from './components/system/ErrorBoundary'"), 'bootstrap principal não depende de import dinâmico para montar o React');
+must(mainSource.includes('BOOT_TIMEOUT_MS = 10000') && mainSource.includes('observatorioMounted'), 'bootstrap possui timeout de segurança e marcador de montagem');
+must(mainSource.includes('[Observatório][boot] 1/4') && mainSource.includes('[Observatório][boot] 4/4'), 'bootstrap possui logs de diagnóstico por etapa');
+must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
+
 const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
