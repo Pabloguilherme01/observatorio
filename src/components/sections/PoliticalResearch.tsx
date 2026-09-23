@@ -3,39 +3,55 @@ import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { observatorioData as d } from '../../data/observatorioData';
+import { electoral360Snapshot } from '../../data/electoral360';
 import { formatCurrency } from '../../utils/formatters';
 
 export function PoliticalResearch() {
+  const hasGenerated = electoral360Snapshot.matchedCandidates.length > 0;
+  const candidates = hasGenerated
+    ? electoral360Snapshot.matchedCandidates.map(candidate => ({
+        name: candidate.name,
+        party: candidate.party,
+        ballotNumber: candidate.ballotNumber,
+        status: candidate.status,
+        occupation: undefined,
+        education: undefined,
+        declaredAssetsBrl: undefined,
+        sourceId: candidate.sourceId,
+        snapshotDate: candidate.snapshotDate,
+      }))
+    : d.candidates;
+
   return (
     <section id="candidaturas" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="research-title">
       <SectionHeader
         titleId="research-title"
         eyebrow="Pesquisa documental"
         title="Candidaturas: registro, patrimônio e situação"
-        description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação."
+        description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação eleitoral. Quando disponível, a camada sincronizada do TSE passa a ser a fonte operacional."
       />
       <div className="grid gap-4 md:grid-cols-2">
-        {d.candidates.map(candidate => (
+        {candidates.map(candidate => (
           <Card key={candidate.name}>
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-lg font-black text-white">{candidate.name}</h3>
-                <p className="mt-1 text-xs text-slate-500">{candidate.party} · {candidate.ballotNumber}</p>
+                <p className="mt-1 text-xs text-slate-500">{candidate.party ?? '—'} · {candidate.ballotNumber ?? '—'}</p>
               </div>
               <Badge tone="info">{candidate.status}</Badge>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 text-xs">
               <div className="rounded-2xl border border-white/8 p-3">
                 <span className="text-slate-500">Ocupação</span>
-                <strong className="mt-1 block text-white">{candidate.occupation ?? '—'}</strong>
+                <strong className="mt-1 block text-white">{candidate.occupation ?? 'Não capturado nesta camada'}</strong>
               </div>
               <div className="rounded-2xl border border-white/8 p-3">
                 <span className="text-slate-500">Escolaridade</span>
-                <strong className="mt-1 block text-white">{candidate.education ?? '—'}</strong>
+                <strong className="mt-1 block text-white">{candidate.education ?? 'Não capturado nesta camada'}</strong>
               </div>
               <div className="rounded-2xl border border-white/8 p-3">
                 <span className="text-slate-500">Bens declarados</span>
-                <strong className="mt-1 block text-white">{candidate.declaredAssetsBrl != null ? formatCurrency(candidate.declaredAssetsBrl) : '—'}</strong>
+                <strong className="mt-1 block text-white">{candidate.declaredAssetsBrl != null ? formatCurrency(candidate.declaredAssetsBrl) : 'Não capturado nesta camada'}</strong>
               </div>
               <div className="rounded-2xl border border-white/8 p-3">
                 <span className="text-slate-500">Snapshot</span>
