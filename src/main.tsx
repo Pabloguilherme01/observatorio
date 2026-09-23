@@ -52,6 +52,12 @@ type BeforeInstallPromptEvent = Event & {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; }>;
 };
 
+function MountSignal() {
+  useEffect(() => {
+  }, []);
+  return null;
+}
+
 function PwaInstallPrompt() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
 
@@ -180,9 +186,10 @@ if (!root) {
       <StrictMode>
         <ErrorBoundary>
           <App />
-          <PwaStatus />
-          <PwaInstallPrompt />
         </ErrorBoundary>
+        <MountSignal />
+        <PwaStatus />
+        <PwaInstallPrompt />
       </StrictMode>,
     );
     console.info('[Observatório][boot] 4/4 React render() concluído em ' + Math.round(performance.now() - bootStartedAt) + 'ms');

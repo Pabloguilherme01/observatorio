@@ -40,6 +40,7 @@ function shareCandidate(candidate: CandidateView, channel: 'native' | 'whatsapp'
 export function PoliticalResearch() {
   const { mode } = useLanguageMode();
   const hasLocalCandidates = electoral360Snapshot.matchedCandidates.length > 0;
+  const municipalCaptureCompleted = electoral360Snapshot.captureMode === 'github-actions' && Boolean(electoral360Snapshot.capturedAt);
   const candidates: CandidateView[] = electoral360Snapshot.matchedCandidates.map(candidate => {
     const raw = candidate as typeof candidate & { municipality?: string; photoUrl?: string | null; instagramUrl?: string | null };
     return { ...candidate, municipality: raw.municipality ?? 'Águas Lindas de Goiás', photoUrl: raw.photoUrl, instagramUrl: raw.instagramUrl };
@@ -67,8 +68,12 @@ export function PoliticalResearch() {
           <div className="flex items-start gap-3">
             <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-emerald-300" aria-hidden="true" />
             <div>
-              <h3 className="text-base font-black text-white">Captura municipal pendente</h3>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">O último snapshot não contém correspondências municipais validadas. O observatório não transforma a watchlist estadual em candidatura local e mantém a seção vazia até existir evidência municipal no TSE.</p>
+              <h3 className="text-base font-black text-white">{municipalCaptureCompleted ? 'Nenhum registro da watchlist no recorte municipal' : 'Captura municipal pendente'}</h3>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
+                {municipalCaptureCompleted
+                  ? 'A captura oficial do município foi concluída, mas nenhum dos nomes atualmente monitorados na watchlist apareceu no recorte municipal desta execução. A ausência aqui não significa ausência de outras candidaturas fora da watchlist.'
+                  : 'O último snapshot não contém correspondências municipais validadas. O observatório não transforma a watchlist estadual em candidatura local e mantém a seção vazia até existir evidência municipal no TSE.'}
+              </p>
               <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-bold text-slate-200 hover:border-sky-300/20">Conferir dados oficiais do TSE <ExternalLink className="h-4 w-4" aria-hidden="true" /></a>
             </div>
           </div>

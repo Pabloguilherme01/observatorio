@@ -29,6 +29,20 @@ else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 const main = read('src/main.tsx');
 if (main.includes('observatorioMounted') && main.includes('observatorio:last-runtime-error')) pass('bootstrap possui marcador de montagem e diagnóstico runtime.');
 else fail('bootstrap perdeu marcadores de resiliência.');
+if (main.includes('function MountSignal') && main.includes('<MountSignal />') && main.includes("observatorio:app-mounted")) pass('sinal de montagem React é emitido por componente após o commit.');
+else fail('sinal de montagem React não está protegido por efeito pós-commit.');
+
+const tseSync = read('scripts/sync-tse-2026.mjs');
+if (
+  tseSync.includes('function parseCsv')
+  && tseSync.includes("MUNICIPALITY_CODE = '92737'")
+  && tseSync.includes("coverage: 'municipality_required'")
+  && tseSync.includes("retrievalMethod: 'official_tse_zip_csv'")
+) pass('captura TSE é autocontida, municipal e baseada no pacote oficial.');
+else fail('captura TSE perdeu filtro municipal ou contrato oficial direto.');
+
+if (!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts'))) pass('pipeline municipal legado inexistente não pode voltar a falhar em produção.');
+else fail('pipeline municipal legado ainda está presente.');
 
 const summary = read('src/components/sections/ExecutiveSummary.tsx');
 if (summary.includes('brasiliaRoute?.fareBrl') && summary.includes('poll?.')) pass('Resumo executivo protege dependências opcionais.');
