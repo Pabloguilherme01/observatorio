@@ -1,16 +1,99 @@
+import { useEffect, useState } from 'react';
 import { AlertTriangle, FileSearch, ShieldCheck } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { SectionHeader } from '../ui/SectionHeader';
 
+const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection';
+
 export function PoliticalRadar() {
   const poll = d.polls[0];
+  const candidateOptions = [...new Set(poll.results.map(result => result.label))];
+
+  const [selectedCandidate, setSelectedCandidate] = useState<string>(() => {
+    if (typeof window === 'undefined') return candidateOptions[0] ?? '';
+    try {
+      const stored = window.localStorage.getItem(RADAR_STORAGE_KEY);
+      return stored && candidateOptions.includes(stored) ? stored : (candidateOptions[0] ?? '');
+    } catch {
+      return candidateOptions[0] ?? '';
+    }
+  });
+
+  useEffect(() => {
+    if (!selectedCandidate) return;
+    try {
+      window.localStorage.setItem(RADAR_STORAGE_KEY, selectedCandidate);
+    } catch {
+      // Storage unavailable; UI remains fully functional.
+    }
+  }, [selectedCandidate]);
+
+  const selectedResult = poll.results.find(result => result.label === selectedCandidate);
+
   return <section id="politica" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="politica-title">
     <SectionHeader titleId="politica-title" eyebrow="Eleições 2026" title="Pesquisa, contas e integridade em um mesmo radar" description="As informações políticas são apresentadas como registros e comparações documentais; o componente não produz recomendação eleitoral." />
     <div className="grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
-      <Card><div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Pesquisa registrada</div><h3 className="mt-2 text-xl font-black text-white">{poll.pollster}</h3><p className="mt-1 text-xs text-slate-500">{poll.collectionDate} · {poll.interviews} entrevistas · pesquisa {poll.method === 'spontaneous' ? 'espontânea' : poll.method}</p></div><Badge tone="warning">Registro: {poll.registrationNumber}</Badge></div><div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem exibida abaixo: cálculo teórico para a amostra, não margem oficial declarada.</div><div className="mt-4 space-y-2">{poll.results.map(r => <div key={r.label} className="flex items-center gap-3"><div className="w-32 shrink-0 text-xs text-slate-400">{r.label}</div><div className="h-2 flex-1 rounded-full bg-white/5"><div className="h-full rounded-full bg-sky-300" style={{ width: `${Math.min(100, r.percentage * 2)}%` }} /></div><div className="w-14 text-right text-xs font-bold text-white">{r.percentage.toFixed(2).replace('.', ',')}%</div></div>)}</div><div className="mt-5 grid grid-cols-3 gap-3 text-xs"><div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Nenhum</span></div><div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">NS/NR</span></div><div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">±{poll.theoreticalMarginErrorPct?.toFixed(1).replace('.', ',')} pp</strong><span className="text-slate-500">teórico</span></div></div><p className="mt-4 text-xs leading-5 text-slate-500">Nenhum + NS/NR = 25,75% nesta pesquisa. Isso é um retrato daquele levantamento, não medida de “indecisão estrutural” da população.</p></Card>
-      <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Checklist IA / 72h</div><div className="mt-4 space-y-3"><div className="flex gap-3 rounded-2xl border border-white/8 p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><strong className="block text-white">Rotulagem</strong><p className="mt-1 text-xs leading-5 text-slate-400">Conteúdo sintético usado em propaganda deve identificar explicitamente a manipulação e a tecnologia utilizada.</p></div></div><div className="flex gap-3 rounded-2xl border border-white/8 p-4"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><strong className="block text-white">Janela especial</strong><p className="mt-1 text-xs leading-5 text-slate-400">Novos conteúdos sintéticos com imagem, voz ou manifestação de candidato ou pessoa pública têm vedação de publicação/republicação no intervalo definido pelo TSE.</p></div></div><div className="flex gap-3 rounded-2xl border border-white/8 p-4"><FileSearch className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" /><div><strong className="block text-white">Prestação de contas</strong><p className="mt-1 text-xs leading-5 text-slate-400">A consulta oficial permite acompanhar bens, arrecadação, despesas e movimentação financeira. O snapshot parcial cobre fatos até 08/09/2026.</p></div></div></div></Card>
+      <Card>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Pesquisa registrada</div>
+            <h3 className="mt-2 text-xl font-black text-white">{poll.pollster}</h3>
+            <p className="mt-1 text-xs text-slate-500">{poll.collectionDate} · {poll.interviews} entrevistas · pesquisa {poll.method === 'spontaneous' ? 'espontânea' : poll.method}</p>
+          </div>
+          <Badge tone="warning">Registro: {poll.registrationNumber}</Badge>
+        </div>
+
+        <div className="mt-5 grid gap-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:grid-cols-[1fr_auto] sm:items-end">
+          <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Foco do radar
+            <select
+              className="mt-2 h-10 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm font-semibold normal-case tracking-normal text-white outline-none focus:border-sky-300/40 sm:min-w-[220px]"
+              value={selectedCandidate}
+              onChange={event => setSelectedCandidate(event.target.value)}
+              aria-label="Selecionar nome da pesquisa para destacar no radar"
+            >
+              {candidateOptions.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </label>
+          <div className="rounded-xl border border-sky-400/10 bg-sky-400/[0.03] px-4 py-3 text-right">
+            <span className="block text-[11px] uppercase tracking-wide text-slate-500">Valor destacado</span>
+            <strong className="text-lg font-black text-sky-300">{selectedResult?.percentage.toFixed(2).replace('.', ',') ?? '—'}%</strong>
+          </div>
+        </div>
+
+        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem exibida abaixo: cálculo teórico para a amostra, não margem oficial declarada.</div>
+        <div className="mt-4 space-y-2">
+          {poll.results.map(r => (
+            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="block w-full rounded-xl px-2 py-1 text-left transition hover:bg-white/[0.03]" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
+              <div className="flex items-center gap-3">
+                <div className="w-32 shrink-0 text-xs text-slate-400">{r.label}</div>
+                <div className="h-2 flex-1 rounded-full bg-white/5">
+                  <div className={'h-full rounded-full transition-all ' + (selectedCandidate === r.label ? 'bg-sky-300' : 'bg-sky-300/50')} style={{ width: `${Math.min(100, r.percentage * 2)}%` }} />
+                </div>
+                <div className="w-14 text-right text-xs font-bold text-white">{r.percentage.toFixed(2).replace('.', ',')}%</div>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-5 grid grid-cols-3 gap-3 text-xs">
+          <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Nenhum</span></div>
+          <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">NS/NR</span></div>
+          <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">±{poll.theoreticalMarginErrorPct?.toFixed(1).replace('.', ',')} pp</strong><span className="text-slate-500">teórico</span></div>
+        </div>
+        <p className="mt-4 text-xs leading-5 text-slate-500">Nenhum + NS/NR = 25,75% nesta pesquisa. Isso é um retrato daquele levantamento, não medida de “indecisão estrutural” da população.</p>
+      </Card>
+
+      <Card>
+        <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Checklist IA / 72h</div>
+        <div className="mt-4 space-y-3">
+          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><strong className="block text-white">Rotulagem</strong><p className="mt-1 text-xs leading-5 text-slate-400">Conteúdo sintético usado em propaganda deve identificar explicitamente a manipulação e a tecnologia utilizada.</p></div></div>
+          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><strong className="block text-white">Janela especial</strong><p className="mt-1 text-xs leading-5 text-slate-400">Novos conteúdos sintéticos com imagem, voz ou manifestação de candidato ou pessoa pública têm vedação de publicação/republicação no intervalo definido pelo TSE.</p></div></div>
+          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><FileSearch className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" /><div><strong className="block text-white">Prestação de contas</strong><p className="mt-1 text-xs leading-5 text-slate-400">A consulta oficial permite acompanhar bens, arrecadação, despesas e movimentação financeira. O snapshot parcial cobre fatos até 08/09/2026.</p></div></div>
+        </div>
+      </Card>
     </div>
   </section>;
 }
