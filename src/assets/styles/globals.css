@@ -106,3 +106,25 @@ body{overscroll-behavior-y:none}
 
 
 .hero-mobile-election-toggle{min-height:44px;min-width:44px;touch-action:manipulation}
+
+/* Mobile recovery: preserve readable text, prevent horizontal overflow and keep controls inside viewport. */
+html, body, #root { max-width:100%; overflow-x:hidden; }
+*, *::before, *::after { box-sizing:border-box; }
+@media (max-width: 640px) {
+  body { font-size:16px; }
+  .hero-shell { padding-left:16px; padding-right:16px; }
+  .hero-shell h1 { font-size:clamp(2.15rem,10.5vw,3.45rem); line-height:1.02; overflow-wrap:anywhere; word-break:normal; }
+  .hero-shell p { max-width:100%; }
+  .hero-shell .hero-kpis { grid-template-columns:1fr; }
+  .hero-shell .hero-mobile-election-toggle { width:100%; justify-content:center; }
+  .hero-shell .hero-mobile-election-toggle span:last-child { margin-left:auto; }
+  .language-toggle-v2 { width:100%; }
+  .language-toggle-v2 button span { font-size:12px; }
+  .language-toggle-v2 button small { font-size:9px; }
+  .header-primary-nav { display:none; }
+}
+@media (max-width:420px) {
+  .hero-shell h1 { font-size:2.15rem; }
+  .hero-shell .hero-badges { gap:6px; }
+  .hero-shell .hero-badges > * { max-width:100%; }
+}
