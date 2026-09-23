@@ -121,26 +121,22 @@ export function ExecutiveSummary() {
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             <Card className="p-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-                <CalendarClock className="h-4 w-4 text-sky-300" aria-hidden="true" /> Eleitorado
-              </div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado</div>
               <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div>
               <div className="text-xs text-slate-500">
                 {languageMode === 'simple'
-                  ? 'foto de ' + electorate.snapshotDate.split('-').reverse().join('/')
+                  ? 'eleitores'
                   : 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')}
               </div>
             </Card>
 
-            <Card className="p-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-                <Wallet className="h-4 w-4 text-sky-300" aria-hidden="true" /> Mobilidade
-              </div>
-              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{brl(monthlyPerPerson)}</div>
-              <div className="text-xs text-slate-500">
-                {languageMode === 'simple' ? 'cenário mensal' : 'por pessoa/mês · Brasília · 22 dias · 2 trechos/dia'}
-              </div>
-            </Card>
+            {languageMode === 'technical' && (
+              <Card className="p-4">
+                <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Mobilidade</div>
+                <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{brl(monthlyPerPerson)}</div>
+                <div className="text-xs text-slate-500">por pessoa/mês · cenário de referência</div>
+              </Card>
+            )}
           </div>
         </div>
 
