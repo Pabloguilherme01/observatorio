@@ -2,42 +2,81 @@ name: Sincronização TSE enriquecida
 
 on:
   workflow_dispatch:
+    inputs:
+      fonte:
+        description: Fonte a sincronizar
+        required: false
+        default: all
+        type: choice
+        options: [all, pesquisas, contas, processual]
   schedule:
-    - cron: '27 8 * * *'
+    - cron: '0 9 * * *'
+    - cron: '0 9 * * 1'
+    - cron: '0 1 * * *'
 
 permissions:
   contents: write
 
 jobs:
-  ingest:
+  pesquisas:
+    if: (github.event_name == 'schedule' && github.event.schedule == '0 9 * * *') || (github.event_name == 'workflow_dispatch' && (inputs.fonte == 'all' || inputs.fonte == 'pesquisas'))
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - name: Setup Node
-        uses: actions/setup-node@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Install
-        run: npm install --no-audit --no-fund
-      - name: Ingerir contas
-        run: npm run ingest:tse:contas
-      - name: Ingerir pesquisas
-        run: npm run ingest:tse:pesquisas
-      - name: Ingerir processual
-        run: npm run ingest:tse:processual
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Commit snapshots
+      - run: npm install --no-audit --no-fund
+      - run: npm run ingest:tse:pesquisas
+      - run: npm run typecheck
+      - name: Commit
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- generated/tse2026-contas.json generated/tse2026-pesquisas.json generated/tse2026-processual.json; then
-            echo "Nenhum snapshot novo."
-            exit 0
-          fi
-          git add generated/tse2026-contas.json generated/tse2026-pesquisas.json generated/tse2026-processual.json
-          git commit -m "data(tse): atualizar snapshots eleitorais enriquecidos"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generated/tse2026-pesquisas.json
+          git diff --cached --quiet || git commit -m 'data(tse): atualizar pesquisas eleitorais 2026'
+          git push
+
+  contas:
+    if: (github.event_name == 'schedule' && github.event.schedule == '0 9 * * 1') || (github.event_name == 'workflow_dispatch' && (inputs.fonte == 'all' || inputs.fonte == 'contas'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run ingest:tse:contas
+      - run: npm run typecheck
+      - name: Commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generated/tse2026-contas.json
+          git diff --cached --quiet || git commit -m 'data(tse): atualizar contas eleitorais 2026'
+          git push
+
+  processual:
+    if: (github.event_name == 'schedule' && github.event.schedule == '0 1 * * *') || (github.event_name == 'workflow_dispatch' && (inputs.fonte == 'all' || inputs.fonte == 'processual'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run ingest:tse:processual
+      - run: npm run typecheck
+      - name: Commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generated/tse2026-processual.json
+          git diff --cached --quiet || git commit -m 'data(tse): atualizar processual eleitoral 2026'
           git push
