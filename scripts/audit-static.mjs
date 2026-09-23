@@ -16,6 +16,7 @@ const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json')
 const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
 const syncWorkflow = read('.github/workflows/sync-tse-candidates.yml');
+const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 
 const errors = [];
 const pass = (message) => console.log('PASS', message);
@@ -37,10 +38,13 @@ must(vite.includes("start_url: '/observatorio/'") && vite.includes("scope: '/obs
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
+must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
+must(vite.includes('start_url: \'/observatorio/\'') && vite.includes('scope: \'/observatorio/\''), 'PWA está configurado para instalação no subcaminho publicado');
 const pkgScripts = packageJson.scripts ?? {};
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra a auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow automatiza captura e validação do snapshot TSE');
+must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy do Pages exige as três auditorias antes da publicação');
 must(app.includes('<DataQualityPanel />') && app.includes('<EvidenceChain />'), 'camadas de qualidade e evidências estão montadas no App');
 must(app.includes('<CivicActionHub />') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
 must(app.includes('<AudienceHub />') && app.includes('<InstagramSyncHub />') && app.includes('<ProjectTrustPanel />') && app.includes('<SnapshotChanges />'), 'descoberta, Instagram, confiança e radar estão montados no primeiro fluxo');
