@@ -1,4 +1,5 @@
 import { Droplets, HeartPulse, TriangleAlert } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';
 import { formatNumber, formatPercent } from '../../utils/formatters';
@@ -54,10 +55,17 @@ function SewerCurve() {
 }
 
 export function SanitationHealthSection() {
+  const [plannedBeds, setPlannedBeds] = useState(d.health.plannedBeds ?? d.health.openingReportedBeds);
   const minimumAttendancesPerOpeningBed = healthCapacity(d.health.firstYearAttendancesAtLeast, d.health.openingReportedBeds);
-  const openingToPlanIncreasePct = ((Number(d.health.plannedBeds ?? 0) - d.health.openingReportedBeds) / d.health.openingReportedBeds) * 100;
+  const openingToPlanIncreasePct = ((plannedBeds - d.health.openingReportedBeds) / d.health.openingReportedBeds) * 100;
   const currentStatedBeds = d.health.currentStatedWardBeds + d.health.currentStatedIcuBeds;
-  const currentToPlanIncrease = Number(d.health.plannedBeds ?? 0) - currentStatedBeds;
+  const currentToPlanIncrease = plannedBeds - currentStatedBeds;
+  const pressure = useMemo(() => {
+    const attendancePerBed = d.health.firstYearAttendancesAtLeast / Math.max(plannedBeds, 1);
+    const reductionPct = (1 - attendancePerBed / (d.health.firstYearAttendancesAtLeast / d.health.openingReportedBeds)) * 100;
+    const status = attendancePerBed > 2000 ? 'Crítico' : attendancePerBed > 1200 ? 'Alta pressão' : 'Sustentável';
+    return { attendancePerBed, reductionPct, status };
+  }, [plannedBeds]);
 
   return (
     <section id="saude" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="saude-title">
@@ -140,9 +148,37 @@ export function SanitationHealthSection() {
             <p className="mt-2 text-xs leading-5 text-slate-500">Base: pelo menos {formatNumber(d.health.firstYearAttendancesAtLeast)} atendimentos ÷ {formatNumber(d.health.openingReportedBeds)} leitos reportados na inauguração.</p>
           </div>
 
+          <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Simulador de capacidade</div>
+                <div className="mt-1 text-sm text-slate-400">Ajuste hipotético entre a referência de inauguração e o planejamento registrado.</div>
+              </div>
+              <strong className="text-sky-300">{formatNumber(plannedBeds)} leitos</strong>
+            </div>
+            <input
+              className="mt-4 w-full accent-sky-400"
+              type="range"
+              min={d.health.openingReportedBeds}
+              max={d.health.plannedBeds ?? d.health.openingReportedBeds}
+              step={1}
+              value={plannedBeds}
+              onChange={event => setPlannedBeds(Number(event.target.value))}
+              aria-label="Simular quantidade de leitos"
+              aria-valuemin={d.health.openingReportedBeds}
+              aria-valuemax={d.health.plannedBeds ?? d.health.openingReportedBeds}
+              aria-valuenow={plannedBeds}
+            />
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Atendimentos/leito</span><strong className="mt-1 block text-lg text-white light:text-slate-900">{formatNumber(Math.round(pressure.attendancePerBed))}</strong></div>
+              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Redução teórica da pressão</span><strong className="mt-1 block text-lg text-white light:text-slate-900">-{formatNumber(pressure.reductionPct, 1)}%</strong></div>
+              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Faixa calculada</span><strong className="mt-1 block text-lg text-white light:text-slate-900">{pressure.status}</strong></div>
+            </div>
+          </div>
+
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatNumber(d.health.plannedBeds ?? 0)}</strong>
+              <strong className="block text-white light:text-slate-900">{formatNumber(plannedBeds)}</strong>
               <span className="text-xs text-slate-500">leitos planejados no dataset</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
@@ -160,7 +196,7 @@ export function SanitationHealthSection() {
               <span>Variação 164 → 298</span>
               <strong className="text-white light:text-slate-900">+{openingToPlanIncreasePct.toFixed(1).replace('.', ',')}%</strong>
             </div>
-            <p className="mt-2">O número de 298 é tratado como planejamento presente na base do observatório, não como capacidade já instalada.</p>
+            <p className="mt-2">O número de referência do planejamento é tratado como cenário e não como capacidade já instalada.</p>
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
