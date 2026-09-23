@@ -26,6 +26,12 @@ jobs:
           node-version: 22
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Validate static consistency
+        run: npm run audit:static
+      - name: Validate accessibility and contrast
+        run: npm run audit:a11y
+      - name: Validate mobile UX
+        run: npm run audit:mobile
       - name: Validate data contracts
         run: npm run validate:observatorio
       - name: Validate TSE snapshot structure
