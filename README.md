@@ -63,14 +63,17 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V43.1 — Observatório de Dados Cívicos e Eleitorais.
+V43.2 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V43.1
-- Controle do Modo Eleição também disponível no mobile, com estado acessível e reversível.
-- Auditoria mobile e de acessibilidade passou a detectar regressão desse controle.
-- Versão e documentação alinhadas em V43.1.
-- Validação de produção confirmada pela sequência recente de CI, Quality e GitHub Pages da main.
-- Snapshot de candidaturas continua separado como first_capture, com escopo watchlist e proveniência explícita no dataset.
+### Foco V43.2
+- Navegação programática respeita a preferência de redução de movimento também em interações móveis e atalhos internos.
+- Barra de progresso de leitura usa requestAnimationFrame para reduzir atualizações de estado durante rolagem.
+- theme-color acompanha o tema claro/escuro no navegador e no PWA, inclusive na primeira pintura.
+- Metadados de instalação mobile e preview social foram reforçados.
+- Busca responde diretamente a consultas de PIB per capita, Ideb e HEAL e corrige o destino da busca por candidaturas e saneamento.
+- Busca devolve foco ao controle que a abriu.
+- Navegação inferior mobile usa aria-current="location".
+- A camada de candidaturas não exibe links vazios quando uma referência não possui URL.
 
 ### Foco V41
 - Camada pública de confiança com método, atualização e canal de correção por evidência.
