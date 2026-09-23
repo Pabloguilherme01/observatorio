@@ -21,24 +21,24 @@ const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
 
 const pesquisas = rows.map(row => {
-  const municipality = valueOf(row, ['NM_MUNICIPIO', 'MUNICIPIO']);
+  const municipality = valueOf(row, ['NM_UE']);
   return {
-    idPesquisa: valueOf(row, ['NR_PESQUISA', 'ID_PESQUISA', 'SQ_PESQUISA']),
-    registroTSE: valueOf(row, ['NR_REGISTRO', 'REGISTRO_TSE', 'NR_REGISTRO_TSE']),
-    instituto: valueOf(row, ['NM_INSTITUTO', 'INSTITUTO']),
-    contratante: valueOf(row, ['NM_CONTRATANTE', 'CONTRATANTE']),
+    idPesquisa: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
+    registroTSE: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
+    instituto: valueOf(row, ['NM_EMPRESA']),
+    contratante: undefined,
     pagante: valueOf(row, ['NM_PAGANTE', 'PAGANTE'], false) || undefined,
     municipio: municipality,
-    uf: valueOf(row, ['SG_UF', 'UF']),
-    dataRegistro: parseDate(valueOf(row, ['DT_REGISTRO', 'DATA_REGISTRO'])),
+    uf: valueOf(row, ['SG_UF']),
+    dataRegistro: parseDate(valueOf(row, ['DT_REGISTRO'])),
     periodoColeta: {
-      inicio: parseDate(valueOf(row, ['DT_INICIO_COLETA', 'DT_INICIO'])),
-      fim: parseDate(valueOf(row, ['DT_FIM_COLETA', 'DT_FIM'])),
+      inicio: parseDate(valueOf(row, ['DT_INICIO_PESQUISA'])),
+      fim: parseDate(valueOf(row, ['DT_FIM_PESQUISA'])),
     },
-    amostra: Number(valueOf(row, ['QT_ENTREVISTAS', 'NR_ENTREVISTAS', 'AMOSTRA'])),
-    margemErro: Number(valueOf(row, ['VR_MARGEM_ERRO', 'MARGEM_ERRO']).replace(',', '.')),
-    nivelConfianca: Number(valueOf(row, ['VR_NIVEL_CONFIANCA', 'NIVEL_CONFIANCA']).replace(',', '.')),
-    tipo: valueOf(row, ['TP_PESQUISA', 'DS_TIPO_PESQUISA', 'TIPO_PESQUISA']),
+    amostra: Number(valueOf(row, ['QT_ENTREVISTADO'])),
+    margemErro: undefined,
+    nivelConfianca: undefined,
+    tipo: valueOf(row, ['DS_CARGO']),
     detalhamentoBairro: true,
     proveniencia: {
       fonte: 'TSE - Pesquisas Eleitorais 2026',
