@@ -21,7 +21,7 @@
           "deviceScaleFactor": 2,
           "disabled": false
         },
-        "formFactor": "mobile",
+        "formFactor": "mobile"
       }
     },
     "assert": {
