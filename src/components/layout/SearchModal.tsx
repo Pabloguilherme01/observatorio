@@ -8,7 +8,7 @@ const entries: readonly (readonly [string, string])[] = [
   ['Transporte', 'transporte'],
   ['Saneamento e saúde', 'saude'],
   ['Pesquisas', 'politica'],
-  ['Candidaturas', 'candidaturas'],
+  ['Candidaturas', 'eleitoral360'],
   ['Orçamento', 'orcamento'],
   ['Qualidade dos dados', 'qualidade'],
   ['Fontes e metodologia', 'fontes'],
