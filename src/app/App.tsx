@@ -28,19 +28,25 @@ import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { FreshnessBanner } from '../components/sections/FreshnessBanner';
 import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
 import { EvidenceChain } from '../components/sections/EvidenceChain';
+import { ContextComparison } from '../components/sections/ContextComparison';
+import { CivicActionHub } from '../components/sections/CivicActionHub';
+import { LanguageModeProvider } from '../context/LanguageModeContext';
 
 export function App() {
   return (
-    <ThemeProvider>
-      <ExperienceShell>
+    <LanguageModeProvider>
+      <ThemeProvider>
+        <ExperienceShell>
         <Header />
         <HeroCountdown />
         <main id="main-content">
           <ExecutiveSummary />
+          <CivicActionHub />
           <DiscoveryHub />
           <FreshnessBanner />
           <ResultsLiveBanner />
           <DashboardMetrics />
+          <ContextComparison />
           <ElectoralProfile />
           <DemographicDynamic />
           <TransportCalculator />
@@ -63,7 +69,8 @@ export function App() {
         <Footer />
         <ScrollTopButton />
         <DataInspector />
-      </ExperienceShell>
-    </ThemeProvider>
+        </ExperienceShell>
+      </ThemeProvider>
+    </LanguageModeProvider>
   );
 }
