@@ -16,6 +16,7 @@ import { EvidenceMap } from '../components/sections/EvidenceMap';
 import { ThemeProvider } from '../context/ThemeContext';
 import { DataInsights } from '../components/sections/DataInsights';
 import { PublicDataPulse } from '../components/sections/PublicDataPulse';
+import { Electoral360 } from '../components/sections/Electoral360';
 
 export function App() {
   return (
@@ -30,6 +31,7 @@ export function App() {
         <SanitationHealthSection />
         <PoliticalRadar />
         <PoliticalResearch />
+        <Electoral360 />
         <BudgetSection />
         <Central2026 />
         <PublicDataPulse />
