@@ -1,0 +1,7 @@
+{
+  "snapshotId": "second-001",
+  "records": [
+    { "id": "1", "nome": "A", "status": "deferido" },
+    { "id": "3", "nome": "C", "status": "deferido" }
+  ]
+}
