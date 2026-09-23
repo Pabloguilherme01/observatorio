@@ -63,7 +63,14 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V41.0 — Observatório de Dados Cívicos e Eleitorais.
+V42.0 — Observatório de Dados Cívicos e Eleitorais.
+
+### Foco V42
+- Viewport mobile com escala máxima preservada e suporte a safe-area/PWA no dispositivo.
+- Respostas rápidas verificáveis na busca para perguntas comuns sobre população, eleitorado, orçamento, tarifa e saneamento.
+- Compartilhamento do cenário do simulador HEAL via Web Share/cópia.
+- Deploy do GitHub Pages passa a exigir auditorias estática, acessibilidade e mobile antes da publicação.
+- Issue forms para correção de dado, nova fonte e melhoria de UX.
 
 ### Foco V41
 - Camada pública de confiança com método, atualização e canal de correção por evidência.
