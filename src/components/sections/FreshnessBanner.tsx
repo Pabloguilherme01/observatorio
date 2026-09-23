@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
 
-const VISIT_KEY = 'observatorio-last-visit-v29';
+const VISIT_KEY = 'observatorio-last-visit-v30';
 
 export function FreshnessBanner() {
   const [previousVisit, setPreviousVisit] = useState<string | null>(null);
