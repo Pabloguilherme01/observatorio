@@ -1,5 +1,6 @@
 import { ArrowRight, CalendarClock, Command, ExternalLink, Sparkles } from 'lucide-react';
 import { useCountdown } from '../../hooks/useCountdown';
+import { EDITION } from '../../config/version';
 import { Badge } from '../ui/Badge';
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
@@ -21,7 +22,7 @@ export function HeroCountdown() {
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
       <div className="mb-6 flex flex-wrap gap-2">
-        <Badge>V36 • leitura pública + investigação + evidências</Badge>
+        <Badge>{EDITION} • leitura pública + investigação + evidências</Badge>
         <Badge>Dados públicos</Badge>
         <Badge>Fontes rastreáveis</Badge>
         <Badge>Sem ranking automático</Badge>
