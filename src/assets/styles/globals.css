@@ -175,10 +175,8 @@ html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after
 
 .mode-overview #demografia,
 .mode-overview #insights,
-.mode-overview #eleitoral360,
 .mode-overview #mudancas-snapshot,
 .mode-overview #orcamento-impacto,
-.mode-overview #dados,
 .mode-overview #exportacao {
   display: none !important;
 }
