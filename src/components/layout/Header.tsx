@@ -4,6 +4,10 @@ import { SearchModal } from './SearchModal';
 import { useTheme } from '../../context/ThemeContext';
 import { navigation } from '../../config/navigation';
 
+const primaryNavigationIds = ['descubra', 'dashboard', 'eleitorado', 'transporte', 'orcamento', 'dados', 'acao'] as const;
+const primaryNavigation = primaryNavigationIds.map(id => navigation.find(item => item.id === id)).filter(Boolean);
+const secondaryNavigation = navigation.filter(item => !primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
+
 export function Header() {
   const { theme, toggle } = useTheme();
   const [activeSection, setActiveSection] = useState('dashboard');
@@ -29,11 +33,11 @@ export function Header() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <a href="#dashboard" className="min-w-0" aria-label="Observatório, início">
             <span className="block truncate text-sm font-black tracking-tight text-white light:text-slate-900">Observatório</span>
-            <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">Águas Lindas · 2026</span>
+            <span className="block truncate text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Águas Lindas · 2026</span>
           </a>
 
           <nav className="hidden items-center gap-1 xl:flex" aria-label="Navegação principal">
-            {navigation.slice(0, 7).map(item => (
+            {primaryNavigation.map(item => (
               <a key={item.id} href={'#' + item.id} className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white light:bg-slate-900/10 light:text-slate-900' : 'text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900')} aria-current={activeSection === item.id ? 'location' : undefined}>
                 {item.shortLabel}
               </a>
@@ -57,7 +61,15 @@ export function Header() {
         </div>
 
         {menuOpen && <nav id="mobile-navigation" className="border-t border-white/10 px-4 py-2 lg:hidden" aria-label="Navegação móvel">
-          {navigation.map(item => <a key={item.id} href={'#' + item.id} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')} aria-current={activeSection === item.id ? 'location' : undefined}>{item.label}</a>)}
+          <div className="grid gap-1">
+            {primaryNavigation.map(item => item && <a key={item.id} href={'#' + item.id} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')} aria-current={activeSection === item.id ? 'location' : undefined}>{item.label}</a>)}
+          </div>
+          <details className="mobile-secondary-nav mt-2 border-t border-white/10 pt-2">
+            <summary className="cursor-pointer list-none rounded-xl px-3 py-3 text-sm font-bold text-slate-400 hover:bg-white/5 hover:text-white">Mais áreas</summary>
+            <div className="mt-1 grid gap-1 pb-2">
+              {secondaryNavigation.map(item => <a key={item.id} href={'#' + item.id} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')} aria-current={activeSection === item.id ? 'location' : undefined}>{item.label}</a>)}
+            </div>
+          </details>
         </nav>}
       </header>
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
