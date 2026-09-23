@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { Activity, Gauge, Map, Users } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber, formatPercent } from '../../utils/formatters';
@@ -14,6 +15,13 @@ interface LineChartProps {
   readonly description: string;
   readonly points: readonly Point[];
   readonly valueFormatter?: (value: number) => string;
+}
+
+interface TooltipState {
+  readonly xPct: number;
+  readonly yPct: number;
+  readonly label: string;
+  readonly value: string;
 }
 
 function lineChartGeometry(points: readonly Point[]) {
@@ -37,13 +45,23 @@ function lineChartGeometry(points: readonly Point[]) {
     return { ...point, x, y };
   });
 
-  return { width, height, padX, plotHeight, coords };
+  return { width, height, plotHeight, coords };
 }
 
 function LineChart({ title, description, points, valueFormatter = value => formatNumber(value) }: LineChartProps) {
-  const geometry = lineChartGeometry(points);
+  const geometry = useMemo(() => lineChartGeometry(points), [points]);
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const polyline = geometry.coords.map(point => point.x + ',' + point.y).join(' ');
   const guides = [0, 1, 2, 3].map(index => 22 + (geometry.plotHeight * index) / 3);
+
+  const showTooltip = (point: typeof geometry.coords[number]) => {
+    setTooltip({
+      xPct: (point.x / geometry.width) * 100,
+      yPct: (point.y / geometry.height) * 100,
+      label: point.label,
+      value: valueFormatter(point.value),
+    });
+  };
 
   return (
     <figure className="rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70" aria-labelledby={title + '-caption'}>
@@ -51,33 +69,75 @@ function LineChart({ title, description, points, valueFormatter = value => forma
         <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
         <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
       </figcaption>
-      <div className="mt-4 overflow-x-auto">
+
+      <div className="relative mt-4" onMouseLeave={() => setTooltip(null)}>
         <svg
-          viewBox={'0 0 ' + geometry.width + ' ' + heightForChart()}
+          viewBox={'0 0 ' + geometry.width + ' ' + geometry.height}
           role="img"
           aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')}
-          className="h-auto min-w-[560px] w-full"
+          className="h-auto min-w-[560px] w-full overflow-visible"
         >
           <title>{title}</title>
           <desc>{description}</desc>
+
           {guides.map((y, index) => (
-            <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />
+            <line
+              key={index}
+              x1="26"
+              x2="594"
+              y1={y}
+              y2={y}
+              className="stroke-slate-700/40 light:stroke-slate-300/70"
+              strokeWidth="1"
+            />
           ))}
-          <polyline points={polyline} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+
+          <polyline
+            points={polyline}
+            fill="none"
+            className="stroke-sky-300 light:stroke-sky-600"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
           {geometry.coords.map(point => (
             <g key={point.label}>
-              <circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" />
-              <text x={point.x} y="234" textAnchor="middle" className="fill-slate-500 text-[12px]">{point.label}</text>
+              <circle
+                cx={point.x}
+                cy={point.y}
+                r="6"
+                className="cursor-pointer fill-sky-300 transition-[r] duration-150 hover:r-[8px] focus:outline-none light:fill-sky-600"
+                tabIndex={0}
+                role="img"
+                aria-label={point.label + ': ' + valueFormatter(point.value)}
+                onMouseEnter={() => showTooltip(point)}
+                onMouseLeave={() => setTooltip(null)}
+                onFocus={() => showTooltip(point)}
+                onBlur={() => setTooltip(null)}
+                onTouchStart={() => showTooltip(point)}
+              />
+              <text x={point.x} y="234" textAnchor="middle" className="fill-slate-500 text-[12px]">
+                {point.label}
+              </text>
             </g>
           ))}
         </svg>
+
+        {tooltip && (
+          <div
+            className="pointer-events-none absolute z-20 min-w-[120px] -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-900/95 px-3 py-2 text-xs text-white shadow-xl backdrop-blur-md light:border-slate-200 light:bg-white/95 light:text-slate-900"
+            style={{ left: tooltip.xPct + '%', top: tooltip.yPct + '%' }}
+            role="status"
+            aria-live="polite"
+          >
+            <div className="font-medium text-slate-300 light:text-slate-500">{tooltip.label}</div>
+            <div className="mt-0.5 text-sm font-semibold text-sky-300 light:text-sky-700">{tooltip.value}</div>
+          </div>
+        )}
       </div>
     </figure>
   );
-}
-
-function heightForChart(): number {
-  return 240;
 }
 
 export function DashboardMetrics() {
@@ -114,6 +174,7 @@ export function DashboardMetrics() {
   return (
     <section id="dashboard" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dashboard-title">
       <SectionHeader titleId="dashboard-title" eyebrow="Visão geral" title="Os números de referência" description="Indicadores principais em uma camada enxuta, com unidade, estado do dado e cálculo derivado explicitado." />
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metrics.map(({ label, value, caption, icon: Icon }) => (
           <Card key={label}>
@@ -130,8 +191,18 @@ export function DashboardMetrics() {
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <LineChart title="Crescimento populacional · 2022–2026" description="Série disponível no dataset atual; 2022 é Censo e 2025/2026 são estimativas IBGE." points={populationPoints} valueFormatter={value => formatNumber(value) + ' hab.'} />
-        <LineChart title="Eleitorado · 2018–2026" description="Snapshots do eleitorado disponíveis no modelo, com 2026 tratado como fotografia da 28ª Zona." points={electoratePoints} valueFormatter={value => formatNumber(value) + ' eleitores'} />
+        <LineChart
+          title="Crescimento populacional · 2022–2026"
+          description="Série disponível no dataset atual; 2022 é Censo e 2025/2026 são estimativas IBGE."
+          points={populationPoints}
+          valueFormatter={value => formatNumber(value) + ' hab.'}
+        />
+        <LineChart
+          title="Eleitorado · 2018–2026"
+          description="Snapshots do eleitorado disponíveis no modelo, com 2026 tratado como fotografia da 28ª Zona."
+          points={electoratePoints}
+          valueFormatter={value => formatNumber(value) + ' eleitores'}
+        />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-3">
@@ -152,6 +223,7 @@ export function DashboardMetrics() {
           <p className="mt-1 text-xs leading-5 text-slate-500">Área territorial usada para a densidade demográfica derivada.</p>
         </Card>
       </div>
+
       <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -179,7 +251,6 @@ export function DashboardMetrics() {
           ))}
         </div>
       </div>
-
     </section>
   );
 }
