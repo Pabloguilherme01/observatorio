@@ -7,6 +7,15 @@ test.describe('Visual regression · 5 viewports', () => {
   });
 
   test('home', async ({ page }) => {
+    await page.evaluate(async () => {
+      const step = Math.max(window.innerHeight, 700);
+      for (let y = 0; y <= document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise(resolve => window.setTimeout(resolve, 80));
+      }
+      window.scrollTo(0, 0);
+      await new Promise(resolve => window.setTimeout(resolve, 250));
+    });
     await expect(page).toHaveScreenshot('home.png', {
       maxDiffPixelRatio: 0.001,
       animations: 'disabled',
