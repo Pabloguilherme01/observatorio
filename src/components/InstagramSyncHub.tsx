@@ -2,6 +2,7 @@ import { Camera, Check, Download, ExternalLink, MessageCircle, Share2, Sparkles 
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
+import { useLanguageMode } from '../context/LanguageModeContext';
 import { downloadBlob } from '../lib/export';
 
 type Format = 'story' | 'post';
@@ -89,6 +90,7 @@ async function makeCard(item: SocialItem, format: Format) {
 }
 
 export function InstagramSyncHub() {
+  const { mode } = useLanguageMode();
   const [selectedId, setSelectedId] = useState('orcamento');
   const [format, setFormat] = useState<Format>('story');
   const [status, setStatus] = useState('');
@@ -151,7 +153,7 @@ export function InstagramSyncHub() {
               <Camera className="h-3.5 w-3.5" aria-hidden="true" /> Distribuição social
             </div>
             <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Instagram conectado ao fluxo de dados</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Escolha um dado, gere um Story ou Post, copie uma legenda factual e use o compartilhamento nativo do celular quando disponível.</p>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode === 'simple' ? 'Escolha o dado, gere o card e compartilhe.' : 'Escolha o dado, gere Story/Post, copie uma legenda factual e use o compartilhamento nativo do celular.'}</p>
           </div>
           <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
             Abrir Instagram <ExternalLink className="h-4 w-4" aria-hidden="true" />
@@ -198,7 +200,7 @@ export function InstagramSyncHub() {
                   {status === 'Legenda copiada' ? <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" /> : <Share2 className="h-4 w-4 text-sky-300" aria-hidden="true" />} {status || 'Copiar legenda'}
                 </button>
               </div>
-              <p className="mt-3 text-[11px] leading-5 text-slate-600">A integração aqui é assistida: o navegador gera o arquivo e usa o compartilhamento do aparelho. Publicação automática na conta do Instagram exigiria autenticação e infraestrutura da API da Meta.</p>
+              <p className="mt-3 text-[11px] leading-5 text-slate-600">O fluxo é assistido pelo navegador. No Instagram, o compartilhamento é feito pelo sistema do celular; publicação automática exigiria autenticação da Meta.</p>
             </div>
           </div>
         </div>
