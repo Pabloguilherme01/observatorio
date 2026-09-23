@@ -33,7 +33,7 @@ export function HeroCountdown() {
 
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
-      <div className="mb-6 flex flex-wrap gap-2">
+      <div className="hero-badges mb-6 flex flex-wrap gap-2">
         <Badge>{EDITION} • leitura pública + investigação + evidências</Badge>
         <Badge>Dados públicos</Badge>
         <Badge>Fontes rastreáveis</Badge>
@@ -51,8 +51,8 @@ export function HeroCountdown() {
               : 'Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.'}
           </p>
           <div className="mt-7 flex flex-wrap gap-2">
-            <a href="#dashboard" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
-              Começar exploração <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <a href="#descubra" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
+              Escolher um assunto <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a href="#evidencias" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
               Ver evidências
@@ -102,7 +102,7 @@ export function HeroCountdown() {
             </div>
             <p className="mt-2 text-[11px] leading-5 text-slate-500">A mudança reorganiza a densidade da interface. A camada de evidências continua acessível em qualquer momento.</p>
           </div>
-          <div className="mt-5 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
+          <div className="hero-trust-line mt-5 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
             <span className="inline-flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Explore · compare · verifique</span>
           </div>
         </div>
