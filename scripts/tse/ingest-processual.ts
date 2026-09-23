@@ -27,7 +27,7 @@ const decisaoPath = findFile(decisionsExtractDir, /decis.*\.csv$/i);
 const processos = readCsv(processoPath);
 const decisoes = readCsv(decisaoPath);
 const capture = new Date().toISOString();
-const hash = sha256File(zipPath) + ':' + sha256File(decisionsZipPath);
+const hash = sha256Files([zipPath, decisionsZipPath]);
 
 const decisionByProcess = new Map<string, Array<{ data: string; descricao: string; tipo: string }>>();
 for (const row of decisoes) {
@@ -43,7 +43,7 @@ for (const row of decisoes) {
 
 const outputRows = processos.map(row => {
   const municipio = valueOf(row, ['NM_MUNICIPIO', 'MUNICIPIO'], false);
-  const municipioNormalizado = municipio.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').trim().replace(/\\s+/g, ' ').toUpperCase();
+  const municipioNormalizado = normalizeLabel(municipio);
   if (!municipios.has(municipioNormalizado)) return null;
   const numeroProcesso = valueOf(row, ['NR_PROCESSO', 'NUMERO_PROCESSO', 'PROCESSO']);
   const baseDate = parseDate(valueOf(row, ['DT_AUTUACAO', 'DT_DISTRIBUICAO', 'DATA_DISTRIBUICAO']));
