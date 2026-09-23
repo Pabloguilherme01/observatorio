@@ -167,6 +167,11 @@ html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after
 }
 @media (prefers-reduced-motion:reduce){.discovery-card,.quick-dock button{transition:none}}
 
+/* V39 civic reading layer */
+.language-simple .technical-only { display: none !important; }
+.civic-action-card { min-height: 100%; }
+html.light .civic-action-card { box-shadow: 0 10px 40px rgba(15,23,42,.05); }
+
 
 .chart-axis-label { display: block; }
 @media (max-width: 767px) {
