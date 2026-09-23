@@ -31,6 +31,7 @@ export function TransportCalculator() {
   return (
     <section id="transporte" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="transporte-title">
       <SectionHeader
+        titleId="transporte-title"
         eyebrow="Mobilidade"
         title="Simulador de custo do deslocamento"
         description="A regra é simples e auditável: tarifa × trechos/dia × dias/mês × pessoas."
@@ -96,7 +97,7 @@ export function TransportCalculator() {
         </div>
 
         <div className="mt-4 rounded-2xl border border-sky-400/10 bg-sky-400/[0.03] p-4 text-xs leading-5 text-slate-400">
-          <strong className="text-slate-200">Cenário padrão:</strong> R$ 11,45 × 2 × 22 = R$ 503,80/mês e R$ 6.045,60/ano. O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados.
+          <strong className="text-slate-200">Cenário padrão:</strong> {formatBRL(routes[0].fareBrl)} × {d.transport.defaultTripsPerDay} × {d.transport.defaultWorkDaysPerMonth} = {formatBRL(routes[0].fareBrl * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth)}/mês e {formatBRL(routes[0].fareBrl * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth * 12)}/ano. O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados.
         </div>
       </Card>
     </section>
