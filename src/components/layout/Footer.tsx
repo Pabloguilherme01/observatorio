@@ -13,6 +13,9 @@ export function Footer() {
         <div className="flex flex-wrap gap-x-4 gap-y-1">
           <span>Atualizado em {formatDate(d.meta.updatedAt)}</span>
           <a href="#fontes" className="transition hover:text-sky-300">Fontes e metodologia</a>
+          <a href="#contexto" className="transition hover:text-sky-300">Contexto</a>
+          <a href="#acao" className="transition hover:text-sky-300">Como usar</a>
+          <a href="https://github.com/Pabloguilherme01/observatorio" target="_blank" rel="noopener noreferrer" className="transition hover:text-sky-300">Código-fonte</a>
           <span>Dados e cálculos com proveniência identificada.</span>
         </div>
       </div>
