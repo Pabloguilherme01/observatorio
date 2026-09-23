@@ -18,7 +18,8 @@ function jump(id: string) {
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
-  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [progress, setProgress] = useState(0), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview'), [electionMode, setElectionModeState] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [progress, setProgress] = useState(0), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview'), [electionMode, setElectionModeState] = useState(false), [toast, setToast] = useState<string | null>(null);
+  const toastTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), pendingG = useRef(false);
 
   useEffect(() => {
@@ -66,7 +67,18 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       if (next === 'overview' || next === 'investigation' || next === 'evidence') setExperienceMode(next);
     };
     window.addEventListener('observatorio:mode', onMode as EventListener);
-    return () => window.removeEventListener('observatorio:mode', onMode as EventListener);
+    const onToast = (event: Event) => {
+      const message = (event as CustomEvent<string>).detail;
+      setToast(message);
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+      toastTimerRef.current = window.setTimeout(() => setToast(null), 4200);
+    };
+    window.addEventListener('observatorio:toast', onToast as EventListener);
+    return () => {
+      window.removeEventListener('observatorio:mode', onMode as EventListener);
+      window.removeEventListener('observatorio:toast', onToast as EventListener);
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    };
   }, []);
   useEffect(() => {
     if (!activeModal) { openerRef.current?.focus?.(); return; }
@@ -91,6 +103,9 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       if (modifier && event.key.toLowerCase() === 'k') { event.preventDefault(); openerRef.current = document.activeElement as HTMLElement; setCommandOpen(true); return; }
       if (event.key === 'Escape') { setCommandOpen(false); setHelpOpen(false); return; }
       if (typing || activeModal) return;
+      // Ignore chords with modifiers so browser shortcuts (Ctrl+Shift+K etc.) and
+      // the search modal's own keys never trigger g-combos.
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
       if (event.key === '?') { event.preventDefault(); openerRef.current = document.activeElement as HTMLElement; setHelpOpen(true); return; }
       if (event.key.toLowerCase() === 'g') { pendingG.current = true; window.setTimeout(() => { pendingG.current = false; }, 900); return; }
       if (pendingG.current) {
@@ -101,7 +116,28 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     window.addEventListener('keydown', onKey); return () => window.removeEventListener('keydown', onKey);
   }, [activeModal]);
 
-  const setExperienceMode = (next: ExperienceMode) => { setMode(next); localStorage.setItem(MODE_KEY, next); document.documentElement.dataset.experienceMode = next; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + next); window.dispatchEvent(new CustomEvent('observatorio:mode-changed', { detail: next })); };
+  const setExperienceMode = (next: ExperienceMode) => {
+    setMode(next); localStorage.setItem(MODE_KEY, next); document.documentElement.dataset.experienceMode = next;
+    document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + next);
+    // Modes hide whole sections via CSS; if the current anchor is hidden the page
+    // silently stops scrolling there. Reveal it and tell the user why.
+    const hiddenIdsByMode: Record<ExperienceMode, string[]> = { overview: ['demografia', 'insights', 'orcamento-impacto', 'exportacao', 'evidencias'], investigation: ['evidencias'], evidence: [] };
+    const hidden = hiddenIdsByMode[next];
+    const currentId = window.location.hash.replace('#', '');
+    if (hidden.includes(currentId)) {
+      document.getElementById(currentId)?.scrollIntoView({ block: 'start' });
+      window.dispatchEvent(new CustomEvent('observatorio:toast', { detail: 'A seção "' + (navigation.find(item => item.id === currentId)?.label ?? currentId) + '" está oculta no modo ' + MODE_LABELS[next] + '.' }));
+    } else {
+      for (const id of hidden) {
+        const node = document.getElementById(id);
+        if (node && node.getBoundingClientRect().top < window.innerHeight && node.getBoundingClientRect().bottom > 0) {
+          window.dispatchEvent(new CustomEvent('observatorio:toast', { detail: 'O modo ' + MODE_LABELS[next] + ' ocultou a seção visível nesta tela.' }));
+          break;
+        }
+      }
+    }
+    window.dispatchEvent(new CustomEvent('observatorio:mode-changed', { detail: next }));
+  };
   const setElectionMode = (next: boolean) => { setElectionModeState(next); localStorage.setItem(ELECTION_KEY, next ? '1' : '0'); document.documentElement.classList.toggle('mode-election', next); window.dispatchEvent(new CustomEvent('observatorio:election-mode-changed', { detail: next })); };
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); localStorage.setItem(RECENT_KEY, JSON.stringify(next)); return next; }); };
@@ -113,7 +149,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     {children}
     <MobileBottomNav />
     <div className="quick-dock" aria-label="Acesso rápido"><button type="button" onClick={() => { jump('dashboard'); remember('dashboard'); }} title="Dashboard" aria-label="Ir para Dashboard"><LayoutDashboard className="h-4 w-4" aria-hidden="true" /></button><button type="button" onClick={() => { jump('transporte'); remember('transporte'); }} title="Transporte" aria-label="Ir para Transporte"><BusFront className="h-4 w-4" aria-hidden="true" /></button><button type="button" onClick={() => { jump('saude'); remember('saude'); }} title="Saneamento e saúde" aria-label="Ir para saneamento e saúde"><Droplets className="h-4 w-4" aria-hidden="true" /></button><button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} title="Abrir central de comandos" aria-label="Abrir central de comandos"><Command className="h-4 w-4" aria-hidden="true" /></button><button type="button" onClick={() => setElectionMode(!electionMode)} className="bg-amber-300/10 text-amber-200" title={electionMode ? 'Desativar Modo Eleição' : 'Ativar Modo Eleição'} aria-pressed={electionMode} aria-label={electionMode ? 'Desativar Modo Eleição' : 'Ativar Modo Eleição'}><Vote className="h-4 w-4" aria-hidden="true" /></button></div>
-    {commandOpen && <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="command-title"><button className="command-backdrop" type="button" aria-label="Fechar central de comandos" onClick={() => setCommandOpen(false)} /><div ref={modalRef} className="command-panel"><div className="flex items-center gap-3 border-b border-white/10 px-4 py-3"><Search className="h-4 w-4 text-slate-500" aria-hidden="true" /><input ref={inputRef} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Buscar uma área do observatório…" className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-slate-600" aria-label="Buscar uma área do observatório" /><kbd>Esc</kbd></div><div className="px-4 pt-4"><div id="command-title" className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500"><Compass className="h-3.5 w-3.5" aria-hidden="true" /> Explorar</div>{!query && recent.length > 0 && <div className="mb-4">
+    {toast && <div role="status" aria-live="polite" className="fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 rounded-2xl border border-white/15 bg-[#101821]/95 px-4 py-2.5 text-center text-xs font-semibold text-slate-100 shadow-2xl backdrop-blur md:bottom-8">{toast}</div>}    {commandOpen && <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="command-title"><button className="command-backdrop" type="button" aria-label="Fechar central de comandos" onClick={() => setCommandOpen(false)} /><div ref={modalRef} className="command-panel"><div className="flex items-center gap-3 border-b border-white/10 px-4 py-3"><Search className="h-4 w-4 text-slate-500" aria-hidden="true" /><input ref={inputRef} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Buscar uma área do observatório…" className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-slate-600" aria-label="Buscar uma área do observatório" /><kbd>Esc</kbd></div><div className="px-4 pt-4"><div id="command-title" className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500"><Compass className="h-3.5 w-3.5" aria-hidden="true" /> Explorar</div>{!query && recent.length > 0 && <div className="mb-4">
         <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Retomar leitura</div>
         <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {recent.slice(0, 4).map(id => {

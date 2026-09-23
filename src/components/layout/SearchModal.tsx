@@ -51,22 +51,28 @@ function fuzzyScore(query: string, text: string): number {
 export function SearchModal({ open, onClose }: { readonly open: boolean; readonly onClose: () => void }) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const activeModalRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!open) {
+      activeModalRef.current = false;
       openerRef.current?.focus?.();
       return;
     }
     openerRef.current = document.activeElement as HTMLElement | null;
+    activeModalRef.current = true;
     setQuery('');
     setActiveIndex(0);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 0);
     const handleKey = (event: KeyboardEvent) => {
+      // While the search dialog is open it owns the keyboard: stop the
+      // global ExperienceShell shortcuts (g-combos, ?, cmd+k stacking).
+      if (activeModalRef.current && event.key !== 'Tab') event.stopPropagation();
       if (event.key === 'Escape') onClose();
       if (event.key === 'Tab' && dialogRef.current) {
         const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href]')).filter(node => !node.hasAttribute('disabled'));
@@ -96,24 +102,28 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const quickAnswer = useMemo(() => {
     const q = normalize(query);
     if (!q || q.length < 4) return null;
+    const tokens = q.split(/\s+/).filter(Boolean);
+    const hasToken = (...words: string[]) => words.some(word => q.includes(word) || tokens.includes(word));
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
-    if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
-    if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
-    if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: 'R$ ' + d.budget.totalBrl.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), id: 'orcamento', sourceId: d.budget.sourceId };
-    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
-    if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
+    // Only answer when the query is short enough to plausibly be a single fact question.
+    if (tokens.length > 5) return null;
+    if (hasToken('populacao', 'populacional', 'habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
+    if (hasToken('eleitorado', 'eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
+    if (hasToken('orcamento', 'loa')) return { title: 'LOA 2026', value: 'R$ ' + d.budget.totalBrl.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), id: 'orcamento', sourceId: d.budget.sourceId };
+    if (hasToken('esgoto', 'saneamento')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
+    if (hasToken('tarifa', 'passagem')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
       return route ? { title: 'Tarifa de referência para Brasília', value: route.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por trecho', id: 'transporte', sourceId: route.sourceId } : null;
     }
-    if (q.includes('pib')) {
+    if (tokens.includes('pib')) {
       const indicator = d.indicators.find(item => item.id === 'gdp-per-capita-2023');
       return indicator ? { title: 'PIB per capita 2023', value: indicator.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
-    if (q.includes('ideb')) {
+    if (hasToken('ideb')) {
       const range = d.education?.ideb2025Range;
       return range && d.education ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education.sourceId } : null;
     }
-    if (q.includes('heal') || q.includes('hospital')) {
+    if (hasToken('heal', 'healgo', 'hospital', 'leitos')) {
       const total = (d.health?.currentStatedWardBeds ?? 0) + (d.health?.currentStatedIcuBeds ?? 0);
       return { title: 'HEAL · leitos declarados', value: total.toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: 'healgo' };
     }
@@ -169,14 +179,25 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               onChange={event => setQuery(event.target.value)}
               onKeyDown={event => {
                 if (event.key === 'Enter' && filtered[activeIndex]) {
-                  window.location.hash = filtered[activeIndex].id;
+                  // jump() handles smooth scroll + reduced motion + history;
+                  // plain hash assignment caused abrupt jumps and double focus changes.
+                  const id = filtered[activeIndex].id;
                   onClose();
+                  window.requestAnimationFrame(() => {
+                    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.history.replaceState(null, '', '#' + id);
+                    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+                  });
                 }
               }}
               placeholder="Buscar seção, fonte ou indicador…"
               className="w-full bg-transparent text-white outline-none placeholder:text-slate-500"
               aria-label="Buscar seção, fonte ou indicador"
               aria-controls="search-results"
+              role="combobox"
+              aria-expanded={filtered.length > 0}
+              aria-autocomplete="list"
+              aria-activedescendant={filtered[activeIndex] ? 'search-option-' + activeIndex : undefined}
             />
           </div>
           <button type="button" onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-white/5 hover:text-white" aria-label="Fechar busca">
@@ -190,19 +211,21 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <a href={'#' + quickAnswer.id} onClick={onClose} className="mt-2 inline-flex min-h-10 items-center text-xs font-bold text-slate-300 hover:text-white">Abrir dado e fonte →</a>
         </div>}
         <div className="flex items-center justify-between px-4 py-2 text-[11px] text-slate-500">
-          <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
+          <span id="search-status" role="status" aria-live="polite">{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
           <span>↑↓ navegar · Enter abrir · Esc fechar</span>
         </div>
         <div id="search-results" className="max-h-[55vh] overflow-auto p-2" role="list" aria-label="Resultados da busca">
           {filtered.map((item, index) => (
             <a
               key={item.label + '-' + item.id}
+              id={'search-option-' + index}
               href={'#' + item.id}
               onMouseEnter={() => setActiveIndex(index)}
               onClick={onClose}
               data-search-index={index}
+              role="option"
+              aria-selected={activeIndex === index}
               className={'block rounded-2xl px-4 py-3 text-sm transition ' + (activeIndex === index ? 'bg-white/10 text-white' : 'text-slate-200 hover:bg-white/5')}
-              aria-current={activeIndex === index ? 'true' : undefined}
             >
               {item.label}
               <span className="ml-2 text-xs text-slate-500">#{item.id}</span>
