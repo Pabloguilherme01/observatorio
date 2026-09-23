@@ -8,7 +8,13 @@ const tmpRoot = join(process.cwd(), '.tmp', 'tse-pesquisas');
 const zipPath = join(tmpRoot, 'pesquisas-2026.zip');
 const extractDir = join(tmpRoot, 'unzipped');
 const outputPath = join(process.cwd(), 'generated', 'tse2026-pesquisas.json');
-const municipios = new Set(['Águas Lindas de Goiás', 'Valparaíso de Goiás', 'Santo Antônio do Descoberto', 'Novo Gama', 'Planaltina'].map(normalizeLabel));
+const MUNICIPIOS = new Map<string, string>([
+  ['5200258', 'Águas Lindas de Goiás'],
+  ['5221858', 'Valparaíso de Goiás'],
+  ['5219753', 'Santo Antônio do Descoberto'],
+  ['5215231', 'Novo Gama'],
+  ['5217609', 'Planaltina'],
+]);
 
 mkdirSync(tmpRoot, { recursive: true });
 if (existsSync(extractDir)) rmSync(extractDir, { recursive: true, force: true });
@@ -19,10 +25,41 @@ extractZip(zipPath, extractDir);
 const pesquisaPath = findFile(extractDir, /pesquisa.*\.csv$/i);
 const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
+const headers = rows.length ? Object.keys(rows[0] ?? {}) : [];
+console.log('[TSE] headers pesquisas:', headers.join(', '));
 
-const municipalValues = [...new Set(rows.map(row => valueOf(row, ['DS_DADO_MUNICIPIO'], false)).filter(value => /AGUAS|VALPARAISO|SANTO ANTONIO|NOVO GAMA|PLANALTINA/i.test(normalizeLabel(value))))].slice(0, 20);
-console.log('[TSE] municípios candidatos encontrados:', municipalValues.join(' | ') || 'nenhum');
-const targetRows = rows.filter(row => municipios.has(normalizeLabel(valueOf(row, ['DS_DADO_MUNICIPIO'], false))));
+const municipalityValue = (row: Readonly<Record<string, string>>): string => {
+  for (const alias of [
+    'DS_DADO_MUNICIPIO',
+    'NM_MUNICIPIO',
+    'DS_MUNICIPIO',
+    'NM_CIDADE',
+    'DS_CIDADE',
+    'MUNICIPIO',
+    'CD_MUNICIPIO',
+  ]) {
+    const value = valueOf(row, [alias], false);
+    if (value) return value;
+  }
+  return '';
+};
+
+const targetRows = rows.filter(row => {
+  const raw = municipalityValue(row);
+  const normalized = normalizeLabel(raw);
+  if (MUNICIPIOS.has(raw.trim())) return true;
+  if (MUNICIPIOS.has(normalized)) return true;
+  return [...MUNICIPIOS.keys()].includes(raw.trim());
+});
+
+const diagnostics = [...new Set(rows.map(row => municipalityValue(row)).filter(Boolean))]
+  .filter(value => /AGUAS|VALPARAISO|SANTO ANTONIO|NOVO GAMA|PLANALTINA|5200258|5221858|5219753|5215231|5217609/i.test(normalizeLabel(value)))
+  .slice(0, 20);
+console.log('[TSE] municípios candidatos encontrados:', diagnostics.join(' | ') || 'nenhum');
+
+if (targetRows.length === 0) {
+  throw new Error('Nenhuma pesquisa dos municípios-alvo foi identificada. Cabeçalhos=' + headers.join(', ') + '; verifique o layout oficial antes de promover a captura.');
+}
 const pesquisas = targetRows.map(row => {
   const municipality = valueOf(row, ['DS_DADO_MUNICIPIO']);
   return {
@@ -51,7 +88,7 @@ const pesquisas = targetRows.map(row => {
       arquivoOrigem: zipPath,
     },
   };
-}).filter(pesquisa => municipios.has(pesquisa.municipio));
+});
 
 const output = TSEPesquisasFileSchema.parse({
   versao: '1.0.0',
