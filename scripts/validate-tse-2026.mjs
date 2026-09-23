@@ -7,17 +7,19 @@ const payload = JSON.parse(readFileSync(path, 'utf8'));
 const errors = [];
 const warnings = [];
 
-if (payload.schemaVersion !== 2) errors.push('schemaVersion deve ser 2.');
-if (payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist neste sincronizador.');
+const isMunicipalitySnapshot = payload.schemaVersion === 3 && payload.coverage === 'municipality_required';
+if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('schemaVersion deve ser 2 ou 3.');
+if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist no contrato estadual antigo.');
+if (payload.schemaVersion === 3 && payload.coverage !== 'municipality_required') errors.push('coverage inválido no contrato municipal.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
 const state = payload.meta?.state;
 const sha = payload.meta?.sourceFileSha256;
-const allowedStates = new Set(['not_synced', 'first_capture', 'unchanged', 'changed']);
+const allowedStates = new Set(['not_synced', 'first_capture', 'unchanged', 'changed', 'local_filter_pending', 'synced']);
 if (!allowedStates.has(state)) errors.push('state do snapshot inválido: ' + String(state));
 const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 
-if (state === 'not_synced') {
+if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
   if (requireSynced) errors.push('Placeholder não pode passar quando REQUIRE_TSE_SYNC=true.');
 } else if (!validSha) {
@@ -25,7 +27,8 @@ if (state === 'not_synced') {
 }
 
 if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.meta.sourceRows <= 0)) errors.push('sourceRows inválido.');
-if (!Array.isArray(payload.watchlist) || payload.watchlist.length !== 10) errors.push('watchlist deve conter exatamente 10 nomes monitorados.');
+if (!Array.isArray(payload.watchlist)) errors.push('watchlist deve ser array.');
+if (!isMunicipalitySnapshot && payload.watchlist.length !== 10) errors.push('watchlist deve conter exatamente 10 nomes monitorados no contrato legado.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
 
 const ids = new Set();
@@ -36,12 +39,12 @@ for (const candidate of payload.matched ?? []) {
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
 }
 
-if (state === 'not_synced' && !requireSynced) {
+if ((state === 'not_synced' || state === 'local_filter_pending') && !requireSynced) {
   warnings.push('Snapshot TSE ainda não sincronizado; qualidade estrutural validada sem promover o placeholder a dado eleitoral.');
 }
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
 
-if (state !== 'not_synced') {
+if (state !== 'not_synced' && state !== 'local_filter_pending' && state !== 'synced') {
   const allowedRetrievalMethods = new Set(['official_tse_open_data_csv', 'official_tse_divulgacandcontas_api']);
   if (!allowedRetrievalMethods.has(payload.meta?.retrievalMethod)) errors.push('retrievalMethod do snapshot TSE inválido ou ausente.');
   if (typeof payload.meta?.resourceUrl !== 'string') errors.push('resourceUrl oficial do TSE ausente.');
@@ -51,11 +54,13 @@ if (state !== 'not_synced') {
     errors.push('captureTransport do snapshot TSE inválido.');
   }
   if (payload.meta?.captureTransport === 'historical_third_party_reader') warnings.push('Snapshot registra transporte histórico intermediado; esse transporte não participa da produção atual.');
-  for (const expected of payload.watchlist ?? []) {
-    if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
-  }
-  for (const candidate of payload.matched ?? []) {
-    if (!candidate.watchlistName) errors.push('Registro TSE sem watchlistName: ' + candidate.sqCandidate);
+  if (!isMunicipalitySnapshot) {
+    for (const expected of payload.watchlist ?? []) {
+      if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
+    }
+    for (const candidate of payload.matched ?? []) {
+      if (!candidate.watchlistName) errors.push('Registro TSE sem watchlistName: ' + candidate.sqCandidate);
+    }
   }
 }
 if (!payload.meta?.workflowRunId && process.env.CI) warnings.push('workflowRunId não informado; execução manual detectada.');
