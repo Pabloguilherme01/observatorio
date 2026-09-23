@@ -17,7 +17,8 @@
     "verify:jws": "node scripts/verify-jws.mjs",
     "sync:results": "node scripts/sync-results-2026.mjs",
     "test:jws": "node scripts/test-jws-verifier.mjs",
-    "audit:mobile": "node scripts/audit-mobile.mjs"
+    "audit:mobile": "node scripts/audit-mobile.mjs",
+    "audit:tse-architecture": "node scripts/audit-tse-architecture.mjs"
   },
   "dependencies": {
     "lucide-react": "1.47.0",
