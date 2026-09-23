@@ -5,7 +5,8 @@ import { Badge } from '../ui/Badge';
 const election = useCountdown('2026-10-04T08:00:00-03:00');
 const radar = useCountdown('2026-09-23T00:00:00-03:00');
 
-function Timer({ value }: { value: ReturnType<typeof useCountdown> }) {
+function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
+  if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300">{completedLabel}</div>;
   return (
     <div className="grid grid-cols-4 gap-2 text-center" aria-live="polite">
       {[
