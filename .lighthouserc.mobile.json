@@ -14,7 +14,6 @@
           "best-practices",
           "seo"
         ],
-        "preset": "mobile",
         "screenEmulation": {
           "mobile": true,
           "width": 412,
