@@ -166,6 +166,10 @@ export function DashboardMetrics() {
             ['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025'],
             ['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025'],
             ['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023'],
+            ['Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019'],
+            ['Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022'],
+            ['Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022'],
+            ['Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024'],
           ].map(([label, value, year]) => (
             <div key={label} className="rounded-2xl border border-white/8 bg-black/10 p-4 light:bg-white">
               <div className="text-xs font-semibold text-slate-500">{label}</div>
