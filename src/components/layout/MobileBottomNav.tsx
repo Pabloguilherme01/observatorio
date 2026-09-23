@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 const items = [
   { id: 'dashboard', label: 'Início', icon: Home },
-  { id: 'descubra', label: 'Assuntos', icon: Compass },
+  { id: 'descubra', label: 'Explorar', icon: Compass },
   { id: 'fontes', label: 'Fontes', icon: FileSearch },
 ] as const;
 
@@ -18,10 +18,12 @@ export function MobileBottomNav() {
 
   useEffect(() => {
     const observedIds = ['dashboard', 'descubra', 'fontes'];
+    const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'dados', 'qualidade', 'evidencias', 'acao', 'instagram']);
     const observed = observedIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const updateFromHash = () => {
       const id = window.location.hash.replace('#', '');
       if (observedIds.includes(id)) setActiveSection(id);
+      else if (thematicIds.has(id)) setActiveSection('descubra');
     };
     updateFromHash();
     if (!observed.length) return () => window.removeEventListener('hashchange', updateFromHash);
