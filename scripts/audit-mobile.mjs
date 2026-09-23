@@ -45,3 +45,8 @@ if (errors.length) {
 } else {
   pass('auditoria mobile estática concluída');
 }
+
+const css = read('src/assets/styles/globals.css');
+if (!css.includes('touch-action: manipulation')) fail('touch-action: manipulation ausente nos controles interativos');
+if (!css.includes('.mode-election')) fail('Modo Eleição não possui regras mobile/desktop no CSS');
+if (!read('src/components/sections/HeroCountdown.tsx').includes('Modo Eleição')) fail('Hero não expõe Modo Eleição');
