@@ -5,7 +5,7 @@ export function SnapshotChanges() {
   const diff = generated.diff;
   const hasChanges = diff.added + diff.removed + diff.changed > 0;
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="changes-title">
+    <section id="mudancas-snapshot" className="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="changes-title">
       <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-5 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
