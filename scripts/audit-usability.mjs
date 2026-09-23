@@ -40,12 +40,14 @@ for (const { file, content } of texts) {
   for (const match of content.matchAll(/href=["']#([^"']+)["']/g)) internalRefs.set(match[1], file);
   for (const match of content.matchAll(/getElementById\(["']([^"']+)["']\)/g)) internalRefs.set(match[1], file);
 
-  for (const match of content.matchAll(/<a[^>]+href=["'](https?:\/\/[^"']+)["'][^>]*>/g)) {
-    externalLinks.push({
-      file,
-      url: match[1],
-      context: match[0],
-    });
+  if (!file.startsWith('src/data/')) {
+    for (const match of content.matchAll(/<a[^>]+href=["'](https?:\/\/[^"']+)["'][^>]*>/g)) {
+      externalLinks.push({
+        file,
+        url: match[1],
+        context: match[0],
+      });
+    }
   }
 }
 
