@@ -30,6 +30,8 @@ jobs:
         run: node scripts/sync-tse-2026.mjs
 
       - name: Validate generated snapshot
+        env:
+          REQUIRE_TSE_SYNC: 'true'
         run: node scripts/validate-tse-2026.mjs
 
       - name: Commit validated snapshot
