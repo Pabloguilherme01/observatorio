@@ -25,6 +25,8 @@ import { DiscoveryHub } from '../components/DiscoveryHub';
 import { DemographicDynamic } from '../components/sections/DemographicDynamic';
 import { BudgetImpact } from '../components/sections/BudgetImpact';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
+import { FreshnessBanner } from '../components/sections/FreshnessBanner';
+import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
 
 export function App() {
   return (
@@ -35,6 +37,8 @@ export function App() {
         <main id="main-content">
           <DiscoveryHub />
           <ExecutiveSummary />
+          <FreshnessBanner />
+          <ResultsLiveBanner />
           <DashboardMetrics />
           <ElectoralProfile />
           <DemographicDynamic />
