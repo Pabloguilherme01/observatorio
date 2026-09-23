@@ -55,7 +55,7 @@ const publicApiPlugin = (): Plugin => ({
         info: {
           title: 'Observatório Águas Lindas — API pública',
           version: APP_VERSION,
-          description: 'Snapshot público estático gerado a cada build a partir da mesma fonte usada pela interface.',
+          description: 'Snapshot público estático gerado a cada build a partir da mesma fonte usada pela interface. A versão publicada é identificada pelo contrato de saúde.',
         },
         servers: [{ url: '/observatorio' }],
         paths: {
