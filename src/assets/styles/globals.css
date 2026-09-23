@@ -176,3 +176,11 @@ html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after
   .quick-dock { min-height: 52px; }
   .quick-dock button { min-height: 44px; min-width: 44px; }
 }
+
+@media (max-width: 767px) {
+  .label-secondary { display: none; }
+  .table-compact-mobile { display: grid; }
+}
+@media (min-width: 768px) {
+  .table-compact-mobile { display: none; }
+}
