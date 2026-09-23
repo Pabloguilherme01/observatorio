@@ -10,7 +10,10 @@ const OUTPUT_DIR = join(ROOT, 'src', 'data', 'generated');
 const OUTPUT = join(OUTPUT_DIR, 'tse2026-candidates.json');
 const DIFF_OUTPUT = join(OUTPUT_DIR, 'tse2026-diff.json');
 const HISTORY_DIR = join(OUTPUT_DIR, 'history');
-const ZIP_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip';
+const ZIP_URLS = [
+  'https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip',
+  'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip',
+];
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
 const API_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos';
 const WATCHLIST = ['Keké', 'Anderson Teodoro', 'Zé da Imperial', 'Baiano dos Cocos', 'Cambão', 'Abadyas Damasceno', 'Pábio Mossoró', 'Felipe Galdino', 'Ribeiro do Túlio', 'André do Premium'];
@@ -43,7 +46,7 @@ function download(url, destination, attempt = 1) {
       '--retry-all-errors',
       '--connect-timeout', '30',
       '--max-time', '240',
-      '--user-agent', 'observatorio-aguas-lindas/42.0 (+https://pabloguilherme01.github.io/observatorio/)',
+      '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/153 Safari/537.36',
       '--header', 'Accept: application/zip, application/octet-stream;q=0.9, */*;q=0.8',
       '--output', destination,
       url,
@@ -291,10 +294,23 @@ async function main() {
     let allMatches = [];
 
     try {
-      await download(ZIP_URL, zip);
+      let lastZipError = null;
+      let selectedZipUrl = null;
+      for (const candidateUrl of ZIP_URLS) {
+        try {
+          await download(candidateUrl, zip);
+          selectedZipUrl = candidateUrl;
+          break;
+        } catch (error) {
+          lastZipError = error;
+          console.warn('[TSE] download falhou para ' + candidateUrl + ': ' + error.message);
+          rmSync(zip, { force: true });
+        }
+      }
+      if (!selectedZipUrl) throw lastZipError ?? new Error('Nenhum recurso oficial TSE de candidatos respondeu.');
       sourceFileSha256 = sha256(zip);
       retrievalMethod = 'official_tse_open_data_csv';
-      resourceUrl = ZIP_URL;
+      resourceUrl = selectedZipUrl;
       execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
       const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
       if (!csvPath) throw new Error('Arquivo de candidatos de GO não encontrado no pacote TSE.');
