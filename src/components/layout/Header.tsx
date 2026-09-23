@@ -5,7 +5,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { navigation } from '../../config/navigation';
 
 const primaryNavigationIds = ['descubra', 'dashboard', 'eleitorado', 'transporte', 'orcamento', 'dados', 'acao'] as const;
-const primaryNavigation = primaryNavigationIds.map(id => navigation.find(item => item.id === id)).filter(Boolean);
+const primaryNavigation = navigation.filter(item => primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
 const secondaryNavigation = navigation.filter(item => !primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
 
 export function Header() {
