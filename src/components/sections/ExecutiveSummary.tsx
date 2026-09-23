@@ -4,6 +4,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 
 function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -19,6 +20,7 @@ export function ExecutiveSummary() {
   const population = d.populationSeries.find(point => point.year === 2026);
   const electorate = d.electoral;
   const [shareStatus, setShareStatus] = useState('');
+  const { mode: languageMode } = useLanguageMode();
   const share = async () => {
     const text = [
       'Observatório Eleitoral Águas Lindas 2026',
@@ -54,7 +56,7 @@ export function ExecutiveSummary() {
             titleId="executive-summary-title"
             eyebrow="Comece aqui"
             title="Resumo de leitura"
-            description="Cinco pontos para entender o painel antes de entrar nos detalhes. Os números preservam a data de referência e a natureza do dado."
+            description={languageMode === 'simple' ? 'Comece pelo que é mais fácil de conferir: data, fonte e contexto. Depois aprofunde nas camadas técnicas.' : 'Cinco pontos para entender o painel antes de entrar nos detalhes. Os números preservam a data de referência e a natureza do dado.'}
           />
           <button type="button" onClick={share} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
             <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
@@ -80,7 +82,7 @@ export function ExecutiveSummary() {
                 </div>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
                   Soma das duas categorias: <strong className="text-white light:text-slate-900">{groupedUnknown.toFixed(2).replace('.', ',')}%</strong>.
-                  Essa combinação não é uma categoria adicional da pesquisa e não deve ser lida como classificação de “indecisos”.
+                  Essa combinação não é uma categoria adicional da pesquisa e não deve ser lida como classificação de “indecisos”. A pesquisa é um retrato daquela coleta, não uma previsão do resultado eleitoral.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-slate-500">
                   <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
@@ -122,7 +124,7 @@ export function ExecutiveSummary() {
           <Card className="p-4">
             <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Leitura 1</div>
             <p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-600">
-              Comece pelos valores com data clara. “Atual” e “histórico” não são a mesma coisa.
+              {languageMode === 'simple' ? 'Olhe primeiro a data e a fonte. Um número de 2022 não é automaticamente um retrato de 2026.' : 'Comece pelos valores com data clara. “Atual” e “histórico” não são a mesma coisa.'}
             </p>
           </Card>
           <Card className="p-4">
