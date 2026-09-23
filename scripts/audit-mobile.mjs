@@ -45,6 +45,9 @@ const appVersionMatch = files.version.match(/APP_VERSION\s*=\s*['\"]([^'\"]+)['\
 must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('44.'), 'versão do aplicativo sincronizada com a camada mobile');
 const app = read('src/app/App.tsx');
 must(app.includes('IntersectionObserver') && /rootMargin\s*:\s*['"]\d+px\s+0px['"]/.test(app), 'seções abaixo da dobra usam carregamento diferido');
+const deferredReadyReturn = app.indexOf('if (!ready) return <div ref={ref}');
+const deferredUseMemo = app.indexOf('const Component = useMemo(() => lazy(loader), [loader])');
+must(deferredReadyReturn === -1 || deferredUseMemo !== -1 && deferredUseMemo < deferredReadyReturn, 'DeferredBlock chama todos os Hooks antes de qualquer retorno antecipado');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
 must(app.includes("'saude'") && app.includes("'healgo'"), 'âncoras de saúde e simulador permanecem navegáveis após code splitting');
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
