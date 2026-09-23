@@ -20,6 +20,8 @@ const pesquisaPath = findFile(extractDir, /pesquisa.*\.csv$/i);
 const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
 
+const municipalValues = [...new Set(rows.map(row => valueOf(row, ['DS_DADO_MUNICIPIO'], false)).filter(value => /AGUAS|VALPARAISO|SANTO ANTONIO|NOVO GAMA|PLANALTINA/i.test(normalizeLabel(value))))].slice(0, 20);
+console.log('[TSE] municípios candidatos encontrados:', municipalValues.join(' | ') || 'nenhum');
 const targetRows = rows.filter(row => municipios.has(normalizeLabel(valueOf(row, ['DS_DADO_MUNICIPIO'], false))));
 const pesquisas = targetRows.map(row => {
   const municipality = valueOf(row, ['DS_DADO_MUNICIPIO']);
