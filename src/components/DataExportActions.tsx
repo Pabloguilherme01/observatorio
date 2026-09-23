@@ -39,7 +39,7 @@ export function DataExportActions() {
   };
 
   const exportCsv = () => {
-    downloadBlob('observatorio-aguas-lindas-v22.csv', toCsv(rows), 'text/csv;charset=utf-8');
+    downloadBlob('observatorio-aguas-lindas-v22-1.csv', toCsv(rows), 'text/csv;charset=utf-8');
     flash('CSV exportado');
   };
 
@@ -82,7 +82,8 @@ export function DataExportActions() {
     ctx.font = '700 42px Inter, sans-serif';
     ctx.fillStyle = '#8cc8f2';
     ctx.fillText(d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', 70, 360);
-    ctx.fillText('249.978 habitantes', 70, 440);
+    const population = d.indicators.find(item => item.id === 'population-2026')?.value ?? d.populationSeries.at(-1)?.value ?? 0;
+    ctx.fillText(population.toLocaleString('pt-BR') + ' habitantes', 70, 440);
     ctx.fillText('R$ ' + d.transport.routes[0].fareBrl.toFixed(2).replace('.', ','), 70, 520);
     ctx.fillStyle = '#94a3b8';
     ctx.font = '28px Inter, sans-serif';
@@ -91,7 +92,7 @@ export function DataExportActions() {
 
     canvas.toBlob(blob => {
       if (blob) {
-        downloadBlob('observatorio-aguas-lindas-v22-story.png', blob, 'image/png');
+        downloadBlob('observatorio-aguas-lindas-v22-1-story.png', blob, 'image/png');
         flash('Story PNG gerado');
       } else {
         flash('Não foi possível gerar o Story');
@@ -105,7 +106,7 @@ export function DataExportActions() {
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados e exportação</div>
           <h3 className="mt-2 text-xl font-black text-white">Leve os dados para fora da aplicação</h3>
-          <p className="mt-1 text-sm text-slate-400">CSV com BOM UTF-8, metadados JSON copiados e card 1080×1920 para Stories.</p>
+          <p className="mt-1 text-sm text-slate-400">CSV com BOM UTF-8, metadados JSON e card 1080×1920. Os números são gerados diretamente do dataset local.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5">
