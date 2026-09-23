@@ -22,6 +22,7 @@ assert.equal(proof.curve, 'Ed25519');
 assert.equal(proof.verifiedAt.length > 0, true);
 assert.match(proof.proofSha256, /^[a-f0-9]{64}$/);
 assert.equal(proof.payload.value, 'observatorio-v34');
+assert.equal(verifyCompactJws(jws).valid, false);
 
 const tamperedPayload = Buffer.from(JSON.stringify({ fixture: true, value: 'tampered' }), 'utf8').toString('base64url');
 const tampered = `${header}.${tamperedPayload}.${signature}`;
