@@ -31,6 +31,8 @@ export function DataInsights() {
     { question: 'Qual é a população estimada de 2026?', options: ['245.352', '249.978', '250.391'], correct: 1, explanation: 'A estimativa populacional usada nesta edição é de 249.978 habitantes, com referência em 1º de julho de 2026.', sourceId: 'ibge-estimativas-2026' },
     { question: 'Qual é a tarifa informada para Brasília?', options: ['R$ 7,65', 'R$ 11,45', 'R$ 5,85'], correct: 1, explanation: 'O valor atual usado pelo observatório para Brasília é R$ 11,45 por trecho; Taguatinga e Ceilândia aparecem separadamente.', sourceId: 'utb-tarifas' },
     { question: 'Quantos leitos são explicitados atualmente no portal do HEAL?', options: ['53', '85', '164'], correct: 1, explanation: 'A página atual da SES-GO explicita 32 leitos de enfermaria e 53 de UTI, totalizando 85 leitos.', sourceId: 'healgo' },
+    { question: 'Qual é o acesso ao serviço público de esgoto no recorte SINISA 2024?', options: ['49,7%', '84,8%', '95,8%'], correct: 1, explanation: 'O recorte SINISA 2024 usado pelo observatório registra 84,8% de acesso ao serviço público de esgoto.', sourceId: 'sinisa-2024' },
+    { question: 'Qual é o acesso à água no recorte SINISA 2024?', options: ['60,1%', '84,8%', '95,8%'], correct: 2, explanation: 'O recorte SINISA 2024 usado pelo observatório registra 95,8% de acesso à água.', sourceId: 'sinisa-2024' },
   ];
   const currentQuestion = questions[quizStep];
   const answer = (index: number) => {
@@ -77,7 +79,7 @@ export function DataInsights() {
         </Card>
 
         <Card id="quiz">
-          <div className="flex items-center gap-3"><Brain className="h-5 w-5 text-violet-300" aria-hidden="true" /><div><h3 className="text-lg font-black text-white">Quiz do observatório</h3><p className="text-xs text-slate-400">Teste a leitura dos dados desta edição, sem usar indicadores ainda pendentes de validação.</p></div></div>
+          <div className="flex items-center gap-3"><Brain className="h-5 w-5 text-violet-300" aria-hidden="true" /><div><h3 className="text-lg font-black text-white">Quiz do observatório</h3><p className="text-xs text-slate-400">Teste a leitura dos dados desta edição. As perguntas usam registros e indicadores já presentes no dataset publicado.</p></div></div>
           {!quizDone ? <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
             <div className="text-xs text-slate-500">Pergunta {quizStep + 1} de {questions.length} · acertos: {score}</div>
             <h4 className="mt-2 text-base font-bold text-white">{currentQuestion.question}</h4>
