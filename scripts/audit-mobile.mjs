@@ -51,7 +51,10 @@ must(files.index.includes('apple-mobile-web-app-capable') && files.index.include
 must(files.mobileNav.includes("aria-current={activeSection === id ? 'location'"), 'navegação inferior usa estado de localização acessível');
 must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface mobile não calcula margem de erro teórica');
 must(read('src/components/ExperienceShell.tsx').includes("behavior: reduceMotion ? 'auto' : 'smooth'"), 'navegação programática respeita redução de movimento');
-
+must(files.header.includes('desktop-theme-toggle') && files.header.includes('mobile-tools-actions'), 'cabeçalho mobile não concentra controles demais na linha principal');
+must(files.css.includes('.mobile-tools-actions') && files.css.includes('.desktop-theme-toggle'), 'CSS possui sistema dedicado para ferramentas móveis');
+must(files.css.includes('overflow-x:hidden') && files.css.includes('overflow-x:clip'), 'contenção horizontal mobile está ativa');
+must(files.css.includes('--mobile-nav-height:66px'), 'altura da navegação inferior mobile está consolidada');
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
   errors.forEach(error => console.error(' - ' + error));
