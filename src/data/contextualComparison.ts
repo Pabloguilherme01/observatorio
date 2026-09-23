@@ -65,6 +65,18 @@ export const contextualMunicipalities: readonly ContextMunicipality[] = [
     values: { population: 75814, schooling: 98.85, infantMortality: 14.67, gdpPerCapita: 13488.69 },
     url: 'https://www.ibge.gov.br/cidades-e-estados/go/santo-antonio-do-descoberto.html',
   },
+  {
+    name: 'Novo Gama',
+    ibgeCode: '5215231',
+    values: { population: 108219, schooling: 98.88, infantMortality: 13.47, gdpPerCapita: 13005.12 },
+    url: 'https://www.ibge.gov.br/cidades-e-estados/go/novo-gama.html',
+  },
+  {
+    name: 'Planaltina',
+    ibgeCode: '5217609',
+    values: { population: 113950, schooling: 98.45, infantMortality: 7.49, gdpPerCapita: 18469.82 },
+    url: 'https://www.ibge.gov.br/cidades-e-estados/go/planaltina.html',
+  },
 ];
 
-export const contextualMethodology = 'Comparação apenas descritiva, sem ranking. Os municípios foram selecionados como referências do Entorno do DF; os anos-base e definições permanecem visíveis em cada indicador.';
+export const contextualMethodology = 'Comparação apenas descritiva, sem ranking. Os municípios foram selecionados como referências do Entorno do DF; os anos-base e definições permanecem visíveis em cada indicador. Os novos registros de Novo Gama e Planaltina usam os valores exibidos pelo IBGE Cidades na consulta de 23/09/2026.';
