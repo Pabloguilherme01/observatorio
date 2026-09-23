@@ -25,16 +25,16 @@ export function ExecutiveSummary() {
   const { mode: languageMode } = useLanguageMode();
 
   const share = async () => {
-    const text = languageMode === 'simple'
+    const text = languageMode === 'technical'
       ? [
-        'Observatório Eleitoral Águas Lindas 2026',
-        `Pesquisa de ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
-        `Transporte: ${brl(monthlyPerPerson)} por pessoa/mês no cenário usado pelo Observatório.`,
-      ].join(' ')
-      : [
         'Observatório Eleitoral Águas Lindas 2026',
         `Pesquisa registrada em ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
         `Mobilidade: ${brl(monthlyPerPerson)} por pessoa/mês no cenário de 22 dias e 2 trechos/dia para Brasília.`,
+      ].join(' ')
+      : [
+        'Observatório Eleitoral Águas Lindas 2026',
+        `Pesquisa de ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
+        `Transporte: ${brl(monthlyPerPerson)} por pessoa/mês no cenário usado pelo Observatório.`,
       ].join(' ');
 
     try {
@@ -58,14 +58,16 @@ export function ExecutiveSummary() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
-            eyebrow={languageMode === 'simple' ? 'Leia primeiro' : 'Resumo técnico'}
-            title={languageMode === 'simple' ? 'O essencial em 1 minuto' : 'Resumo com rastreabilidade'}
-            description={languageMode === 'simple'
-              ? 'Veja o número principal, quando ele foi medido e de onde veio.'
-              : 'Veja valor, data, fonte, método e contexto para conferir o dado.'}
+            eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
+            title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
+            description={languageMode === 'technical'
+              ? 'Veja valor, data, fonte, método e contexto para conferir o dado.'
+              : languageMode === 'summary'
+                ? 'Poucos dados para entender rapidamente o cenário, com data e fonte preservadas.'
+                : 'Veja o número principal, quando ele foi medido e de onde veio.'}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="summary-mode-pill">{languageMode === 'simple' ? 'Leitura simples' : 'Camada técnica'}</span>
+            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Camada técnica' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
             <button type="button" onClick={share} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
               <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
             </button>
@@ -91,13 +93,13 @@ export function ExecutiveSummary() {
                   </div>
                 </div>
 
-                {languageMode === 'simple' ? (
-                  <p className="simple-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    A pesquisa separa essas respostas. Aqui, cada percentual é mostrado como foi registrado.
-                  </p>
-                ) : (
+                {languageMode === 'technical' ? (
                   <p className="technical-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
                     Soma das duas categorias: <strong className="text-white light:text-slate-900">{groupedUnknown.toFixed(2).replace('.', ',')}%</strong>. Essa combinação não é uma categoria adicional da pesquisa e não deve ser lida como classificação de “indecisos”.
+                  </p>
+                ) : (
+                  <p className="simple-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
+                    A pesquisa separa essas respostas. Aqui, cada percentual é mostrado como foi registrado.
                   </p>
                 )}
 
@@ -117,7 +119,7 @@ export function ExecutiveSummary() {
 
                 {source?.url && (
                   <a href={source.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                    {languageMode === 'simple' ? 'Conferir fonte oficial' : 'Ver catálogo oficial das pesquisas'} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    {languageMode === 'technical' ? 'Ver catálogo oficial das pesquisas' : 'Conferir fonte oficial'} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 )}
               </div>
@@ -129,9 +131,9 @@ export function ExecutiveSummary() {
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado</div>
               <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div>
               <div className="text-xs text-slate-500">
-                {languageMode === 'simple'
-                  ? 'eleitores'
-                  : 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')}
+                {languageMode === 'technical'
+                  ? 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')
+                  : 'eleitores'}
               </div>
             </Card>
 
