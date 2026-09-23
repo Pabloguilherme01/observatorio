@@ -3,26 +3,112 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0d1117">
-  <title>Observatório — modo offline</title>
+  <meta name="theme-color" content="#0b1117">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Observatório · offline</title>
   <style>
-    :root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#0d1117;color:#e6edf3}
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box}
-    main{width:min(620px,100%);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:28px;background:#11161e;box-shadow:0 24px 80px rgba(0,0,0,.35)}
-    .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#8cc8f2;font-weight:800}
-    h1{font-size:clamp(2rem,7vw,3.2rem);line-height:1;margin:10px 0 14px}
-    p{color:#94a3b8;line-height:1.65}
-    a{display:inline-flex;min-height:44px;align-items:center;justify-content:center;margin-top:12px;padding:0 16px;border-radius:12px;background:#8cc8f2;color:#0b1117;font-weight:800;text-decoration:none}
-    .note{margin-top:16px;padding:14px;border:1px solid rgba(140,200,242,.15);border-radius:16px;color:#aab7c7;font-size:13px}
+    :root{
+      color-scheme:dark;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#0b1117;
+      color:#e6edf3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100svh;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      padding-bottom:calc(20px + env(safe-area-inset-bottom));
+      background:
+        radial-gradient(circle at 50% 0%,rgba(56,189,248,.10),transparent 36%),
+        #0b1117;
+    }
+    main{
+      width:min(560px,100%);
+      padding:24px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:24px;
+      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+      box-shadow:0 24px 80px rgba(0,0,0,.38);
+    }
+    .eyebrow{
+      font-size:10px;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:#7dd3fc;
+      font-weight:900;
+    }
+    h1{
+      margin:12px 0 10px;
+      font-size:clamp(2rem,10vw,3.1rem);
+      line-height:.98;
+      letter-spacing:-.04em;
+    }
+    p{
+      margin:0;
+      color:#a8b6c8;
+      line-height:1.65;
+      font-size:15px;
+    }
+    .actions{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+    a,button{
+      min-height:46px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 15px;
+      font:inherit;
+      font-size:13px;
+      font-weight:850;
+      text-decoration:none;
+      cursor:pointer;
+    }
+    a{
+      background:#a5e8ff;
+      color:#071019;
+    }
+    button{
+      background:rgba(255,255,255,.035);
+      color:#d8e6f5;
+    }
+    .note{
+      margin-top:16px;
+      padding:13px 14px;
+      border:1px solid rgba(125,211,252,.13);
+      border-radius:16px;
+      color:#91a2b6;
+      font-size:12px;
+      line-height:1.55;
+      background:rgba(125,211,252,.035);
+    }
+    @media (max-width:380px){
+      main{padding:19px;border-radius:20px}
+      body{padding-inline:13px}
+      p{font-size:14px}
+    }
   </style>
 </head>
 <body>
   <main>
-    <div class="eyebrow">Observatório Águas Lindas 2026</div>
+    <div class="eyebrow">Observatório Águas Lindas · PWA</div>
     <h1>Você está offline.</h1>
-    <p>Não foi possível carregar esta página agora. O aplicativo instalado pode continuar disponível com os dados já armazenados no dispositivo.</p>
-    <a href="/observatorio/">Tentar novamente</a>
-    <div class="note">Quando a conexão voltar, abra novamente o Observatório para receber a versão mais recente do dataset.</div>
+    <p>O conteúdo online não respondeu agora. O aplicativo pode continuar funcionando com os recursos e dados que já foram armazenados no dispositivo.</p>
+    <div class="actions">
+      <a href="/observatorio/">Tentar novamente</a>
+      <button type="button" onclick="window.location.reload()">Recarregar</button>
+    </div>
+    <div class="note">Quando a conexão voltar, o PWA poderá atualizar automaticamente os arquivos e dados para a próxima abertura.</div>
   </main>
 </body>
 </html>
