@@ -24,17 +24,15 @@ function sectionToTab(id: string) {
 }
 
 function jump(id: string) {
-  const reduceMotion = document.documentElement.classList.contains('reduced-motion')
-    || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
   window.history.replaceState(null, '', '#' + id);
-
-  const scroll = () => document.getElementById(id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  if (document.getElementById(id)) scroll();
-  else {
-    requestAnimationFrame(scroll);
-    requestAnimationFrame(() => requestAnimationFrame(scroll));
-  }
+  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+  window.requestAnimationFrame(() => {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const reduceMotion = document.documentElement.classList.contains('reduced-motion')
+      || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  });
 }
 
 export function MobileBottomNav() {
@@ -65,7 +63,6 @@ export function MobileBottomNav() {
     const onNavigate = (event: Event) => {
       setActiveSection(sectionToTab((event as CustomEvent<string>).detail));
       requestAnimationFrame(observe);
-      requestAnimationFrame(() => requestAnimationFrame(observe));
     };
 
     window.addEventListener('hashchange', updateFromHash);
