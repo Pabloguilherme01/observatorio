@@ -39,13 +39,14 @@ export function DataExportActions() {
   };
 
   const exportCsv = () => {
-    downloadBlob('observatorio-aguas-lindas-v22-1.csv', toCsv(rows), 'text/csv;charset=utf-8');
+    downloadBlob('observatorio-aguas-lindas-v24-ultra.csv', toCsv(rows), 'text/csv;charset=utf-8');
     flash('CSV exportado');
   };
 
   const copyMetadata = async () => {
     const metadata = JSON.stringify({
       edition: d.meta.edition,
+      datasetVersion: 'V24 Ultra',
       municipality: d.meta.municipality,
       updatedAt: d.meta.updatedAt,
       sources: d.sources.map(source => ({
@@ -92,7 +93,7 @@ export function DataExportActions() {
 
     canvas.toBlob(blob => {
       if (blob) {
-        downloadBlob('observatorio-aguas-lindas-v22-1-story.png', blob, 'image/png');
+        downloadBlob('observatorio-aguas-lindas-v24-ultra-story.png', blob, 'image/png');
         flash('Story PNG gerado');
       } else {
         flash('Não foi possível gerar o Story');
