@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowRight, Wallet } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatBRL } from '../../utils/formatters';
+import { formatBRL } from '../../lib/transport';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { MethodologyFooter } from '../MethodologyFooter';
