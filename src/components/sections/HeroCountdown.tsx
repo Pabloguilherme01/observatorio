@@ -49,9 +49,9 @@ export function HeroCountdown() {
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
           <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-            <div className="hero-second-round-note mb-2 hidden text-xs font-semibold text-slate-500">2º turno: 25/10, se houver.</div>
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white"><CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />1º turno · 04/10 · 08:00</div>
             <Timer value={election} />
+            <div className="hero-second-round-note mt-2 hidden text-xs font-semibold text-slate-500">2º turno: 25/10, se houver.</div>
           </div>
           <div className="hero-secondary-round rounded-2xl border border-white/10 bg-white/[0.035] p-4">
             <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-white"><CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />2º turno · 25/10 · se houver</div>
