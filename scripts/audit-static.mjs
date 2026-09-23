@@ -101,3 +101,7 @@ if (!errors.length) {
   for (const error of errors) console.error(' -', error);
   process.exitCode = 1;
 }
+
+const contasIngest = read('scripts/tse/ingest-contas.ts');
+const pesquisasIngest = read('scripts/tse/ingest-pesquisas.ts');
+must(contasIngest.includes('_GO') && pesquisasIngest.includes('_GO'), 'ingestores TSE selecionam explicitamente os CSVs de Goiás');
