@@ -35,7 +35,7 @@ const candidateStatus = (() => {
     case 'stale':
       return 'pending' as const;
     case 'failed':
-      return 'error' as const;
+      return 'pending' as const;
     case 'not_synced':
     default:
       return 'pending' as const;
