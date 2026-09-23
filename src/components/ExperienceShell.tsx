@@ -71,7 +71,10 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   useEffect(() => {
     if (!activeModal) { openerRef.current?.focus?.(); return; }
     setQuery('');
-    window.setTimeout(() => (commandOpen ? inputRef.current : modalRef.current?.querySelector<HTMLElement>('button,input,[href],[tabindex]:not([tabindex="-1"])'))?.focus(), 0);
+    const isCompactViewport = window.matchMedia?.('(max-width: 767px)').matches;
+    if (!isCompactViewport) {
+      window.setTimeout(() => (commandOpen ? inputRef.current : modalRef.current?.querySelector<HTMLElement>('button,input,[href],[tabindex]:not([tabindex="-1"])'))?.focus(), 0);
+    }
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') { setCommandOpen(false); setHelpOpen(false); return; }
       if (event.key !== 'Tab' || !modalRef.current) return;
