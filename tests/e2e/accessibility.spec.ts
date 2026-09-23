@@ -15,6 +15,18 @@ const VIEWS = [
 
 const ALLOWLIST = new Set<string>();
 
+async function hydrateDeferredSections(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    const step = Math.max(window.innerHeight, 700);
+    for (let y = 0; y <= document.body.scrollHeight; y += step) {
+      window.scrollTo(0, y);
+      await new Promise(resolve => window.setTimeout(resolve, 70));
+    }
+    window.scrollTo(0, 0);
+    await new Promise(resolve => window.setTimeout(resolve, 250));
+  });
+}
+
 async function runAxe(page: Page, scope: string) {
   const results = await new AxeBuilder({ page })
     .include(scope)
@@ -34,6 +46,7 @@ test.describe('WCAG 2.2 AA · axe-core runtime', () => {
     test('zero violações em ' + view.route, async ({ page }) => {
       await page.goto('/' + view.hash);
       await page.waitForSelector('main[data-app-ready="true"]');
+      await hydrateDeferredSections(page);
 
       const violations = await runAxe(page, 'body');
       expect(
@@ -51,6 +64,7 @@ test.describe('WCAG 2.2 AA · axe-core runtime', () => {
   test('ProvenanceDrawer aberto', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('main[data-app-ready="true"]');
+    await hydrateDeferredSections(page);
 
     const trigger = page.getByTestId('provenance-trigger').first();
     await trigger.scrollIntoViewIfNeeded();
@@ -64,6 +78,8 @@ test.describe('WCAG 2.2 AA · axe-core runtime', () => {
   test('AccessibleRegionMap com região selecionada', async ({ page }) => {
     await page.goto('/#contexto');
     await page.waitForSelector('main[data-app-ready="true"]');
+    await page.locator('#contexto').scrollIntoViewIfNeeded();
+    await expect(page.locator('#contexto')).toBeVisible();
 
     const region = page.getByTestId('region-option').first();
     await region.focus();
