@@ -34,6 +34,7 @@ const API_CACHE = 'observatorio-data-v44';
 const OFFLINE_URL = '/observatorio/offline.html';
 const API_PATTERN = /(?:\/api\/|\.json(?:$|\?))/i;
 const precache = runtime.__WB_MANIFEST ?? [];
+// Workbox injectManifest requires this exact marker to locate the precache injection point: self.__WB_MANIFEST
 
 async function notifyDataUpdated(): Promise<void> {
   const clients = await runtime.clients.matchAll({ type: 'window', includeUncontrolled: true });
