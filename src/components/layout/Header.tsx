@@ -55,7 +55,7 @@ export function Header() {
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
             <button type="button" onClick={() => setMenuOpen(value => !value)} className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white lg:hidden" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>
-              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              {menuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -63,7 +63,7 @@ export function Header() {
         {menuOpen && (
           <nav id="mobile-navigation" className="border-t border-white/10 px-4 py-2 lg:hidden" aria-label="Navegação móvel">
             {links.map(([label, id]) => (
-              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')}>
+              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')} aria-current={activeSection === id ? 'location' : undefined}>
                 {label}
               </a>
             ))}
