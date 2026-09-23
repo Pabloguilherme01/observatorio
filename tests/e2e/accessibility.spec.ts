@@ -95,6 +95,8 @@ test.describe('WCAG 2.2 AA · axe-core runtime', () => {
   test('tooltip ativo em runtime', async ({ page }) => {
     await page.goto('/#contexto');
     await page.waitForSelector('main[data-app-ready="true"]');
+    await page.locator('#contexto').scrollIntoViewIfNeeded();
+    await expect(page.locator('#contexto')).toBeVisible();
 
     const region = page.getByTestId('region-option').first();
     await region.focus();
