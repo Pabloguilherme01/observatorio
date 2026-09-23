@@ -33,7 +33,7 @@ must(index.includes('og:image') && index.includes('twitter:image'), 'preview soc
 must(css.includes(':focus-visible'), 'foco de teclado possui estilo visível');
 must(css.includes('prefers-reduced-motion'), 'redução de movimento está contemplada');
 must(css.includes('min-height: 44px') || css.includes('min-height:44px'), 'controles móveis usam alvo de toque confortável');
-must(css.includes('@media (max-width: 380px)'), 'há ajuste dedicado para telas muito estreitas');
+must(/@media\s*\(max-width:\s*380px\)/.test(css), 'há ajuste dedicado para telas muito estreitas');
 must(hero.includes('aria-pressed'), 'alternância de linguagem informa estado ao leitor de tela');
 must(comparison.includes('role=\"tablist\"') && comparison.includes('aria-selected'), 'abas de contexto têm semântica acessível');
 must(dashboard.includes('role=\"img\"') && dashboard.includes('aria-label'), 'gráficos principais possuem alternativa textual');
