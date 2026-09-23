@@ -43,6 +43,14 @@ for (const file of files) {
   }
 }
 
+const syncScript = join(ROOT, 'scripts/sync-tse-2026.mjs');
+if (existsSync(syncScript)) {
+  const content = readFileSync(syncScript, 'utf8');
+  for (const token of ['r.jina.ai', 'jina.ai/http', 'API_PROXY_URL', 'proxy']) {
+    if (content.toLowerCase().includes(token.toLowerCase())) violations.push({ file: 'scripts/sync-tse-2026.mjs', token });
+  }
+}
+
 const deployWorkflow = join(ROOT, '.github/workflows/deploy-pages.yml');
 if (existsSync(deployWorkflow)) {
   const content = readFileSync(deployWorkflow, 'utf8');
