@@ -1,22 +1,22 @@
 {
   "meta": {
     "fonte": "processual",
-    "snapshotId": "processual-20260923104620531-318e65abf88b",
+    "snapshotId": "processual-20260923144338419-318e65abf88b",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
     "checksum": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
     "sourceRows": 70759,
     "validatedRows": 63,
     "matchedRows": 63,
     "rejectedRows": 0,
-    "captureTime": "2026-09-23T10:46:20.531Z",
+    "captureTime": "2026-09-23T14:43:38.419Z",
     "retrievalMethod": "official_tse_zip_csv",
-    "state": "first_capture",
-    "baseline": true
+    "state": "synced",
+    "baseline": false
   },
   "data": {
     "versao": "1.0.0",
-    "estado": "first_capture",
-    "geradoEm": "2026-09-23T10:46:20.531Z",
+    "estado": "synced",
+    "geradoEm": "2026-09-23T14:43:38.419Z",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
     "sourceHash": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
     "totalProcessos": 63,
@@ -50,9 +50,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -84,9 +88,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -118,9 +126,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -157,9 +169,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -191,9 +207,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -235,9 +255,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -259,9 +283,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -303,9 +331,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -337,9 +369,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -366,9 +402,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -395,9 +435,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -424,9 +468,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -463,9 +511,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -492,9 +544,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -521,9 +577,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -550,9 +610,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -584,9 +648,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -628,9 +696,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -657,9 +729,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -686,9 +762,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -740,9 +820,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -764,9 +848,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -793,9 +881,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -822,9 +914,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -881,9 +977,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -905,9 +1005,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -939,9 +1043,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -968,9 +1076,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1002,9 +1114,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1026,9 +1142,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1055,9 +1175,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1089,9 +1213,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1113,9 +1241,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1142,9 +1274,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1166,9 +1302,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1195,9 +1335,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1229,9 +1373,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1263,9 +1411,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1292,9 +1444,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1326,9 +1482,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1355,9 +1515,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1384,9 +1548,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1413,9 +1581,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1452,9 +1624,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1481,9 +1657,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1510,9 +1690,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1539,9 +1723,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1568,9 +1756,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1592,9 +1784,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1616,9 +1812,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1640,9 +1840,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1669,9 +1873,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1718,9 +1926,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1757,9 +1969,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1781,9 +1997,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1805,9 +2025,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1844,9 +2068,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1873,9 +2101,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1907,9 +2139,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1941,9 +2177,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1975,9 +2215,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -1999,9 +2243,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       },
       {
@@ -2033,9 +2281,13 @@
         "proveniencia": {
           "fonte": "TSE - Processual 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
-          "capturaEm": "2026-09-23T10:46:19.974Z",
+          "capturaEm": "2026-09-23T14:43:37.921Z",
           "snapshotId": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
-          "arquivoOrigem": "processual-2026.zip"
+          "arquivoOrigem": "processual-2026.zip",
+          "urlsComplementares": [
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_partes_2026.zip",
+            "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip"
+          ]
         }
       }
     ]

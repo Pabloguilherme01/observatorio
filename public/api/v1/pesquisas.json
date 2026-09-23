@@ -1,9 +1,106 @@
 {
   "versao": "1.0.0",
-  "estado": "first_capture",
-  "geradoEm": "2026-09-23T10:46:20.531Z",
+  "estado": "synced",
+  "geradoEm": "2026-09-23T14:43:38.419Z",
   "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
   "sourceHash": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
-  "totalPesquisas": 0,
-  "pesquisas": []
+  "totalPesquisas": 4,
+  "pesquisas": [
+    {
+      "idPesquisa": "GO036872026",
+      "registroTSE": "GO036872026",
+      "instituto": "INSTITUTO GAZETA LTDA",
+      "municipio": "Santo Antônio do Descoberto",
+      "uf": "GO",
+      "abrangenciaDetectada": "FORMOSA, PLANALTINA, AGUAS LINDAS, SANTO ANTONIO DO DESCOBERTO, VALPARAISO, LUZIÂNIA, CIDADE OCIDENTAL E NOVO GAMA.",
+      "criterioMunicipio": "abrangencia_textual",
+      "dataRegistro": "2026-08-19",
+      "periodoColeta": {
+        "inicio": "2026-08-10",
+        "fim": "2026-08-18"
+      },
+      "amostra": 4100,
+      "tipo": "Governador, Senador, Deputado Federal, Deputado Estadual",
+      "detalhamentoBairro": true,
+      "proveniencia": {
+        "fonte": "TSE - Pesquisas Eleitorais 2026",
+        "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
+        "arquivoOrigem": "pesquisas-2026.zip"
+      }
+    },
+    {
+      "idPesquisa": "GO041492026",
+      "registroTSE": "GO041492026",
+      "instituto": "INSTITUTO GAZETA LTDA",
+      "municipio": "Valparaíso de Goiás",
+      "uf": "GO",
+      "abrangenciaDetectada": "Região Geográfica Imediata de Luziânia (Luziânia, Cidade Ocidental, Santo Antônio do Descoberto, Novo Gama, Valparaiso de Goias e Cristalina)",
+      "criterioMunicipio": "abrangencia_textual",
+      "dataRegistro": "2026-03-19",
+      "periodoColeta": {
+        "inicio": "2026-03-21",
+        "fim": "2026-03-24"
+      },
+      "amostra": 1200,
+      "tipo": "Governador, Senador, Deputado Federal, Deputado Estadual",
+      "detalhamentoBairro": true,
+      "proveniencia": {
+        "fonte": "TSE - Pesquisas Eleitorais 2026",
+        "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
+        "arquivoOrigem": "pesquisas-2026.zip"
+      }
+    },
+    {
+      "idPesquisa": "GO030312026",
+      "registroTSE": "GO030312026",
+      "instituto": "DATA POVO INSTITUTO DE PESQUISAS MARKETING E CONSULTORIA LTDA",
+      "municipio": "Águas Lindas de Goiás",
+      "uf": "GO",
+      "abrangenciaDetectada": "Goiânia, Aparecida de Goiânia, Anápolis, Rio Verde, Águas Lindas de Goiás, Luziânia, Valparaíso de Goiás, Senador Canedo, Trindade, Catalão, Formosa, Itumbiara, Planaltina, Jataí, Novo Gama, Caldas Novas, Cristalina, Itaberaí, Padre Bernardo, Posse, Uruaçu, Alexânia, Abadiânia.",
+      "criterioMunicipio": "abrangencia_textual",
+      "dataRegistro": "2026-04-06",
+      "periodoColeta": {
+        "inicio": "2026-04-02",
+        "fim": "2026-04-04"
+      },
+      "amostra": 1000,
+      "tipo": "Governador",
+      "detalhamentoBairro": true,
+      "proveniencia": {
+        "fonte": "TSE - Pesquisas Eleitorais 2026",
+        "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
+        "arquivoOrigem": "pesquisas-2026.zip"
+      }
+    },
+    {
+      "idPesquisa": "GO086512026",
+      "registroTSE": "GO086512026",
+      "instituto": "INSTITUTO GAZETA LTDA",
+      "municipio": "Valparaíso de Goiás",
+      "uf": "GO",
+      "abrangenciaDetectada": "FORMOSA, PLANALTINA, AGUAS LINDAS, SANTO ANTONIO DO DESCOBERTO, LUZIANIA, CIDADE OCIDENTAL, VALPARAISO DE GOIAS E NOVO GAMA.",
+      "criterioMunicipio": "abrangencia_textual",
+      "dataRegistro": "2026-08-20",
+      "periodoColeta": {
+        "inicio": "2026-08-15",
+        "fim": "2026-08-24"
+      },
+      "amostra": 4100,
+      "tipo": "Governador, Senador, Deputado Federal, Deputado Estadual",
+      "detalhamentoBairro": true,
+      "proveniencia": {
+        "fonte": "TSE - Pesquisas Eleitorais 2026",
+        "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
+        "arquivoOrigem": "pesquisas-2026.zip"
+      }
+    }
+  ]
 }
