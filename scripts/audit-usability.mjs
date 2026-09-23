@@ -31,26 +31,26 @@ const texts = sourceFiles.map(file => ({
 }));
 const combined = texts.map(item => item.content).join('\n');
 const ids = new Set();
-const internalRefs = new Set();
+const internalRefs = new Map();
 const externalLinks = [];
 
 for (const { file, content } of texts) {
   for (const match of content.matchAll(/id=["']([^"']+)["']/g)) ids.add(match[1]);
 
-  for (const match of content.matchAll(/href=["']#([^"']+)["']/g)) internalRefs.add(match[1]);
-  for (const match of content.matchAll(/getElementById\(["']([^"']+)["']\)/g)) internalRefs.add(match[1]);
+  for (const match of content.matchAll(/href=["']#([^"']+)["']/g)) internalRefs.set(match[1], file);
+  for (const match of content.matchAll(/getElementById\(["']([^"']+)["']\)/g)) internalRefs.set(match[1], file);
 
-  for (const match of content.matchAll(/href=["'](https?:\/\/[^"']+)["']/g)) {
+  for (const match of content.matchAll(/<a[^>]+href=["'](https?:\/\/[^"']+)["'][^>]*>/g)) {
     externalLinks.push({
       file,
       url: match[1],
-      context: content.slice(Math.max(0, match.index - 120), Math.min(content.length, match.index + match[0].length + 220)),
+      context: match[0],
     });
   }
 }
 
-const broken = [...internalRefs].filter(id => !ids.has(id));
-if (broken.length) broken.forEach(id => fail('Âncora interna sem alvo: #' + id));
+const broken = [...internalRefs.entries()].filter(([id]) => !ids.has(id));
+if (broken.length) broken.forEach(([id, file]) => fail('Âncora interna sem alvo: #' + id + ' em ' + file));
 else pass('âncoras internas estáticas possuem alvo');
 
 for (const link of externalLinks) {
