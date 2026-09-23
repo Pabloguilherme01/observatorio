@@ -10,7 +10,9 @@ const events = [
   { date: '2026-08-05', label: 'Fim das convenções', description: 'Data-limite para realização das convenções partidárias.', sourceId: 'tse-calendario-2026' },
   { date: '2026-08-15', label: 'Registro de candidaturas', description: 'Prazo final para partidos, federações e coligações apresentarem pedidos de registro.', sourceId: 'tse-calendario-2026' },
   { date: '2026-08-16', label: 'Propaganda eleitoral', description: 'Início da propaganda eleitoral geral nas ruas e na internet.', sourceId: 'tse-calendario-2026' },
-  { date: '2026-09-13', label: 'Contas parciais', description: 'Prazo final para envio da prestação de contas parcial da campanha.', sourceId: 'tse-contas-2026' },
+  { date: '2026-09-09', label: 'Início do envio das contas parciais', description: 'Começa o período de envio da prestação de contas parcial.', sourceId: 'tse-contas-2026' },
+  { date: '2026-09-13', label: 'Fim do envio das contas parciais', description: 'Data-limite para envio da prestação de contas parcial.', sourceId: 'tse-contas-2026' },
+  { date: '2026-09-15', label: 'Publicação das contas parciais', description: 'Dados da prestação parcial passam a ser disponibilizados na internet.', sourceId: 'tse-contas-2026' },
   { date: '2026-10-04', label: '1º turno', description: 'Dia da votação do primeiro turno das Eleições Gerais de 2026.', sourceId: 'tse-calendario-2026' },
   { date: '2026-10-25', label: '2º turno eventual', description: 'Data prevista para eventual segundo turno nas disputas majoritárias.', sourceId: 'tse-calendario-2026' },
 ];
