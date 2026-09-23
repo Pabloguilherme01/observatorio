@@ -1,4 +1,4 @@
-import { BusFront, Coins, ExternalLink, Users } from 'lucide-react';
+import { BusFront, Coins, ExternalLink, Share2, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { calculateTransportCost, formatBRL } from '../lib/transport';
@@ -29,6 +29,18 @@ export function TransportCalculator() {
   const source = d.sources.find(sourceItem => sourceItem.id === route.sourceId);
   const salaryShare = result.monthlyPctOfSalaryPerPerson ?? 0;
   const salaryBarWidth = Math.min(100, Math.max(0, salaryShare));
+  const share = async () => {
+    const text = `Simulador de bolso · ${route.label}. ${formatBRL(result.monthlyPerPersonBrl)} por pessoa/mês no cenário de ${days} dias e ${trips} trechos/dia. Veja e ajuste as premissas: ${window.location.href}#transporte`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Simulador de bolso · Águas Lindas', text, url: window.location.href + '#transporte' });
+        return;
+      }
+      await navigator.clipboard?.writeText(text);
+    } catch {
+      // O compartilhamento pode ser cancelado pelo usuário.
+    }
+  };
 
   return (
     <section id="transporte" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="transporte-title">
@@ -87,6 +99,9 @@ export function TransportCalculator() {
               </div>
               <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatBRL(result.monthlyPerPersonBrl)}</div>
               <div className="mt-1 text-xs text-slate-500">{trips} trechos/dia · {days} dias</div>
+              <button type="button" onClick={share} className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">
+                <Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar cenário
+              </button>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4 light:bg-white">
               <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
