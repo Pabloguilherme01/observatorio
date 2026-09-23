@@ -34,12 +34,10 @@ jobs:
 
       - run: npm install --no-audit --no-fund
 
-      - name: Recapturar Contas, Pesquisas e Processual
+      - name: Recapturar e promover snapshots TSE
         run: |
           set -euo pipefail
-          npm run ingest:tse:contas
-          npm run ingest:tse:pesquisas
-          npm run ingest:tse:processual
+          npm run ingest:tse:first-batch
           npm run typecheck
 
       - name: Verificar integridade dos snapshots
