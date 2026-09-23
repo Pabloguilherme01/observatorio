@@ -1,0 +1,17 @@
+name: Nova fonte
+description: Sugira uma fonte pública relevante para o observatório.
+title: "[Fonte] "
+labels: ["fonte"]
+body:
+  - type: input
+    id: fonte
+    attributes:
+      label: URL da fonte
+    validations:
+      required: true
+  - type: textarea
+    id: justificativa
+    attributes:
+      label: Por que esta fonte é relevante?
+    validations:
+      required: true
