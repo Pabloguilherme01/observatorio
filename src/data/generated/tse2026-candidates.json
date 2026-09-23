@@ -7,7 +7,7 @@
     "scope": "GO",
     "downloadedAt": "2026-09-23T08:16:17.987Z",
     "sourceFileSha256": "351e273ae5f3815478f9fb297cc89486e48e7db9468de29373dad2a9cec3db89",
-    "sourceHashKind": "source_zip",
+    "sourceHashKind": "api_response_utf8",
     "sourceRows": 594,
     "matchedRows": 10,
     "workflowRunId": "35836117975",
