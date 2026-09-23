@@ -82,6 +82,7 @@ export const observatorioData: ObservatoryData = {
       contractor: 'HERZ Locadora de Motos Ltda.',
       collectionDate: '2026-08-25',
       interviews: 400,
+      theoreticalMarginErrorPct: 4.9,
       method: 'spontaneous',
       results: [
         { label: 'Keké', percentage: 35.25 },
