@@ -31,6 +31,8 @@ npm run dev
 
 ```bash
 npm run typecheck
+npm run validate:observatorio
+npm run validate:tse
 npm run build
 ```
 
@@ -55,7 +57,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V27 — Observatório de Dados Cívicos e Eleitorais.
+V27.1 — Observatório de Dados Cívicos e Eleitorais.
 
 ### Camadas atuais
 - Dashboard municipal e eleitoral
@@ -66,6 +68,9 @@ V27 — Observatório de Dados Cívicos e Eleitorais.
 - Linha do tempo eleitoral baseada em fontes oficiais
 - Orçamento, exportação e mapa de evidências
 - Central de qualidade, fontes e inspeção de dados
+- Demografia dinâmica com série temporal e metodologia reutilizável
+- Leitura orçamentária per capita com denominadores preservados
+- Cenários hipotéticos de tarifa sem confundir hipótese com dado oficial
 - PWA com cache local para recursos da aplicação
 
 ### Estado da sincronização eleitoral
