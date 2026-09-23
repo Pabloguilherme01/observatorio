@@ -8,6 +8,7 @@ const errors = [];
 const warnings = [];
 
 const isMunicipalitySnapshot = payload.schemaVersion === 3 && payload.coverage === 'municipality_required';
+const state = payload.meta?.state;
 if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('schemaVersion deve ser 2 ou 3.');
 if (isMunicipalitySnapshot) {
   if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter municipal ausente ou divergente.');
@@ -20,7 +21,6 @@ if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push
 if (payload.schemaVersion === 3 && payload.coverage !== 'municipality_required') errors.push('coverage inválido no contrato municipal.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
-const state = payload.meta?.state;
 const sha = payload.meta?.sourceFileSha256;
 const allowedStates = new Set(['not_synced', 'first_capture', 'unchanged', 'changed', 'local_filter_pending', 'synced']);
 if (!allowedStates.has(state)) errors.push('state do snapshot inválido: ' + String(state));
