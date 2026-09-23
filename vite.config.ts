@@ -40,7 +40,7 @@ export default defineConfig({
           },
         ],
         cleanupOutdatedCaches: true,
-        navigateFallback: '/observatorio/index.html',
+        navigateFallback: 'index.html',
       },
     }),
   ],
