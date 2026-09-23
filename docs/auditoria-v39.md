@@ -72,7 +72,23 @@ A comunicação deve continuar descritiva, evitar recomendação ou previsão el
 
 As Eleições 2026 são Eleições Gerais. O TSE define primeiro turno em 4 de outubro de 2026 e eventual segundo turno em 25 de outubro de 2026 para Presidente/Governador. O observatório usa o município de Águas Lindas como recorte territorial e cidadão, mas o pleito não é uma eleição municipal.
 
-## Estado da auditoria
+## Acessibilidade e teste visual
+
+A V39 agora possui uma auditoria automática dedicada no CI para verificar:
+- idioma `pt-BR`;
+- preview social;
+- foco visível;
+- redução de movimento;
+- alvos de toque confortáveis no mobile;
+- ajuste para telas de até 380 px;
+- semântica de abas e alternativas textuais dos gráficos;
+- persistência segura da preferência de linguagem;
+- contraste dos principais tokens da interface em tema escuro.
+
+A auditoria usa cálculo de luminância/contraste para os tokens críticos. O projeto foi ajustado para elevar os tons de texto secundário do tema escuro que anteriormente ficavam abaixo do limiar de 4,5:1 para texto normal. As regras relevantes da WCAG tratam 4,5:1 como mínimo para texto normal e 3:1 para texto grande; a WCAG 2.2 também traz requisito de tamanho mínimo de alvo de ponteiro de 24×24 CSS px, além de requisitos de foco visível. citeturn822941search4turn822941search2
+
+O código já possui `:focus-visible`, redução de movimento e controles móveis de 44 px em vários pontos. A auditoria automática reduz o risco de regressão, mas não substitui teste manual com Lighthouse, leitor de tela, teclado, zoom e dispositivos reais.
+
 
 Código e estrutura: revisados no branch `main`.
 
