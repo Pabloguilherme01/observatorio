@@ -24,6 +24,7 @@ import { ExperienceShell } from '../components/ExperienceShell';
 import { DiscoveryHub } from '../components/DiscoveryHub';
 import { DemographicDynamic } from '../components/sections/DemographicDynamic';
 import { BudgetImpact } from '../components/sections/BudgetImpact';
+import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 
 export function App() {
   return (
@@ -33,6 +34,7 @@ export function App() {
         <HeroCountdown />
         <main id="main-content">
           <DiscoveryHub />
+          <ExecutiveSummary />
           <DashboardMetrics />
           <ElectoralProfile />
           <DemographicDynamic />
