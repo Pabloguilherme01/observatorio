@@ -45,6 +45,13 @@ export function DataInsights() {
     else setQuizDone(true);
   };
   const restart = () => { setQuizStep(0); setScore(0); setSelectedAnswer(null); setQuizDone(false); };
+  const shareHeal = async () => {
+    const text = `Simulador HEAL · ${beds} leitos. Cenário derivado: ${Math.round(pressure.perBed).toLocaleString('pt-BR')} atendimentos por leito e ${Math.max(0, pressure.reduction).toFixed(1).replace('.', ',')}% de redução teórica da pressão em relação à referência. #healgo`;
+    try {
+      if (navigator.share) { await navigator.share({ title: 'Simulador HEAL · Observatório', text, url: window.location.href + '#healgo' }); return; }
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text + '\\n' + window.location.href + '#healgo');
+    } catch {}
+  };
 
   const genderStyle = { background: `conic-gradient(#8cc8f2 0 ${d.electoral.womenPct}%, #315a75 ${d.electoral.womenPct}% 100%)` };
 
