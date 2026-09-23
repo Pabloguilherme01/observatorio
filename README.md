@@ -63,14 +63,14 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V42.0 — Observatório de Dados Cívicos e Eleitorais.
+V43.1 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V42
-- Viewport mobile com escala máxima preservada e suporte a safe-area/PWA no dispositivo.
-- Respostas rápidas verificáveis na busca para perguntas comuns sobre população, eleitorado, orçamento, tarifa e saneamento.
-- Compartilhamento do cenário do simulador HEAL via Web Share/cópia.
-- Deploy do GitHub Pages passa a exigir auditorias estática, acessibilidade e mobile antes da publicação.
-- Issue forms para correção de dado, nova fonte e melhoria de UX.
+### Foco V43.1
+- Controle do Modo Eleição também disponível no mobile, com estado acessível e reversível.
+- Auditoria mobile e de acessibilidade passou a detectar regressão desse controle.
+- Versão e documentação alinhadas em V43.1.
+- Validação de produção confirmada pela sequência recente de CI, Quality e GitHub Pages da main.
+- Snapshot de candidaturas continua separado como first_capture, com escopo watchlist e proveniência explícita no dataset.
 
 ### Foco V41
 - Camada pública de confiança com método, atualização e canal de correção por evidência.
@@ -139,9 +139,12 @@ V42.0 — Observatório de Dados Cívicos e Eleitorais.
 - PWA com cache local para recursos da aplicação
 
 ### Estado da sincronização eleitoral
-A automação de candidatos do TSE está preparada para ler o arquivo de Goiás e produzir um snapshot de watchlist com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas. O workflow `.github/workflows/sync-tse-candidates.yml` pode ser acionado manualmente e roda diariamente para baixar o pacote oficial, validar o contrato e publicar somente mudanças verificadas.
+A edição atual contém uma primeira captura de candidatos em escopo `watchlist`, com 594 linhas de origem e 10 correspondências locais no snapshot versionado. O estado é `first_capture`. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-candidates.yml` é manual por desenho e valida uma nova captura direta antes de publicar alterações.
 
 A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
+
+### Auditoria V43.1
+A auditoria desta edição cobre arquitetura, navegação mobile, acessibilidade estática, proveniência, contratos de dados, CI/deploy e coerência editorial. A validação visual em navegador externo não foi possível nesta sessão porque a ferramenta de automação de navegador não está disponível no ambiente e a URL pública não pôde ser carregada pelo analisador web. Os workflows recentes da main confirmam CI e Quality aprovados e um deploy do GitHub Pages concluído com sucesso no commit eda7cea5.
 
 ### Limitações editoriais
 - Dados de anos-base diferentes não são tratados como uma série homogênea sem indicação explícita.
