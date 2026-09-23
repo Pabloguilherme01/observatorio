@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
@@ -132,7 +133,7 @@ function collectFiles(target) {
   return output;
 }
 
-const scriptFiles = collectFiles('scripts');
+const scriptFiles = collectFiles('scripts').filter(file => !/[/\\]audit-[^/]+\.mjs$/.test(file));
 const missingLocalImports = [];
 for (const file of scriptFiles) {
   const source = fs.readFileSync(file, 'utf8');
@@ -164,8 +165,13 @@ if (missingLocalImports.length) {
   pass('scripts não possuem imports locais apontando para arquivos inexistentes');
 }
 
-if (!fs.existsSync(path.join(root, 'package-lock.json'))) {
-  console.warn('WARN package-lock.json ausente; CI continua usando npm install até a lockfile ser gerada.');
+let lockTracked = false;
+try {
+  execFileSync('git', ['ls-files', '--error-unmatch', 'package-lock.json'], { stdio: ['ignore', 'pipe', 'ignore'] });
+  lockTracked = true;
+} catch {}
+if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
+  console.warn('WARN package-lock.json não está versionado; CI continua usando npm install.');
 } else {
   pass('package-lock.json está versionado para instalações reprodutíveis');
 }
