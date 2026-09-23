@@ -4,7 +4,7 @@ import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';
 import { STORAGE_NAMESPACE } from '../config/version';
 
-const RECENT_KEY = `${STORAGE_NAMESPACE}-recent-sections`, FAVORITES_KEY = `${STORAGE_NAMESPACE}-favorite-sections`, REDUCED_KEY = `${STORAGE_NAMESPACE}-reduced-motion`, MODE_KEY = `${STORAGE_NAMESPACE}-experience-mode`, ELECTION_KEY = `${STORAGE_NAMESPACE}-election-mode`, LEGACY_FAST_MODE_KEY = 'observatorio-fast-reading-v33-default-investigation';
+const RECENT_KEY = `${STORAGE_NAMESPACE}-recent-sections`, FAVORITES_KEY = `${STORAGE_NAMESPACE}-favorite-sections`, REDUCED_KEY = `${STORAGE_NAMESPACE}-reduced-motion`, MODE_KEY = `${STORAGE_NAMESPACE}-experience-mode`, ELECTION_KEY = `${STORAGE_NAMESPACE}-election-mode`;
 type ExperienceMode = 'overview' | 'investigation' | 'evidence';
 const MODE_LABELS: Record<ExperienceMode, string> = { overview: 'Visão geral', investigation: 'Investigação', evidence: 'Evidências' };
 
@@ -26,7 +26,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), pendingG = useRef(false);
 
   useEffect(() => {
-    setRecent(readList(RECENT_KEY)); setFavorites(readList(FAVORITES_KEY)); const reduced = localStorage.getItem(REDUCED_KEY) === '1'; setReducedMotion(reduced); document.documentElement.classList.toggle('reduced-motion', reduced); const electionStored = localStorage.getItem(ELECTION_KEY) === '1'; setElectionModeState(electionStored); document.documentElement.classList.toggle('mode-election', electionStored); const storedMode = localStorage.getItem(MODE_KEY) as ExperienceMode | null; const legacyFast = localStorage.getItem(LEGACY_FAST_MODE_KEY) === '1'; const initialMode: ExperienceMode = storedMode === 'overview' || storedMode === 'investigation' || storedMode === 'evidence' ? storedMode : legacyFast ? 'overview' : 'overview'; setMode(initialMode); document.documentElement.dataset.experienceMode = initialMode; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + initialMode);
+    setRecent(readList(RECENT_KEY)); setFavorites(readList(FAVORITES_KEY)); const reduced = localStorage.getItem(REDUCED_KEY) === '1'; setReducedMotion(reduced); document.documentElement.classList.toggle('reduced-motion', reduced); const electionStored = localStorage.getItem(ELECTION_KEY) === '1'; setElectionModeState(electionStored); document.documentElement.classList.toggle('mode-election', electionStored); const storedMode = localStorage.getItem(MODE_KEY) as ExperienceMode | null; const initialMode: ExperienceMode = storedMode === 'overview' || storedMode === 'investigation' || storedMode === 'evidence' ? storedMode : 'overview'; setMode(initialMode); document.documentElement.dataset.experienceMode = initialMode; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + initialMode);
     let scrollRaf = 0;
     const onScroll = () => {
       if (scrollRaf) return;
@@ -113,12 +113,6 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); localStorage.setItem(RECENT_KEY, JSON.stringify(next)); return next; }); };
   const toggleFavorite = (id: string) => { setFavorites(current => { const next = current.includes(id) ? current.filter(item => item !== id) : [...current,id].slice(-6); localStorage.setItem(FAVORITES_KEY, JSON.stringify(next)); return next; }); };
-  const quickLinks = useMemo(() => {
-    const priority = ['dashboard', 'descubra', 'eleitorado', 'transporte', 'orcamento', 'dados', 'fontes'];
-    return priority.map(id => navigation.find(item => item.id === id)).filter(Boolean);
-  }, []);
-  const recentItems = useMemo(() => recent.slice(0, 4).map(id => navigation.find(item => item.id === id)).filter(Boolean), [recent]);
-  const favoriteItems = useMemo(() => favorites.map(id => navigation.find(item => item.id === id)).filter(Boolean), [favorites]);
   const results = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase('pt-BR');
     if (!normalized) return navigation;
