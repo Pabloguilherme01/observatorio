@@ -52,8 +52,8 @@ export function PoliticalResearch() {
         eyebrow="Candidaturas locais"
         title={mode === 'simple' ? 'Candidatos do município' : 'Candidaturas com recorte municipal'}
         description={mode === 'simple'
-          ? 'Só aparecem nomes filtrados para Águas Lindas na base oficial.'
-          : 'A interface usa apenas registros municipais do snapshot oficial. Instagram e foto só entram quando declarados na base do TSE.'}
+          ? 'Só aparecem nomes validados para Águas Lindas na captura oficial.'
+          : 'A interface publica somente registros com evidência municipal no snapshot oficial. Instagram e foto só entram quando declarados na base do TSE.'}
       />
 
       <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
@@ -67,8 +67,8 @@ export function PoliticalResearch() {
           <div className="flex items-start gap-3">
             <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-emerald-300" aria-hidden="true" />
             <div>
-              <h3 className="text-base font-black text-white">A captura municipal ainda não trouxe candidatos</h3>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Os registros estaduais anteriores foram retirados. O sincronizador agora filtra Águas Lindas diretamente e importa, quando existentes, as redes sociais declaradas ao TSE.</p>
+              <h3 className="text-base font-black text-white">Captura municipal pendente</h3>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">O último snapshot não contém correspondências municipais validadas. O observatório não transforma a watchlist estadual em candidatura local e mantém a seção vazia até existir evidência municipal no TSE.</p>
               <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-bold text-slate-200 hover:border-sky-300/20">Conferir dados oficiais do TSE <ExternalLink className="h-4 w-4" aria-hidden="true" /></a>
             </div>
           </div>
