@@ -16,6 +16,7 @@ const ZIP_URLS = [
 ];
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
 const API_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos';
+const API_PROXY_URL = 'https://r.jina.ai/https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos';
 const WATCHLIST = ['Keké', 'Anderson Teodoro', 'Zé da Imperial', 'Baiano dos Cocos', 'Cambão', 'Abadyas Damasceno', 'Pábio Mossoró', 'Felipe Galdino', 'Ribeiro do Túlio', 'André do Premium'];
 
 const WATCHLIST_ALIASES = {
@@ -105,6 +106,20 @@ function downloadText(url, destination, attempt = 1) {
     const waitMs = 2000 * attempt;
     console.warn('[TSE API] tentativa ' + attempt + ' falhou. Nova tentativa em ' + waitMs + 'ms.');
     return sleep(waitMs).then(() => downloadText(url, destination, attempt + 1));
+  }
+}
+
+function parseJsonPayload(raw) {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    const objectStart = raw.indexOf('{');
+    const objectEnd = raw.lastIndexOf('}');
+    if (objectStart >= 0 && objectEnd > objectStart) return JSON.parse(raw.slice(objectStart, objectEnd + 1));
+    const arrayStart = raw.indexOf('[');
+    const arrayEnd = raw.lastIndexOf(']');
+    if (arrayStart >= 0 && arrayEnd > arrayStart) return JSON.parse(raw.slice(arrayStart, arrayEnd + 1));
+    throw new Error('Resposta do proxy não contém JSON reconhecível.');
   }
 }
 
@@ -336,18 +351,39 @@ async function main() {
       });
       sourceRows = rowsRead;
     } catch (cdnError) {
-      console.warn('[TSE] Pacote oficial CDN indisponível; usando fallback oficial DivulgaCandContas:', cdnError.message);
-      const rawApi = await downloadText(API_URL, apiJson);
-      const parsedApi = JSON.parse(rawApi);
+      console.warn('[TSE] Pacotes oficiais indisponíveis; tentando DivulgaCandContas direto e por proxy:', cdnError.message);
+      const apiAttempts = [
+        { url: API_URL, retrievalMethod: 'official_tse_divulgacandcontas_api', proxyUrl: null },
+        { url: API_PROXY_URL, retrievalMethod: 'official_tse_divulgacandcontas_api_via_reader_proxy', proxyUrl: API_PROXY_URL },
+      ];
+      let apiError = null;
+      let rawApi = null;
+      let apiRetrievalMethod = null;
+      let apiProxyUrl = null;
+
+      for (const attempt of apiAttempts) {
+        try {
+          rawApi = await downloadText(attempt.url, apiJson);
+          apiRetrievalMethod = attempt.retrievalMethod;
+          apiProxyUrl = attempt.proxyUrl;
+          break;
+        } catch (error) {
+          apiError = error;
+          console.warn('[TSE API] falha em ' + attempt.url + ': ' + error.message);
+        }
+      }
+
+      if (!rawApi || !apiRetrievalMethod) throw apiError ?? new Error('Nenhuma rota oficial de candidatos respondeu.');
+      const parsedApi = parseJsonPayload(rawApi);
       const records = findCandidateArray(parsedApi);
       if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
       sourceFileSha256 = createHash('sha256').update(rawApi, 'utf8').digest('hex');
       sourceRows = records.length;
-      retrievalMethod = 'official_tse_divulgacandcontas_api';
+      retrievalMethod = apiRetrievalMethod;
       resourceUrl = API_URL;
       allMatches = selectWatchlist(records);
+      var sourceProxyUrl = apiProxyUrl;
     }
-
     if (!sourceRows) throw new Error('Snapshot inválido: nenhum registro de candidato foi lido.');
 
     const missingWatchlist = WATCHLIST.filter(name => !allMatches.some(candidate => candidate.watchlistName === name));
@@ -382,6 +418,7 @@ async function main() {
         state,
         retrievalMethod,
         resourceUrl,
+        ...(sourceProxyUrl ? { sourceProxyUrl } : {}),
       },
       coverage: 'watchlist',
       watchlist: WATCHLIST,
