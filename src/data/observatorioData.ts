@@ -5,7 +5,7 @@ import { sourceRegistry } from './sourceRegistry';
  * Snapshot inicial do V22, normalizado para o novo domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
- * - tarifa Brasília segue a tabela atual da UTB (R$ 11,45);
+ * - tarifa Brasília segue o valor indicado no levantamento atual (R$ 11,43);
  * - abstenção de 2024 fica separada de votos brancos e nulos;
  * - margem de erro da pesquisa de 400 entrevistas é tratada como teórica,
  *   não como margem oficial, enquanto a ficha técnica não a informar.
@@ -85,7 +85,7 @@ export const observatorioData: ObservatoryData = {
 
   transport: {
     routes: [
-      { id: 'brasilia', label: 'Águas Lindas → Brasília / Plano Piloto', fareBrl: 11.45, regulator: 'Tabela publicada pela UTB', sourceId: 'utb-tarifas' },
+      { id: 'brasilia', label: 'Águas Lindas → Brasília / Plano Piloto', fareBrl: 11.43, regulator: 'Tabela publicada pela UTB', sourceId: 'utb-tarifas' },
       { id: 'taguatinga', label: 'Águas Lindas → Taguatinga', fareBrl: 7.65, regulator: 'ANTT / Taguatur', sourceId: 'antt-entorno-2026' },
       { id: 'ceilandia', label: 'Águas Lindas → Ceilândia', fareBrl: 5.85, regulator: 'ANTT / Taguatur', sourceId: 'antt-entorno-2026' },
     ],
@@ -151,7 +151,7 @@ export const observatorioData: ObservatoryData = {
     { id: 'density', label: 'Densidade 2026 (derivada)', value: 249978 / 191.817, unit: 'hab/km²', status: 'derived', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026', note: 'Estimativa de 2026 ÷ área territorial de 191,817 km²; não é o indicador oficial do Censo.' },
     { id: 'electorate', label: 'Eleitorado 2026', value: 125062, unit: 'eleitores', status: 'snapshot', referenceDate: '2026-07-15', sourceId: 'tse-eleitorado-2026' },
     { id: 'electorateShare', label: 'Razão eleitorado/população', value: (125062 / 249978) * 100, unit: '%', status: 'derived', sourceId: 'tse-eleitorado-2026', note: 'Razão estatística entre universos distintos; não é comparecimento.' },
-    { id: 'fare', label: 'Tarifa Brasília', value: 11.45, unit: 'BRL/trecho', status: 'current', sourceId: 'utb-tarifas' },
+    { id: 'fare', label: 'Tarifa Brasília', value: 11.43, unit: 'BRL/trecho', status: 'current', sourceId: 'utb-tarifas' },
     { id: 'budget', label: 'LOA 2026', value: 771255334.51, unit: 'BRL', status: 'current', sourceId: 'loa-2026' },
     { id: 'companies', label: 'Empresas ativas', value: 20096, unit: 'empresas', status: 'snapshot', sourceId: 'caged-sebrae-2026' },
     { id: 'cagedBalance', label: 'Saldo celetista até jul/2026', value: 762, unit: 'postos', status: 'snapshot', sourceId: 'caged-sebrae-2026' },
