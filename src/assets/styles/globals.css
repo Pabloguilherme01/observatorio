@@ -780,3 +780,105 @@ button,a{touch-action:manipulation}
     transition:none!important;
   }
 }
+
+/* Card refinement v2 */
+@media (max-width: 767px) {
+  .metric-interactive > div,
+  .today-card,
+  .topic-card,
+  .candidate-card,
+  .summary-stat,
+  .summary-evidence {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-interactive > div::after,
+  .today-card::after,
+  .topic-card::after,
+  .candidate-card::after,
+  .summary-stat::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255,255,255,.045), transparent 38%);
+  }
+
+  .metric-interactive > div {
+    min-height: 148px;
+    padding: 16px;
+  }
+
+  .metric-interactive > div .text-3xl {
+    font-size: clamp(1.7rem, 8vw, 2.15rem);
+    letter-spacing: -.045em;
+  }
+
+  .metric-interactive > div > .flex {
+    position: relative;
+    z-index: 1;
+    min-height: 116px;
+  }
+
+  .today-card {
+    min-height: 170px;
+  }
+
+  .today-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .topic-card {
+    min-height: 146px;
+  }
+
+  .topic-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .candidate-card {
+    border-radius: 20px!important;
+  }
+
+  .candidate-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .summary-stat {
+    min-height: 118px;
+  }
+
+  .summary-evidence {
+    box-shadow: 0 8px 24px rgba(0,0,0,.1);
+  }
+
+  .metric-interactive:focus-visible > div,
+  .topic-card:focus-visible,
+  .candidate-card:focus-visible {
+    border-color: rgba(125,211,252,.42)!important;
+    box-shadow: 0 0 0 3px rgba(125,211,252,.09), var(--mobile-shadow);
+  }
+}
+
+@media (max-width: 390px) {
+  .metric-interactive > div {
+    min-height: 142px;
+    padding: 14px;
+  }
+
+  .today-card {
+    min-height: 164px;
+  }
+
+  .topic-card {
+    min-height: 138px;
+  }
+
+  .summary-stat {
+    min-height: 110px;
+  }
+}
