@@ -14,6 +14,7 @@ import { BudgetSection } from '../components/sections/BudgetSection';
 import { DataExportActions } from '../components/DataExportActions';
 import { EvidenceMap } from '../components/sections/EvidenceMap';
 import { ThemeProvider } from '../context/ThemeContext';
+import { DataInsights } from '../components/sections/DataInsights';
 
 export function App() {
   return (
@@ -24,6 +25,7 @@ export function App() {
         <DashboardMetrics />
         <ElectoralProfile />
         <TransportCalculator />
+        <DataInsights />
         <SanitationHealthSection />
         <PoliticalRadar />
         <PoliticalResearch />
