@@ -71,6 +71,11 @@ export function DataQualityPanel() {
           <p className="mt-1 text-xs text-slate-500">Verifique a ficha de cada fonte para o respectivo ano-base.</p>
         </Card>
         <Card className="p-4">
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Snapshot TSE</div>
+          <div className={`mt-2 text-base font-black ${tseReady ? 'text-emerald-300' : 'text-amber-300'}`}>{tseReady ? 'Sincronizado' : 'Aguardando captura'}</div>
+          <p className="mt-1 text-xs text-slate-500">Estado local: {tseState}. Isso não representa ausência de candidaturas na fonte oficial.</p>
+        </Card>
+        <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Regra editorial</div>
           <div className="mt-2 text-base font-black text-white">Sem ranking automático</div>
           <p className="mt-1 text-xs text-slate-500">Comparações documentais não são convertidas em recomendação eleitoral.</p>
