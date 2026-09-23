@@ -1,4 +1,4 @@
-import { Check, Download, ExternalLink, Instagram, Share2, Sparkles } from 'lucide-react';
+import { Camera, Check, Download, ExternalLink, Share2, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
@@ -146,7 +146,7 @@ export function InstagramSyncHub() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
-              <Instagram className="h-3.5 w-3.5" aria-hidden="true" /> Distribuição social
+              <Camera className="h-3.5 w-3.5" aria-hidden="true" /> Distribuição social
             </div>
             <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Instagram conectado ao fluxo de dados</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Escolha um dado, gere um Story ou Post, copie uma legenda factual e use o compartilhamento nativo do celular quando disponível.</p>
@@ -159,7 +159,7 @@ export function InstagramSyncHub() {
         <div className="mt-5 grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
           <div className="instagram-mobile-rail gap-2">
             <div className="instagram-mobile-column">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500">1 · Escolha o dado</div>
+              <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">1 · Escolha o dado</div>
               <div className="mt-3 grid gap-2">
                 {items.map(entry => (
                   <button key={entry.id} type="button" onClick={() => setSelectedId(entry.id)} aria-pressed={selectedId === entry.id} className={'rounded-2xl border p-3 text-left ' + (selectedId === entry.id ? 'border-sky-300/25 bg-sky-300/10' : 'border-white/8 bg-white/[0.02]')}>
@@ -171,7 +171,7 @@ export function InstagramSyncHub() {
             </div>
 
             <div className="instagram-mobile-column">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500">2 · Formato</div>
+              <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">2 · Formato</div>
               <div className="mt-3 flex flex-wrap gap-2">
                 <button type="button" onClick={() => setFormat('story')} aria-pressed={format === 'story'} className={'min-h-11 rounded-xl border px-3 py-2 text-xs font-bold ' + (format === 'story' ? 'border-sky-300/25 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400')}>Story · 1080×1920</button>
                 <button type="button" onClick={() => setFormat('post')} aria-pressed={format === 'post'} className={'min-h-11 rounded-xl border px-3 py-2 text-xs font-bold ' + (format === 'post' ? 'border-sky-300/25 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400')}>Post · 1080×1350</button>
