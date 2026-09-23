@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Observatório Águas Lindas 2026" />
+    <meta name="apple-mobile-web-app-title" content="Observatório Águas Lindas 2026" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="keywords" content="Águas Lindas de Goiás, dados eleitorais 2026, eleitorado, orçamento municipal, transporte, saneamento, transparência pública" />
     <meta name="theme-color" content="#0d1117" />
@@ -20,6 +22,8 @@
     <meta property="og:title" content="Observatório Eleitoral — Águas Lindas de Goiás 2026" />
     <meta property="og:description" content="Dados públicos, fontes rastreáveis, contexto comparativo e caminhos oficiais para aprofundar a fiscalização cívica." />
     <meta property="og:image" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
+    <meta property="og:image:url" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
+    <meta property="og:image:secure_url" content="https://pabloguilherme01.github.io/observatorio/og-cover.svg" />
     <meta property="og:image:alt" content="Observatório Eleitoral de Águas Lindas de Goiás 2026" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -39,6 +43,8 @@
             : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
           document.documentElement.classList.toggle("light", theme === "light");
           document.documentElement.style.colorScheme = theme;
+          const themeColor = document.querySelector('meta[name="theme-color"]');
+          if (themeColor) themeColor.content = theme === "light" ? "#f5f7fa" : "#0b1117";
         } catch {}
       })();
     </script>
