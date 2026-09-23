@@ -167,6 +167,51 @@ export function DashboardMetrics() {
         </div>
       )}
       {languageMode === 'technical' && (
+        <>
+          <div className="technical-detail mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300/80">Contexto quantitativo</div>
+                <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Indicadores adicionais</h3>
+                <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Mais números para análise. Cada cartão mantém ano-base, fonte e possibilidade de abrir o inspetor.</p>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'snapshot 2026', 'caged-sebrae-2026'],
+                ['Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
+                ['IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
+                ['IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
+                ['Salário formal médio', formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', '2024', 'ibge-cidades-2026'],
+                ['Investimento em saneamento', 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2024', 'sinisa-2024'],
+                ['Internações ligadas à água', formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), '2024', 'sinisa-2024'],
+                ['Óbitos ligados à água', formatNumber(Number(municipalIndicator('water-related-deaths'))), '2024', 'sinisa-2024'],
+                ['Matrículas básicas', formatNumber(Number(municipalIndicator('basic-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
+                ['Matrículas municipais', formatNumber(Number(municipalIndicator('municipal-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
+                ['EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
+                ['Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
+              ].map(([label,value,year,sourceId]) => (
+                <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
+                  <div className="text-xs font-semibold text-slate-500">{label}</div>
+                  <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
+                  <div className="mt-1 text-[11px] text-slate-500">{year}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="technical-detail mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80">Leitura metodológica</div>
+              <p className="mt-2 text-xs leading-5 text-slate-400">Os valores podem vir de censo, estimativa, snapshot ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
+            </div>
+            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
+              <p className="mt-2 text-xs leading-5 text-slate-400">O recorte local registra 125.062 eleitores, enquanto o consolidado indicado no modelo é 125.501. A diferença é exibida como reconciliação, não como erro automático.</p>
+            </div>
+          </div>
+        </>
+      )}
+      {languageMode === 'technical' && (
         <div className="technical-detail mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
             <div>
