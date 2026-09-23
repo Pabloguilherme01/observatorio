@@ -10,7 +10,17 @@ const warnings = [];
 if (payload.schemaVersion !== 2) errors.push('schemaVersion deve ser 2.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
-if (!payload.meta?.sourceFileSha256 || !/^[a-f0-9]{64}$/i.test(payload.meta.sourceFileSha256)) errors.push('SHA-256 da fonte ausente ou inválido.');
+const state = payload.meta?.state;
+const sha = payload.meta?.sourceFileSha256;
+const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
+
+if (state === 'not_synced') {
+  if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
+  if (requireSynced) errors.push('Placeholder não pode passar quando REQUIRE_TSE_SYNC=true.');
+} else if (!validSha) {
+  errors.push('SHA-256 da fonte ausente ou inválido.');
+}
+
 if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.meta.sourceRows <= 0)) errors.push('sourceRows inválido.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
 
@@ -22,9 +32,8 @@ for (const candidate of payload.matched ?? []) {
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
 }
 
-if (payload.meta?.state === 'not_synced') {
-  if (requireSynced) errors.push('Placeholder não pode passar quando REQUIRE_TSE_SYNC=true.');
-  else warnings.push('Snapshot TSE ainda não sincronizado; qualidade estrutural validada sem promover o placeholder a dado eleitoral.');
+if (state === 'not_synced' && !requireSynced) {
+  warnings.push('Snapshot TSE ainda não sincronizado; qualidade estrutural validada sem promover o placeholder a dado eleitoral.');
 }
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
 if (!payload.meta?.workflowRunId && process.env.CI) warnings.push('workflowRunId não informado; execução manual detectada.');
