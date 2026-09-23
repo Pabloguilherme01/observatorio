@@ -32,7 +32,7 @@ export function TimelineProcessual() {
             {processualData.processos.map(processo => (
               <article key={processo.numeroProcesso} className="border-l border-white/10 pl-4">
                 <div className="text-xs font-black text-white">{processo.numeroProcesso}</div>
-                <div className="mt-1 text-xs text-slate-400">{processo.classe} · {processo.assunto}</div>
+                <div className="mt-1 text-xs text-slate-400">{processo.classe} · {processo.assunto}</div><div className="mt-1 text-[10px] font-bold uppercase tracking-wide text-slate-600">{processo.escopo}</div>
                 <div className="mt-3 space-y-3">
                   {processo.timeline.map(evento => (
                     <div key={evento.data + evento.tipo} className="rounded-xl border border-white/8 bg-white/[0.02] p-3">
