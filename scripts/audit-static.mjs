@@ -15,6 +15,7 @@ const app = read('src/app/App.tsx');
 const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
 const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
+const syncWorkflow = read('.github/workflows/sync-tse-candidates.yml');
 
 const errors = [];
 const pass = (message) => console.log('PASS', message);
@@ -38,6 +39,8 @@ must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'site
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 const pkgScripts = packageJson.scripts ?? {};
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra a auditoria de acessibilidade');
+must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
+must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow automatiza captura e validação do snapshot TSE');
 must(app.includes('<DataQualityPanel />') && app.includes('<EvidenceChain />'), 'camadas de qualidade e evidências estão montadas no App');
 must(app.includes('<CivicActionHub />') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
 must(app.includes('<AudienceHub />') && app.includes('<InstagramSyncHub />') && app.includes('<ProjectTrustPanel />') && app.includes('<SnapshotChanges />'), 'descoberta, Instagram, confiança e radar estão montados no primeiro fluxo');
