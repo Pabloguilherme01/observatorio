@@ -144,3 +144,13 @@ export function listFiles(root: string): string[] {
   }
   return output.sort();
 }
+
+
+export function normalizeLabel(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toUpperCase();
+}
