@@ -31,6 +31,7 @@ npm run dev
 
 ```bash
 npm run audit:static
+npm run audit:a11y
 npm run typecheck
 npm run validate:observatorio
 npm run validate:tse
