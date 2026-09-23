@@ -14,6 +14,7 @@ export function DataQualityPanel() {
   return (
     <section id="qualidade" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="quality-title">
       <SectionHeader
+        titleId="quality-title"
         eyebrow="Qualidade"
         title="Proveniência antes de interpretação"
         description="O observatório separa dado atual, snapshot, histórico e cálculo derivado. A data abaixo é a última atualização do conjunto local, não uma promessa de atualização automática das fontes."
