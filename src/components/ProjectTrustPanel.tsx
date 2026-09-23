@@ -3,10 +3,12 @@ import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
 import { formatDate } from '../utils/formatters';
 import { METHODOLOGY_BREAKS } from '../data/methodologyBreaks';
+import { useLanguageMode } from '../context/LanguageModeContext';
 
 const correctionUrl = 'https://github.com/Pabloguilherme01/observatorio/issues/new?title=Corre%C3%A7%C3%A3o%20de%20dado%20ou%20fonte&labels=correcao';
 
 export function ProjectTrustPanel() {
+  const { mode } = useLanguageMode();
   const official = d.sources.filter(source => source.nature === 'official').length;
   return (
     <section id="principios" className="mx-auto max-w-7xl px-4 pb-10 sm:px-6" aria-labelledby="principles-title">
@@ -51,20 +53,24 @@ export function ProjectTrustPanel() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-amber-400/10 bg-amber-400/[0.025] px-4 py-3 text-xs leading-5 text-slate-500">
-          <strong className="text-amber-200">Quebras metodológicas registradas:</strong>
-          <div className="mt-2 space-y-1.5">
-            {METHODOLOGY_BREAKS.map(item => (
-              <p key={item.id}>
-                {item.fonte} · {item.aviso}{' '}
-                <a href={item.fonteUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-sky-300">Ver metodologia</a>
-              </p>
-            ))}
-          </div>
-        </div>
-        <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
-          <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado. Para decisões e providências, consulte a fonte oficial correspondente.
-        </div>
+        {mode === 'technical' && (
+          <>
+                    <div className="mt-4 rounded-2xl border border-amber-400/10 bg-amber-400/[0.025] px-4 py-3 text-xs leading-5 text-slate-500">
+                      <strong className="text-amber-200">Quebras metodológicas registradas:</strong>
+                      <div className="mt-2 space-y-1.5">
+                        {METHODOLOGY_BREAKS.map(item => (
+                          <p key={item.id}>
+                            {item.fonte} · {item.aviso}{' '}
+                            <a href={item.fonteUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-sky-300">Ver metodologia</a>
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
+                      <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado. Para decisões e providências, consulte a fonte oficial correspondente.
+                    </div>
+          </>
+        )}
       </div>
     </section>
   );
