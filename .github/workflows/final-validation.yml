@@ -152,7 +152,7 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
       - name: E2E
-        run: npx playwright test tests/e2e/observatorio.spec.ts || { echo '::error::Playwright E2E falhou em um dos cinco viewports.'; exit 1; }
+        run: npx playwright test tests/e2e || { echo '::error::Playwright E2E/mobile UX falhou.'; exit 1; }
       - name: Visual regression
         run: npx playwright test tests/visual/visual.spec.ts || { echo '::error::Visual regression falhou. Atualize snapshots apenas com justificativa.'; exit 1; }
       - uses: actions/upload-artifact@v4
