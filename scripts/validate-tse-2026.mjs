@@ -45,6 +45,10 @@ for (const candidate of payload.matched ?? []) {
   if (ids.has(candidate.sqCandidate)) errors.push('SQ_CANDIDATO duplicado: ' + candidate.sqCandidate);
   ids.add(candidate.sqCandidate);
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
+  if (isMunicipalitySnapshot && state !== 'local_filter_pending') {
+    if (candidate.municipality !== 'Águas Lindas de Goiás') errors.push('Candidato municipal sem município validado: ' + candidate.sqCandidate);
+    if (candidate.municipalityCodeTse !== '92737') errors.push('Candidato municipal sem código TSE validado: ' + candidate.sqCandidate);
+  }
 }
 
 if ((state === 'not_synced' || state === 'local_filter_pending') && !requireSynced) {
