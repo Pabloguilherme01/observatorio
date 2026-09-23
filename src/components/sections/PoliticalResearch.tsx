@@ -84,6 +84,7 @@ export function PoliticalResearch() {
 
 function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
   const hasInstagram = Boolean(candidate.instagramUrl);
+  const { mode } = useLanguageMode();
   return (
     <Card className="candidate-card overflow-hidden border-white/10 bg-white/[0.02] p-0">
       <div className="flex gap-4 p-5 sm:p-6">
