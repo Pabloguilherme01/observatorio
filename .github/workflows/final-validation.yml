@@ -126,7 +126,7 @@ jobs:
 
   e2e:
     name: 5 · Playwright E2E + visual
-    needs: build
+    needs: lighthouse
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -149,7 +149,7 @@ jobs:
 
   axe:
     name: 6 · axe-core runtime
-    needs: build
+    needs: e2e
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -196,14 +196,41 @@ jobs:
               e2e: '${{ needs.e2e.result }}',
               axe: '${{ needs.axe.result }}'
             },
+            evidence: {
+              lighthouseScores: null,
+              playwright: null,
+              axe: null
+            },
             success: ['typecheck','ingest','build','lighthouse','e2e','axe'].every(key => {
-              const values = { typecheck: '${{ needs.typecheck.result }}', ingest: '${{ needs.ingest.result }}', build: '${{ needs.build.result }}', lighthouse: '${{ needs.lighthouse.result }}', e2e: '${{ needs.e2e.result }}', axe: '${{ needs.axe.result }}' };
+              const values = {
+                typecheck: '${{ needs.typecheck.result }}',
+                ingest: '${{ needs.ingest.result }}',
+                build: '${{ needs.build.result }}',
+                lighthouse: '${{ needs.lighthouse.result }}',
+                e2e: '${{ needs.e2e.result }}',
+                axe: '${{ needs.axe.result }}'
+              };
               return values[key] === 'success';
             })
           };
           const lh = 'validation-artifacts/lighthouse-report/lighthouse-scores.json';
-          if (fs.existsSync(lh)) report.lighthouseEvidence = JSON.parse(fs.readFileSync(lh,'utf8'));
-          fs.writeFileSync('validation-report.json', JSON.stringify(report,null,2) + '\n');
+          const pw = 'validation-artifacts/playwright-results/playwright-report.json';
+          const axeDir = 'validation-artifacts/axe-report';
+
+          if (fs.existsSync(lh)) report.evidence.lighthouseScores = JSON.parse(fs.readFileSync(lh, 'utf8'));
+          if (fs.existsSync(pw)) report.evidence.playwright = JSON.parse(fs.readFileSync(pw, 'utf8'));
+          if (fs.existsSync(axeDir)) {
+            const axeFiles = fs.readdirSync(axeDir).filter(file => file.startsWith('axe-') && file.endsWith('.json'));
+            report.evidence.axe = {
+              reportFiles: axeFiles.length,
+              violations: axeFiles.flatMap(file => {
+                const payload = JSON.parse(fs.readFileSync(axeDir + '/' + file, 'utf8'));
+                return Array.isArray(payload.violations) ? payload.violations.map(item => item.id) : [];
+              })
+            };
+          }
+
+          fs.writeFileSync('validation-report.json', JSON.stringify(report, null, 2) + '\n');
           console.log(JSON.stringify(report,null,2));
           NODE
       - uses: actions/upload-artifact@v4
