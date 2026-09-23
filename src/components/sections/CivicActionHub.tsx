@@ -1,4 +1,4 @@
-import { ClipboardCheck, ExternalLink, FileQuestion, Landmark, MessageCircle, Scale } from 'lucide-react';
+import { ClipboardCheck, ExternalLink, FileQuestion, Landmark, MessageCircle, Scale, Smartphone, SearchCheck } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
@@ -30,6 +30,27 @@ const actions = [
     description: 'O TCMGO mantém Ouvidoria e SIC para solicitações, reclamações e comunicações relacionadas ao controle municipal.',
     href: 'https://www.tcmgo.tc.br/site/ouvidoria/',
     cta: 'Acessar Ouvidoria TCMGO',
+  },
+  {
+    icon: Smartphone,
+    title: 'Usar o e-Título',
+    description: 'Aplicativo oficial da Justiça Eleitoral para serviços como título digital, local de votação, justificativa e certidões.',
+    href: 'https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo',
+    cta: 'Abrir e-Título',
+  },
+  {
+    icon: SearchCheck,
+    title: 'Consultar candidaturas e contas',
+    description: 'O TSE disponibiliza o DivulgaCandContas para consultar candidaturas, situação de registro e informações de contas eleitorais.',
+    href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
+    cta: 'Abrir página oficial das Eleições 2026',
+  },
+  {
+    icon: Smartphone,
+    title: 'Consultar o Pardal',
+    description: 'Ferramenta oficial do TSE para encaminhar e acompanhar denúncias de propaganda eleitoral irregular.',
+    href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Agosto/pardal-ja-esta-disponivel-para-denuncias-de-irregularidades-na-propaganda-eleitoral',
+    cta: 'Ver instruções do TSE',
   },
   {
     icon: MessageCircle,
