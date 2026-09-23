@@ -14,6 +14,7 @@ export default defineConfig({
         name: 'Observatório Águas Lindas 2026',
         short_name: 'Obs 2026',
         description: 'Observatório público de dados eleitorais e municipais de Águas Lindas de Goiás.',
+        id: 'observatorio-aguas-lindas-2026-v271',
         theme_color: '#0d1117',
         background_color: '#0d1117',
         display: 'standalone',
@@ -33,7 +34,7 @@ export default defineConfig({
             urlPattern: ({ request }) => ['script', 'style', 'image', 'font'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'observatorio-static-assets',
+              cacheName: 'observatorio-static-assets-v271',
               expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
