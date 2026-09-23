@@ -44,6 +44,14 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
   },
   {
+    id: 'tse-resultados-2026',
+    label: 'TSE — Divulgação de resultados 2026',
+    institution: 'Tribunal Superior Eleitoral',
+    url: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados',
+    nature: 'official',
+    note: 'Documentação técnica para divulgação de resultados, arquivos de acompanhamento e ambiente oficial. A integração de produção deve seguir as URLs e códigos publicados pelo TSE.',
+  },
+  {
     id: 'tse-calendario-2026',
     label: 'TSE — Calendário Eleitoral 2026',
     institution: 'Tribunal Superior Eleitoral',
