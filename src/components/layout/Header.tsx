@@ -1,5 +1,5 @@
 import { Menu, Moon, Search, Sun, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SearchModal } from './SearchModal';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -50,7 +50,7 @@ export function Header() {
         {menuOpen && (
           <nav id="mobile-navigation" className="border-t border-white/10 px-4 py-2 lg:hidden" aria-label="Navegação móvel">
             {links.map(([label, id]) => (
-              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} className="block rounded-xl px-3 py-3 text-sm font-semibold text-slate-300 hover:bg-white/5 hover:text-white">
+              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)} className={'block rounded-xl px-3 py-3 text-sm font-semibold transition ' + (activeSection === id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')}>
                 {label}
               </a>
             ))}
