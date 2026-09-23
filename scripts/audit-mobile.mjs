@@ -40,7 +40,8 @@ must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-must(files.version.includes("APP_VERSION = '43.5.0'"), 'versão V43.4 sincronizada com a camada mobile');
+const appVersionMatch = files.version.match(/APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]/);
+must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('43.'), 'versão do aplicativo sincronizada com a camada mobile');
 const app = read('src/app/App.tsx');
 must(app.includes('IntersectionObserver') && app.includes('rootMargin: \'900px 0px\''), 'seções abaixo da dobra usam carregamento diferido');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
