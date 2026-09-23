@@ -25,7 +25,22 @@ const generatedData = generated as {
   };
 };
 
-const candidateStatus = generatedData.meta.state === 'not_synced' ? 'pending' : 'captured';
+const candidateStatus = (() => {
+  switch (generatedData.meta.state) {
+    case 'first_capture':
+    case 'synced':
+    case 'unchanged':
+    case 'changed':
+      return 'captured' as const;
+    case 'stale':
+      return 'pending' as const;
+    case 'failed':
+      return 'error' as const;
+    case 'not_synced':
+    default:
+      return 'pending' as const;
+  }
+})();
 const snapshotDate = generatedData.meta.downloadedAt ? generatedData.meta.downloadedAt.slice(0, 10) : '—';
 
 export const electoral360Modules: readonly Electoral360Module[] = [
