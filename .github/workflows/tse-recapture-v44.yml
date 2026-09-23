@@ -1,6 +1,9 @@
 name: TSE recapture · branch fixes
 
 on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
   push:
     branches:
