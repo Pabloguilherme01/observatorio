@@ -1,4 +1,4 @@
-import { Landmark, TrendingUp } from 'lucide-react';
+import { Landmark, TrendingUp } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { dispatchInspect } from '../DataInspector';
 import { formatCurrency, formatPercent } from '../../utils/formatters';

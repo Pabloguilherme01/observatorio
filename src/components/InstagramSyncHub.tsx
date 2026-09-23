@@ -1,4 +1,4 @@
-import { Camera, Check, Download, ExternalLink, Share2, Sparkles } from 'lucide-react';
+import { Camera, Check, Download, ExternalLink, Share2, Sparkles } from '../components/icons.mjs';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';

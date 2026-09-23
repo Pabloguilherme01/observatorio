@@ -1,4 +1,4 @@
-import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck } from '../components/icons.mjs';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
 import { formatDate } from '../utils/formatters';

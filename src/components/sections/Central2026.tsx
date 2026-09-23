@@ -1,4 +1,4 @@
-import { CalendarDays, ExternalLink, MapPin, MessageCircle, ShieldAlert } from 'lucide-react';
+import { CalendarDays, ExternalLink, MapPin, MessageCircle, ShieldAlert } from '../../components/icons.mjs';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 

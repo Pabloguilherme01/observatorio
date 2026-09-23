@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from 'lucide-react';
+import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Check, Share2 } from 'lucide-react';
+import { Check, Share2 } from '../components/icons.mjs';
 import { useState } from 'react';
 
 interface ShareDataButtonProps {

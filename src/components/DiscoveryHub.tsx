@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Database, Search, Sparkles } from 'lucide-react';
+import { ArrowRight, BarChart3, Database, Search, Sparkles } from '../components/icons.mjs';
 import { navigation } from '../config/navigation';
 
 const cards = [

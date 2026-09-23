@@ -1,4 +1,4 @@
-import { Compass, FileSearch, Home, Menu, Search } from 'lucide-react';
+import { Compass, FileSearch, Home, Menu, Search } from '../../components/icons.mjs';
 import { useEffect, useState } from 'react';
 
 const items = [

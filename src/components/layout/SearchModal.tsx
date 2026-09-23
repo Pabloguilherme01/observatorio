@@ -1,4 +1,4 @@
-import { Search, X } from 'lucide-react';
+import { Search, X } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useEffect, useMemo, useRef, useState } from 'react';
 

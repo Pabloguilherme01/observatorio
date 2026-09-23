@@ -1,4 +1,4 @@
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp } from '../../components/icons.mjs';
 import { useEffect, useState } from 'react';
 
 export function ScrollTopButton() {

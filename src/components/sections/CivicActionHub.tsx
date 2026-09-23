@@ -1,4 +1,4 @@
-import { ClipboardCheck, ExternalLink, FileQuestion, Landmark, MessageCircle, Scale, Smartphone, SearchCheck } from 'lucide-react';
+import { ClipboardCheck, ExternalLink, FileQuestion, Landmark, MessageCircle, Scale, Smartphone, SearchCheck } from '../../components/icons.mjs';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 

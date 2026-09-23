@@ -1,4 +1,4 @@
-import { Users, TrendingUp } from 'lucide-react';
+import { Users, TrendingUp } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber } from '../../utils/formatters';
 import { Card } from '../ui/Card';

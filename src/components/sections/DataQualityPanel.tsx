@@ -1,4 +1,4 @@
-import { CheckCircle2, Database, Link2, TriangleAlert } from 'lucide-react';
+import { CheckCircle2, Database, Link2, TriangleAlert } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';

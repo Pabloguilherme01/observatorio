@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Activity, Gauge, Map, Users } from 'lucide-react';
+import { Activity, Gauge, Map, Users } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';

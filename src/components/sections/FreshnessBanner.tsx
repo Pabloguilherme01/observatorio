@@ -1,4 +1,4 @@
-import { Clock3, RefreshCw } from 'lucide-react';
+import { Clock3, RefreshCw } from '../../components/icons.mjs';
 import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';

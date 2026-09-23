@@ -1,5 +1,5 @@
 import type { SourceRef } from '../types/observatorio';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink } from '../components/icons.mjs';
 
 interface Props {
   readonly source: SourceRef;

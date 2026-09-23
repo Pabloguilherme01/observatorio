@@ -1,4 +1,4 @@
-import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from 'lucide-react';
+import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from '../../components/icons.mjs';
 import generated from '../../data/generated/tse2026-candidates.json';
 
 export function SnapshotChanges() {

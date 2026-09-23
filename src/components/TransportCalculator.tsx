@@ -1,4 +1,4 @@
-import { BusFront, Coins, ExternalLink, Share2, Users } from 'lucide-react';
+import { BusFront, Coins, ExternalLink, Share2, Users } from '../components/icons.mjs';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { calculateTransportCost, formatBRL } from '../lib/transport';

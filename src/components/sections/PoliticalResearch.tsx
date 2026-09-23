@@ -1,4 +1,4 @@
-import { Database, ExternalLink } from 'lucide-react';
+import { Database, ExternalLink } from '../../components/icons.mjs';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';

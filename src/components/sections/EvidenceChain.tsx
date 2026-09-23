@@ -1,4 +1,4 @@
-import { Database, FileCheck2, Fingerprint, Link2, ShieldCheck } from 'lucide-react';
+import { Database, FileCheck2, FingerprintPattern, Link2, ShieldCheck } from '../../components/icons.mjs';
 import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import generated from '../../data/generated/tse2026-candidates.json';
@@ -59,7 +59,7 @@ export function EvidenceChain() {
 
         <Card>
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-            <Fingerprint className="h-4 w-4 text-sky-300" aria-hidden="true" /> Integridade
+            <FingerprintPattern className="h-4 w-4 text-sky-300" aria-hidden="true" /> Integridade
           </div>
           <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Prova material da captura</h3>
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">

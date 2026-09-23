@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Fingerprint, UserRound, UsersRound } from 'lucide-react';
+import { FingerprintPattern, UserRound, UsersRound } from '../../components/icons.mjs';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber } from '../../utils/formatters';
 import { Card } from '../ui/Card';
@@ -53,7 +53,7 @@ export function ElectoralProfile() {
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-white/8 p-4"><UserRound className="mb-2 h-4 w-4 text-sky-300" aria-hidden="true" /><strong className="block text-white">{(d.electoral.womenPct ?? 0).toFixed(2).replace('.', ',')}%</strong><span className="text-xs text-slate-500">mulheres</span></div>
           <div className="rounded-2xl border border-white/8 p-4"><UsersRound className="mb-2 h-4 w-4 text-sky-300" aria-hidden="true" /><strong className="block text-white">{(d.electoral.menPct ?? 0).toFixed(2).replace('.', ',')}%</strong><span className="text-xs text-slate-500">homens</span></div>
-          <div className="rounded-2xl border border-white/8 p-4"><Fingerprint className="mb-2 h-4 w-4 text-sky-300" aria-hidden="true" /><strong className="block text-white">{formatNumber(d.electoral.socialNameCount ?? 0)}</strong><span className="text-xs text-slate-500">nome social</span></div>
+          <div className="rounded-2xl border border-white/8 p-4"><FingerprintPattern className="mb-2 h-4 w-4 text-sky-300" aria-hidden="true" /><strong className="block text-white">{formatNumber(d.electoral.socialNameCount ?? 0)}</strong><span className="text-xs text-slate-500">nome social</span></div>
         </div>
       </Card>
       <Card>

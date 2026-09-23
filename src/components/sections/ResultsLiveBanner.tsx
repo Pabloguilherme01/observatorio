@@ -1,4 +1,4 @@
-import { ExternalLink, Radio, RefreshCw, ShieldCheck } from 'lucide-react';
+import { ExternalLink, Radio, RefreshCw, ShieldCheck } from '../../components/icons.mjs';
 import { useResultsFeed } from '../../hooks/useResultsFeed';
 
 const RESULTS_DOCS_URL = 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados';

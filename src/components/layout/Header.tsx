@@ -1,4 +1,4 @@
-import { Command, Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { Command, Menu, Moon, Search, Sun, X } from '../icons.mjs';
 import { useEffect, useState } from 'react';
 import { SearchModal } from './SearchModal';
 import { useTheme } from '../../context/ThemeContext';
