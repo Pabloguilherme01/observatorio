@@ -49,14 +49,14 @@ export function DataExportActions() {
   };
 
   const exportCsv = () => {
-    downloadBlob('observatorio-aguas-lindas-v32.csv', toCsv(rows), 'text/csv;charset=utf-8');
-    flash('CSV V32 exportado');
+    downloadBlob('observatorio-aguas-lindas-v33.csv', toCsv(rows), 'text/csv;charset=utf-8');
+    flash('CSV V33 exportado');
   };
 
   const copyMetadata = async () => {
     const metadata = JSON.stringify({
       edition: d.meta.edition,
-      datasetVersion: 'V32',
+      datasetVersion: 'V33',
       municipality: d.meta.municipality,
       updatedAt: d.meta.updatedAt,
       sources: d.sources.map(source => ({
@@ -83,9 +83,9 @@ export function DataExportActions() {
     ctx.fillText('R$ ' + d.transport.routes[0].fareBrl.toFixed(2).replace('.', ','), 70, 520);
     ctx.fillStyle = '#94a3b8'; ctx.font = '28px Inter, sans-serif';
     ctx.fillText('Dados públicos • fontes identificadas', 70, 1750);
-    ctx.fillText('V32', 70, 1800);
+    ctx.fillText('V33', 70, 1800);
     canvas.toBlob(blob => {
-      if (blob) { downloadBlob('observatorio-aguas-lindas-v32-story.png', blob, 'image/png'); flash('Story V32 gerado'); }
+      if (blob) { downloadBlob('observatorio-aguas-lindas-v33-story.png', blob, 'image/png'); flash('Story V33 gerado'); }
       else flash('Não foi possível gerar o Story');
     });
   };
