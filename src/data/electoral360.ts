@@ -17,6 +17,12 @@ const generatedData = generated as {
     party: string | null;
     office: string | null;
     status: string | null;
+    municipality?: string;
+    municipalityCodeTse?: string;
+    municipalityCodeIbge?: string;
+    photoUrl?: string | null;
+    instagramUrl?: string | null;
+    sourceResource?: string;
   }>;
   diff: {
     state: string;
@@ -120,6 +126,12 @@ export const electoral360Snapshot: Electoral360Snapshot = {
     status: candidate.status ?? '—',
     snapshotDate,
     sourceId: 'tse-candidatos-2026',
+    municipality: candidate.municipality,
+    municipalityCodeTse: candidate.municipalityCodeTse,
+    municipalityCodeIbge: candidate.municipalityCodeIbge,
+    photoUrl: candidate.photoUrl,
+    instagramUrl: candidate.instagramUrl,
+    sourceResource: candidate.sourceResource,
   })),
 };
 
