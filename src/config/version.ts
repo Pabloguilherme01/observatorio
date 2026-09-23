@@ -1,3 +1,3 @@
-export const APP_VERSION = '43.1.0' as const;
+export const APP_VERSION = '43.2.0' as const;
 export const EDITION = 'V43' as const;
 export const STORAGE_NAMESPACE = 'observatorio-v43' as const;
