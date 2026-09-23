@@ -13,6 +13,8 @@ if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
 const state = payload.meta?.state;
 const sha = payload.meta?.sourceFileSha256;
+const allowedStates = new Set(['not_synced', 'first_capture', 'unchanged', 'changed']);
+if (!allowedStates.has(state)) errors.push('state do snapshot inválido: ' + String(state));
 const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 
 if (state === 'not_synced') {
@@ -23,6 +25,7 @@ if (state === 'not_synced') {
 }
 
 if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.meta.sourceRows <= 0)) errors.push('sourceRows inválido.');
+if (!Array.isArray(payload.watchlist) || payload.watchlist.length !== 10) errors.push('watchlist deve conter exatamente 10 nomes monitorados.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
 
 const ids = new Set();
@@ -37,6 +40,17 @@ if (state === 'not_synced' && !requireSynced) {
   warnings.push('Snapshot TSE ainda não sincronizado; qualidade estrutural validada sem promover o placeholder a dado eleitoral.');
 }
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
+
+if (state !== 'not_synced') {
+  const normalize = value => String(value ?? '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+  const names = payload.matched.map(candidate => normalize(candidate.name));
+  for (const expected of payload.watchlist ?? []) {
+    const normalizedExpected = normalize(expected);
+    if (!names.some(name => name.includes(normalizedExpected))) {
+      errors.push('Watchlist sem correspondência TSE: ' + expected);
+    }
+  }
+}
 if (!payload.meta?.workflowRunId && process.env.CI) warnings.push('workflowRunId não informado; execução manual detectada.');
 
 if (errors.length) {
