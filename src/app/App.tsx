@@ -30,22 +30,26 @@ function Deferred({ children }: { readonly children: ReactNode }) {
   );
 }
 
-function scrollToHash(hash: string) {
-  if (!hash) return;
+function performHashScroll(hash: string) {
+  if (!hash) return false;
+  const target = document.getElementById(hash);
+  if (!target) return false;
   const reduceMotion = document.documentElement.classList.contains('reduced-motion')
     || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  target.scrollIntoView({
+    behavior: reduceMotion ? 'auto' : 'smooth',
+    block: 'start',
+  });
+  return true;
+}
+
+function scrollToHash(hash: string) {
+  if (!hash) return;
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
   let attempts = 0;
   const scroll = () => {
-    const target = document.getElementById(hash);
-    if (target) {
-      target.scrollIntoView({
-        behavior: reduceMotion ? 'auto' : 'smooth',
-        block: 'start',
-      });
-      return;
-    }
-    if (attempts >= 12) return;
+    if (performHashScroll(hash)) return;
+    if (attempts >= 18) return;
     attempts += 1;
     window.setTimeout(scroll, 80);
   };
@@ -101,7 +105,11 @@ function DeferredBlock({
     if (!ready) return;
     const hash = window.location.hash.slice(1);
     if (!anchorIds.includes(hash)) return;
-    const frame = window.requestAnimationFrame(() => scrollToHash(hash));
+    const frame = window.requestAnimationFrame(() => {
+      // O App já anunciou a navegação. Quando o bloco tardio monta, apenas
+      // completa a rolagem, sem disparar o evento novamente.
+      performHashScroll(hash);
+    });
     return () => window.cancelAnimationFrame(frame);
   }, [ready, anchorIds]);
 
