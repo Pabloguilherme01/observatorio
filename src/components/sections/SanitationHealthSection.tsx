@@ -182,7 +182,7 @@ export function SanitationHealthSection() {
               <span className="text-xs text-slate-500">leitos planejados no dataset</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">+{formatNumber(d.health.plannedBeds ? d.health.plannedBeds - d.health.openingReportedBeds : 0)}</strong>
+              <strong className="block text-white light:text-slate-900">+{formatNumber(plannedBeds - d.health.openingReportedBeds)}</strong>
               <span className="text-xs text-slate-500">leitos vs. referência de inauguração</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
