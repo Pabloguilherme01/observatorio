@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT, electionCodeMatchesCargo } from '../data/resultsConfig';
 
-export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'complete' | 'ended_unavailable';
+export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'stale' | 'complete' | 'ended_unavailable';
 
 export interface ResultsFeedItem {
   readonly municipality?: string;
@@ -13,12 +14,15 @@ export interface ResultsFeedItem {
 }
 
 export interface ResultsFeed {
-  readonly schemaVersion: 1;
+  readonly schemaVersion: 2;
+  readonly environment: 'official';
+  readonly scope: 'municipality';
   readonly state: 'pending' | 'live' | 'complete';
   readonly source: 'official-tse';
   readonly sourceUrl: string;
   readonly sourceFile: string;
-  readonly electionCode: number;
+  readonly pleito: 3220;
+  readonly electionCode: 6257 | 6259 | 6261;
   readonly turn: 1 | 2;
   readonly uf: 'GO';
   readonly municipalityCode: string;
@@ -30,12 +34,12 @@ export interface ResultsFeed {
   readonly integrity?: {
     readonly sha256?: string;
     readonly jwsVerified?: boolean;
+    readonly signatureStatus?: 'verified' | 'not_verified' | 'unavailable';
   };
 }
 
-const FEED_URL = '/observatorio/data/tse-results.json';
-const RESULTS_WINDOW_START = new Date('2026-09-30T00:00:00-03:00').getTime();
-const RESULTS_WINDOW_END = new Date('2026-10-26T06:00:00-03:00').getTime();
+const RESULTS_WINDOW_START = new Date(RESULTS_WINDOW.start).getTime();
+const RESULTS_WINDOW_END = new Date(RESULTS_WINDOW.end).getTime();
 const VALID_STATES = new Set<ResultsFeed['state']>(['pending', 'live', 'complete']);
 
 export function isResultsWindowOpen(now = Date.now()) {
@@ -46,7 +50,10 @@ function getResultsFeedPhase(data: ResultsFeed | null, now = Date.now()): Result
   if (data?.state === 'complete') return 'complete';
   if (now < RESULTS_WINDOW_START) return 'pre_open';
   if (now > RESULTS_WINDOW_END) return 'ended_unavailable';
-  if (data?.state === 'live') return 'live';
+  if (data?.state === 'live') {
+    const capturedAt = Date.parse(data.capturedAt);
+    return Number.isFinite(capturedAt) && now - capturedAt <= RESULTS_LIVE_MAX_AGE_MS ? 'live' : 'stale';
+  }
   return 'open_waiting';
 }
 
@@ -61,12 +68,17 @@ function isOfficialResultsUrl(value: unknown): value is string {
 function isValidResultsFeed(value: unknown): value is ResultsFeed {
   if (!value || typeof value !== 'object') return false;
   const payload = value as Record<string, unknown>;
-  if (payload.schemaVersion !== 1) return false;
+  if (payload.schemaVersion !== 2) return false;
+  if (payload.environment !== OFFICIAL_RESULTS_CONTEXT.environment || payload.scope !== OFFICIAL_RESULTS_CONTEXT.scope) return false;
   if (payload.source !== 'official-tse' || !VALID_STATES.has(payload.state as ResultsFeed['state'])) return false;
+  if (payload.pleito !== OFFICIAL_RESULTS_CONTEXT.pleito) return false;
   if (!isOfficialResultsUrl(payload.sourceUrl) || typeof payload.sourceFile !== 'string' || !payload.sourceFile.trim()) return false;
   if (!Number.isInteger(payload.electionCode) || ![6257, 6259, 6261].includes(payload.electionCode as number)) return false;
   if (![1, 2].includes(payload.turn as number) || payload.uf !== 'GO') return false;
   if (typeof payload.municipalityCode !== 'string' || !/^\d{5}$/.test(payload.municipalityCode)) return false;
+  if (!electionCodeMatchesCargo(payload.electionCode as number, payload.uf as string, payload.cargo as string)) return false;
+  if (payload.uf !== OFFICIAL_RESULTS_CONTEXT.uf) return false;
+  if (typeof payload.municipalityName !== 'string' || payload.municipalityName.trim() !== 'Águas Lindas de Goiás') return false;
   if (typeof payload.municipalityName !== 'string' || !payload.municipalityName.trim()) return false;
   if (typeof payload.cargo !== 'string' || !payload.cargo.trim()) return false;
   if (!isIsoDate(payload.referenceDate) || !isIsoDate(payload.capturedAt)) return false;
@@ -80,6 +92,7 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
     const integrity = payload.integrity as Record<string, unknown>;
     if (integrity.sha256 !== undefined && (typeof integrity.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.sha256))) return false;
     if (integrity.jwsVerified !== undefined && typeof integrity.jwsVerified !== 'boolean') return false;
+    if (integrity.signatureStatus !== undefined && !['verified', 'not_verified', 'unavailable'].includes(integrity.signatureStatus as string)) return false;
   }
 
   return payload.items.every(item => {
@@ -113,7 +126,7 @@ export function useResultsFeed(intervalMs = 300000) {
 
       setChecking(true);
       try {
-        const response = await fetch(FEED_URL, { cache: 'no-store' });
+        const response = await fetch(RESULTS_FEED_URL, { cache: 'no-store', headers: { Accept: 'application/json' } });
         if (!response.ok) {
           if (active) setData(current => current?.state === 'complete' ? current : null);
           return;
