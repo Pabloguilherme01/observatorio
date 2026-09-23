@@ -1,0 +1,24 @@
+name: Verify TSE 2026 Simulation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 12,17 22-24 9 *'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Verify official simulation endpoints
+        env:
+          REQUIRE_TSE_SIMULATION: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+        run: node scripts/verify-tse-simulation-2026.mjs
