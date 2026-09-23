@@ -5,9 +5,9 @@ const generatedData = generated as {
   meta: {
     snapshotId: string;
     downloadedAt: string | null;
-    state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
+    state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced' | 'local_filter_pending';
   };
-  coverage: 'watchlist';
+  coverage: 'watchlist' | 'municipality_required';
   watchlist: string[];
   matched: Array<{
     sqCandidate: string;
@@ -34,30 +34,30 @@ const candidateStatus = (() => {
     case 'changed':
       return 'captured' as const;
     case 'stale':
-      return 'pending' as const;
     case 'failed':
-      return 'pending' as const;
+    case 'local_filter_pending':
     case 'not_synced':
     default:
       return 'pending' as const;
   }
 })();
+
 const snapshotDate = generatedData.meta.downloadedAt ? generatedData.meta.downloadedAt.slice(0, 10) : '—';
 
 export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'Cadastro, cargo, partido, situação, bens, redes, histórico e propostas. O recorte automatizado utiliza identidade SQ_CANDIDATO e preserva o manifesto do snapshot.',
+    description: 'A lista pública mostra apenas candidaturas com vínculo municipal comprovado com Águas Lindas de Goiás. Dados pessoais e eleitorais ficam separados por fonte e data.',
     status: candidateStatus,
-    frequency: '4x ao dia',
+    frequency: 'conforme captura oficial',
     sourceId: 'tse-candidatos-2026',
     datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
   },
   {
     id: 'electorate',
     title: 'Eleitorado',
-    description: 'Perfil do eleitorado, locais de votação e seções eleitorais para o recorte municipal. Catálogo oficial identificado; snapshot eleitoral municipal segue como próxima ingestão.',
+    description: 'Perfil do eleitorado, locais de votação e seções eleitorais para o recorte municipal.',
     status: 'cataloged',
     frequency: 'conforme base oficial',
     sourceId: 'tse-eleitorado-2026',
@@ -75,7 +75,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'accounts',
     title: 'Contas eleitorais',
-    description: 'Prestação de contas, CNPJ de campanha e movimentações publicadas pelo TSE. A camada deve ser tratada como série temporal, não como valor único.',
+    description: 'Prestação de contas, CNPJ de campanha e movimentações publicadas pelo TSE. A camada deve ser tratada como série temporal.',
     status: 'cataloged',
     frequency: 'conforme publicação',
     sourceId: 'tse-contas-2026',
@@ -103,8 +103,8 @@ export const electoral360Modules: readonly Electoral360Module[] = [
 
 export const electoral360Snapshot: Electoral360Snapshot = {
   capturedAt: generatedData.meta.downloadedAt ?? '',
-  captureMode: generatedData.meta.state === 'not_synced' ? 'static-local' : 'github-actions',
-  candidateUniverseScope: 'GO',
+  captureMode: generatedData.meta.state === 'not_synced' || generatedData.meta.state === 'local_filter_pending' ? 'static-local' : 'github-actions',
+  candidateUniverseScope: 'Águas Lindas de Goiás',
   localWatchlist: generatedData.watchlist,
   matchedCandidates: generatedData.matched.map(candidate => ({
     sqCandidate: candidate.sqCandidate,
