@@ -48,9 +48,9 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'Cadastro, cargo, partido, situação, bens, redes, histórico e propostas. O recorte automatizado utiliza identidade SQ_CANDIDATO e preserva o manifesto do snapshot.',
+    description: 'Cadastro, cargo, partido, situação e número. O recorte automatizado usa identidade SQ_CANDIDATO e preserva o manifesto do snapshot; bens, redes, histórico e propostas permanecem como camadas ainda não capturadas.',
     status: candidateStatus,
-    frequency: '4x ao dia',
+    frequency: 'conforme atualização da fonte',
     sourceId: 'tse-candidatos-2026',
     datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
   },
