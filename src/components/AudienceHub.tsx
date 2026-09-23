@@ -16,7 +16,7 @@ const topics: readonly Topic[] = [
   { id: 'eleitorado', label: 'Eleitorado', description: 'Perfil, snapshots e diferenças de base.', icon: Users },
   { id: 'orcamento', label: 'Orçamento', description: 'LOA, áreas de gasto e valores previstos.', icon: WalletCards },
   { id: 'transporte', label: 'Transporte', description: 'Tarifas e cálculo de custo mensal.', icon: BusFront },
-  { id: 'saneamento', label: 'Saneamento', description: 'Água, esgoto, coleta e tratamento.', icon: Droplets },
+  { id: 'saude', label: 'Saneamento', description: 'Água, esgoto, coleta e tratamento.', icon: Droplets },
   { id: 'politica', label: 'Eleições', description: 'Pesquisas documentais, calendário e registros.', icon: Landmark },
 ];
 
@@ -75,7 +75,7 @@ export function AudienceHub() {
                 ['02', 'Eleitorado', d.electoral.electorate.toLocaleString('pt-BR') + ' no snapshot local', 'eleitorado'],
                 ['03', 'Orçamento', brl(d.budget.totalBrl) + ' na LOA 2026', 'orcamento'],
                 ['04', 'Mobilidade', 'a partir de ' + brl(fare) + ' por trecho de referência', 'transporte'],
-                ['05', 'Saneamento', sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% com acesso ao serviço público de esgoto', 'saneamento'],
+                ['05', 'Saneamento', sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% com acesso ao serviço público de esgoto', 'saude'],
                 ['06', 'Eleições', 'calendário, pesquisas e registros documentais', 'politica'],
               ].map(([step, label, description, id]) => (
                 <button key={step} type="button" onClick={() => go(id)} className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-left transition hover:-translate-y-0.5 hover:border-sky-300/20">
@@ -143,7 +143,7 @@ export function AudienceHub() {
               <span className="mt-1 block text-xs text-slate-500">acesso ao serviço público de esgoto</span>
               <div className="mt-3 flex flex-wrap gap-2">
                 <a href="#saneamento" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Entender o indicador</a>
-                <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado pelo Observatório.'} url={shareUrl + '#saneamento'} compact />
+                <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado pelo Observatório.'} url={shareUrl + '#saude'} compact />
               </div>
             </div>
           </div>
