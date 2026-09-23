@@ -96,9 +96,10 @@ function DeferredBlock({
     return () => window.cancelAnimationFrame(frame);
   }, [ready, anchorIds]);
 
+  const Component = useMemo(() => lazy(loader), [loader]);
+
   if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
 
-  const Component = useMemo(() => lazy(loader), [loader]);
   return (
     <div ref={ref}>
       <Deferred><Component /></Deferred>
