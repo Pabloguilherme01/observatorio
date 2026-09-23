@@ -24,7 +24,7 @@ export function RadarPesquisas() {
 
         <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-wide text-slate-600">
           <span className="rounded-full border border-white/8 px-2.5 py-1">Estado: {pesquisasData.estado}</span>
-          <span className="rounded-full border border-white/8 px-2.5 py-1">{pesquisasData.totalPesquisas} registros</span>
+          <span className="rounded-full border border-white/8 px-2.5 py-1">{pesquisasData.totalPesquisas} associações no recorte</span>
         </div>
 
         {pesquisasData.pesquisas.length ? (
@@ -43,7 +43,7 @@ export function RadarPesquisas() {
           </div>
         ) : (
           <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-            O primeiro snapshot oficial foi materializado. O CSV principal do TSE contém registros, mas nenhum deles correspondeu aos cinco municípios do recorte operacional nesta captura; por isso a interface não inventa pesquisas locais.
+            O primeiro snapshot oficial foi materializado. O CSV principal do TSE contém registros, mas nenhum deles correspondeu ao recorte nominal configurado nesta captura; por isso a interface não inventa pesquisas locais.
           </div>
         )}
 
