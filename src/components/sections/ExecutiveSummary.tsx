@@ -59,8 +59,8 @@ export function ExecutiveSummary() {
             eyebrow={languageMode === 'simple' ? 'Leia primeiro' : 'Resumo técnico'}
             title={languageMode === 'simple' ? 'O essencial em 1 minuto' : 'Resumo com rastreabilidade'}
             description={languageMode === 'simple'
-              ? 'Número, data e fonte. O resto fica escondido até você pedir.'
-              : 'Valor, data, metodologia e origem ficam visíveis para conferência.'}
+              ? 'Veja o número principal, quando ele foi medido e de onde veio.'
+              : 'Veja valor, data, fonte, método e contexto para conferir o dado.'}
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'simple' ? 'Leitura simples' : 'Camada técnica'}</span>
@@ -90,7 +90,7 @@ export function ExecutiveSummary() {
 
                 {languageMode === 'simple' ? (
                   <p className="simple-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    São respostas diferentes. Veja a fonte antes de comparar.
+                    A pesquisa separa essas respostas. Aqui, cada percentual é mostrado como foi registrado.
                   </p>
                 ) : (
                   <p className="technical-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
