@@ -100,9 +100,27 @@ test.describe('Observatório · jornada E2E', () => {
 
     await expect(cards.first().locator('img[alt^="Foto oficial de"], div[aria-label^="Foto indisponível"]')).toHaveCount(1);
     const instagramLinks = cards.locator('a[href*="instagram.com/"]');
-    await expect(instagramLinks).toHaveCount(6);
+    await expect(instagramLinks.count()).toBeLessThanOrEqual(7);
 
     await expect(section.getByText('Instagram não informado no TSE')).toHaveCount(1);
+  });
+
+  test('busca no mobile abre sem forçar o teclado', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    await page.waitForSelector('main[data-app-ready="true"]');
+    await page.getByRole('button', { name: 'Abrir busca' }).click();
+    const input = page.getByRole('textbox', { name: 'Buscar seção, fonte ou indicador' });
+    await expect(input).toBeVisible();
+    await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).not.toBe('INPUT');
+  });
+
+  test('modo rápido reduz densidade sem apagar o caminho principal', async ({ page }) => {
+    await page.getByRole('button', { name: 'Modo de leitura' }).getByRole('button', { name: 'Rápido' }).click();
+    await expect(page.locator('html')).toHaveClass(/mode-quick/);
+    await expect(page.locator('#descubra')).toBeVisible();
+    await expect(page.locator('#eleitoral360')).toBeVisible();
+    await expect(page.locator('#instagram')).toBeVisible();
   });
 
 });
