@@ -23,10 +23,19 @@ export function DataHealthPanel() {
         <SectionHeader
           titleId="health-title"
           eyebrow="Data health"
-          title={mode === 'simple' ? 'Como conferir os dados' : 'Metadados técnicos do conjunto'}
-          description={mode === 'simple' ? 'Fonte, data e cobertura vêm antes da interpretação. Os detalhes técnicos ficam disponíveis no modo técnico.' : 'Dimensões técnicas calculadas no build. Os valores descrevem cobertura, origem e automação do dado; não são uma classificação eleitoral.'}
+          title={mode === 'simple' ? 'Como conferir os dados' : mode === 'quick' ? 'Dados verificados' : 'Metadados técnicos do conjunto'}
+          description={mode === 'simple' ? 'Fonte, data e cobertura vêm antes da interpretação. Os detalhes técnicos ficam disponíveis no modo técnico.' : mode === 'quick' ? 'Veja só o sinal principal. A camada técnica fica separada.' : 'Dimensões técnicas calculadas no build. Os valores descrevem cobertura, origem e automação do dado; não são uma classificação eleitoral.'}
         />
-        {mode === 'simple' ? (
+        {mode === 'quick' ? (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {DATA_HEALTH.entries.slice(0, 4).map(entry => (
+              <article key={entry.id} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+                <div className="text-sm font-black text-white">{entry.label}</div>
+                <div className="mt-2 text-xs font-semibold text-sky-200">Sinal de integridade disponível</div>
+              </article>
+            ))}
+          </div>
+        ) : mode === 'simple' ? (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {DATA_HEALTH.entries.slice(0, 8).map(entry => (
               <article key={entry.id} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
