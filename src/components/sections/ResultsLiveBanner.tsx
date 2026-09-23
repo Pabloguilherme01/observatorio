@@ -39,11 +39,13 @@ export function ResultsLiveBanner() {
   const detail = data.items.length
     ? `${data.items.length} registros recebidos`
     : 'Nenhum registro municipal no feed atual';
-  const integrity = data.integrity?.jwsVerified === true || data.integrity?.signatureStatus === 'verified'
-    ? 'assinatura verificada'
-    : data.integrity?.signatureStatus === 'unavailable'
-      ? 'assinatura não disponível'
-      : 'contrato local validado';
+  const integrity = data.integrity?.jwsVerified === true && data.integrity?.signatureStatus === 'verified' && data.integrity?.verificationMethod === 'jws-node-crypto'
+    ? 'assinatura JWS verificada'
+    : data.integrity?.signatureStatus === 'not_verified'
+      ? 'assinatura não verificada'
+      : data.integrity?.signatureStatus === 'unavailable'
+        ? 'assinatura não disponível'
+        : 'contrato local validado';
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite">
