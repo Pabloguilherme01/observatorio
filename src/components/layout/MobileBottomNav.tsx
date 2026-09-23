@@ -19,7 +19,8 @@ export function MobileBottomNav() {
   useEffect(() => {
     const observedIds = ['dashboard', 'descubra', 'fontes'];
     const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'dados', 'qualidade', 'evidencias', 'acao', 'instagram']);
-    const observed = observedIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const allObservedIds = [...observedIds, ...thematicIds];
+    const observed = allObservedIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const updateFromHash = () => {
       const id = window.location.hash.replace('#', '');
       if (observedIds.includes(id)) setActiveSection(id);
@@ -32,7 +33,7 @@ export function MobileBottomNav() {
       const visible = entries
         .filter(entry => entry.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible?.target.id) setActiveSection(visible.target.id);
+      if (visible?.target.id) setActiveSection(thematicIds.has(visible.target.id) ? 'descubra' : visible.target.id);
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
     observed.forEach(node => observer.observe(node));
