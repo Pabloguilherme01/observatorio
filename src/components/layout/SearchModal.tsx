@@ -79,7 +79,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   const filtered = useMemo(() => {
     const queryNormalized = normalize(query);
-    const all: Array<[string, string]> = [
+    const all: Array<readonly [string, string]> = [
       ...entries,
       ...d.sources.map(source => [source.label, 'fontes'] as [string, string]),
       ...d.candidates.map(candidate => [candidate.name, 'candidaturas'] as [string, string]),
