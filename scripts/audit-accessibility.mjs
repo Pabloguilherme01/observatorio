@@ -11,6 +11,7 @@ const hero = read('src/components/sections/HeroCountdown.tsx');
 const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const comparison = read('src/components/sections/ContextComparison.tsx');
 const context = read('src/context/LanguageModeContext.tsx');
+const header = read('src/components/layout/Header.tsx');
 
 const errors = [];
 const pass = message => console.log('PASS', message);
@@ -39,6 +40,9 @@ must(comparison.includes('role=\"tablist\"') && comparison.includes('aria-select
 must(dashboard.includes('role=\"img\"') && dashboard.includes('aria-label'), 'gráficos principais possuem alternativa textual');
 must(app.includes('<LanguageModeProvider>'), 'modo de linguagem está integrado na aplicação');
 must(context.includes('localStorage'), 'preferência de linguagem é persistida sem depender de servidor');
+must(header.includes('aria-controls={menuOpen ? "mobile-navigation" : undefined}'), 'aria-controls do menu móvel não referencia elemento ausente quando fechado');
+must(css.includes('html { font-size: 16px; }'), 'base tipográfica global é 16px');
+must(context.includes("'quick'"), 'terceiro modo de leitura está implementado');
 
 const darkPairs = [
   ['#e6edf3', '#0b1117', 4.5],
