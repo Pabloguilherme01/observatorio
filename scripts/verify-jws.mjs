@@ -8,7 +8,7 @@ export const ALGORITHMS = {
   PS256: { hash: 'sha256', padding: constants.RSA_PKCS1_PSS_PADDING, saltLength: constants.RSA_PSS_SALTLEN_DIGEST },
   PS384: { hash: 'sha384', padding: constants.RSA_PKCS1_PSS_PADDING, saltLength: constants.RSA_PSS_SALTLEN_DIGEST },
   PS512: { hash: 'sha512', padding: constants.RSA_PKCS1_PSS_PADDING, saltLength: constants.RSA_PSS_SALTLEN_DIGEST },
-} as const;
+};
 
 function decodeBase64Url(value) {
   return Buffer.from(value.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
