@@ -27,6 +27,12 @@ jobs:
         run: npm run validate:observatorio
       - name: Validate TSE architecture isolation
         run: npm run audit:tse-architecture
+      - name: Static consistency audit
+        run: npm run audit:static
+      - name: Accessibility and contrast audit
+        run: npm run audit:a11y
+      - name: Runtime hardening audit
+        run: npm run audit:runtime
       - name: Audit engagement and mobile regressions
         run: npm run audit:engagement
       - name: Validate versioned TSE snapshot contract

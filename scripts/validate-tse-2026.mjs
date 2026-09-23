@@ -45,6 +45,10 @@ for (const candidate of payload.matched ?? []) {
   if (ids.has(candidate.sqCandidate)) errors.push('SQ_CANDIDATO duplicado: ' + candidate.sqCandidate);
   ids.add(candidate.sqCandidate);
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
+  if (isMunicipalitySnapshot && state !== 'local_filter_pending') {
+    if (candidate.municipality !== 'Águas Lindas de Goiás') errors.push('Candidato municipal sem município validado: ' + candidate.sqCandidate);
+    if (candidate.municipalityCodeTse !== '92737') errors.push('Candidato municipal sem código TSE validado: ' + candidate.sqCandidate);
+  }
 }
 
 if ((state === 'not_synced' || state === 'local_filter_pending') && !requireSynced) {
@@ -53,10 +57,10 @@ if ((state === 'not_synced' || state === 'local_filter_pending') && !requireSync
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
 
 if (state !== 'not_synced' && state !== 'local_filter_pending' && state !== 'synced') {
-  const allowedRetrievalMethods = new Set(['official_tse_open_data_csv', 'official_tse_divulgacandcontas_api']);
+  const allowedRetrievalMethods = new Set(['official_tse_open_data_csv', 'official_tse_zip_csv', 'official_tse_divulgacandcontas_api']);
   if (!allowedRetrievalMethods.has(payload.meta?.retrievalMethod)) errors.push('retrievalMethod do snapshot TSE inválido ou ausente.');
   if (typeof payload.meta?.resourceUrl !== 'string') errors.push('resourceUrl oficial do TSE ausente.');
-  if (payload.meta?.retrievalMethod === 'official_tse_open_data_csv' && !payload.meta.resourceUrl.includes('cdn.tse.jus.br')) errors.push('resourceUrl do pacote CSV oficial do TSE ausente.');
+  if ((payload.meta?.retrievalMethod === 'official_tse_open_data_csv' || payload.meta?.retrievalMethod === 'official_tse_zip_csv') && !payload.meta.resourceUrl.includes('tse.jus.br/')) errors.push('resourceUrl do pacote CSV oficial do TSE ausente.');
   if ((payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api' || payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy') && !payload.meta.resourceUrl.includes('divulgacandcontas.tse.jus.br/divulga/rest/')) errors.push('resourceUrl da API oficial DivulgaCandContas ausente.');
   if (payload.meta?.captureTransport && payload.meta.captureTransport !== 'historical_third_party_reader' && payload.meta.captureTransport !== 'direct_official') {
     errors.push('captureTransport do snapshot TSE inválido.');

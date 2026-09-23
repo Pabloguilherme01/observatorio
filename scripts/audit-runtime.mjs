@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
@@ -29,8 +30,24 @@ else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 const main = read('src/main.tsx');
 if (main.includes('observatorioMounted') && main.includes('observatorio:last-runtime-error')) pass('bootstrap possui marcador de montagem e diagnóstico runtime.');
 else fail('bootstrap perdeu marcadores de resiliência.');
-if (main.includes('function MountSignal') && main.includes('<MountSignal />') && main.includes("observatorio:app-mounted")) pass('sinal de montagem React é emitido por componente após o commit.');
+const mountWrites = (main.match(/document\.documentElement\.dataset\.observatorioMounted = 'true'/g) ?? []).length;
+if (mountWrites === 1) pass('marcador de montagem é escrito apenas no efeito React pós-commit.');
+else fail('marcador de montagem possui escrita duplicada ou fora do MountSignal.');
+const mountSignalBlock = main.match(/function MountSignal\(\) \{[\s\S]*?\n\}/)?.[0] ?? '';
+if (
+  main.includes('<MountSignal />')
+  && mountSignalBlock.includes("document.documentElement.dataset.observatorioMounted = 'true'")
+  && mountSignalBlock.includes("window.dispatchEvent(new CustomEvent('observatorio:app-mounted'))")
+  && main.includes('window.addEventListener(\'observatorio:app-mounted\', registerPwa')
+) pass('sinal de montagem React é emitido por efeito pós-commit antes do PWA.');
 else fail('sinal de montagem React não está protegido por efeito pós-commit.');
+
+try {
+  execFileSync(process.execPath, ['--check', path.join(root, 'scripts/sync-tse-2026.mjs')], { stdio: 'pipe' });
+  pass('script de sincronização TSE passa no parser do Node.');
+} catch (error) {
+  fail('script de sincronização TSE falhou no parser do Node: ' + (error instanceof Error ? error.message : String(error)));
+}
 
 const tseSync = read('scripts/sync-tse-2026.mjs');
 if (
