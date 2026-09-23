@@ -8,6 +8,10 @@ export interface SourceRef {
   readonly label: string;
   readonly institution: string;
   readonly url: string;
+  readonly resourceUrl?: string;
+  readonly updateFrequency?: string;
+  readonly license?: string;
+  readonly lastCheckedAt?: string;
   readonly nature: DataNature;
   readonly referenceDate?: ISODate;
   readonly publishedAt?: ISODate;
