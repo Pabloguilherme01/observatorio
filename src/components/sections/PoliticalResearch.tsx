@@ -30,6 +30,9 @@ export function PoliticalResearch() {
         title="Candidaturas: registro, patrimônio e situação"
         description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação eleitoral. Quando disponível, a camada sincronizada do TSE passa a ser a fonte operacional."
       />
+      <div className="mb-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
+        <strong className="text-amber-200 light:text-amber-800">Recorte editorial local:</strong> os registros abaixo são um snapshot de 22/09/2026 e não representam a lista completa de candidaturas. A sincronização automatizada do TSE permanece aguardando captura.
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         {candidates.map(candidate => (
           <Card key={candidate.name}>

@@ -30,6 +30,7 @@
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+html, body { overflow-x: clip; }
 
 body {
   margin: 0;
@@ -149,7 +150,21 @@ html.light .command-panel{background:rgba(255,255,255,.98);border-color:rgba(15,
 html.light .command-item,html.light .shortcut-row{background:rgba(15,23,42,.025);border-color:rgba(15,23,42,.09);color:#0f172a}
 html.light .command-panel input{color:#0f172a}
 html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-@media (max-width:640px){.quick-dock{right:10px;bottom:10px;left:10px;justify-content:space-around}.quick-dock button{flex:1;justify-content:center}.quick-dock-label{display:none}.command-overlay{padding:7vh 10px 16px}.command-panel{border-radius:20px}.discovery-shell{border-radius:24px;padding:18px}}
+@media (max-width:640px){
+  body{padding-bottom:78px}
+  .quick-dock{
+    right:10px;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    left:10px;
+    justify-content:space-around;
+    padding:6px;
+  }
+  .quick-dock button{flex:1;justify-content:center;min-height:44px;min-width:44px}
+  .quick-dock-label{display:none}
+  .command-overlay{padding:7vh 10px 16px}
+  .command-panel{border-radius:20px;max-height:82vh}
+  .discovery-shell{border-radius:24px;padding:18px}
+}
 @media (prefers-reduced-motion:reduce){.discovery-card,.quick-dock button{transition:none}}
 
 
@@ -175,11 +190,15 @@ html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after
 @media (max-width: 640px) {
   .quick-dock { min-height: 52px; }
   .quick-dock button { min-height: 44px; min-width: 44px; }
+  footer { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
 }
 
 @media (max-width: 767px) {
   .label-secondary { display: none; }
   .table-compact-mobile { display: grid; }
+  input[type="range"] { min-height: 44px; }
+  button, a { min-height: 44px; }
+  .quick-dock button { min-height: 44px; }
 }
 @media (min-width: 768px) {
   .table-compact-mobile { display: none; }

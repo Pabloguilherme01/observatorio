@@ -13,7 +13,7 @@ import { sourceRegistry } from './sourceRegistry';
 export const observatorioData: ObservatoryData = {
   meta: {
     name: 'Observatório Eleitoral Águas Lindas de Goiás 2026',
-    edition: 'V27 • experiência interativa, rastreabilidade e atualização',
+    edition: 'V29 • experiência interativa, rastreabilidade e atualização',
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
     updatedAt: '2026-09-23',
@@ -156,12 +156,12 @@ export const observatorioData: ObservatoryData = {
     ],
     functions: [
       { id: 'educacao-f', level: 'function', name: 'Educação', amountBrl: 245_469_752.28, sourceId: 'loa-2026' },
-      { id: 'saude-f', level: 'function', name: 'Saúde', amountBrl: 138_093_749.06, sourceId: 'loa-2026' },
-      { id: 'administracao-f', level: 'function', name: 'Administração', amountBrl: 87_550_700, sourceId: 'loa-2026' },
-      { id: 'urbanismo-f', level: 'function', name: 'Urbanismo', amountBrl: 55_116_400, sourceId: 'loa-2026' },
+      { id: 'saude-f', level: 'function', name: 'Saúde', amountBrl: 138_093_749.09, sourceId: 'loa-2026' },
+      { id: 'administracao-f', level: 'function', name: 'Administração', amountBrl: 87_550_682.04, sourceId: 'loa-2026' },
+      { id: 'urbanismo-f', level: 'function', name: 'Urbanismo', amountBrl: 55_116_420.94, sourceId: 'loa-2026' },
       { id: 'encargos-f', level: 'function', name: 'Encargos especiais', amountBrl: 65_469_900, sourceId: 'loa-2026' },
       { id: 'previdencia-f', level: 'function', name: 'Previdência', amountBrl: 35_002_000, sourceId: 'loa-2026' },
-      { id: 'saneamento-f', level: 'function', name: 'Saneamento', amountBrl: 14_630_500, sourceId: 'loa-2026' },
+      { id: 'saneamento-f', level: 'function', name: 'Saneamento', amountBrl: 14_630_532.88, sourceId: 'loa-2026' },
     ],
   },
 
