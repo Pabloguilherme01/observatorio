@@ -84,4 +84,25 @@ test.describe('Observatório · jornada E2E', () => {
       }
     }
   });
+  test('recorte local exibe fotos e redes declaradas sem nomes fora da cidade', async ({ page }) => {
+    await page.goto('/#eleitoral360');
+    await page.waitForSelector('main[data-app-ready="true"]');
+    const section = page.locator('#eleitoral360');
+    await section.scrollIntoViewIfNeeded();
+    await expect(section).toBeVisible();
+
+    const cards = page.getByTestId('candidate-card');
+    await expect(cards).toHaveCount(7);
+
+    for (const excluded of ['André do Premium', 'Pábio Mossoró', 'WILDE CAMBÃO']) {
+      await expect(section).not.toContainText(excluded);
+    }
+
+    await expect(cards.first().locator('img[alt^="Foto oficial de"]')).toHaveCount(1);
+    const instagramLinks = cards.locator('a[href*="instagram.com/"]');
+    await expect(instagramLinks).toHaveCount(6);
+
+    await expect(section.getByText('Instagram não informado no TSE')).toHaveCount(1);
+  });
+
 });
