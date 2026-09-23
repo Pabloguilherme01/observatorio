@@ -23,6 +23,8 @@ function applyTheme(theme: Theme) {
   const root = document.documentElement;
   root.classList.toggle('light', theme === 'light');
   root.style.colorScheme = theme;
+  const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  themeColor?.setAttribute('content', theme === 'light' ? '#f5f7fa' : '#0b1117');
 }
 
 export function ThemeProvider({ children }: { readonly children: ReactNode }) {
