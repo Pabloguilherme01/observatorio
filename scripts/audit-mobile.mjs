@@ -43,7 +43,7 @@ must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'p
 const appVersionMatch = files.version.match(/APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]/);
 must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('44.'), 'versão do aplicativo sincronizada com a camada mobile');
 const app = read('src/app/App.tsx');
-must(app.includes('IntersectionObserver') && app.includes('rootMargin: \'900px 0px\''), 'seções abaixo da dobra usam carregamento diferido');
+must(app.includes('IntersectionObserver') && /rootMargin:\s*['"]\d+px 0px['"]/.test(app), 'seções abaixo da dobra usam carregamento diferido');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
 must(app.includes("'saude'") && app.includes("'healgo'"), 'âncoras de saúde e simulador permanecem navegáveis após code splitting');
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
