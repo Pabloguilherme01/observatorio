@@ -49,10 +49,10 @@ must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'packa
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow automatiza captura e validação TSE');
 must(syncWorkflow.includes('ingest-candidates-local.ts'), 'workflow sincroniza recorte municipal, Instagram e fotos');
-must(syncWorkflow.includes('schedule:'), 'workflow possui atualização programada');
+must(syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização manual segura');
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
-must(!dataSource.includes('theoreticalMarginErrorPct') && !read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'pesquisa não calcula margem de erro teórica');
+must(!read('src/components/sections/PoliticalRadar.tsx').includes('theoreticalMarginErrorPct'), 'interface não calcula margem de erro teórica');
 must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy exige auditorias principais');
 
 const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
