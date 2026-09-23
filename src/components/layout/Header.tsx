@@ -14,8 +14,20 @@ const links = [
 
 export function Header() {
   const { theme, toggle } = useTheme();
+  const [activeSection, setActiveSection] = useState('dashboard');
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const observedIds = links.map(([, id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!observedIds.length) return;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.id) setActiveSection(visible.target.id);
+    }, { rootMargin: '-18% 0px -68% 0px', threshold: [0.1, 0.25, 0.5] });
+    observedIds.forEach(node => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
