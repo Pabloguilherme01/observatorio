@@ -12,6 +12,7 @@ const stateLabel: Record<string,string> = { first_capture:'Primeiro snapshot',sy
 export function Electoral360() {
   const [query,setQuery]=useState(''), [selectedName,setSelectedName]=useState(d.candidates[0]?.name ?? '');
   const captured=electoral360Modules.filter(m=>m.status==='captured').length, cataloged=electoral360Modules.filter(m=>m.status==='cataloged').length;
+  const snapshotWarning = ['not_synced','stale','failed'].includes(String(electoral360Diff.state));
   const candidateSource=d.sources.find(s=>s.id==='tse-candidatos-2026');
   const candidates=useMemo(()=>{const n=query.trim().toLocaleLowerCase('pt-BR');if(!n)return electoral360Snapshot.matchedCandidates;return electoral360Snapshot.matchedCandidates.filter(c=>[c.name,c.party,c.office,c.status,c.ballotNumber].join(' ').toLocaleLowerCase('pt-BR').includes(n));},[query]);
   const fallback=d.candidates.find(c=>c.name===selectedName) ?? d.candidates[0];
@@ -44,7 +45,7 @@ export function Electoral360() {
       </Card>
 
       <div className="space-y-4">
-        <Card><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><ShieldAlert className="h-4 w-4 text-amber-300"/> Estado do snapshot</div><div className="mt-3 text-lg font-black text-white">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}</div><p className="mt-2 text-xs leading-5 text-slate-500">Ausência de captura local não equivale a ausência de candidaturas.</p><div className="mt-4 flex flex-wrap gap-2"><span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{electoral360Snapshot.localWatchlist.length} nomes monitorados</span><span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">identidade por SQ_CANDIDATO</span></div></Card>
+        <Card><div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><ShieldAlert className={`h-4 w-4 ${snapshotWarning ? 'text-amber-300' : 'text-emerald-300'}`}/> Estado do snapshot</div><div className="mt-3 text-lg font-black text-white">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}</div><p className="mt-2 text-xs leading-5 text-slate-500">Ausência de captura local não equivale a ausência de candidaturas.</p><div className="mt-4 flex flex-wrap gap-2"><span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{electoral360Snapshot.localWatchlist.length} nomes monitorados</span><span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">identidade por SQ_CANDIDATO</span></div></Card>
         <Card><div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte operacional</div><p className="mt-2 text-xs leading-5 text-slate-500">A watchlist é um recorte para cruzamento com o universo de Goiás; não representa o universo completo.</p><div className="mt-4 flex flex-wrap gap-2">{electoral360Snapshot.localWatchlist.map(name=><span key={name} className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{name}</span>)}</div></Card>
       </div>
     </div>
