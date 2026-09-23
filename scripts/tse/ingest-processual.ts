@@ -4,24 +4,30 @@ import { TSEProcessualFileSchema } from '../../src/schemas/tse-enriched.schema.t
 import { extractZip, findFile, downloadFile, parseDate, readCsv, sha256File, valueOf, writeJson } from './common.ts';
 
 const SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip';
+const DECISIONS_SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip';
 const tmpRoot = join(process.cwd(), '.tmp', 'tse-processual');
 const zipPath = join(tmpRoot, 'processual-2026.zip');
+const decisionsZipPath = join(tmpRoot, 'decisoes-2026.zip');
 const extractDir = join(tmpRoot, 'unzipped');
+const decisionsExtractDir = join(tmpRoot, 'decisoes-unzipped');
 const outputPath = join(process.cwd(), 'generated', 'tse2026-processual.json');
-const municipios = new Set(['Águas Lindas de Goiás', 'Valparaíso de Goiás', 'Santo Antônio do Descoberto', 'Novo Gama', 'Planaltina']);
+const municipios = new Set(['Águas Lindas de Goiás', 'Valparaíso de Goiás', 'Santo Antônio do Descoberto', 'Novo Gama', 'Planaltina'].map(value => value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toUpperCase()));
 
 mkdirSync(tmpRoot, { recursive: true });
 if (existsSync(extractDir)) rmSync(extractDir, { recursive: true, force: true });
+if (existsSync(decisionsExtractDir)) rmSync(decisionsExtractDir, { recursive: true, force: true });
 
 await downloadFile(SOURCE_URL, zipPath);
 extractZip(zipPath, extractDir);
+await downloadFile(DECISIONS_SOURCE_URL, decisionsZipPath);
+extractZip(decisionsZipPath, decisionsExtractDir);
 
 const processoPath = findFile(extractDir, /processo.*eleitoral.*\.csv$/i);
-const decisaoPath = findFile(extractDir, /decis.*\.csv$/i);
+const decisaoPath = findFile(decisionsExtractDir, /decis.*\.csv$/i);
 const processos = readCsv(processoPath);
 const decisoes = readCsv(decisaoPath);
 const capture = new Date().toISOString();
-const hash = sha256File(zipPath);
+const hash = sha256File(zipPath) + ':' + sha256File(decisionsZipPath);
 
 const decisionByProcess = new Map<string, Array<{ data: string; descricao: string; tipo: string }>>();
 for (const row of decisoes) {
@@ -37,7 +43,8 @@ for (const row of decisoes) {
 
 const outputRows = processos.map(row => {
   const municipio = valueOf(row, ['NM_MUNICIPIO', 'MUNICIPIO'], false);
-  if (!municipios.has(municipio)) return null;
+  const municipioNormalizado = municipio.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').trim().replace(/\\s+/g, ' ').toUpperCase();
+  if (!municipios.has(municipioNormalizado)) return null;
   const numeroProcesso = valueOf(row, ['NR_PROCESSO', 'NUMERO_PROCESSO', 'PROCESSO']);
   const baseDate = parseDate(valueOf(row, ['DT_AUTUACAO', 'DT_DISTRIBUICAO', 'DATA_DISTRIBUICAO']));
   const timeline = [
