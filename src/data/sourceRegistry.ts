@@ -198,3 +198,20 @@ export const sourceRegistry: readonly SourceRef[] = [
     note: 'Conjunto de denúncias registradas no Pardal, com frequência de atualização diária. Registro de denúncia não equivale a comprovação de irregularidade.',
   },
 ];
+
+  {
+    id: 'tse-candidatos-2026',
+    label: 'TSE — Candidatos 2026 / dados abertos',
+    institution: 'Tribunal Superior Eleitoral',
+    url: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
+    nature: 'official',
+    note: 'Base com candidatos, informações complementares, bens, coligações, vagas, redes sociais, histórico e propostas. O catálogo informa atualização quatro vezes ao dia.',
+  },
+  {
+    id: 'tse-processual-2026',
+    label: 'TSE — Processual 2026',
+    institution: 'Tribunal Superior Eleitoral',
+    url: 'https://dadosabertos.tse.jus.br/dataset/processual-2026',
+    nature: 'official',
+    note: 'Processos eleitorais, assuntos, decisões e recursos referentes ao pleito de 2026.',
+  },
