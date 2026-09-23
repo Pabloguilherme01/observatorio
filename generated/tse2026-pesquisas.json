@@ -1,0 +1,9 @@
+{
+  "versao": "1.0.0",
+  "estado": "not_ingested",
+  "geradoEm": "2026-09-23T00:00:00.000Z",
+  "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
+  "sourceHash": "not-captured-yet",
+  "totalPesquisas": 0,
+  "pesquisas": []
+}
