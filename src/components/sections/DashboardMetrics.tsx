@@ -80,7 +80,6 @@ export function DashboardMetrics() {
   const electorateShare = population2026 ? (d.electoral.electorate / population2026) * 100 : 0;
   const inclusionCount = d.electoral.socialNameCount ?? 0;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
-  const indigenousElectorate = d.electoral.indigenousElectorate ?? 0;
   const populationPoints = d.populationSeries.filter(p => p.year >= 2022).map(p => ({ label: String(p.year), value: p.value, sourceId: p.sourceId, referenceDate: p.referenceDate }));
   const electoratePoints: readonly Point[] = [
     { label: '2018', value: d.electoral.electorate2018 ?? 0, sourceId: d.electoral.sourceId },
