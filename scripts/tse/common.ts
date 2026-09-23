@@ -10,6 +10,12 @@ export function sha256File(filePath: string): string {
   return createHash('sha256').update(readFileSync(filePath)).digest('hex');
 }
 
+export function sha256Files(filePaths: readonly string[]): string {
+  const hash = createHash('sha256');
+  for (const filePath of filePaths) hash.update(readFileSync(filePath));
+  return hash.digest('hex');
+}
+
 export async function downloadFile(url: string, destination: string): Promise<string> {
   mkdirSync(join(destination, '..'), { recursive: true });
   const response = await fetch(url, { headers: { 'user-agent': 'observatorio-aguas-lindas-tse-ingest/1.0' } });
