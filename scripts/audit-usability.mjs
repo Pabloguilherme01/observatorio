@@ -63,6 +63,7 @@ const mountedSources = [
   texts.find(item => item.file === 'src/components/sections/DeferredCivicGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredPublicDataGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
+  texts.find(item => item.file === 'src/components/sections/DeferredTrustGroup.tsx')?.content ?? '',
 ].join('\n');
 
 for (const [component, label] of [
