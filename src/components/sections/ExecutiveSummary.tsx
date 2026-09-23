@@ -17,7 +17,7 @@ export function ExecutiveSummary() {
     * d.transport.defaultTripsPerDay
     * d.transport.defaultWorkDaysPerMonth;
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
-  const population = d.populationSeries.find(point => point.year === 2026);
+  
   const electorate = d.electoral;
   const [shareStatus, setShareStatus] = useState('');
   const { mode: languageMode } = useLanguageMode();
@@ -56,13 +56,14 @@ export function ExecutiveSummary() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
-            eyebrow="Comece aqui"
-            title={languageMode === 'simple' ? 'O essencial em 1 minuto' : 'Resumo de leitura'}
+            eyebrow={languageMode === 'simple' ? 'Leia primeiro' : 'Resumo técnico'}
+            title={languageMode === 'simple' ? 'O essencial em 1 minuto' : 'Resumo com rastreabilidade'}
             description={languageMode === 'simple'
-              ? 'Veja o que é o dado, a data e onde conferir.'
-              : 'Cinco pontos para entender o painel antes dos detalhes. Os números preservam a data de referência e a natureza do dado.'}
+              ? 'Número, data e fonte. O resto fica escondido até você pedir.'
+              : 'Valor, data, metodologia e origem ficam visíveis para conferência.'}
           />
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="summary-mode-pill">{languageMode === 'simple' ? 'Leitura simples' : 'Camada técnica'}</span>
             <button type="button" onClick={share} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
               <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
             </button>
@@ -89,7 +90,7 @@ export function ExecutiveSummary() {
 
                 {languageMode === 'simple' ? (
                   <p className="simple-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    São duas respostas diferentes da pesquisa. Elas não formam uma nova categoria.
+                    São respostas diferentes. Veja a fonte antes de comparar.
                   </p>
                 ) : (
                   <p className="technical-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
@@ -99,6 +100,7 @@ export function ExecutiveSummary() {
 
                 <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-slate-500">
                   <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
+                  <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
                   {languageMode === 'technical' && (
                     <>
                       <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.registrationNumber}</span>
@@ -136,7 +138,7 @@ export function ExecutiveSummary() {
               </div>
               <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{brl(monthlyPerPerson)}</div>
               <div className="text-xs text-slate-500">
-                {languageMode === 'simple' ? 'cenário mensal usado no cálculo' : 'por pessoa/mês · Brasília · 22 dias · 2 trechos/dia'}
+                {languageMode === 'simple' ? 'cenário mensal' : 'por pessoa/mês · Brasília · 22 dias · 2 trechos/dia'}
               </div>
             </Card>
           </div>
