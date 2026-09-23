@@ -8,53 +8,93 @@ const items = [
   { id: 'fontes', label: 'Fontes', icon: FileSearch },
 ] as const;
 
+const thematicIds = new Set([
+  'contexto', 'eleitorado', 'demografia', 'transporte', 'politica',
+  'candidaturas', 'eleitoral360', 'linha-do-tempo', 'orcamento',
+  'orcamento-impacto', 'qualidade', 'evidencias', 'acao', 'instagram',
+  'saude', 'quiz', 'principios',
+]);
+
 function jump(id: string) {
   const reduceMotion = document.documentElement.classList.contains('reduced-motion')
     || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  document.getElementById(id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  window.history.replaceState(null, '', '#' + id);
+
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+  window.history.replaceState(null, '', '#' + id);
+
+  const target = document.getElementById(id);
+  if (target) {
+    target.scrollIntoView({
+      behavior: reduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+    return;
+  }
+
+  // Se a seção estiver lazy-loaded, o App carrega o grupo a partir deste evento.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    });
+  });
+}
+
+function sectionToTab(id: string) {
+  if (id === 'dashboard') return 'dashboard';
+  if (id === 'descubra') return 'descubra';
+  if (id === 'dados' || id === 'fontes') return id;
+  return thematicIds.has(id) ? (id === 'dados' ? 'dados' : 'descubra') : 'descubra';
 }
 
 export function MobileBottomNav() {
   const [activeSection, setActiveSection] = useState('dashboard');
 
   useEffect(() => {
-    const observedIds = ['dashboard', 'descubra', 'dados', 'fontes'];
-    const thematicIds = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'politica', 'candidaturas', 'eleitoral360', 'linha-do-tempo', 'orcamento', 'orcamento-impacto', 'qualidade', 'evidencias', 'acao', 'instagram']);
-    const allObservedIds = [...observedIds, ...thematicIds];
-    const observed = allObservedIds.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-
     const updateFromHash = () => {
       const id = window.location.hash.replace('#', '');
-      if (observedIds.includes(id)) setActiveSection(id);
-      else if (thematicIds.has(id)) setActiveSection(id === 'dados' ? 'dados' : 'descubra');
+      if (id) setActiveSection(sectionToTab(id));
+    };
+
+    const observer = typeof IntersectionObserver === 'undefined'
+      ? null
+      : new IntersectionObserver(entries => {
+          const visible = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+          if (visible?.target.id) {
+            setActiveSection(sectionToTab(visible.target.id));
+          }
+        }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
+
+    const observeVisibleAnchors = () => {
+      if (!observer) return;
+      const ids = ['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds];
+      ids.forEach(id => {
+        const node = document.getElementById(id);
+        if (node) observer.observe(node);
+      });
     };
 
     updateFromHash();
-
-    const observer = new IntersectionObserver(entries => {
-      const visible = entries
-        .filter(entry => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (!visible?.target.id) return;
-      const id = visible.target.id;
-      setActiveSection(observedIds.includes(id) ? id : id === 'dados' ? 'dados' : id === 'fontes' ? 'fontes' : 'descubra');
-    }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
-
-    observed.forEach(node => observer.observe(node));
+    observeVisibleAnchors();
 
     const onNavigate = (event: Event) => {
       const id = (event as CustomEvent<string>).detail;
-      if (observedIds.includes(id)) setActiveSection(id);
-      else setActiveSection(id === 'dados' ? 'dados' : 'descubra');
+      setActiveSection(sectionToTab(id));
+      // Lazy sections are inserted after the navigation event.
+      requestAnimationFrame(observeVisibleAnchors);
+      requestAnimationFrame(() => requestAnimationFrame(observeVisibleAnchors));
     };
 
     window.addEventListener('hashchange', updateFromHash);
     window.addEventListener('observatorio:navigate', onNavigate);
 
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
       window.removeEventListener('hashchange', updateFromHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
     };
@@ -63,7 +103,13 @@ export function MobileBottomNav() {
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular">
       {items.map(({ id, label, icon: Icon }) => (
-        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'location' : undefined}>
+        <button
+          key={id}
+          type="button"
+          onClick={() => jump(id)}
+          className={activeSection === id ? 'is-active' : ''}
+          aria-current={activeSection === id ? 'location' : undefined}
+        >
           <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
           <span>{label}</span>
         </button>
