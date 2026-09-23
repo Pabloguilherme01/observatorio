@@ -46,7 +46,9 @@ export function SnapshotChanges() {
           </div>
         </div>
         <div className="mt-4 rounded-2xl border border-white/8 bg-black/10 p-4">
-          {hasChanges ? (
+          {generated.meta.state === 'first_capture' ? (
+            <div className="text-sm text-slate-300">Esta é a primeira captura validada da watchlist. Os registros adicionados formam a linha de base local; não representam uma comparação temporal entre duas capturas.</div>
+          ) : hasChanges ? (
             <div className="text-sm text-slate-300">Existem diferenças no snapshot atual. Abra o Eleitoral 360° para consultar os registros afetados.</div>
           ) : (
             <div className="flex items-start gap-3 text-xs leading-5 text-slate-500">
