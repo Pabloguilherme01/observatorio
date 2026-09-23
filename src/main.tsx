@@ -114,6 +114,7 @@ if (!root) {
       </StrictMode>,
     );
     console.info('[Observatório][boot] 4/4 React render() concluído em ' + Math.round(performance.now() - bootStartedAt) + 'ms');
+    document.documentElement.dataset.observatorioMounted = 'true';
     window.dispatchEvent(new CustomEvent('observatorio:app-mounted'));
   } catch (error) {
     const errorId = persistBootError(error, 'render');
