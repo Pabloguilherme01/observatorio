@@ -82,7 +82,7 @@ V31.0 — Observatório de Dados Cívicos e Eleitorais.
 - PWA com cache local para recursos da aplicação
 
 ### Estado da sincronização eleitoral
-A automação de candidatos do TSE está preparada para capturar o universo de Goiás e produzir snapshots com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas.
+A automação de candidatos do TSE está preparada para ler o arquivo de Goiás e produzir um snapshot de watchlist com SHA-256, diff e histórico. Enquanto a primeira captura validada não existir, a interface mantém o estado `not_synced` e não interpreta isso como ausência de candidaturas.
 
 ### Limitações editoriais
 - Dados de anos-base diferentes não são tratados como uma série homogênea sem indicação explícita.
