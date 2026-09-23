@@ -78,6 +78,8 @@ export interface ElectionPoll {
   readonly notSurePct?: number;
   readonly unclassifiedPct?: number;
   readonly officialMarginErrorPct?: number;
+  /** Margem registrada na documentação da pesquisa; não é calculada pelo Observatório. */
+  readonly theoreticalMarginErrorPct?: number;
   readonly confidenceLevelPct?: number;
   readonly sourceId: string;
   readonly judicialContext?: {
