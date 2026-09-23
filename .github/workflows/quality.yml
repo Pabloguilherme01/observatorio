@@ -38,6 +38,8 @@ jobs:
           RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
+      - name: Mobile UX audit
+        run: npm run audit:mobile
       - name: Typecheck
         run: npm run typecheck
       - name: Verify JWS implementation
