@@ -102,5 +102,26 @@ else pass('rótulos de ações principais são suficientemente descritivos');
 if (combined.includes('election-mode-actions') && combined.includes('mode-election')) pass('Modo Eleição é reversível e separado da leitura padrão');
 else fail('Modo Eleição perdeu a separação da leitura padrão');
 
+const simpleTexts = [
+  'Números claros. Toque para ver a fonte.',
+  'O essencial em 1 minuto',
+  'Os principais números',
+];
+const technicalTexts = [
+  'Fonte, data e método',
+  'Resumo com rastreabilidade',
+  'Os números de referência',
+];
+if (simpleTexts.every(value => combined.includes(value)) && technicalTexts.every(value => combined.includes(value))) pass('contrato de linguagem simples vs técnica presente');
+else fail('distinção de linguagem simples vs técnica incompleta');
+
+const mobileSafety = [
+  'isCompactViewport',
+  'max-width:380px',
+  'overflow-wrap:anywhere',
+];
+if (mobileSafety.every(value => combined.includes(value) || css.includes(value))) pass('proteções de experiência mobile presentes');
+else warn('algumas proteções mobile podem estar ausentes');
+
 console.log(JSON.stringify({ valid: errors.length === 0, filesScanned: sourceFiles.length, ids: ids.size, internalRefs: internalRefs.size, externalLinks: externalLinks.length, warnings, errors }, null, 2));
 if (errors.length) process.exitCode = 1;
