@@ -8,7 +8,7 @@ const generatedData = generated as {
     downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced';
   };
-  coverage: 'watchlist';
+  coverage: 'watchlist' | 'municipality';
   watchlist: string[];
   matched: Array<{
     sqCandidate: string;
@@ -55,7 +55,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'Cadastro, cargo, partido, situação e número. O recorte automatizado usa identidade SQ_CANDIDATO e preserva o manifesto do snapshot; bens, redes, histórico e propostas permanecem como camadas ainda não capturadas.',
+    description: 'Cadastro, cargo, partido, situação, município e número. Quando a sincronização enriquecida roda, foto e Instagram vêm dos recursos oficiais do TSE; bens, histórico e propostas só aparecem quando ingeridos.'
     status: candidateStatus,
     frequency: 'conforme atualização da fonte',
     sourceId: 'tse-candidatos-2026',
