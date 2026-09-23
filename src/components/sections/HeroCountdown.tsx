@@ -1,11 +1,11 @@
 import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
-import { EDITION, STORAGE_NAMESPACE } from '../../config/version';
+import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
-import { useEffect, useState } from 'react';
+
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
   if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
@@ -31,47 +31,32 @@ export function HeroCountdown() {
   const loa = d.budget.totalBrl;
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode: languageMode, setMode: setLanguageMode } = useLanguageMode();
-  const [electionMode, setElectionMode] = useState(false);
-  useEffect(() => {
-    const sync = () => setElectionMode(localStorage.getItem(`${STORAGE_NAMESPACE}-election-mode`) === '1');
-    sync();
-    window.addEventListener('observatorio:election-mode-changed', sync);
-    return () => window.removeEventListener('observatorio:election-mode-changed', sync);
-  }, []);
-  const toggleElectionMode = () => window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: !electionMode }));
 
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
-      <div className="hero-badges mb-6 flex flex-wrap gap-2">
-        <Badge>{EDITION} • leitura pública + investigação + evidências</Badge>
+      <div className="hero-badges mb-5 flex flex-wrap gap-2">
+        <Badge>{EDITION} · dados + método</Badge>
         <Badge>Dados públicos</Badge>
         <Badge>Fontes rastreáveis</Badge>
-        <Badge>Sem ranking automático</Badge>
       </div>
-      <div className="grid gap-10 lg:grid-cols-[1.18fr_.82fr] lg:items-end">
+      <div className="grid gap-8 lg:grid-cols-[1.12fr_.88fr] lg:items-end">
         <div>
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-sky-400">Observatório Eleitoral</p>
           <h1 id="hero-title" className="max-w-4xl text-4xl font-black tracking-tight text-white sm:text-6xl">
             Águas Lindas de Goiás <span className="text-slate-400">2026</span>
           </h1>
-          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
+          <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
             {languageMode === 'simple'
               ? 'Uma leitura pública da cidade: números, fontes e datas ficam visíveis para você conferir de onde veio cada informação.'
               : 'Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.'}
           </p>
-          <div className="mt-7 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap gap-2">
             <a href="#descubra" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
               Escolher um assunto <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a href="#evidencias" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
               Ver evidências
             </a>
-            <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
-              <Command className="h-4 w-4" aria-hidden="true" /> Central de comandos
-            </button>
-            <button type="button" onClick={toggleElectionMode} aria-pressed={electionMode} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-4 py-2.5 text-sm font-bold text-amber-100 transition hover:bg-amber-300/[0.10]">
-              <Vote className="h-4 w-4" aria-hidden="true" /> {electionMode ? 'Sair do Modo Eleição' : 'Modo Eleição'}
-            </button>
           </div>
 
           <div className="election-mode-actions mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.045] p-4" aria-label="Ações cívicas prioritárias">
@@ -83,47 +68,57 @@ export function HeroCountdown() {
             </div>
           </div>
 
-          <div className="hero-kpis mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Indicadores de referência da edição">
+          <div className="hero-kpis mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="Indicadores de referência da edição">
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">População 2026</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">População 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{population.toLocaleString('pt-BR')}</div>
-              <div className="mt-1 text-[10px] text-slate-600">estimativa IBGE</div>
+              <div className="mt-1 text-[11px] text-slate-600">estimativa IBGE</div>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado 2026</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{electorate.toLocaleString('pt-BR')}</div>
-              <div className="mt-1 text-[10px] text-slate-600">{languageMode === 'simple' ? 'foto do eleitorado' : 'snapshot local'}</div>
+              <div className="mt-1 text-[11px] text-slate-600">{languageMode === 'simple' ? 'foto do eleitorado' : 'snapshot local'}</div>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">LOA 2026</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">LOA 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{brl(loa)}</div>
-              <div className="mt-1 text-[10px] text-slate-600">orçamento total informado</div>
+              <div className="mt-1 text-[11px] text-slate-600">orçamento total informado</div>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Dataset</div>
-              <div className="mt-1 text-lg font-black text-white light:text-slate-900">{updatedAt}</div>
-              <div className="mt-1 text-[10px] text-slate-600">última atualização local</div>
-            </div>
+          </div>
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium text-slate-600" aria-label="Atualização do conjunto de dados">
+            <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Dados locais atualizados em {updatedAt}.</span>
+            <span>Conteúdo informativo · sem ranking automático.</span>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70" aria-label="Escolha a linguagem da interface">
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500"><Languages className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Linguagem</div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Explicação simples</button>
-              <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Detalhes técnicos</button>
+          <details className="hero-preferences mt-4 rounded-2xl border border-white/8 bg-white/[0.02] light:border-slate-200 light:bg-slate-50/70">
+            <summary className="cursor-pointer px-3 py-3 text-sm font-bold text-slate-300 hover:text-white light:text-slate-700">Preferências de leitura e ferramentas</summary>
+            <div className="grid gap-3 border-t border-white/8 p-3 sm:grid-cols-2">
+              <div aria-label="Escolha a linguagem da interface">
+                <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"><Languages className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Linguagem</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Explicação simples</button>
+                  <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Detalhes técnicos</button>
+                </div>
+                <p className="mt-2 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Termos técnicos ganham explicação direta.' : 'O vocabulário técnico e as camadas metodológicas ficam em primeiro plano.'}</p>
+              </div>
+              <div aria-label="Escolha a camada de leitura">
+                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada de leitura</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'overview' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Visão geral</button>
+                  <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Investigação</button>
+                  <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'evidence' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Evidências</button>
+                </div>
+                <p className="mt-2 text-xs leading-5 text-slate-500">A mudança reorganiza a densidade da interface.</p>
+              </div>
+              <div className="flex items-end sm:col-span-2">
+                <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
+                  <Command className="h-4 w-4" aria-hidden="true" /> Central de comandos
+                </button>
+              </div>
             </div>
-            <p className="mt-2 text-[11px] leading-5 text-slate-500">{languageMode === 'simple' ? 'Termos técnicos ganham explicação direta.' : 'O vocabulário técnico e as camadas metodológicas ficam em primeiro plano.'}</p>
-          </div>
-          <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70" aria-label="Escolha a camada de leitura">
-            <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada de leitura</div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'overview' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Visão geral</button>
-              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Investigação</button>
-              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'evidence' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Evidências</button>
-            </div>
-            <p className="mt-2 text-[11px] leading-5 text-slate-500">A mudança reorganiza a densidade da interface. A camada de evidências continua acessível em qualquer momento.</p>
-          </div>
-          <div className="hero-trust-line mt-5 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
+          </details>
+
+          <div className="hero-trust-line mt-4 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
             <span className="inline-flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Explore · compare · verifique</span>
           </div>
         </div>
