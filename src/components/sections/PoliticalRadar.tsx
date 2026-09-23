@@ -5,7 +5,7 @@ import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { SectionHeader } from '../ui/SectionHeader';
 
-const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection';
+const RADAR_STORAGE_KEY = 'observatorio-political-radar-selection-v30';
 
 export function PoliticalRadar() {
   const poll = d.polls[0];
@@ -15,9 +15,9 @@ export function PoliticalRadar() {
     if (typeof window === 'undefined') return candidateOptions[0] ?? '';
     try {
       const stored = window.localStorage.getItem(RADAR_STORAGE_KEY);
-      return stored && candidateOptions.includes(stored) ? stored : (candidateOptions[0] ?? '');
+      return stored && candidateOptions.includes(stored) ? stored : '';
     } catch {
-      return candidateOptions[0] ?? '';
+      return '';
     }
   });
 
@@ -58,8 +58,8 @@ export function PoliticalRadar() {
             </select>
           </label>
           <div className="rounded-xl border border-sky-400/10 bg-sky-400/[0.03] px-4 py-3 text-right">
-            <span className="block text-[11px] uppercase tracking-wide text-slate-500">Valor destacado</span>
-            <strong className="text-lg font-black text-sky-300">{selectedResult?.percentage.toFixed(2).replace('.', ',') ?? '—'}%</strong>
+            <span className="block text-[11px] uppercase tracking-wide text-slate-500">{selectedCandidate ? 'Valor destacado' : 'Foco neutro'}</span>
+            <strong className="text-lg font-black text-sky-300">{selectedResult ? selectedResult.percentage.toFixed(2).replace('.', ',') + '%' : 'Selecione um nome'}</strong>
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export function PoliticalRadar() {
         </div>
 
         <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400">
-          <strong className="text-amber-200">Situação da divulgação:</strong> há decisão judicial de 20/09/2026 sobre publicações que reproduziram esta pesquisa. O texto público localizado confirma a indisponibilização de publicações específicas e admite nova divulgação desde que as informações exigidas sejam apresentadas de forma clara e legível. Este cartão trata os percentuais como <strong className="text-slate-200">snapshot histórico</strong>, não como atualização de setembro.
+          <strong className="text-amber-200">Situação da divulgação:</strong> há decisão judicial datada de 17/09/2026, com reprodução pública localizada em 20/09/2026, sobre publicações que reproduziram esta pesquisa. O texto público localizado confirma a indisponibilização de publicações específicas e admite nova divulgação desde que as informações exigidas sejam apresentadas de forma clara e legível. Este cartão trata os percentuais como <strong className="text-slate-200">snapshot histórico</strong>, não como atualização de setembro.
           <a href="https://www.jusbrasil.com.br/jurisprudencia/tre-go/7355108574/inteiro-teor-7355108583" target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Ver inteiro teor reproduzido publicamente</a>
         </div>
 
