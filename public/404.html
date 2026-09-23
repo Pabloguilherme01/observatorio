@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="0; url=/observatorio/" />
+    <script>
+      (function () {
+        var target = "/observatorio/";
+        var path = window.location.pathname;
+        if (path.startsWith("/observatorio/") && path !== target) {
+          var rest = path.slice("/observatorio".length);
+          var query = window.location.search || "";
+          var hash = window.location.hash || "";
+          sessionStorage.setItem("observatorio-path", rest + query + hash);
+        }
+        window.location.replace(target);
+      })();
+    </script>
+    <title>Observatório</title>
+  </head>
+  <body>
+    <p>Redirecionando para o Observatório…</p>
+  </body>
+</html>
