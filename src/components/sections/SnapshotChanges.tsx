@@ -14,7 +14,7 @@ export function SnapshotChanges() {
             </div>
             <h2 id="changes-title" className="mt-2 text-2xl font-black tracking-tight text-white">O que mudou?</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-              A camada de diferenças compara registros por <code>SQ_CANDIDATO</code>. Enquanto a primeira captura validada não existir, o painel permanece explicitamente como não sincronizado.
+              Este painel mostra apenas diferenças que o snapshot local consegue sustentar. Sem uma primeira captura TSE validada, a interface deixa isso explícito em vez de preencher a lacuna com inferências.
             </p>
           </div>
           <span className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">{generated.meta.state}</span>
