@@ -2,7 +2,7 @@ import { Copy, Download, Image as ImageIcon } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
-import { Card } from '../ui/Card';
+import { Card } from './ui/Card';
 
 const rows: readonly (readonly ExportCell[])[] = [
   ['indicador', 'valor', 'unidade', 'status', 'fonte'],
