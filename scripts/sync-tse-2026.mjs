@@ -225,6 +225,39 @@ function selectWatchlist(records) {
 }
 
 
+
+function diffRecords(before, after) {
+  const key = candidate => candidate.sqCandidate || String(candidate.ballotNumber ?? candidate.name);
+  const previous = new Map(before.map(candidate => [key(candidate), candidate]));
+  const current = new Map(after.map(candidate => [key(candidate), candidate]));
+  const records = [];
+
+  for (const [id, candidate] of current) {
+    const old = previous.get(id);
+    if (!old) {
+      records.push({ key: id, type: 'added', after: candidate });
+      continue;
+    }
+    const fields = Object.keys(candidate).filter(field => candidate[field] !== old[field]);
+    if (fields.length) records.push({ key: id, type: 'changed', before: old, after: candidate, changedFields: fields });
+  }
+  for (const [id, candidate] of previous) {
+    if (!current.has(id)) records.push({ key: id, type: 'removed', before: candidate });
+  }
+  return records;
+}
+
+function loadPrevious() {
+  if (!existsSync(OUTPUT)) return null;
+  try {
+    const previous = JSON.parse(readFileSync(OUTPUT, 'utf8'));
+    if (!previous.meta || !Array.isArray(previous.matched) || previous.meta.state === 'not_synced') return null;
+    return previous;
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   mkdirSync(OUTPUT_DIR, { recursive: true });
   mkdirSync(HISTORY_DIR, { recursive: true });
