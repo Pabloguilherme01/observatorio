@@ -2,7 +2,7 @@ import { Search, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-const entries = [
+const entries: readonly (readonly [string, string])[] = [
   ['Dashboard', 'dashboard'],
   ['Perfil eleitoral', 'eleitorado'],
   ['Transporte', 'transporte'],
@@ -10,7 +10,7 @@ const entries = [
   ['Pesquisas', 'politica'],
   ['Orçamento', 'orcamento'],
   ['Fontes e metodologia', 'fontes'],
-, ['Eleitorado: 125.062', 'eleitorado'], ['População 2026: 249.978', 'dashboard'], ['Tarifa Brasília: R$ 11,45', 'transporte'], ['LOA 2026: R$ 771,3 milhões', 'orcamento'], ['Pesquisa GO-04133/2026', 'politica'], ['Fontes e metodologia', 'fontes'],
+  ['Eleitorado: 125.062', 'eleitorado'], ['População 2026: 249.978', 'dashboard'], ['Tarifa Brasília: R$ 11,45', 'transporte'], ['LOA 2026: R$ 771,3 milhões', 'orcamento'], ['Pesquisa GO-04133/2026', 'politica'], ['Fontes e metodologia', 'fontes'],
 ];
 
 const dataEntries = [
