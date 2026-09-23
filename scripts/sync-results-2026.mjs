@@ -90,7 +90,9 @@ function numberFrom(value) {
 function extractCandidates(payload, cargoName) {
   const candidates = [];
   const seen = new Set();
-  for (const cargo of payload.carg ?? []) {
+  const cargoBlocks = (payload.carg ?? []).filter(cargo => normalize(cargo.nmn || cargo.nm || cargo.nmf || '') === normalize(cargoName));
+  if (!cargoBlocks.length) throw new Error(`Payload não contém o cargo ${cargoName}.`);
+  for (const cargo of cargoBlocks) {
     for (const group of cargo.agr ?? []) {
       for (const party of group.par ?? []) {
         for (const candidate of party.cand ?? []) {
@@ -113,6 +115,10 @@ function extractCandidates(payload, cargoName) {
 }
 
 function entryFromPayload(payload, sourceFile, spec) {
+  if (String(payload.ele) !== String(spec.electionCode)) throw new Error(`${sourceFile}: código de eleição divergente no payload.`);
+  if (Number(payload.t ?? 0) !== TURN) throw new Error(`${sourceFile}: turno divergente no payload.`);
+  if (String(payload.tpabr ?? '').toLowerCase() !== 'mu') throw new Error(`${sourceFile}: abrangência não é municipal.`);
+  if (String(payload.cdabr ?? '') !== MUNICIPALITY_CODE) throw new Error(`${sourceFile}: município divergente no payload.`);
   const sections = payload.s ?? {};
   const electors = payload.e ?? {};
   const votes = payload.v ?? {};
