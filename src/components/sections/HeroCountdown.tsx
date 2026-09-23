@@ -1,6 +1,7 @@
-import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles } from 'lucide-react';
+import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
+import { useEffect, useState } from 'react';
 import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
@@ -31,6 +32,26 @@ export function HeroCountdown() {
   const loa = d.budget.totalBrl;
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode: languageMode, setMode: setLanguageMode } = useLanguageMode();
+  const [electionMode, setElectionMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('observatorio-v43-election-mode') === '1'
+        || document.documentElement.classList.contains('mode-election');
+    } catch {
+      return document.documentElement.classList.contains('mode-election');
+    }
+  });
+
+  useEffect(() => {
+    const onElectionModeChanged = (event: Event) => {
+      setElectionMode(Boolean((event as CustomEvent<boolean>).detail));
+    };
+    window.addEventListener('observatorio:election-mode-changed', onElectionModeChanged);
+    return () => window.removeEventListener('observatorio:election-mode-changed', onElectionModeChanged);
+  }, []);
+
+  const toggleElectionMode = () => {
+    window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: !electionMode }));
+  };
 
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
@@ -58,6 +79,17 @@ export function HeroCountdown() {
               Ver evidências
             </a>
           </div>
+          <button
+            type="button"
+            className="hero-mobile-election-toggle mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 py-2 text-xs font-black text-amber-100 transition hover:bg-amber-300/[0.08]"
+            onClick={toggleElectionMode}
+            aria-pressed={electionMode}
+            aria-label={electionMode ? 'Desativar Modo Eleição' : 'Ativar Modo Eleição'}
+          >
+            <Vote className="h-4 w-4" aria-hidden="true" />
+            <span>{electionMode ? 'Modo Eleição · ativo' : 'Modo Eleição'}</span>
+            <span className="text-amber-200/60">{electionMode ? 'desativar' : 'ativar'}</span>
+          </button>
 
           <div className="election-mode-actions mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.045] p-4" aria-label="Ações cívicas prioritárias">
             <div className="text-[11px] font-black uppercase tracking-[0.16em] text-amber-200">Modo Eleição · acesso rápido</div>
