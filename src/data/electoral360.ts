@@ -105,10 +105,9 @@ export const electoral360Snapshot: Electoral360Snapshot = {
   capturedAt: generatedData.meta.downloadedAt ?? '',
   captureMode: generatedData.meta.state === 'not_synced' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
-  localWatchlist: generatedData.watchlist.filter(name => {
-    const candidate = generatedData.matched.find(item => item.watchlistName === name);
-    return !!candidate && LOCAL_CANDIDATE_IDS.includes(candidate.sqCandidate as typeof LOCAL_CANDIDATE_IDS[number]);
-  }),
+  localWatchlist: generatedData.matched
+    .filter(candidate => LOCAL_CANDIDATE_IDS.includes(candidate.sqCandidate as typeof LOCAL_CANDIDATE_IDS[number]))
+    .map(candidate => candidate.name),
   matchedCandidates: generatedData.matched
     .filter(candidate => LOCAL_CANDIDATE_IDS.includes(candidate.sqCandidate as typeof LOCAL_CANDIDATE_IDS[number]))
     .map(candidate => ({
