@@ -198,6 +198,15 @@ export const sourceRegistry: readonly SourceRef[] = [
     note: 'Catálogo diário com pesquisas, contratantes, pagantes, questionários, notas fiscais e detalhamento de bairro/município.',
   },
   {
+    id: 'tre-go-decisao-go04133-2026',
+    label: 'Jusbrasil — inteiro teor de decisão do TRE-GO sobre GO-04133/2026',
+    institution: 'Jusbrasil / TRE-GO',
+    url: 'https://www.jusbrasil.com.br/jurisprudencia/tre-go/7355108574/inteiro-teor-7355108583',
+    nature: 'secondary',
+    referenceDate: '2026-09-20',
+    note: 'Fonte secundária que reproduz decisão do TRE-GO sobre publicações que divulgaram resultados da pesquisa. Usada apenas para sinalizar cautela editorial na divulgação.',
+  },
+  {
     id: 'tse-pardal-2026',
     label: 'TSE — Denúncias Eleitorais / Pardal 2026',
     institution: 'Tribunal Superior Eleitoral',
