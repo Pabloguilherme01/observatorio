@@ -51,11 +51,22 @@ async function notifyDataUpdated(): Promise<void> {
 
 async function refreshData(request: Request): Promise<Response> {
   const response = await fetch(request);
-  if (response.ok) {
-    const cache = await runtime.caches.open(API_CACHE);
-    await cache.put(request, response.clone());
-    await notifyDataUpdated();
+  if (!response.ok) return response;
+
+  const cache = await runtime.caches.open(API_CACHE);
+  const cached = await cache.match(request);
+  let changed = true;
+
+  if (cached) {
+    const [cachedText, freshText] = await Promise.all([
+      cached.clone().text(),
+      response.clone().text(),
+    ]);
+    changed = cachedText !== freshText;
   }
+
+  await cache.put(request, response.clone());
+  if (changed) await notifyDataUpdated();
   return response;
 }
 
