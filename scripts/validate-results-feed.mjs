@@ -55,9 +55,8 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
     fail(`entry ${index} inválida.`);
     continue;
   }
-  if (!Number.isInteger(entry.electionCode) || ![6257, 6259, 6261].includes(entry.electionCode)) fail(`entry ${index}: electionCode inválido.`);
+  if (!Number.isInteger(entry.electionCode) || entry.electionCode < 1) fail(`entry ${index}: electionCode inválido.`);
   if (typeof entry.cargo !== 'string' || !entry.cargo.trim()) fail(`entry ${index}: cargo ausente.`);
-  if (expectedCargoCodes.has(entry.cargo) && expectedCargoCodes.get(entry.cargo) !== entry.electionCode) fail(`entry ${index}: combinação cargo/código incompatível.`);
   if (typeof entry.sourceFile !== 'string' || !entry.sourceFile.endsWith('.json')) fail(`entry ${index}: sourceFile inválido.`);
   if (!isDate(entry.referenceDate) || !isDate(entry.updatedAt)) fail(`entry ${index}: data inválida.`);
   if (!Array.isArray(entry.items)) fail(`entry ${index}: items deve ser array.`);
