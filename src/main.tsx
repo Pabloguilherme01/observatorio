@@ -47,6 +47,48 @@ function BootstrapFallback({ errorId, message }: { readonly errorId: string; rea
   );
 }
 
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; }>;
+};
+
+function PwaInstallPrompt() {
+  const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    const onBeforeInstall = (event: Event) => {
+      const promptEvent = event as BeforeInstallPromptEvent;
+      event.preventDefault();
+      setInstallEvent(promptEvent);
+    };
+    window.addEventListener('beforeinstallprompt', onBeforeInstall);
+    return () => window.removeEventListener('beforeinstallprompt', onBeforeInstall);
+  }, []);
+
+  if (!installEvent) return null;
+
+  const install = async () => {
+    try {
+      await installEvent.prompt();
+      await installEvent.userChoice;
+    } finally {
+      setInstallEvent(null);
+    }
+  };
+
+  return (
+    <div className="pwa-install-banner" role="status" aria-live="polite">
+      <div>
+        <strong>Instalar o Observatório</strong>
+        <small>Atalho para abrir o painel como aplicativo, quando o navegador oferecer suporte.</small>
+      </div>
+      <button type="button" className="pwa-install-button" onClick={install}>
+        Instalar
+      </button>
+    </div>
+  );
+}
+
 function PwaStatus() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   useEffect(() => {
@@ -139,6 +181,7 @@ if (!root) {
         <ErrorBoundary>
           <App />
           <PwaStatus />
+          <PwaInstallPrompt />
         </ErrorBoundary>
       </StrictMode>,
     );
