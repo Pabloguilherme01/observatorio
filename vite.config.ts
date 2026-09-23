@@ -55,7 +55,7 @@ const publicApiPlugin = (): Plugin => ({
         info: {
           title: 'Observatório Águas Lindas — API pública',
           version: APP_VERSION,
-          description: 'Snapshot público estático gerado a cada build a partir da mesma fonte usada pela interface. A versão publicada é identificada pelo contrato de saúde.',
+          description: 'Snapshot público estático gerado a cada build a partir da mesma fonte usada pela interface.',
         },
         servers: [{ url: '/observatorio' }],
         paths: {
@@ -87,15 +87,19 @@ export default defineConfig({
       registerType: 'autoUpdate',
       manifest: {
         name: 'Observatório Águas Lindas 2026',
-        short_name: 'Obs 2026',
-        description: 'Observatório público de dados eleitorais e municipais de Águas Lindas de Goiás.',
-        id: `observatorio-aguas-lindas-2026-${APP_VERSION}`,
+        short_name: 'Observatório 2026',
+        description: 'Dados públicos eleitorais e municipais de Águas Lindas de Goiás, com fontes rastreáveis.',
+        lang: 'pt-BR',
+        dir: 'ltr',
+        id: '/observatorio/',
         theme_color: '#0d1117',
         background_color: '#0d1117',
         display: 'standalone',
         orientation: 'portrait-primary',
         start_url: '/observatorio/',
         scope: '/observatorio/',
+        categories: ['public-services', 'education'],
+        prefer_related_applications: false,
         icons: [
           { src: '/observatorio/pwa-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
           { src: '/observatorio/pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
@@ -104,31 +108,43 @@ export default defineConfig({
       includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
+        navigateFallback: '/observatorio/index.html',
+        navigateFallbackDenylist: [/^\/observatorio\/api\//],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => ['script', 'style', 'image', 'font'].includes(request.destination),
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: `observatorio-static-assets-${APP_VERSION}`,
-              expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              cacheName: 'observatorio-static-v1',
+              expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
           {
-            urlPattern: ({ request }) => request.mode === 'navigate',
+            urlPattern: ({ request }) => request.destination === 'document' && request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: `observatorio-pages-${APP_VERSION}`,
-              networkTimeoutSeconds: 3,
-              expiration: { maxEntries: 12, maxAgeSeconds: 60 * 60 * 24 * 7 },
+              cacheName: 'observatorio-documents-v1',
+              networkTimeoutSeconds: 4,
+              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 14 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.startsWith('/observatorio/api/v1/'),
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'observatorio-api-v1',
+              networkTimeoutSeconds: 4,
+              expiration: { maxEntries: 32, maxAgeSeconds: 60 * 60 * 24 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],
         cleanupOutdatedCaches: true,
-        navigateFallback: 'index.html',
         clientsClaim: true,
         skipWaiting: true,
+        cacheId: 'observatorio-aguas-lindas',
 
       },
     }),

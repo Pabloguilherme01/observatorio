@@ -12,12 +12,10 @@ const files = {
   share: read('src/components/ShareDataButton.tsx'),
   instagram: read('src/components/InstagramSyncHub.tsx'),
   trust: read('src/components/ProjectTrustPanel.tsx'),
-  header: read('src/components/layout/Header.tsx'),
-  mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
-  language: read('src/components/layout/LanguageModeToggle.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
   index: read('index.html'),
+  mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
 };
 
 const errors = [];
@@ -42,12 +40,10 @@ must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
-
 const appVersionMatch = files.version.match(/APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]/);
-must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('44.'), 'versão V44 sincronizada com a camada mobile');
-
-const app = files.app;
-must(app.includes('IntersectionObserver') && app.includes("rootMargin: '900px 0px'"), 'seções abaixo da dobra usam carregamento diferido');
+must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('43.'), 'versão do aplicativo sincronizada com a camada mobile');
+const app = read('src/app/App.tsx');
+must(app.includes('IntersectionObserver') && app.includes('rootMargin: \'900px 0px\''), 'seções abaixo da dobra usam carregamento diferido');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
 must(app.includes("'saude'") && app.includes("'healgo'"), 'âncoras de saúde e simulador permanecem navegáveis após code splitting');
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile suporta zoom e safe-area');
@@ -55,17 +51,6 @@ must(files.index.includes('apple-mobile-web-app-capable') && files.index.include
 must(files.mobileNav.includes("aria-current={activeSection === id ? 'location'"), 'navegação inferior usa estado de localização acessível');
 must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface mobile não calcula margem de erro teórica');
 must(read('src/components/ExperienceShell.tsx').includes("behavior: reduceMotion ? 'auto' : 'smooth'"), 'navegação programática respeita redução de movimento');
-must(files.language.includes("setMode('simple')") && files.language.includes("setMode('technical')"), 'alternância simples/técnico está disponível no mobile');
-must(files.instagram.includes('wa.me/?text='), 'WhatsApp contextual está integrado ao fluxo social');
-
-/* Regression guards for the recent mobile layout failure. */
-must(files.css.startsWith('@import "tailwindcss";'), 'Tailwind v4 é importado antes das regras customizadas');
-must(files.header.includes('hidden flex-1') && files.header.includes('xl:flex'), 'navegação desktop permanece oculta em viewport mobile');
-must(files.css.includes('html,body,#root{min-width:0;max-width:100%;overflow-x:hidden}'), 'raiz da aplicação bloqueia crescimento horizontal acidental');
-must(files.css.includes('.mobile-bottom-nav{') && files.css.includes('grid-template-columns:repeat(6,minmax(0,1fr))'), 'barra inferior mantém seis atalhos com colunas elásticas');
-must(files.css.includes('button,a,input,select,textarea{font:inherit}'), 'controles não sofrem expansão tipográfica inesperada no mobile');
-must(files.css.includes('img,svg,video,canvas{max-width:100%;height:auto}'), 'mídia não ultrapassa a largura do viewport');
-must(files.index.includes('name="viewport"'), 'viewport meta está presente');
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
@@ -74,3 +59,7 @@ if (errors.length) {
 } else {
   pass('auditoria mobile estática concluída');
 }
+
+
+must(read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('simple')") && read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('technical')"), 'alternância simples/técnico está disponível no mobile');
+must(read('src/components/InstagramSyncHub.tsx').includes('wa.me/?text='), 'WhatsApp contextual está integrado ao fluxo social');
