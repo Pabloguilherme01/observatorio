@@ -15,22 +15,63 @@ const ZIP_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/co
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
 const WATCHLIST = ['Keké', 'Anderson Teodoro', 'Zé da Imperial', 'Baiano dos Cocos', 'Cambão', 'Abadyas Damasceno', 'Pábio Mossoró', 'Felipe Galdino', 'Ribeiro do Túlio', 'André do Premium'];
 
-function download(url, destination) {
+const WATCHLIST_ALIASES = {
+  'Keké': ['KEKE'],
+  'Anderson Teodoro': ['ANDERSON TEODORO'],
+  'Zé da Imperial': ['ZE DA IMPERIAL', 'JOSE IMPERIAL'],
+  'Baiano dos Cocos': ['BAIANO DOS COCOS', 'BAIANO DO COCOS', 'BAIANO COCOS'],
+  'Cambão': ['CAMBAO'],
+  'Abadyas Damasceno': ['ABADYAS DAMASCENO'],
+  'Pábio Mossoró': ['PABIO MOSSORO'],
+  'Felipe Galdino': ['FELIPE GALDINO'],
+  'Ribeiro do Túlio': ['RIBEIRO DO TULIO'],
+  'André do Premium': ['ANDRE DO PREMIUM'],
+};
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function download(url, destination, attempt = 1) {
   return new Promise((resolve, reject) => {
+    let settled = false;
     const file = createWriteStream(destination);
-    const get = target => request(target, response => {
-      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-        response.resume();
-        return get(new URL(response.headers.location, target).href);
-      }
-      if (response.statusCode !== 200) {
-        response.resume();
-        return reject(new Error('TSE respondeu HTTP ' + response.statusCode));
-      }
-      response.pipe(file);
-      file.on('finish', () => file.close(resolve));
-    });
-    get(url).on('error', reject);
+    const finish = error => {
+      if (settled) return;
+      settled = true;
+      file.close(() => error ? reject(error) : resolve());
+    };
+    const get = target => {
+      const req = request(target, {
+        headers: {
+          'Accept': 'application/zip, application/octet-stream;q=0.9, */*;q=0.8',
+          'User-Agent': 'observatorio-aguas-lindas/42.0 (+https://pabloguilherme01.github.io/observatorio/)',
+        },
+        timeout: 30000,
+      }, response => {
+        if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+          response.resume();
+          return get(new URL(response.headers.location, target).href);
+        }
+        if (response.statusCode !== 200) {
+          response.resume();
+          return finish(new Error('TSE respondeu HTTP ' + response.statusCode));
+        }
+        response.pipe(file);
+        response.on('error', finish);
+        file.on('finish', () => finish());
+      });
+      req.on('timeout', () => req.destroy(new Error('Timeout de 30s ao baixar o pacote TSE.')));
+      req.on('error', finish);
+    };
+    get(url);
+  }).catch(async error => {
+    rmSync(destination, { force: true });
+    if (attempt >= 4) throw new Error('Falha ao baixar pacote TSE após ' + attempt + ' tentativas: ' + error.message);
+    const waitMs = 1000 * 2 ** (attempt - 1);
+    console.warn('[TSE] tentativa ' + attempt + ' falhou: ' + error.message + '. Nova tentativa em ' + waitMs + 'ms.');
+    await sleep(waitMs);
+    return download(url, destination, attempt + 1);
   });
 }
 
@@ -186,8 +227,16 @@ async function main() {
       }
       rowsRead += 1;
       const candidateName = normalize(row[header.NM_URNA_CANDIDATO] || row[header.NM_CANDIDATO] || '');
-      if (!WATCHLIST.some(name => candidateName.includes(normalize(name)))) return;
+      const matchedWatchName = WATCHLIST.find(name => (WATCHLIST_ALIASES[name] ?? [normalize(name)])
+        .some(alias => {
+          const aliasTokens = normalize(alias).split(' ').filter(Boolean);
+          const candidateTokens = candidateName.split(' ').filter(Boolean);
+          if (!aliasTokens.length || aliasTokens.length > candidateTokens.length) return false;
+          return aliasTokens.every((token, index) => candidateTokens[index] === token);
+        }));
+      if (!matchedWatchName) return;
       const record = toRecord(row, header);
+      record.watchlistName = matchedWatchName;
       if (!record.sqCandidate) throw new Error('Registro monitorado sem SQ_CANDIDATO.');
       if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte: ' + record.sqCandidate);
       seen.add(record.sqCandidate);
@@ -196,8 +245,7 @@ async function main() {
 
     if (!rowsRead) throw new Error('Snapshot inválido: nenhum registro de candidato foi lido.');
 
-    const normalizedMatches = allMatches.map(candidate => normalize(candidate.name));
-    const missingWatchlist = WATCHLIST.filter(name => !normalizedMatches.some(match => match.includes(normalize(name))));
+    const missingWatchlist = WATCHLIST.filter(name => !allMatches.some(candidate => candidate.watchlistName === name));
     if (missingWatchlist.length) {
       throw new Error('Captura TSE incompleta; watchlist sem correspondência: ' + missingWatchlist.join(', '));
     }
@@ -222,6 +270,8 @@ async function main() {
         gitCommit: process.env.GITHUB_SHA || undefined,
         schemaVersion: 2,
         state,
+        retrievalMethod: 'official_tse_open_data_csv',
+        resourceUrl: ZIP_URL,
       },
       coverage: 'watchlist',
       watchlist: WATCHLIST,
