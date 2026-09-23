@@ -55,16 +55,26 @@ function MetricBar({ label, value, emphasis = false }: { readonly label: string;
 }
 
 function SewerCurve() {
-  const max = Math.max(...sewerHistory.map(point => point.value));
-  const min = Math.min(...sewerHistory.map(point => point.value));
-  const points = sewerHistory.map((point, index) => ({ ...point, x: 32 + (index * 560) / (sewerHistory.length - 1), y: 20 + ((max - point.value) / Math.max(max - min, 1)) * 125 }));
+  const chartMin = 0;
+  const chartMax = 100;
+  const points = sewerHistory.map((point, index) => ({
+    ...point,
+    x: 42 + (index * 548) / (sewerHistory.length - 1),
+    y: 28 + ((chartMax - point.value) / (chartMax - chartMin)) * 122,
+  }));
   return (
     <figure className="mt-6 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
       <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Série histórica · esgoto</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Atendimento por rede pública, 2017–2024.</p></figcaption>
-      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label="Série histórica do atendimento por rede pública de esgoto entre 2017 e 2024">
+      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label="Série histórica do atendimento por rede pública de esgoto entre 2017 e 2024, em escala de 0 a 100 por cento">
         <title>Atendimento por rede pública de esgoto, 2017 a 2024</title>
         <desc>{sewerHistory.map(point => `${point.year}: ${String(point.value).replace('.', ',')} por cento`).join('; ')}.</desc>
-        <line x1="32" y1="170" x2="592" y2="170" className="stroke-slate-700/40 light:stroke-slate-300" strokeWidth="1" />
+        {[0, 50, 100].map(value => {
+          const y = 28 + ((chartMax - value) / (chartMax - chartMin)) * 122;
+          return <g key={value}>
+            <line x1="42" y1={y} x2="590" y2={y} className="stroke-slate-700/25 light:stroke-slate-300/80" strokeWidth="1" />
+            <text x="12" y={y + 4} className="label-secondary fill-slate-500 text-[9px]">{value}%</text>
+          </g>;
+        })}
         <polyline points={points.map(point => `${point.x},${point.y}`).join(' ')} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
         {points.map(point => <g key={point.year} tabIndex={0} role="img" aria-label={`${point.year}: ${String(point.value).replace('.', ',')}%`}><circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" /><text x={point.x} y={point.y - 12} textAnchor="middle" className="label-secondary fill-slate-400 text-[10px] light:fill-slate-600">{String(point.value).replace('.', ',')}%</text><text x={point.x} y="194" textAnchor="middle" className="label-secondary fill-slate-500 text-[10px]">{point.year}</text></g>)}
       </svg>
