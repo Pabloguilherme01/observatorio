@@ -4,6 +4,7 @@ export const navigation = [
   { id: 'transporte', label: 'Transporte', shortLabel: 'Transporte', description: 'Mobilidade e tarifas', shortcut: 'G T' },
   { id: 'politica', label: 'Política', shortLabel: 'Política', description: 'Pesquisas documentais', shortcut: 'G P' },
   { id: 'eleitoral360', label: 'Eleitoral 360°', shortLabel: '360°', description: 'Snapshots e registros', shortcut: 'G X' },
+  { id: 'linha-do-tempo', label: 'Linha do tempo', shortLabel: 'Timeline', description: 'Calendário eleitoral', shortcut: 'G L' },
   { id: 'orcamento', label: 'Orçamento', shortLabel: 'Orçamento', description: 'Receitas e despesas', shortcut: 'G O' },
   { id: 'dados', label: 'Dados', shortLabel: 'Dados', description: 'Atualizações públicas', shortcut: 'G A' },
   { id: 'qualidade', label: 'Qualidade', shortLabel: 'Qualidade', description: 'Integridade e proveniência', shortcut: 'G Q' },
