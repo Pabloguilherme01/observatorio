@@ -35,6 +35,7 @@ import { QuickQuiz } from '../components/sections/QuickQuiz';
 import { InstagramSyncHub } from '../components/InstagramSyncHub';
 import { ProjectTrustPanel } from '../components/ProjectTrustPanel';
 import { ProvenanceDrawer } from '../components/ProvenanceDrawer';
+import { DataUpdateToast } from '../components/DataUpdateToast';
 import { DataHealthPanel } from '../components/sections/DataHealthPanel';
 
 export function App() {
@@ -79,6 +80,7 @@ export function App() {
           <ScrollTopButton />
           <DataInspector />
           <ProvenanceDrawer />
+          <DataUpdateToast />
         </ExperienceShell>
       </ThemeProvider>
     </LanguageModeProvider>
