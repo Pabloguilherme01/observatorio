@@ -171,6 +171,11 @@ export interface ObservatoryData {
   readonly transport: TransportProfile;
   readonly sanitation: SanitationSnapshot;
   readonly health: HealthProfile;
+  readonly education?: {
+    readonly ideb2025Range: readonly [number, number];
+    readonly sourceId: string;
+    readonly note: string;
+  };
   readonly budget: BudgetData;
   readonly indicators: readonly MunicipalIndicator[];
 }
