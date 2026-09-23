@@ -1,6 +1,9 @@
-import processualData from '../../../generated/tse2026-processual.json';
+import rawProcessualData from '../../../generated/tse2026-processual.json';
+import { TSEProcessualFileSchema } from '../../schemas/tse-enriched.schema';
 import { ShareDataButton } from '../ShareDataButton';
 import { Card } from '../ui/Card';
+
+const processualData = TSEProcessualFileSchema.parse(rawProcessualData);
 
 export function TimelineProcessual() {
   const url = typeof window === 'undefined'
