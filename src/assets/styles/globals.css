@@ -108,7 +108,7 @@ html.light body::before {
     linear-gradient(90deg, rgba(15,23,42,.035) 1px, transparent 1px);
 }
 
-html.light .bg-\\[\\#0b1117\\] { background: #f5f7fa !important; }
+html.light .bg-\[\#0b1117\] { background: #f5f7fa !important; }
 html.light .text-white { color: #0f172a !important; }
 html.light .text-slate-300 { color: #334155 !important; }
 html.light .text-slate-400 { color: #475569 !important; }
