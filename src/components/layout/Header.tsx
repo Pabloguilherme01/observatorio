@@ -62,7 +62,6 @@ export function Header() {
             <button type="button" onClick={toggle} className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
-            <div className="sm:hidden"><LanguageModeToggle /></div>
             <button type="button" onClick={() => setMenuOpen(value => !value)} className="rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white lg:hidden" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}>
               {menuOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <Menu className="h-4 w-4" aria-hidden="true" />}
             </button>
