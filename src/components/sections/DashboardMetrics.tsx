@@ -88,6 +88,7 @@ export function DashboardMetrics() {
   const populationGrowthPct = population2022 ? ((population2026 - population2022) / population2022) * 100 : 0;
   const electorateShare = population2026 ? (d.electoral.electorate / population2026) * 100 : 0;
   const inclusionCount = d.electoral.socialNameCount ?? 0;
+  const municipalIndicator = (id: string) => d.indicators.find(indicator => indicator.id === id)?.value ?? 0;
   const indigenousElectorate = d.electoral.indigenousElectorate ?? 0;
 
   const populationPoints = d.populationSeries
@@ -151,6 +152,30 @@ export function DashboardMetrics() {
           <p className="mt-1 text-xs leading-5 text-slate-500">Área territorial usada para a densidade demográfica derivada.</p>
         </Card>
       </div>
+      <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300/80">Contexto municipal</div>
+            <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Outros indicadores do perfil IBGE</h3>
+          </div>
+          <span className="text-xs text-slate-500">anos-base preservados por indicador</span>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ['Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022'],
+            ['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025'],
+            ['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025'],
+            ['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023'],
+          ].map(([label, value, year]) => (
+            <div key={label} className="rounded-2xl border border-white/8 bg-black/10 p-4 light:bg-white">
+              <div className="text-xs font-semibold text-slate-500">{label}</div>
+              <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
+              <div className="mt-1 text-[11px] text-slate-500">ano-base {year}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </section>
   );
 }
