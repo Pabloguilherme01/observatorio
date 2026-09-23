@@ -96,7 +96,7 @@ function isOfficialResultsUrl(value: unknown): value is string {
 function isValidResultsFeed(value: unknown): value is ResultsFeed {
   if (!value || typeof value !== 'object') return false;
   const payload = value as Record<string, unknown>;
-  if (payload.schemaVersion !== 2) return false;
+  if (payload.schemaVersion !== RESULTS_FEED_SCHEMA_VERSION) return false;
   if (payload.environment !== OFFICIAL_RESULTS_CONTEXT.environment || payload.scope !== OFFICIAL_RESULTS_CONTEXT.scope) return false;
   if (payload.source !== 'official-tse' || !VALID_STATES.has(payload.state as ResultsFeed['state'])) return false;
   if (payload.pleito !== OFFICIAL_RESULTS_CONTEXT.pleito) return false;
