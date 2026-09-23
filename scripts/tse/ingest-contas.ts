@@ -66,7 +66,7 @@ for (const row of despesas) {
   const id = valueOf(row, ['SQ_CANDIDATO', 'SQ_CANDIDATO_']);
   const bucket = byCandidate.get(id);
   if (!bucket) continue;
-  const value = parseMoney(valueOf(row, ['VR_DESPESA', 'VR_DESPESA_TOTAL']));
+  const value = parseMoney(valueOf(row, ['VR_DESPESA', 'VR_DESPESA_TOTAL', 'VR_DESPESA_CONTRATADA']));
   bucket.despesas.total += value;
   bucket.despesas.lista.push({
     nome: valueOf(row, ['NM_FORNECEDOR', 'NM_FORNECEDOR_ORIGINARIO']),
