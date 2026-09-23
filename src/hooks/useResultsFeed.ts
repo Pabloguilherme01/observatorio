@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RESULTS_FEED_SCHEMA_VERSION, RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT, electionCodeMatchesCargo } from '../data/resultsConfig';
+import { RESULTS_FEED_SCHEMA_VERSION, RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT } from '../data/resultsConfig';
 
 export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'stale' | 'complete' | 'ended_unavailable';
 
@@ -110,20 +110,22 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   if (capturedAt > Date.now() + 5 * 60 * 1000) return false;
   if (!Array.isArray(payload.entries)) return false;
 
+  if (payload.state !== 'pending' && (!payload.integrity || payload.integrity.allVerified !== true)) return false;
+
   if (payload.integrity !== undefined) {
     if (!payload.integrity || typeof payload.integrity !== 'object') return false;
     const integrity = payload.integrity as Record<string, unknown>;
     if (!Array.isArray(integrity.files) || typeof integrity.allVerified !== 'boolean') return false;
     if (integrity.files.length !== payload.entries.length) return false;
-    if (integrity.allVerified && integrity.files.some(file => !file || typeof file !== 'object' || (file as Record<string, unknown>).signatureStatus !== 'verified')) return false;
+    if (integrity.files.some(file => !file || typeof file !== 'object' || (file as Record<string, unknown>).signatureStatus !== 'verified')) return false;
+    if (integrity.files.some(file => (file as Record<string, unknown>).verificationMethod !== 'tse-official-jwk-ed25519' || (file as Record<string, unknown>).algorithm !== 'EdDSA' || (file as Record<string, unknown>).curve !== 'Ed25519' || (file as Record<string, unknown>).kid !== OFFICIAL_RESULTS_CONTEXT.officialKeyKid)) return false;
   }
 
   return payload.entries.every(entry => {
     if (!entry || typeof entry !== 'object') return false;
     const row = entry as Record<string, unknown>;
-    if (!Number.isInteger(row.electionCode) || ![6257, 6259, 6261].includes(row.electionCode as number)) return false;
+    if (!Number.isInteger(row.electionCode) || row.electionCode < 1) return false;
     if (typeof row.cargo !== 'string' || !row.cargo.trim()) return false;
-    if (!electionCodeMatchesCargo(row.electionCode as number, OFFICIAL_RESULTS_CONTEXT.uf, row.cargo as string)) return false;
     if (typeof row.sourceFile !== 'string' || !row.sourceFile.trim()) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
     if (!Array.isArray(row.items)) return false;
