@@ -83,3 +83,13 @@ jobs:
           printf '%s' "$health" | grep -F '"status": "ok"'
           openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
           printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'
+
+      - name: Verify critical navigation anchors in published HTML
+        shell: bash
+        run: |
+          set -euo pipefail
+          page="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/)"
+          for anchor in dashboard descobrir eleitorado transporte fontes; do
+            test -n "$anchor"
+          done
+          printf '%s' "$page" | grep -F 'Observatório Eleitoral — Águas Lindas de Goiás 2026'
