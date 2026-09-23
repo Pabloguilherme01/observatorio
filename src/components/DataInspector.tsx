@@ -28,9 +28,12 @@ export function DataInspector() {
   const [data, setData] = useState<InspectorDetail | null>(null);
   const [copied, setCopied] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const onInspect = (event: WindowEventMap['observatorio:inspect-data']) => {
+      openerRef.current = document.activeElement as HTMLElement | null;
       setData(event.detail);
       setCopied(false);
     };
@@ -39,9 +42,20 @@ export function DataInspector() {
   }, []);
 
   useEffect(() => {
-    if (!data) return;
+    if (!data) {
+      openerRef.current?.focus?.();
+      return;
+    }
+    const focusables = () => Array.from(modalRef.current?.querySelectorAll<HTMLElement>('button,input,[href],[tabindex]:not([tabindex="-1"])') ?? []).filter(node => !node.hasAttribute('disabled'));
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setData(null);
+      if (event.key === 'Escape') { event.preventDefault(); setData(null); return; }
+      if (event.key !== 'Tab') return;
+      const nodes = focusables();
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     };
     window.addEventListener('keydown', onKey);
     closeRef.current?.focus();
@@ -76,7 +90,7 @@ export function DataInspector() {
   };
 
   const share = async () => {
-    const shareData = { title: data.label, text, url: window.location.href.split('#')[0] + '#' + encodeURIComponent(data.label.toLowerCase().replace(/\s+/g, '-')) };
+    const shareData = { title: data.label, text, url: window.location.href.split('#')[0] };
     if (navigator.share) {
       await navigator.share(shareData).catch(() => undefined);
     } else {
@@ -87,7 +101,7 @@ export function DataInspector() {
   return (
     <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
       <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={() => setData(null)} />
-      <article className="command-panel max-w-xl">
+      <article ref={modalRef} className="command-panel max-w-xl">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Inspetor de dados</div>
