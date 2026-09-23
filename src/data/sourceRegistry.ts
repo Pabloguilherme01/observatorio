@@ -34,7 +34,6 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2018',
     nature: 'official',
-    referenceDate: '2018-09-01',
     note: 'Conjunto oficial de eleitorado 2018 usado como origem do ponto histórico no gráfico do observatório.',
   },
   {
@@ -43,7 +42,6 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2022',
     nature: 'official',
-    referenceDate: '2022-09-01',
     note: 'Conjunto oficial de eleitorado 2022 usado como origem do ponto histórico no gráfico do observatório.',
   },
   {
@@ -52,7 +50,6 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2024',
     nature: 'official',
-    referenceDate: '2024-08-01',
     note: 'Conjunto oficial de eleitorado 2024 usado como origem do ponto histórico no gráfico do observatório.',
   },
   {
