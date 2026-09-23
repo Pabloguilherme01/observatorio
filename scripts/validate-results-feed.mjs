@@ -3,6 +3,20 @@ import { resolve } from 'node:path';
 
 const path = resolve(process.cwd(), process.env.RESULTS_FEED_FILE ?? 'public/data/tse-results.json');
 const requireFeed = process.env.REQUIRE_RESULTS_FEED === 'true';
+const SCHEMA_VERSION = 3;
+const OFFICIAL_HOST = 'resultados.tse.jus.br';
+const MUNICIPALITY_CODE = '93343';
+const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
+
+function officialUrl(value) {
+  if (typeof value !== 'string') return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && url.hostname === OFFICIAL_HOST;
+  } catch {
+    return false;
+  }
+}
 
 if (!existsSync(path)) {
   const beforeWindow = Date.now() < new Date('2026-10-04T17:00:00-03:00').getTime();
@@ -18,69 +32,80 @@ const payload = JSON.parse(readFileSync(path, 'utf8'));
 const errors = [];
 const warnings = [];
 const fail = message => errors.push(message);
+const isDate = value => typeof value === 'string' && Number.isFinite(Date.parse(value));
 
-if (payload.schemaVersion !== 2) fail('schemaVersion deve ser 2.');
+if (payload.schemaVersion !== SCHEMA_VERSION) fail('schemaVersion deve ser 3.');
 if (payload.environment !== 'official') fail('environment deve ser official.');
 if (payload.scope !== 'municipality') fail('scope deve ser municipality.');
 if (payload.pleito !== 3220) fail('pleito deve ser 3220.');
-
 if (!['pending', 'live', 'complete'].includes(payload.state)) fail('state inválido.');
 if (payload.source !== 'official-tse') fail('source deve ser official-tse.');
-if (typeof payload.sourceUrl !== 'string' || !payload.sourceUrl.startsWith('https://resultados.tse.jus.br')) fail('sourceUrl não aponta para o domínio oficial de resultados do TSE.');
-if (typeof payload.sourceFile !== 'string' || !payload.sourceFile.trim()) fail('sourceFile ausente.');
-if (![6257, 6259, 6261].includes(payload.electionCode)) fail('electionCode fora do conjunto documentado pelo TSE para 04/10/2026.');
-if (payload.electionCode === 6257 && payload.cargo !== 'Presidente') fail('6257 deve corresponder a Presidente.');
-if (payload.electionCode === 6259 && (payload.uf === 'DF' || payload.cargo === 'Presidente' || payload.cargo === 'Deputado Distrital')) fail('6259 incompatível com UF/cargo informado.');
-if (payload.electionCode === 6261 && (payload.uf !== 'DF' || payload.cargo !== 'Deputado Distrital')) fail('6261 deve corresponder ao Distrito Federal e Deputado Distrital.');
-if (payload.turn !== 1 && payload.turn !== 2) fail('turn deve ser 1 ou 2.');
+if (!officialUrl(payload.sourceBaseUrl)) fail('sourceBaseUrl deve apontar exatamente para https://resultados.tse.jus.br.');
+if (![1, 2].includes(payload.turn)) fail('turn deve ser 1 ou 2.');
 if (payload.uf !== 'GO') fail('uf deve ser GO.');
-if (typeof payload.municipalityCode !== 'string' || !/^\d{5}$/.test(payload.municipalityCode)) fail('municipalityCode deve ter 5 dígitos.');
-if (typeof payload.municipalityName !== 'string' || !payload.municipalityName.trim()) fail('municipalityName ausente.');
-if (typeof payload.cargo !== 'string' || !payload.cargo.trim()) fail('cargo ausente.');
-if (payload.scope === 'municipality' && payload.municipalityName !== 'Águas Lindas de Goiás') fail('municipalityName fora do escopo municipal declarado.');
-if (typeof payload.referenceDate !== 'string' || !Number.isFinite(Date.parse(payload.referenceDate))) fail('referenceDate inválida.');
-if (typeof payload.capturedAt !== 'string' || !Number.isFinite(Date.parse(payload.capturedAt))) fail('capturedAt inválida.');
+if (payload.municipalityCode !== MUNICIPALITY_CODE) fail('municipalityCode não corresponde a Águas Lindas de Goiás (93343).');
+if (payload.municipalityName !== MUNICIPALITY_NAME) fail('municipalityName fora do escopo municipal.');
+if (!isDate(payload.referenceDate)) fail('referenceDate inválida.');
+if (!isDate(payload.capturedAt)) fail('capturedAt inválida.');
 if (Date.parse(payload.capturedAt) > Date.now() + 5 * 60 * 1000) fail('capturedAt está no futuro.');
-if (!Array.isArray(payload.items)) fail('items deve ser array.');
+if (!Array.isArray(payload.entries)) fail('entries deve ser array.');
 
-if (payload.environment === 'official' && typeof payload.sourceUrl === 'string' && !payload.sourceUrl.startsWith('https://resultados.tse.jus.br')) fail('feed de produção deve apontar para resultados.tse.jus.br.');
-if (payload.integrity !== undefined) {
-  if (!payload.integrity || typeof payload.integrity !== 'object') fail('integrity inválido.');
-  const { sha256, jwsVerified, signatureStatus, verificationMethod, verifiedAt, algorithm, keyFingerprint, proofSha256 } = payload.integrity ?? {};
-  if (sha256 !== undefined && (typeof sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(sha256))) fail('integrity.sha256 inválido.');
-  if (jwsVerified !== undefined && typeof jwsVerified !== 'boolean') fail('integrity.jwsVerified deve ser booleano.');
-  if (signatureStatus !== undefined && !['verified', 'not_verified', 'unavailable'].includes(signatureStatus)) fail('integrity.signatureStatus inválido.');
-  if (verificationMethod !== undefined && verificationMethod !== 'jws-node-crypto') fail('integrity.verificationMethod inválido.');
-  if (verifiedAt !== undefined && !Number.isFinite(Date.parse(verifiedAt))) fail('integrity.verifiedAt inválido.');
-  if (algorithm !== undefined && (typeof algorithm !== 'string' || !algorithm.trim())) fail('integrity.algorithm inválido.');
-  if (keyFingerprint !== undefined && (typeof keyFingerprint !== 'string' || !/^[a-f0-9]{64}$/i.test(keyFingerprint))) fail('integrity.keyFingerprint inválido.');
-  if (proofSha256 !== undefined && (typeof proofSha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(proofSha256))) fail('integrity.proofSha256 inválido.');
-  if (jwsVerified === true && (signatureStatus !== 'verified' || verificationMethod !== 'jws-node-crypto' || !verifiedAt || !algorithm || !keyFingerprint || !proofSha256)) {
-    fail('assinatura JWS marcada como verificada sem prova criptográfica completa.');
-  }
-  if (signatureStatus === 'verified' && jwsVerified !== true) fail('signatureStatus=verified exige jwsVerified=true.');
-}
+const expectedCargoCodes = new Map([
+  ['Presidente', 6257],
+  ['Governador', 6259],
+  ['Senador', 6259],
+  ['Deputado Federal', 6259],
+  ['Deputado Estadual', 6259],
+]);
 
-for (const [index, item] of (payload.items ?? []).entries()) {
-  if (!item || typeof item !== 'object') {
-    fail(`item ${index} inválido.`);
+for (const [index, entry] of (payload.entries ?? []).entries()) {
+  if (!entry || typeof entry !== 'object') {
+    fail(`entry ${index} inválida.`);
     continue;
   }
-  for (const key of ['validVotes', 'totalVotes']) {
-    if (item[key] !== undefined && (typeof item[key] !== 'number' || !Number.isFinite(item[key]) || item[key] < 0)) {
-      fail(`item ${index}: ${key} inválido.`);
+  if (!Number.isInteger(entry.electionCode) || ![6257, 6259, 6261].includes(entry.electionCode)) fail(`entry ${index}: electionCode inválido.`);
+  if (typeof entry.cargo !== 'string' || !entry.cargo.trim()) fail(`entry ${index}: cargo ausente.`);
+  if (expectedCargoCodes.has(entry.cargo) && expectedCargoCodes.get(entry.cargo) !== entry.electionCode) fail(`entry ${index}: combinação cargo/código incompatível.`);
+  if (typeof entry.sourceFile !== 'string' || !entry.sourceFile.endsWith('.json')) fail(`entry ${index}: sourceFile inválido.`);
+  if (!isDate(entry.referenceDate) || !isDate(entry.updatedAt)) fail(`entry ${index}: data inválida.`);
+  if (!Array.isArray(entry.items)) fail(`entry ${index}: items deve ser array.`);
+
+  for (const [itemIndex, item] of (entry.items ?? []).entries()) {
+    if (!item || typeof item !== 'object') {
+      fail(`entry ${index} item ${itemIndex}: inválido.`);
+      continue;
     }
+    if (typeof item.candidateId !== 'string' || !item.candidateId.trim()) fail(`entry ${index} item ${itemIndex}: candidateId ausente.`);
+    if (typeof item.candidate !== 'string' || !item.candidate.trim()) fail(`entry ${index} item ${itemIndex}: candidate ausente.`);
+    if (item.cargo !== entry.cargo) fail(`entry ${index} item ${itemIndex}: cargo divergente.`);
+    if (typeof item.votes !== 'number' || !Number.isFinite(item.votes) || item.votes < 0) fail(`entry ${index} item ${itemIndex}: votes inválido.`);
   }
-  if (typeof item.validVotes === 'number' && typeof item.totalVotes === 'number' && item.validVotes > item.totalVotes) fail(`item ${index}: validVotes maior que totalVotes.`);
-  if (item.municipality !== undefined && typeof item.municipality !== 'string') fail(`item ${index}: municipality inválido.`);
-  if (item.candidateId !== undefined && typeof item.candidateId !== 'string') fail(`item ${index}: candidateId inválido.`);
-  if (item.candidate !== undefined && typeof item.candidate !== 'string') fail(`item ${index}: candidate inválido.`);
-  if (item.cargo !== undefined && typeof item.cargo !== 'string') fail(`item ${index}: cargo inválido.`);
-  if (item.updatedAt !== undefined && !Number.isFinite(Date.parse(item.updatedAt))) fail(`item ${index}: updatedAt inválido.`);
 }
 
-if (payload.items.length === 0 && payload.state !== 'pending') warnings.push('Feed não finalizado sem registros: revisar captura antes de publicar.');
-if (payload.state === 'live' && Date.parse(payload.capturedAt) < Date.now() - 15 * 60 * 1000) warnings.push('Feed marcado como live, mas a captura tem mais de 15 minutos; a UI deve tratá-lo como desatualizado.');
+if (payload.integrity !== undefined) {
+  if (!payload.integrity || typeof payload.integrity !== 'object') fail('integrity inválido.');
+  const files = payload.integrity.files;
+  if (!Array.isArray(files)) fail('integrity.files deve ser array.');
+  if (Array.isArray(files)) {
+    if (files.length !== payload.entries.length) fail('integrity.files deve ter uma prova por arquivo de cargo.');
+    for (const [index, file] of files.entries()) {
+      if (typeof file.sourceFile !== 'string' || typeof file.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(file.sha256)) fail(`integrity.files[${index}]: hash inválido.`);
+      if (!/^[a-f0-9]{64}$/i.test(file.jwsProofSha256 ?? '')) fail(`integrity.files[${index}]: jwsProofSha256 inválido.`);
+      if (file.signatureStatus !== 'verified') fail(`integrity.files[${index}]: assinatura não verificada.`);
+      if (file.verificationMethod !== 'tse-official-jwk-ed25519') fail(`integrity.files[${index}]: método de verificação inválido.`);
+      if (file.algorithm !== 'EdDSA' || file.curve !== 'Ed25519') fail(`integrity.files[${index}]: algoritmo/curva inválidos.`);
+      if (file.kid !== 'sNbt9Q_fLS65zE1_ZLNV-XRRwPY') fail(`integrity.files[${index}]: kid oficial inesperado.`);
+      if (!/^[a-f0-9]{64}$/i.test(file.keyFingerprint ?? '')) fail(`integrity.files[${index}]: keyFingerprint inválido.`);
+      if (!isDate(file.verifiedAt)) fail(`integrity.files[${index}]: verifiedAt inválido.`);
+    }
+  }
+  if (payload.integrity.allVerified !== true) fail('integrity.allVerified deve ser true para publicar um feed oficial.');
+} else {
+  if (payload.state !== 'pending') fail('Feed não-pendente precisa carregar prova de integridade.');
+}
+
+if (payload.entries.length === 0 && payload.state !== 'pending') warnings.push('Feed não finalizado sem registros.');
+if (payload.state === 'live' && Date.parse(payload.capturedAt) < Date.now() - 15 * 60 * 1000) warnings.push('Feed live com mais de 15 minutos: a UI deve tratá-lo como stale.');
 
 if (errors.length) {
   console.error(JSON.stringify({ valid: false, present: true, errors, warnings }, null, 2));
