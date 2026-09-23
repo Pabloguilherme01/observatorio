@@ -1,6 +1,9 @@
-import contasData from '../../../generated/tse2026-contas.json';
+import rawContasData from '../../../generated/tse2026-contas.json';
+import { TSEContasFileSchema } from '../../schemas/tse-enriched.schema';
 import { ShareDataButton } from '../ShareDataButton';
 import { Card } from '../ui/Card';
+
+const contasData = TSEContasFileSchema.parse(rawContasData);
 
 export function Contas360() {
   const anchor = 'contas';
