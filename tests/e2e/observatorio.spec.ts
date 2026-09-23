@@ -63,7 +63,9 @@ test.describe('Observatório · jornada E2E', () => {
         data: { type: 'DATA_UPDATED', semantics: 'background-cache-only' },
       }));
     });
+    await expect(page.getByTestId('data-update-toast')).toBeVisible();
     await expect(page.getByText('Dados atualizados em segundo plano', { exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Recarregar/ })).toBeVisible();
   });
 
   test('módulos TSE comunicam honestamente seu estado de captura', async ({ page }) => {
