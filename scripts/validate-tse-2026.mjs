@@ -42,13 +42,13 @@ if (state === 'not_synced' && !requireSynced) {
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
 
 if (state !== 'not_synced') {
-  const normalize = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
-  const names = payload.matched.map(candidate => normalize(candidate.name));
+  if (payload.meta?.retrievalMethod !== 'official_tse_open_data_csv') errors.push('retrievalMethod do snapshot TSE inválido ou ausente.');
+  if (typeof payload.meta?.resourceUrl !== 'string' || !payload.meta.resourceUrl.includes('cdn.tse.jus.br')) errors.push('resourceUrl oficial do pacote TSE ausente.');
   for (const expected of payload.watchlist ?? []) {
-    const normalizedExpected = normalize(expected);
-    if (!names.some(name => name.includes(normalizedExpected))) {
-      errors.push('Watchlist sem correspondência TSE: ' + expected);
-    }
+    if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
+  }
+  for (const candidate of payload.matched ?? []) {
+    if (!candidate.watchlistName) errors.push('Registro TSE sem watchlistName: ' + candidate.sqCandidate);
   }
 }
 if (!payload.meta?.workflowRunId && process.env.CI) warnings.push('workflowRunId não informado; execução manual detectada.');
