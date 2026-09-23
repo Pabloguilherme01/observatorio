@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { TSEContasFileSchema, TSEPesquisasFileSchema, TSEProcessualFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
-import { listFiles, readCsv, readJson, writeJson, sha256File } from './common.ts';
+import { listFiles, readJson, writeJson } from './common.ts';
 
 type DatasetName = 'contas' | 'pesquisas' | 'processual';
 
@@ -90,7 +90,11 @@ function countCsvRows(root: string): number {
   if (!existsSync(root)) return 0;
   return listFiles(root)
     .filter(file => file.toLowerCase().endsWith('.csv'))
-    .reduce((total, file) => total + readCsv(join(root, file)).length, 0);
+    .reduce((total, file) => {
+      const absolute = join(root, file);
+      const lines = Number(execFileSync('wc', ['-l', absolute], { encoding: 'utf8' }).trim().split(/\s+/)[0] ?? 0);
+      return total + Math.max(0, lines - 1);
+    }, 0);
 }
 
 function normalizeJson(value: unknown): string {
