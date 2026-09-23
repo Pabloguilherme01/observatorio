@@ -40,7 +40,8 @@ export function Header() {
 
           <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
             {links.map(([label, id]) => (
-              <a key={id} href={`#${id}`} className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-400 transition hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900">
+              <a key={id} href={`#${id}`} className={"rounded-xl px-3 py-2 text-xs font-semibold transition " + (activeSection === id ? "bg-white/10 text-white light:bg-slate-900/10 light:text-slate-900" : "text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900")}
+                aria-current={activeSection === id ? "location" : undefined}>
                 {label}
               </a>
             ))}
