@@ -3,6 +3,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
+import generated from '../../data/generated/tse2026-candidates.json';
 
 export function DataQualityPanel() {
   const derived = d.indicators.filter(i => i.status === 'derived').length;
@@ -14,12 +15,13 @@ export function DataQualityPanel() {
   const pollNamedPct = poll.results.reduce((sum, result) => sum + result.percentage, 0);
   const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
   const pollGapPct = Math.max(0, 100 - pollCoveredPct);
+  const tseState = generated.meta.state;
   const warnings = [
     pollGapPct > 0 ? 'Pesquisa: ' + pollGapPct.toFixed(2).replace('.', ',') + ' p.p. estão fora das categorias publicadas.' : null,
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
     'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
     'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
-    'Eleitoral 360°: o pipeline de candidaturas está preparado para sincronização automática; o arquivo gerado só substitui o placeholder após uma execução bem-sucedida do workflow.',
+    'Eleitoral 360°: estado do snapshot de candidaturas = ' + tseState + '; o frontend não interpreta um placeholder como ausência de candidatos.',
   ].filter(Boolean) as string[];
 
   return (
@@ -56,7 +58,7 @@ export function DataQualityPanel() {
           {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
         </div>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid gap-3 sm:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
           <div className="mt-2 text-2xl font-black text-white">{d.sources.length}</div>
