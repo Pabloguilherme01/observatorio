@@ -40,6 +40,9 @@ must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xm
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
+must(!/<noscript[\\s\\S]*?<main[\\s\\S]*?<\\/main>[\\s\\S]*?<\\/noscript>/i.test(index), 'noscript não contém elemento main');
+must((index.match(/<main\\b/g) ?? []).length <= 1, 'documento possui no máximo um main estático');
+
 must(vite.includes('start_url: \'/observatorio/\'') && vite.includes('scope: \'/observatorio/\''), 'PWA está configurado para instalação no subcaminho publicado');
 must(vite.includes("offline.html") && read('src/sw.ts').includes("request.mode === 'navigate'") && read('src/sw.ts').includes('OFFLINE_URL'), 'PWA possui página offline e cache NetworkFirst para navegação');
 must(app.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente no shell de experiência');
