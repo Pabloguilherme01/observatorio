@@ -67,6 +67,7 @@ const allRuntimeText = [
   read('src/components/sections/DeferredCivicGroup.tsx'),
   read('src/components/sections/DeferredPublicDataGroup.tsx'),
   read('src/components/sections/DeferredEvidenceGroup.tsx'),
+  read('src/components/sections/DeferredTrustGroup.tsx'),
 ].join('\n');
 must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
 must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<DataExportActions />'), 'ação e exportação montadas');
