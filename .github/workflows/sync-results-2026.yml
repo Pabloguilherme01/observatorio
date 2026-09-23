@@ -32,10 +32,19 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Resolve turn
+        shell: bash
+        run: |
+          DAY=$(TZ=America/Sao_Paulo date +%d)
+          if [ "$DAY" = "25" ] || [ "$DAY" = "26" ]; then
+            echo "RESULTS_TURN=2" >> "$GITHUB_ENV"
+          else
+            echo "RESULTS_TURN=1" >> "$GITHUB_ENV"
+          fi
+
       - name: Sync official JSON + JWS
         env:
           REQUIRE_RESULTS_SYNC: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
-          RESULTS_TURN: '1'
         run: npm run sync:results
 
       - name: Validate feed when captured
