@@ -1,3 +1,21 @@
+import { observatorioData as d } from '../../data/observatorioData';
+import { formatDate } from '../../utils/formatters';
+
 export function Footer() {
-  return <footer className="border-t border-white/8 px-4 py-10 sm:px-6"><div className="mx-auto flex max-w-7xl flex-col gap-2 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"><span>Observatório Eleitoral Águas Lindas de Goiás · V22 React</span><span>Dados e cálculos com proveniência identificada.</span></div></footer>;
+  return (
+    <footer className="border-t border-white/8 px-4 py-10" aria-label="Informações do observatório">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <span className="font-semibold text-slate-400">Observatório Eleitoral Águas Lindas de Goiás</span>
+          <span className="mx-2">·</span>
+          <span>{d.meta.edition}</span>
+        </div>
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
+          <span>Atualizado em {formatDate(d.meta.updatedAt)}</span>
+          <a href="#fontes" className="transition hover:text-sky-300">Fontes e metodologia</a>
+          <span>Dados e cálculos com proveniência identificada.</span>
+        </div>
+      </div>
+    </footer>
+  );
 }
