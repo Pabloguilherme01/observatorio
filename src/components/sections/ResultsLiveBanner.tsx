@@ -36,16 +36,15 @@ export function ResultsLiveBanner() {
   }
 
   const label = data.state === 'live' ? 'AO VIVO · Apuração TSE' : 'RESULTADO · TSE';
-  const detail = data.items.length
-    ? `${data.items.length} registros recebidos`
-    : 'Nenhum registro municipal no feed atual';
-  const integrity = data.integrity?.jwsVerified === true && data.integrity?.signatureStatus === 'verified' && data.integrity?.verificationMethod === 'jws-node-crypto'
-    ? 'assinatura JWS verificada com chave configurada'
-    : data.integrity?.signatureStatus === 'not_verified'
-      ? 'assinatura não verificada'
-      : data.integrity?.signatureStatus === 'unavailable'
-        ? 'assinatura não disponível'
-        : 'contrato local validado';
+  const detail = data.entries.length
+    ? `${data.entries.length} cargos · ${data.entries.reduce((sum, entry) => sum + entry.items.length, 0)} registros recebidos`
+    : 'Nenhum cargo municipal no feed atual';
+  const verified = data.integrity?.files.filter(file => file.signatureStatus === 'verified').length ?? 0;
+  const integrity = data.integrity?.allVerified
+    ? `${verified}/${data.integrity.files.length} assinaturas JWS verificadas com chave oficial TSE`
+    : data.integrity
+      ? 'integridade incompleta · não exibida como verificada'
+      : 'sem prova criptográfica publicada';
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite">
@@ -55,7 +54,7 @@ export function ResultsLiveBanner() {
           <div>
             <strong className="block text-sm text-slate-100">{label}</strong>
             <span className="text-xs text-slate-500">
-              {data.municipalityName} · {data.cargo} · turno {data.turn} · {detail} · capturado em {new Date(data.capturedAt).toLocaleString('pt-BR')} · {integrity}
+              {data.municipalityName} · turno {data.turn} · {detail} · capturado em {new Date(data.capturedAt).toLocaleString('pt-BR')} · {integrity}
             </span>
           </div>
         </div>

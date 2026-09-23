@@ -10,7 +10,7 @@ export function PoliticalResearch() {
   const hasGenerated = electoral360Snapshot.matchedCandidates.length > 0;
   const snapshotLabel = hasGenerated && electoral360Snapshot.capturedAt
     ? `snapshot local validado em ${new Date(electoral360Snapshot.capturedAt).toLocaleDateString('pt-BR')}`
-    : 'recorte editorial local de 22/09/2026';
+    : 'recorte editorial local desta edição';
   const candidates = hasGenerated
     ? electoral360Snapshot.matchedCandidates.map(candidate => ({
         name: candidate.name,
@@ -34,6 +34,7 @@ export function PoliticalResearch() {
         description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação eleitoral. Quando disponível, a camada sincronizada do TSE passa a ser a fonte operacional."
       />
       <div className="mb-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
+        <div className="mb-3 flex flex-wrap items-center gap-2"><span className="rounded-full border border-amber-300/20 bg-amber-300/5 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-amber-200">{hasGenerated ? 'Captura TSE local' : 'Recorte editorial local'}</span><span className="rounded-full border border-white/8 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">{candidates.length} registros visíveis</span></div>
         <strong className="text-amber-200 light:text-amber-800">{hasGenerated ? 'Snapshot TSE local:' : 'Recorte editorial local:'}</strong> os registros abaixo correspondem ao {snapshotLabel}. A captura automatizada trabalha com uma watchlist e, portanto, não representa a lista completa de candidaturas. A base oficial do TSE é atualizada quatro vezes ao dia.
       </div>
       <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mb-5 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-semibold text-slate-300 hover:bg-white/5"><Database className="h-4 w-4 text-sky-300" aria-hidden="true" /> abrir base oficial de Candidatos 2026 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>

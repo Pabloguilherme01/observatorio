@@ -1,34 +1,57 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "environment": "official",
   "scope": "municipality",
   "state": "live",
   "source": "official-tse",
-  "sourceUrl": "https://resultados.tse.jus.br",
-  "sourceFile": "TEST-FIXTURE-NOT-A-TSE-FILE.json",
+  "sourceBaseUrl": "https://resultados.tse.jus.br/oficial",
   "pleito": 3220,
-  "electionCode": 6259,
   "turn": 1,
   "uf": "GO",
-  "municipalityCode": "99999",
+  "municipalityCode": "93343",
   "municipalityName": "Águas Lindas de Goiás",
-  "cargo": "Governador",
-  "referenceDate": "2026-10-04T12:00:00-03:00",
+  "referenceDate": "2026-10-04T17:05:00-03:00",
   "capturedAt": "2026-09-22T12:05:00-03:00",
-  "items": [
+  "entries": [
     {
-      "municipality": "Águas Lindas de Goiás",
-      "candidateId": "TEST-001",
-      "candidate": "CANDIDATO DE TESTE",
+      "electionCode": 6259,
       "cargo": "Governador",
-      "validVotes": 10,
-      "totalVotes": 10,
-      "updatedAt": "2026-09-22T12:05:00-03:00"
+      "sourceFile": "TEST-FIXTURE-NOT-A-TSE-FILE.json",
+      "referenceDate": "2026-10-04T17:05:00-03:00",
+      "updatedAt": "2026-09-22T12:05:00-03:00",
+      "sectionsTotal": 10,
+      "sectionsCounted": 10,
+      "totalVotes": 100,
+      "validVotes": 90,
+      "blankVotes": 5,
+      "nullVotes": 5,
+      "abstentions": 20,
+      "items": [
+        {
+          "candidateId": "TEST-001",
+          "candidate": "CANDIDATO DE TESTE",
+          "cargo": "Governador",
+          "votes": 10,
+          "status": "Válido"
+        }
+      ]
     }
   ],
   "integrity": {
-    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    "signatureStatus": "not_verified",
-    "jwsVerified": false
+    "files": [
+      {
+        "sourceFile": "TEST-FIXTURE-NOT-A-TSE-FILE.json",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "jwsProofSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "signatureStatus": "verified",
+        "verificationMethod": "tse-official-jwk-ed25519",
+        "verifiedAt": "2026-09-22T12:06:00-03:00",
+        "algorithm": "EdDSA",
+        "curve": "Ed25519",
+        "kid": "sNbt9Q_fLS65zE1_ZLNV-XRRwPY",
+        "keyFingerprint": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    ],
+    "allVerified": true
   }
 }

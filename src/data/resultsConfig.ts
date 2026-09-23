@@ -1,4 +1,5 @@
 export const RESULTS_FEED_URL = '/observatorio/data/tse-results.json';
+export const RESULTS_FEED_SCHEMA_VERSION = 3;
 
 export const RESULTS_WINDOW = {
   start: '2026-10-04T17:00:00-03:00',
@@ -13,7 +14,13 @@ export const OFFICIAL_RESULTS_CONTEXT = {
   pleito: 3220,
   allowedElectionCodes: [6257, 6259, 6261],
   uf: 'GO',
+  municipalityCode: '93343',
+  municipalityName: 'Águas Lindas de Goiás',
   scope: 'municipality',
+  host: 'resultados.tse.jus.br',
+  jwsAlgorithm: 'EdDSA',
+  jwsCurve: 'Ed25519',
+  officialKeyKid: 'sNbt9Q_fLS65zE1_ZLNV-XRRwPY',
 } as const;
 
 export const SIMULATION_CONTEXT = {
