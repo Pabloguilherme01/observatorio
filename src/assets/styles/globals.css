@@ -64,3 +64,27 @@ body{overscroll-behavior-y:none}
  .mobile-bottom-nav button{min-height:46px}
  .search-modal-panel{margin-top:2vh;border-radius:20px}
 }
+
+.candidate-overview-card{min-height:116px}
+.summary-mode-pill{display:inline-flex;align-items:center;min-height:32px;border:1px solid rgba(125,211,252,.14);border-radius:999px;padding:5px 9px;background:rgba(125,211,252,.06);font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#7dd3fc}
+.summary-stat{border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;background:rgba(255,255,255,.025)}
+.summary-stat-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.summary-stat-value{margin-top:4px;font-size:clamp(1.6rem,4vw,2.1rem);line-height:1;font-weight:950;color:#fff}
+.summary-simple-tip{border:1px solid rgba(125,211,252,.1);border-radius:16px;padding:10px 12px;background:rgba(125,211,252,.035);font-size:11px;color:#94a3b8}
+.summary-evidence{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;font-size:11px;color:#64748b;background:rgba(255,255,255,.02)}
+.summary-evidence strong{display:block;margin-top:4px;color:#dbeafe}
+.metric-interactive{display:block;width:100%;touch-action:manipulation}
+.metric-interactive>div{height:100%}
+.today-rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.today-card{min-width:0;border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));overflow:hidden}
+.today-card strong{font-size:clamp(1.35rem,3vw,2rem);line-height:1.05;letter-spacing:-.03em}
+@media(max-width:900px){.today-rail{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){
+ .candidate-overview-grid{grid-template-columns:1fr}
+ .candidate-overview-card{min-height:auto}
+ .today-rail{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:10px;padding-bottom:4px;scrollbar-width:none}
+ .today-rail::-webkit-scrollbar{display:none}
+ .today-card{flex:0 0 min(83vw,320px);scroll-snap-align:start}
+ .summary-mode-pill{order:3;width:100%;justify-content:center}
+ .summary-stat-value{font-size:1.55rem}
+}
