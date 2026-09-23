@@ -21,7 +21,7 @@ export function HeroCountdown() {
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
       <div className="mb-6 flex flex-wrap gap-2">
-        <Badge>V33 • experiência investigativa</Badge>
+        <Badge>V35 • leitura pública + investigação</Badge>
         <Badge>Dados públicos</Badge>
         <Badge>Fontes rastreáveis</Badge>
         <Badge>Sem ranking automático</Badge>
@@ -42,6 +42,15 @@ export function HeroCountdown() {
             <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
               <Command className="h-4 w-4" aria-hidden="true" /> Central de comandos
             </button>
+          </div>
+          <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70" aria-label="Escolha a camada de leitura">
+            <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada de leitura</div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'overview' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Visão geral</button>
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Investigação</button>
+              <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'evidence' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Evidências</button>
+            </div>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">A mudança reorganiza a densidade da interface; fontes e avisos de integridade permanecem acessíveis.</p>
           </div>
           <div className="mt-5 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
             <span className="inline-flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Explore · compare · verifique</span>
