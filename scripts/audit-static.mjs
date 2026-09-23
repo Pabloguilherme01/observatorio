@@ -61,7 +61,7 @@ for (const group of deferredGroups) must(appSource.includes(group), 'App registr
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
 must(appSource.includes('scrollToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
-must(appSource.includes('id="analise"'), 'atalho legado #analise aponta para o dashboard');
+must(appSource.includes('id="analise"') && appSource.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && (appSource.includes('DeferredTrustGroup') || appSource.includes('<ProjectTrustPanel />')), 'descoberta, confiança e modo de linguagem montados');
 
 const allRuntimeText = [
