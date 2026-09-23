@@ -174,9 +174,20 @@ export interface ObservatoryData {
   readonly health: HealthProfile;
   readonly education?: {
     readonly ideb2025Range: readonly [number, number];
+    readonly basicEducationEnrollments2025: number;
+    readonly municipalBasicEducationEnrollments2025: number;
+    readonly technicalEptEnrollments2025: number;
     readonly sourceId: string;
     readonly note: string;
   };
+  readonly budgetUpdates: readonly {
+    readonly date: ISODate;
+    readonly law: string;
+    readonly title: string;
+    readonly amountBrl: number;
+    readonly description: string;
+    readonly sourceId: string;
+  }[];
   readonly budget: BudgetData;
   readonly indicators: readonly MunicipalIndicator[];
 }
