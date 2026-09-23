@@ -13,6 +13,9 @@ const items: readonly SocialItem[] = [
   { id: 'transporte', label: 'Transporte', value: d.transport.routes[0]?.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'R$ 0,00', note: 'trecho de referência para Brasília', anchor: 'transporte' },
   { id: 'saneamento', label: 'Saneamento', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'acesso ao serviço público de esgoto', anchor: 'saneamento' },
   { id: 'populacao', label: 'População 2026', value: (d.populationSeries.find(point => point.year === 2026)?.value ?? 0).toLocaleString('pt-BR'), note: 'estimativa IBGE', anchor: 'dashboard' },
+  { id: 'educacao', label: 'Educação básica', value: d.education?.basicEducationEnrollments2025.toLocaleString('pt-BR') ?? '—', note: 'matrículas em 2025', anchor: 'dados' },
+  { id: 'empregos', label: 'Saldo celetista', value: String(d.indicators.find(item => item.id === 'cagedBalance')?.value ?? '—'), note: 'postos no snapshot', anchor: 'dados' },
+  { id: 'saude', label: 'HEAL', value: String(d.health.plannedBeds ?? '—') + ' leitos', note: 'capacidade planejada no recorte', anchor: 'saude' },
 ];
 
 function trackedUrl(anchor: string) {
@@ -186,7 +189,7 @@ export function InstagramSyncHub() {
 
               <div className="mt-4 flex flex-wrap gap-2">
                 <button type="button" onClick={() => generate(false)} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2 text-xs font-black text-slate-950">
-                  <Download className="h-4 w-4" aria-hidden="true" /> Gerar {format === 'story' ? 'Story' : 'Post'}
+                  <Download className="h-4 w-4" aria-hidden="true" /> Baixar {format === 'story' ? 'Story' : 'Post'}
                 </button>
                 <button type="button" onClick={() => generate(true)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
                   <Share2 className="h-4 w-4" aria-hidden="true" /> Enviar para compartilhar
