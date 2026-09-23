@@ -15,6 +15,7 @@ const files = {
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
   index: read('index.html'),
+  mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
 };
 
 const errors = [];
@@ -31,6 +32,7 @@ must(files.css.includes('min-height: 44px') || files.css.includes('min-height:44
 must(files.css.includes('env(safe-area-inset-bottom)'), 'barra móvel considera safe-area');
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css), 'existe ajuste dedicado para telas muito pequenas');
 must(files.css.includes('scroll-snap-type'), 'rails móveis usam snap para descoberta por gesto');
+must(files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes('observatorio:navigate'), 'barra mobile identifica Explorar e acompanha navegação temática');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp estão disponíveis');
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
