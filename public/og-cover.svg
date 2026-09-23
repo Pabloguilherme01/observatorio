@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1117"/>
+      <stop offset="1" stop-color="#111a24"/>
+    </linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#8cc8f2" stroke-opacity=".08"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="1010" cy="90" r="190" fill="#3e6f8f" fill-opacity=".12"/>
+  <circle cx="110" cy="590" r="210" fill="#8cc8f2" fill-opacity=".06"/>
+  <rect x="70" y="74" width="1060" height="482" rx="34" fill="#ffffff" fill-opacity=".035" stroke="#ffffff" stroke-opacity=".12"/>
+  <text x="110" y="160" fill="#8cc8f2" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="5">OBSERVATÓRIO ELEITORAL</text>
+  <text x="110" y="242" fill="#f6f9fb" font-family="Inter, Arial, sans-serif" font-size="66" font-weight="900">Águas Lindas</text>
+  <text x="110" y="315" fill="#94a3b8" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="700">de Goiás · 2026</text>
+  <text x="110" y="385" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="500">Dados públicos · fontes rastreáveis · cálculos explicitados</text>
+  <rect x="110" y="438" width="280" height="52" rx="16" fill="#8cc8f2" fill-opacity=".12" stroke="#8cc8f2" stroke-opacity=".24"/>
+  <text x="250" y="472" text-anchor="middle" fill="#8cc8f2" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800">SEM RANKING AUTOMÁTICO</text>
+  <text x="110" y="528" fill="#64748b" font-family="Inter, Arial, sans-serif" font-size="18">pabloguilherme01.github.io/observatorio/</text>
+</svg>
