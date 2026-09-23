@@ -7,7 +7,6 @@ import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
-
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
   if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
   return <div className="grid grid-cols-4 gap-2 text-center" role="timer" aria-live="off">
@@ -53,32 +52,42 @@ export function HeroCountdown() {
     window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: !electionMode }));
   };
 
-  return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
+  return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-10 sm:px-6 sm:py-16 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
-      <div className="hero-badges mb-5 flex flex-wrap gap-2">
-        <Badge>{EDITION} · dados + método</Badge>
-        <Badge>Dados públicos</Badge>
-        <Badge>Fontes rastreáveis</Badge>
+      <div className="hero-badges mb-4 flex flex-wrap gap-2">
+        {languageMode === 'simple' ? (
+          <Badge>Dados públicos · fontes rastreáveis</Badge>
+        ) : (
+          <>
+            <Badge>{EDITION} · dados + método</Badge>
+            <Badge>Dados públicos</Badge>
+            <Badge>Fontes rastreáveis</Badge>
+          </>
+        )}
       </div>
-      <div className="grid gap-8 lg:grid-cols-[1.12fr_.88fr] lg:items-end">
+
+      <div className="grid gap-7 lg:grid-cols-[1.12fr_.88fr] lg:items-end">
         <div>
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.22em] text-sky-400">Observatório Eleitoral</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-sky-400">Observatório Eleitoral</p>
           <h1 id="hero-title" className="max-w-4xl text-4xl font-black tracking-tight text-white sm:text-6xl">
             Águas Lindas de Goiás <span className="text-slate-400">2026</span>
           </h1>
+
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
             {languageMode === 'simple'
-              ? 'Uma leitura pública da cidade: números, fontes e datas ficam visíveis para você conferir de onde veio cada informação.'
+              ? 'Veja os principais números da cidade e confira a fonte de cada um.'
               : 'Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.'}
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            <a href="#descubra" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
-              Escolher um assunto <ArrowRight className="h-4 w-4" aria-hidden="true" />
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            <a href="#descubra" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
+              {languageMode === 'simple' ? 'Começar' : 'Escolher um assunto'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
-            <a href="#evidencias" className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
-              Ver evidências
+            <a href="#evidencias" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
+              {languageMode === 'simple' ? 'Conferir fontes' : 'Ver evidências'}
             </a>
           </div>
+
           <button
             type="button"
             className="hero-mobile-election-toggle mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 py-2 text-xs font-black text-amber-100 transition hover:bg-amber-300/[0.08]"
@@ -104,7 +113,7 @@ export function HeroCountdown() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">População 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{population.toLocaleString('pt-BR')}</div>
-              <div className="mt-1 text-[11px] text-slate-600">estimativa IBGE</div>
+              <div className="mt-1 text-[11px] text-slate-600">{languageMode === 'simple' ? 'habitantes estimados' : 'estimativa IBGE'}</div>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado 2026</div>
@@ -114,33 +123,44 @@ export function HeroCountdown() {
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
               <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">LOA 2026</div>
               <div className="mt-1 text-lg font-black text-white light:text-slate-900">{brl(loa)}</div>
-              <div className="mt-1 text-[11px] text-slate-600">orçamento total informado</div>
+              <div className="mt-1 text-[11px] text-slate-600">{languageMode === 'simple' ? 'orçamento previsto' : 'orçamento total informado'}</div>
             </div>
           </div>
+
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium text-slate-600" aria-label="Atualização do conjunto de dados">
-            <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Dados locais atualizados em {updatedAt}.</span>
-            <span>Conteúdo informativo · sem ranking automático.</span>
+            {languageMode === 'simple' ? (
+              <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Atualizado em {updatedAt}</span>
+            ) : (
+              <>
+                <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Dados locais atualizados em {updatedAt}.</span>
+                <span>Conteúdo informativo · sem ranking automático.</span>
+              </>
+            )}
           </div>
 
           <details className="hero-preferences mt-4 rounded-2xl border border-white/8 bg-white/[0.02] light:border-slate-200 light:bg-slate-50/70">
-            <summary className="cursor-pointer px-3 py-3 text-sm font-bold text-slate-300 hover:text-white light:text-slate-700">Preferências de leitura e ferramentas</summary>
+            <summary className="cursor-pointer px-3 py-3 text-sm font-bold text-slate-300 hover:text-white light:text-slate-700">
+              {languageMode === 'simple' ? 'Opções de leitura' : 'Preferências de leitura e ferramentas'}
+            </summary>
             <div className="grid gap-3 border-t border-white/8 p-3 sm:grid-cols-2">
               <div aria-label="Escolha a linguagem da interface">
                 <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"><Languages className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Linguagem</div>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Explicação simples</button>
-                  <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Detalhes técnicos</button>
+                  <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Simples</button>
+                  <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Técnica</button>
                 </div>
-                <p className="mt-2 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Termos técnicos ganham explicação direta.' : 'O vocabulário técnico e as camadas metodológicas ficam em primeiro plano.'}</p>
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  {languageMode === 'simple' ? 'Leitura curta. Toque em um dado para conferir a fonte.' : 'Método, referência e contexto ficam disponíveis em primeiro plano.'}
+                </p>
               </div>
               <div aria-label="Escolha a camada de leitura">
-                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada de leitura</div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada</div>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'overview' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Visão geral</button>
                   <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Investigação</button>
                   <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'evidence' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Evidências</button>
                 </div>
-                <p className="mt-2 text-xs leading-5 text-slate-500">A mudança reorganiza a densidade da interface.</p>
+                <p className="mt-2 text-xs leading-5 text-slate-500">A camada altera a densidade da interface.</p>
               </div>
               <div className="flex items-end sm:col-span-2">
                 <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
@@ -154,6 +174,7 @@ export function HeroCountdown() {
             <span className="inline-flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Explore · compare · verifique</span>
           </div>
         </div>
+
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
           <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
             <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white"><CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />1º turno · 04/10 · 08:00</div>
