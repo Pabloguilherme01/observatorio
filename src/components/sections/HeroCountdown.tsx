@@ -47,9 +47,13 @@ export function HeroCountdown() {
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
             {languageMode === 'simple'
-              ? 'Uma leitura pública da cidade: números, fontes e datas ficam visíveis para você conferir de onde veio cada informação.'
-              : 'Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.'}
+              ? 'Veja o número, a data e a fonte. O detalhe fica opcional.'
+              : 'Cada indicador separa valor, data de referência, origem, natureza do dado e limitações.'}
           </p>
+          <div className="mt-4 inline-flex rounded-2xl border border-white/10 bg-white/[0.02] p-1" role="group" aria-label="Modo de leitura">
+            <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'simple' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Leitura simples</button>
+            <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'technical' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Detalhes técnicos</button>
+          </div>
           <div className="mt-6 flex flex-wrap gap-2">
             <a href="#descubra" className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
               Escolher um assunto <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -93,14 +97,6 @@ export function HeroCountdown() {
           <details className="hero-preferences mt-4 rounded-2xl border border-white/8 bg-white/[0.02] light:border-slate-200 light:bg-slate-50/70">
             <summary className="cursor-pointer px-3 py-3 text-sm font-bold text-slate-300 hover:text-white light:text-slate-700">Preferências de leitura e ferramentas</summary>
             <div className="grid gap-3 border-t border-white/8 p-3 sm:grid-cols-2">
-              <div aria-label="Escolha a linguagem da interface">
-                <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"><Languages className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Linguagem</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Explicação simples</button>
-                  <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Detalhes técnicos</button>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-slate-500">{languageMode === 'simple' ? 'Termos técnicos ganham explicação direta.' : 'O vocabulário técnico e as camadas metodológicas ficam em primeiro plano.'}</p>
-              </div>
               <div aria-label="Escolha a camada de leitura">
                 <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada de leitura</div>
                 <div className="mt-2 flex flex-wrap gap-2">
