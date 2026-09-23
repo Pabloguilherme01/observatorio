@@ -64,16 +64,16 @@ export function MobileBottomNav() {
     <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular">
       {items.map(({ id, label, icon: Icon }) => (
         <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'location' : undefined}>
-          <Icon className="h-4 w-4" aria-hidden="true" />
+          <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
           <span>{label}</span>
         </button>
       ))}
       <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))} aria-label="Buscar no observatório">
-        <Search className="h-4 w-4" aria-hidden="true" />
+        <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
         <span>Buscar</span>
       </button>
       <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} aria-label="Abrir mais áreas e ferramentas">
-        <Menu className="h-4 w-4" aria-hidden="true" />
+        <Menu className="h-4 w-4 shrink-0" aria-hidden="true" />
         <span>Mais</span>
       </button>
     </nav>
