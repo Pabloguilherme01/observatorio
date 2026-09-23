@@ -79,6 +79,9 @@ if (payload.integrity !== undefined) {
   if (!Array.isArray(files)) fail('integrity.files deve ser array.');
   if (Array.isArray(files)) {
     if (files.length !== payload.entries.length) fail('integrity.files deve ter uma prova por arquivo de cargo.');
+    const entryFiles = new Set((payload.entries ?? []).map(entry => entry.sourceFile));
+    const proofFiles = new Set((files ?? []).map(file => file?.sourceFile));
+    if (entryFiles.size !== proofFiles.size || [...entryFiles].some(file => !proofFiles.has(file))) fail('integrity.files não corresponde exatamente aos sourceFile das entradas.');
     for (const [index, file] of files.entries()) {
       if (typeof file.sourceFile !== 'string' || typeof file.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(file.sha256)) fail(`integrity.files[${index}]: hash inválido.`);
       if (!/^[a-f0-9]{64}$/i.test(file.jwsProofSha256 ?? '')) fail(`integrity.files[${index}]: jwsProofSha256 inválido.`);
