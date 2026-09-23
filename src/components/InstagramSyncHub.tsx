@@ -84,7 +84,8 @@ async function makeCard(item: SocialItem, format: Format) {
 
   ctx.fillStyle = '#64748b';
   ctx.font = '500 24px Inter, Arial, sans-serif';
-  ctx.fillText(EDITION + ' · dados públicos · conteúdo informativo', 72, canvas.height - 120);
+  ctx.fillText('pabloguilherme01.github.io/observatorio', 72, canvas.height - 154);
+  ctx.fillText(EDITION + ' · dados públicos · conteúdo informativo', 72, canvas.height - 112);
 
   return new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'));
 }
@@ -152,7 +153,7 @@ export function InstagramSyncHub() {
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
               <Camera className="h-3.5 w-3.5" aria-hidden="true" /> Distribuição social
             </div>
-            <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Instagram conectado ao fluxo de dados</h2>
+            <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Estúdio social</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode === 'simple' ? 'Escolha o dado, gere o card e compartilhe.' : 'Escolha o dado, gere Story/Post, copie uma legenda factual e use o compartilhamento nativo do celular.'}</p>
           </div>
           <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
@@ -189,8 +190,8 @@ export function InstagramSyncHub() {
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => generate(false)} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2 text-xs font-black text-slate-950">
-                  <Download className="h-4 w-4" aria-hidden="true" /> Gerar {format === 'story' ? 'Story' : 'Post'}
+                <button type="button" onClick={() => generate(false)} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-xs font-black text-slate-950">
+                  <Download className="h-4 w-4" aria-hidden="true" /> Baixar {format === 'story' ? 'Story' : 'Feed'}
                 </button>
                 <button type="button" onClick={() => generate(true)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
                   <Share2 className="h-4 w-4" aria-hidden="true" /> Enviar para compartilhar
