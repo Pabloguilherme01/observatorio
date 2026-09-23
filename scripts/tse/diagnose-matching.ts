@@ -47,7 +47,7 @@ async function diagnoseContas(): Promise<DiagnosticReport> {
   mkdirSync(work, { recursive: true });
   await downloadFile(SOURCE.contas, zip);
   extractZip(zip, extract);
-  const receitasPath = findFile(extract, /receitas.*candidato.*\.csv$/i);
+  const receitasPath = findFile(extract, /receitas.*candidato.*_GO\.csv$/i);
   const rows = readCsv(receitasPath);
   const headers = rows[0] ? Object.keys(rows[0]) : [];
   const candidateSnapshot = readJson<{ readonly matched: readonly { readonly sqCandidate: string; readonly name: string }[] }>(CANDIDATE_SOURCE);
@@ -94,7 +94,7 @@ async function diagnosePesquisas(): Promise<DiagnosticReport> {
   mkdirSync(work, { recursive: true });
   await downloadFile(SOURCE.pesquisas, zip);
   extractZip(zip, extract);
-  const pesquisaPath = findFile(extract, /pesquisa.*\.csv$/i);
+  const pesquisaPath = findFile(extract, /pesquisa.*_GO\.csv$/i);
   const rows = readCsv(pesquisaPath);
   const headers = rows[0] ? Object.keys(rows[0]) : [];
   const municipalityKeys = headers.filter(header => /MUNICIPIO|MUNIC|CD_MUN|DADO_MUNIC/i.test(header));
