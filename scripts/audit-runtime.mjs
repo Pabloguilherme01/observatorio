@@ -29,6 +29,9 @@ else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 const main = read('src/main.tsx');
 if (main.includes('observatorioMounted') && main.includes('observatorio:last-runtime-error')) pass('bootstrap possui marcador de montagem e diagnóstico runtime.');
 else fail('bootstrap perdeu marcadores de resiliência.');
+const mountWrites = (main.match(/document\.documentElement\.dataset\.observatorioMounted = 'true'/g) ?? []).length;
+if (mountWrites === 1) pass('marcador de montagem é escrito apenas no efeito React pós-commit.');
+else fail('marcador de montagem possui escrita duplicada ou fora do MountSignal.');
 const mountSignalBlock = main.match(/function MountSignal\(\) \{[\s\S]*?\n\}/)?.[0] ?? '';
 if (
   main.includes('<MountSignal />')
