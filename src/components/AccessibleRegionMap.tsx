@@ -14,9 +14,9 @@ interface AccessibleRegionMapProps {
 }
 
 const DEFAULT_REGIONS: readonly RegionDatum[] = [
-  { id: 'norte', name: 'Região Norte', population: 82400, note: 'Representação esquemática: perímetro fictício para demonstração da interação acessível.' },
-  { id: 'central', name: 'Região Central', population: 96200, note: 'Representação esquemática: perímetro fictício para demonstração da interação acessível.' },
-  { id: 'sul', name: 'Região Sul', population: 71378, note: 'Representação esquemática: perímetro fictício para demonstração da interação acessível.' },
+  { id: 'norte', name: 'Região Norte', population: 82400, note: 'Valor populacional ilustrativo; perímetro fictício e posições sem correspondência geográfica real.' },
+  { id: 'central', name: 'Região Central', population: 96200, note: 'Valor populacional ilustrativo; perímetro fictício e posições sem correspondência geográfica real.' },
+  { id: 'sul', name: 'Região Sul', population: 71378, note: 'Valor populacional ilustrativo; perímetro fictício e posições sem correspondência geográfica real.' },
 ];
 
 const PATHS: Readonly<Record<string, string>> = {
