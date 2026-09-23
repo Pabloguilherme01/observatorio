@@ -54,7 +54,6 @@ function LineChart({ title, description, points, valueFormatter = value => forma
   const polyline = geometry.coords.map(point => point.x + ',' + point.y).join(' ');
   const guides = [0, 1, 2, 3].map(index => 22 + (geometry.plotHeight * index) / 3);
 
-  const pointPad = 7;
   const showTooltip = (point: typeof geometry.coords[number]) => {
     setTooltip({
       xPct: (point.x / geometry.width) * 100,
@@ -116,7 +115,6 @@ function LineChart({ title, description, points, valueFormatter = value => forma
                 onMouseLeave={() => setTooltip(null)}
                 onFocus={() => showTooltip(point)}
                 onBlur={() => setTooltip(null)}
-                onTouchStart={() => showTooltip(point)}
                 onPointerDown={() => showTooltip(point)}
               />
               <text x={point.x} y="234" textAnchor="middle" className="fill-slate-500 text-[12px]">
