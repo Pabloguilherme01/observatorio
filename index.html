@@ -113,6 +113,22 @@
         <p>Este observatório precisa de JavaScript para exibir os painéis interativos.</p>
       </main>
     </noscript>
+    <script>
+      (() => {
+        const startedAt = Date.now();
+        window.setTimeout(() => {
+          const root = document.getElementById('root');
+          const mounted = document.documentElement.dataset.observatorioMounted === 'true';
+          if (!root || mounted) return;
+          const fallback = document.getElementById('boot-fallback');
+          if (fallback) {
+            fallback.innerHTML = '<strong style="font-size:18px">A interface não iniciou</strong><p style="margin:10px 0 0;color:#8b949e;line-height:1.6">O navegador não conseguiu executar o aplicativo em 10 segundos. Recarregue a página. Se o problema persistir, abra o console do navegador e informe o erro.</p><button type="button" onclick="location.reload()" style="margin-top:16px;padding:10px 16px;border:0;border-radius:10px;font-weight:700;cursor:pointer">Recarregar</button>';
+            fallback.setAttribute('role', 'alert');
+            fallback.dataset.bootTimeout = String(Date.now() - startedAt);
+          }
+        }, 10000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
