@@ -66,7 +66,7 @@ export function PublicDataPulse() {
               <div className="mt-1 text-sm font-bold text-slate-200">{latestBudgetUpdate.title}</div>
               <div className="mt-1 text-xs text-slate-500">{latestBudgetUpdate.law} · {latestBudgetUpdate.date.split('-').reverse().join('/')}</div>
               <p className="mt-4 text-xs leading-5 text-slate-400">{latestBudgetUpdate.description}</p>
-              <a href={d.sources.find(s => s.id === latestBudgetUpdate.sourceId)?.url} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200">
+              <a href={d.sources.find(s => s.id === latestBudgetUpdate.sourceId)?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200">
                 Abrir lei oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             </>
@@ -82,11 +82,11 @@ export function PublicDataPulse() {
             </div>
           </div>
           <div className="mt-5 space-y-3">
-            <a href="https://dadosabertos.tse.jus.br/dataset/pesquisas-eleitorais-2026" target="_blank" rel="noreferrer" className="flex items-start gap-3 rounded-2xl border border-white/8 p-3 hover:bg-white/[0.03]">
+            <a href="https://dadosabertos.tse.jus.br/dataset/pesquisas-eleitorais-2026" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 rounded-2xl border border-white/8 p-3 hover:bg-white/[0.03]">
               <CalendarClock className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
               <span><strong className="block text-sm text-white">PesqEle 2026</strong><span className="text-xs text-slate-500">Pesquisas, contratantes, pagantes e questionários · atualização diária</span></span>
             </a>
-            <a href="https://dadosabertos.tse.jus.br/dataset/denuncias-eleitorais" target="_blank" rel="noreferrer" className="flex items-start gap-3 rounded-2xl border border-white/8 p-3 hover:bg-white/[0.03]">
+            <a href="https://dadosabertos.tse.jus.br/dataset/denuncias-eleitorais" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 rounded-2xl border border-white/8 p-3 hover:bg-white/[0.03]">
               <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
               <span><strong className="block text-sm text-white">Pardal 2026</strong><span className="text-xs text-slate-500">Denúncias registradas · atualização diária · denúncia não é comprovação</span></span>
             </a>
