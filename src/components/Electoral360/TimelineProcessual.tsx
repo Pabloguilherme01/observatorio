@@ -50,7 +50,7 @@ export function TimelineProcessual() {
           </div>
         ) : (
           <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-            A captura processual ainda não foi materializada neste snapshot. Nenhum processo é inferido ou preenchido manualmente.
+            A captura processual foi materializada e o recorte exibido é documental: processos associados à watchlist por registros de partes, sem inferir causalidade a partir da timeline.
           </div>
         )}
 
