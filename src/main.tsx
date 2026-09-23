@@ -91,19 +91,22 @@ if (!root) {
 
   void (async () => {
     try {
-      const pwa = await import('virtual:pwa-register');
       let updateSW: ((reloadPage?: boolean) => Promise<void>) | undefined;
 
-      try {
-        updateSW = pwa.registerSW({
-          immediate: true,
-          onNeedRefresh() {
-            window.dispatchEvent(new CustomEvent('observatorio:pwa-update-available'));
-          },
-        });
-      } catch (error) {
-        captureGlobalError('pwa-register', error);
-      }
+      void import('virtual:pwa-register')
+        .then(pwa => {
+          try {
+            updateSW = pwa.registerSW({
+              immediate: true,
+              onNeedRefresh() {
+                window.dispatchEvent(new CustomEvent('observatorio:pwa-update-available'));
+              },
+            });
+          } catch (error) {
+            captureGlobalError('pwa-register', error);
+          }
+        })
+        .catch(error => captureGlobalError('pwa-module', error));
 
       const onApplyUpdate = () => { if (updateSW) void updateSW(true); };
       window.addEventListener('observatorio:pwa-apply-update', onApplyUpdate);
