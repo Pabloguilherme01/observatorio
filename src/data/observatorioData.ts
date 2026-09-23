@@ -168,5 +168,10 @@ export const observatorioData: ObservatoryData = {
     { id: 'revenue-2025', label: 'Receitas brutas realizadas 2025', value: 825112043.1, unit: 'BRL', status: 'historical', referenceDate: '2025-12-31', sourceId: 'ibge-cidades-2026' },
     { id: 'expenses-2025', label: 'Despesas brutas empenhadas 2025', value: 691558004.38, unit: 'BRL', status: 'historical', referenceDate: '2025-12-31', sourceId: 'ibge-cidades-2026' },
     { id: 'gdp-per-capita-2023', label: 'PIB per capita', value: 13567.92, unit: 'BRL', status: 'historical', referenceDate: '2023-12-31', sourceId: 'ibge-cidades-2026' },
+    { id: 'sanitation-investment', label: 'Investimento em saneamento', value: 30004882.01, unit: 'BRL', status: 'historical', referenceDate: '2024-01-01', sourceId: 'sinisa-2024' },
+    { id: 'sanitation-investment-per-capita', label: 'Investimento em saneamento per capita', value: 124.70, unit: 'BRL/pessoa', status: 'historical', referenceDate: '2024-01-01', sourceId: 'sinisa-2024' },
+    { id: 'water-related-deaths', label: 'Óbitos por doenças relacionadas à água', value: 3, unit: 'óbitos', status: 'historical', referenceDate: '2024-01-01', sourceId: 'sinisa-2024' },
+    { id: 'water-related-hospitalizations', label: 'Internações por doenças relacionadas à água', value: 427, unit: 'internações', status: 'historical', referenceDate: '2024-01-01', sourceId: 'sinisa-2024' },
+    { id: 'companies-new', label: 'Empresas novas no recorte', value: 25848, unit: 'empresas', status: 'snapshot', referenceDate: '2026-01-01', sourceId: 'caged-sebrae-2026' },
   ],
 };
