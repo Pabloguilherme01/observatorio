@@ -21,6 +21,8 @@ function collectFiles(target) {
   const files = [];
   for (const entry of entries) {
     const full = join(absolute, entry.name);
+    const relativePath = relative(ROOT, full).replaceAll('\\', '/');
+    if (relativePath === 'src/data/generated' || relativePath.startsWith('src/data/generated/')) continue;
     if (entry.isDirectory()) files.push(...collectFiles(relative(ROOT, full)));
     else if (/\.(mjs|js|ts|tsx|yml|yaml)$/.test(entry.name)) files.push(full);
   }
