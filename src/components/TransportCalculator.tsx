@@ -1,7 +1,7 @@
 import { BusFront, Calculator, Coins, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { observatorioData as d } from '../../data/observatorioData';
-import { calculateTransportCost, formatBRL } from '../../lib/transport';
+import { observatorioData as d } from '../data/observatorioData';
+import { calculateTransportCost, formatBRL } from '../lib/transport';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
