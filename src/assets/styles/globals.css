@@ -157,3 +157,22 @@ html.reduced-motion *,html.reduced-motion *::before,html.reduced-motion *::after
 @media (max-width: 767px) {
   .chart-axis-label { display: none; }
 }
+
+.fast-reading #demografia,
+.fast-reading #candidaturas,
+.fast-reading #dados,
+.fast-reading #orcamento,
+.fast-reading #orcamento-impacto,
+.fast-reading #eleitoral360,
+.fast-reading #fontes {
+  display: none !important;
+}
+
+.fast-reading #qualidade {
+  padding-top: 3rem;
+}
+
+@media (max-width: 640px) {
+  .quick-dock { min-height: 52px; }
+  .quick-dock button { min-height: 44px; min-width: 44px; }
+}
