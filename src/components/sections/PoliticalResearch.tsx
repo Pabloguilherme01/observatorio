@@ -1,3 +1,4 @@
+import { ExternalLink } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -13,7 +14,6 @@ export function PoliticalResearch() {
         title="Candidaturas: registro, patrimônio e situação"
         description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação."
       />
-      <h2 id="research-title" className="sr-only">Candidaturas e registros documentais</h2>
       <div className="grid gap-4 md:grid-cols-2">
         {d.candidates.map(candidate => (
           <Card key={candidate.name}>
@@ -42,6 +42,14 @@ export function PoliticalResearch() {
                 <strong className="mt-1 block text-white">{candidate.snapshotDate}</strong>
               </div>
             </div>
+            <a
+              href={d.sources.find(source => source.id === candidate.sourceId)?.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300"
+            >
+              Fonte do registro <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
           </Card>
         ))}
       </div>
