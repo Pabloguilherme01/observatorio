@@ -97,7 +97,7 @@ export function AccessibleRegionMap({ ariaDescribedBy, regions = DEFAULT_REGIONS
         className="mt-2 min-h-5 text-xs text-slate-500"
       >
         {focusedRegion
-          ? focusedRegion.name + ': ' + focusedRegion.note
+          ? 'Representação esquemática · ' + focusedRegion.name + ': ' + focusedRegion.note
           : 'Selecione ou passe o foco por uma região para ver seu contexto.'}
       </div>
 
