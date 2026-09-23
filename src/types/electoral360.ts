@@ -26,6 +26,11 @@ export interface ElectoralCandidateSnapshot {
   readonly photoUrl?: string | null;
   readonly instagramUrl?: string | null;
   readonly sourceResource?: string;
+  readonly fullName?: string | null;
+  readonly occupation?: string | null;
+  readonly education?: string | null;
+  readonly naturalidade?: string | null;
+  readonly declaredAssetsBrl?: number | null;
 }
 
 export interface Electoral360Snapshot {
