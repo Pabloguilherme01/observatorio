@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarClock, Command, Database, ExternalLink, Languages, Sparkles, Vote } from 'lucide-react';
+import { ArrowRight, CalendarClock, Database, ExternalLink, Vote } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
 import { useEffect, useState } from 'react';
@@ -88,26 +88,6 @@ export function HeroCountdown() {
             </a>
           </div>
 
-          <button
-            type="button"
-            className="hero-mobile-election-toggle mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 py-2 text-xs font-black text-amber-100 transition hover:bg-amber-300/[0.08]"
-            onClick={toggleElectionMode}
-            aria-pressed={electionMode}
-            aria-label={electionMode ? 'Desativar Modo Eleição' : 'Ativar Modo Eleição'}
-          >
-            <Vote className="h-4 w-4" aria-hidden="true" />
-            <span>{electionMode ? 'Modo Eleição · ativo' : 'Modo Eleição'}</span>
-            <span className="text-amber-200/60">{electionMode ? 'desativar' : 'ativar'}</span>
-          </button>
-
-          <div className="election-mode-actions mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.045] p-4" aria-label="Ações cívicas prioritárias">
-            <div className="text-[11px] font-black uppercase tracking-[0.16em] text-amber-200">Modo Eleição · acesso rápido</div>
-            <div className="mt-3 grid gap-2 sm:grid-cols-3">
-              <a href="https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">e-Título · local e serviços</a>
-              <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">DivulgaCandContas</a>
-              <a href="https://www.tse.jus.br/eleicoes/cde-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">Pardal</a>
-            </div>
-          </div>
 
           <div className="hero-kpis mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3" aria-label="Indicadores de referência da edição">
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
@@ -138,41 +118,6 @@ export function HeroCountdown() {
             )}
           </div>
 
-          <details className="hero-preferences mt-4 rounded-2xl border border-white/8 bg-white/[0.02] light:border-slate-200 light:bg-slate-50/70">
-            <summary className="cursor-pointer px-3 py-3 text-sm font-bold text-slate-300 hover:text-white light:text-slate-700">
-              {languageMode === 'simple' ? 'Opções de leitura' : 'Preferências de leitura e ferramentas'}
-            </summary>
-            <div className="grid gap-3 border-t border-white/8 p-3 sm:grid-cols-2">
-              <div aria-label="Escolha a linguagem da interface">
-                <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500"><Languages className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Linguagem</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'simple' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Simples</button>
-                  <button type="button" onClick={() => setLanguageMode('technical')} aria-pressed={languageMode === 'technical'} className={"rounded-xl border px-3 py-2 text-xs font-bold " + (languageMode === 'technical' ? 'border-sky-300/30 bg-sky-300/10 text-sky-200' : 'border-white/10 bg-white/[0.035] text-slate-400')}>Técnica</button>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-slate-500">
-                  {languageMode === 'simple' ? 'Leitura curta. Toque em um dado para conferir a fonte.' : 'Método, referência e contexto ficam disponíveis em primeiro plano.'}
-                </p>
-              </div>
-              <div aria-label="Escolha a camada de leitura">
-                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Camada</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'overview' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Visão geral</button>
-                  <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Investigação</button>
-                  <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'evidence' }))} className="rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">Evidências</button>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-slate-500">A camada altera a densidade da interface.</p>
-              </div>
-              <div className="flex items-end sm:col-span-2">
-                <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/5">
-                  <Command className="h-4 w-4" aria-hidden="true" /> Central de comandos
-                </button>
-              </div>
-            </div>
-          </details>
-
-          <div className="hero-trust-line mt-4 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
-            <span className="inline-flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Explore · compare · verifique</span>
-          </div>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
