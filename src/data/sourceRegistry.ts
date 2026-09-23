@@ -12,6 +12,15 @@ export const sourceRegistry: readonly SourceRef[] = [
     note: 'Estimativas municipais com referência em 1º de julho de 2026.',
   },
   {
+    id: 'ibge-cidades-2026',
+    label: 'IBGE — Cidades e Estados: Águas Lindas de Goiás',
+    institution: 'IBGE',
+    url: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html',
+    nature: 'official',
+    referenceDate: '2026-09-22',
+    note: 'Painel municipal com área territorial, população estimada, escolarização, mortalidade infantil, receitas, despesas e PIB per capita, conforme os respectivos anos-base informados pelo IBGE.',
+  },
+  {
     id: 'ibge-censo-2022',
     label: 'IBGE — Censo Demográfico 2022',
     institution: 'IBGE',
