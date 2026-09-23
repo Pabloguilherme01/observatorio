@@ -52,9 +52,11 @@ export function ProjectTrustPanel() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
-          <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado. Para decisões e providências, consulte a fonte oficial correspondente.
-        </div>
+        {mode === 'technical' && (
+          <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
+            <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado. Para decisões e providências, consulte a fonte oficial correspondente.
+          </div>
+        )}
       </div>
     </section>
   );
