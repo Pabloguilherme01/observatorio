@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Activity, Gauge, Map, Users } from 'lucide-react';
+import { Activity, Gauge, Map, Users, ArrowUpRight, CalendarDays, Database, Info } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
@@ -24,6 +24,12 @@ function lineChartGeometry(points: readonly Point[]) {
 }
 
 function LineChart({ title, description, points, valueFormatter = value => formatNumber(value) }: LineChartProps) {
+  const hasData = points.length > 0;
+  const latest = points[points.length - 1];
+  const previous = points.length > 1 ? points[points.length - 2] : undefined;
+  const change = latest && previous && previous.value !== 0
+    ? ((latest.value - previous.value) / previous.value) * 100
+    : null;
   const geometry = useMemo(() => lineChartGeometry(points), [points]);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const polyline = geometry.coords.map(point => point.x + ',' + point.y).join(' ');
@@ -41,10 +47,20 @@ function LineChart({ title, description, points, valueFormatter = value => forma
         <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
         <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
       </figcaption>
+      {hasData && (
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+          {latest && <span className="inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.02] px-2.5 py-1 light:border-slate-200 light:bg-white"><CalendarDays className="h-3 w-3" aria-hidden="true" /> Até {latest.label}</span>}
+          {change !== null && <span className={`inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.02] px-2.5 py-1 ${change >= 0 ? 'text-emerald-300' : 'text-amber-300'} light:border-slate-200 light:bg-white`}><ArrowUpRight className="h-3 w-3" aria-hidden="true" /> {change >= 0 ? '+' : ''}{formatPercent(change, 1)} vs. anterior</span>}
+        </div>
+      )}
       <div className="relative mt-4 overflow-visible pb-1" onMouseLeave={() => setTooltip(null)}>
         <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto w-full max-w-full overflow-visible" preserveAspectRatio="xMidYMid meet">
           <title>{title}</title><desc>{description}</desc>
           {guides.map((y, index) => <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />)}
+          {!hasData ? (
+            <text x="310" y="126" textAnchor="middle" className="fill-slate-500 text-[12px]">Sem dados para exibir</text>
+          ) : (
+          <>
           <polyline points={polyline} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
           {geometry.coords.map(point => (
             <g key={point.label}>
@@ -54,7 +70,12 @@ function LineChart({ title, description, points, valueFormatter = value => forma
               <text x={point.x} y="234" textAnchor="middle" className="chart-axis-label fill-slate-500 text-[12px]">{point.label}</text>
             </g>
           ))}
+          </>
+          )}
         </svg>
+        {!hasData ? (
+          <div className="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-center text-xs text-slate-500 light:border-slate-200">Ainda não há observações suficientes para esta série.</div>
+        ) : (
         <div className="mt-3 grid gap-2 md:hidden" aria-label={title + ' em tabela'}>
           {points.map(point => (
             <div key={point.label + '-mobile'} className="flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 light:bg-white">
@@ -63,6 +84,7 @@ function LineChart({ title, description, points, valueFormatter = value => forma
             </div>
           ))}
         </div>
+        )}
         {tooltip && <button type="button" onClick={() => dispatchInspect({ label: title + ' · ' + tooltip.point.label, value: valueFormatter(tooltip.point.value), sourceId: tooltip.point.sourceId, referenceDate: tooltip.point.referenceDate, method: 'Ponto da série temporal.' })} className="absolute z-20 min-w-[150px] -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-900/95 px-3 py-2 text-left text-xs text-white shadow-xl backdrop-blur-md light:border-slate-200 light:bg-white/95 light:text-slate-900" style={{ left: tooltip.xPct + '%', top: tooltip.yPct + '%' }}>
           <div className="font-medium text-slate-300 light:text-slate-500">{tooltip.point.label}</div>
           <div className="mt-0.5 text-sm font-semibold text-sky-300 light:text-sky-700">{valueFormatter(tooltip.point.value)}</div>
@@ -99,8 +121,10 @@ export function DashboardMetrics() {
   ];
 
   return (
-    <section id="dashboard" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14" aria-labelledby="dashboard-title">
-      <SectionHeader
+    <section id="dashboard" className="dashboard-shell mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14" aria-labelledby="dashboard-title">
+      <div className="dashboard-heading-card mb-6 rounded-[28px] border border-white/8 bg-white/[0.025] p-4 sm:p-5 light:border-slate-200 light:bg-slate-50/80">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeader
         titleId="dashboard-title"
         eyebrow={languageMode === 'simple' ? 'Números da cidade' : 'Visão geral'}
         title={languageMode === 'simple' ? 'Os principais números' : 'Os números de referência'}
@@ -112,7 +136,7 @@ export function DashboardMetrics() {
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note }) => (
           <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note })} className="metric-interactive text-left">
-            <Card>
+            <Card className="dashboard-kpi-card">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
