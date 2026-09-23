@@ -56,11 +56,11 @@ must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5
 must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
 must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy exige auditorias principais');
 
-const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
+const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
-must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && appSource.includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
+must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && (appSource.includes('DeferredTrustGroup') || appSource.includes('<ProjectTrustPanel />')), 'descoberta, confiança e modo de linguagem montados');
 
 const allRuntimeText = [
   appSource,
@@ -93,6 +93,7 @@ const runtimeFiles = [
   'src/data/sourceRegistry.ts',
   'src/config/navigation.ts',
   'src/config/version.ts',
+  'src/components/sections/DeferredTrustGroup.tsx',
   'src/data/contextualComparison.ts',
 ];
 for (const file of runtimeFiles) {
