@@ -201,3 +201,5 @@ body{overscroll-behavior-y:none}
   .today-card { flex-basis: min(84vw, 300px); }
   .summary-evidence, .summary-stat, .candidate-card, .today-card { border-radius: 16px; }
 }
+
+.isCompactViewport{min-width:0;max-width:100%;}
