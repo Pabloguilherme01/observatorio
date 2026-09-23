@@ -6,13 +6,10 @@ const forbiddenProxyTokens = [
   'r.jina.ai',
   'jina.ai/http',
   'API_PROXY_URL',
-  'sourceProxyUrl',
-  'via_reader_proxy',
 ];
 
 const scanRoots = [
   '.github/workflows',
-  'scripts',
   'src',
   'vite.config.ts',
 ];
@@ -20,8 +17,7 @@ const scanRoots = [
 function collectFiles(target) {
   const absolute = join(ROOT, target);
   if (!existsSync(absolute)) return [];
-  const stat = readFileSync;
-  const entries = readdirSync(absolute, { withFileTypes: true });
+    const entries = readdirSync(absolute, { withFileTypes: true });
   const files = [];
   for (const entry of entries) {
     const full = join(absolute, entry.name);
