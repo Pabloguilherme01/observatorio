@@ -40,7 +40,7 @@ function LineChart({ title, description, points, valueFormatter = value => forma
         <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
       </figcaption>
       <div className="relative mt-4 overflow-x-auto pb-1" onMouseLeave={() => setTooltip(null)}>
-        <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto min-w-[560px] w-full max-w-none overflow-visible">
+        <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto w-full max-w-full overflow-visible" preserveAspectRatio="xMidYMid meet">
           <title>{title}</title><desc>{description}</desc>
           {guides.map((y, index) => <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />)}
           <polyline points={polyline} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
@@ -49,10 +49,18 @@ function LineChart({ title, description, points, valueFormatter = value => forma
               <circle cx={point.x} cy={point.y} r="6" className="cursor-pointer fill-sky-300 transition-[r] duration-150 hover:r-[8px] focus:outline-none light:fill-sky-600" tabIndex={0} role="button" aria-label={point.label + ': ' + valueFormatter(point.value) + '. Abrir detalhes.'}
                 onMouseEnter={() => showTooltip(point)} onMouseLeave={() => setTooltip(null)} onFocus={() => showTooltip(point)} onBlur={() => setTooltip(null)}
                 onPointerDown={() => showTooltip(point)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); dispatchInspect({ label: title + ' · ' + point.label, value: valueFormatter(point.value), sourceId: point.sourceId, referenceDate: point.referenceDate, method: 'Ponto da série temporal.' }); } }} />
-              <text x={point.x} y="234" textAnchor="middle" className="fill-slate-500 text-[12px]">{point.label}</text>
+              <text x={point.x} y="234" textAnchor="middle" className="chart-axis-label fill-slate-500 text-[12px]">{point.label}</text>
             </g>
           ))}
         </svg>
+        <div className="mt-3 grid gap-2 md:hidden" aria-label={title + ' em tabela'}>
+          {points.map(point => (
+            <div key={point.label + '-mobile'} className="flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 light:bg-white">
+              <span className="text-xs font-semibold text-slate-500">{point.label}</span>
+              <span className="text-xs font-black text-slate-200 light:text-slate-700">{valueFormatter(point.value)}</span>
+            </div>
+          ))}
+        </div>
         {tooltip && <button type="button" onClick={() => dispatchInspect({ label: title + ' · ' + tooltip.point.label, value: valueFormatter(tooltip.point.value), sourceId: tooltip.point.sourceId, referenceDate: tooltip.point.referenceDate, method: 'Ponto da série temporal.' })} className="absolute z-20 min-w-[150px] -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-900/95 px-3 py-2 text-left text-xs text-white shadow-xl backdrop-blur-md light:border-slate-200 light:bg-white/95 light:text-slate-900" style={{ left: tooltip.xPct + '%', top: tooltip.yPct + '%' }}>
           <div className="font-medium text-slate-300 light:text-slate-500">{tooltip.point.label}</div>
           <div className="mt-0.5 text-sm font-semibold text-sky-300 light:text-sky-700">{valueFormatter(tooltip.point.value)}</div>
@@ -94,7 +102,7 @@ export function DashboardMetrics() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {metricDetails.map(({ label, value, caption, icon: Icon, sourceId, referenceDate, status, note }) => (
           <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note })} className="text-left">
-            <Card><div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div><div className="mt-3 text-3xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-xs text-slate-500">{caption}</div><div className="mt-2 text-[10px] font-bold uppercase tracking-wide text-sky-300/70">Abrir detalhes</div></div><Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" /></div></Card>
+            <Card><div className="flex items-start justify-between gap-4"><div><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div><div className="mt-3 text-3xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-xs text-slate-500">{caption}</div><div className="mt-2 inline-flex rounded-full border border-white/8 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">{referenceDate ? `ref. ${referenceDate.split('-').reverse().join('/')}` : 'sem referência'}</div><div className="mt-2 text-[10px] font-bold uppercase tracking-wide text-sky-300/70">Abrir detalhes</div></div><Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" /></div></Card>
           </button>
         ))}
       </div>
