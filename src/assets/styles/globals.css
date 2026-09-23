@@ -307,8 +307,8 @@ html.light .mode-evidence #eleitoral360::before {
 
   .table-compact-mobile { display: grid; }
   input[type="range"] { min-height: 44px; }
-  button { min-height: 48px; }
-  a.inline-flex, a.flex { min-height: 48px; }
+  button { min-height: 44px; }
+  a.inline-flex, a.flex { min-height: 44px; }
   .quick-dock button { min-height: 44px; }
 }
 @media (min-width: 768px) {
