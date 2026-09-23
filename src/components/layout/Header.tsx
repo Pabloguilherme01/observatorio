@@ -1,9 +1,11 @@
-import { Command, Moon, Search, Sun, X } from 'lucide-react';
+import { CalendarDays, Command, Moon, Search, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SearchModal } from './SearchModal';
 import { useTheme } from '../../context/ThemeContext';
 import { navigation } from '../../config/navigation';
 import { LanguageModeToggle } from './LanguageModeToggle';
+import { observatorioData as d } from '../../data/observatorioData';
+import { formatDate } from '../../utils/formatters';
 
 const primaryNavigationIds = ['descubra', 'dashboard', 'eleitorado', 'transporte', 'orcamento', 'dados', 'acao'] as const;
 const primaryNavigation = navigation.filter(item => primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
@@ -51,7 +53,7 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="site-header-actions ml-auto flex items-center gap-1">
+          <div className="site-header-status hidden lg:flex items-center gap-1.5 rounded-full border border-sky-300/10 bg-sky-300/[0.035] px-2.5 py-1.5 text-[10px] font-bold text-slate-500" aria-label={'Dados atualizados em ' + updatedAt}>\n            <CalendarDays className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" />\n            <span>Atualizado {updatedAt}</span>\n          </div>\n\n          <div className="site-header-actions ml-auto flex items-center gap-1">
             <button type="button" onClick={() => setSearchOpen(true)} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -69,7 +71,7 @@ export function Header() {
           <div id="mobile-tools" className="mobile-tools-sheet border-t border-white/10 px-4 py-3 md:hidden" role="region" aria-label="Ferramentas e modo de leitura">
             <div className="mobile-tools-grid">
               <div className="mobile-tools-mode">
-                <span className="mobile-tools-label">Leitura</span>
+                <div className="mobile-tools-meta">\n                  <span className="mobile-tools-label">Leitura</span>\n                  <span className="mobile-tools-updated"><CalendarDays className="h-3 w-3" aria-hidden="true" />Atualizado {updatedAt}</span>\n                </div>
                 <LanguageModeToggle />
               </div>
               <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:command')); setToolsOpen(false); }} className="mobile-tool-action">
