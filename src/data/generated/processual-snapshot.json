@@ -10,12 +10,12 @@
     "rejectedRows": 0,
     "captureTime": "2026-09-23T10:46:20.531Z",
     "retrievalMethod": "official_tse_zip_csv",
-    "state": "synced",
-    "baseline": false
+    "state": "first_capture",
+    "baseline": true
   },
   "data": {
     "versao": "1.0.0",
-    "estado": "synced",
+    "estado": "first_capture",
     "geradoEm": "2026-09-23T10:46:20.531Z",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip",
     "sourceHash": "318e65abf88befaea029c18aa9f534745e5d145bf35da99210a76be929e71052",
