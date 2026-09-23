@@ -3,25 +3,24 @@ import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { HeroCountdown } from '../components/sections/HeroCountdown';
-import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { ThemeProvider } from '../context/ThemeContext';
-import { SnapshotChanges } from '../components/sections/SnapshotChanges';
 import { DataInspector } from '../components/DataInspector';
 import { ExperienceShell } from '../components/ExperienceShell';
-import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
-import { FreshnessBanner } from '../components/sections/FreshnessBanner';
-import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
-import { ContextComparison } from '../components/sections/ContextComparison';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
-import { AudienceHub } from '../components/AudienceHub';
-import { QuickQuiz } from '../components/sections/QuickQuiz';
-import { ProjectTrustPanel } from '../components/ProjectTrustPanel';
 import { ProvenanceDrawer } from '../components/ProvenanceDrawer';
 import { DataUpdateToast } from '../components/DataUpdateToast';
-import { DataHealthPanel } from '../components/sections/DataHealthPanel';
 import { DeferredSection } from '../components/DeferredSection';
 
-
+const LazyAudienceHub = lazy(() => import('../components/AudienceHub').then(module => ({ default: module.AudienceHub })));
+const LazyQuickQuiz = lazy(() => import('../components/sections/QuickQuiz').then(module => ({ default: module.QuickQuiz })));
+const LazyProjectTrustPanel = lazy(() => import('../components/ProjectTrustPanel').then(module => ({ default: module.ProjectTrustPanel })));
+const LazyDataHealthPanel = lazy(() => import('../components/sections/DataHealthPanel').then(module => ({ default: module.DataHealthPanel })));
+const LazyExecutiveSummary = lazy(() => import('../components/sections/ExecutiveSummary').then(module => ({ default: module.ExecutiveSummary })));
+const LazyFreshnessBanner = lazy(() => import('../components/sections/FreshnessBanner').then(module => ({ default: module.FreshnessBanner })));
+const LazySnapshotChanges = lazy(() => import('../components/sections/SnapshotChanges').then(module => ({ default: module.SnapshotChanges })));
+const LazyResultsLiveBanner = lazy(() => import('../components/sections/ResultsLiveBanner').then(module => ({ default: module.ResultsLiveBanner })));
+const LazyDashboardMetrics = lazy(() => import('../components/sections/DashboardMetrics').then(module => ({ default: module.DashboardMetrics })));
+const LazyContextComparison = lazy(() => import('../components/sections/ContextComparison').then(module => ({ default: module.ContextComparison })));
 const LazyElectoralProfile = lazy(() => import('../components/sections/ElectoralProfile').then(module => ({ default: module.ElectoralProfile })));
 const LazyDemographicDynamic = lazy(() => import('../components/sections/DemographicDynamic').then(module => ({ default: module.DemographicDynamic })));
 const LazyTransportCalculator = lazy(() => import('../components/TransportCalculator').then(module => ({ default: module.TransportCalculator })));
@@ -50,16 +49,16 @@ export function App() {
           <Header />
           <HeroCountdown />
           <main id="main-content" data-app-ready="true">
-            <AudienceHub />
-            <QuickQuiz />
-            <ProjectTrustPanel />
-            <DataHealthPanel />
-            <ExecutiveSummary />
-            <FreshnessBanner />
-            <SnapshotChanges />
-            <ResultsLiveBanner />
-            <DashboardMetrics />
-            <ContextComparison />
+            <DeferredSection id="descubra" label="Descoberta" component={LazyAudienceHub} minHeight={360} />
+            <DeferredSection label="Quiz rápido" component={LazyQuickQuiz} minHeight={420} />
+            <DeferredSection label="Confiança do projeto" component={LazyProjectTrustPanel} minHeight={420} />
+            <DeferredSection label="Saúde dos dados" component={LazyDataHealthPanel} minHeight={420} />
+            <DeferredSection label="Resumo executivo" component={LazyExecutiveSummary} minHeight={640} />
+            <DeferredSection label="Atualidade dos dados" component={LazyFreshnessBanner} minHeight={240} />
+            <DeferredSection label="Mudanças do snapshot" component={LazySnapshotChanges} minHeight={420} />
+            <DeferredSection label="Resultados ao vivo" component={LazyResultsLiveBanner} minHeight={260} />
+            <DeferredSection id="dashboard" label="Painel de indicadores" component={LazyDashboardMetrics} minHeight={900} />
+            <DeferredSection id="contexto" label="Comparador contextual" component={LazyContextComparison} minHeight={820} />
             <DeferredSection id="perfil" label="Perfil eleitoral" component={LazyElectoralProfile} minHeight={420} />
             <DeferredSection label="Dinâmica demográfica" component={LazyDemographicDynamic} minHeight={520} />
             <DeferredSection label="Mobilidade e transporte" component={LazyTransportCalculator} minHeight={520} />
