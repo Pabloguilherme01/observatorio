@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { basename, join, relative } from 'node:path';
 
 export const MUNICIPIO_IBGE = '5200258';
 export const MUNICIPIO_NOME = 'Águas Lindas de Goiás';
@@ -81,8 +81,20 @@ export function parseCsv(content: string): ReadonlyArray<Record<string, string>>
   });
 }
 
+function decodeCsvBuffer(buffer: Buffer): string {
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+  } catch {
+    return new TextDecoder('windows-1252').decode(buffer);
+  }
+}
+
 export function readCsv(filePath: string): ReadonlyArray<Record<string, string>> {
-  return parseCsv(readFileSync(filePath, 'utf8'));
+  return parseCsv(decodeCsvBuffer(readFileSync(filePath)));
+}
+
+export function sourceBasename(filePath: string): string {
+  return basename(filePath);
 }
 
 export function normalizeHeader(value: string): string {
