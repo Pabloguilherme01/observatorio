@@ -72,7 +72,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
       }
       if (event.key === 'ArrowDown') {
         event.preventDefault();
-        setActiveIndex(index => Math.min(index + 1, 99));
+        setActiveIndex(index => Math.min(index + 1, Math.max(filtered.length - 1, 0)));
       }
       if (event.key === 'ArrowUp') {
         event.preventDefault();
@@ -131,6 +131,11 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     if (activeIndex >= filtered.length) setActiveIndex(Math.max(filtered.length - 1, 0));
   }, [activeIndex, filtered.length]);
 
+  useEffect(() => {
+    const active = document.querySelector<HTMLElement>(`[data-search-index="${activeIndex}"]`);
+    active?.scrollIntoView({ block: 'nearest' });
+  }, [activeIndex]);
+
   if (!open) return null;
 
   return (
@@ -161,7 +166,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           </button>
         </div>
         {quickAnswer && <div className="mx-2 mt-2 rounded-2xl border border-sky-300/15 bg-sky-300/[0.05] p-4">
-          <div className="text-[10px] font-bold uppercase tracking-widest text-sky-300/80">Resposta rápida</div>
+          <div className="text-[11px] font-bold uppercase tracking-widest text-sky-300/80">Resposta rápida</div>
           <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
           <div className="mt-1 text-xl font-black text-sky-300">{quickAnswer.value}</div>
           <a href={'#' + quickAnswer.id} onClick={onClose} className="mt-2 inline-flex min-h-10 items-center text-xs font-bold text-slate-300 hover:text-white">Abrir dado e fonte →</a>
@@ -177,6 +182,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               href={'#' + item.id}
               onMouseEnter={() => setActiveIndex(index)}
               onClick={onClose}
+              data-search-index={index}
               className={'block rounded-2xl px-4 py-3 text-sm transition ' + (activeIndex === index ? 'bg-white/10 text-white' : 'text-slate-200 hover:bg-white/5')}
               aria-current={activeIndex === index ? 'true' : undefined}
             >
