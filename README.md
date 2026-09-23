@@ -57,13 +57,15 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V30.0 — Observatório de Dados Cívicos e Eleitorais.
+V31.0 — Observatório de Dados Cívicos e Eleitorais.
 
-### Foco V30
+### Foco V31
 - Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
 - Compartilhamento nativo de resumo e cenários de mobilidade.
 - Estados TSE explicitamente diferenciados entre capturado, desatualizado, falha e aguardando captura.
 - Visualização histórica de saneamento com escala 0–100% e tabela compacta no celular.
+- Feed de resultados com contrato contextualizado: eleição, turno, UF, município, cargo, arquivo-fonte e estado de captura.
+- Validação dedicada do feed de resultados antes de CI e publicação.
 
 ### Camadas atuais
 - Dashboard municipal e eleitoral
