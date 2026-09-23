@@ -48,7 +48,9 @@ export function HeroCountdown() {
           <p className="mt-4 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
             {languageMode === 'simple'
               ? 'Veja o número, a data e a fonte. O detalhe fica opcional.'
-              : 'Cada indicador separa valor, data de referência, origem, natureza do dado e limitações.'}
+              : languageMode === 'quick'
+                ? 'Os números principais primeiro. Toque para abrir, comparar e compartilhar.'
+                : 'Cada indicador separa valor, data de referência, origem, natureza do dado e limitações.'}
           </p>
           <div className="reading-mode-switch mt-4 inline-flex rounded-2xl border border-white/10 bg-white/[0.02] p-1" role="group" aria-label="Modo de leitura">
             <button type="button" onClick={() => setLanguageMode('simple')} aria-pressed={languageMode === 'simple'} className={'rounded-xl px-3 py-2 text-xs font-bold ' + (languageMode === 'simple' ? 'bg-sky-300 text-slate-950' : 'text-slate-400 hover:text-white')}>Simples</button>
