@@ -78,7 +78,7 @@ export function MobileBottomNav() {
   }, []);
 
   return (
-    <nav className="mobile-bottom-nav" aria-label="Navegação principal do observatório">
+    <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular">
       {items.map(({ id, label, icon: Icon }) => (
         <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'location' : undefined}>
           <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
