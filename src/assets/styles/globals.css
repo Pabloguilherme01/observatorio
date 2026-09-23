@@ -67,6 +67,8 @@ button, a, select, input { -webkit-tap-highlight-color: transparent; }
 }
 .skip-link:focus { transform: translateY(0); }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+html:not(.light) .text-slate-500 { color: #7d8da3 !important; }
+html:not(.light) .text-slate-600 { color: #718096 !important; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
