@@ -53,9 +53,9 @@ must(syncWorkflow.includes("REQUIRE_TSE_SYNC: 'true'"), 'workflow TSE exige snap
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa do TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada como referência secundária');
 must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy do Pages exige as três auditorias antes da publicação');
-must(app.includes('<DataQualityPanel />') && app.includes('<EvidenceChain />'), 'camadas de qualidade e evidências estão montadas no App');
-must(app.includes('<CivicActionHub />') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
-must(app.includes('<AudienceHub />') && app.includes('<InstagramSyncHub />') && app.includes('<ProjectTrustPanel />') && app.includes('<SnapshotChanges />'), 'descoberta, Instagram, confiança e radar estão montados no primeiro fluxo');
+must(app.includes('DataQualityPanel') && app.includes('EvidenceChain'), 'camadas de qualidade e evidências estão montadas no App');
+must(app.includes('CivicActionHub') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
+must(app.includes('<AudienceHub />') && app.includes('InstagramSyncHub') && app.includes('<ProjectTrustPanel />') && app.includes('<SnapshotChanges />'), 'descoberta, Instagram, confiança e radar estão montados no primeiro fluxo');
 for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
