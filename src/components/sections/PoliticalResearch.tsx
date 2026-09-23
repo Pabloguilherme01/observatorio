@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { Database, ExternalLink } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -31,8 +31,9 @@ export function PoliticalResearch() {
         description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação eleitoral. Quando disponível, a camada sincronizada do TSE passa a ser a fonte operacional."
       />
       <div className="mb-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
-        <strong className="text-amber-200 light:text-amber-800">Recorte editorial local:</strong> os registros abaixo são um snapshot de 22/09/2026 e não representam a lista completa de candidaturas. A sincronização automatizada do TSE permanece aguardando captura.
+        <strong className="text-amber-200 light:text-amber-800">Recorte editorial local:</strong> os registros abaixo são um recorte editorial de 22/09/2026 e não representam a lista completa de candidaturas. A base oficial do TSE é atualizada quatro vezes ao dia; a sincronização local permanece aguardando captura.
       </div>
+      <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mb-5 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-semibold text-slate-300 hover:bg-white/5"><Database className="h-4 w-4 text-sky-300" aria-hidden="true" /> abrir base oficial de Candidatos 2026 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
       <div className="grid gap-4 md:grid-cols-2">
         {candidates.map(candidate => (
           <Card key={candidate.name}>
