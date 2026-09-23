@@ -15,6 +15,7 @@ export default defineConfig({
     timeout: 10_000,
     toHaveScreenshot: { animations: 'disabled', maxDiffPixelRatio: 0.001 },
   },
+  snapshotDir: 'tests/visual/__snapshots__',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
