@@ -40,7 +40,9 @@ export function PoliticalResearch() {
       </div>
       <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mb-5 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-semibold text-slate-300 hover:bg-white/5"><Database className="h-4 w-4 text-sky-300" aria-hidden="true" /> abrir base oficial de Candidatos 2026 <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
       <div className="grid gap-4 md:grid-cols-2">
-        {candidates.map(candidate => (
+        {candidates.map(candidate => {
+          const sourceUrl = d.sources.find(source => source.id === candidate.sourceId)?.url;
+          return (
           <Card key={candidate.name}>
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -67,16 +69,19 @@ export function PoliticalResearch() {
                 <strong className="mt-1 block text-white">{candidate.snapshotDate}</strong>
               </div>
             </div>
-            <a
-              href={d.sources.find(source => source.id === candidate.sourceId)?.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300"
-            >
-              Fonte da referência <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
+            {sourceUrl && (
+              <a
+                href={sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300"
+              >
+                Fonte da referência <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            )}
           </Card>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

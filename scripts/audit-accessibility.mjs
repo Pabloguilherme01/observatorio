@@ -11,6 +11,7 @@ const hero = read('src/components/sections/HeroCountdown.tsx');
 const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const comparison = read('src/components/sections/ContextComparison.tsx');
 const context = read('src/context/LanguageModeContext.tsx');
+const theme = read('src/context/ThemeContext.tsx');
 
 const errors = [];
 const pass = message => console.log('PASS', message);
@@ -30,6 +31,8 @@ function contrast(foreground, background) {
 
 must(/lang=["']pt-BR["']/.test(index), 'documento declara idioma pt-BR');
 must(index.includes('og:image') && index.includes('twitter:image'), 'preview social possui imagem');
+must(index.includes('application-name') && index.includes('apple-mobile-web-app-title'), 'metadados de nome para instalação mobile estão presentes');
+must(theme.includes('meta[name="theme-color"]') && theme.includes('#f5f7fa') && theme.includes('#0b1117'), 'theme-color acompanha o tema da aplicação');
 must(css.includes(':focus-visible'), 'foco de teclado possui estilo visível');
 must(css.includes('prefers-reduced-motion'), 'redução de movimento está contemplada');
 must(css.includes('min-height: 44px') || css.includes('min-height:44px'), 'controles móveis usam alvo de toque confortável');

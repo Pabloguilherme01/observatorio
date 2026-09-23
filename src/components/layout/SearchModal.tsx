@@ -8,13 +8,14 @@ const entries: readonly (readonly [string, string])[] = [
   ['Transporte', 'transporte'],
   ['Saneamento e saúde', 'saude'],
   ['Pesquisas', 'politica'],
-  ['Candidaturas', 'eleitoral360'],
+  ['Candidaturas', 'candidaturas'],
   ['Orçamento', 'orcamento'],
   ['Qualidade dos dados', 'qualidade'],
   ['Fontes e metodologia', 'fontes'],
   ['Exportação', 'exportacao'],
   ['Pesquisa registrada', 'politica'],
   ['HEALGO', 'saude'],
+  ['Resumo de leitura', 'resumo'],
 ];
 
 const normalize = (value: string) =>
@@ -52,9 +53,14 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      openerRef.current?.focus?.();
+      return;
+    }
+    openerRef.current = document.activeElement as HTMLElement | null;
     setQuery('');
     setActiveIndex(0);
     const previousOverflow = document.body.style.overflow;
@@ -72,7 +78,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
       }
       if (event.key === 'ArrowDown') {
         event.preventDefault();
-        setActiveIndex(index => index + 1);
+        setActiveIndex(index => Math.min(index + 1, Math.max(filtered.length - 1, 0)));
       }
       if (event.key === 'ArrowUp') {
         event.preventDefault();
@@ -94,10 +100,22 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: 'R$ ' + d.budget.totalBrl.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), id: 'orcamento', sourceId: d.budget.sourceId };
-    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saneamento', sourceId: 'sinisa-2024' };
+    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
       return route ? { title: 'Tarifa de referência para Brasília', value: route.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por trecho', id: 'transporte', sourceId: route.sourceId } : null;
+    }
+    if (q.includes('pib')) {
+      const indicator = d.indicators.find(item => item.id === 'gdp-per-capita-2023');
+      return indicator ? { title: 'PIB per capita 2023', value: indicator.value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('ideb')) {
+      const range = d.education?.ideb2025Range;
+      return range ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education.sourceId } : null;
+    }
+    if (q.includes('heal') || q.includes('hospital')) {
+      const total = (d.health?.currentStatedWardBeds ?? 0) + (d.health?.currentStatedIcuBeds ?? 0);
+      return { title: 'HEAL · leitos declarados', value: total.toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: 'healgo' };
     }
     return null;
   }, [query]);
