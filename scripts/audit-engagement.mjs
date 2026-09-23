@@ -37,7 +37,7 @@ must(main.includes('beforeinstallprompt') && main.includes('PwaInstallPrompt'), 
 must(index.includes('manifest.webmanifest') && index.includes('apple-mobile-web-app-capable'), 'metadados de instalação estão publicados');
 must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
 const versionMatch = version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
-must(versionMatch?.[1] === '44.3.0', 'versão marcada como 44.3.0');
+must(versionMatch?.[1] === '44.4.0', 'versão marcada como 44.4.0');
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');

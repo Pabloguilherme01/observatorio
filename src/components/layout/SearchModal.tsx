@@ -1,5 +1,6 @@
 import { Search, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
+import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const entries: readonly (readonly [string, string])[] = [
@@ -20,6 +21,8 @@ const entries: readonly (readonly [string, string])[] = [
 
 const normalize = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
+
+const sourceLabel = (sourceId: string) => d.sources.find(source => source.id === sourceId)?.label ?? sourceId;
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
@@ -44,6 +47,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
+  const filteredLengthRef = useRef(0);
 
   const openSearch = () => {
     openerRef.current = document.activeElement as HTMLElement | null;
@@ -67,10 +71,10 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') { event.preventDefault(); onClose(); return; }
-      if (event.key === 'ArrowDown') { event.preventDefault(); setActiveIndex(index => Math.min(index + 1, Math.max(filtered.length - 1, 0))); return; }
+      if (event.key === 'ArrowDown') { event.preventDefault(); setActiveIndex(index => Math.min(index + 1, Math.max(filteredLengthRef.current - 1, 0))); return; }
       if (event.key === 'ArrowUp') { event.preventDefault(); setActiveIndex(index => Math.max(index - 1, 0)); return; }
       if (event.key === 'Home') { event.preventDefault(); setActiveIndex(0); return; }
-      if (event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filtered.length - 1, 0)); return; }
+      if (event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filteredLengthRef.current - 1, 0)); return; }
       if (event.key === 'Tab' && dialogRef.current) {
         const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href]')).filter(node => !node.hasAttribute('disabled'));
         if (!focusable.length) return;
@@ -93,7 +97,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
-    if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: 'R$ ' + d.budget.totalBrl.toLocaleString('pt-BR', { maximumFractionDigits: 2 }), id: 'orcamento', sourceId: d.budget.sourceId };
+    if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
     if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
@@ -138,6 +142,8 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
       .slice(0, 30);
   }, [query]);
 
+  filteredLengthRef.current = filtered.length;
+
   useEffect(() => {
     if (activeIndex >= filtered.length) setActiveIndex(Math.max(filtered.length - 1, 0));
   }, [activeIndex, filtered.length]);
@@ -180,7 +186,11 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               placeholder="Ex.: orçamento, transporte, eleitorado, HEAL…"
               className="search-modal-input"
               aria-label="Buscar seção, fonte ou indicador"
+              role="combobox"
+              aria-expanded={open}
               aria-controls="search-results"
+              aria-activedescendant={filtered[activeIndex] ? 'search-result-' + activeIndex : undefined}
+              aria-autocomplete="list"
               autoComplete="off"
               inputMode="search"
               enterKeyHint="go"
@@ -206,6 +216,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           {filtered.map((item, index) => (
             <button
               key={item.label + '-' + item.id}
+              id={'search-result-' + index}
               type="button"
               data-search-index={index}
               onMouseEnter={() => setActiveIndex(index)}
@@ -218,7 +229,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               <span className="search-result-enter">↵</span>
             </button>
           ))}
-          {!filtered.length && <div className="search-empty">Nenhum resultado encontrado.</div>}
+          {!filtered.length && <div className="search-empty">Nenhum resultado encontrado. Tente termos como orçamento, eleitorado, transporte ou saneamento.</div>}
         </div>
       </div>
     </div>

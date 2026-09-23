@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Activity, Gauge, Map, Users, ArrowUpRight, CalendarDays, Database, Info } from 'lucide-react';
+import { Activity, Gauge, Map, Users, ArrowUpRight, CalendarDays, Database, Info, Table2, AlertCircle } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
@@ -10,7 +10,7 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 interface Point { readonly label: string; readonly value: number; readonly sourceId: string; readonly referenceDate?: string; }
 interface LineChartProps { readonly title: string; readonly description: string; readonly points: readonly Point[]; readonly valueFormatter?: (value: number) => string; }
 interface TooltipState { readonly xPct: number; readonly yPct: number; readonly point: Point; }
-interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; }
+interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; readonly nature: string; }
 
 function lineChartGeometry(points: readonly Point[]) {
   const width = 620, height = 240, padX = 26, padY = 22;
@@ -25,6 +25,7 @@ function lineChartGeometry(points: readonly Point[]) {
 
 function LineChart({ title, description, points, valueFormatter = value => formatNumber(value) }: LineChartProps) {
   const hasData = points.length > 0;
+  const [showTable, setShowTable] = useState(false);
   const latest = points[points.length - 1];
   const previous = points.length > 1 ? points[points.length - 2] : undefined;
   const change = latest && previous && previous.value !== 0
@@ -76,14 +77,35 @@ function LineChart({ title, description, points, valueFormatter = value => forma
         {!hasData ? (
           <div className="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-center text-xs text-slate-500 light:border-slate-200">Ainda não há observações suficientes para esta série.</div>
         ) : (
-        <div className="mt-3 grid gap-2 md:hidden" aria-label={title + ' em tabela'}>
-          {points.map(point => (
-            <div key={point.label + '-mobile'} className="flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 light:bg-white">
-              <span className="text-xs font-semibold text-slate-500">{point.label}</span>
-              <span className="text-xs font-black text-slate-200 light:text-slate-700">{valueFormatter(point.value)}</span>
+          <>
+            <div className="mt-3 flex justify-end">
+              <button type="button" onClick={() => setShowTable(open => !open)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700" aria-expanded={showTable} aria-controls={title + '-table'}>
+                <Table2 className="h-3.5 w-3.5" aria-hidden="true" />
+                {showTable ? 'Ocultar dados em tabela' : 'Ver dados em tabela'}
+              </button>
             </div>
-          ))}
-        </div>
+            {showTable && (
+              <div id={title + '-table'} className="mt-3 overflow-x-auto rounded-2xl border border-white/8 light:border-slate-200">
+                <table className="w-full text-left text-xs">
+                  <caption className="sr-only">{title}</caption>
+                  <thead className="bg-white/[0.03] light:bg-slate-50">
+                    <tr>
+                      <th scope="col" className="px-3 py-2 font-bold text-slate-500">Período</th>
+                      <th scope="col" className="px-3 py-2 text-right font-bold text-slate-500">Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {points.map(point => (
+                      <tr key={point.label} className="border-t border-white/8 light:border-slate-200">
+                        <th scope="row" className="px-3 py-2 font-semibold text-slate-300 light:text-slate-700">{point.label}</th>
+                        <td className="px-3 py-2 text-right font-black text-white light:text-slate-900">{valueFormatter(point.value)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
         )}
         {tooltip && <button type="button" onClick={() => dispatchInspect({ label: title + ' · ' + tooltip.point.label, value: valueFormatter(tooltip.point.value), sourceId: tooltip.point.sourceId, referenceDate: tooltip.point.referenceDate, method: 'Ponto da série temporal.' })} className="absolute z-20 min-w-[150px] -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-900/95 px-3 py-2 text-left text-xs text-white shadow-xl backdrop-blur-md light:border-slate-200 light:bg-white/95 light:text-slate-900" style={{ left: tooltip.xPct + '%', top: tooltip.yPct + '%' }}>
           <div className="font-medium text-slate-300 light:text-slate-500">{tooltip.point.label}</div>
@@ -114,10 +136,10 @@ export function DashboardMetrics() {
   ];
   const populationDelta = population2026 - population2022;
   const metricDetails: readonly MetricDetail[] = [
-    { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', simpleExplanation: 'Quantas pessoas moram na cidade, segundo a estimativa usada.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
-    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot TSE', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate },
-    { label: 'Nome social', value: formatNumber(inclusionCount), caption: 'registros no snapshot', simpleExplanation: 'Registros com nome social.', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'cálculo: população ÷ área', simpleExplanation: 'Média de habitantes por km².', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01' },
+    { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', simpleExplanation: 'Quantas pessoas moram na cidade, segundo a estimativa usada.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Estimativa' },
+    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot TSE', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Snapshot' },
+    { label: 'Nome social', value: formatNumber(inclusionCount), caption: 'registros no snapshot', simpleExplanation: 'Registros com nome social.', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate, nature: 'Snapshot' },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'cálculo: população ÷ área', simpleExplanation: 'Média de habitantes por km².', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado' },
   ];
 
   return (
@@ -139,6 +161,20 @@ export function DashboardMetrics() {
         </div>
       </div>
 
+      <div className="mb-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.025] p-4 light:border-amber-300/50 light:bg-amber-50/60">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-200 light:text-amber-700" aria-hidden="true" />
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/80 light:text-amber-700">O que merece atenção</div>
+            <div className="mt-2 grid gap-2 text-xs leading-5 text-slate-400 sm:grid-cols-3 light:text-slate-600">
+              <p>População: 2022 é Censo; 2025 e 2026 são estimativas do IBGE.</p>
+              <p>Eleitorado: o valor de 2026 é um snapshot e tem data própria de referência.</p>
+              <p>Indicadores do painel podem usar anos-base diferentes; compare sempre a referência.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
@@ -147,7 +183,7 @@ export function DashboardMetrics() {
       </div>
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note }) => (
+        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature }) => (
           <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note })} className="metric-interactive text-left">
             <Card className="dashboard-kpi-card">
               <div className="flex items-start justify-between gap-4">
@@ -162,9 +198,12 @@ export function DashboardMetrics() {
                       <div className="technical-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">Fonte, data e método no inspetor.</div>
                     </>
                   )}
-                  <span className="mt-3 inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-300/80 light:border-slate-200">
-                    {languageMode === 'simple' ? 'Ver fonte' : 'Abrir detalhes'}
-                  </span>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    <span className="inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-300/80 light:border-slate-200">{nature}</span>
+                    <span className="inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">
+                      {languageMode === 'simple' ? 'Ver fonte' : 'Abrir detalhes'}
+                    </span>
+                  </div>
                   {languageMode === 'technical' && (
                     <span className="technical-detail mt-2 block text-[10px] text-slate-500">{referenceDate ? 'ref. ' + referenceDate.split('-').reverse().join('/') : 'sem referência'}</span>
                   )}

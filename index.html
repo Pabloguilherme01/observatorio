@@ -102,15 +102,34 @@
   <body>
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
     <div id="root">
-      <main id="boot-fallback" style="max-width:720px;margin:40px auto;padding:24px;font-family:system-ui,sans-serif;color:#e6edf3;background:#0b1117;border:1px solid rgba(255,255,255,.1);border-radius:20px">
-        <strong style="font-size:18px">Observatório Eleitoral — Águas Lindas de Goiás 2026</strong>
-        <p style="margin:10px 0 0;color:#8b949e;line-height:1.6">Carregando a interface. Se esta mensagem permanecer, houve uma falha na inicialização do aplicativo.</p>
+      <main id="boot-fallback" aria-live="polite" style="max-width:920px;margin:28px auto;padding:20px;font-family:system-ui,sans-serif;color:#e6edf3;background:#0b1117">
+        <div style="border:1px solid rgba(125,211,252,.14);border-radius:24px;padding:22px;background:linear-gradient(135deg,rgba(125,211,252,.055),rgba(255,255,255,.018))">
+          <div style="font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc">Observatório · inicialização</div>
+          <strong style="display:block;margin-top:8px;font-size:24px;line-height:1.05">Águas Lindas de Goiás · 2026</strong>
+          <p style="margin:9px 0 0;color:#94a3b8;line-height:1.6">Preparando dados públicos, indicadores, fontes e ferramentas.</p>
+          <div style="display:grid;gap:10px;margin-top:18px">
+            <div style="height:84px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.045),rgba(255,255,255,.08),rgba(255,255,255,.045));background-size:200% 100%;animation:obs-skeleton 1.45s ease-in-out infinite"></div>
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">
+              <div style="height:118px;border-radius:18px;background:rgba(255,255,255,.035)"></div>
+              <div style="height:118px;border-radius:18px;background:rgba(255,255,255,.035)"></div>
+              <div style="height:118px;border-radius:18px;background:rgba(255,255,255,.035)"></div>
+              <div style="height:118px;border-radius:18px;background:rgba(255,255,255,.035)"></div>
+            </div>
+            <div style="height:170px;border-radius:18px;background:rgba(255,255,255,.025)"></div>
+          </div>
+          <p style="margin:12px 0 0;color:#64748b;font-size:12px">Carregamento inicial · você verá um aviso de erro caso a interface não consiga iniciar.</p>
+        </div>
       </main>
     </div>
     <noscript>
-      <main style="max-width:720px;margin:40px auto;padding:24px;font-family:system-ui,sans-serif">
+      <main style="max-width:720px;margin:40px auto;padding:24px;font-family:system-ui,sans-serif;color:#0f172a">
         <h1>Observatório Eleitoral — Águas Lindas de Goiás 2026</h1>
-        <p>Este observatório precisa de JavaScript para exibir os painéis interativos.</p>
+        <p>Os painéis interativos exigem JavaScript, mas os dados públicos continuam disponíveis em formatos abertos.</p>
+        <nav aria-label="Recursos sem JavaScript" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
+          <a href="/observatorio/api/v1/observatorio.json" style="padding:10px 14px;border-radius:10px;background:#0b1117;color:#e6edf3;text-decoration:none">Dataset JSON</a>
+          <a href="/observatorio/api/v1/sources.json" style="padding:10px 14px;border-radius:10px;background:#0b1117;color:#e6edf3;text-decoration:none">Fontes</a>
+          <a href="/observatorio/api/v1/openapi.json" style="padding:10px 14px;border-radius:10px;background:#0b1117;color:#e6edf3;text-decoration:none">API / OpenAPI</a>
+        </nav>
       </main>
     </noscript>
     <script>
