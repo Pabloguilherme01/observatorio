@@ -8,6 +8,7 @@ export function PoliticalResearch() {
   return (
     <section id="candidaturas" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="research-title">
       <SectionHeader
+        titleId="research-title"
         eyebrow="Pesquisa documental"
         title="Candidaturas: registro, patrimônio e situação"
         description="Snapshot descritivo; a aplicação não produz avaliação, ranking ou recomendação."
