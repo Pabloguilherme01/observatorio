@@ -17,7 +17,20 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Observatório Eleitoral — Águas Lindas de Goiás 2026" />
     <meta name="twitter:description" content="Dados públicos, fontes rastreáveis e cálculos auditáveis sobre Águas Lindas de Goiás." />
+    <meta name="twitter:site" content="@pablo.builds.ia" />
     <title>Observatório Eleitoral — Águas Lindas de Goiás 2026</title>
+    <script>
+      (() => {
+        try {
+          const stored = localStorage.getItem("observatorio-theme");
+          const theme = stored === "light" || stored === "dark"
+            ? stored
+            : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.classList.toggle("light", theme === "light");
+          document.documentElement.style.colorScheme = theme;
+        } catch {}
+      })();
+    </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
