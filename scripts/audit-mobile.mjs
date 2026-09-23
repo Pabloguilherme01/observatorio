@@ -41,7 +41,7 @@ must(files.share.includes('navigator.share') && files.share.includes('wa.me'), '
 must(!files.css.includes('.mode-overview #mudancas-snapshot'), 'radar de mudanças não fica oculto na visão geral');
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra a auditoria mobile');
 const appVersionMatch = files.version.match(/APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]/);
-must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('43.'), 'versão do aplicativo sincronizada com a camada mobile');
+must(Boolean(appVersionMatch?.[1]) && appVersionMatch[1].startsWith('44.'), 'versão do aplicativo sincronizada com a camada mobile');
 const app = read('src/app/App.tsx');
 must(app.includes('IntersectionObserver') && app.includes('rootMargin: \'900px 0px\''), 'seções abaixo da dobra usam carregamento diferido');
 must(app.includes('observatorio:navigate') && app.includes('anchorIds'), 'navegação profunda consegue ativar seções diferidas');
