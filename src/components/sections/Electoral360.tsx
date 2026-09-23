@@ -10,12 +10,12 @@ const statusLabel = { captured: 'Capturado', cataloged: 'Catalogado', pending: '
 const stateLabel: Record<string,string> = { first_capture:'Primeiro snapshot',synced:'Sincronizado',unchanged:'Sem alterações',changed:'Dados alterados',stale:'Desatualizado',failed:'Falha na sincronização',not_synced:'Ainda não sincronizado' };
 
 export function Electoral360() {
-  const [query,setQuery]=useState(''), [selectedName,setSelectedName]=useState(d.candidates[0]?.name ?? '');
+  const [query,setQuery]=useState(''), [selectedName,setSelectedName]=useState('');
   const captured=electoral360Modules.filter(m=>m.status==='captured').length, cataloged=electoral360Modules.filter(m=>m.status==='cataloged').length;
   const snapshotWarning = ['not_synced','stale','failed'].includes(String(electoral360Diff.state));
   const candidateSource=d.sources.find(s=>s.id==='tse-candidatos-2026');
   const candidates=useMemo(()=>{const n=query.trim().toLocaleLowerCase('pt-BR');if(!n)return electoral360Snapshot.matchedCandidates;return electoral360Snapshot.matchedCandidates.filter(c=>[c.name,c.party,c.office,c.status,c.ballotNumber].join(' ').toLocaleLowerCase('pt-BR').includes(n));},[query]);
-  const fallback=d.candidates.find(c=>c.name===selectedName) ?? d.candidates[0];
+  const fallback=d.candidates.find(c=>c.name===selectedName);
   const profileCandidate=electoral360Snapshot.matchedCandidates.find(c=>c.name===selectedName);
 
   return <section id="eleitoral360" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="electoral360-title">
@@ -31,7 +31,7 @@ export function Electoral360() {
       <Card>
         <div className="flex items-start justify-between gap-4"><div><h3 className="text-lg font-black text-white">Perfil documental</h3><p className="mt-1 text-xs leading-5 text-slate-500">Quando o snapshot TSE estiver sincronizado, este perfil passa a usar a captura validada. Até lá, os registros locais da edição permanecem identificados como recorte editorial e não representam o universo completo de candidaturas.</p></div><FileText className="h-5 w-5 text-sky-300"/></div>
         <div className="mb-3 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">Recorte local: estes registros são usados enquanto o snapshot oficial do TSE permanece <strong className="text-amber-200">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state).toLowerCase()}</strong>. Isso não equivale à lista completa de candidaturas.</div><div className="mt-4 flex flex-wrap gap-2">{d.candidates.map(candidate=><button key={candidate.name} type="button" onClick={()=>setSelectedName(candidate.name)} className={`rounded-xl border px-3 py-2 text-xs font-bold ${candidate.name===fallback.name?'border-sky-300/40 bg-sky-300/10 text-sky-200':'border-white/10 text-slate-400'}`}>{candidate.name}</button>)}</div>
-        {fallback && <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {!fallback ? <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Selecione um registro para abrir o perfil documental. Nenhum nome é pré-selecionado.</div> : <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <Info label="Identidade" value={fallback.name} />
           <Info label="Situação" value={profileCandidate?.status ?? fallback.status} />
           <Info label="Partido" value={profileCandidate?.party ?? fallback.party ?? 'Não informado'} />
@@ -41,7 +41,7 @@ export function Electoral360() {
           <Info label="Bens declarados" value={fallback.declaredAssetsBrl ? fallback.declaredAssetsBrl.toLocaleString('pt-BR',{style:'currency',currency:'BRL'}) : 'Não informado'} />
           <Info label="Snapshot" value={fallback.snapshotDate} />
         </div>}
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">{['Bens','Contas','Redes','Pesquisas','Processos','Propostas','Histórico','Alterações'].map(tab=><button key={tab} type="button" onClick={()=>dispatchInspect({label:`${fallback?.name ?? 'Candidato'} · ${tab}`,value:'Módulo documental',status:'catalogado',note:'Este módulo está no mapa de dados do Eleitoral 360°. A ausência de captura local não é interpretada como ausência do registro.'})} className="rounded-xl border border-white/8 p-3 text-left text-xs font-bold text-slate-400 hover:border-sky-300/20"><span className="block text-slate-600">Abrir</span>{tab}</button>)}</div>
+        {fallback && <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">{['Bens','Contas','Redes','Pesquisas','Processos','Propostas','Histórico','Alterações'].map(tab=><button key={tab} type="button" onClick={()=>dispatchInspect({label:`${fallback?.name ?? 'Candidato'} · ${tab}`,value:'Módulo documental',status:'catalogado',note:'Este módulo está no mapa de dados do Eleitoral 360°. A ausência de captura local não é interpretada como ausência do registro.'})} className="rounded-xl border border-white/8 p-3 text-left text-xs font-bold text-slate-400 hover:border-sky-300/20"><span className="block text-slate-600">Abrir</span>{tab}</button>)}</div>
       </Card>
 
       <div className="space-y-4">
