@@ -80,8 +80,8 @@ export const observatorioData: ObservatoryData = {
   ],
 
   candidates: [
-    { name: 'Keké da Vulkanic', party: 'MOBILIZA', ballotNumber: 33777, status: 'Aguardando julgamento', occupation: 'Vendedor pracista / representante', education: 'Superior completo', declaredAssetsBrl: 270700, sourceId: 'tse-eleicoes-2026', snapshotDate: '2026-09-22' },
-    { name: 'Anderson Teodoro', party: 'PRD', ballotNumber: 25789, status: 'Deferido', occupation: 'Vereador', education: 'Superior incompleto', declaredAssetsBrl: 990000, sourceId: 'tse-eleicoes-2026', snapshotDate: '2026-09-22' },
+    { name: 'Keké da Vulkanic', party: 'MOBILIZA', ballotNumber: 33777, status: 'Aguardando julgamento', occupation: 'Vendedor pracista / representante', education: 'Superior completo', declaredAssetsBrl: 270700, sourceId: 'tse-candidatos-2026', snapshotDate: '2026-09-22' },
+    { name: 'Anderson Teodoro', party: 'PRD', ballotNumber: 25789, status: 'Deferido', occupation: 'Vereador', education: 'Superior incompleto', declaredAssetsBrl: 990000, sourceId: 'tse-candidatos-2026', snapshotDate: '2026-09-22' },
   ],
 
   transport: {
