@@ -1,8 +1,9 @@
 import { BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
+import { STORAGE_NAMESPACE } from '../config/version';
 
-const RECENT_KEY = 'observatorio-recent-sections-v35', FAVORITES_KEY = 'observatorio-favorite-sections-v35', REDUCED_KEY = 'observatorio-reduced-motion-v35', MODE_KEY = 'observatorio-experience-mode-v35', LEGACY_FAST_MODE_KEY = 'observatorio-fast-reading-v33-default-investigation';
+const RECENT_KEY = `${STORAGE_NAMESPACE}-recent-sections`, FAVORITES_KEY = `${STORAGE_NAMESPACE}-favorite-sections`, REDUCED_KEY = `${STORAGE_NAMESPACE}-reduced-motion`, MODE_KEY = `${STORAGE_NAMESPACE}-experience-mode`, LEGACY_FAST_MODE_KEY = 'observatorio-fast-reading-v33-default-investigation';
 type ExperienceMode = 'overview' | 'investigation' | 'evidence';
 const MODE_LABELS: Record<ExperienceMode, string> = { overview: 'Visão geral', investigation: 'Investigação', evidence: 'Evidências' };
 

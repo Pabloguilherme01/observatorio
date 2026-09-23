@@ -1,8 +1,9 @@
 import type { ObservatoryData } from '../types/observatorio';
 import { sourceRegistry } from './sourceRegistry';
+import { EDITION } from '../config/version';
 
 /**
- * Dataset V35, normalizado para o domínio React.
+ * Dataset V37, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília usa a tarifa atual publicada pela UTB (R$ 11,45);
@@ -13,7 +14,7 @@ import { sourceRegistry } from './sourceRegistry';
 export const observatorioData: ObservatoryData = {
   meta: {
     name: 'Observatório Eleitoral Águas Lindas de Goiás 2026',
-    edition: 'V36 • leitura pública + investigação + evidências',
+    edition: `${EDITION} • leitura pública + investigação + evidências`,
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
     updatedAt: '2026-09-23',
@@ -79,13 +80,20 @@ export const observatorioData: ObservatoryData = {
       unclassifiedPct: 7.75,
       theoreticalMarginErrorPct: 4.9,
       sourceId: 'tse-pesquisas-2026',
+      judicialContext: {
+        status: 'decision_related',
+        referenceDate: '2026-09-17',
+        sourceId: 'tre-go-decisao-go04133-2026',
+        scope: 'specific_disclosures',
+        summary: 'Decisão judicial reconheceu irregularidade formal na divulgação de publicações específicas da pesquisa e admitiu nova divulgação com as informações exigidas. O contexto não deve ser apresentado como anulação automática do levantamento.',
+      },
       note: 'Os 4,9 pontos são aproximação teórica para amostra de 400; não substituem a ficha técnica oficial.',
     },
   ],
 
   candidates: [
     { name: 'Keké da Vulkanic', party: 'MOBILIZA', ballotNumber: 33777, status: 'Aguardando julgamento', occupation: 'Vendedor pracista / representante', education: 'Superior completo', declaredAssetsBrl: 270700, sourceId: 'recorte-editorial-candidatos-2026', snapshotDate: '2026-09-22' },
-    { name: 'Anderson Teodoro', party: 'PRD', ballotNumber: 25789, status: 'Deferido', occupation: 'Vereador', education: 'Superior incompleto', declaredAssetsBrl: 990000, sourceId: 'tse-candidatos-2026', snapshotDate: '2026-09-22' },
+    { name: 'Anderson Teodoro', party: 'PRD', ballotNumber: 25789, status: 'Deferido', occupation: 'Vereador', education: 'Superior incompleto', declaredAssetsBrl: 990000, sourceId: 'recorte-editorial-candidatos-2026', snapshotDate: '2026-09-22' },
   ],
 
   transport: {

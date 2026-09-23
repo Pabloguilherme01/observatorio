@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
 import { Card } from './ui/Card';
+import { EDITION } from '../config/version';
 
 const categoryFor = (id: string) => {
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
@@ -49,14 +50,14 @@ export function DataExportActions() {
   };
 
   const exportCsv = () => {
-    downloadBlob('observatorio-aguas-lindas-v35.csv', toCsv(rows), 'text/csv;charset=utf-8');
-    flash('CSV V35 exportado');
+    downloadBlob(`observatorio-aguas-lindas-${EDITION.toLowerCase()}.csv`, toCsv(rows), 'text/csv;charset=utf-8');
+    flash(`CSV ${EDITION} exportado`);
   };
 
   const copyMetadata = async () => {
     const metadata = JSON.stringify({
       edition: d.meta.edition,
-      datasetVersion: 'V35',
+      datasetVersion: EDITION,
       municipality: d.meta.municipality,
       updatedAt: d.meta.updatedAt,
       sources: d.sources.map(source => ({
@@ -83,9 +84,9 @@ export function DataExportActions() {
     ctx.fillText('R$ ' + d.transport.routes[0].fareBrl.toFixed(2).replace('.', ','), 70, 520);
     ctx.fillStyle = '#94a3b8'; ctx.font = '28px Inter, sans-serif';
     ctx.fillText('Dados públicos • fontes identificadas', 70, 1750);
-    ctx.fillText('V35', 70, 1800);
+    ctx.fillText(EDITION, 70, 1800);
     canvas.toBlob(blob => {
-      if (blob) { downloadBlob('observatorio-aguas-lindas-v35-story.png', blob, 'image/png'); flash('Story V35 gerado'); }
+      if (blob) { downloadBlob(`observatorio-aguas-lindas-${EDITION.toLowerCase()}-story.png`, blob, 'image/png'); flash(`Story ${EDITION} gerado`); }
       else flash('Não foi possível gerar o Story');
     });
   };

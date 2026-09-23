@@ -35,7 +35,7 @@ export function ResultsLiveBanner() {
     );
   }
 
-  const label = data.state === 'live' ? 'AO VIVO · Apuração TSE' : 'RESULTADO · TSE';
+  const label = data.state === 'live' ? 'AO VIVO · Apuração TSE' : 'FEED COMPLETO · TSE';
   const detail = data.entries.length
     ? `${data.entries.length} cargos · ${data.entries.reduce((sum, entry) => sum + entry.items.length, 0)} registros recebidos`
     : 'Nenhum cargo municipal no feed atual';

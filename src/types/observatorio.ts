@@ -81,6 +81,13 @@ export interface ElectionPoll {
   readonly theoreticalMarginErrorPct?: number;
   readonly confidenceLevelPct?: number;
   readonly sourceId: string;
+  readonly judicialContext?: {
+    readonly status: 'decision_related';
+    readonly referenceDate: ISODate;
+    readonly sourceId: string;
+    readonly scope: 'specific_disclosures';
+    readonly summary: string;
+  };
   readonly note?: string;
 }
 
