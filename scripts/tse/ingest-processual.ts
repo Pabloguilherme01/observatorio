@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { TSEProcessualFileSchema } from '../../src/schemas/tse-enriched.schema.ts';
-import { extractZip, findFile, downloadFile, parseDate, readCsv, sha256File, valueOf, writeJson } from './common.ts';
+import { extractZip, findFile, downloadFile, normalizeLabel, parseDate, readCsv, sha256File, sha256Files, valueOf, writeJson } from './common.ts';
 
 const SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processo_eleitoral_2026.zip';
 const DECISIONS_SOURCE_URL = 'https://cdn.tse.jus.br/estatistica/sead/odsele/processual/processos_eleitorais_decisoes_2026.zip';
