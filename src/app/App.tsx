@@ -18,6 +18,8 @@ import { DataInsights } from '../components/sections/DataInsights';
 import { PublicDataPulse } from '../components/sections/PublicDataPulse';
 import { Electoral360 } from '../components/sections/Electoral360';
 import { SnapshotChanges } from '../components/sections/SnapshotChanges';
+import { ElectionTimeline } from '../components/sections/ElectionTimeline';
+import { DataInspector } from '../components/DataInspector';
 import { ExperienceShell } from '../components/ExperienceShell';
 import { DiscoveryHub } from '../components/DiscoveryHub';
 
@@ -36,19 +38,19 @@ export function App() {
           <SanitationHealthSection />
           <PoliticalRadar />
           <PoliticalResearch />
+          <ElectionTimeline />
           <SnapshotChanges />
           <Electoral360 />
           <BudgetSection />
           <Central2026 />
           <PublicDataPulse />
           <DataQualityPanel />
-          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-            <DataExportActions />
-          </div>
+          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6"><DataExportActions /></div>
           <EvidenceMap />
         </main>
         <Footer />
         <ScrollTopButton />
+        <DataInspector />
       </ExperienceShell>
     </ThemeProvider>
   );
