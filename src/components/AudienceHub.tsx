@@ -94,44 +94,29 @@ export function AudienceHub() {
           </div>
         )}
 
-        <div className="mt-5 grid gap-4 lg:grid-cols-[1.45fr_.55fr]">
-          <div className="rounded-3xl border border-white/8 bg-black/10 p-4 sm:p-5">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Entenda a cidade em poucos minutos</div>
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">6 atalhos</span>
+        {mode === 'technical' && (
+          <div className="mt-5 rounded-3xl border border-white/8 bg-black/10 p-4 sm:p-5">
+            <div className="mb-3 flex items-center justify-between gap-2">
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Atalhos</div>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">6 assuntos</span>
             </div>
-            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                ['01', 'População', population.toLocaleString('pt-BR') + ' habitantes estimados', 'dashboard'],
-                ['02', 'Eleitorado', d.electoral.electorate.toLocaleString('pt-BR') + ' no snapshot local', 'eleitorado'],
-                ['03', 'Orçamento', brl(d.budget.totalBrl) + ' na LOA 2026', 'orcamento'],
-                ['04', 'Mobilidade', 'a partir de ' + brl(fare) + ' por trecho de referência', 'transporte'],
-                ['05', 'Saneamento', sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado', 'saude'],
-                ['06', 'Eleições', 'calendário, pesquisas e registros', 'politica'],
-              ].map(([step, label, description, id]) => (
-                <button key={step} type="button" onClick={() => go(id)} className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-left transition hover:-translate-y-0.5 hover:border-sky-300/20">
-                  <span className="text-[10px] font-black tracking-widest text-sky-300/70">{step}</span>
-                  <strong className="mt-2 block text-sm text-white">{label}</strong>
-                  <span className="mt-1 block text-xs leading-5 text-slate-500">{description}</span>
+                ['População', population.toLocaleString('pt-BR') + ' habitantes', 'dashboard'],
+                ['Eleitorado', d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', 'eleitorado'],
+                ['Orçamento', brl(d.budget.totalBrl), 'orcamento'],
+                ['Transporte', brl(fare) + ' por trecho', 'transporte'],
+                ['Saneamento', sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', 'saude'],
+                ['Eleições', 'calendário e registros', 'politica'],
+              ].map(([label, description, id]) => (
+                <button key={label} type="button" onClick={() => go(id)} className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-left transition hover:border-sky-300/20">
+                  <strong className="block text-sm text-white">{label}</strong>
+                  <span className="mt-1 block text-xs text-slate-500">{description}</span>
                 </button>
               ))}
             </div>
           </div>
-
-          <div className="rounded-3xl border border-sky-300/10 bg-sky-300/[0.035] p-4 sm:p-5">
-            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">
-              <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" /> Atualização
-            </div>
-            <div className="mt-2 text-lg font-black text-white">O que entrou de novo</div>
-            <p className="mt-1 text-xs leading-5 text-slate-500">
-              Dataset local atualizado em {formatDate(d.meta.updatedAt)}. {snapshotLabel}.
-            </p>
-            <a href="#mudancas-snapshot" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
-              Ver mudanças <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-
+        )}
         <div className="mt-5">
           <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
             <div>
