@@ -103,3 +103,5 @@ body{overscroll-behavior-y:none}
  .mobile-bottom-nav{gap:2px}
  .mobile-bottom-nav button{font-size:9px}
 }
+
+.hero-mobile-election-toggle{min-height:44px;min-width:44px;touch-action:manipulation}
