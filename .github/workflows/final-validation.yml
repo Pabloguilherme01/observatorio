@@ -95,7 +95,7 @@ jobs:
         run: npm run ingest:tse:candidates-local
       - name: Build
         run: npm run build || { echo '::error::Build V44 falhou.'; exit 1; }
-      - run: test -f dist/api/v1/contas.json && test -f dist/api/v1/pesquisas.json && test -f dist/api/v1/processual.json
+      - run: test -f dist/api/v1/contas.json && test -f dist/api/v1/pesquisas.json && test -f dist/api/v1/processual.json && test -f dist/api/v1/candidatos.json && test -d dist/img/candidatos
       - uses: actions/upload-artifact@v4
         with:
           name: dist-build
