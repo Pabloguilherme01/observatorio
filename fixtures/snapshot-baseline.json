@@ -1,0 +1,7 @@
+{
+  "snapshotId": "baseline-001",
+  "records": [
+    { "id": "1", "nome": "A", "status": "deferido" },
+    { "id": "2", "nome": "B", "status": "aguardando_julgamento" }
+  ]
+}
