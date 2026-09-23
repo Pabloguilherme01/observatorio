@@ -1,6 +1,9 @@
-import pesquisasData from '../../../generated/tse2026-pesquisas.json';
+import rawPesquisasData from '../../../generated/tse2026-pesquisas.json';
+import { TSEPesquisasFileSchema } from '../../schemas/tse-enriched.schema';
 import { ShareDataButton } from '../ShareDataButton';
 import { Card } from '../ui/Card';
+
+const pesquisasData = TSEPesquisasFileSchema.parse(rawPesquisasData);
 
 export function RadarPesquisas() {
   const url = typeof window === 'undefined'
