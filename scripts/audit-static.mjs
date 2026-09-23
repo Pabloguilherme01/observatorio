@@ -35,8 +35,10 @@ must(vite.includes("base: '/observatorio/'"), 'Vite usa base compatível com Git
 must(vite.includes("start_url: '/observatorio/'") && vite.includes("scope: '/observatorio/'"), 'PWA mantém start_url e scope no subcaminho publicado');
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
+must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 must(app.includes('<DataQualityPanel />') && app.includes('<EvidenceChain />'), 'camadas de qualidade e evidências estão montadas no App');
-for (const id of ['dashboard', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
+must(app.includes('<CivicActionHub />') && app.includes('<ContextComparison />') && app.includes('<LanguageModeProvider>'), 'camadas cívicas e modo de linguagem estão montados no App');
+for (const id of ['dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
 must(candidates.coverage === 'watchlist', 'snapshot de candidaturas deixa explícito o escopo watchlist');
@@ -47,12 +49,16 @@ const runtimeFiles = [
   'src/app/App.tsx',
   'src/components/ExperienceShell.tsx',
   'src/components/sections/HeroCountdown.tsx',
+  'src/components/sections/ContextComparison.tsx',
+  'src/components/sections/CivicActionHub.tsx',
+  'src/context/LanguageModeContext.tsx',
   'src/components/sections/EvidenceChain.tsx',
   'src/components/sections/DataQualityPanel.tsx',
   'src/data/observatorioData.ts',
   'src/data/sourceRegistry.ts',
   'src/config/navigation.ts',
   'src/config/version.ts',
+  'src/data/contextualComparison.ts',
 ];
 for (const file of runtimeFiles) {
   const content = read(file).toLowerCase();
