@@ -15,17 +15,30 @@
     "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
     "captureTransport": "historical_third_party_reader",
-    "filterNote": "A captura existente é estadual e não carrega município de candidatura em cada registro. Por isso, os registros estaduais não são tratados como candidaturas de Águas Lindas sem evidência municipal.",
+    "filterNote": "A captura existente é estadual e não carrega município de candidatura em cada registro. Os 10 nomes encontrados no recorte estadual permanecem pendentes de validação municipal e não são tratados como candidaturas de Águas Lindas.",
     "sourceFileSha256": null
   },
   "coverage": "municipality_required",
-  "watchlist": [],
+  "watchlist": [
+    "Keké",
+    "Anderson Teodoro",
+    "Zé da Imperial",
+    "Baiano dos Cocos",
+    "Cambão",
+    "Abadyas Damasceno",
+    "Pábio Mossoró",
+    "Felipe Galdino",
+    "Ribeiro do Túlio",
+    "André do Premium"
+  ],
   "matched": [],
   "diff": {
     "state": "local_filter_pending",
     "added": 0,
-    "removed": 10,
+    "removed": 0,
     "changed": 0,
+    "unresolved": 10,
+    "comparison": "blocked_by_missing_municipality_evidence",
     "records": []
   }
 }
