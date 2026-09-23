@@ -64,6 +64,10 @@ export function PoliticalRadar() {
         </div>
 
         <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem exibida abaixo: cálculo teórico para a amostra, não margem oficial declarada.</div>
+        <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500">
+          <strong className="text-slate-300">Recorte temporal:</strong> este painel contém um único snapshot de pesquisa, com coleta em {poll.collectionDate}. Não há série temporal suficiente neste conjunto para afirmar tendência de alta ou queda entre pesquisas.
+        </div>
+
         <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400">
           <strong className="text-amber-200">Situação da divulgação:</strong> há decisão judicial de 20/09/2026 sobre publicações que reproduziram esta pesquisa. O texto público localizado confirma a indisponibilização de publicações específicas e admite nova divulgação desde que as informações exigidas sejam apresentadas de forma clara e legível. Este cartão trata os percentuais como <strong className="text-slate-200">snapshot histórico</strong>, não como atualização de setembro.
           <a href="https://www.jusbrasil.com.br/jurisprudencia/tre-go/7355108574/inteiro-teor-7355108583" target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Ver inteiro teor reproduzido publicamente</a>

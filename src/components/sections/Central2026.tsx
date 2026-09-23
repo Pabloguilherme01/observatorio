@@ -11,7 +11,7 @@ const timeline = [
 ];
 
 const items = [
-  ['Local de votação', 'Consultar local no TSE/e-Título', 'https://www.tse.jus.br/eleicoes/eleicoes-2026'],
+  ['Onde votar', 'Consultar seu local de votação no TSE ou no e-Título', 'https://www.tse.jus.br/servicos-eleitorais/local-de-votacao-zonas-eleitorais'],
   ['PesqEle', 'Consultar registro de pesquisas', 'https://www.tse.jus.br/eleicoes/eleicoes-2026-content/pesquisas-eleitorais'],
   ['DivulgaCandContas', 'Candidaturas e contas de campanha', 'https://divulgacandcontas.tse.jus.br/'],
   ['Pardal', 'Registrar ou acompanhar denúncia eleitoral', 'https://pardal.tse.jus.br/'],
