@@ -41,6 +41,8 @@ function DeferredBlock({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const initialHash = window.location.hash.slice(1);
+    if (anchorIds.includes(initialHash)) setReady(true);
     const node = ref.current;
     if (!node || typeof IntersectionObserver === 'undefined') {
       setReady(true);
