@@ -84,12 +84,12 @@ jobs:
           openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
           printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'
 
-      - name: Verify critical navigation anchors in published HTML
+      - name: Verify critical published app markers
         shell: bash
         run: |
           set -euo pipefail
           page="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/)"
-          for anchor in dashboard descobrir eleitorado transporte fontes; do
-            test -n "$anchor"
-          done
           printf '%s' "$page" | grep -F 'Observatório Eleitoral — Águas Lindas de Goiás 2026'
+          printf '%s' "$page" | grep -F 'id="root"'
+          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest | grep -F 'Observatório Águas Lindas 2026'
+          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v2'
