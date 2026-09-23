@@ -72,9 +72,9 @@ export function DataQualityPanel() {
         </div>
       </div>
       <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Frescor por domínio</div>
-        <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Referência de cada camada, sem fingir atualização automática</h3>
-        <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">A data abaixo é a referência ou publicação registrada na ficha da fonte. Ela não significa que a fonte tenha sido consultada em tempo real durante cada visita.</p>
+        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Referência e atualização das fontes</div>
+        <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Data da fonte, captura local e estado da camada</h3>
+        <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">A data da fonte é diferente da última captura local. Quando a captura não é registrada por esta camada, isso aparece explicitamente em vez de sugerir atualização em tempo real.</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             ['Eleitorado 2026', 'tse-eleitorado-2026'],
@@ -86,11 +86,13 @@ export function DataQualityPanel() {
           ].map(([label, sourceId]) => {
             const source = d.sources.find(item => item.id === sourceId);
             const date = source?.referenceDate ?? source?.publishedAt;
+            const localCapture = sourceId === 'tse-candidatos-2026' && generated.meta.downloadedAt ? formatDate(generated.meta.downloadedAt) : 'não registrada nesta camada';
             return (
               <a key={sourceId} href={source?.url} target="_blank" rel="noopener noreferrer" className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 transition hover:border-sky-300/20 light:border-slate-200 light:bg-white">
                 <div className="text-xs font-bold text-slate-400">{label}</div>
                 <div className="mt-2 text-sm font-black text-white light:text-slate-900">{date ? formatDate(date) : 'sem data registrada'}</div>
                 <div className="mt-1 text-[10px] uppercase tracking-wide text-slate-600">{source?.nature ?? 'fonte não encontrada'}</div>
+                <div className="mt-2 text-[10px] font-semibold text-slate-500">Captura local: {localCapture}</div>
               </a>
             );
           })}
@@ -117,8 +119,8 @@ export function DataQualityPanel() {
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Pipeline de resultados</div>
-          <div className="mt-2 text-base font-black text-white">JWS Ed25519 preparado</div>
-          <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão V34 resolve o código municipal 93343 a partir da configuração oficial, baixa os pares JSON/JWS, compara os payloads e publica o feed somente com provas de assinatura da chave oficial fixada do TSE.</p>
+          <div className="mt-2 text-base font-black text-white">Integridade dos resultados</div>
+          <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão verifica o arquivo oficial antes de publicá-lo. JSON/JWS, contexto municipal e assinatura são tratados separadamente; a prova criptográfica só aparece como verificada quando todos os arquivos passam.</p>
           {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
         </Card>
         <Card className="p-4">
