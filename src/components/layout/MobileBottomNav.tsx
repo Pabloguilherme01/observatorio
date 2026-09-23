@@ -8,7 +8,9 @@ const items = [
 ] as const;
 
 function jump(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const reduceMotion = document.documentElement.classList.contains('reduced-motion')
+    || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById(id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
 }
@@ -59,7 +61,7 @@ export function MobileBottomNav() {
           type="button"
           onClick={() => jump(id)}
           className={activeSection === id ? 'is-active' : ''}
-          aria-current={activeSection === id ? 'page' : undefined}
+          aria-current={activeSection === id ? 'location' : undefined}
         >
           <Icon className="h-4 w-4" aria-hidden="true" />
           <span>{label}</span>
