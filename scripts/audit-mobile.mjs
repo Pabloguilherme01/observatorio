@@ -68,5 +68,10 @@ if (errors.length) {
 }
 
 
-must(read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('simple')") && read('src/components/layout/LanguageModeToggle.tsx').includes("setMode('technical')"), 'alternância simples/técnico está disponível no mobile');
+const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+must(languageToggle.includes("setMode('summary')") && languageToggle.includes("setMode('simple')") && languageToggle.includes("setMode('technical')"), 'os três modos de leitura estão disponíveis no mobile');
+const quiz = read('src/components/sections/QuickQuiz.tsx');
+const quizPrompts = (quiz.match(/prompt:\s*'/g) || []).length;
+must(quizPrompts >= 10, 'quiz possui pelo menos dez perguntas');
+must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual ligado ao total de perguntas');
 must(read('src/components/InstagramSyncHub.tsx').includes('wa.me/?text='), 'WhatsApp contextual está integrado ao fluxo social');
