@@ -9,16 +9,43 @@ import { SectionHeader } from '../ui/SectionHeader';
 const LEGACY_SEWER_REFERENCE_2017 = 2.9;
 
 function MetricBar({ label, value, emphasis = false }: { readonly label: string; readonly value: number; readonly emphasis?: boolean }) {
+  const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null);
   const width = Math.min(100, Math.max(0, value));
+
   return (
-    <div>
+    <div
+      className="relative"
+      onMouseLeave={() => setTooltip(null)}
+      onMouseMove={event => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setTooltip({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+      }}
+    >
       <div className="mb-1 flex items-center justify-between gap-4 text-xs">
         <span className={emphasis ? 'font-semibold text-white light:text-slate-900' : 'text-slate-400 light:text-slate-600'}>{label}</span>
         <strong className={emphasis ? 'text-sky-300 light:text-sky-700' : 'text-white light:text-slate-900'}>{formatPercent(value, 1)}</strong>
       </div>
-      <div className="h-2.5 overflow-hidden rounded-full bg-white/5 light:bg-slate-200" aria-hidden="true">
-        <div className="h-full rounded-full bg-sky-300 light:bg-sky-600" style={{ width: `${width}%` }} />
+      <div
+        className="h-2.5 cursor-help overflow-hidden rounded-full bg-white/5 light:bg-slate-200"
+        role="img"
+        aria-label={label + ': ' + formatPercent(value, 1)}
+        tabIndex={0}
+        onFocus={() => setTooltip({ x: 50, y: -8 })}
+        onBlur={() => setTooltip(null)}
+      >
+        <div className="h-full rounded-full bg-sky-300 light:bg-sky-600" style={{ width: width + '%' }} />
       </div>
+      {tooltip && (
+        <div
+          className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-900/95 px-3 py-2 text-xs text-white shadow-xl backdrop-blur-md light:border-slate-200 light:bg-white/95 light:text-slate-900"
+          style={{ left: tooltip.x, top: tooltip.y }}
+          role="status"
+          aria-live="polite"
+        >
+          <span className="block text-slate-400 light:text-slate-500">{label}</span>
+          <strong className="text-sky-300 light:text-sky-700">{formatPercent(value, 1)}</strong>
+        </div>
+      )}
     </div>
   );
 }
