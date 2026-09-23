@@ -146,7 +146,7 @@ export const observatorioData: ObservatoryData = {
 
   indicators: [
     { id: 'population-2026', label: 'População 2026', value: 249978, unit: 'habitantes', status: 'current', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026' },
-    { id: 'area', label: 'Área territorial', value: 191.817, unit: 'km²', status: 'current', sourceId: 'ibge-estimativas-2026' },
+    { id: 'area', label: 'Área territorial', value: 191.817, unit: 'km²', status: 'current', sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01' },
     { id: 'density', label: 'Densidade demográfica 2026', value: 249978 / 191.817, unit: 'hab/km²', status: 'derived', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026', note: '249.978 ÷ 191,817 km².' },
     { id: 'electorate', label: 'Eleitorado 2026', value: 125062, unit: 'eleitores', status: 'snapshot', referenceDate: '2026-07-15', sourceId: 'tse-eleitorado-2026' },
     { id: 'electorateShare', label: 'Razão eleitorado/população', value: (125062 / 249978) * 100, unit: '%', status: 'derived', sourceId: 'tse-eleitorado-2026', note: 'Razão estatística entre universos distintos; não é comparecimento.' },
@@ -157,5 +157,10 @@ export const observatorioData: ObservatoryData = {
     { id: 'idebInitial', label: 'IDEB anos iniciais', value: 5.5, unit: 'pontos', status: 'historical', sourceId: 'inei-2023' },
     { id: 'idebFinal', label: 'IDEB anos finais', value: 4.9, unit: 'pontos', status: 'historical', sourceId: 'inei-2023' },
     { id: 'homicideRate', label: 'Homicídios', value: 18.7, unit: 'por 100 mil', status: 'historical', sourceId: 'atlas-violencia-2026' },
+    { id: 'schooling-6-14', label: 'Escolarização 6–14 anos', value: 98.1, unit: '%', status: 'historical', referenceDate: '2022-08-01', sourceId: 'ibge-cidades-2026' },
+    { id: 'infant-mortality', label: 'Mortalidade infantil', value: 11.23, unit: 'óbitos por mil', status: 'current', referenceDate: '2025-01-01', sourceId: 'ibge-cidades-2026' },
+    { id: 'revenue-2025', label: 'Receitas brutas realizadas 2025', value: 825112043.1, unit: 'BRL', status: 'historical', referenceDate: '2025-12-31', sourceId: 'ibge-cidades-2026' },
+    { id: 'expenses-2025', label: 'Despesas brutas empenhadas 2025', value: 691558004.38, unit: 'BRL', status: 'historical', referenceDate: '2025-12-31', sourceId: 'ibge-cidades-2026' },
+    { id: 'gdp-per-capita-2023', label: 'PIB per capita', value: 13567.92, unit: 'BRL', status: 'historical', referenceDate: '2023-12-31', sourceId: 'ibge-cidades-2026' },
   ],
 };
