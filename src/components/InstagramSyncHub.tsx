@@ -19,7 +19,7 @@ function trackedUrl(anchor: string) {
   const url = new URL(window.location.origin + window.location.pathname);
   url.searchParams.set('utm_source', 'instagram');
   url.searchParams.set('utm_medium', 'organic');
-  url.searchParams.set('utm_campaign', 'observatorio-v40');
+  url.searchParams.set('utm_campaign', 'observatorio-v43');
   url.hash = anchor;
   return url.toString();
 }
