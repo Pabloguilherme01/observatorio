@@ -49,7 +49,7 @@ const actions = [
     icon: Smartphone,
     title: 'Consultar o Pardal',
     description: 'Ferramenta oficial do TSE para encaminhar e acompanhar denúncias de propaganda eleitoral irregular.',
-    href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Agosto/pardal-ja-esta-disponivel-para-denuncias-de-irregularidades-na-propaganda-eleitoral',
+    href: 'https://www.tse.jus.br/servicos-eleitorais/servicos/pardal',
     cta: 'Ver instruções do TSE',
   },
   {
