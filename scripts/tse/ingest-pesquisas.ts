@@ -27,7 +27,7 @@ if (existsSync(extractDir)) rmSync(extractDir, { recursive: true, force: true })
 await downloadFile(SOURCE_URL, zipPath);
 extractZip(zipPath, extractDir);
 
-const pesquisaPath = findFile(extractDir, /pesquisa.*\.csv$/i);
+const pesquisaPath = findFile(extractDir, /pesquisa.*_GO\.csv$/i);
 const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
 const headers = rows.length ? Object.keys(rows[0] ?? {}) : [];
