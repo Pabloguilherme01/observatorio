@@ -1,7 +1,7 @@
 {
   "versao": "1.0.0",
   "estado": "synced",
-  "geradoEm": "2026-09-23T14:43:38.419Z",
+  "geradoEm": "2026-09-23T14:45:52.460Z",
   "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
   "sourceHash": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
   "totalPesquisas": 4,
@@ -25,7 +25,7 @@
       "proveniencia": {
         "fonte": "TSE - Pesquisas Eleitorais 2026",
         "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
-        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "capturaEm": "2026-09-23T14:45:48.344Z",
         "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
         "arquivoOrigem": "pesquisas-2026.zip"
       }
@@ -49,7 +49,7 @@
       "proveniencia": {
         "fonte": "TSE - Pesquisas Eleitorais 2026",
         "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
-        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "capturaEm": "2026-09-23T14:45:48.344Z",
         "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
         "arquivoOrigem": "pesquisas-2026.zip"
       }
@@ -73,7 +73,7 @@
       "proveniencia": {
         "fonte": "TSE - Pesquisas Eleitorais 2026",
         "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
-        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "capturaEm": "2026-09-23T14:45:48.344Z",
         "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
         "arquivoOrigem": "pesquisas-2026.zip"
       }
@@ -97,7 +97,7 @@
       "proveniencia": {
         "fonte": "TSE - Pesquisas Eleitorais 2026",
         "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/pesquisa_eleitoral/pesquisa_eleitoral_2026.zip",
-        "capturaEm": "2026-09-23T14:43:33.197Z",
+        "capturaEm": "2026-09-23T14:45:48.344Z",
         "snapshotId": "6cb162fb7558561e9ed28baca520d2d6bdcacb24bfb66c19cc29f9f3c92f4a1b",
         "arquivoOrigem": "pesquisas-2026.zip"
       }

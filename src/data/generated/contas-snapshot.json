@@ -1,14 +1,14 @@
 {
   "meta": {
     "fonte": "contas",
-    "snapshotId": "contas-20260923144338419-142c0aae2b49",
+    "snapshotId": "contas-20260923144552460-142c0aae2b49",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
     "checksum": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
     "sourceRows": 2961388,
     "validatedRows": 10,
     "matchedRows": 10,
     "rejectedRows": 0,
-    "captureTime": "2026-09-23T14:43:38.419Z",
+    "captureTime": "2026-09-23T14:45:52.460Z",
     "retrievalMethod": "official_tse_zip_csv",
     "state": "synced",
     "baseline": false
@@ -16,7 +16,7 @@
   "data": {
     "versao": "1.0.0",
     "estado": "synced",
-    "geradoEm": "2026-09-23T14:43:38.419Z",
+    "geradoEm": "2026-09-23T14:45:52.460Z",
     "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
     "sourceHash": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
     "totalCandidatosComContas": 10,
@@ -728,7 +728,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -3960,7 +3960,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -4686,7 +4686,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -5391,7 +5391,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -5536,7 +5536,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -7137,7 +7137,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -8143,7 +8143,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -8848,7 +8848,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -9840,7 +9840,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
@@ -12176,7 +12176,7 @@
         "proveniencia": {
           "fonte": "TSE - Prestação de Contas 2026",
           "urlOriginal": "https://cdn.tse.jus.br/estatistica/sead/odsele/prestacao_contas/prestacao_de_contas_eleitorais_candidatos_2026.zip",
-          "capturaEm": "2026-09-23T14:43:32.466Z",
+          "capturaEm": "2026-09-23T14:45:47.708Z",
           "snapshotId": "142c0aae2b49edda10244fd1dd320560e8c588bd11b8567535f8c94318a6c55f",
           "arquivoOrigem": "contas-2026.zip"
         }
