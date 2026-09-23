@@ -20,9 +20,9 @@ const pesquisaPath = findFile(extractDir, /pesquisa.*\.csv$/i);
 const rows = readCsv(pesquisaPath);
 const capture = new Date().toISOString();
 
-const targetRows = rows.filter(row => municipios.has(valueOf(row, ['NM_UE'], false)));
+const targetRows = rows.filter(row => municipios.has(valueOf(row, ['DS_DADO_MUNICIPIO'], false)));
 const pesquisas = targetRows.map(row => {
-  const municipality = valueOf(row, ['NM_UE']);
+  const municipality = valueOf(row, ['DS_DADO_MUNICIPIO']);
   return {
     idPesquisa: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
     registroTSE: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
