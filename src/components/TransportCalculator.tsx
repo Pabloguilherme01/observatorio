@@ -1,9 +1,9 @@
-import { BusFront, Calculator, Coins, Users } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { BusFront, Coins, Users } from 'lucide-react';
+import { useMemo, useState, type ComponentType } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { calculateTransportCost, formatBRL } from '../lib/transport';
-import { Card } from '../ui/Card';
-import { SectionHeader } from '../ui/SectionHeader';
+import { Card } from './ui/Card';
+import { SectionHeader } from './ui/SectionHeader';
 
 export function TransportCalculator() {
   const routes = d.transport.routes;
@@ -27,7 +27,7 @@ export function TransportCalculator() {
         <label className="text-sm text-slate-300">Renda de referência<input className={input} type="number" min={1} step={1} value={salary} onChange={e => setSalary(Math.max(1, Number(e.target.value) || 1))} /></label>
       </div>
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {[['Por pessoa / mês', formatBRL(result.monthlyPerPersonBrl), BusFront], ['Por pessoa / ano', formatBRL(result.annualPerPersonBrl), Coins], ['Grupo / mês', formatBRL(result.monthlyTotalBrl), Users], ['Grupo / ano', formatBRL(result.annualTotalBrl), Coins]].map(([label, value, Icon]) => <div key={String(label)} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500"><Icon className="h-4 w-4" aria-hidden="true" />{label}</div><div className="mt-3 text-2xl font-black text-white">{value}</div></div>)}
+        {([['Por pessoa / mês', formatBRL(result.monthlyPerPersonBrl), BusFront], ['Por pessoa / ano', formatBRL(result.annualPerPersonBrl), Coins], ['Grupo / mês', formatBRL(result.monthlyTotalBrl), Users], ['Grupo / ano', formatBRL(result.annualTotalBrl), Coins]] as const).map(([label, value, Icon]) => <div key={String(label)} className="rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500"><Icon className="h-4 w-4" aria-hidden="true" />{label}</div><div className="mt-3 text-2xl font-black text-white">{value}</div></div>)}
       </div>
       <div className="mt-4 rounded-2xl border border-sky-400/10 bg-sky-400/[0.03] p-4 text-xs leading-5 text-slate-400"><strong className="text-slate-200">Cenário padrão:</strong> R$ 11,45 × 2 × 22 = R$ 503,80/mês e R$ 6.045,60/ano. O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados.</div>
     </Card>
