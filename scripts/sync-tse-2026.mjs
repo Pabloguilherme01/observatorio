@@ -1,10 +1,9 @@
 import { createHash } from 'node:crypto';
-import { createWriteStream, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createReadStream } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { request } from 'node:https';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const OUTPUT_DIR = join(ROOT, 'src', 'data', 'generated');
@@ -33,48 +32,31 @@ function sleep(ms) {
 }
 
 function download(url, destination, attempt = 1) {
-  return new Promise((resolve, reject) => {
-    let settled = false;
-    const file = createWriteStream(destination);
-    const finish = error => {
-      if (settled) return;
-      settled = true;
-      file.close(() => error ? reject(error) : resolve());
-    };
-    const get = target => {
-      const req = request(target, {
-        headers: {
-          'Accept': 'application/zip, application/octet-stream;q=0.9, */*;q=0.8',
-          'User-Agent': 'observatorio-aguas-lindas/42.0 (+https://pabloguilherme01.github.io/observatorio/)',
-        },
-        timeout: 30000,
-      }, response => {
-        if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-          response.resume();
-          return get(new URL(response.headers.location, target).href);
-        }
-        if (response.statusCode !== 200) {
-          response.resume();
-          return finish(new Error('TSE respondeu HTTP ' + response.statusCode));
-        }
-        response.pipe(file);
-        response.on('error', finish);
-        file.on('finish', () => finish());
-      });
-      req.on('timeout', () => req.destroy(new Error('Timeout de 30s ao baixar o pacote TSE.')));
-      req.on('error', finish);
-    };
-    get(url);
-  }).catch(async error => {
+  try {
+    execFileSync('curl', [
+      '--fail',
+      '--location',
+      '--http1.1',
+      '--retry', '3',
+      '--retry-delay', '2',
+      '--retry-all-errors',
+      '--connect-timeout', '30',
+      '--max-time', '240',
+      '--user-agent', 'observatorio-aguas-lindas/42.0 (+https://pabloguilherme01.github.io/observatorio/)',
+      '--header', 'Accept: application/zip, application/octet-stream;q=0.9, */*;q=0.8',
+      '--output', destination,
+      url,
+    ], { stdio: 'inherit' });
+  } catch (error) {
     rmSync(destination, { force: true });
-    if (attempt >= 4) throw new Error('Falha ao baixar pacote TSE após ' + attempt + ' tentativas: ' + error.message);
-    const waitMs = 1000 * 2 ** (attempt - 1);
-    console.warn('[TSE] tentativa ' + attempt + ' falhou: ' + error.message + '. Nova tentativa em ' + waitMs + 'ms.');
-    await sleep(waitMs);
-    return download(url, destination, attempt + 1);
-  });
+    if (attempt >= 3) {
+      throw new Error('Falha ao baixar pacote TSE após ' + attempt + ' tentativas via curl: ' + (error instanceof Error ? error.message : String(error)));
+    }
+    const waitMs = 2000 * 2 ** (attempt - 1);
+    console.warn('[TSE] tentativa ' + attempt + ' via curl falhou. Nova tentativa em ' + waitMs + 'ms.');
+    return sleep(waitMs).then(() => download(url, destination, attempt + 1));
+  }
 }
-
 function sha256(path) {
   return createHash('sha256').update(readFileSync(path)).digest('hex');
 }
