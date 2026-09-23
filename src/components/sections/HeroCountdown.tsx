@@ -64,7 +64,7 @@ export function HeroCountdown() {
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
               <a href="https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">e-Título · local e serviços</a>
               <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">DivulgaCandContas</a>
-              <a href="https://www.tse.jus.br/servicos-eleitorais/servicos/pardal" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">Pardal</a>
+              <a href="https://www.tse.jus.br/eleicoes/cde-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2 text-xs font-black text-slate-100">Pardal</a>
             </div>
           </div>
 
