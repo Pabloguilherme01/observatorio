@@ -198,16 +198,35 @@ function promote<T extends CandidatePayload>(
       : (record: { readonly numeroProcesso: string }) => record.numeroProcesso;
 
   let previousRecords: readonly Record<string, unknown>[] | undefined;
+  let canDiff = false;
+
   if (previousExists) {
     const previous = readJson<DatasetSnapshot<T>>(previousPath);
-    const priorData = previous.data;
-    previousRecords =
-      fonte === 'contas' ? (priorData.contas ?? []) as readonly Record<string, unknown>[] :
-      fonte === 'pesquisas' ? (priorData.pesquisas ?? []) as readonly Record<string, unknown>[] :
-      (priorData.processos ?? []) as readonly Record<string, unknown>[];
+    // Só snapshots produzidos pelo pipeline oficial podem ser base de diff.
+    // Assim, a primeira captura oficial não publica "remoções" de um recorte editorial anterior.
+    canDiff = previous.meta?.retrievalMethod === 'official_tse_zip_csv';
+    if (canDiff) {
+      const priorData = previous.data;
+      previousRecords =
+        fonte === 'contas' ? (priorData.contas ?? []) as readonly Record<string, unknown>[] :
+        fonte === 'pesquisas' ? (priorData.pesquisas ?? []) as readonly Record<string, unknown>[] :
+        (priorData.processos ?? []) as readonly Record<string, unknown>[];
+    }
   }
 
-  const diff = computeDiff(fonte, records as readonly Record<string, unknown>[], previousRecords, keyOf as (record: Record<string, unknown>) => string, now);
+  const diff = canDiff
+    ? computeDiff(fonte, records as readonly Record<string, unknown>[], previousRecords, keyOf as (record: Record<string, unknown>) => string, now)
+    : {
+        fonte,
+        state: 'first_capture' as const,
+        firstCapture: true,
+        added: 0,
+        removed: 0,
+        changed: 0,
+        baselineRecords: records.length,
+        records: [],
+        captureTime: now,
+      };
   const state = diff.firstCapture ? 'first_capture' : 'synced';
 
   const promoted = { ...validated, estado: state, geradoEm: now } as T;
