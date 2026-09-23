@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "source": "TSE — Candidatos 2026",
+  "sourceUrl": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
+  "downloadedAt": "2026-09-22T00:00:00-03:00",
+  "scope": "GO",
+  "watchlist": ["Keké", "Anderson Teodoro", "Zé da Imperial", "Baiano dos Cocos", "Cambão", "Abadyas Damasceno", "Pábio Mossoró", "Felipe Galdino", "Ribeiro do Túlio", "André do Premium"],
+  "matched": [],
+  "counts": { "rowsRead": 0, "matched": 0 },
+  "note": "Placeholder controlado: o workflow de sincronização substitui este arquivo após a primeira execução bem-sucedida. Não apresenta ausência de correspondências como dado eleitoral."
+}
