@@ -142,20 +142,68 @@ function findCandidateArray(value, depth = 0) {
   return null;
 }
 
-function apiCandidateToRecord(item) {
-  const sq = item?.id ?? item?.sqCandidato ?? item?.sqCandidate ?? item?.SQ_CANDIDATO;
-  const name = item?.nomeUrna ?? item?.nome_urna ?? item?.NM_URNA_CANDIDATO ?? item?.nome ?? '';
+function collectStrings(value, output = [], depth = 0) {
+  if (depth > 5 || value == null) return output;
+  if (typeof value === 'string') {
+    if (value.trim()) output.push(value);
+    return output;
+  }
+  if (Array.isArray(value)) {
+    value.forEach(item => collectStrings(item, output, depth + 1));
+    return output;
+  }
+  if (typeof value === 'object') {
+    Object.values(value).forEach(child => collectStrings(child, output, depth + 1));
+  }
+  return output;
+}
+
+function firstString(value, keys, depth = 0) {
+  if (!value || depth > 5 || typeof value !== 'object') return null;
+  for (const key of keys) {
+    const candidate = value[key];
+    if (typeof candidate === 'string' && candidate.trim()) return candidate;
+    if (candidate && typeof candidate === 'object') {
+      const nested = firstString(candidate, keys, depth + 1);
+      if (nested) return nested;
+    }
+  }
+  for (const child of Object.values(value)) {
+    const nested = firstString(child, keys, depth + 1);
+    if (nested) return nested;
+  }
+  return null;
+}
+
+function firstScalar(value, keys, depth = 0) {
+  if (!value || depth > 5 || typeof value !== 'object') return null;
+  for (const key of keys) {
+    const candidate = value[key];
+    if ((typeof candidate === 'string' || typeof candidate === 'number') && String(candidate).trim()) return candidate;
+  }
+  for (const child of Object.values(value)) {
+    const nested = firstScalar(child, keys, depth + 1);
+    if (nested !== null) return nested;
+  }
+  return null;
+}
+
+function apiCandidateToRecord(item, watchlistName) {
+  const sq = firstScalar(item, ['id', 'sqCandidato', 'sqCandidate', 'SQ_CANDIDATO', 'idCandidato', 'codigoCandidato']);
+  const name = firstString(item, ['nomeUrna', 'nome_urna', 'NM_URNA_CANDIDATO', 'nomeCandidato', 'nomeCompleto', 'NM_CANDIDATO', 'nome']) || watchlistName;
+  const ballot = firstScalar(item, ['numero', 'nrCandidato', 'NR_CANDIDATO']);
   return {
-    sqCandidate: sq == null ? '' : String(sq),
-    ballotNumber: item?.numero ?? item?.nrCandidato ?? item?.NR_CANDIDATO ?? null,
+    sqCandidate: sq == null ? 'api-surrogate-' + createHash('sha256').update(JSON.stringify(item)).digest('hex').slice(0, 16) : String(sq),
+    ballotNumber: ballot == null ? null : Number(ballot),
     name: String(name),
-    fullName: item?.nomeCompleto ?? item?.NM_CANDIDATO ?? null,
-    party: item?.partido?.sigla ?? item?.partido?.sgPartido ?? item?.sgPartido ?? item?.siglaPartido ?? null,
-    office: item?.cargo?.nome ?? item?.cargo?.descricao ?? item?.descricaoCargo ?? 'DEPUTADO ESTADUAL',
-    status: item?.descricaoSituacao ?? item?.descricaoSituacaoCandidato ?? item?.situacao ?? item?.status ?? null,
-    federation: item?.federacao?.nome ?? item?.nomeFederacao ?? item?.nmFederacao ?? null,
-    generationDate: item?.dtGeracao ?? item?.dataGeracao ?? null,
-    generationTime: item?.hhGeracao ?? null,
+    fullName: firstString(item, ['nomeCompleto', 'NM_CANDIDATO']) || null,
+    party: firstString(item, ['sgPartido', 'siglaPartido', 'partidoSigla', 'sigla']) || null,
+    office: firstString(item, ['descricaoCargo', 'nomeCargo', 'cargo']) || 'DEPUTADO ESTADUAL',
+    status: firstString(item, ['descricaoSituacao', 'descricaoSituacaoCandidato', 'situacao', 'status']) || null,
+    federation: firstString(item, ['nomeFederacao', 'nmFederacao', 'federacao']) || null,
+    generationDate: firstString(item, ['dtGeracao', 'dataGeracao']) || null,
+    generationTime: firstString(item, ['hhGeracao']) || null,
+    candidateIdKind: sq == null ? 'surrogate_hash' : 'tse_api_id',
   };
 }
 
@@ -163,134 +211,23 @@ function selectWatchlist(records) {
   const matches = [];
   const seen = new Set();
   for (const item of records) {
-    const record = apiCandidateToRecord(item);
-    if (!record.sqCandidate || !record.name) continue;
-    const matchedWatchName = WATCHLIST.find(name => matchesAlias(record.name, WATCHLIST_ALIASES[name] ?? [normalize(name)]));
+    const itemText = collectStrings(item).join(' ');
+    const matchedWatchName = WATCHLIST.find(name => matchesAlias(itemText, WATCHLIST_ALIASES[name] ?? [normalize(name)]));
     if (!matchedWatchName) continue;
-    if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte: ' + record.sqCandidate);
+    const record = apiCandidateToRecord(item, matchedWatchName);
+    if (seen.has(record.sqCandidate)) continue;
     seen.add(record.sqCandidate);
     record.watchlistName = matchedWatchName;
     matches.push(record);
   }
+  console.log('[TSE API] registros recebidos=' + records.length + ' | watchlist=' + matches.map(item => item.watchlistName).join(', '));
+  if (matches.length < WATCHLIST.length) {
+    console.warn('[TSE API] amostra de chaves: ' + JSON.stringify(Object.keys(records[0] ?? {})));
+    console.warn('[TSE API] amostra de strings: ' + JSON.stringify(collectStrings(records[0] ?? {}).slice(0, 12)));
+  }
   return matches;
 }
 
-function parseCsvLineStreaming(filePath, onRow) {
-  return new Promise((resolve, reject) => {
-    const stream = createReadStream(filePath, { encoding: 'latin1', highWaterMark: 1024 * 1024 });
-    let field = '';
-    let row = [];
-    let inQuotes = false;
-    let quotePending = false;
-    let rows = 0;
-
-    const emit = () => {
-      if (row.length === 1 && row[0] === '') return;
-      onRow(row);
-      rows += 1;
-      row = [];
-    };
-
-    const consume = chunk => {
-      for (let i = 0; i < chunk.length; i += 1) {
-        const ch = chunk[i];
-        if (inQuotes) {
-          if (quotePending) {
-            if (ch === '"') {
-              field += '"';
-              quotePending = false;
-              continue;
-            }
-            inQuotes = false;
-            quotePending = false;
-          } else if (ch === '"') {
-            quotePending = true;
-            continue;
-          } else {
-            field += ch;
-            continue;
-          }
-        }
-
-        if (ch === '"') {
-          inQuotes = true;
-        } else if (ch === ';') {
-          row.push(field);
-          field = '';
-        } else if (ch === '\n') {
-          row.push(field.replace(/\r$/, ''));
-          field = '';
-          emit();
-        } else {
-          field += ch;
-        }
-      }
-    };
-
-    stream.on('data', consume);
-    stream.on('end', () => {
-      if (quotePending) {
-        inQuotes = false;
-        quotePending = false;
-      }
-      if (field.length || row.length) {
-        row.push(field);
-        emit();
-      }
-      resolve(rows);
-    });
-    stream.on('error', reject);
-  });
-}
-
-function toRecord(row, index) {
-  const value = key => row[index[key]] ?? '';
-  const sq = value('SQ_CANDIDATO').trim();
-  return {
-    sqCandidate: sq,
-    ballotNumber: value('NR_CANDIDATO') ? Number(value('NR_CANDIDATO')) : null,
-    name: value('NM_URNA_CANDIDATO') || value('NM_CANDIDATO') || '',
-    fullName: value('NM_CANDIDATO') || null,
-    party: value('SG_PARTIDO') || null,
-    office: value('DS_CARGO') || null,
-    status: value('DS_SIT_TOT_TURNO') || value('DS_SITUACAO_CANDIDATO') || null,
-    federation: value('NM_FEDERACAO') || null,
-    generationDate: value('DT_GERACAO') || null,
-    generationTime: value('HH_GERACAO') || null,
-  };
-}
-
-function diffRecords(before, after) {
-  const key = candidate => candidate.sqCandidate || String(candidate.ballotNumber ?? candidate.name);
-  const previous = new Map(before.map(candidate => [key(candidate), candidate]));
-  const current = new Map(after.map(candidate => [key(candidate), candidate]));
-  const records = [];
-
-  for (const [id, candidate] of current) {
-    const old = previous.get(id);
-    if (!old) {
-      records.push({ key: id, type: 'added', after: candidate });
-      continue;
-    }
-    const fields = Object.keys(candidate).filter(field => candidate[field] !== old[field]);
-    if (fields.length) records.push({ key: id, type: 'changed', before: old, after: candidate, changedFields: fields });
-  }
-  for (const [id, candidate] of previous) {
-    if (!current.has(id)) records.push({ key: id, type: 'removed', before: candidate });
-  }
-  return records;
-}
-
-function loadPrevious() {
-  if (!existsSync(OUTPUT)) return null;
-  try {
-    const previous = JSON.parse(readFileSync(OUTPUT, 'utf8'));
-    if (!previous.meta || !Array.isArray(previous.matched) || previous.meta.state === 'not_synced') return null;
-    return previous;
-  } catch {
-    return null;
-  }
-}
 
 async function main() {
   mkdirSync(OUTPUT_DIR, { recursive: true });

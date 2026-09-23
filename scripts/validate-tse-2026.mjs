@@ -42,11 +42,12 @@ if (state === 'not_synced' && !requireSynced) {
 if (payload.meta?.matchedRows !== payload.matched.length) errors.push('matchedRows diverge do tamanho de matched.');
 
 if (state !== 'not_synced') {
-  const allowedRetrievalMethods = new Set(['official_tse_open_data_csv', 'official_tse_divulgacandcontas_api']);
+  const allowedRetrievalMethods = new Set(['official_tse_open_data_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy']);
   if (!allowedRetrievalMethods.has(payload.meta?.retrievalMethod)) errors.push('retrievalMethod do snapshot TSE inválido ou ausente.');
   if (typeof payload.meta?.resourceUrl !== 'string') errors.push('resourceUrl oficial do TSE ausente.');
   if (payload.meta?.retrievalMethod === 'official_tse_open_data_csv' && !payload.meta.resourceUrl.includes('cdn.tse.jus.br')) errors.push('resourceUrl do pacote CSV oficial do TSE ausente.');
-  if (payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api' && !payload.meta.resourceUrl.includes('divulgacandcontas.tse.jus.br/divulga/rest/')) errors.push('resourceUrl da API oficial DivulgaCandContas ausente.');
+  if ((payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api' || payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy') && !payload.meta.resourceUrl.includes('divulgacandcontas.tse.jus.br/divulga/rest/')) errors.push('resourceUrl da API oficial DivulgaCandContas ausente.');
+  if (payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy' && typeof payload.meta?.sourceProxyUrl !== 'string') errors.push('sourceProxyUrl do fallback de proxy ausente.');
   for (const expected of payload.watchlist ?? []) {
     if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
   }
