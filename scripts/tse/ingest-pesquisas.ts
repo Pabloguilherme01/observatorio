@@ -39,11 +39,19 @@ const municipalityValue = (row: Readonly<Record<string, string>>): string => {
   return value.trim();
 };
 
-const resolveMunicipality = (row: Readonly<Record<string, string>>): string | null => {
+const resolveMunicipality = (row: Readonly<Record<string, string>>): { nome: string; criterio: 'codigo' | 'nome_exato' | 'abrangencia_textual'; evidencia: string } | null => {
   const raw = municipalityValue(row);
   if (!raw) return null;
-  if (MUNICIPIO_POR_CODIGO.has(raw)) return MUNICIPIO_POR_CODIGO.get(raw) ?? null;
-  return MUNICIPIO_POR_NOME.get(normalizeLabel(raw)) ?? null;
+  const normalized = normalizeLabel(raw);
+  if (MUNICIPIO_POR_CODIGO.has(raw)) {
+    return { nome: MUNICIPIO_POR_CODIGO.get(raw) ?? MUNICIPIO_POR_CODIGO.values().next().value as string, criterio: 'codigo', evidencia: raw };
+  }
+  const exact = MUNICIPIO_POR_NOME.get(normalized);
+  if (exact) return { nome: exact, criterio: 'nome_exato', evidencia: raw };
+  for (const [label, nome] of MUNICIPIO_POR_NOME) {
+    if (normalized.includes(label)) return { nome, criterio: 'abrangencia_textual', evidencia: raw };
+  }
+  return null;
 };
 
 const distinctMunicipalities = [...new Set(rows.map(row => municipalityValue(row)).filter(Boolean))];
@@ -58,8 +66,8 @@ const targetRows = rows.filter(row => resolveMunicipality(row) !== null);
 console.log('[TSE] linhas correspondentes aos municípios-alvo:', targetRows.length);
 
 const pesquisas = targetRows.map(row => {
-  const municipality = resolveMunicipality(row);
-  if (!municipality) throw new Error('Linha de pesquisa sem município resolvível após o filtro.');
+  const resolved = resolveMunicipality(row);
+  if (!resolved) throw new Error('Linha de pesquisa sem município resolvível após o filtro.');
 
   return {
     idPesquisa: valueOf(row, ['NR_PROTOCOLO_REGISTRO']),
@@ -67,7 +75,9 @@ const pesquisas = targetRows.map(row => {
     instituto: valueOf(row, ['NM_EMPRESA']),
     contratante: undefined,
     pagante: undefined,
-    municipio: municipality,
+    municipio: resolved.nome,
+    abrangenciaDetectada: resolved.evidencia,
+    criterioMunicipio: resolved.criterio,
     uf: valueOf(row, ['SG_UF']),
     dataRegistro: parseDate(valueOf(row, ['DT_REGISTRO'])),
     periodoColeta: {
