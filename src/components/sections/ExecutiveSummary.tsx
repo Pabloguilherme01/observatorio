@@ -12,11 +12,13 @@ function brl(value: number) {
 
 export function ExecutiveSummary() {
   const poll = d.polls[0];
+  const brasiliaRoute = d.transport.routes.find(route => route.id === 'brasilia');
   const groupedUnknown = (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
-  const monthlyPerPerson = d.transport.routes.find(route => route.id === 'brasilia')!.fareBrl
+  const monthlyPerPerson = (brasiliaRoute?.fareBrl ?? 0)
     * d.transport.defaultTripsPerDay
     * d.transport.defaultWorkDaysPerMonth;
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
+  const hasPoll = Boolean(poll);
   
   const electorate = d.electoral;
   const [shareStatus, setShareStatus] = useState('');
@@ -26,12 +28,12 @@ export function ExecutiveSummary() {
     const text = languageMode === 'simple'
       ? [
         'Observatório Eleitoral Águas Lindas 2026',
-        `Pesquisa de ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',')}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',')}% “Não sabe/NR”.`,
+        `Pesquisa de ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
         `Transporte: ${brl(monthlyPerPerson)} por pessoa/mês no cenário usado pelo Observatório.`,
       ].join(' ')
       : [
         'Observatório Eleitoral Águas Lindas 2026',
-        `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',')}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',')}% “Não sabe/NR”.`,
+        `Pesquisa registrada em ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
         `Mobilidade: ${brl(monthlyPerPerson)} por pessoa/mês no cenário de 22 dias e 2 trechos/dia para Brasília.`,
       ].join(' ');
 
@@ -77,14 +79,15 @@ export function ExecutiveSummary() {
               <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Pesquisa registrada</div>
+                {!hasPoll && <p className="mt-3 text-sm text-slate-400">Nenhuma pesquisa está disponível neste snapshot.</p>}
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:max-w-md">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
                     <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Nenhum</div>
-                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll.nonePct?.toFixed(2).replace('.', ',')}%</div>
+                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}%</div>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
                     <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Não sabe/NR</div>
-                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</div>
+                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}%</div>
                   </div>
                 </div>
 
@@ -99,12 +102,14 @@ export function ExecutiveSummary() {
                 )}
 
                 <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-slate-500">
-                  <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
-                  <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
+                  {poll && <>
+                    <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
+                    <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
+                  </>}
                   {languageMode === 'technical' && (
                     <>
-                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.registrationNumber}</span>
-                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.pollster}</span>
+                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.registrationNumber ?? 'Registro não disponível'}</span>
+                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.pollster ?? 'Instituto não informado'}</span>
                       <span className="technical-detail rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-2.5 py-1 text-amber-200 light:border-amber-300/50 light:bg-amber-50 light:text-amber-800">divulgação com cautela</span>
                     </>
                   )}
