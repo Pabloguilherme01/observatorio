@@ -1,0 +1,67 @@
+name: TSE recapture · branch fixes
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feat/v44-trust-pwa-accessibility
+    paths:
+      - 'scripts/tse/**'
+      - 'src/schemas/tse-enriched.schema.ts'
+      - 'src/data/generated/tse2026-candidates.json'
+
+permissions:
+  contents: write
+
+jobs:
+  recapture:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: tse-recapture-v44
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: feat/v44-trust-pwa-accessibility
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - run: npm install --no-audit --no-fund
+
+      - name: Recapturar Contas, Pesquisas e Processual
+        run: |
+          set -euo pipefail
+          npm run ingest:tse:contas
+          npm run ingest:tse:pesquisas
+          npm run ingest:tse:processual
+          npm run typecheck
+
+      - name: Verificar integridade dos snapshots
+        run: |
+          set -euo pipefail
+          npm run verify:tse:capture
+          test -f public/api/v1/contas.json
+          test -f public/api/v1/pesquisas.json
+          test -f public/api/v1/processual.json
+          if grep -R -n "�" generated/tse2026-processual.json src/data/generated/processual-snapshot.json public/api/v1/processual.json; then
+            echo "::error::Encoding corrompido encontrado no processual."
+            exit 1
+          fi
+          node --experimental-strip-types -e "for (const p of ['generated/tse2026-contas.json','generated/tse2026-pesquisas.json']) { const x=require('node:fs').readFileSync(p,'utf8'); const j=JSON.parse(x); if(!((j.totalCandidatosComContas ?? j.totalPesquisas) > 0)) throw new Error(p+' continua sem registros associados'); }"
+
+      - name: Atualizar snapshots no branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generated public/api/v1 src/data/generated
+          if git diff --cached --quiet; then
+            echo 'Nenhuma alteração de snapshot.'
+            exit 0
+          fi
+          git commit -m 'data(tse): recapturar datasets após correção do filtro GO'
+          git push origin HEAD:feat/v44-trust-pwa-accessibility
