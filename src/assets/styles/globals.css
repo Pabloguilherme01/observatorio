@@ -115,9 +115,9 @@ html.light .text-slate-400 { color: #475569 !important; }
 html.light .text-slate-500 { color: #64748b !important; }
 html.light .border-white\/10,
 html.light .border-white\/8 { border-color: var(--line) !important; }
-html.light .bg-white\\/\\[0\\.035\\],
-html.light .bg-white\\/\\[0\\.025\\],
-html.light .bg-white\\/\\[0\\.02\\] { background: rgba(255,255,255,.85) !important; }
+html.light .bg-white\/\[0\.035\],
+html.light .bg-white\/\[0\.025\],
+html.light .bg-white\/\[0\.02\] { background: rgba(255,255,255,.85) !important; }
 html.light header { background: rgba(245,247,250,.92); }
 
 /* V27 Experience Layer */
