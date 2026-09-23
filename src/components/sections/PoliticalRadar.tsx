@@ -78,12 +78,13 @@ export function PoliticalRadar() {
           ))}
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-3 text-xs">
+        <div className="mt-5 grid gap-3 sm:grid-cols-4 text-xs">
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Nenhum</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">NS/NR</span></div>
+          <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Não classificado</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">±{poll.theoreticalMarginErrorPct?.toFixed(1).replace('.', ',')} pp</strong><span className="text-slate-500">teórico</span></div>
         </div>
-        <p className="mt-4 text-xs leading-5 text-slate-500">Nenhum + NS/NR = 25,75% nesta pesquisa. Isso é um retrato daquele levantamento, não medida de “indecisão estrutural” da população.</p>
+        <p className="mt-4 text-xs leading-5 text-slate-500">As respostas publicadas no snapshot somam 92,25%; os 7,75 pontos restantes ficam explicitamente como “não classificados” para evitar completar a distribuição por inferência.</p>
       </Card>
 
       <Card>
