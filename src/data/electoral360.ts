@@ -105,8 +105,13 @@ export const electoral360Snapshot: Electoral360Snapshot = {
   capturedAt: generatedData.meta.downloadedAt ?? '',
   captureMode: generatedData.meta.state === 'not_synced' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
-  localWatchlist: generatedData.watchlist,
-  matchedCandidates: generatedData.matched.map(candidate => ({
+  localWatchlist: generatedData.watchlist.filter(name => {
+    const candidate = generatedData.matched.find(item => item.watchlistName === name);
+    return !!candidate && LOCAL_CANDIDATE_IDS.includes(candidate.sqCandidate as typeof LOCAL_CANDIDATE_IDS[number]);
+  }),
+  matchedCandidates: generatedData.matched
+    .filter(candidate => LOCAL_CANDIDATE_IDS.includes(candidate.sqCandidate as typeof LOCAL_CANDIDATE_IDS[number]))
+    .map(candidate => ({
     sqCandidate: candidate.sqCandidate,
     ballotNumber: candidate.ballotNumber ?? 0,
     name: candidate.name,
@@ -117,5 +122,7 @@ export const electoral360Snapshot: Electoral360Snapshot = {
     sourceId: 'tse-candidatos-2026',
   })),
 };
+
+export { CANDIDATE_PROFILES };
 
 export const electoral360Diff = generatedData.diff;
