@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
@@ -40,6 +41,13 @@ if (
   && main.includes('window.addEventListener(\'observatorio:app-mounted\', registerPwa')
 ) pass('sinal de montagem React é emitido por efeito pós-commit antes do PWA.');
 else fail('sinal de montagem React não está protegido por efeito pós-commit.');
+
+try {
+  execFileSync(process.execPath, ['--check', path.join(root, 'scripts/sync-tse-2026.mjs')], { stdio: 'pipe' });
+  pass('script de sincronização TSE passa no parser do Node.');
+} catch (error) {
+  fail('script de sincronização TSE falhou no parser do Node: ' + (error instanceof Error ? error.message : String(error)));
+}
 
 const tseSync = read('scripts/sync-tse-2026.mjs');
 if (
