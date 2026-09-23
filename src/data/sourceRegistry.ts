@@ -170,7 +170,16 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2025-12-31',
     publishedAt: '2026-08-05',
-    note: 'Página oficial dos resultados 2005–2025. A faixa municipal usada no dataset aguarda conferência do valor pontual na tabela oficial.',
+    note: 'Página oficial dos resultados 2005–2025. A consulta confirma a publicação dos resultados municipais, mas o snapshot deste projeto ainda não materializa o ponto municipal de Águas Lindas de Goiás.',
+  },
+  {
+    id: 'qedu-ideb-2025',
+    label: 'QEdu — referência secundária para Ideb 2025',
+    institution: 'QEdu',
+    url: 'https://qedu.org.br/',
+    nature: 'secondary',
+    referenceDate: '2025-12-31',
+    note: 'Referência secundária citada no levantamento de origem para uma faixa 2025. Não substitui a captura do valor municipal pontual na fonte oficial do INEP.',
   },
   {
     id: 'inep-2023',
