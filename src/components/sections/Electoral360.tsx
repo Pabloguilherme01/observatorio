@@ -104,7 +104,7 @@ export function Electoral360() {
         eyebrow="Eleitoral 360°"
         title="Quem está no recorte local"
         description={languageMode === 'simple'
-          ? '7 nomes com vínculo eleitoral comprovado com Águas Lindas. Veja foto, número, partido, situação e os dados principais. Abra “mais dados” para detalhes.'
+          ? '7 nomes com vínculo eleitoral local documentado. Veja o essencial e abra “Mais dados” para detalhes.'
           : 'Eleições Gerais de 2026: o pleito inclui Governador, Senador, Deputado Federal e Deputado Estadual, entre outros cargos nacionais e estaduais; prefeito e vereador não estão em disputa em 2026. Os registros brutos do TSE permanecem preservados, mas a interface exibe apenas os nomes com vínculo eleitoral local documentado.'}
       />
 
@@ -177,11 +177,19 @@ export function Electoral360() {
                     </div>
                   </div>
 
-                  <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                    <Info label="Patrimônio declarado" value={profile.declaredAssetsBrl == null ? 'Não informado' : profile.declaredAssetsBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
-                    <Info label="Escolaridade" value={profile.education} />
-                    <Info label="Ocupação" value={profile.occupation} />
-                  </div>
+                  {languageMode === 'technical' && (
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      <Info label="Patrimônio declarado" value={profile.declaredAssetsBrl == null ? 'Não informado' : profile.declaredAssetsBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} />
+                      <Info label="Escolaridade" value={profile.education} />
+                      <Info label="Ocupação" value={profile.occupation} />
+                    </div>
+                  )}
+
+                  {languageMode === 'simple' && (
+                    <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2 text-xs text-slate-400">
+                      <strong className="text-slate-200">Local:</strong> {profile.localConnection}
+                    </div>
+                  )}
 
                   <div className="mt-4 flex flex-wrap gap-2">
                     {profile.instagramUrl ? (
@@ -190,14 +198,14 @@ export function Electoral360() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.04] px-3 py-2 text-xs font-bold text-pink-100"
-                        aria-label={'Instagram declarado no TSE de ' + candidateLabel}
+                        aria-label={'Instagram informado no registro de ' + candidateLabel}
                       >
                         <Camera className="h-4 w-4" aria-hidden="true" />
                         Instagram declarado
                       </a>
                     ) : (
                       <span className="inline-flex min-h-11 items-center rounded-xl border border-white/8 px-3 py-2 text-xs font-semibold text-slate-500">
-                        Instagram não informado no TSE
+                        Instagram não informado no registro
                       </span>
                     )}
                     <button
