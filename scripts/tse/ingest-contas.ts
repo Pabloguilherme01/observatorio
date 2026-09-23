@@ -76,7 +76,9 @@ for (const row of despesas) {
   });
 }
 
-const contas = [...byCandidate.values()].map(bucket => {
+const contas = [...byCandidate.values()]
+  .filter(bucket => bucket.receitas.lista.length > 0 || bucket.despesas.lista.length > 0)
+  .map(bucket => {
   const saldo = bucket.receitas.total - bucket.despesas.total;
   return {
     candidatoId: bucket.candidate.sqCandidate,
