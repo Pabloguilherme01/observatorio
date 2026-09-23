@@ -1,45 +1,62 @@
 import { useEffect, useState } from 'react';
-import { RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT, electionCodeMatchesCargo } from '../data/resultsConfig';
+import { RESULTS_FEED_SCHEMA_VERSION, RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT, electionCodeMatchesCargo } from '../data/resultsConfig';
 
 export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'stale' | 'complete' | 'ended_unavailable';
 
 export interface ResultsFeedItem {
-  readonly municipality?: string;
-  readonly candidateId?: string;
-  readonly candidate?: string;
-  readonly cargo?: string;
-  readonly validVotes?: number;
+  readonly candidateId: string;
+  readonly candidate: string;
+  readonly party?: string;
+  readonly cargo: string;
+  readonly votes: number;
+  readonly status?: string;
+}
+
+export interface ResultsFeedEntry {
+  readonly electionCode: number;
+  readonly cargo: string;
+  readonly sourceFile: string;
+  readonly referenceDate: string;
+  readonly updatedAt: string;
+  readonly sectionsTotal?: number;
+  readonly sectionsCounted?: number;
   readonly totalVotes?: number;
-  readonly updatedAt?: string;
+  readonly validVotes?: number;
+  readonly blankVotes?: number;
+  readonly nullVotes?: number;
+  readonly abstentions?: number;
+  readonly items: readonly ResultsFeedItem[];
 }
 
 export interface ResultsFeed {
-  readonly schemaVersion: 2;
+  readonly schemaVersion: typeof RESULTS_FEED_SCHEMA_VERSION;
   readonly environment: 'official';
   readonly scope: 'municipality';
   readonly state: 'pending' | 'live' | 'complete';
   readonly source: 'official-tse';
-  readonly sourceUrl: string;
-  readonly sourceFile: string;
+  readonly sourceBaseUrl: string;
   readonly pleito: 3220;
-  readonly electionCode: 6257 | 6259 | 6261;
   readonly turn: 1 | 2;
   readonly uf: 'GO';
   readonly municipalityCode: string;
   readonly municipalityName: string;
-  readonly cargo: string;
   readonly referenceDate: string;
   readonly capturedAt: string;
-  readonly items: readonly ResultsFeedItem[];
+  readonly entries: readonly ResultsFeedEntry[];
   readonly integrity?: {
-    readonly sha256?: string;
-    readonly jwsVerified?: boolean;
-    readonly signatureStatus?: 'verified' | 'not_verified' | 'unavailable';
-    readonly verificationMethod?: 'jws-node-crypto';
-    readonly verifiedAt?: string;
-    readonly algorithm?: string;
-    readonly keyFingerprint?: string;
-    readonly proofSha256?: string;
+    readonly files: readonly {
+      readonly sourceFile: string;
+      readonly sha256: string;
+      readonly jwsProofSha256: string;
+      readonly signatureStatus: 'verified' | 'not_verified' | 'unavailable';
+      readonly verificationMethod: 'tse-official-jwk-ed25519';
+      readonly verifiedAt?: string;
+      readonly algorithm: 'EdDSA';
+      readonly curve: 'Ed25519';
+      readonly kid: string;
+      readonly keyFingerprint: string;
+    }[];
+    readonly allVerified: boolean;
   };
 }
 
@@ -67,7 +84,13 @@ function isIsoDate(value: unknown): value is string {
 }
 
 function isOfficialResultsUrl(value: unknown): value is string {
-  return typeof value === 'string' && value.startsWith('https://resultados.tse.jus.br');
+  if (typeof value !== 'string') return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && url.hostname === OFFICIAL_RESULTS_CONTEXT.host;
+  } catch {
+    return false;
+  }
 }
 
 function isValidResultsFeed(value: unknown): value is ResultsFeed {
@@ -77,47 +100,42 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   if (payload.environment !== OFFICIAL_RESULTS_CONTEXT.environment || payload.scope !== OFFICIAL_RESULTS_CONTEXT.scope) return false;
   if (payload.source !== 'official-tse' || !VALID_STATES.has(payload.state as ResultsFeed['state'])) return false;
   if (payload.pleito !== OFFICIAL_RESULTS_CONTEXT.pleito) return false;
-  if (!isOfficialResultsUrl(payload.sourceUrl) || typeof payload.sourceFile !== 'string' || !payload.sourceFile.trim()) return false;
-  if (!Number.isInteger(payload.electionCode) || ![6257, 6259, 6261].includes(payload.electionCode as number)) return false;
-  if (![1, 2].includes(payload.turn as number) || payload.uf !== 'GO') return false;
-  if (typeof payload.municipalityCode !== 'string' || !/^\d{5}$/.test(payload.municipalityCode)) return false;
-  if (!electionCodeMatchesCargo(payload.electionCode as number, payload.uf as string, payload.cargo as string)) return false;
-  if (payload.uf !== OFFICIAL_RESULTS_CONTEXT.uf) return false;
-  if (typeof payload.municipalityName !== 'string' || payload.municipalityName.trim() !== 'Águas Lindas de Goiás') return false;
-  if (typeof payload.cargo !== 'string' || !payload.cargo.trim()) return false;
+  if (!isOfficialResultsUrl(payload.sourceBaseUrl)) return false;
+  if (![1, 2].includes(payload.turn as number) || payload.uf !== OFFICIAL_RESULTS_CONTEXT.uf) return false;
+  if (payload.municipalityCode !== OFFICIAL_RESULTS_CONTEXT.municipalityCode) return false;
+  if (typeof payload.municipalityName !== 'string' || payload.municipalityName.trim() !== OFFICIAL_RESULTS_CONTEXT.municipalityName) return false;
   if (!isIsoDate(payload.referenceDate) || !isIsoDate(payload.capturedAt)) return false;
 
   const capturedAt = Date.parse(payload.capturedAt as string);
   if (capturedAt > Date.now() + 5 * 60 * 1000) return false;
-  if (!Array.isArray(payload.items)) return false;
+  if (!Array.isArray(payload.entries)) return false;
 
   if (payload.integrity !== undefined) {
     if (!payload.integrity || typeof payload.integrity !== 'object') return false;
     const integrity = payload.integrity as Record<string, unknown>;
-    if (integrity.sha256 !== undefined && (typeof integrity.sha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.sha256))) return false;
-    if (integrity.jwsVerified !== undefined && typeof integrity.jwsVerified !== 'boolean') return false;
-    if (integrity.signatureStatus !== undefined && !['verified', 'not_verified', 'unavailable'].includes(integrity.signatureStatus as string)) return false;
-    if (integrity.verificationMethod !== undefined && integrity.verificationMethod !== 'jws-node-crypto') return false;
-    if (integrity.verifiedAt !== undefined && !isIsoDate(integrity.verifiedAt)) return false;
-    if (integrity.algorithm !== undefined && (typeof integrity.algorithm !== 'string' || !integrity.algorithm.trim())) return false;
-    if (integrity.keyFingerprint !== undefined && (typeof integrity.keyFingerprint !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.keyFingerprint))) return false;
-    if (integrity.proofSha256 !== undefined && (typeof integrity.proofSha256 !== 'string' || !/^[a-f0-9]{64}$/i.test(integrity.proofSha256))) return false;
-    if (integrity.jwsVerified === true && (integrity.signatureStatus !== 'verified' || integrity.verificationMethod !== 'jws-node-crypto' || !integrity.verifiedAt || !integrity.algorithm || !integrity.keyFingerprint)) return false;
+    if (!Array.isArray(integrity.files) || typeof integrity.allVerified !== 'boolean') return false;
+    if (integrity.files.length !== payload.entries.length) return false;
+    if (integrity.allVerified && integrity.files.some(file => !file || typeof file !== 'object' || (file as Record<string, unknown>).signatureStatus !== 'verified')) return false;
   }
 
-  return payload.items.every(item => {
-    if (!item || typeof item !== 'object') return false;
-    const row = item as Record<string, unknown>;
-    if (row.updatedAt !== undefined && !isIsoDate(row.updatedAt)) return false;
-    if (row.municipality !== undefined && (typeof row.municipality !== 'string' || !row.municipality.trim())) return false;
-    if (row.candidateId !== undefined && typeof row.candidateId !== 'string') return false;
-    if (row.candidate !== undefined && typeof row.candidate !== 'string') return false;
-    if (row.cargo !== undefined && typeof row.cargo !== 'string') return false;
-    for (const key of ['validVotes', 'totalVotes'] as const) {
-      if (row[key] !== undefined && (typeof row[key] !== 'number' || !Number.isFinite(row[key]) || row[key] < 0)) return false;
-    }
-    if (typeof row.validVotes === 'number' && typeof row.totalVotes === 'number' && row.validVotes > row.totalVotes) return false;
-    return true;
+  return payload.entries.every(entry => {
+    if (!entry || typeof entry !== 'object') return false;
+    const row = entry as Record<string, unknown>;
+    if (!Number.isInteger(row.electionCode) || ![6257, 6259, 6261].includes(row.electionCode as number)) return false;
+    if (typeof row.cargo !== 'string' || !row.cargo.trim()) return false;
+    if (!electionCodeMatchesCargo(row.electionCode as number, OFFICIAL_RESULTS_CONTEXT.uf, row.cargo as string)) return false;
+    if (typeof row.sourceFile !== 'string' || !row.sourceFile.trim()) return false;
+    if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
+    if (!Array.isArray(row.items)) return false;
+    return row.items.every(item => {
+      if (!item || typeof item !== 'object') return false;
+      const candidate = item as Record<string, unknown>;
+      if (typeof candidate.candidateId !== 'string' || !candidate.candidateId.trim()) return false;
+      if (typeof candidate.candidate !== 'string' || !candidate.candidate.trim()) return false;
+      if (candidate.cargo !== row.cargo) return false;
+      if (typeof candidate.votes !== 'number' || !Number.isFinite(candidate.votes) || candidate.votes < 0) return false;
+      return true;
+    });
   });
 }
 
