@@ -29,6 +29,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Validate static consistency
         run: npm run audit:static
+      - name: Audit practical usability and links
+        run: npm run audit:usability
       - name: Validate accessibility and contrast
         run: npm run audit:a11y
       - name: Validate mobile UX
