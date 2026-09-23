@@ -43,17 +43,12 @@ function performHashScroll(hash: string) {
   return true;
 }
 
-function scrollToHash(hash: string) {
+function navigateToHash(hash: string) {
   if (!hash) return;
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
-  let attempts = 0;
-  const scroll = () => {
-    if (performHashScroll(hash)) return;
-    if (attempts >= 18) return;
-    attempts += 1;
-    window.setTimeout(scroll, 80);
-  };
-  requestAnimationFrame(scroll);
+  window.requestAnimationFrame(() => {
+    performHashScroll(hash);
+  });
 }
 
 function DeferredBlock({
@@ -128,7 +123,7 @@ export function App() {
   useEffect(() => {
     const navigateFromLocation = () => {
       const hash = window.location.hash.slice(1);
-      if (hash) scrollToHash(hash);
+      if (hash) navigateToHash(hash);
     };
     navigateFromLocation();
     window.addEventListener('hashchange', navigateFromLocation);
