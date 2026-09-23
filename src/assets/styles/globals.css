@@ -653,3 +653,18 @@ html.light .quiz-option-key {
   #eleitoral360 article[data-testid="candidate-card"] .grid.sm\\:grid-cols-3{grid-template-columns:1fr 1fr}
   #eleitoral360 article[data-testid="candidate-card"] img,#eleitoral360 article[data-testid="candidate-card"] [aria-label^="Foto indisponível"]{height:72px;width:72px}
 }
+
+
+/* V44.1 mobile touch targets: keep text compact, enlarge the clickable area */
+@media (max-width: 767px) {
+  footer a,
+  footer button,
+  header nav a,
+  header nav button {
+    min-height: 44px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
