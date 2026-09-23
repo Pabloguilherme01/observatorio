@@ -124,6 +124,10 @@ export function TransportCalculator() {
               <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={31} value={days} onChange={event => setDays(Math.max(1, Number(event.target.value) || 1))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
+              Pessoas
+              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={20} value={people} onChange={event => setPeople(Math.max(1, Number(event.target.value) || 1))} />
+            </label>
+            <label className="text-sm text-slate-300 light:text-slate-700">
               Renda de referência
               <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} step={1} value={salary} onChange={event => setSalary(Math.max(1, Number(event.target.value) || 1))} />
             </label>
