@@ -10,11 +10,15 @@ const MODE_LABELS: Record<ExperienceMode, string> = { overview: 'Visão geral', 
 
 function readList(key: string): string[] { try { const value = JSON.parse(localStorage.getItem(key) ?? '[]'); return Array.isArray(value) ? value.filter(item => typeof item === 'string') : []; } catch { return []; } }
 function jump(id: string) {
-  const reduceMotion = document.documentElement.classList.contains('reduced-motion')
-    || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  document.getElementById(id)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+  window.requestAnimationFrame(() => {
+    const target = document.getElementById(id);
+    if (!target) return;
+    const reduceMotion = document.documentElement.classList.contains('reduced-motion')
+      || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  });
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
