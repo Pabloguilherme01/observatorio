@@ -195,7 +195,6 @@ const snapshot = {
     municipalityCodeIbge: TARGET_IBGE_CODE,
     socialSourceUrl: SOCIAL_SOURCE,
     photoSourceUrl: PHOTO_SOURCE,
-    socialSourceUrl: SOCIAL_SOURCE,
     complementarySourceUrl: COMPLEMENT_SOURCE,
     assetsSourceUrl: ASSETS_SOURCE,
     mediaAvailable: photoAvailable,
