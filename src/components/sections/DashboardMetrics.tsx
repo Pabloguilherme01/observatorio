@@ -39,8 +39,8 @@ function LineChart({ title, description, points, valueFormatter = value => forma
         <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
         <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
       </figcaption>
-      <div className="relative mt-4" onMouseLeave={() => setTooltip(null)}>
-        <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto min-w-[560px] w-full overflow-visible">
+      <div className="relative mt-4 overflow-x-auto pb-1" onMouseLeave={() => setTooltip(null)}>
+        <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto min-w-[560px] w-full max-w-none overflow-visible">
           <title>{title}</title><desc>{description}</desc>
           {guides.map((y, index) => <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />)}
           <polyline points={polyline} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
