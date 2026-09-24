@@ -142,7 +142,7 @@ export function ExecutiveSummary() {
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Camada técnica' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
-            <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
+            <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório" disabled={shareBusy} aria-busy={shareBusy}>
               <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}
             </button>
             {shareStatus && <span className="text-[11px] font-semibold text-emerald-300" role="status" aria-live="polite">{shareStatus}</span>}
@@ -187,7 +187,7 @@ export function ExecutiveSummary() {
                 <span className="summary-public-discovery-count">{publicFacts.length} cartões</span>
               </div>
               <div className="summary-public-discovery-tools" aria-label="Controles das descobertas rápidas">
-                <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact}>Fechar cartão</button>
+                <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact} aria-label="Fechar descoberta aberta">Fechar cartão</button>
                 <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próxima descoberta <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
               <div className="summary-public-status" aria-live="polite">
