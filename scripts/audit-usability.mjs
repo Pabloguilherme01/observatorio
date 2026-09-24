@@ -108,9 +108,9 @@ const languageContext = texts.find(item => item.file === 'src/context/LanguageMo
 if (
   languageToggle.includes('language-toggle-v2') &&
   languageToggle.includes('aria-pressed') &&
-  languageContext.includes("mode === 'technical'") &&
-  languageContext.includes("mode === 'simple'") &&
-  languageContext.includes("mode === 'summary'")
+  languageContext.includes("'summary' | 'simple' | 'technical'") &&
+  languageContext.includes("value === 'technical'") &&
+  languageContext.includes("value === 'summary'")
 ) pass('contrato de linguagem simples vs técnica presente');
 else fail('distinção de linguagem simples vs técnica incompleta');
 
