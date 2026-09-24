@@ -87,6 +87,9 @@ must(appSource.includes('id="analise"') && appSource.includes('DashboardMetrics'
 const dashboardIdCount = (appSource.match(/id="dashboard"/g) ?? []).length + (read('src/components/AudienceHub.tsx').match(/id="dashboard"/g) ?? []).length;
 const analiseIdCount = (appSource.match(/id="analise"/g) ?? []).length;
 must(dashboardIdCount === 1, '#dashboard possui uma única âncora pública');
+const audienceHub = read('src/components/AudienceHub.tsx');
+must(audienceHub.includes("dashboard: 'dashboard'"), 'atalho Cidade usa a âncora pública #dashboard');
+must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
 must(appSource.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && (appSource.includes('DeferredTrustGroup') || appSource.includes('<ProjectTrustPanel />')), 'descoberta, confiança e modo de linguagem montados');
