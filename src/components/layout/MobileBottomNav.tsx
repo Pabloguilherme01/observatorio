@@ -53,7 +53,7 @@ export function MobileBottomNav() {
       if (visible?.target.id) updateActiveSection(sectionToTab(visible.target.id));
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
-    const targetIds = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
+    const targetIds = new Set(['dashboard', 'resumo', 'descubra', 'dados', 'fontes', ...thematicIds]);
     const observedNodes = new WeakSet<Element>();
     const observedIds = new Set<string>();
     let mutations: MutationObserver | null = null;
