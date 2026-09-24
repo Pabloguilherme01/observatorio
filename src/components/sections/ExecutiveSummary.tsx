@@ -109,13 +109,13 @@ export function ExecutiveSummary() {
             eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
             title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
             description={languageMode === 'technical'
-              ? 'Veja valor, data, fonte, método e contexto para conferir o dado.'
+              ? 'Valor, data, fonte, método e contexto para conferir o dado.'
               : languageMode === 'summary'
-                ? 'Poucos dados para entender rapidamente o cenário, com data e fonte preservadas.'
-                : 'Veja o número principal, quando ele foi medido e de onde veio.'}
+                ? 'Quatro números para situar o cenário. Cada cartão preserva referência e fonte.'
+                : 'Número principal, data de referência e fonte em uma leitura direta.'}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Camada técnica' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
+            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Rastreável' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
             <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório" disabled={shareBusy} aria-busy={shareBusy}>
               <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}
             </button>
@@ -128,8 +128,8 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
-                <h3>Veja o essencial. Abra o detalhe quando precisar.</h3>
-                <p className="summary-public-lead">Números principais, contexto sob demanda e fonte sempre acessível. Sem ranking de candidatos.</p>
+                <h3>Águas Lindas em foco</h3>
+                <p className="summary-public-lead">O essencial em quatro números. Abra o cartão para ver contexto, referência e fonte.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -154,10 +154,8 @@ export function ExecutiveSummary() {
                 </div>
               </div>
               <div className="summary-public-discovery-head">
-                <div>
-                  <strong>4 dados para começar</strong>
-                  <span>Valor, fonte e referência aparecem no próprio cartão.</span>
-                </div>
+                <span>4 indicadores para começar</span>
+                <small>Fonte e referência em cada cartão</small>
               </div>
 
               <div className="summary-public-facts" aria-label="Cartões de contexto rápido">
@@ -165,9 +163,8 @@ export function ExecutiveSummary() {
                   <button key={fact.id} type="button" className="summary-public-fact is-static text-left" onClick={() => goToSection(fact.target)} aria-label={`Abrir contexto de ${fact.label}`}>
                     <span className="block">{fact.label}</span>
                     <strong className="mt-1 block mobile-safe-wrap">{fact.value}</strong>
-                    <span className={'summary-public-badge'}>{fact.badge}</span>
-                    <small className="mt-1 block">{fact.source}</small>
-                    <em className="mt-1 block">{fact.note}</em>
+                    <span className="summary-public-source">{fact.source}</span>
+                    <em className="summary-public-note">{fact.note}</em>
                     <ArrowRight className="summary-public-arrow mt-2 h-4 w-4" aria-hidden="true" />
                   </button>
                 ))}
