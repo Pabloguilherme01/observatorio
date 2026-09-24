@@ -107,9 +107,9 @@ function CandidateCard({ candidate }: { candidate: PublicCandidate }) {
           <button type="button" onClick={() => { setTab("profile"); setOpen((value) => !value); }} aria-expanded={open && tab === "profile"} className="min-h-10 rounded-xl bg-sky-50 px-3 text-sm font-bold text-sky-700 hover:bg-sky-100 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:bg-sky-400/10 dark:text-sky-300 dark:hover:bg-sky-400/15">
             {open && tab === "profile" ? "Fechar perfil" : "Conheça o candidato"}
           </button>
-          <button type="button" onClick={() => { setTab("poll"); setOpen(true); }} aria-expanded={open && tab === "poll"} className="min-h-10 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5">
+          {pollValue !== undefined ? <button type="button" onClick={() => { setTab("poll"); setOpen(true); }} aria-expanded={open && tab === "poll"} className="min-h-10 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5">
             Ver pesquisa
-          </button>
+          </button> : <span className="flex min-h-10 items-center justify-center rounded-xl border border-dashed border-slate-200 px-3 text-xs font-semibold text-slate-400 dark:border-white/10 dark:text-slate-500">Pesquisa não publicada para este nome</span>}
         </div>
 
         {open && tab === "profile" ? (
@@ -120,7 +120,7 @@ function CandidateCard({ candidate }: { candidate: PublicCandidate }) {
             </dl>
             {candidate.localEvidence ? <div className="rounded-xl bg-slate-50 p-3 dark:bg-white/5"><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Evidência de vínculo local</p><p className="mt-1 leading-5 text-slate-600 dark:text-slate-300">{candidate.localEvidence}</p></div> : null}
             {candidate.socials?.length ? <div><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Redes públicas</p><div className="mt-2 flex flex-wrap gap-2">{candidate.socials.map((url) => <a key={url} href={url} target="_blank" rel="noreferrer" className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-semibold hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15">{sourceLabel(url)} <ExternalLink className="h-3 w-3" aria-hidden="true" /></a>)}</div></div> : null}
-            {candidate.sourceUrls?.length ? <div><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Fontes</p><div className="mt-2 flex flex-wrap gap-2">{candidate.sourceUrls.map((url) => <a key={url} href={url} target="_blank" rel="noreferrer" className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-50 dark:border-white/10 dark:text-sky-300 dark:hover:bg-white/5">{sourceLabel(url)} <ExternalLink className="h-3 w-3" aria-hidden="true" /></a>)}</div></div> : null}
+            {candidate.sourceUrls?.length ? <div><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Fontes</p><div className="mt-2 flex flex-wrap gap-2">{Array.from(new Set(candidate.sourceUrls)).map((url) => <a key={url} href={url} target="_blank" rel="noreferrer" className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-50 dark:border-white/10 dark:text-sky-300 dark:hover:bg-white/5">{sourceLabel(url)} <ExternalLink className="h-3 w-3" aria-hidden="true" /></a>)}</div></div> : null}
           </div>
         ) : null}
 
