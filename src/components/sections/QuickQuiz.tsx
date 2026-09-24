@@ -18,6 +18,7 @@ const LEVELS: readonly Difficulty[] = ['Fácil', 'Médio', 'Difícil', 'Avançad
 export function QuickQuiz() {
   const questions = useMemo<readonly Question[]>(() => [
     {
+      difficulty: 'Fácil',
       prompt: "Para interpretar um número público corretamente, o que vale conferir junto com ele?",
       options: ["Fonte e data de referência","A cor do gráfico","Somente o valor absoluto"],
       answer: 0,
@@ -26,6 +27,7 @@ export function QuickQuiz() {
       sourceLabel: "Mapa de evidências",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Um snapshot do eleitorado representa melhor qual ideia?",
       options: ["Uma fotografia de uma base em determinada data","Uma previsão de voto","O resultado final da eleição"],
       answer: 0,
@@ -34,6 +36,7 @@ export function QuickQuiz() {
       sourceLabel: "Perfil eleitoral",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Como ler a LOA 2026 dentro do observatório?",
       options: ["Como orçamento previsto para o exercício","Como gasto já executado integralmente","Como uma pesquisa de opinião"],
       answer: 0,
@@ -42,6 +45,7 @@ export function QuickQuiz() {
       sourceLabel: "Orçamento",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Por que dois números podem não ser comparáveis diretamente?",
       options: ["Porque podem ter datas, universos ou metodologias diferentes","Porque um número maior é sempre melhor","Porque gráficos diferentes usam cores diferentes"],
       answer: 0,
@@ -50,6 +54,7 @@ export function QuickQuiz() {
       sourceLabel: "Princípios e correções",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Onde conferir as fontes catalogadas pelo projeto?",
       options: ["No Mapa de evidências","Apenas no rodapé do navegador","Somente nas redes sociais"],
       answer: 0,
@@ -58,6 +63,7 @@ export function QuickQuiz() {
       sourceLabel: "Mapa de evidências",
     },
     {
+      difficulty: 'Fácil',
       prompt: "O que diferencia um dado observado de um cálculo derivado?",
       options: ["O observado vem da fonte; o derivado é calculado a partir de outros dados","O derivado é sempre mais importante","Não existe diferença entre os dois"],
       answer: 0,
@@ -66,6 +72,7 @@ export function QuickQuiz() {
       sourceLabel: "Qualidade dos dados",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Por que a data de referência importa ao comparar dois indicadores?",
       options: ["Porque os indicadores podem representar momentos diferentes","Porque a data muda automaticamente o valor para melhor","Porque toda data é apenas informativa"],
       answer: 0,
@@ -74,6 +81,7 @@ export function QuickQuiz() {
       sourceLabel: "Fontes e metodologia",
     },
     {
+      difficulty: 'Fácil',
       prompt: "O que fazer quando um registro ainda não tem evidência municipal suficiente?",
       options: ["Mantê-lo como pendente e não tratá-lo como registro local validado","Inferir o município pelo nome","Publicá-lo como confirmado para completar a lista"],
       answer: 0,
@@ -82,6 +90,7 @@ export function QuickQuiz() {
       sourceLabel: "Candidaturas locais",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Para que serve um link para a fonte oficial?",
       options: ["Permitir a conferência do registro original","Substituir a necessidade de ler a metodologia","Transformar uma estimativa em resultado"],
       answer: 0,
@@ -90,6 +99,7 @@ export function QuickQuiz() {
       sourceLabel: "Mapa de evidências",
     },
     {
+      difficulty: 'Fácil',
       prompt: "O que uma fonte secundária representa no catálogo do projeto?",
       options: ["Um material de apoio que não substitui a fonte oficial quando ela existe","Uma fonte automaticamente mais precisa","Um resultado eleitoral"],
       answer: 0,
@@ -98,6 +108,7 @@ export function QuickQuiz() {
       sourceLabel: "Mapa de evidências",
     },
     {
+      difficulty: 'Fácil',
       prompt: "O que significa dizer que uma métrica tem um denominador específico?",
       options: ["Que o percentual depende do conjunto usado como base do cálculo","Que o número está automaticamente errado","Que o denominador pode ser ignorado"],
       answer: 0,
@@ -106,6 +117,7 @@ export function QuickQuiz() {
       sourceLabel: "Qualidade dos dados",
     },
     {
+      difficulty: 'Fácil',
       prompt: "Por que percentuais de cobertura não devem ser simplesmente somados?",
       options: ["Porque podem usar bases e universos diferentes","Porque nenhum percentual pode ser comparado","Porque toda cobertura é uma estimativa"],
       answer: 0,
@@ -114,6 +126,7 @@ export function QuickQuiz() {
       sourceLabel: "Saneamento",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que uma série histórica de eleitorado mostra?",
       options: ["Mudanças na quantidade registrada em diferentes bases de referência","Quem vencerá a próxima eleição","Quais candidatos tiveram mais votos"],
       answer: 0,
@@ -122,6 +135,7 @@ export function QuickQuiz() {
       sourceLabel: "Eleitoral 2026",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que é uma abstenção eleitoral?",
       options: ["Eleitores aptos que não compareceram para votar","Votos brancos","Votos anulados por decisão judicial"],
       answer: 0,
@@ -130,6 +144,7 @@ export function QuickQuiz() {
       sourceLabel: "Perfil eleitoral",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que são votos válidos em uma base eleitoral?",
       options: ["Votos contabilizados para a escolha de candidatura ou opção válida","Todos os eleitores cadastrados","Somente votos brancos"],
       answer: 0,
@@ -138,6 +153,7 @@ export function QuickQuiz() {
       sourceLabel: "Eleitoral 2026",
     },
     {
+      difficulty: 'Médio',
       prompt: "Por que uma estimativa populacional não é igual a um censo?",
       options: ["Porque a estimativa atualiza a população entre operações censitárias","Porque estimativas sempre substituem censos","Porque censo é uma pesquisa de opinião"],
       answer: 0,
@@ -146,6 +162,7 @@ export function QuickQuiz() {
       sourceLabel: "Cidade",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que uma densidade populacional relaciona?",
       options: ["População e área territorial","Eleitorado e orçamento","Votos e pesquisas"],
       answer: 0,
@@ -154,6 +171,7 @@ export function QuickQuiz() {
       sourceLabel: "Cidade",
     },
     {
+      difficulty: 'Médio',
       prompt: "Uma tarifa de transporte publicada deve ser tratada como quê?",
       options: ["Valor de referência da fonte na data considerada","Custo obrigatório para todas as viagens futuras","Previsão de reajuste"],
       answer: 0,
@@ -162,6 +180,7 @@ export function QuickQuiz() {
       sourceLabel: "Transporte",
     },
     {
+      difficulty: 'Médio',
       prompt: "O cálculo de custo mensal de transporte é que tipo de dado?",
       options: ["Cálculo derivado a partir de premissas explícitas","Dado oficial diretamente publicado pela fonte","Resultado eleitoral"],
       answer: 0,
@@ -170,6 +189,7 @@ export function QuickQuiz() {
       sourceLabel: "Transporte",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que ajuda a tornar um cálculo derivado auditável?",
       options: ["Mostrar as premissas e a fórmula","Esconder as variáveis","Apresentar só o resultado final"],
       answer: 0,
@@ -178,6 +198,7 @@ export function QuickQuiz() {
       sourceLabel: "Qualidade dos dados",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que significa uma informação estar em um snapshot?",
       options: ["Ela está congelada na fotografia de dados daquela captura","Ela será atualizada automaticamente a cada segundo","Ela é necessariamente uma previsão"],
       answer: 0,
@@ -186,6 +207,7 @@ export function QuickQuiz() {
       sourceLabel: "Fontes e metodologia",
     },
     {
+      difficulty: 'Médio',
       prompt: "Qual é a função de um estado 'pendente' em um dado eleitoral?",
       options: ["Sinalizar que falta confirmação suficiente para uma afirmação mais forte","Confirmar a informação por padrão","Indicar que o dado foi apagado"],
       answer: 0,
@@ -194,6 +216,7 @@ export function QuickQuiz() {
       sourceLabel: "Candidaturas locais",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que uma fonte oficial do TSE permite conferir?",
       options: ["Registros eleitorais publicados pela Justiça Eleitoral","Qualquer opinião sobre um candidato","Qualquer estimativa econômica"],
       answer: 0,
@@ -202,6 +225,7 @@ export function QuickQuiz() {
       sourceLabel: "Fonte TSE",
     },
     {
+      difficulty: 'Médio',
       prompt: "Por que o observatório separa universo estadual de recorte local?",
       options: ["Para não apresentar uma base estadual como se fosse municipal","Para aumentar a quantidade de candidatos exibidos","Para eliminar todas as fontes"],
       answer: 0,
@@ -210,6 +234,7 @@ export function QuickQuiz() {
       sourceLabel: "Eleitoral 2026",
     },
     {
+      difficulty: 'Médio',
       prompt: "O que significa uma watchlist editorial?",
       options: ["Uma lista de nomes definidos para acompanhamento no projeto","Uma lista oficial de eleitos","Um ranking automático"],
       answer: 0,
@@ -218,6 +243,7 @@ export function QuickQuiz() {
       sourceLabel: "Candidaturas locais",
     },
     {
+      difficulty: 'Difícil',
       prompt: "Por que não se deve inferir município apenas pelo nome de urna?",
       options: ["Porque o nome não prova o município da candidatura","Porque nomes de urna são secretos","Porque todo candidato concorre em todos os municípios"],
       answer: 0,
@@ -226,6 +252,7 @@ export function QuickQuiz() {
       sourceLabel: "Candidaturas locais",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que uma pesquisa eleitoral registrada informa?",
       options: ["Dados de um levantamento conforme o registro e ficha técnica disponíveis","O resultado oficial da eleição","Uma garantia sobre o futuro"],
       answer: 0,
@@ -234,6 +261,7 @@ export function QuickQuiz() {
       sourceLabel: "Pesquisas",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que uma decisão judicial ligada a uma pesquisa pode mudar na leitura?",
       options: ["Pode exigir contexto e cautela sobre divulgações específicas","Transforma automaticamente a pesquisa em resultado eleitoral","Elimina todos os dados públicos"],
       answer: 0,
@@ -242,6 +270,7 @@ export function QuickQuiz() {
       sourceLabel: "Pesquisas",
     },
     {
+      difficulty: 'Difícil',
       prompt: "Qual é a diferença entre pesquisa e resultado eleitoral?",
       options: ["Pesquisa mede respostas de uma amostra; resultado decorre da votação apurada","São sinônimos","Resultado é sempre uma estimativa"],
       answer: 0,
@@ -250,6 +279,7 @@ export function QuickQuiz() {
       sourceLabel: "Pesquisas",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que uma margem de erro publicada na ficha técnica representa?",
       options: ["Uma medida estatística informada pelo responsável pelo levantamento","Uma garantia de acerto do resultado","Um cálculo feito automaticamente pelo observatório"],
       answer: 0,
@@ -258,6 +288,7 @@ export function QuickQuiz() {
       sourceLabel: "Pesquisas",
     },
     {
+      difficulty: 'Difícil',
       prompt: "Como ler uma nota de saneamento com denominador diferente?",
       options: ["Conferindo exatamente qual população ou domicílios entram na base","Somando a nota com outras coberturas","Ignorando a metodologia"],
       answer: 0,
@@ -266,6 +297,7 @@ export function QuickQuiz() {
       sourceLabel: "Saneamento",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que é coleta de esgoto?",
       options: ["Etapa relacionada à coleta do esgoto gerado","Sinônimo automático de tratamento","Percentual de água potável"],
       answer: 0,
@@ -274,6 +306,7 @@ export function QuickQuiz() {
       sourceLabel: "Saneamento",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que significa tratar 100% do esgoto coletado?",
       options: ["Que o esgoto que foi coletado recebeu tratamento na base informada","Que 100% dos domicílios têm coleta","Que 100% da população tem rede"],
       answer: 0,
@@ -282,6 +315,7 @@ export function QuickQuiz() {
       sourceLabel: "Saneamento",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que um indicador de perdas na distribuição de água mede?",
       options: ["Parcela de água que se perde entre produção/distribuição e consumo faturado conforme a metodologia","Qualidade da água na torneira","Quantidade de chuva"],
       answer: 0,
@@ -290,6 +324,7 @@ export function QuickQuiz() {
       sourceLabel: "Saneamento",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que torna um indicador educacional secundário?",
       options: ["Quando ele depende de uma referência que ainda não foi materializada como dado municipal oficial no snapshot","Quando ele aparece em um gráfico","Quando ele tem um número decimal"],
       answer: 0,
@@ -298,6 +333,7 @@ export function QuickQuiz() {
       sourceLabel: "Educação",
     },
     {
+      difficulty: 'Difícil',
       prompt: "Por que uma faixa de valor não deve ser apresentada como nota pontual?",
       options: ["Porque a faixa não informa um valor único confirmado","Porque faixas são sempre melhores","Porque qualquer intervalo é uma média"],
       answer: 0,
@@ -306,6 +342,7 @@ export function QuickQuiz() {
       sourceLabel: "Educação",
     },
     {
+      difficulty: 'Difícil',
       prompt: "O que representa uma LOA?",
       options: ["Lei Orçamentária Anual","Levantamento de Opinião Anual","Lista Oficial de Arrecadação"],
       answer: 0,
@@ -314,6 +351,7 @@ export function QuickQuiz() {
       sourceLabel: "Orçamento",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Qual a diferença entre orçamento previsto e gasto executado?",
       options: ["O previsto é autorizado/planejado; o executado é o que efetivamente foi realizado na execução","São exatamente a mesma coisa","Executado sempre significa empenhado e pago"],
       answer: 0,
@@ -322,6 +360,7 @@ export function QuickQuiz() {
       sourceLabel: "Orçamento",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Por que um crédito adicional deve ser identificado como atualização?",
       options: ["Porque ele altera a autorização orçamentária em relação à previsão original","Porque substitui automaticamente toda a LOA","Porque é uma pesquisa"],
       answer: 0,
@@ -330,6 +369,7 @@ export function QuickQuiz() {
       sourceLabel: "Orçamento",
     },
     {
+      difficulty: 'Avançado',
       prompt: "O que ajuda a verificar se um valor orçamentário é confiável?",
       options: ["Fonte legal, data e identificação do instrumento","Somente o tamanho do número","A aparência do gráfico"],
       answer: 0,
@@ -338,6 +378,7 @@ export function QuickQuiz() {
       sourceLabel: "Orçamento",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Para que serve um filtro de busca eleitoral no observatório?",
       options: ["Localizar registros do recorte acompanhado","Criar um ranking automático","Predizer o vencedor"],
       answer: 0,
@@ -346,6 +387,7 @@ export function QuickQuiz() {
       sourceLabel: "Candidaturas locais",
     },
     {
+      difficulty: 'Avançado',
       prompt: "O que deve acontecer quando a busca não encontra um nome?",
       options: ["Mostrar um estado vazio claro e permitir limpar ou alterar o termo","Inventar uma correspondência aproximada","Trocar para outro universo sem avisar"],
       answer: 0,
@@ -354,6 +396,7 @@ export function QuickQuiz() {
       sourceLabel: "Candidaturas locais",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Por que fontes e letras precisam de boa hierarquia visual?",
       options: ["Para facilitar a leitura sem esconder contexto importante","Para deixar o conteúdo mais técnico","Para reduzir a transparência"],
       answer: 0,
@@ -362,6 +405,7 @@ export function QuickQuiz() {
       sourceLabel: "Mapa de evidências",
     },
     {
+      difficulty: 'Avançado',
       prompt: "O que uma informação secundária discreta deve fazer?",
       options: ["Apoiar a leitura sem competir com a informação principal","Substituir o dado principal","Ocupar mais espaço que o dado principal"],
       answer: 0,
@@ -370,6 +414,7 @@ export function QuickQuiz() {
       sourceLabel: "Resumo público",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Qual é a vantagem de um cartão clicável no modo Resumo?",
       options: ["Levar do número ao contexto completo sem exigir leitura técnica imediata","Eliminar a fonte do dado","Transformar opinião em fato"],
       answer: 0,
@@ -378,6 +423,7 @@ export function QuickQuiz() {
       sourceLabel: "Resumo público",
     },
     {
+      difficulty: 'Avançado',
       prompt: "O que um bom botão mobile deve oferecer?",
       options: ["Alvo de toque confortável e estado visual claro","Texto minúsculo e sem foco","Área clicável imprevisível"],
       answer: 0,
@@ -386,6 +432,7 @@ export function QuickQuiz() {
       sourceLabel: "Usabilidade",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Por que a barra inferior mobile deve ter poucas ações?",
       options: ["Para manter decisões simples e reduzir poluição visual","Para esconder todas as seções","Para impedir a navegação por links"],
       answer: 0,
@@ -394,6 +441,7 @@ export function QuickQuiz() {
       sourceLabel: "Navegação mobile",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Para que serve o modo Resumo?",
       options: ["Entregar primeiro os pontos essenciais e deixar o detalhe para depois","Eliminar fontes","Substituir todos os dados técnicos"],
       answer: 0,
@@ -402,6 +450,7 @@ export function QuickQuiz() {
       sourceLabel: "Resumo público",
     },
     {
+      difficulty: 'Avançado',
       prompt: "Para que serve o modo Técnico?",
       options: ["Exibir mais contexto sobre fonte, método e limitações","Selecionar automaticamente um candidato","Ocultar os dados principais"],
       answer: 0,
@@ -410,6 +459,7 @@ export function QuickQuiz() {
       sourceLabel: "Fontes e metodologia",
     },
     {
+      difficulty: 'Avançado',
       prompt: "O que significa uma fonte rastreável?",
       options: ["Que a pessoa pode identificar e conferir de onde o dado veio","Que o dado é necessariamente recente","Que o dado não possui limitações"],
       answer: 0,
@@ -417,110 +467,57 @@ export function QuickQuiz() {
       anchor: "fontes",
       sourceLabel: "Mapa de evidências",
     },
-    { difficulty: 'Fácil', prompt: "Fácil 1: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 2: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 3: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 4: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 5: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 6: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 7: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 8: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 9: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 10: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 11: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 12: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 13: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 14: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 15: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 16: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 17: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 18: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 19: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 20: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 21: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 22: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 23: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 24: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Fácil', prompt: "Fácil 25: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'resumo', sourceLabel: 'Resumo público' },
-    { difficulty: 'Médio', prompt: "Médio 1: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 2: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 3: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 4: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 5: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 6: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 7: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 8: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 9: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 10: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 11: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 12: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 13: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 14: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 15: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 16: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 17: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 18: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 19: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 20: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 21: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 22: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 23: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 24: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Médio', prompt: "Médio 25: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'dashboard', sourceLabel: 'Dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 1: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 2: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 3: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 4: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 5: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 6: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 7: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 8: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 9: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 10: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 11: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 12: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 13: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 14: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 15: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 16: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 17: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 18: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 19: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 20: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 21: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 22: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 23: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 24: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Difícil', prompt: "Difícil 25: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'qualidade', sourceLabel: 'Qualidade dos dados' },
-    { difficulty: 'Avançado', prompt: "Avançado 1: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 2: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 3: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 4: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 5: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 6: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 7: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 8: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 9: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 10: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 11: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 12: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 13: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 14: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 15: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 16: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 17: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 18: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 19: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 20: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 21: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 22: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 23: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 24: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-    { difficulty: 'Avançado', prompt: "Avançado 25: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
-  ], []);
-  ], []);
-  ], []);
-  const [phase, setPhase] = useState(0);
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+    { difficulty:
+  ], []);  const [phase, setPhase] = useState(0);
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -597,8 +594,6 @@ export function QuickQuiz() {
         </div>
 
         {!finished && current ? (
-          <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Nível do quiz">{(['Todos', 'Fácil', 'Médio', 'Difícil', 'Avançado'] as const).map(level => <button key={level} type="button" onClick={() => changeDifficulty(level)} aria-pressed={difficulty === level} className={`min-h-10 rounded-xl border px-3 py-2 text-xs font-bold ${difficulty === level ? 'border-violet-200/50 bg-violet-300 text-slate-950' : 'border-white/10 bg-white/[0.03] text-slate-300'}`}>{level}</button>)}</div>
-
           <div className="mt-5 grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
             <div className="rounded-3xl border border-white/8 bg-white/[0.02] p-5">
               <div className="flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600"><span>Pergunta {step + 1}</span><span className="rounded-full border border-white/10 px-2 py-1 text-[9px] text-violet-200">{current.difficulty}</span></div>
