@@ -1,9 +1,9 @@
-import { ExternalLink, MapPin, MessageCircle, Share2, ShieldCheck } from 'lucide-react';
+import { ExternalLink, MapPin, MessageCircle, Search, Share2, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { electoral360Snapshot } from '../../data/electoral360';
-import { useLanguageMode } from '../../context/LanguageModeContext';
+import { useLanguageMode } from '../../context/LanguageModeContext';\nimport { useMemo, useState } from 'react';
 
 type CandidateView = {
   name: string;
@@ -59,7 +59,7 @@ export function PoliticalResearch() {
 
       <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
         <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · município</div></div>
-        <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">{hasLocalCandidates ? 'registros municipais no snapshot' : 'nenhum registro municipal validado nesta captura'}</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">nomes no snapshot acompanhado</div></div>
         <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Leitura do recorte</div><div className="mt-2 text-sm font-black text-amber-100">Acompanhamento local</div><div className="mt-1 text-xs text-slate-500">não substitui a confirmação individual no TSE</div></div>
       </div>
 
@@ -82,7 +82,46 @@ export function PoliticalResearch() {
         <div className="grid gap-4 md:grid-cols-2">{candidates.map(candidate => <CandidateCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />)}</div>
       )}
 
-      <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Redes sociais:</strong> o Instagram só aparece quando a URL foi declarada na base. O observatório não deduz contas por semelhança de nome.</div>
+      <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4">
+        <div className="flex items-start gap-3">
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
+          <div>
+            <strong className="block text-sm font-black text-sky-100">Como ler esta lista</strong>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Os nomes são o recorte acompanhado pelo Observatório. O snapshot estadual não preenche o município nestes registros, então a interface não transforma o acompanhamento local em confirmação automática de candidatura municipal.</p>
+          </div>
+        </div>
+      </div>
+
+      {hasLocalCandidates && (
+        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <label className="flex min-h-11 flex-1 items-center gap-2 rounded-xl border border-white/10 bg-black/10 px-3">
+              <Search className="h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" />
+              <span className="sr-only">Buscar candidatura</span>
+              <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar por nome, partido ou número" className="w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-600" />
+              {query && <button type="button" onClick={() => setQuery('')} className="grid min-h-8 min-w-8 place-items-center rounded-lg text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Limpar busca"><X className="h-4 w-4" /></button>}
+            </label>
+            <label className="flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-semibold text-slate-400">
+              <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only">Filtrar por cargo</span>
+              <select value={officeFilter} onChange={event => setOfficeFilter(event.target.value)} className="bg-transparent text-sm text-slate-300 outline-none">
+                <option value="all" className="bg-slate-900">Todos os cargos</option>
+                {offices.map(office => <option key={office} value={office} className="bg-slate-900">{office}</option>)}
+              </select>
+            </label>
+          </div>
+          <div className="mt-2 flex items-center justify-between text-[11px] text-slate-600">
+            <span>{filteredCandidates.length} de {candidates.length} registros</span>
+            {(query || officeFilter !== 'all') && <button type="button" onClick={() => { setQuery(''); setOfficeFilter('all'); }} className="font-semibold text-sky-300 hover:underline">Limpar filtros</button>}
+          </div>
+        </div>
+      )}
+
+      {hasLocalCandidates && (
+        <div className="mt-4 grid gap-4 md:grid-cols-2">{filteredCandidates.length ? filteredCandidates.map(candidate => <CandidateCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />) : <div className="md:col-span-2 rounded-2xl border border-dashed border-white/10 p-6 text-center text-sm text-slate-500">Nenhuma candidatura encontrada com esses filtros.</div>}</div>
+      )}
+
+      <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Redes sociais:</strong> o Instagram só aparece quando a URL foi declarada na base. O Observatório não deduz contas por semelhança de nome.</div>
     </section>
   );
 }
