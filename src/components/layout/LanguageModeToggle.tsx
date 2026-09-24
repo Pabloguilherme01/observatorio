@@ -26,7 +26,7 @@ export function LanguageModeToggle() {
         <span>Técnico</span>
         <small>detalhes</small>
       </button>
-      <span className="language-toggle-status" title={status} aria-label={status} role="status">
+      <span className="language-toggle-status" title={status} aria-label={status} aria-live="polite" role="status">
         <Info className="h-3 w-3" aria-hidden="true" />
       </span>
     </div>
