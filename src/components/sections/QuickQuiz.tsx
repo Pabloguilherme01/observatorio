@@ -90,12 +90,215 @@ const seeds: readonly Seed[] = [
   { category:'Saúde', label:'investimento de abertura do HEAL', value:money(157000000), numeric:157000000, unit:'R$', sourceId:'healgo', sourceLabel:sourceLabel('healgo'), anchor:'saude', note:'investimento informado para a abertura' },
 ] as const;
 
-const easy = seeds.map((s, i): Question => ({
-  id:`easy-${i+1}`, difficulty:'Fácil', phase:1, category:s.category,
-  prompt:`Qual é o valor registrado para ${s.label}?`,
-  options:[s.value, s.unit === '%' ? pct(Math.max(0, (s.numeric ?? 0) - 5), 1) : s.value + '0', s.unit === 'R$' ? money((s.numeric ?? 0) / 2) : fmt((s.numeric ?? 0) / 2, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0)],
-  answer:s.value, explanation:s.note + '.', anchor:s.anchor, sourceId:s.sourceId, sourceLabel:s.sourceLabel,
-}));
+const easy = seeds.map((s, i): Question => {
+  const alternatives = seeds.filter(candidate => candidate.unit === s.unit && candidate.value !== s.value).slice(0, 2).map(candidate => candidate.value);
+  const fallback = s.unit === 'R
+
+const pairs = seeds.map((s, i) => {
+  const sameUnit = seeds.find((candidate, j) => j !== i && candidate.unit === s.unit);
+  const sameCategory = seeds.find((candidate, j) => j !== i && candidate.category === s.category);
+  return { a: s, b: sameUnit ?? sameCategory ?? seeds[(i + 1) % seeds.length] };
+});
+const medium = pairs.map(({a,b},i): Question => {
+  const aNum=a.numeric ?? 0, bNum=b.numeric ?? 0;
+  const larger = aNum >= bNum ? a.value : b.value;
+  const label = aNum >= bNum ? a.label : b.label;
+  return {
+    id:`medium-${i+1}`, difficulty:'Médio', phase:2, category:a.category,
+    prompt:`Entre "${a.label}" e "${b.label}", qual valor é maior no recorte desta edição?`,
+    options:[larger, a.value, b.value],
+    answer:larger, explanation:`A comparação usa os valores registrados para os dois indicadores. O maior é ${label}: ${larger}.`,
+    anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
+  };
+});
+
+const hard = pairs.map(({a,b},i): Question => {
+  const aNum=a.numeric ?? 0, bNum=b.numeric ?? 0;
+  const ratio = bNum === 0 ? 0 : aNum / bNum;
+  const answer = `${fmt(ratio,2)}×`;
+  return {
+    id:`hard-${i+1}`, difficulty:'Difícil', phase:3, category:a.category,
+    prompt:`Considerando os valores de "${a.label}" e "${b.label}", qual é a razão aproximada do primeiro pelo segundo?`,
+    options:[answer,`${fmt(ratio*10,2)}×`,`${fmt(ratio/2,2)}×`],
+    answer, explanation:`Razão derivada: ${fmt(aNum,2)} ÷ ${fmt(bNum,2)} = ${answer}. É uma relação matemática entre os dois dados, não um indicador oficial adicional.`,
+    anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
+  };
+});
+
+const advanced = pairs.map(({a,b},i): Question => {
+  const sameSource = a.sourceId === b.sourceId;
+  const answer = sameSource ? 'Podem ser comparados diretamente dentro da mesma fonte, respeitando as definições.' : 'Exigem cuidado porque vêm de fontes ou definições diferentes.';
+  return {
+    id:`advanced-${i+1}`, difficulty:'Avançado', phase:4, category:a.category,
+    prompt:`Ao interpretar "${a.label}" junto com "${b.label}", qual leitura metodológica é mais adequada?`,
+    options:[answer,'Os dois números sempre têm o mesmo denominador e período.','Qualquer diferença entre eles prova causalidade.'],
+    answer, explanation: sameSource
+      ? `Os dois registros apontam para ${a.sourceLabel}. Ainda assim, unidade, período e definição precisam ser lidos antes da comparação.`
+      : `Os registros não compartilham necessariamente fonte, período ou denominador. A edição mantém essas camadas separadas para evitar uma comparação indevida.`,
+    anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
+  };
+});
+
+const expert = pairs.map(({a,b},i): Question => {
+  const answer = a.sourceId === b.sourceId
+    ? `Usar a definição da fonte e conferir a data antes de concluir.`
+    : `Manter as fontes e os denominadores separados antes de concluir.`;
+  return {
+    id:`expert-${i+1}`, difficulty:'Expert', phase:5, category:'Método',
+    prompt:`Você está auditando "${a.label}" contra "${b.label}". Qual procedimento é defensável antes de publicar uma conclusão?`,
+    options:[answer,'Somar os valores e publicar o total como novo indicador oficial.','Escolher o maior número e tratá-lo como referência para ambos.'],
+    answer, explanation:`O Observatório diferencia dado oficial, derivação e interpretação. ${a.note}; ${b.note}.`,
+    anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
+  };
+});
+
+export const QUIZ_LEVELS = ['Fácil','Médio','Difícil','Avançado','Expert'] as const;
+export const QUESTIONS_PER_LEVEL = 40 as const;
+export const QUIZ_TOTAL = 200 as const;
+export const QUESTION_BANK: readonly Question[] = [...easy, ...medium, ...hard, ...advanced, ...expert];
+
+if (QUESTION_BANK.length !== QUIZ_TOTAL || QUIZ_LEVELS.some(level => QUESTION_BANK.filter(q => q.difficulty === level).length !== QUESTIONS_PER_LEVEL)) {
+  throw new Error(`Banco do quiz deve ter ${QUIZ_TOTAL} questões, com ${QUESTIONS_PER_LEVEL} por nível; recebeu ${QUESTION_BANK.length}`);
+}
+
+export function QuickQuiz() {
+  const [phase, setPhase] = useState<Difficulty>('Fácil');
+  const [step, setStep] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [finished, setFinished] = useState(false);
+  const [unlockedPhase, setUnlockedPhase] = useState(0);
+
+  const phases = QUIZ_LEVELS;
+  const questions = useMemo(() => QUESTION_BANK.filter(q => q.difficulty === phase), [phase]);
+  const question = questions[step];
+  const progress = finished ? 100 : Math.round(((step + 1) / questions.length) * 100);
+
+  const options = useMemo(() => {
+    if (!question) return [];
+    const values = [...question.options];
+    const shift = step % values.length;
+    return values.slice(shift).concat(values.slice(0, shift));
+  }, [question, step]);
+
+  const choosePhase = (next: Difficulty) => {
+    const nextIndex = phases.indexOf(next);
+    if (nextIndex > unlockedPhase) return;
+    setPhase(next);
+    setStep(0);
+    setScore(0);
+    setSelected(null);
+    setFinished(false);
+  };
+
+  const answer = (value: string) => {
+    if (selected) return;
+    setSelected(value);
+    if (value === question.answer) setScore(v => v + 1);
+  };
+
+  const next = () => {
+    if (!selected) return;
+    if (step === questions.length - 1) {
+      setFinished(true);
+      setUnlockedPhase(current => Math.max(current, Math.min(phases.length - 1, phases.indexOf(phase) + 1)));
+    } else {
+      setStep(v => v + 1);
+      setSelected(null);
+    }
+  };
+
+  const restart = () => {
+    setStep(0);
+    setScore(0);
+    setSelected(null);
+    setFinished(false);
+  };
+
+  const share = async () => {
+    const text = `Quiz do Observatório · ${phase}: ${score}/${questions.length} acertos.`;
+    try {
+      if (navigator.share) await navigator.share({ title:'Quiz do Observatório', text, url:window.location.href + '#quiz' });
+      else if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text + ' ' + window.location.href + '#quiz');
+    } catch {}
+  };
+
+  const source = question ? d.sources.find(item => item.id === question.sourceId) : undefined;
+  const questionSourceUrl = question ? sourceUrl(question.sourceId) : undefined;
+
+  return (
+    <section id="quiz" className="quiz-premium scroll-mt-24" aria-labelledby="quiz-title">
+      <div className="quiz-premium-head">
+        <div>
+          <span className="quiz-eyebrow">200 perguntas · 5 fases · 40 por nível · edição {d.meta.updatedAt.split('-').reverse().join('/')}</span>
+          <h2 id="quiz-title">Desafio do Observatório</h2>
+          <p>Comece no Fácil e avance até Expert. Cada resposta mostra a explicação e a fonte usada no dado.</p>
+        </div>
+        <span className="quiz-counter">{finished ? 'Fase concluída' : `${step + 1}/${QUESTIONS_PER_LEVEL}`}</span>
+      </div>
+
+      <div className="quiz-phase-grid" role="tablist" aria-label="Fases de dificuldade">
+        {phases.map((item, index) => {
+          const locked = index > unlockedPhase;
+          return (
+            <button key={item} type="button" role="tab" aria-selected={phase === item} aria-disabled={locked} disabled={locked} className={phase === item ? 'is-active' : ''} onClick={() => choosePhase(item)}>
+              <span>Fase {index + 1}</span><strong>{item}</strong><small>{locked ? 'Bloqueada' : `${QUESTIONS_PER_LEVEL} perguntas`}</small>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="quiz-progress-track" aria-label={`Progresso da fase: ${progress}%`}><span style={{width:`${progress}%`}} /></div>
+
+      {finished ? (
+        <div className="quiz-result">
+          <div className="quiz-result-icon"><CheckCircle2 aria-hidden="true" /></div>
+          <span className="quiz-eyebrow">Fase concluída</span>
+          <strong>{score}/{QUESTIONS_PER_LEVEL}</strong>
+          <p>{score === 40 ? 'Fase concluída com aproveitamento máximo.' : 'Revise as explicações e as fontes das questões erradas antes de avançar.'}</p>
+          <div className="quiz-actions">
+            <button type="button" onClick={restart}><RotateCcw aria-hidden="true" /> Refazer fase</button>
+            <button type="button" onClick={share} className="secondary"><Share2 aria-hidden="true" /> Compartilhar</button>
+          </div>
+        </div>
+      ) : question ? (
+        <div className="quiz-question">
+          <div className="quiz-meta"><span>{question.difficulty}</span><span>{question.category}</span><span>{question.sourceLabel}</span></div>
+          <h3>{question.prompt}</h3>
+          <div className="quiz-options">
+            {options.map(option => {
+              const isSelected = selected === option;
+              const isCorrect = Boolean(selected) && option === question.answer;
+              return (
+                <button key={option} type="button" onClick={() => answer(option)} disabled={Boolean(selected)} aria-pressed={isSelected} className={`quiz-option ${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''}`}>
+                  <span className="quiz-option-dot" aria-hidden="true" /><span>{option}</span>
+                </button>
+              );
+            })}
+          </div>
+          {selected && (
+            <div className={`quiz-feedback ${selected === question.answer ? 'correct' : 'wrong'}`} role="status">
+              <strong>{selected === question.answer ? 'Resposta correta' : 'Resposta registrada'}</strong>
+              <p>{question.explanation}</p>
+              {questionSourceUrl && <a href={questionSourceUrl} target="_blank" rel="noopener noreferrer">Conferir fonte · {source?.label ?? question.sourceLabel} <ExternalLink aria-hidden="true" /></a>}
+            </div>
+          )}
+          <div className="quiz-footer"><span>{selected ? 'Resposta registrada' : 'Escolha uma alternativa'}</span><button type="button" onClick={next} disabled={!selected}>{step === 39 ? 'Concluir fase' : 'Próxima'} <span aria-hidden="true">→</span></button></div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+    ? [money((s.numeric ?? 0) / 2), money((s.numeric ?? 0) * 1.5)]
+    : [fmt((s.numeric ?? 0) / 2, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0), fmt((s.numeric ?? 0) * 1.5, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0)];
+  const options = Array.from(new Set([s.value, ...alternatives, ...fallback])).slice(0, 3);
+  return {
+    id:`easy-${i+1}`, difficulty:'Fácil', phase:1, category:s.category,
+    prompt:`Qual é o valor registrado para ${s.label}?`,
+    options, answer:s.value, explanation:s.note + '.', anchor:s.anchor, sourceId:s.sourceId, sourceLabel:s.sourceLabel,
+  };
+});
 
 const pairs = seeds.map((s, i) => {
   const sameUnit = seeds.find((candidate, j) => j !== i && candidate.unit === s.unit);
