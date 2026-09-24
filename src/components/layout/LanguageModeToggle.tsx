@@ -4,24 +4,24 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 export function LanguageModeToggle() {
   const { mode, setMode } = useLanguageMode();
   const status = mode === 'technical'
-    ? 'Detalhes técnicos, fontes e método visíveis'
+    ? 'Fontes, método e rastreabilidade'
     : mode === 'summary'
-      ? 'Somente os dados essenciais e ações rápidas'
-      : 'Leitura clara com contexto sob demanda';
+      ? 'Só o essencial e ações rápidas'
+      : 'Dados claros, contexto sob demanda';
 
   return (
     <div className="language-toggle language-toggle-v2" role="group" aria-label="Escolha o nível de detalhe da leitura">
-      <button type="button" onClick={() => setMode('summary')} aria-pressed={mode === 'summary'} className={mode === 'summary' ? 'is-active' : ''} title="Somente os dados essenciais e ações rápidas">
+      <button type="button" onClick={() => setMode('summary')} aria-pressed={mode === 'summary'} className={mode === 'summary' ? 'is-active' : ''} title="Mostrar apenas os dados essenciais e ações rápidas">
         <List className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Resumo</span>
         <small>essencial</small>
       </button>
-      <button type="button" onClick={() => setMode('simple')} aria-pressed={mode === 'simple'} className={mode === 'simple' ? 'is-active' : ''} title="Leitura clara com contexto sob demanda">
+      <button type="button" onClick={() => setMode('simple')} aria-pressed={mode === 'simple'} className={mode === 'simple' ? 'is-active' : ''} title="Mostrar dados claros e abrir contexto quando necessário">
         <FileText className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Simples</span>
         <small>claro</small>
       </button>
-      <button type="button" onClick={() => setMode('technical')} aria-pressed={mode === 'technical'} className={mode === 'technical' ? 'is-active' : ''} title="Mostrar fontes, método e detalhes dos dados">
+      <button type="button" onClick={() => setMode('technical')} aria-pressed={mode === 'technical'} className={mode === 'technical' ? 'is-active' : ''} title="Mostrar fontes, método e detalhes para auditoria">
         <Code2 className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Técnico</span>
         <small>detalhes</small>
