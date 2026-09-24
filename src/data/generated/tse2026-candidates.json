@@ -41,15 +41,12 @@
   },
   "coverage": "state_watchlist",
   "watchlist": [
-    "Keké",
     "Anderson Teodoro",
     "Zé da Imperial",
     "Baiano dos Cocos",
     "Cambão",
     "Abadyas Damasceno",
-    "Pábio Mossoró",
     "Felipe Galdino",
-    "Ribeiro do Túlio",
     "André do Premium"
   ],
   "matched": [
@@ -62,7 +59,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "ANDERSON TEODORO DA CUNHA DOURADO",
+      "gender": "MASCULINO",
+      "education": "SUPERIOR INCOMPLETO",
+      "occupation": "VEREADOR"
     },
     {
       "sqCandidate": "90002543127",
@@ -73,7 +74,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "JOSE BARBOSA DA SILVA",
+      "gender": "MASCULINO",
+      "education": "ENSINO MÉDIO COMPLETO",
+      "occupation": "COMERCIANTE"
     },
     {
       "sqCandidate": "90002537423",
@@ -84,7 +89,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
+      "gender": "MASCULINO",
+      "education": "ENSINO MÉDIO COMPLETO",
+      "occupation": "COMERCIANTE"
     },
     {
       "sqCandidate": "90002547032",
@@ -95,7 +104,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "WILDE LOPES RORIZ",
+      "gender": "MASCULINO",
+      "education": "SUPERIOR COMPLETO",
+      "occupation": "DEPUTADO"
     },
     {
       "sqCandidate": "90002547004",
@@ -106,7 +119,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
+      "gender": "MASCULINO",
+      "education": "ENSINO MÉDIO INCOMPLETO",
+      "occupation": "ELETRICISTA E ASSEMELHADOS"
     },
     {
       "sqCandidate": "90002543768",
@@ -117,7 +134,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "FELIPE DE MOURA GALDINO FERNANDES",
+      "gender": "MASCULINO",
+      "education": "SUPERIOR INCOMPLETO",
+      "occupation": "EMPRESÁRIO"
     },
     {
       "sqCandidate": "90002547039",
@@ -128,7 +149,11 @@
       "status": "#NE",
       "municipality": null,
       "photoUrl": null,
-      "instagramUrl": null
+      "instagramUrl": null,
+      "fullName": "ANDRE LUIZ GOMES GONTIJO",
+      "gender": "MASCULINO",
+      "education": "ENSINO MÉDIO INCOMPLETO",
+      "occupation": "DEPUTADO"
     }
   ],
   "diff": {
