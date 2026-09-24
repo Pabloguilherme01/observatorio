@@ -62,12 +62,12 @@ must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('max
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
 must(executive.includes('poll?.pollster') && executive.includes('poll?.method') && executive.includes('poll?.registrationNumber'), 'card de pesquisa exibe identificação e cenário');
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
-must((read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && (read('src/components/sections/HeroCountdown.tsx')).includes('Ativar Modo Eleição') && files.hero.includes('aria-pressed'), 'Modo Eleição possui alternador visível e acessível');
-must(files.hero.includes('Fonte: IBGE') && files.hero.includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
+must((read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && (read('src/components/sections/HeroCountdown.tsx')).includes('Ativar Modo Eleição') && (read('src/components/sections/HeroCountdown.tsx')).includes('aria-pressed'), 'Modo Eleição possui alternador visível e acessível');
+must((read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: IBGE') && (read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
 must(dashboard.includes('Orçamento planejado por habitante') && dashboard.includes('totalBrl') && dashboard.includes('population2026'), 'dashboard calcula orçamento planejado por habitante');
-must(dashboard.includes('LOA ÷ população') || files.dashboard.includes('LOA / população'), 'indicador per capita explicita fórmula');
+must(dashboard.includes('LOA ÷ população') || dashboard.includes('LOA / população'), 'indicador per capita explicita fórmula');
 must(files.hero.includes('transporte semiurbano') && files.hero.includes('Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
-must(files.dashboard.includes('Crescimento populacional · 2022–2026') && files.dashboard.includes('Eleitorado · 2018–2026'), 'dashboard mantém tendências históricas');
+must(dashboard.includes('Crescimento populacional · 2022–2026') && dashboard.includes('Eleitorado · 2018–2026'), 'dashboard mantém tendências históricas');
 
 
 
