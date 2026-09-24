@@ -11,11 +11,11 @@ const isMunicipalitySnapshot = payload.schemaVersion === 3 && payload.coverage =
 const isStateWatchlistSnapshot = payload.schemaVersion === 3 && payload.coverage === 'state_watchlist';
 const state = payload.meta?.state;
 if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('schemaVersion deve ser 2 ou 3.');
-if (isMunicipalitySnapshot) {
-  if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter municipal ausente ou divergente.');
-  if (state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '5200258') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
+if (isMunicipalitySnapshot || isStateWatchlistSnapshot) {
+  if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter local ausente ou divergente.');
+  if (isMunicipalitySnapshot && state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '5200258') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
   if (state !== 'local_filter_pending' && !new Set(['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy']).has(payload.meta?.retrievalMethod)) errors.push('snapshot TSE sincronizado deve usar uma fonte oficial TSE suportada.');
-  if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot municipal não informa explicitamente o recorte monitorado.');
+  if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot não informa explicitamente o recorte monitorado.');
 }
 
 if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist no contrato estadual antigo.');
@@ -31,6 +31,7 @@ if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
   if (requireSynced && !isMunicipalitySnapshot) errors.push('Placeholder estadual não pode passar quando REQUIRE_TSE_SYNC=true.');
   if (requireSynced && isMunicipalitySnapshot && state === 'local_filter_pending') errors.push('Snapshot municipal ainda pendente; sincronização oficial municipal é necessária antes da publicação de novos registros de candidatura.');
+  if (requireSynced && isStateWatchlistSnapshot && !payload.matched.length) errors.push('Snapshot estadual sincronizado sem correspondências da watchlist.');
 } else if (!validSha) {
   errors.push('SHA-256 da fonte ausente ou inválido.');
 }
@@ -39,6 +40,8 @@ if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.met
 if (!Array.isArray(payload.watchlist)) errors.push('watchlist deve ser array.');
 if (!isMunicipalitySnapshot && payload.watchlist.length !== 10) errors.push('watchlist deve conter exatamente 10 nomes monitorados no recorte TSE.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
+if (isStateWatchlistSnapshot && payload.meta?.candidateUniverseScope !== 'GO') errors.push('candidateUniverseScope deve ser GO no snapshot estadual.');
+if (isStateWatchlistSnapshot && payload.meta?.localFilterType !== 'editorial_watchlist') errors.push('localFilterType deve identificar o recorte editorial.');
 
 const ids = new Set();
 for (const candidate of payload.matched ?? []) {
