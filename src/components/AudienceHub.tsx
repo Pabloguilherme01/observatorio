@@ -1,10 +1,8 @@
-import { ArrowRight, BarChart3, Brain, BusFront, Droplets, Landmark, RefreshCw, Users, WalletCards } from 'lucide-react';
-import { useMemo } from 'react';
+import { ArrowRight, BarChart3, BusFront, Droplets, Landmark, RefreshCw, Users, WalletCards } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
-import generated from '../data/generated/tse2026-candidates.json';
 import { formatDate } from '../utils/formatters';
-import { ShareDataButton } from './ShareDataButton';
 import { useLanguageMode } from '../context/LanguageModeContext';
+import { AudienceTodaySummary } from './AudienceTodaySummary';
 
 type Topic = {
   readonly id: string;
@@ -16,11 +14,11 @@ type Topic = {
 
 const topics: readonly Topic[] = [
   { id: 'dashboard', label: 'Cidade', description: 'População, densidade e indicadores básicos.', simple: 'Os números básicos da cidade.', icon: BarChart3 },
-  { id: 'eleitorado', label: 'Eleitorado', description: 'Perfil, snapshots e diferenças de base.', simple: 'Quem está no recorte eleitoral.', icon: Users },
+  { id: 'eleitorado', label: 'Eleitorado', description: 'Perfil eleitoral e recortes da base.', simple: 'Quem está no recorte eleitoral.', icon: Users },
   { id: 'orcamento', label: 'Orçamento', description: 'LOA, áreas de gasto e valores previstos.', simple: 'Quanto está previsto no orçamento.', icon: WalletCards },
   { id: 'transporte', label: 'Transporte', description: 'Tarifas e cálculo de custo mensal.', simple: 'Quanto o transporte pode custar.', icon: BusFront },
   { id: 'saude', label: 'Saneamento', description: 'Água, esgoto, coleta e tratamento.', simple: 'Como estão água e esgoto.', icon: Droplets },
-  { id: 'politica', label: 'Eleições', description: 'Pesquisas documentais, calendário e registros.', simple: 'Calendário, pesquisas e registros.', icon: Landmark },
+  { id: 'politica', label: 'Eleições', description: 'Calendário, candidaturas e registros.', simple: 'Calendário e candidatos.', icon: Landmark },
 ];
 
 function brl(value: number) {
@@ -32,10 +30,6 @@ export function AudienceHub() {
   const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
   const sanitationPct = d.sanitation.publicSewerServicePct;
   const fare = d.transport.routes[0]?.fareBrl ?? 0;
-  const snapshotState = generated.meta.state;
-  const snapshotLabel = snapshotState === 'not_synced'
-    ? 'candidaturas ainda não sincronizadas'
-    : 'captura de candidaturas: ' + snapshotState;
 
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({
@@ -46,15 +40,11 @@ export function AudienceHub() {
     window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
   };
 
-  const shareUrl = window.location.origin + window.location.pathname;
-  const modeHint = useMemo(
-    () => mode === 'technical'
-      ? 'Valores, método, data e fonte ficam disponíveis em cada dado.'
-      : mode === 'summary'
-        ? 'Os principais assuntos e números, sem a camada técnica.'
-        : 'Números claros. Toque para ver a fonte.',
-    [mode],
-  );
+  const modeHint = mode === 'technical'
+    ? 'Valores, método, data e fonte ficam disponíveis em cada dado.'
+    : mode === 'summary'
+      ? 'Os principais assuntos e números, sem a camada técnica.'
+      : 'Números claros para explorar a cidade.';
 
   return (
     <section id="descubra" className="mx-auto max-w-7xl px-4 pb-8 pt-3 sm:px-6 sm:pb-10" aria-labelledby="audience-title">
@@ -92,14 +82,14 @@ export function AudienceHub() {
 
         {mode === 'technical' && (
           <div className="technical-detail mt-4 rounded-2xl border border-white/8 bg-white/[0.018] px-4 py-3 text-xs text-slate-500">
-            Dados locais atualizados em {formatDate(d.meta.updatedAt)} · {snapshotLabel}. Use o inspetor de dados para a referência completa de cada valor.
+            Dados locais atualizados em {formatDate(d.meta.updatedAt)}. A referência completa fica disponível no inspetor de dados.
           </div>
         )}
 
         {mode === 'technical' && (
           <div className="mt-5 rounded-3xl border border-white/8 bg-black/10 p-4 sm:p-5">
             <div className="mb-3 flex items-center justify-between gap-2">
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Atalhos</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Atalhos técnicos</div>
               <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-600">6 assuntos</span>
             </div>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -119,55 +109,24 @@ export function AudienceHub() {
             </div>
           </div>
         )}
+
         <div className="mt-5">
           <div className="mb-3 flex items-end justify-between gap-2">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Hoje</div>
-              <p className="mt-1 text-xs text-slate-500">{mode === 'technical' ? 'Quatro números com acesso à fonte.' : mode === 'summary' ? 'Os quatro números principais.' : 'Quatro números para começar.'}</p>
+              <p className="mt-1 text-xs text-slate-500">
+                {mode === 'technical' ? 'Indicadores com referência e método.' : 'Os quatro números principais para começar.'}
+              </p>
             </div>
           </div>
 
-          <div className="today-rail">
-            <div className="today-card">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">LOA 2026</span>
-              <strong className="mt-2 block text-2xl font-black text-white">{brl(d.budget.totalBrl)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'previsto para 2026' : 'orçamento'}</span>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <a href="#orcamento" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
-                {mode === 'technical' && <ShareDataButton title="LOA 2026 · Águas Lindas" text={'A LOA 2026 prevê ' + brl(d.budget.totalBrl) + ' para Águas Lindas de Goiás.'} url={shareUrl + '#orcamento'} compact />}
-              </div>
-            </div>
-
-            <div className="today-card">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Eleitorado</span>
-              <strong className="mt-2 block text-2xl font-black text-white">{d.electoral.electorate.toLocaleString('pt-BR')}</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'snapshot local' : 'eleitores'}</span>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <a href="#eleitorado" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
-                {mode === 'technical' && <ShareDataButton title="Eleitorado 2026 · Águas Lindas" text={'O snapshot local usado pelo Observatório registra ' + d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores em Águas Lindas de Goiás.'} url={shareUrl + '#eleitorado'} compact />}
-              </div>
-            </div>
-
-            <div className="today-card">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Transporte</span>
-              <strong className="mt-2 block text-2xl font-black text-white">{brl(fare)}</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'por trecho · Brasília' : 'por trecho'}</span>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <a href="#transporte" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Calcular</a>
-                {mode === 'technical' && <ShareDataButton title="Transporte · Águas Lindas → Brasília" text={'A tarifa de referência considerada pelo Observatório é ' + brl(fare) + ' por trecho para Brasília.'} url={shareUrl + '#transporte'} compact />}
-              </div>
-            </div>
-
-            <div className="today-card">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Saneamento</span>
-              <strong className="mt-2 block text-2xl font-black text-white">{sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
-              <span className="mt-1 block text-xs text-slate-500">{mode === 'technical' ? 'serviço público de esgoto' : 'esgoto'}</span>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <a href="#saude" className="inline-flex min-h-10 items-center rounded-xl bg-sky-300 px-3 py-2 text-xs font-black text-slate-950">Ver</a>
-                {mode === 'technical' && <ShareDataButton title="Saneamento · Águas Lindas" text={'O indicador de acesso ao serviço público de esgoto é ' + sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% no recorte apresentado.'} url={shareUrl + '#saude'} compact />}
-              </div>
-            </div>
-          </div>
+          <AudienceTodaySummary
+            budget={brl(d.budget.totalBrl)}
+            electorate={d.electoral.electorate.toLocaleString('pt-BR')}
+            transport={brl(fare)}
+            sanitation={sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'}
+            onNavigate={go}
+          />
         </div>
 
         {mode === 'technical' && (
@@ -183,27 +142,6 @@ export function AudienceHub() {
                 <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
               </div>
             ))}
-          </div>
-        )}
-
-        {mode === 'technical' && (
-          <div className="mt-5 rounded-2xl border border-violet-300/10 bg-violet-300/[0.035] p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-violet-200/80">Leitura guiada</div>
-                <strong className="mt-1 block text-sm text-white">Teste o que entendeu</strong>
-              </div>
-              <button type="button" onClick={() => {
-                window.dispatchEvent(new CustomEvent('observatorio:mode', { detail: 'investigation' }));
-                window.setTimeout(() => {
-                  document.getElementById('quiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  window.history.replaceState(null, '', '#quiz');
-                  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'quiz' }));
-                }, 40);
-              }} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-violet-300/20 bg-violet-300/10 px-3 py-2 text-xs font-black text-violet-100">
-                Quiz <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
           </div>
         )}
       </div>
