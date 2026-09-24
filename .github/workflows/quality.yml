@@ -42,6 +42,8 @@ jobs:
         run: npm run audit:engagement
       - name: Validate versioned TSE snapshot contract
         run: npm run validate:tse
+      - name: Validate candidate source guard
+        run: node scripts/test-candidate-source-guard.mjs
       - name: Validate production results feed contract
         run: npm run validate:results
       - name: Validate synthetic results contract fixture
