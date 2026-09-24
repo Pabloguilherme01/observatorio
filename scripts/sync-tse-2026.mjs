@@ -47,8 +47,9 @@ const API_CARGOS = [
 // mas o transporte pode passar por um reader/proxy público somente para contornar
 // a barreira de rede. O snapshot registra esse transporte explicitamente.
 const API_READER_PROXIES = [
-  'https://api.allorigins.win/raw?url=',
-  'https://corsproxy.io/?url=',
+  { prefix: 'https://r.jina.ai/http://', encode: false, label: 'jina-reader' },
+  { prefix: 'https://api.allorigins.win/raw?url=', encode: true, label: 'allorigins' },
+  { prefix: 'https://corsproxy.io/?url=', encode: true, label: 'corsproxy' },
 ];
 
 function curlJson(url) {
@@ -65,8 +66,15 @@ function curlJson(url) {
   return JSON.parse(output);
 }
 
-function encodeProxyTarget(url) {
-  return encodeURIComponent(url);
+function parseJsonOutput(output) {
+  try {
+    return JSON.parse(output);
+  } catch {
+    const start = output.indexOf('{');
+    const end = output.lastIndexOf('}');
+    if (start >= 0 && end > start) return JSON.parse(output.slice(start, end + 1));
+    throw new Error('A resposta intermediada não contém JSON válido.');
+  }
 }
 
 function fetchApi(url) {
@@ -75,11 +83,18 @@ function fetchApi(url) {
   } catch (directError) {
     console.warn('[TSE] acesso direto bloqueado/indisponível; tentando transporte intermediado.');
     for (const proxy of API_READER_PROXIES) {
-      const requestUrl = proxy + encodeProxyTarget(url);
+      const requestUrl = proxy.prefix + (proxy.encode ? encodeURIComponent(url) : url.replace(/^https:\/\//, ''));
       try {
-        return { payload: curlJson(requestUrl), transport: 'reader_proxy', requestUrl };
+        const output = execFileSync('curl', [
+          '--fail', '--location', '--http1.1', '--retry', '1', '--retry-delay', '1', '--retry-all-errors',
+          '--connect-timeout', '10', '--max-time', '20',
+          '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
+          '--header', 'Accept: application/json,text/plain;q=0.9,*/*;q=0.8',
+          requestUrl,
+        ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
+        return { payload: parseJsonOutput(output), transport: 'reader_proxy', requestUrl, proxy: proxy.label };
       } catch (proxyError) {
-        console.warn('[TSE] proxy indisponível: ' + proxy + ' (' + (proxyError instanceof Error ? proxyError.message : String(proxyError)) + ')');
+        console.warn('[TSE] proxy indisponível: ' + proxy.label + ' (' + (proxyError instanceof Error ? proxyError.message : String(proxyError)) + ')');
       }
     }
     throw directError;
