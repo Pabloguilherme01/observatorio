@@ -25,7 +25,7 @@
       "declaredAssetsTotal": 60000,
       "localEvidence": "Vereador de Águas Lindas eleito em 2024 com 1.680 votos; histórico municipal identificado em fontes públicas.",
       "sourceUrls": [
-        "https://www.tse.jus.br/",
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/baiano-dos-cocos/"
       ]
     },
@@ -43,9 +43,9 @@
         "https://www.facebook.com/andersonteodorooficial"
       ],
       "declaredAssetsTotal": 990000,
-      "localEvidence": "Deputado estadual eleito em 2022; votação municipal expressiva em Águas Lindas e base eleitoral declarada no município.",
+      "localEvidence": "Deputado estadual eleito em 2022; votação municipal relevante em Águas Lindas e histórico político local documentado em fontes públicas.",
       "sourceUrls": [
-        "https://www.tse.jus.br/",
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/anderson-teodoro/"
       ]
     },
@@ -65,7 +65,7 @@
       "declaredAssetsTotal": 57531,
       "localEvidence": "Vereador de Águas Lindas reeleito em 2024; histórico municipal confirmado em bases públicas.",
       "sourceUrls": [
-        "https://www.tse.jus.br/",
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/abadyas-damasceno/"
       ]
     },
@@ -84,7 +84,7 @@
       "declaredAssetsTotal": 270700,
       "localEvidence": "Vereador de Águas Lindas e candidato a deputado estadual em 2022; nova candidatura estadual registrada em 2026.",
       "sourceUrls": [
-        "https://www.tse.jus.br/",
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://meuvoto.org.br/candidato/90002543113.html"
       ]
     },
@@ -104,7 +104,7 @@
       "declaredAssetsTotal": 105000,
       "localEvidence": "Ex-deputado estadual e vereador de Águas Lindas; 6.218 votos no município em 2022.",
       "sourceUrls": [
-        "https://www.tse.jus.br/",
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://www1.folha.uol.com.br/",
         "https://pt.wikipedia.org/wiki/Z%C3%A9_da_Imperial"
       ]
@@ -124,7 +124,7 @@
       "declaredAssetsTotal": 2632041.93,
       "localEvidence": "Candidatura de 2026 identificada em cobertura pública associada a Águas Lindas; a base local é tratada como evidência pública e não como campo oficial do TSE.",
       "sourceUrls": [
-        "https://www.tse.jus.br/",
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://www.gazetadopovo.com.br/eleicoes/2026/candidatos/go/deputado-estadual/ribeiro-do-tullio-psdb-45007/"
       ]
     }
