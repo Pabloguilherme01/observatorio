@@ -28,6 +28,7 @@ export function LanguageModeToggle() {
       </button>
       <span className="language-toggle-status" title={status} aria-label={status} aria-live="polite" role="status">
         <Info className="h-3 w-3" aria-hidden="true" />
+        <span className="sr-only">{status}</span>
       </span>
     </div>
   );
