@@ -30,6 +30,7 @@ export function ExecutiveSummary() {
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const [discoveryIndex, setDiscoveryIndex] = useState(0);
+  const [showMoreSummary, setShowMoreSummary] = useState(false);
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -193,8 +194,18 @@ export function ExecutiveSummary() {
                   </div>
                 ))}
               </div>
-              <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
-                {quickStats.map(stat => (
+              <button
+                type="button"
+                className="summary-more-toggle"
+                aria-expanded={showMoreSummary}
+                onClick={() => setShowMoreSummary(current => !current)}
+              >
+                {showMoreSummary ? 'Menos indicadores' : 'Mais indicadores'}
+                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showMoreSummary ? 'rotate-180' : ''}`} aria-hidden="true" />
+              </button>
+              {showMoreSummary && (
+              <div className="summary-public-grid" aria-label="Indicadores adicionais do observatório">
+                {quickStats.slice(0, 4).map(stat => (
                   <div key={stat.label} className={`summary-public-stat ${activeStat === stat.label ? 'is-active' : ''}`}>
                     <button
                       type="button"
@@ -217,6 +228,7 @@ export function ExecutiveSummary() {
                   </div>
                 ))}
               </div>
+              )}
             </div>
           )}
           
