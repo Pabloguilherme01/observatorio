@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown, Copy, Check } from 'lucide-react';
+import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
