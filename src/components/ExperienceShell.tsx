@@ -102,7 +102,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, [activeModal]);
 
   const setExperienceMode = (next: ExperienceMode) => { setMode(next); localStorage.setItem(MODE_KEY, next); document.documentElement.dataset.experienceMode = next; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + next); window.dispatchEvent(new CustomEvent('observatorio:mode-changed', { detail: next })); };
-  const setElectionMode = (next: boolean) => { setElectionModeState(next); localStorage.setItem(ELECTION_KEY, next ? '1' : '0'); document.documentElement.classList.toggle('mode-election', next); window.dispatchEvent(new CustomEvent('observatorio:election-mode-changed', { detail: next })); };
+  const setElectionMode = (next: boolean) => { setElectionModeState(next); writeStorage(ELECTION_KEY, next ? '1' : '0'); document.documentElement.classList.toggle('mode-election', next); window.dispatchEvent(new CustomEvent('observatorio:election-mode-changed', { detail: next })); };
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); localStorage.setItem(RECENT_KEY, JSON.stringify(next)); return next; }); };
   const toggleFavorite = (id: string) => { setFavorites(current => { const next = current.includes(id) ? current.filter(item => item !== id) : [...current,id].slice(-6); localStorage.setItem(FAVORITES_KEY, JSON.stringify(next)); return next; }); };
