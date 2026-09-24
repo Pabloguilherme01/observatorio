@@ -21,30 +21,6 @@ const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
 const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 
 
-// O TSE pode bloquear o IP compartilhado dos runners do GitHub Actions (HTTP 403).
-// Nesses casos, o conteúdo continua sendo solicitado ao endpoint oficial do TSE,
-// mas o transporte pode passar por um reader/proxy público somente para contornar
-// a barreira de rede. O snapshot registra esse transporte explicitamente.
-const API_READER_PROXIES = [
-  { prefix: 'https://api.codetabs.com/v1/proxy?quest=', encode: true, label: 'codetabs' },
-  { prefix: 'https://api.cors.lol/?url=', encode: true, label: 'cors-lol' },
-  { prefix: 'https://api.allorigins.win/raw?url=', encode: true, label: 'allorigins' },
-];
-
-function curlJson(url) {
-  const output = execFileSync('curl', [
-    '--fail', '--location', '--http1.1',
-    '--retry', '1', '--retry-delay', '1', '--retry-all-errors',
-    '--connect-timeout', '15', '--max-time', '20',
-    '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
-    '--header', 'Accept: application/json',
-    '--header', 'Accept-Language: pt-BR,pt;q=0.9',
-    '--referer', 'https://divulgacandcontas.tse.jus.br/divulga/',
-    url,
-  ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
-  return JSON.parse(output);
-}
-
 function municipalityMatch(row, header) {
   const code = valueOf(row, header, ['CD_MUNICIPIO', 'CD_MUNICIPIO_TSE', 'NR_MUNICIPIO']);
   const name = valueOf(row, header, ['NM_MUNICIPIO']);
@@ -165,7 +141,8 @@ async function main() {
     let sourceRows = 0;
     let municipalityRows = 0;
 
-    // Para o recorte completo do município, usamos exclusivamente o CSV oficial do TSE.\n    // O endpoint estadual do DivulgaCandContas não contém município no registro retornado.\n    let lastError = null;
+    // Para o recorte completo do município, usamos exclusivamente o CSV oficial do TSE.
+    // O endpoint estadual do DivulgaCandContas não contém município no registro retornado.\n    let lastError = null;
 
     for (const candidateUrl of ZIP_URLS) {
       try {
