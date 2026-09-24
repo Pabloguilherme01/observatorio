@@ -10,6 +10,7 @@ import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
+import { QuizAccessButton } from '../components/QuizAccessButton';
 
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
@@ -188,6 +189,7 @@ export function App() {
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Acesso rápido ao quiz"><QuizAccessButton /></SectionErrorBoundary>
         </ExperienceShell>
       </ThemeProvider>
       </LanguageModeProvider>
