@@ -86,7 +86,7 @@ must(appSource.includes('navigateToHash') && appSource.includes("window.dispatch
 must(appSource.includes('id="analise"') && appSource.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
 const dashboardIdCount = (dashboardMetrics.match(/id="dashboard"/g) ?? []).length + (appSource.match(/id="dashboard"/g) ?? []).length;
 const analiseIdCount = (appSource.match(/id="analise"/g) ?? []).length;
-must(dashboardIdCount === 1 && dashboardMetrics.includes('<section id="dashboard"'), '#dashboard possui uma única âncora pública no DashboardMetrics');
+must(dashboardIdCount === 1 && dashboardMetrics.includes('id="dashboard"'), '#dashboard possui uma única âncora pública no DashboardMetrics');
 const audienceHub = read('src/components/AudienceHub.tsx');
 must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a âncora pública #dashboard');
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
@@ -196,7 +196,7 @@ if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
 
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
 const social = read('src/components/InstagramSyncHub.tsx');
-must(languageToggle.includes('language-toggle') && languageToggle.includes("setMode('technical')"), 'modo simples/técnico possui componente próprio');
+must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modo Resumo/Simples/Técnico possui componente próprio');
 must(social.includes('MessageCircle') && social.includes('shareWhatsApp'), 'Instagram/WhatsApp possuem compartilhamento');
 
 if (!errors.length) {
