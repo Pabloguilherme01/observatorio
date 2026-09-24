@@ -178,9 +178,9 @@ export function App() {
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><HeroCountdown /></SectionErrorBoundary>
           <main id="main-content">
-            <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Dashboard"><div id="dashboard" className="scroll-mt-24"><div id="analise"><DashboardMetrics /></div></div></SectionErrorBoundary>
+            <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
+            <SectionErrorBoundary label="Dashboard"><div id="dashboard" className="scroll-mt-24"><div id="analise"><DashboardMetrics /></div></div>
             <DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} />
             <DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} />
             <DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} />
