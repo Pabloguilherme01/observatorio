@@ -12,7 +12,7 @@ const state = payload.meta?.state;
 if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('schemaVersion deve ser 2 ou 3.');
 if (isMunicipalitySnapshot) {
   if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter municipal ausente ou divergente.');
-  if (state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '92737') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
+  if (state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '5200258') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
   if (state !== 'local_filter_pending' && payload.meta?.retrievalMethod !== 'official_tse_zip_csv') errors.push('snapshot municipal sincronizado deve usar official_tse_zip_csv.');
   if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot municipal não informa explicitamente o recorte monitorado.');
 }
@@ -29,7 +29,7 @@ const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
   if (requireSynced && !isMunicipalitySnapshot) errors.push('Placeholder estadual não pode passar quando REQUIRE_TSE_SYNC=true.');
-  if (requireSynced && isMunicipalitySnapshot && state === 'local_filter_pending') warnings.push('Snapshot municipal ainda pendente; sincronização oficial municipal é necessária antes da publicação de novos registros de candidatura.');
+  if (requireSynced && isMunicipalitySnapshot && state === 'local_filter_pending') errors.push('Snapshot municipal ainda pendente; sincronização oficial municipal é necessária antes da publicação de novos registros de candidatura.');
 } else if (!validSha) {
   errors.push('SHA-256 da fonte ausente ou inválido.');
 }
@@ -47,7 +47,7 @@ for (const candidate of payload.matched ?? []) {
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
   if (isMunicipalitySnapshot && state !== 'local_filter_pending') {
     if (candidate.municipality !== 'Águas Lindas de Goiás') errors.push('Candidato municipal sem município validado: ' + candidate.sqCandidate);
-    if (candidate.municipalityCodeTse !== '92737') errors.push('Candidato municipal sem código TSE validado: ' + candidate.sqCandidate);
+    if (candidate.municipalityCodeTse !== '5200258') errors.push('Candidato municipal sem código TSE validado: ' + candidate.sqCandidate);
   }
 }
 
