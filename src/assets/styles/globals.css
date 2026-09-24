@@ -248,4 +248,4 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .summary-public-topics{grid-template-columns:1fr!important}
 }
 
-@media (max-width: 767px) { html, body, #root { overflow-x: clip; } }
+@media (max-width: 767px) { html, body, #root { overflow-x:clip; } }
