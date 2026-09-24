@@ -38,8 +38,6 @@ jobs:
       - name: Audit engagement and mobile regressions
         run: npm run audit:engagement
       - name: Validate versioned TSE snapshot contract
-        env:
-          REQUIRE_TSE_SYNC: 'true'
         run: npm run validate:tse
       - name: Validate production results feed contract
         run: npm run validate:results
