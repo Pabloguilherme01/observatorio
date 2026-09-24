@@ -115,7 +115,7 @@ const medium = pairs.map(({a,b},i): Question => {
   return {
     id:`medium-${i+1}`, difficulty:'Médio', phase:2, category:a.category,
     prompt:`Entre "${a.label}" e "${b.label}", qual valor é maior no recorte desta edição?`,
-    options:[larger, a.value, b.value],
+    options:Array.from(new Set([larger, a.value, b.value, aNum === bNum ? (aNum + 1).toLocaleString('pt-BR') : (aNum > bNum ? b.value : a.value)])).slice(0, 3),
     answer:larger, explanation:`A comparação usa os valores registrados para os dois indicadores. O maior é ${label}: ${larger}.`,
     anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
   };
