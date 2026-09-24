@@ -13,11 +13,7 @@ function brl(value: number) {
 
 export function ExecutiveSummary() {
   const poll = d.polls[0];
-  const brasiliaRoute = d.transport.routes.find(route => route.id === 'brasilia');
   const groupedUnknown = (poll?.nonePct ?? 0) + (poll?.notSurePct ?? 0);
-  const monthlyPerPerson = (brasiliaRoute?.fareBrl ?? 0)
-    * d.transport.defaultTripsPerDay
-    * d.transport.defaultWorkDaysPerMonth;
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
   const hasPoll = Boolean(poll);
   
@@ -34,8 +30,7 @@ export function ExecutiveSummary() {
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const [lastAction, setLastAction] = useState('');
-  const [shareBusyCard, setShareBusyCard] = useState('');
-  const { mode: languageMode } = useLanguageMode();
+    const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
     window.history.replaceState(null, '', '#' + id);
@@ -80,14 +75,9 @@ export function ExecutiveSummary() {
     goToSection(topic.target);
   };
 
-  const shareCard = async (label: string, value: string) => {
-    await share(label, value);
-    setLastAction(`Compartilhar: ${label}`);
-  };
 
   const share = async (cardLabel?: string, cardValue?: string) => {
-    if (shareBusy || (cardLabel && shareBusyCard)) return;
-    if (cardLabel) setShareBusyCard(cardLabel);
+    if (shareBusy) return;
     setShareBusy(true);
     const text = [
       'Observatório Eleitoral — Águas Lindas de Goiás 2026',
@@ -121,7 +111,6 @@ export function ExecutiveSummary() {
       window.setTimeout(() => setShareStatus(''), 2400);
     } finally {
       setShareBusy(false);
-      setShareBusyCard('');
     }
   };
 
@@ -241,9 +230,6 @@ export function ExecutiveSummary() {
                       <em>{stat.detail}</em>
                     </button>
                     <span className="summary-public-stat-footer">
-                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={() => { void shareCard(stat.label, stat.value); }} disabled={shareBusyCard === stat.label || shareBusy}>
-                        <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
-                      </button>
                       <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
                     </span>
                   </div>
@@ -314,13 +300,6 @@ export function ExecutiveSummary() {
               {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Ver contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
             </Card>
 
-            {languageMode === 'technical' && (
-              <Card className="p-4">
-                <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Mobilidade</div>
-                <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{brl(monthlyPerPerson)}</div>
-                <div className="text-xs text-slate-500">por pessoa/mês · cenário de referência</div>
-              </Card>
-            )}
           </div>
         </div>
 
