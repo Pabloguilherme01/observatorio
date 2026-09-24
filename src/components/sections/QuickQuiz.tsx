@@ -2,9 +2,9 @@ import { CheckCircle2, ExternalLink, RotateCcw, Share2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 type Difficulty = 'Fácil' | 'Médio' | 'Difícil';
-
 type Question = {
   readonly difficulty: Difficulty;
+  readonly category: string;
   readonly prompt: string;
   readonly options: readonly string[];
   readonly answer: string;
@@ -32,7 +32,7 @@ const QUESTIONS: readonly Question[] = [
 ];
 
 function shuffledOptions(question: Question, index: number): readonly string[] {
-  const offset = index % question.options.length;
+  const offset = (index * 3) % question.options.length;
   return question.options.map((_, position) => question.options[(position + offset) % question.options.length]);
 }
 
@@ -42,28 +42,30 @@ export function QuickQuiz() {
   const [selected, setSelected] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
   const [category, setCategory] = useState('Todas');
-  const options = useMemo(() => shuffledOptions(QUESTIONS[step] ?? QUESTIONS[0], step), [step]);
-
-  const question = QUESTIONS[step];
-  const progress = finished ? 100 : Math.round(((step + 1) / QUESTIONS.length) * 100);
+  const available = useMemo(() => category === 'Todas' ? QUESTIONS : QUESTIONS.filter(question => question.category === category), [category]);
+  const options = useMemo(() => shuffledOptions(available[step] ?? available[0] ?? QUESTIONS[0], step), [available, step]);
+  const question = available[step];
+  const progress = finished ? 100 : Math.round(((step + 1) / Math.max(available.length, 1)) * 100);
+  const categories = useMemo(() => ['Todas', ...Array.from(new Set(QUESTIONS.map(question => question.category)))], []);
 
   function answer(value: string) {
-    if (selected) return;
+    if (selected || !question) return;
     setSelected(value);
     if (value === question.answer) setScore(current => current + 1);
   }
 
   function next() {
-    if (!selected) return;
+    if (!selected || !question) return;
     if (step === available.length - 1) setFinished(true);
-    else {
-      setStep(current => current + 1);
-      setSelected(null);
-    }
+    else { setStep(current => current + 1); setSelected(null); }
   }
 
-  function chooseCategory(next: string) {
-    setCategory(next); setStep(0); setScore(0); setSelected(null); setFinished(false);
+  function chooseCategory(nextCategory: string) {
+    setCategory(nextCategory);
+    setStep(0);
+    setScore(0);
+    setSelected(null);
+    setFinished(false);
   }
 
   function restart() {
@@ -74,7 +76,7 @@ export function QuickQuiz() {
   }
 
   async function share() {
-    const text = `Completei o Quiz atualizado: ${score}/${available.length} acertos.`;
+    const text = `Completei o Quiz do Observatório: ${score}/${available.length} acertos.`;
     if (navigator.share) await navigator.share({ title:'Quiz do Observatório', text, url:location.href });
     else if (navigator.clipboard) await navigator.clipboard.writeText(text + ' ' + location.href);
   }
@@ -82,57 +84,34 @@ export function QuickQuiz() {
   return (
     <section id="quiz" aria-labelledby="quiz-title" className="quiz-premium">
       <div className="quiz-premium-head">
-        <div>
-          <span className="quiz-eyebrow">Interativo · 15 perguntas</span>
-          <h2 id="quiz-title">Quiz do Observatório</h2>
-          <p>Questões baseadas nas fontes e no funcionamento do próprio Observatório.</p>
-        </div>
-        {!finished && <span className="quiz-counter">{step + 1}/{QUESTIONS.length}</span>}
+        <div><span className="quiz-eyebrow">Interativo · 15 perguntas</span><h2 id="quiz-title">Quiz atualizado</h2><p>Questões baseadas nas fontes e no funcionamento do próprio Observatório.</p></div>
+        {!finished && <span className="quiz-counter">{step + 1}/{available.length}</span>}
       </div>
-
-      <div className="quiz-categories" role="tablist" aria-label="Categorias do quiz">{categories.map(item => <button key={item} type="button" role="tab" aria-selected={category === item} className={category === item ? 'is-active' : ''} onClick={() => chooseCategory(item)}>{item}</button>)}</div>
-      <div className="quiz-progress" aria-label={`Progresso: ${progress}%`}>
-        <span style={{ width: `${progress}%` }} />
+      <div className="quiz-categories" role="tablist" aria-label="Categorias do quiz">
+        {categories.map(item => <button key={item} type="button" role="tab" aria-selected={category === item} className={category === item ? 'is-active' : ''} onClick={() => chooseCategory(item)}>{item}</button>)}
       </div>
-
+      <div className="quiz-progress" aria-label={`Progresso: ${progress}%`}><span style={{ width: `${progress}%` }} /></div>
       {finished ? (
         <div className="quiz-result">
           <div className="quiz-result-icon"><CheckCircle2 aria-hidden="true" /></div>
           <span className="quiz-eyebrow">Quiz concluído</span>
-          <strong>{score}/{QUESTIONS.length}</strong>
-          <p>{score >= 10 ? 'Você demonstrou domínio das regras centrais de leitura do Observatório.' : score >= 7 ? 'Você já domina boa parte da leitura. Use as fontes para aprofundar os pontos restantes.' : 'Vale revisar fontes, datas, denominadores e metodologia antes de avançar.'}</p>
-          <div className="quiz-actions">
-            <button type="button" onClick={restart}><RotateCcw aria-hidden="true" /> Refazer</button>
-            <button type="button" onClick={share} className="secondary"><Share2 aria-hidden="true" /> Compartilhar</button>
-          </div>
+          <strong>{score}/{available.length}</strong>
+          <p>{score === available.length ? 'Você acertou todas as questões deste recorte.' : 'Revise as explicações e abra as fontes ligadas às questões que você errou.'}</p>
+          <div className="quiz-actions"><button type="button" onClick={restart}><RotateCcw aria-hidden="true" /> Refazer</button><button type="button" onClick={share} className="secondary"><Share2 aria-hidden="true" /> Compartilhar</button></div>
         </div>
-      ) : (
+      ) : question ? (
         <div className="quiz-question">
           <div className="quiz-meta"><span>{question.difficulty}</span><span>{question.category}</span><span>{question.sourceLabel}</span></div>
           <h3>{question.prompt}</h3>
-          <div className="quiz-options">
-            {options.map(option => {
-              const isSelected = selected === option;
-              const isCorrect = selected && option === question.answer;
-              return (
-                <button key={option} type="button" onClick={() => answer(option)} className={`quiz-option ${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''}`} disabled={Boolean(selected)}>
-                  <span className="quiz-option-dot" aria-hidden="true" />
-                  <span>{option}</span>
-                </button>
-              );
-            })}
-          </div>
-          {selected && <div className={`quiz-feedback ${selected === question.answer ? 'correct' : 'wrong'}`} role="status">
-            <strong>{selected === question.answer ? 'Resposta correta' : 'Revise este ponto'}</strong>
-            <p>{question.explanation}</p>
-            <a href={`#${question.anchor}`}>Abrir {question.sourceLabel} <ExternalLink aria-hidden="true" /></a>
-          </div>}
-          <div className="quiz-footer">
-            <span>{selected ? 'Resposta registrada' : 'Escolha uma alternativa'}</span>
-            <button type="button" onClick={next} disabled={!selected}>Próxima <ExternalLink aria-hidden="true" /></button>
-          </div>
+          <div className="quiz-options">{options.map(option => {
+            const isSelected = selected === option;
+            const isCorrect = Boolean(selected) && option === question.answer;
+            return <button key={option} type="button" onClick={() => answer(option)} className={`quiz-option ${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''}`} disabled={Boolean(selected)}><span className="quiz-option-dot" aria-hidden="true" /><span>{option}</span></button>;
+          })}</div>
+          {selected && <div className={`quiz-feedback ${selected === question.answer ? 'correct' : 'wrong'}`} role="status"><strong>{selected === question.answer ? 'Resposta correta' : 'Revise este ponto'}</strong><p>{question.explanation}</p><a href={`#${question.anchor}`}>Abrir {question.sourceLabel} <ExternalLink aria-hidden="true" /></a></div>}
+          <div className="quiz-footer"><span>{selected ? 'Resposta registrada' : 'Escolha uma alternativa'}</span><button type="button" onClick={next} disabled={!selected}>Próxima <span aria-hidden="true">→</span></button></div>
         </div>
-      )}
+      ) : null}
     </section>
   );
 }
