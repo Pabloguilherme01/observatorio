@@ -324,44 +324,6 @@ async function main() {
   mkdirSync(extracted, { recursive: true });
 
   try {
-    let lastError = null;
-
-    for (const candidateUrl of ZIP_URLS) {
-      try {
-        selectedSourceUrl = candidateUrl;
-        download(candidateUrl, zip);
-        lastError = null;
-        break;
-      } catch (error) {
-        lastError = error;
-        console.warn('[TSE] fonte indisponível: ' + candidateUrl);
-      }
-    }
-
-    if (lastError) throw lastError;
-
-    execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
-
-    const csvPath = execFileSync(
-      'find',
-      [extracted, '-type', 'f', '-iname', '*GO.csv'],
-      { encoding: 'utf8' },
-    ).split(/\r?\n/).find(Boolean);
-
-    if (!csvPath) throw new Error('Arquivo estadual de candidatos de GO não encontrado no pacote oficial.');
-
-    const rows = parseCsv(readFileSync(csvPath, 'utf8'));
-    if (rows.length < 2) throw new Error('Arquivo CSV de candidatos de GO está vazio ou inválido.');
-
-    const header = headerMap(rows[0]);
-    const requiredColumns = ['SQ_CANDIDATO', 'NM_URNA_CANDIDATO', 'NM_CANDIDATO'];
-    const missingColumns = requiredColumns.filter(key => header[key] === undefined);
-    if (missingColumns.length) {
-      throw new Error('Colunas essenciais ausentes no CSV TSE: ' + missingColumns.join(', '));
-    }
-
-    let sourceRows = 0;
-    let municipalityRows = 0;
     const previous = loadPrevious();
     const previousBySq = new Map((previous?.matched ?? []).map(candidate => [candidate.sqCandidate, candidate]));
 
@@ -431,6 +393,48 @@ async function main() {
       console.log(JSON.stringify({valid:true,state,snapshotId,sourceRows,municipalityRows,matched:matched.length,retrievalMethod:'official_tse_divulgacandcontas_api'},null,2));
       return;
     }
+
+    let lastError = null;
+
+    for (const candidateUrl of ZIP_URLS) {
+      try {
+        selectedSourceUrl = candidateUrl;
+        download(candidateUrl, zip);
+        lastError = null;
+        break;
+      } catch (error) {
+        lastError = error;
+        console.warn('[TSE] fonte indisponível: ' + candidateUrl);
+      }
+    }
+
+    if (lastError) throw lastError;
+
+    execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
+
+    const csvPath = execFileSync(
+      'find',
+      [extracted, '-type', 'f', '-iname', '*GO.csv'],
+      { encoding: 'utf8' },
+    ).split(/\r?\n/).find(Boolean);
+
+    if (!csvPath) throw new Error('Arquivo estadual de candidatos de GO não encontrado no pacote oficial.');
+
+    const rows = parseCsv(readFileSync(csvPath, 'utf8'));
+    if (rows.length < 2) throw new Error('Arquivo CSV de candidatos de GO está vazio ou inválido.');
+
+    const header = headerMap(rows[0]);
+    const requiredColumns = ['SQ_CANDIDATO', 'NM_URNA_CANDIDATO', 'NM_CANDIDATO'];
+    const missingColumns = requiredColumns.filter(key => header[key] === undefined);
+    if (missingColumns.length) {
+      throw new Error('Colunas essenciais ausentes no CSV TSE: ' + missingColumns.join(', '));
+    }
+
+    let sourceRows = 0;
+    let municipalityRows = 0;
+    const previous = loadPrevious();
+    const previousBySq = new Map((previous?.matched ?? []).map(candidate => [candidate.sqCandidate, candidate]));
+
     const matched = [];
     const seen = new Set();
 
