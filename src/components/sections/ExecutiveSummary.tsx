@@ -149,7 +149,7 @@ export function ExecutiveSummary() {
                     <Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar assuntos
                   </button>
                   <button type="button" onClick={() => { goToSection('eleitoral360'); }} className="summary-public-action">
-                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> Ver recorte eleitoral
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> Explorar recorte eleitoral
                   </button>
                 </div>
               </div>
@@ -220,7 +220,7 @@ export function ExecutiveSummary() {
 
                 {source?.url && (
                   <a href={source.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                    {languageMode === 'technical' ? 'Ver catálogo oficial das pesquisas' : 'Conferir fonte oficial'} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    {languageMode === 'technical' ? 'Conferir catálogo oficial das pesquisas' : 'Conferir fonte oficial'} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 )}
               </div>
@@ -236,7 +236,7 @@ export function ExecutiveSummary() {
                   ? 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')
                   : 'eleitores · snapshot TSE'}
               </div>
-              {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Ver contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
+              {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
             </Card>
 
           </div>}
