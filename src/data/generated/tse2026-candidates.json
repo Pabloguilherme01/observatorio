@@ -65,7 +65,11 @@
       "gender": "MASCULINO",
       "education": "SUPERIOR INCOMPLETO",
       "occupation": "VEREADOR",
-      "watchlistName": "Anderson teodoro"
+      "watchlistName": "Anderson teodoro",
+      "localEvidence": "Base eleitoral declarada em Águas Lindas de Goiás e trajetória política iniciada no município.",
+      "evidenceSourceUrls": [
+        "https://portal.al.go.leg.br/deputados/perfil-biografico/809"
+      ]
     },
     {
       "sqCandidate": "90002543127",
@@ -81,7 +85,11 @@
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO COMPLETO",
       "occupation": "COMERCIANTE",
-      "watchlistName": "Zé da imperial"
+      "watchlistName": "Zé da imperial",
+      "localEvidence": "Disputou eleição para vereador em Águas Lindas de Goiás e mantém trajetória eleitoral vinculada ao município.",
+      "evidenceSourceUrls": [
+        "https://meuvoto.org.br/candidato/90002543127.html"
+      ]
     },
     {
       "sqCandidate": "90002537423",
@@ -97,7 +105,11 @@
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO COMPLETO",
       "occupation": "COMERCIANTE",
-      "watchlistName": "Baiano dos cocos"
+      "watchlistName": "Baiano dos cocos",
+      "localEvidence": "Foi candidato a vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
+      "evidenceSourceUrls": [
+        "https://meuvoto.org.br/candidato/90002537423.html"
+      ]
     },
     {
       "sqCandidate": "90002547004",
@@ -113,7 +125,11 @@
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO INCOMPLETO",
       "occupation": "ELETRICISTA E ASSEMELHADOS",
-      "watchlistName": "Abadyas damasceno"
+      "watchlistName": "Abadyas damasceno",
+      "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
+      "evidenceSourceUrls": [
+        "https://meuvoto.org.br/candidato/90002547004.html"
+      ]
     },
     {
       "sqCandidate": "90002543768",
@@ -129,7 +145,11 @@
       "gender": "MASCULINO",
       "education": "SUPERIOR INCOMPLETO",
       "occupation": "EMPRESÁRIO",
-      "watchlistName": "Felipe galdino"
+      "watchlistName": "Felipe galdino",
+      "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; também foi oficializado para a disputa estadual de 2026.",
+      "evidenceSourceUrls": [
+        "https://meuvoto.org.br/candidato/90002543768.html"
+      ]
     },
     {
       "sqCandidate": "90002543113",
@@ -146,9 +166,8 @@
       "education": null,
       "occupation": null,
       "watchlistName": "Keké da Vulkanic",
-      "localEvidence": "Vereador eleito em Águas Lindas de Goiás em 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
+      "localEvidence": "Foi vereador eleito em Águas Lindas de Goiás em 2020 e 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
       "evidenceSourceUrls": [
-        "https://www12.senado.leg.br/tv/programas/noticias-1/2024/10/aguas-lindas-e-o-municipio-do-entorno-do-df-que-mais-recebeu-titulos-transferidos-da-capital-federal",
         "https://meuvoto.org.br/candidato/90002543113.html"
       ],
       "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos"
