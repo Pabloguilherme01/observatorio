@@ -34,6 +34,8 @@ const pollMeta = {
 const formatAssets = (value?: number) =>
   value === undefined ? "Não informado" : value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+const labelValue = (value?: string) => value?.trim() || "Não informado";
+
 const sourceLabel = (url: string) => {
   try {
     const host = new URL(url).hostname.replace(/^www\./, "");
@@ -97,8 +99,11 @@ function CandidateCard({ candidate }: { candidate: PublicCandidate }) {
             {candidate.status ? <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-extrabold uppercase tracking-wide text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">{candidate.status}</span> : null}
           </div>
           <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{candidate.office ?? "Cargo não informado"}</p>
-          <p className="mt-2 text-sm font-bold text-sky-700 dark:text-sky-300">{candidate.party ?? "Partido não informado"} · {candidate.ballotNumber ?? "—"}</p>
-          {pollValue !== undefined ? <p className="mt-2 text-xs font-bold text-slate-600 dark:text-slate-300">Pesquisa espontânea: {pollValue.toFixed(2).replace(".", ",")}%</p> : null}
+          <div className="mt-2 flex flex-wrap items-center gap-1.5">
+            <span className="rounded-lg bg-sky-50 px-2 py-1 text-xs font-extrabold text-sky-700 dark:bg-sky-400/10 dark:text-sky-300">{candidate.party ?? "Partido não informado"}</span>
+            <span className="rounded-lg bg-slate-100 px-2 py-1 text-xs font-extrabold text-slate-700 dark:bg-white/10 dark:text-slate-300">Nº {candidate.ballotNumber ?? "—"}</span>
+          </div>
+          {pollValue !== undefined ? <p className="mt-2 text-xs font-bold text-slate-600 dark:text-slate-300">Registro histórico de pesquisa: {pollValue.toFixed(2).replace(".", ",")}%</p> : null}
         </div>
       </div>
 
@@ -115,7 +120,9 @@ function CandidateCard({ candidate }: { candidate: PublicCandidate }) {
         {open && tab === "profile" ? (
           <div className="mt-3 space-y-4 border-t border-slate-100 pt-3 text-sm dark:border-white/10">
             <dl className="grid gap-3 sm:grid-cols-2">
-              <div><dt className="text-xs text-slate-500">Nome completo</dt><dd className="font-semibold">{candidate.fullName ?? "Não informado"}</dd></div>
+              <div><dt className="text-xs text-slate-500">Nome completo</dt><dd className="font-semibold">{labelValue(candidate.fullName)}</dd></div>
+              <div><dt className="text-xs text-slate-500">Ocupação informada</dt><dd className="font-semibold">{labelValue(candidate.occupation)}</dd></div>
+              <div><dt className="text-xs text-slate-500">Escolaridade</dt><dd className="font-semibold">{labelValue(candidate.education)}</dd></div>
               <div><dt className="text-xs text-slate-500">Bens declarados</dt><dd className="font-semibold">{formatAssets(candidate.declaredAssetsTotal)}</dd></div>
             </dl>
             {candidate.localEvidence ? <div className="rounded-xl bg-slate-50 p-3 dark:bg-white/5"><p className="text-xs font-bold uppercase tracking-wide text-slate-500">Evidência de vínculo local</p><p className="mt-1 leading-5 text-slate-600 dark:text-slate-300">{candidate.localEvidence}</p></div> : null}
@@ -148,7 +155,10 @@ export function CandidatesPanel() {
           <h2 id="candidates-title" className="text-xl font-black text-slate-900 dark:text-white sm:text-2xl">Candidatos com base local mapeada</h2>
           <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-slate-600 dark:bg-white/10 dark:text-slate-300">{publicCandidates.length} nomes</span>
         </div>
-        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{publicCandidateScope}. O recorte cruza o cadastro eleitoral de 2026 com evidências públicas de vínculo local.</p>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{publicCandidateScope}</p>
+        <div className="mt-3 rounded-xl border border-sky-200 bg-sky-50 px-3 py-2.5 text-xs leading-5 text-sky-900 dark:border-sky-400/15 dark:bg-sky-400/[0.06] dark:text-sky-100">
+          <strong>Como ler esta lista:</strong> são candidaturas estaduais de 2026 com vínculo local documental mapeado. O campo municipal do cadastro estadual do TSE não foi usado para inferir residência ou base eleitoral. A situação exibida corresponde ao snapshot de {publicCandidateMethodology.checkedAt}.
+        </div>
       </div>
 
       <label className="relative block">
