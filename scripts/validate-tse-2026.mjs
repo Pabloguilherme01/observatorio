@@ -40,7 +40,7 @@ if (state === 'not_synced' || state === 'local_filter_pending') {
 
 if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.meta.sourceRows <= 0)) errors.push('sourceRows inválido.');
 if (!Array.isArray(payload.watchlist)) errors.push('watchlist deve ser array.');
-if (!isMunicipalitySnapshot && ![7, 10].includes(payload.watchlist.length)) errors.push('watchlist deve conter 7 ou 10 nomes monitorados no recorte TSE.');
+if (!isMunicipalitySnapshot && (payload.watchlist.length < 1 || payload.watchlist.length > 10)) errors.push('watchlist deve conter entre 1 e 10 nomes no recorte editorial TSE.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
 if (isStateWatchlistSnapshot && payload.meta?.candidateUniverseScope !== 'GO') errors.push('candidateUniverseScope deve ser GO no snapshot estadual.');
 if (isStateWatchlistSnapshot && payload.meta?.localFilterType !== 'editorial_watchlist') errors.push('localFilterType deve identificar o recorte editorial.');
