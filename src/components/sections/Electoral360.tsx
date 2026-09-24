@@ -54,9 +54,9 @@ export function Electoral360() {
     <section id="eleitoral360" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="electoral360-title">
       <SectionHeader
         titleId="electoral360-title"
-        eyebrow="Eleitoral 360°"
-        title="Conheça os candidatos acompanhados"
-        description="Consulte o recorte de nomes acompanhado em Águas Lindas e confira os dados públicos de cada perfil."
+        eyebrow="Eleitoral 2026"
+        title="Nomes acompanhados no recorte de Águas Lindas"
+        description="Consulte os registros públicos disponíveis e veja com clareza quando um dado ainda depende de confirmação oficial."
       />
 
       <div className="mb-3 rounded-2xl border border-white/8 bg-white/[0.018] px-3 py-3">
@@ -78,10 +78,10 @@ export function Electoral360() {
       </div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
         <div className="min-w-0">
-          <strong className="block text-xs font-black text-sky-100">Nomes acompanhados em Águas Lindas</strong>
-          <span className="text-[11px] text-slate-500">Este recorte reúne somente os nomes monitorados pelo observatório para a cidade; ele não substitui a confirmação do município da candidatura no registro oficial.</span>
+          <strong className="block text-xs font-black text-sky-100">Recorte eleitoral local</strong>
+          <span className="text-[11px] leading-5 text-slate-500">O observatório acompanha nomes relacionados a Águas Lindas. A confirmação do município da candidatura deve vir do registro oficial do TSE.</span>
         </div>
-        <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} acompanhados</span>
+        <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span>
       </div>
       {electoral360Snapshot.captureMode === 'static-local' && (
         <div className="electoral-scope-note mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
@@ -254,9 +254,9 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Nomes acompanhados no recorte de Águas Lindas' : 'Registros do recorte local'}</h3>
-            <p className="mt-1 text-xs text-slate-500">
-              {hasLocalCandidateSnapshot ? 'Somente os nomes do recorte acompanhado são exibidos. A identificação vem da base oficial de Candidatos 2026 do TSE.' : 'Ainda não há registros de nomes no snapshot local.'}
+            <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Registros acompanhados' : 'Registros do recorte local'}</h3>
+            <p className="mt-1 text-xs leading-5 text-slate-500">
+              {hasLocalCandidateSnapshot ? 'Os nomes abaixo pertencem ao recorte acompanhado. O município da candidatura é exibido apenas quando confirmado pela fonte oficial.' : 'Ainda não há registros de nomes no snapshot local.'}
             </p>
           </div>
           <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
