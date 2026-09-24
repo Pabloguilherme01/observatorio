@@ -75,6 +75,12 @@ export function ExecutiveSummary() {
     revealFact(next.id, next.label);
   };
 
+  const openTopic = (topic: typeof topics[number]) => {
+    setActiveTopic(topic.id);
+    setLastAction(topic.label);
+    goToSection(topic.target);
+  };
+
   const shareCard = async (label: string, value: string) => {
     await share(label, value);
     setLastAction(`Compartilhar: ${label}`);
@@ -157,11 +163,7 @@ export function ExecutiveSummary() {
                       type="button"
                       className={`summary-public-topic ${activeTopic === topic.id ? 'is-active' : ''}`}
                       aria-pressed={activeTopic === topic.id}
-                      onClick={() => {
-                        setActiveTopic(topic.id);
-                        setLastAction(topic.label);
-                        goToSection(topic.target);
-                      }}
+                      onClick={() => openTopic(topic)}
                     >
                       <strong>{topic.label}</strong>
                       <span>{topic.caption}</span>
@@ -188,7 +190,7 @@ export function ExecutiveSummary() {
                 <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact}>Fechar cartão</button>
                 <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próxima descoberta <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
-              <div className="summary-public-status">
+              <div className="summary-public-status" aria-live="polite">
                 <span className="summary-public-status-dot" aria-hidden="true" />
                 <span>{lastAction ? `Aberto: ${lastAction}` : 'Pronto para explorar'}</span>
                 <span className="summary-public-status-count">{electoral360Snapshot.matchedCandidates.length} nomes no recorte acompanhado</span>
