@@ -133,18 +133,29 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); writeStorage(RECENT_KEY, JSON.stringify(next)); return next; }); };
   const toggleFavorite = (id: string) => { setFavorites(current => { const next = current.includes(id) ? current.filter(item => item !== id) : [...current,id].slice(-6); writeStorage(FAVORITES_KEY, JSON.stringify(next)); return next; }); };
-  const results = useMemo(() => {
+  const normalizedNavigation = useMemo(() => {
     const normalize = (value: string) => value
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLocaleLowerCase('pt-BR')
       .trim();
-    const normalized = normalize(query);
+    return navigation.map(item => ({
+      item,
+      searchText: [item.label, item.description, item.shortcut].map(normalize).join(' '),
+    }));
+  }, []);
+
+  const results = useMemo(() => {
+    const normalized = query
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase('pt-BR')
+      .trim();
     if (!normalized) return navigation;
-    return navigation.filter(item =>
-      [item.label, item.description, item.shortcut].some(value => normalize(value).includes(normalized))
-    );
-  }, [query]);
+    return normalizedNavigation
+      .filter(entry => entry.searchText.includes(normalized))
+      .map(entry => entry.item);
+  }, [normalizedNavigation, query]);
 
   return <>
     <div className="reading-progress" style={{ width: progress + '%' }} aria-hidden="true" />
