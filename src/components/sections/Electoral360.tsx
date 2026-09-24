@@ -1,6 +1,6 @@
 import { CheckCircle2, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { electoral360Diff, electoral360Modules, electoral360Snapshot } from '../../data/electoral360';
+import { electoral360Diff, electoral360Snapshot } from '../../data/electoral360';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -21,7 +21,6 @@ export function Electoral360() {
   const [selectedName, setSelectedName] = useState('');
   const localCandidateRecords = electoral360Snapshot.matchedCandidates;
   const hasLocalCandidateSnapshot = localCandidateRecords.length > 0;
-  const captured = electoral360Modules.filter(module => module.status === 'captured').length;
   const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state));
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
   const complementaryStats = electoral360Snapshot.complementaryStats;
