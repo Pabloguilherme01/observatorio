@@ -108,6 +108,20 @@ html{scroll-padding-top:88px;scroll-padding-bottom:calc(76px + env(safe-area-ins
 
 .hero-mobile-election-toggle{min-height:44px;min-width:44px;touch-action:manipulation}
 
+
+
+/* Bottom navigation stability */
+@media (max-width: 767px) {
+  .mobile-bottom-nav { height: var(--mobile-nav-height); max-height: calc(78px + env(safe-area-inset-bottom,0px)); }
+  .mobile-bottom-nav button { overflow:hidden; }
+  .mobile-bottom-nav button span { line-height:1.05; }
+}
+@media (max-width: 390px) {
+  .mobile-bottom-nav button { min-height:50px; border-radius:12px; }
+  .mobile-bottom-nav button svg { width:17px; height:17px; }
+  .mobile-bottom-nav button span { font-size:8.5px; }
+}
+
 /* Consolidated mobile experience */
 @media (max-width: 767px) {
   body { padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px)); }
