@@ -5,6 +5,7 @@ import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import { electoral360Snapshot } from '../../data/electoral360';
 
 function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -43,7 +44,7 @@ export function ExecutiveSummary() {
     { id: 'eleitorado', label: 'Quem participa', value: electorate.electorate.toLocaleString('pt-BR'), note: 'eleitores no snapshot utilizado pelo observatório.', target: 'eleitorado' },
     { id: 'populacao', label: 'Tamanho da cidade', value: population.toLocaleString('pt-BR'), note: 'habitantes na estimativa de 2026.', target: 'dashboard' },
     { id: 'orcamento', label: 'Orçamento municipal', value: brl(budget), note: 'valor total da LOA 2026 registrada no dataset.', target: 'orcamento' },
-    { id: 'candidatos', label: 'Candidatos acompanhados', value: d.candidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral acompanhado em Águas Lindas.', target: 'eleitoral360' },
+    { id: 'candidatos', label: 'Candidatos acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral acompanhado em Águas Lindas.', target: 'eleitoral360' },
   ] as const;
 
   const quickStats = [
@@ -51,7 +52,7 @@ export function ExecutiveSummary() {
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
-    { label: 'Candidatos', value: d.candidates.length.toLocaleString('pt-BR'), caption: 'acompanhados', detail: languageMode === 'technical' ? 'recorte TSE por nomes monitorados' : 'ver perfis', target: 'eleitoral360' },
+    { label: 'Candidatos', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), caption: 'acompanhados', detail: languageMode === 'technical' ? 'recorte TSE por nomes monitorados' : 'ver perfis', target: 'eleitoral360' },
   ] as const;
 
   const topics = [
@@ -74,7 +75,7 @@ export function ExecutiveSummary() {
       `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationPoint?.referenceDate ? ` (referência ${formatDate(populationPoint.referenceDate)})` : ''}.`,
       `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
-      `Candidatos acompanhados em Águas Lindas: ${d.candidates.length}.`,
+      `Nomes acompanhados em Águas Lindas: ${electoral360Snapshot.matchedCandidates.length}.`,
       cardLabel && cardValue ? `${cardLabel}: ${cardValue}.` : '',
       poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.` : '',
     ].filter(Boolean).join(' ');
