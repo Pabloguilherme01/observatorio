@@ -31,8 +31,7 @@ export function ExecutiveSummary() {
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const [lastAction, setLastAction] = useState('');
   const [discoveryIndex, setDiscoveryIndex] = useState(0);
-  const shareTimerRef = useState<{ current: number | null }>({ current: null })[0];
-    const { mode: languageMode } = useLanguageMode();
+  const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
     window.history.replaceState(null, '', '#' + id);
