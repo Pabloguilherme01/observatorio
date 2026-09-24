@@ -21,9 +21,13 @@ export function ExecutiveSummary() {
   const hasPoll = Boolean(poll);
   
   const electorate = d.electoral;
-  const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+  const populationPoint = d.populationSeries.find(point => point.year === 2026);
+  const population = populationPoint?.value ?? 0;
+  const populationSource = d.sources.find(sourceItem => sourceItem.id === populationPoint?.sourceId);
   const sanitationPct = d.sanitation.publicSewerServicePct;
+  const sanitationSource = d.sources.find(sourceItem => sourceItem.id === d.sanitation.sourceId);
   const budget = d.budget.totalBrl;
+  const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
   const [shareStatus, setShareStatus] = useState('');
   const { mode: languageMode } = useLanguageMode();
 
@@ -34,18 +38,18 @@ export function ExecutiveSummary() {
 
   const quickStats = [
     { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : 'referência TSE', target: 'eleitorado' },
-    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? 'estimativa populacional · 2026' : 'estimativa 2026', target: 'dashboard' },
-    { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? 'lei orçamentária' : 'orçamento municipal', target: 'orcamento' },
-    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? 'indicador SINISA · referência 2024' : 'indicador de saneamento', target: 'saude' },
+    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
+    { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
+    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'saude' },
   ] as const;
 
   const share = async () => {
     const text = [
       'Observatório Eleitoral — Águas Lindas de Goiás 2026',
       `Eleitorado: ${electorate.electorate.toLocaleString('pt-BR')} eleitores.`,
-      `População estimada: ${population.toLocaleString('pt-BR')} habitantes.`,
-      `Orçamento LOA 2026: ${brl(budget)}.`,
-      `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
+      `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationPoint?.referenceDate ? ` (referência ${formatDate(populationPoint.referenceDate)})` : ''}.`,
+      `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
+      `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%${sanitationSource?.label ? ` (${sanitationSource.label})` : ''}.`,
       poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.` : '',
     ].filter(Boolean).join(' ');
 
@@ -60,8 +64,15 @@ export function ExecutiveSummary() {
         await navigator.clipboard.writeText(text + ' ' + window.location.href);
         setShareStatus('Link copiado');
         window.setTimeout(() => setShareStatus(''), 1800);
+        return;
       }
-    } catch {}
+      setShareStatus('Compartilhamento indisponível neste navegador');
+      window.setTimeout(() => setShareStatus(''), 2400);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') return;
+      setShareStatus('Não foi possível compartilhar');
+      window.setTimeout(() => setShareStatus(''), 2400);
+    }
   };
 
   return (
