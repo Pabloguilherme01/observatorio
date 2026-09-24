@@ -105,7 +105,7 @@ export function PoliticalResearch() {
         eyebrow="Recorte eleitoral local"
         title={mode === 'summary' ? 'Candidatos acompanhados' : mode !== 'technical' ? 'Candidatos ligados a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
         description={mode === 'summary'
-          ? '7 candidaturas acompanhadas com evidência documental de vínculo local.'
+          ? `${candidates.length} candidaturas estaduais acompanhadas com evidência documental de vínculo local.`
           : mode !== 'technical'
             ? 'Lista de candidaturas estaduais de 2026 com vínculo local documental acompanhado pelo Observatório. O vínculo local não é inferido do cadastro estadual.'
             : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Campos ausentes permanecem identificados.'}
