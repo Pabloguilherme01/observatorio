@@ -520,7 +520,7 @@ export function QuickQuiz() {
   const [difficulty, setDifficulty] = useState<Difficulty | 'Todos'>('Todos');
   const filteredQuestions = useMemo(() => difficulty === 'Todos' ? questions : questions.filter(question => question.difficulty === difficulty), [difficulty, questions]);
 
-  const [step, setStep = useState(0);
+  const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const finished = step >= filteredQuestions.length;
@@ -556,10 +556,10 @@ export function QuickQuiz() {
           </div>
           {!finished && <div className="quiz-progress-wrap">
             <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${filteredQuestions.length}`}>
-              <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(questions.length).padStart(2, '0')}</span>
+              <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(filteredQuestions.length).padStart(2, '0')}</span>
             </div>
             <div className="quiz-progress-track" aria-hidden="true">
-              <span style={{ width: (((step + 1) / questions.length) * 100) + '%' }} />
+              <span style={{ width: (((step + 1) / filteredQuestions.length) * 100) + '%' }} />
             </div>
           </div>}
         </div>
@@ -617,7 +617,7 @@ export function QuickQuiz() {
                     Ver {current.sourceLabel} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </a>
                   <button type="button" onClick={next} className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-violet-300 px-4 py-2 text-xs font-black text-slate-950">
-                    {step + 1 === questions.length ? 'Ver resultado' : 'Próxima pergunta'}
+                    {step + 1 === filteredQuestions.length ? 'Ver resultado' : 'Próxima pergunta'}
                   </button>
                 </>
               )}
@@ -627,7 +627,7 @@ export function QuickQuiz() {
           <div className="mt-5 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
             <div className="rounded-3xl border border-emerald-300/15 bg-emerald-300/[0.04] p-5">
               <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-200/80">Resultado</div>
-              <div className="mt-2 text-3xl font-black text-white">{score}/{questions.length}</div>
+              <div className="mt-2 text-3xl font-black text-white">{score}/{filteredQuestions.length}</div>
               <div className="mt-1 text-xs font-bold text-violet-200">Nível: {difficulty}</div><p className="mt-2 text-sm leading-6 text-slate-400">Use o resultado como sinal de compreensão das regras de leitura do observatório, não como avaliação de pessoas, partidos ou candidatos.</p>
             </div>
             <div className="flex flex-wrap gap-2">
