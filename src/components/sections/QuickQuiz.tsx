@@ -34,6 +34,12 @@ const fmt = (value: number, digits = 0) => value.toLocaleString('pt-BR', { maxim
 const money = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 const pct = (value: number, digits = 1) => `${fmt(value, digits)}%`;
 
+const ensureThreeOptions = (answer: string, candidates: readonly string[], fallbacks: readonly string[]) => {
+  const unique = Array.from(new Set([answer, ...candidates, ...fallbacks]));
+  if (unique.length < 3) throw new Error('Banco do quiz inválido: uma questão não possui 3 alternativas distintas.');
+  return unique.slice(0, 3);
+};
+
 const indicator = (id: string) => d.indicators.find(item => item.id === id);
 const sourceLabel = (id: string) => d.sources.find(source => source.id === id)?.label ?? id;
 const sourceUrl = (id: string) => d.sources.find(source => source.id === id)?.url;
@@ -86,7 +92,7 @@ const easy = seeds.map((s, i): Question => {
   const fallback = s.unit === 'R$'
     ? [money((s.numeric ?? 0) / 2), money((s.numeric ?? 0) * 1.5)]
     : [fmt((s.numeric ?? 0) / 2, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0), fmt((s.numeric ?? 0) * 1.5, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0)];
-  const options = Array.from(new Set([s.value, ...alternatives, ...fallback])).slice(0, 3);
+  const options = ensureThreeOptions(s.value, alternatives, fallback);
   return {
     id:`easy-${i+1}`, difficulty:'Fácil', phase:1, category:s.category,
     prompt:`Qual é o valor registrado para ${s.label}?`,
@@ -106,7 +112,7 @@ const medium = pairs.map(({a,b},i): Question => {
   return {
     id:`medium-${i+1}`, difficulty:'Médio', phase:2, category:a.category,
     prompt:`Entre "${a.label}" e "${b.label}", qual valor é maior no recorte desta edição?`,
-    options:Array.from(new Set([larger, a.value, b.value, aNum === bNum ? (aNum + 1).toLocaleString('pt-BR') : (aNum > bNum ? b.value : a.value)])).slice(0, 3),
+    options:ensureThreeOptions(larger, [a.value, b.value], [aNum === bNum ? (aNum + 1).toLocaleString('pt-BR') : (aNum > bNum ? b.value : a.value), fmt(aNum + bNum, 0)]),
     answer:larger, explanation:`A comparação usa os valores registrados para os dois indicadores. O maior é ${label}: ${larger}.`,
     anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
   };
@@ -119,7 +125,7 @@ const hard = pairs.map(({a,b},i): Question => {
   return {
     id:`hard-${i+1}`, difficulty:'Difícil', phase:3, category:a.category,
     prompt:`Considerando os valores de "${a.label}" e "${b.label}", qual é a razão aproximada do primeiro pelo segundo?`,
-    options:Array.from(new Set([answer,`${fmt(ratio*10,2)}×`,`${fmt(ratio/2,2)}×`,`${fmt(ratio+1,2)}×`])).slice(0, 3),
+    options:ensureThreeOptions(answer, [`${fmt(ratio*10,2)}×`, `${fmt(ratio/2,2)}×`, `${fmt(ratio+1,2)}×`], [`${fmt(ratio+2,2)}×`, `${fmt(ratio/3,2)}×`]),
     answer, explanation:`Razão derivada: ${fmt(aNum,2)} ÷ ${fmt(bNum,2)} = ${answer}. É uma relação matemática entre os dois dados, não um indicador oficial adicional.`,
     anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
   };
