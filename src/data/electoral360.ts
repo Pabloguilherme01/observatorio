@@ -97,6 +97,13 @@ export const electoral360Snapshot: Electoral360Snapshot = {
   captureMode: generatedData.meta.state === 'not_synced' || generatedData.meta.state === 'local_filter_pending' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
   localWatchlist: generatedData.watchlist,
+  complementaryStats: {
+    sourceRows: 905,
+    uniqueCandidateIds: 905,
+    generationDate: '2026-09-23',
+    byGender: { 'MASCULINO': 551, 'FEMININO': 339, '#NULO': 15 },
+    byJudgment: { 'DEFERIDO': 844, '#NULO': 47, 'INDEFERIDO EM PRAZO RECURSAL OU COM RECURSO': 8, 'PENDENTE DE JULGAMENTO': 5, 'DEFERIDO COM RECURSO': 1 },
+  },
   matchedCandidates: generatedData.matched.map(candidate => ({
     sqCandidate: candidate.sqCandidate,
     ballotNumber: candidate.ballotNumber ?? 0,
