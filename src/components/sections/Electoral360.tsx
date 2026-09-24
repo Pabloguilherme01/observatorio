@@ -185,13 +185,15 @@ export function Electoral360() {
 
 
 
-          <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Candidatos disponíveis para o perfil">
+          <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Nomes acompanhados disponíveis para o perfil">
             {electoral360Snapshot.matchedCandidates.map(candidate => (
               <button
                 key={candidate.name}
                 type="button"
                 onClick={() => setSelectedName(candidate.name)}
                 className={`min-h-11 max-w-full rounded-xl border px-3 py-2 text-left text-xs font-bold break-words ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-100' : 'border-white/10 text-slate-400'}`}
+                aria-pressed={candidate.name === profileName}
+                aria-label={`Abrir perfil de ${candidate.name}`}
               >
                 {candidate.name}
               </button>
