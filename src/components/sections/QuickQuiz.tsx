@@ -14,18 +14,21 @@ type Question = {
 };
 
 const QUESTIONS: readonly Question[] = [
-  { difficulty:'Fácil', prompt:'Ao abrir um indicador público, qual é a primeira dupla de informações que ajuda a interpretar o número?', options:['Fonte e data de referência','Cor e tamanho do gráfico','Título e animação'], answer:'Fonte e data de referência', explanation:'A origem e a data permitem saber quem publicou o dado e qual recorte temporal ele representa.', anchor:'fontes', sourceLabel:'Fontes e metodologia' },
-  { difficulty:'Fácil', prompt:'O que uma LOA representa?', options:['Planejamento orçamentário do exercício','Gasto já realizado em todos os programas','Resultado de uma pesquisa eleitoral'], answer:'Planejamento orçamentário do exercício', explanation:'A Lei Orçamentária Anual estima receitas e fixa despesas para o exercício. Ela não equivale automaticamente ao gasto realizado.', anchor:'orcamento', sourceLabel:'Orçamento' },
-  { difficulty:'Fácil', prompt:'O que é um snapshot de dados?', options:['Um recorte registrado em determinada data','Uma previsão do que acontecerá','Um resultado eleitoral definitivo'], answer:'Um recorte registrado em determinada data', explanation:'Snapshot é uma fotografia da base no momento da captura.', anchor:'dados', sourceLabel:'Dados e atualizações' },
-  { difficulty:'Fácil', prompt:'Por que um cálculo derivado precisa mostrar suas premissas?', options:['Para permitir conferência e reprodução','Para parecer mais técnico','Para substituir a fonte original'], answer:'Para permitir conferência e reprodução', explanation:'Premissas e fórmula permitem que outra pessoa confira como o resultado foi obtido.', anchor:'qualidade', sourceLabel:'Qualidade dos dados' },
-  { difficulty:'Médio', prompt:'Por que dois percentuais podem não ser diretamente comparáveis?', options:['Porque podem usar períodos ou denominadores diferentes','Porque percentuais nunca podem ser comparados','Porque o maior percentual sempre é mais relevante'], answer:'Porque podem usar períodos ou denominadores diferentes', explanation:'A comparação depende de período, universo, denominador e metodologia compatíveis.', anchor:'principios', sourceLabel:'Princípios' },
-  { difficulty:'Médio', prompt:'O que diferencia abstenção de voto branco?', options:['Abstenção é não comparecer; branco é um voto registrado sem escolha de candidatura','São exatamente a mesma coisa','Abstenção é voto anulado'], answer:'Abstenção é não comparecer; branco é um voto registrado sem escolha de candidatura', explanation:'Abstenção ocorre quando o eleitor não comparece. Voto branco ocorre dentro da votação.', anchor:'eleitorado', sourceLabel:'Eleitorado' },
-  { difficulty:'Médio', prompt:'O que uma fonte oficial do TSE permite conferir?', options:['Registros eleitorais publicados pela Justiça Eleitoral','Uma previsão de quem vencerá','A opinião dos eleitores'], answer:'Registros eleitorais publicados pela Justiça Eleitoral', explanation:'O TSE disponibiliza dados oficiais de candidaturas, contas e outros registros eleitorais.', anchor:'fontes', sourceLabel:'TSE' },
-  { difficulty:'Médio', prompt:'Por que o Observatório separa recorte estadual de vínculo local?', options:['Porque uma candidatura estadual não prova, sozinha, uma base municipal','Para criar um ranking de candidatos','Para eliminar candidaturas sem justificativa'], answer:'Porque uma candidatura estadual não prova, sozinha, uma base municipal', explanation:'O projeto trata evidência documental local separadamente para não transformar inferência em fato.', anchor:'politica', sourceLabel:'Candidaturas' },
-  { difficulty:'Médio', prompt:'O custo mensal de transporte calculado pelo Observatório é que tipo de informação?', options:['Um cálculo derivado das premissas informadas','Uma despesa oficial individual do cidadão','Um resultado eleitoral'], answer:'Um cálculo derivado das premissas informadas', explanation:'O valor depende de tarifa, frequência, dias e outras premissas escolhidas no calculador.', anchor:'transporte', sourceLabel:'Transporte' },
-  { difficulty:'Difícil', prompt:'O que torna uma cadeia de evidências mais auditável?', options:['Fonte identificada, data, natureza do dado e link de conferência','Somente um gráfico visual','Um número sem referência para facilitar a leitura'], answer:'Fonte identificada, data, natureza do dado e link de conferência', explanation:'Esses elementos permitem rastrear o caminho entre a informação publicada e sua apresentação no Observatório.', anchor:'evidencias', sourceLabel:'Evidências' },
-  { difficulty:'Difícil', prompt:'Uma pesquisa eleitoral deve ser lida como:', options:['Um levantamento com amostra, metodologia e data próprias','O resultado oficial da eleição','Uma probabilidade calculada automaticamente pelo Observatório'], answer:'Um levantamento com amostra, metodologia e data próprias', explanation:'Pesquisa e resultado oficial são categorias diferentes. A leitura deve considerar ficha técnica, período e situação de divulgação.', anchor:'politica', sourceLabel:'Pesquisas' },
-  { difficulty:'Difícil', prompt:'Se uma fonte municipal ainda não confirma determinada informação, qual conduta é mais adequada?', options:['Sinalizar a lacuna e não apresentar a informação como confirmada','Inferir pelo nome ou por uma notícia isolada','Preencher a lacuna com uma estimativa sem aviso'], answer:'Sinalizar a lacuna e não apresentar a informação como confirmada', explanation:'Transparência sobre limitações evita transformar ausência de evidência em certeza.', anchor:'qualidade', sourceLabel:'Qualidade dos dados' },
+  { difficulty:'Fácil', category:'Fontes', prompt:'A estimativa municipal do IBGE para 2026 tem como referência qual data?', options:['1º de julho de 2026','1º de janeiro de 2026','22 de setembro de 2026','4 de outubro de 2026'], answer:'1º de julho de 2026', explanation:'A fonte do Observatório registra a estimativa municipal de 2026 com referência em 1º de julho de 2026.', anchor:'fontes', sourceLabel:'IBGE · população' },
+  { difficulty:'Fácil', category:'Eleições', prompt:'Em que data ocorre o primeiro turno das Eleições Gerais de 2026?', options:['4 de outubro de 2026','25 de outubro de 2026','6 de maio de 2026','1º de novembro de 2026'], answer:'4 de outubro de 2026', explanation:'O calendário oficial do TSE fixa o primeiro turno em 4 de outubro de 2026.', anchor:'linha-do-tempo', sourceLabel:'Calendário TSE' },
+  { difficulty:'Fácil', category:'Dados', prompt:'O que melhor descreve um snapshot de dados?', options:['Um recorte registrado em determinada data','Uma previsão do resultado futuro','Um dado sem fonte para uso rápido','Uma média obrigatória de vários anos'], answer:'Um recorte registrado em determinada data', explanation:'Snapshot é uma fotografia da base no momento da captura.', anchor:'dados', sourceLabel:'Dados e atualizações' },
+  { difficulty:'Fácil', category:'Orçamento', prompt:'O que a LOA representa no Observatório?', options:['Planejamento orçamentário do exercício','Gasto efetivamente realizado em cada programa','Resultado de uma pesquisa eleitoral','Estimativa populacional'], answer:'Planejamento orçamentário do exercício', explanation:'A LOA estima receitas e fixa despesas para o exercício; não equivale automaticamente ao gasto realizado.', anchor:'orcamento', sourceLabel:'Orçamento' },
+  { difficulty:'Fácil', category:'Eleições', prompt:'O DivulgaCandContas do TSE reúne informações sobre:', options:['Candidaturas e contas eleitorais','Somente pesquisas de opinião','Somente resultados municipais','Apenas propaganda em redes sociais'], answer:'Candidaturas e contas eleitorais', explanation:'O TSE descreve o sistema como uma base sobre candidaturas, contas eleitorais e partidos.', anchor:'fontes', sourceLabel:'TSE · DivulgaCandContas' },
+  { difficulty:'Médio', category:'Eleições', prompt:'Qual é a ordem correta dos dois primeiros cargos na votação de 2026?', options:['Deputado federal e deputado estadual/distrital','Deputado estadual/distrital e deputado federal','Senador e deputado federal','Presidente e governador'], answer:'Deputado federal e deputado estadual/distrital', explanation:'A sequência informada pelo TSE começa com deputado federal e depois deputado estadual ou distrital.', anchor:'linha-do-tempo', sourceLabel:'TSE · ordem de votação' },
+  { difficulty:'Médio', category:'Eleitorado', prompt:'O conjunto Eleitorado 2026 do TSE inclui, entre outros, dados de:', options:['Perfil do eleitorado, seção e local de votação','Somente patrimônio de candidatos','Somente orçamento municipal','Somente pesquisas eleitorais'], answer:'Perfil do eleitorado, seção e local de votação', explanation:'O catálogo de dados abertos do TSE descreve esses grupos no conjunto Eleitorado 2026.', anchor:'eleitorado', sourceLabel:'TSE · Eleitorado 2026' },
+  { difficulty:'Médio', category:'Candidatos', prompt:'O conjunto Candidatos 2026 do TSE reúne quais tipos de recursos?', options:['Candidatos, bens, redes sociais, fotos e propostas','Somente nomes e números','Somente resultados oficiais','Somente pesquisas registradas'], answer:'Candidatos, bens, redes sociais, fotos e propostas', explanation:'O catálogo oficial lista candidatos, bens, redes sociais, fotos, histórico e propostas, além de outros recursos.', anchor:'candidaturas', sourceLabel:'TSE · Candidatos 2026' },
+  { difficulty:'Médio', category:'Qualidade', prompt:'Se uma informação municipal não foi confirmada pela fonte disponível, o Observatório deve:', options:['Sinalizar a lacuna e não tratá-la como confirmada','Preencher com uma estimativa sem aviso','Inferir pelo nome de uma pessoa','Copiar o primeiro resultado de busca'], answer:'Sinalizar a lacuna e não tratá-la como confirmada', explanation:'Ausência de confirmação é uma limitação da evidência; ela não deve ser convertida em certeza.', anchor:'qualidade', sourceLabel:'Qualidade dos dados' },
+  { difficulty:'Médio', category:'Transporte', prompt:'O custo mensal exibido pelo calculador de transporte é:', options:['Um cálculo derivado das premissas informadas','Uma cobrança oficial individual','Uma tarifa nacional única','Um resultado eleitoral'], answer:'Um cálculo derivado das premissas informadas', explanation:'O resultado depende das premissas inseridas, como tarifa, frequência e dias.', anchor:'transporte', sourceLabel:'Calculador de transporte' },
+  { difficulty:'Difícil', category:'Fontes', prompt:'Por que um indicador precisa ser lido junto com sua data de referência?', options:['Porque o valor pode representar outro período ou fotografia da base','Porque a data muda automaticamente o valor','Porque toda fonte precisa ter dados diários','Porque números sem data são sempre falsos'], answer:'Porque o valor pode representar outro período ou fotografia da base', explanation:'A data define o recorte temporal e evita comparar fotografias de períodos diferentes como se fossem iguais.', anchor:'fontes', sourceLabel:'Mapa de evidências' },
+  { difficulty:'Difícil', category:'Pesquisa', prompt:'Uma pesquisa eleitoral registrada deve ser interpretada como:', options:['Um levantamento com amostra, metodologia e data próprias','O resultado oficial da eleição','Uma probabilidade automática de vitória','Uma contagem de votos já apurados'], answer:'Um levantamento com amostra, metodologia e data próprias', explanation:'Pesquisa e resultado oficial são categorias diferentes e devem ser lidos com sua ficha técnica.', anchor:'politica', sourceLabel:'Pesquisas eleitorais' },
+  { difficulty:'Difícil', category:'Comparação', prompt:'Antes de comparar dois percentuais, o que precisa ser conferido?', options:['Período, universo, denominador e metodologia','Somente qual número é maior','A cor usada nos gráficos','A quantidade de casas decimais'], answer:'Período, universo, denominador e metodologia', explanation:'Percentuais podem parecer comparáveis e não serem quando escopo ou método diferem.', anchor:'principios', sourceLabel:'Princípios' },
+  { difficulty:'Difícil', category:'Evidências', prompt:'O que fortalece uma cadeia de evidências?', options:['Fonte identificada, data, natureza do dado e link de conferência','Somente um gráfico bonito','Um número sem referência','Uma afirmação repetida em várias páginas'], answer:'Fonte identificada, data, natureza do dado e link de conferência', explanation:'Esses elementos permitem rastrear e conferir como a informação chegou ao Observatório.', anchor:'evidencias', sourceLabel:'Cadeia de evidências' },
+  { difficulty:'Difícil', category:'Atualização', prompt:'O catálogo oficial de Candidatos 2026 deve ser tratado como:', options:['Base pública que pode ser atualizada e consultada na fonte original','Resultado eleitoral definitivo','Lista imutável desde janeiro','Pesquisa de intenção de voto'], answer:'Base pública que pode ser atualizada e consultada na fonte original', explanation:'O TSE publica o conjunto de dados e seus recursos; o Observatório preserva a data do próprio snapshot.', anchor:'dados', sourceLabel:'TSE · Candidatos 2026' },
 ];
 
 function shuffledOptions(question: Question, index: number): readonly string[] {
@@ -38,6 +41,7 @@ export function QuickQuiz() {
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [finished, setFinished] = useState(false);
+  const [category, setCategory] = useState('Todas');
   const options = useMemo(() => shuffledOptions(QUESTIONS[step] ?? QUESTIONS[0], step), [step]);
 
   const question = QUESTIONS[step];
@@ -51,11 +55,15 @@ export function QuickQuiz() {
 
   function next() {
     if (!selected) return;
-    if (step === QUESTIONS.length - 1) setFinished(true);
+    if (step === available.length - 1) setFinished(true);
     else {
       setStep(current => current + 1);
       setSelected(null);
     }
+  }
+
+  function chooseCategory(next: string) {
+    setCategory(next); setStep(0); setScore(0); setSelected(null); setFinished(false);
   }
 
   function restart() {
@@ -66,7 +74,7 @@ export function QuickQuiz() {
   }
 
   async function share() {
-    const text = `Completei o Quiz do Observatório: ${score}/${QUESTIONS.length} acertos.`;
+    const text = `Completei o Quiz atualizado: ${score}/${available.length} acertos.`;
     if (navigator.share) await navigator.share({ title:'Quiz do Observatório', text, url:location.href });
     else if (navigator.clipboard) await navigator.clipboard.writeText(text + ' ' + location.href);
   }
@@ -75,13 +83,14 @@ export function QuickQuiz() {
     <section id="quiz" aria-labelledby="quiz-title" className="quiz-premium">
       <div className="quiz-premium-head">
         <div>
-          <span className="quiz-eyebrow">Interativo · 12 perguntas</span>
+          <span className="quiz-eyebrow">Interativo · 15 perguntas</span>
           <h2 id="quiz-title">Quiz do Observatório</h2>
-          <p>Teste se você consegue interpretar dados públicos sem cair em conclusões automáticas.</p>
+          <p>Questões baseadas nas fontes e no funcionamento do próprio Observatório.</p>
         </div>
         {!finished && <span className="quiz-counter">{step + 1}/{QUESTIONS.length}</span>}
       </div>
 
+      <div className="quiz-categories" role="tablist" aria-label="Categorias do quiz">{categories.map(item => <button key={item} type="button" role="tab" aria-selected={category === item} className={category === item ? 'is-active' : ''} onClick={() => chooseCategory(item)}>{item}</button>)}</div>
       <div className="quiz-progress" aria-label={`Progresso: ${progress}%`}>
         <span style={{ width: `${progress}%` }} />
       </div>
@@ -99,7 +108,7 @@ export function QuickQuiz() {
         </div>
       ) : (
         <div className="quiz-question">
-          <div className="quiz-meta"><span>{question.difficulty}</span><span>{question.sourceLabel}</span></div>
+          <div className="quiz-meta"><span>{question.difficulty}</span><span>{question.category}</span><span>{question.sourceLabel}</span></div>
           <h3>{question.prompt}</h3>
           <div className="quiz-options">
             {options.map(option => {
