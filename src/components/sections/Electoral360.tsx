@@ -303,13 +303,10 @@ export function Electoral360() {
                     <div className="min-w-0">
                       <h4 className="font-black text-white break-words">{candidate.name}</h4>
                       <p className="mt-1 text-xs text-slate-500 break-words">{candidate.party} · {candidate.office} · nº {candidate.ballotNumber}</p>
+                      <span className="mt-2 block text-[11px] text-slate-600">{candidate.occupation || 'ocupação não informada'}</span>
                     </div>
-                    <span className="shrink-0 rounded-full bg-white/5 px-2 py-1 text-[10px] font-bold text-slate-500">{candidate.status}</span>
                   </div>
-                  <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                    <Info label="SQ_CANDIDATO" value={candidate.sqCandidate} />
-                    <Info label="Snapshot" value={candidate.snapshotDate} />
-                  </div>
+                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="mt-4 min-h-11 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">Ver perfil</button>
                 </article>
               ))}
             </div>
