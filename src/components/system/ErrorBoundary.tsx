@@ -44,6 +44,21 @@ export class ErrorBoundary extends Component<Props, State> {
     window.location.reload();
   };
 
+  private handleRecover = async (): Promise<void> => {
+    try {
+      if ('serviceWorker' in navigator) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map(registration => registration.unregister()));
+      }
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(keys.filter(key => key.includes('observatorio')).map(key => caches.delete(key)));
+      }
+    } finally {
+      window.location.reload();
+    }
+  };
+
   public render(): ReactNode {
     if (!this.state.hasError) return this.props.children;
     if (this.props.fallback) return this.props.fallback;
@@ -64,10 +79,15 @@ export class ErrorBoundary extends Component<Props, State> {
             <code className="mt-1 block text-xs font-bold text-slate-300">{this.state.errorId || 'UI-UNKNOWN'}</code>
             {this.state.message && <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap text-left text-xs text-slate-500">{this.state.message}</pre>}
           </div>
-          <button type="button" onClick={this.handleReload} className="mt-6 inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
-            <RefreshCw className="h-4 w-4" aria-hidden="true" />
-            Recarregar
-          </button>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            <button type="button" onClick={this.handleReload} className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
+              <RefreshCw className="h-4 w-4" aria-hidden="true" />
+              Recarregar
+            </button>
+            <button type="button" onClick={this.handleRecover} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:bg-white/[0.08]">
+              Limpar cache e recuperar
+            </button>
+          </div>
         </section>
       </main>
     );
