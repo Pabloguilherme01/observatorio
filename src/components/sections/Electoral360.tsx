@@ -66,7 +66,7 @@ export function Electoral360() {
         titleId="electoral360-title"
         eyebrow="Eleitoral 360°"
         title="Conheça os candidatos acompanhados"
-        description="Consulte nomes acompanhados em Águas Lindas, dados públicos de identificação e informações do eleitorado."
+        description="Consulte o recorte de nomes acompanhado em Águas Lindas e confira os dados públicos de cada perfil."
       />
 
       <div className="mb-3 rounded-2xl border border-white/8 bg-white/[0.018] px-3 py-3">
@@ -88,10 +88,10 @@ export function Electoral360() {
       </div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
         <div className="min-w-0">
-          <strong className="block text-xs font-black text-sky-100">Recorte local</strong>
-          <span className="text-[11px] text-slate-500">Mostrando somente os nomes acompanhados pelo observatório em Águas Lindas.</span>
+          <strong className="block text-xs font-black text-sky-100">Nomes acompanhados em Águas Lindas</strong>
+          <span className="text-[11px] text-slate-500">Este recorte reúne somente os nomes monitorados pelo observatório para a cidade.</span>
         </div>
-        <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span>
+        <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} acompanhados</span>
       </div>
       <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado atual</div><div className="mt-2 text-2xl font-black text-white">{electorate.electorate.toLocaleString('pt-BR')}</div><div className="text-xs text-slate-500">snapshot · {electorate.snapshotDate}</div></Card>
@@ -139,7 +139,7 @@ export function Electoral360() {
             <div>
               <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais contexto eleitoral</div>
               <div className="mt-1 text-sm font-semibold text-white">Base complementar consultada</div>
-              <p className="mt-1 text-[11px] leading-5 text-slate-500">Base complementar usada para conferir atributos dos nomes acompanhados. O arquivo estadual não traz município da candidatura.</p>
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">Informações complementares para conferir os dados públicos do recorte. A base estadual não informa o município da candidatura.</p>
             </div>
             <div className="grid grid-cols-2 gap-2 text-center sm:w-64">
               <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
@@ -158,7 +158,7 @@ export function Electoral360() {
         <Card>
           <History className="h-5 w-5 text-violet-300" aria-hidden="true" />
           <div className="mt-3 text-sm font-black text-white">{hasLocalCandidateSnapshot ? 'Snapshot disponível' : 'Atualização pendente'}</div>
-          <div className="mt-1 text-xs text-slate-500">dados de identificação pública</div>
+          <div className="mt-1 text-xs text-slate-500">identificação pública disponível</div>
         </Card>
         <Card>
           <UserRound className="h-5 w-5 text-amber-300" aria-hidden="true" />
@@ -240,10 +240,10 @@ export function Electoral360() {
 
         <div className="space-y-4">
           <details className="rounded-3xl border border-white/8 bg-white/[0.015] p-4">
-            <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Como os dados foram conferidos</summary>
+            <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Sobre as fontes</summary>
             <div className="mt-3 space-y-4">
               <div>
-                <div className="flex items-center gap-2 text-sm font-bold text-white"><ShieldAlert className="h-4 w-4 text-sky-300" aria-hidden="true" /> Dados públicos</div>
+                <div className="flex items-center gap-2 text-sm font-bold text-white"><ShieldAlert className="h-4 w-4 text-sky-300" aria-hidden="true" /> Conferência dos dados</div>
                 <p className="mt-2 text-xs leading-5 text-slate-500">O observatório apresenta estes nomes como um recorte acompanhado em Águas Lindas. A base estadual do TSE não informa o município da candidatura.</p>
               </div>
               <div>
