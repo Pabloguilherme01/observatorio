@@ -8,17 +8,18 @@ const errors = [];
 const warnings = [];
 
 const isMunicipalitySnapshot = payload.schemaVersion === 3 && payload.coverage === 'municipality_required';
+const isStateWatchlistSnapshot = payload.schemaVersion === 3 && payload.coverage === 'state_watchlist';
 const state = payload.meta?.state;
 if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('schemaVersion deve ser 2 ou 3.');
 if (isMunicipalitySnapshot) {
   if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter municipal ausente ou divergente.');
   if (state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '5200258') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
-  if (state !== 'local_filter_pending' && !new Set(['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy']).has(payload.meta?.retrievalMethod)) errors.push('snapshot municipal sincronizado deve usar uma fonte oficial TSE suportada.');
+  if (state !== 'local_filter_pending' && !new Set(['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy']).has(payload.meta?.retrievalMethod)) errors.push('snapshot TSE sincronizado deve usar uma fonte oficial TSE suportada.');
   if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot municipal não informa explicitamente o recorte monitorado.');
 }
 
 if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist no contrato estadual antigo.');
-if (payload.schemaVersion === 3 && payload.coverage !== 'municipality_required') errors.push('coverage inválido no contrato municipal.');
+if (payload.schemaVersion === 3 && !isMunicipalitySnapshot && !isStateWatchlistSnapshot) errors.push('coverage inválido no contrato TSE.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
 const sha = payload.meta?.sourceFileSha256;
@@ -36,7 +37,7 @@ if (state === 'not_synced' || state === 'local_filter_pending') {
 
 if (!Number.isInteger(payload.meta?.sourceRows) || (requireSynced && payload.meta.sourceRows <= 0)) errors.push('sourceRows inválido.');
 if (!Array.isArray(payload.watchlist)) errors.push('watchlist deve ser array.');
-if (!isMunicipalitySnapshot && payload.watchlist.length !== 10) errors.push('watchlist deve conter exatamente 10 nomes monitorados no contrato legado.');
+if (!isMunicipalitySnapshot && payload.watchlist.length !== 10) errors.push('watchlist deve conter exatamente 10 nomes monitorados no recorte TSE.');
 if (!Array.isArray(payload.matched)) errors.push('matched deve ser array.');
 
 const ids = new Set();
@@ -67,7 +68,7 @@ if (state !== 'not_synced' && state !== 'local_filter_pending' && state !== 'syn
   }
   if (payload.meta?.captureTransport === 'historical_third_party_reader') warnings.push('Snapshot registra transporte histórico intermediado; esse transporte não participa da produção atual.');
   if (payload.meta?.captureTransport === 'reader_proxy') warnings.push('Snapshot foi obtido do endpoint oficial TSE por transporte intermediado devido a bloqueio HTTP do runner; o endpoint de origem permanece oficial e o transporte está explicitamente registrado.');
-  if (!isMunicipalitySnapshot) {
+  if (isStateWatchlistSnapshot || !isMunicipalitySnapshot) {
     for (const expected of payload.watchlist ?? []) {
       if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
     }
