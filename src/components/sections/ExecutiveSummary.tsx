@@ -36,10 +36,12 @@ export function ExecutiveSummary() {
   };
 
   const publicFacts = [
-    { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', target: 'dashboard' },
-    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', target: 'eleitorado' },
-    { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', target: 'orcamento' },
-    { id: 'saneamento', label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Indicador de serviço público de saneamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', target: 'dashboard' },
+    { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', badge: 'Fonte pública', target: 'dashboard' },
+    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', badge: 'Fonte pública', target: 'eleitorado' },
+    { id: 'participacao', label: 'Participação em 2024', value: electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Comparecimento dos eleitores na eleição de 2024.', source: 'TSE · resultado 2024', badge: 'Fonte pública', target: 'eleitoral360' },
+    { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', badge: 'Derivado', target: 'orcamento' },
+    { id: 'agua', label: 'Água encanada', value: d.sanitation.waterAccessPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Domicílios atendidos pela rede de abastecimento.', source: sanitationSource?.label ?? 'SINISA 2024', badge: 'Fonte pública', target: 'dashboard' },
+    { id: 'saneamento', label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Indicador de serviço público de saneamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'dashboard' },
   ] as const;
 
   const quickStats = [
@@ -154,7 +156,7 @@ export function ExecutiveSummary() {
               </div>
               <div className="summary-public-discovery-head">
                 <div>
-                  <strong>4 dados para começar</strong>
+                  <strong>6 dados para começar</strong>
                   <span>Valor, fonte e referência aparecem no próprio cartão.</span>
                 </div>
               </div>
@@ -164,6 +166,7 @@ export function ExecutiveSummary() {
                   <button key={fact.id} type="button" className="summary-public-fact is-static text-left" onClick={() => goToSection(fact.target)} aria-label={`Abrir contexto de ${fact.label}`}>
                     <span className="block">{fact.label}</span>
                     <strong className="mt-1 block mobile-safe-wrap">{fact.value}</strong>
+                    <span className="summary-public-badge mt-1 inline-flex w-fit items-center rounded-full border border-sky-300/25 bg-sky-300/[0.07] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sky-200">{fact.badge}</span>
                     <small className="mt-1 block">{fact.source}</small>
                     <em className="mt-1 block">{fact.note}</em>
                     <ArrowRight className="summary-public-arrow mt-2 h-4 w-4" aria-hidden="true" />
