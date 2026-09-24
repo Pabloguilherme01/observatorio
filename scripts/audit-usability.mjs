@@ -104,14 +104,14 @@ if (combined.includes('election-mode-actions') && combined.includes('mode-electi
 else fail('Modo Eleição perdeu a separação da leitura padrão');
 
 const simpleTexts = [
-  'Números claros. Toque para ver a fonte.',
-  'O essencial em 1 minuto',
-  'Os principais números',
+  'Leitura direta ao ponto',
+  'Visão rápida com os pontos essenciais',
+  'Escolha o nível de detalhe da leitura',
 ];
 const technicalTexts = [
-  'Fonte, data e método',
   'Detalhes técnicos visíveis',
-  'Resumo com rastreabilidade',
+  'Mostrar fontes, método e detalhes dos dados',
+  'Mostrar informações em linguagem mais simples',
 ];
 if (simpleTexts.every(value => combined.includes(value)) && technicalTexts.every(value => combined.includes(value))) pass('contrato de linguagem simples vs técnica presente');
 else fail('distinção de linguagem simples vs técnica incompleta');
