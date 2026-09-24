@@ -174,6 +174,7 @@ export function App() {
       <ThemeProvider>
         <ContrastProvider>
         <ExperienceShell>
+          <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><HeroCountdown /></SectionErrorBoundary>
           <main id="main-content">
