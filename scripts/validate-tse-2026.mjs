@@ -75,7 +75,7 @@ if (state !== 'not_synced' && state !== 'local_filter_pending' && state !== 'syn
   if (payload.meta?.captureTransport === 'reader_proxy') warnings.push('Snapshot foi obtido do endpoint oficial TSE por transporte intermediado devido a bloqueio HTTP do runner; o endpoint de origem permanece oficial e o transporte está explicitamente registrado.');
   if (isStateWatchlistSnapshot || (!isMunicipalitySnapshot && payload.watchlist.length > 0)) {
     for (const expected of payload.watchlist ?? []) {
-      if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
+      if (!payload.matched.some(candidate => String(candidate.watchlistName ?? '').trim().toLocaleLowerCase('pt-BR') === String(expected).trim().toLocaleLowerCase('pt-BR'))) errors.push('Watchlist sem correspondência TSE: ' + expected);
     }
     for (const candidate of payload.matched ?? []) {
       if (!candidate.watchlistName) errors.push('Registro TSE sem watchlistName: ' + candidate.sqCandidate);
