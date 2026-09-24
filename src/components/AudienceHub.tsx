@@ -30,8 +30,10 @@ export function AudienceHub() {
     <section id="descubra" className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <div className="discovery-shell">
         <div className="mb-6">
-          <h2 className="text-2xl font-black tracking-tight text-white sm:text-3xl">O que você quer saber?</h2>
-          <p className="mt-2 text-sm text-slate-400">
+          <h2 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white sm:text-3xl">
+            O que você quer saber?
+          </h2>
+          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
             {mode === 'technical'
               ? 'Dados completos com fonte, método e auditoria.'
               : 'Explore os principais dados da cidade de forma simples.'}
@@ -40,14 +42,21 @@ export function AudienceHub() {
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {topics.map(({ id, label, simple, icon: Icon }) => (
-            <button key={id} type="button" onClick={() => go(id)} className="topic-card text-left">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-sky-300/10 text-sky-300">
+            <button
+              key={id}
+              type="button"
+              onClick={() => go(id)}
+              className="topic-card text-left border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.035]"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-300/10 dark:text-sky-300">
                 <Icon className="h-5 w-5" />
               </span>
-              <strong className="mt-3 block text-white">{label}</strong>
-              <span className="mt-1 block text-xs text-slate-400">{simple}</span>
+              <strong className="mt-3 block text-slate-900 dark:text-white">{label}</strong>
+              <span className="mt-1 block text-xs text-slate-600 dark:text-slate-400">{simple}</span>
               {mode === 'technical' && (
-                <span className="mt-2 block text-[10px] text-slate-500">Auditoria disponível.</span>
+                <span className="mt-2 block text-[10px] text-slate-500 dark:text-slate-500">
+                  Auditoria disponível.
+                </span>
               )}
             </button>
           ))}
