@@ -336,4 +336,14 @@ export const sourceRegistry: readonly SourceRef[] = [
     referenceDate: '2026-09-21',
     note: 'Orientações sobre justificativa no dia da votação e nos 60 dias seguintes a cada turno.',
   },
+
+  {
+    id: 'tre-go-contas-2026',
+    label: 'TRE-GO — Prestação de contas eleitorais 2026',
+    institution: 'Tribunal Regional Eleitoral de Goiás',
+    url: 'https://www.tre-go.jus.br/eleicoes/prestacao-de-contas-eleitorais/prestacao-de-contas-eleicoes-2026',
+    nature: 'official',
+    referenceDate: '2026-10-05',
+    note: 'Calendário da prestação de contas final: 5 de outubro a 3 de novembro de 2026; para participantes do segundo turno, 26 de outubro a 14 de novembro de 2026.',
+  },
 ];
