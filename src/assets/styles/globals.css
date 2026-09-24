@@ -2690,3 +2690,8 @@ button:disabled{cursor:not-allowed;opacity:.58}
 .summary-public-topic:hover,.summary-public-topic.is-active{border-color:rgba(125,211,252,.35);transform:translateY(-1px)}
 @media (max-width:767px){.summary-public-topics{grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.summary-public-topic{min-height:62px}.summary-public-topic span{font-size:.62rem}}
 @media (prefers-reduced-motion:reduce){.summary-public-topic{transition:none}}
+
+
+.summary-public-stat{cursor:pointer}
+.summary-public-stat-main{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;text-align:left}
+.summary-public-stat-main:focus-visible{outline:2px solid rgba(125,211,252,.55);outline-offset:3px;border-radius:10px}
