@@ -15,6 +15,7 @@ export function ExecutiveSummary() {
   const groupedUnknown = (poll?.nonePct ?? 0) + (poll?.notSurePct ?? 0);
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
   const hasPoll = Boolean(poll);
+  const pollScenario = poll?.method === 'spontaneous' ? '{pollScenario}' : poll?.method === 'stimulated' ? 'Deputado estadual · pergunta estimulada' : 'Cenário da pesquisa';
   
   const electorate = d.electoral;
   const populationPoint = d.populationSeries.find(point => point.year === 2026);
@@ -37,7 +38,7 @@ export function ExecutiveSummary() {
   const publicFacts = [
     { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', target: 'dashboard' },
     { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', target: 'eleitorado' },
-    { id: 'orcamento-per-capita', label: 'Orçamento por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', target: 'orcamento' },
+    { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', target: 'orcamento' },
     { id: 'saneamento', label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Indicador de serviço público de saneamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', target: 'dashboard' },
   ] as const;
 
