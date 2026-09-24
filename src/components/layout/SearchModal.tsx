@@ -24,7 +24,7 @@ const normalize = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
 const sourceLabel = (sourceId: string) => d.sources.find(source => source.id === sourceId)?.label ?? sourceId;
-const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? 'Seção do observatório';
+const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Exportação' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
@@ -107,7 +107,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     if (!q || q.length < 4) return null;
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
-    if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitorado', sourceId: 'tse-eleitorado-2026' };
+    if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitoral360', sourceId: 'tse-eleitorado-2026' };
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
     if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
@@ -167,8 +167,9 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   const selectResult = (id: string) => {
     onClose();
-    window.history.replaceState(null, '', '#' + id);
-    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+    const target = document.getElementById(id) ? id : navigation.find(item => document.getElementById(item.id))?.id ?? 'resumo';
+    window.history.replaceState(null, '', '#' + target);
+    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
   };
 
   return (
