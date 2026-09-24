@@ -30,6 +30,11 @@ function Deferred({ children }: { readonly children: ReactNode }) {
   );
 }
 
+function navigateToHash(hash: string) {
+  if (!hash) return;
+  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
+}
+
 function performHashScroll(hash: string) {
   if (!hash) return false;
   const target = document.getElementById(hash);
