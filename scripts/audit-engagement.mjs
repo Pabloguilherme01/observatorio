@@ -22,7 +22,11 @@ const index = read('index.html');
 
 must(modeToggle.includes("setMode('summary')") && modeToggle.includes("setMode('simple')") && modeToggle.includes("setMode('technical')"), '3 modos neutros de leitura disponíveis');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
-must((quiz.match(/prompt:\s*'/g) || []).length >= 10, 'quiz possui pelo menos 10 perguntas');
+const quizPromptCount = (quiz.match(/\n      prompt:/g) || []).length;
+const quizPromptLines = [...quiz.matchAll(/\n      prompt:\s*([\"'`])([\\s\\S]*?)\1,/g)].map(match => match[2]);
+const uniqueQuizPrompts = new Set(quizPromptLines);
+must(quizPromptCount === 50 && quizPromptLines.length === 50, 'quiz possui exatamente 50 perguntas');
+must(uniqueQuizPrompts.size === 50, 'quiz possui 50 perguntas distintas');
 must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual');
 must(read('src/components/layout/Footer.tsx').includes('https://www.instagram.com/pablo.builds.ia'), 'Instagram do autor está no rodapé');
 must(!search.includes('autoFocus'), 'busca não usa autoFocus');
