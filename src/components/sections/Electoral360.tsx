@@ -25,11 +25,12 @@ const moduleStatusLabel: Record<string, string> = {
 export function Electoral360() {
   const [query, setQuery] = useState('');
   const [selectedName, setSelectedName] = useState('');
-  const hasOfficialCandidateSnapshot = electoral360Snapshot.matchedCandidates.length > 0;
+  const hasOfficialCandidateSnapshot = electoral360Snapshot.matchedCandidates.some(candidate => candidate.municipality?.toLocaleLowerCase('pt-BR') === 'águas lindas de goiás');
   const captured = electoral360Modules.filter(module => module.status === 'captured').length;
   const cataloged = electoral360Modules.filter(module => module.status === 'cataloged').length;
   const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state));
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
+  const complementaryStats = electoral360Snapshot.complementaryStats;
   const electorate = d.electoral;
   const ageTotal = electorate.ageGroups.reduce((sum, group) => sum + group.voters, 0);
   const genderTotalPct = (electorate.womenPct ?? 0) + (electorate.menPct ?? 0);
@@ -43,8 +44,9 @@ export function Electoral360() {
   const normalizedQuery = query.trim().toLocaleLowerCase('pt-BR');
 
   const officialCandidates = useMemo(() => {
-    if (!normalizedQuery) return electoral360Snapshot.matchedCandidates;
-    return electoral360Snapshot.matchedCandidates.filter(candidate =>
+    const localOfficial = electoral360Snapshot.matchedCandidates.filter(candidate => candidate.municipality?.toLocaleLowerCase('pt-BR') === 'águas lindas de goiás');
+    if (!normalizedQuery) return localOfficial;
+    return localOfficial.filter(candidate =>
       [candidate.name, candidate.party, candidate.office, candidate.status, candidate.ballotNumber]
         .join(' ')
         .toLocaleLowerCase('pt-BR')
@@ -115,6 +117,22 @@ export function Electoral360() {
           <p className="mt-3 text-[10px] text-slate-600">Soma das faixas etárias capturadas: {ageTotal.toLocaleString('pt-BR')} eleitores.</p>
         </Card>
       </div>
+      {complementaryStats && (
+        <Card className="mb-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Dados complementares do TSE</div>
+              <div className="mt-1 text-sm font-semibold text-white">905 registros · geração em 23/09/2026</div>
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">Esta base complementa candidatos identificados por SQ_CANDIDATO. Ela não é usada para afirmar que um nome é candidato de Águas Lindas sem evidência municipal.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-center sm:w-64">
+              <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
+              <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.MASCULINO ?? 0}</strong><span className="text-[9px] text-slate-600">masculino</span></div>
+            </div>
+          </div>
+        </Card>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-4">
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
