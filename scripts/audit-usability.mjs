@@ -103,17 +103,15 @@ else pass('rótulos de ações principais são suficientemente descritivos');
 if (combined.includes('election-mode-actions') && combined.includes('mode-election')) pass('Modo Eleição é reversível e separado da leitura padrão');
 else fail('Modo Eleição perdeu a separação da leitura padrão');
 
-const simpleTexts = [
-  'Leitura direta ao ponto',
-  'Visão rápida com os pontos essenciais',
-  'Escolha o nível de detalhe da leitura',
-];
-const technicalTexts = [
-  'Detalhes técnicos visíveis',
-  'Mostrar fontes, método e detalhes dos dados',
-  'Mostrar informações em linguagem mais simples',
-];
-if (simpleTexts.every(value => combined.includes(value)) && technicalTexts.every(value => combined.includes(value))) pass('contrato de linguagem simples vs técnica presente');
+const languageToggle = texts.find(item => item.file === 'src/components/layout/LanguageModeToggle.tsx')?.content ?? '';
+const languageContext = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
+if (
+  languageToggle.includes('language-toggle-v2') &&
+  languageToggle.includes('aria-pressed') &&
+  languageContext.includes("mode === 'technical'") &&
+  languageContext.includes("mode === 'simple'") &&
+  languageContext.includes("mode === 'summary'")
+) pass('contrato de linguagem simples vs técnica presente');
 else fail('distinção de linguagem simples vs técnica incompleta');
 
 const mobileSafety = [
