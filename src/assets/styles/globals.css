@@ -247,3 +247,5 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .quiz-stage-node span:last-child{font-size:8px}
   .summary-public-topics{grid-template-columns:1fr!important}
 }
+
+@media (max-width: 767px) { html, body, #root { overflow-x: clip; } }
