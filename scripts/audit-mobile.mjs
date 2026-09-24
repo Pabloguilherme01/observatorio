@@ -61,7 +61,7 @@ must(files.css.includes('overflow-x:hidden') && files.css.includes('overflow-x:c
 must(files.css.includes('--mobile-nav-height:64px'), 'altura final da navegação inferior mobile está consolidada');
 must(!read('src/components/ExperienceShell.tsx').includes('className="quick-dock"'), 'dock flutuante redundante não é renderizado sobre a navegação mobile');
 const radar = read('src/components/sections/PoliticalRadar.tsx');
-must(radar.includes('Registrada') && radar.includes('min-h-11') && radar.includes('grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3.75rem]'), 'radar político mantém informação consistente e linhas utilizáveis em telas estreitas');
+must(radar.includes('Margem registrada') && radar.includes('min-h-11') && radar.includes('grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3.75rem]'), 'radar político mantém informação consistente e linhas utilizáveis em telas estreitas');
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
 must(languageToggle.includes("setMode('summary')") && languageToggle.includes("setMode('simple')") && languageToggle.includes("setMode('technical')"), 'os três modos de leitura estão disponíveis no mobile');
 const quiz = read('src/components/sections/QuickQuiz.tsx');
