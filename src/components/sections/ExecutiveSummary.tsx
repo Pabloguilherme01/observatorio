@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown } from 'lucide-react';
+import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown, Copy, Check } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -32,6 +32,7 @@ export function ExecutiveSummary() {
   const [activeStat, setActiveStat] = useState('');
   const [openFact, setOpenFact] = useState<string | null>(null);
   const [factToast, setFactToast] = useState('');
+  const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const { mode: languageMode } = useLanguageMode();
 
@@ -69,6 +70,8 @@ export function ExecutiveSummary() {
   };
 
   const share = async (cardLabel?: string, cardValue?: string) => {
+    if (shareBusy) return;
+    setShareBusy(true);
     const text = [
       'Observatório Eleitoral — Águas Lindas de Goiás 2026',
       `Eleitorado: ${electorate.electorate.toLocaleString('pt-BR')} eleitores.`,
@@ -99,6 +102,8 @@ export function ExecutiveSummary() {
       if (error instanceof DOMException && error.name === 'AbortError') return;
       setShareStatus('Não foi possível compartilhar');
       window.setTimeout(() => setShareStatus(''), 2400);
+    } finally {
+      setShareBusy(false);
     }
   };
 
@@ -119,7 +124,7 @@ export function ExecutiveSummary() {
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Camada técnica' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
             <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
-              <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
+              <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}
             </button>
             {shareStatus && <span className="text-[11px] font-semibold text-emerald-300" role="status" aria-live="polite">{shareStatus}</span>}
           </div>
