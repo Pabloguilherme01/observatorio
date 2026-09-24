@@ -20,6 +20,7 @@ const sync = read('.github/workflows/sync-tse-2026.yml');
 const version = read('src/config/version.ts');
 const index = read('index.html');
 const audience = read('src/components/AudienceHub.tsx');
+const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const executive = read('src/components/sections/ExecutiveSummary.tsx');
 const formatters = read('src/utils/formatters.ts');
 
@@ -63,7 +64,7 @@ must(executive.includes('poll?.pollster') && executive.includes('poll?.method') 
 must(files.app.includes('id="main-content"') && (files.app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
 must(files.hero.includes('Modo Eleição') && files.hero.includes('Ativar Modo Eleição') && files.hero.includes('aria-pressed'), 'Modo Eleição possui alternador visível e acessível');
 must(files.hero.includes('Fonte: IBGE') && files.hero.includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
-must(files.dashboard.includes('Orçamento planejado por habitante') && files.dashboard.includes('totalBrl') && files.dashboard.includes('population2026'), 'dashboard calcula orçamento planejado por habitante');
+must(dashboard.includes('Orçamento planejado por habitante') && files.dashboard.includes('totalBrl') && files.dashboard.includes('population2026'), 'dashboard calcula orçamento planejado por habitante');
 must(files.dashboard.includes('LOA ÷ população') || files.dashboard.includes('LOA / população'), 'indicador per capita explicita fórmula');
 must(files.hero.includes('transporte semiurbano') && files.hero.includes('Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
 must(files.dashboard.includes('Crescimento populacional · 2022–2026') && files.dashboard.includes('Eleitorado · 2018–2026'), 'dashboard mantém tendências históricas');
