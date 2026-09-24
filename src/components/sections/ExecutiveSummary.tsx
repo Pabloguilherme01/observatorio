@@ -29,7 +29,6 @@ export function ExecutiveSummary() {
   const [openFact, setOpenFact] = useState<string | null>(null);
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
-  const [lastAction, setLastAction] = useState('');
   const [discoveryIndex, setDiscoveryIndex] = useState(0);
   const { mode: languageMode } = useLanguageMode();
 
@@ -63,7 +62,6 @@ export function ExecutiveSummary() {
     const index = publicFacts.findIndex(fact => fact.id === id);
     if (index >= 0) setDiscoveryIndex(index);
     setOpenFact(current => current === id ? null : id);
-    setLastAction(label);
   };
 
   const focusNextDiscovery = () => {
@@ -75,7 +73,6 @@ export function ExecutiveSummary() {
 
   const openTopic = (topic: typeof topics[number]) => {
     setActiveTopic(topic.id);
-    setLastAction(topic.label);
     goToSection(topic.target);
   };
 
@@ -145,8 +142,8 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
-                <h3>Entenda a cidade em poucos toques.</h3>
-                <p>Explore os números mais úteis primeiro. Cada cartão leva ao contexto completo e preserva a origem do dado.</p>
+                <h3>Veja o essencial. Abra o detalhe quando precisar.</h3>
+                <p className="summary-public-lead">Números principais, contexto sob demanda e fonte sempre acessível.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -172,28 +169,10 @@ export function ExecutiveSummary() {
               </div>
               <div className="summary-public-discovery-head">
                 <div>
-                  <strong>Descobertas rápidas</strong>
-                  <span>Toque em um cartão ou avance para encontrar outro dado.</span>
+                  <strong>4 dados para começar</strong>
+                  <span>Toque para ver a origem ou abrir o contexto completo.</span>
                 </div>
-                <span className="summary-public-discovery-count">{publicFacts.length} cartões</span>
-              </div>
-              <div className="summary-public-discovery-tools" aria-label="Controles das descobertas rápidas">
-                <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact} aria-label="Fechar descoberta aberta">Fechar cartão</button>
-                <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próxima descoberta <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
-              </div>
-              <div className="summary-public-status" aria-live="polite">
-                <span className="summary-public-status-dot" aria-hidden="true" />
-                <span>{lastAction ? `Aberto: ${lastAction}` : 'Pronto para explorar'}</span>
-                <span className="summary-public-status-count">{electoral360Snapshot.matchedCandidates.length} nomes no recorte acompanhado</span>
-              </div>
-              <div className="summary-public-pulse" aria-label="Como usar o Resumo">
-                <div>
-                  <span className="summary-public-pulse-label">Agora</span>
-                  <strong>Veja um número, abra o contexto e confira a fonte.</strong>
-                </div>
-                <button type="button" className="summary-public-pulse-link" onClick={() => goToSection('fontes')} aria-label="Conferir as fontes dos dados">
-                  Fontes <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                </button>
+                <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próximo <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
 
               <div className="summary-public-facts" aria-label="Descobertas rápidas">
@@ -222,7 +201,6 @@ export function ExecutiveSummary() {
                       aria-label={`Abrir contexto de ${stat.label}`}
                       onClick={() => {
                         setActiveStat(stat.label);
-                        setLastAction(stat.label);
                         goToSection(stat.target);
                         window.setTimeout(() => setActiveStat(''), 900);
                       }}
@@ -268,7 +246,7 @@ export function ExecutiveSummary() {
                   </p>
                 )}
 
-                <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-semibold text-slate-500">
+                <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-semibold text-slate-500">
                   {poll && <>
                     <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
                     <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
@@ -314,40 +292,29 @@ export function ExecutiveSummary() {
           </div>
         )}
 
-        {languageMode === 'summary' && (
-          <div className="summary-public-shareline">
-            <div>
-              <strong>Compartilhe um dado útil</strong>
-              <span>O link mantém o contexto completo da página.</span>
-            </div>
-            <button type="button" onClick={() => { void share(); }} disabled={shareBusy} aria-busy={shareBusy}>
-              <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? "Compartilhando…" : "Compartilhar"}
-            </button>
-          </div>
-        )}
-
         {languageMode === 'simple' && (
           <div className="summary-simple-tip mt-3">
-            <strong className="text-slate-200">Como usar:</strong> toque em qualquer número para abrir os dados completos, com fonte e data de referência.
+            <strong className="text-slate-200">Leitura simples</strong>
+            <span className="ml-2">Número primeiro; fonte e contexto quando você abrir.</span>
           </div>
         )}
 
         {languageMode === 'technical' && (
           <div className="mt-3 grid gap-3 md:grid-cols-3">
             <Card className="summary-evidence">
-              <span>Como ler</span>
-              <strong>Data + fonte</strong>
-              <p className="mt-1">Use a data e a origem antes de comparar indicadores.</p>
+              <span>Leitura</span>
+              <strong>Valor + data + fonte</strong>
+              <p className="mt-1">Compare indicadores somente depois de conferir escopo e referência.</p>
             </Card>
             <Card className="summary-evidence">
-              <span>Simulações</span>
-              <strong>Cenário ≠ fato</strong>
-              <p className="mt-1">Resultados calculados ficam separados dos dados observados.</p>
+              <span>Limites</span>
+              <strong>Cenário não é fato</strong>
+              <p className="mt-1">Simulações e estimativas ficam separadas dos valores observados.</p>
             </Card>
             <Card className="summary-evidence">
               <span>Atualização</span>
               <strong>{formatDate(d.meta.updatedAt)}</strong>
-              <p className="mt-1">Cada indicador pode ter uma data de referência diferente.</p>
+              <p className="mt-1">Cada indicador pode ter sua própria data de referência.</p>
             </Card>
           </div>
         )}
