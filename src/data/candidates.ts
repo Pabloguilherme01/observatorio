@@ -17,6 +17,7 @@ export interface PublicCandidate {
   readonly sourceUrls?: readonly string[];
   readonly localEvidence?: string;
   readonly evidenceSourceUrls?: readonly string[];
+  readonly sourceResource?: string;
 }
 
 export const publicCandidateSource = 'TSE — Candidatos 2026';
