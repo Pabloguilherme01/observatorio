@@ -28,20 +28,30 @@ export function Electoral360() {
   const hasOfficialCandidateSnapshot = electoral360Snapshot.matchedCandidates.length > 0;
   const captured = electoral360Modules.filter(module => module.status === 'captured').length;
   const cataloged = electoral360Modules.filter(module => module.status === 'cataloged').length;
-  const snapshotWarning = ['not_synced', 'stale', 'failed'].includes(String(electoral360Diff.state));
+  const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state));
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
 
-  const candidatePool = hasOfficialCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates;
-  const candidates = useMemo(() => {
-    const normalized = query.trim().toLocaleLowerCase('pt-BR');
-    if (!normalized) return candidatePool;
-    return candidatePool.filter(candidate =>
+  const normalizedQuery = query.trim().toLocaleLowerCase('pt-BR');
+
+  const officialCandidates = useMemo(() => {
+    if (!normalizedQuery) return electoral360Snapshot.matchedCandidates;
+    return electoral360Snapshot.matchedCandidates.filter(candidate =>
       [candidate.name, candidate.party, candidate.office, candidate.status, candidate.ballotNumber]
         .join(' ')
         .toLocaleLowerCase('pt-BR')
-        .includes(normalized),
+        .includes(normalizedQuery),
     );
-  }, [query, candidatePool]);
+  }, [normalizedQuery]);
+
+  const localCandidates = useMemo(() => {
+    if (!normalizedQuery) return d.candidates;
+    return d.candidates.filter(candidate =>
+      [candidate.name, candidate.party, candidate.office, candidate.status, candidate.ballotNumber]
+        .join(' ')
+        .toLocaleLowerCase('pt-BR')
+        .includes(normalizedQuery),
+    );
+  }, [normalizedQuery]);
 
   const selectedOfficial = electoral360Snapshot.matchedCandidates.find(candidate => candidate.name === selectedName);
   const selectedLocal = d.candidates.find(candidate => candidate.name === selectedName);
@@ -104,7 +114,7 @@ export function Electoral360() {
                 key={candidate.name}
                 type="button"
                 onClick={() => setSelectedName(candidate.name)}
-                className={`min-h-11 rounded-xl border px-3 py-2 text-left text-xs font-bold ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400'}`}
+                className={`min-h-11 max-w-full rounded-xl border px-3 py-2 text-left text-xs font-bold break-words ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400'}`}
               >
                 {candidate.name}
               </button>
@@ -178,7 +188,7 @@ export function Electoral360() {
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {electoral360Snapshot.localWatchlist.map(name => (
-                <span key={name} className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{name}</span>
+                <span key={name} className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400 break-words">{name}</span>
               ))}
             </div>
           </Card>
@@ -193,7 +203,7 @@ export function Electoral360() {
               {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais permanecem identificados como recorte editorial.'}
             </p>
           </div>
-          <label className="flex items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400">
+          <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
               <Search className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Buscar candidatura</span>
               <input value={query} onChange={event => setQuery(event.target.value)} placeholder={hasOfficialCandidateSnapshot ? 'Buscar candidatura...' : 'Filtrar recorte...'} className="w-full min-w-0 bg-transparent outline-none placeholder:text-slate-600 sm:w-56" />
@@ -201,16 +211,16 @@ export function Electoral360() {
         </div>
 
         {hasOfficialCandidateSnapshot ? (
-          candidates.length ? (
+          officialCandidates.length ? (
             <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {candidates.map(candidate => (
+              {officialCandidates.map(candidate => (
                 <article key={candidate.sqCandidate} className="rounded-2xl border border-white/8 p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h4 className="font-black text-white">{candidate.name}</h4>
-                      <p className="mt-1 text-xs text-slate-500">{candidate.party} · {candidate.office} · nº {candidate.ballotNumber}</p>
+                    <div className="min-w-0">
+                      <h4 className="font-black text-white break-words">{candidate.name}</h4>
+                      <p className="mt-1 text-xs text-slate-500 break-words">{candidate.party} · {candidate.office} · nº {candidate.ballotNumber}</p>
                     </div>
-                    <span className="rounded-full bg-white/5 px-2 py-1 text-[10px] font-bold text-slate-500">{candidate.status}</span>
+                    <span className="shrink-0 rounded-full bg-white/5 px-2 py-1 text-[10px] font-bold text-slate-500">{candidate.status}</span>
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
                     <Info label="SQ_CANDIDATO" value={candidate.sqCandidate} />
@@ -223,12 +233,12 @@ export function Electoral360() {
             <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhuma correspondência encontrada para a busca atual.</div>
           )
         ) : (
-          candidates.length ? (
+          localCandidates.length ? (
             <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {candidates.map(candidate => (
+              {localCandidates.map(candidate => (
                 <article key={candidate.name} className="rounded-2xl border border-white/8 p-4">
-                  <h4 className="font-black text-white">{candidate.name}</h4>
-                  <p className="mt-1 text-xs text-slate-500">Registro editorial local · {candidate.party ?? 'partido não informado'}</p>
+                  <h4 className="font-black text-white break-words">{candidate.name}</h4>
+                  <p className="mt-1 text-xs text-slate-500 break-words">Registro editorial local · {candidate.party ?? 'partido não informado'}</p>
                   <button type="button" onClick={() => setSelectedName(candidate.name)} className="mt-3 min-h-11 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">Abrir perfil documental</button>
                 </article>
               ))}
@@ -236,10 +246,10 @@ export function Electoral360() {
           ) : (
             <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhum registro corresponde ao filtro atual.</div>
           )
-        )}
+        )
 
         {candidateSource?.url && (
-          <a href={candidateSource.url} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold text-sky-300">
+          <a href={candidateSource.url} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold text-sky-300">
             Ver catálogo oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
         )}
@@ -252,7 +262,7 @@ function Info({ label, value }: { readonly label: string; readonly value: string
   return (
     <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3">
       <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600">{label}</div>
-      <div className="mt-1 text-sm font-semibold text-white">{value}</div>
+      <div className="mt-1 break-words text-sm font-semibold text-white">{value}</div>
     </div>
   );
 }
