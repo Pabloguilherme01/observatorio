@@ -40,14 +40,14 @@ export function ExecutiveSummary() {
     { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', badge: 'Fonte pública', target: 'dashboard' },
     { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', badge: 'Fonte pública', target: 'eleitorado' },
     { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 · razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', badge: 'Derivado', target: 'orcamento' },
-    { id: 'saneamento', label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · indicador de serviço público.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'dashboard' },
+    { id: 'saneamento', label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · indicador de serviço público.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'dashboard' },
   ] as const;
 
   const quickStats = [
     { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : `${electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% participaram em 2024`, target: 'eleitoral360' },
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
-    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
+    { label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
   ] as const;
 
   const topics = [
