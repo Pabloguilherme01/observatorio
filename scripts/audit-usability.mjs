@@ -64,6 +64,7 @@ const mountedSources = [
   texts.find(item => item.file === 'src/components/sections/DeferredPublicDataGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredTrustGroup.tsx')?.content ?? '',
+  texts.find(item => item.file === 'src/components/sections/DeferredContextGroup.tsx')?.content ?? '',
 ].join('\n');
 
 for (const [component, label] of [
@@ -108,9 +109,9 @@ const languageContext = texts.find(item => item.file === 'src/context/LanguageMo
 if (
   languageToggle.includes('language-toggle-v3') &&
   languageToggle.includes('aria-pressed') &&
-  languageToggle.includes("id === 'summary'") &&
-  languageToggle.includes("id === 'simple'") &&
-  languageToggle.includes("id === 'technical'") &&
+  languageToggle.includes("summary") &&
+  languageToggle.includes("simple") &&
+  languageToggle.includes("technical") &&
   languageContext.includes("value === 'technical'") &&
   languageContext.includes("value === 'summary'")
 ) pass('contrato de linguagem Resumo/Simples/Técnico presente');
