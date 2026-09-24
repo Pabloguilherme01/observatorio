@@ -47,7 +47,7 @@ export function ExecutiveSummary() {
     { id: 'eleitorado', label: 'Quem participa', value: electorate.electorate.toLocaleString('pt-BR'), note: 'eleitores no snapshot utilizado pelo observatório.', target: 'eleitorado' },
     { id: 'populacao', label: 'Tamanho da cidade', value: population.toLocaleString('pt-BR'), note: 'habitantes na estimativa de 2026.', target: 'dashboard' },
     { id: 'orcamento', label: 'Orçamento municipal', value: brl(budget), note: 'valor total da LOA 2026 registrada no dataset.', target: 'orcamento' },
-    { id: 'candidatos', label: 'Candidatos acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral acompanhado em Águas Lindas.', target: 'eleitoral360' },
+    { id: 'candidatos', label: 'Nomes acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral acompanhado em Águas Lindas.', target: 'eleitoral360' },
   ] as const;
 
   const quickStats = [
@@ -55,7 +55,7 @@ export function ExecutiveSummary() {
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
-    { label: 'Candidatos', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), caption: 'acompanhados', detail: languageMode === 'technical' ? 'recorte TSE por nomes monitorados' : 'ver perfis', target: 'eleitoral360' },
+    { label: 'Nomes acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), caption: 'recorte local', detail: languageMode === 'technical' ? 'TSE por nomes monitorados' : 'ver perfis', target: 'eleitoral360' },
   ] as const;
 
   const topics = [
@@ -174,7 +174,7 @@ export function ExecutiveSummary() {
               <div className="summary-public-discovery-head">
                 <div>
                   <strong>Descobertas rápidas</strong>
-                  <span>Toque em um cartão para abrir o contexto completo.</span>
+                  <span>Toque, avance ou feche para navegar pelas descobertas.</span>
                 </div>
                 <span className="summary-public-discovery-count">{publicFacts.length} cartões</span>
               </div>
