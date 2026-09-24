@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarClock, Database, ExternalLink, Vote } from 'lucide-react';
+import { ArrowRight, BarChart3, BusFront, CalendarClock, Database, Droplets, ExternalLink, Users, Vote, WalletCards } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
 import { useEffect, useState } from 'react';
@@ -87,6 +87,40 @@ export function HeroCountdown() {
               {languageMode === 'simple' ? 'Conferir fontes' : 'Ver evidências'}
             </a>
           </div>
+
+          {languageMode === 'summary' && (
+            <div className="summary-hero-panel mt-5 rounded-[24px] border border-sky-300/15 bg-gradient-to-br from-sky-300/[0.09] via-white/[0.035] to-transparent p-3 sm:p-4" aria-label="Resumo rápido do observatório">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-sky-200/80">Em 1 minuto</div>
+                  <h2 className="mt-1 text-base font-black text-white sm:text-lg">Quatro pontos para entender a cidade</h2>
+                </div>
+                <span className="text-[10px] font-semibold text-slate-500">Toque para explorar</span>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                {[
+                  { id: 'dashboard', label: 'Cidade', value: population.toLocaleString('pt-BR'), note: 'população estimada', icon: BarChart3 },
+                  { id: 'eleitorado', label: 'Eleitorado', value: electorate.toLocaleString('pt-BR'), note: 'snapshot do eleitorado', icon: Users },
+                  { id: 'orcamento', label: 'Orçamento', value: brl(loa), note: 'LOA 2026', icon: WalletCards },
+                  { id: 'transporte', label: 'Transporte', value: brl(d.transport.routes[0]?.fareBrl ?? 0), note: 'tarifa de referência', icon: BusFront },
+                ].map(({ id, label, value, note, icon: Icon }) => (
+                  <a key={id} href={'#' + id} className="summary-hero-card group">
+                    <span className="summary-hero-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">{label}</span>
+                      <strong className="mt-1 block truncate text-base font-black text-white">{value}</strong>
+                      <span className="mt-0.5 block text-[11px] text-slate-500">{note}</span>
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-slate-600 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-300" aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
+              <div className="mt-3 flex items-center gap-2 rounded-2xl border border-white/8 bg-black/10 px-3 py-2.5 text-[11px] leading-5 text-slate-400">
+                <Droplets className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
+                <span>Os números têm datas e fontes próprias. Abra cada cartão para conferir o contexto.</span>
+              </div>
+            </div>
+          )}
 
 
           <div className="election-mode-actions sr-only" aria-hidden="true">Modo Eleição · acesso rápido</div>
