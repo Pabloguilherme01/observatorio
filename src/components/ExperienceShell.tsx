@@ -136,7 +136,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   const results = useMemo(() => {
     const normalize = (value: string) => value
       .normalize('NFD')
-      .replace(/[\\u0300-\\u036f]/g, '')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLocaleLowerCase('pt-BR')
       .trim();
     const normalized = normalize(query);
