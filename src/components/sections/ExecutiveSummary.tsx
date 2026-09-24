@@ -25,7 +25,6 @@ export function ExecutiveSummary() {
   const budget = d.budget.totalBrl;
   const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
   const [shareStatus, setShareStatus] = useState('');
-  const [activeStat, setActiveStat] = useState('');
   const [openFact, setOpenFact] = useState<string | null>(null);
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
@@ -145,7 +144,7 @@ export function ExecutiveSummary() {
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
                 <h3>Veja o essencial. Abra o detalhe quando precisar.</h3>
-                <p className="summary-public-lead">Números principais, contexto sob demanda e fonte sempre acessível.</p>
+                <p className="summary-public-lead">Números principais, contexto sob demanda e fonte sempre acessível. Sem ranking de candidatos.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -161,11 +160,11 @@ export function ExecutiveSummary() {
                   ))}
                 </div>
                 <div className="summary-public-actions" aria-label="Ações rápidas do resumo">
-                  <button type="button" onClick={() => { void share(); }} className="summary-public-action" disabled={shareBusy} aria-busy={shareBusy}>
-                    <Share2 className="h-3.5 w-3.5" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar resumo'}
-                  </button>
                   <button type="button" onClick={() => { goToSection('descubra'); }} className="summary-public-action">
                     <Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar assuntos
+                  </button>
+                  <button type="button" onClick={() => { goToSection('eleitoral360'); }} className="summary-public-action">
+                    <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> Ver recorte eleitoral
                   </button>
                 </div>
               </div>
