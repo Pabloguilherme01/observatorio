@@ -46,9 +46,9 @@ export function ContextComparison() {
           <div className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">Ano-base: {metric.year} · unidade: {metric.unit}</div>
         </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-3">
+        <div className="context-comparison-cards mt-4 flex gap-3 overflow-x-auto snap-x snap-mandatory pb-1 md:grid md:grid-cols-3 md:overflow-visible">
           {contextualMunicipalities.map(place => (
-            <Card key={place.ibgeCode} className="p-5">
+            <Card key={place.ibgeCode} className="context-comparison-card min-w-[82vw] snap-start p-5 md:min-w-0">
               <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">{place.name}</div>
               <div className="mt-3 text-3xl font-black tabular-nums text-white light:text-slate-900">{formatValue(metric.id, place.values[metric.id])}</div>
               <div className="mt-1 text-xs text-slate-500">IBGE · {metric.year}</div>
