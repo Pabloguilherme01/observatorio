@@ -1159,3 +1159,19 @@ ra{
   .obs-card:hover,.quiz-option:hover:not(:disabled),.evidence-mini-card:hover,
   .summary-public-fact:hover,.summary-simple-card:hover{transform:none}
 }
+
+
+/* Hero public polish */
+.hero-section-label{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-left:2px solid rgba(103,232,249,.65);padding-left:10px}
+.hero-section-label span{font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#bae6fd}
+.hero-section-label small{font-size:10px;color:#64748b}
+.hero-kpis-guide>a{position:relative;overflow:hidden;min-height:116px;border-radius:18px!important;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015))!important}
+.hero-kpis-guide>a::after{content:"";position:absolute;inset:auto -20% -70% 35%;height:90px;border-radius:50%;background:rgba(56,189,248,.07);filter:blur(22px);pointer-events:none}
+.hero-kpis-guide>a strong{letter-spacing:-.02em}
+.hero-kpis-guide>a:hover{border-color:rgba(103,232,249,.22)!important;box-shadow:0 14px 30px rgba(2,6,23,.14)}
+@media(max-width:767px){
+  .hero-section-label{display:grid;gap:3px}
+  .hero-section-label small{line-height:1.45}
+  .hero-kpis-guide{grid-template-columns:1fr!important}
+  .hero-kpis-guide>a{min-height:94px;padding:13px!important}
+}
