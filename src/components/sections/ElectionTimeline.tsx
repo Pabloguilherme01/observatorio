@@ -17,7 +17,9 @@ const events = [
   { date: '2026-09-15', label: 'Publicação das contas parciais', description: 'Dados da prestação parcial passam a ser disponibilizados na internet.', sourceId: 'tse-contas-2026' },
   { date: '2026-09-19', label: 'Regra de prisão para candidaturas', description: 'A partir desta data, candidatas e candidatos não podem ser presos ou detidos, salvo as exceções legais.', sourceId: 'tse-calendario-2026' },
   { date: '2026-09-29', label: 'Proteção do eleitorado', description: 'Começa o período em que eleitoras e eleitores não podem ser presos ou detidos, salvo as exceções legais, até 6 de outubro.', sourceId: 'tse-calendario-2026' },
+  { date: '2026-09-30', label: 'Fim da geração de mídias', description: 'O TRE-GO informa a conclusão prevista da geração de mídias e avanço da preparação das urnas para a votação.', sourceId: 'tre-go-geracao-midias-2026' },
   { date: '2026-10-04', label: '1º turno', description: 'Dia da votação do primeiro turno das Eleições Gerais de 2026.', sourceId: 'tse-calendario-2026' },
+  { date: '2026-10-05', label: 'Início da prestação de contas final', description: 'Começa o prazo geral para entrega da prestação de contas final das campanhas, conforme o calendário do TRE-GO.', sourceId: 'tre-go-contas-2026' },
   { date: '2026-10-25', label: '2º turno eventual', description: 'Data prevista para eventual segundo turno nas disputas majoritárias.', sourceId: 'tse-calendario-2026' },
 ];
 
