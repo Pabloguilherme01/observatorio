@@ -47,7 +47,7 @@ export function DataQualityPanel() {
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
     'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
     'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
-    'Candidaturas: o snapshot estadual foi capturado, mas o recorte municipal ainda exige evidência de município no registro.',
+    'Candidaturas: o snapshot estadual foi capturado, mas o recorte local atual é documental e não equivale ao universo municipal completo.',
   ].filter(Boolean) as string[];
 
   return (
@@ -91,7 +91,7 @@ export function DataQualityPanel() {
         <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h3 className="text-lg font-black text-white light:text-slate-900">Estado material da captura</h3>
-            <p className="mt-1 text-xs leading-5 text-slate-500">O arquivo atual é estadual. O Observatório só promove registros para Águas Lindas quando o município é comprovado no dado oficial.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">O arquivo atual é estadual. O recorte de Águas Lindas é documental e separado do campo municipal do TSE; ele não representa, por si só, o universo completo de candidaturas do município.</p>
           </div>
           <div className={'text-sm font-black ' + tseStatus.tone}>{tseStatus.label}</div>
         </div>
@@ -99,7 +99,7 @@ export function DataQualityPanel() {
           <SnapshotInfo label="Captura local" value={formatCapture(generated.meta.downloadedAt)} />
           <SnapshotInfo label="Registros lidos" value={generated.meta.sourceRows.toLocaleString('pt-BR')} />
           <SnapshotInfo label="Encontrados no recorte estadual" value={(generated.meta.originalMatchedRows ?? 0).toLocaleString('pt-BR')} />
-          <SnapshotInfo label="Validados no município" value={generated.meta.matchedRows.toLocaleString('pt-BR')} />
+          <SnapshotInfo label="Mapeados por evidência local" value={generated.meta.matchedRows.toLocaleString('pt-BR')} />
           <SnapshotInfo label="Pendentes de validação" value={unresolved.toLocaleString('pt-BR')} />
           <SnapshotInfo label="Método" value={generated.meta.retrievalMethod.replaceAll('_', ' ')} />
           <SnapshotInfo label="SHA-256" value={generated.meta.sourceFileSha256 ?? 'não disponível nesta captura'} mono />
