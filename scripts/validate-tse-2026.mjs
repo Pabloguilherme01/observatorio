@@ -15,7 +15,7 @@ if (isMunicipalitySnapshot || isStateWatchlistSnapshot) {
   if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter local ausente ou divergente.');
   if (isMunicipalitySnapshot && state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '5200258') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
   if (state !== 'local_filter_pending' && !new Set(['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy', 'official_tse_mirror_secondary']).has(payload.meta?.retrievalMethod)) errors.push('snapshot TSE sincronizado deve usar uma fonte oficial TSE suportada.');
-  if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot não informa explicitamente o recorte monitorado.');
+  if (state !== 'local_filter_pending' && isStateWatchlistSnapshot && !new Set(['watchlist_only', 'local_evidence_watchlist']).has(payload.meta?.selection)) warnings.push('selection do snapshot não informa explicitamente o recorte monitorado.');
 }
 
 if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push('coverage deve ser watchlist no contrato estadual antigo.');
@@ -68,7 +68,7 @@ if (state !== 'not_synced' && state !== 'local_filter_pending' && state !== 'syn
   if (typeof payload.meta?.resourceUrl !== 'string') errors.push('resourceUrl oficial do TSE ausente.');
   if ((payload.meta?.retrievalMethod === 'official_tse_open_data_csv' || payload.meta?.retrievalMethod === 'official_tse_zip_csv') && !payload.meta.resourceUrl.includes('tse.jus.br/')) errors.push('resourceUrl do pacote CSV oficial do TSE ausente.');
   if ((payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api' || payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy') && !payload.meta.resourceUrl.includes('divulgacandcontas.tse.jus.br/divulga/rest/')) errors.push('resourceUrl da API oficial DivulgaCandContas ausente.');
-  if (payload.meta?.captureTransport && !new Set(['historical_third_party_reader', 'direct_official', 'reader_proxy', 'secondary_public_mirror']).has(payload.meta.captureTransport)) {
+  if (payload.meta?.captureTransport && !new Set(['historical_third_party_reader', 'direct_official', 'reader_proxy', 'secondary_public_mirror', 'official_tse_snapshot_plus_documentary_local_evidence']).has(payload.meta.captureTransport)) {
     errors.push('captureTransport do snapshot TSE inválido.');
   }
   if (payload.meta?.captureTransport === 'historical_third_party_reader') warnings.push('Snapshot registra transporte histórico intermediado; esse transporte não participa da produção atual.');
