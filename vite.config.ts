@@ -143,7 +143,7 @@ export default defineConfig({
             urlPattern: ({ request }) => ['script', 'style', 'image', 'font'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'observatorio-static-v4',
+              cacheName: 'observatorio-static-v5',
               expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -152,7 +152,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'document' && request.mode === 'navigate',
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'observatorio-documents-v4',
+              cacheName: 'observatorio-documents-v5',
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -161,7 +161,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith('/api/v1/'),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-api-v4',
+              cacheName: 'observatorio-api-v5',
               networkTimeoutSeconds: 3,
               expiration: { maxEntries: 32, maxAgeSeconds: 60 * 60 * 24 * 7, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
