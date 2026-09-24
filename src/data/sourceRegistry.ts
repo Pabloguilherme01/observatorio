@@ -119,7 +119,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'antt-entorno-2026',
     label: 'ANTT — Tarifas do Entorno do DF',
     institution: 'ANTT',
-    url: 'https://www.gov.br/antt/pt-br/assuntos/ultimas-noticias/entorno-do-df-novas-tarifas-da-taguatur-entram-em-vigor-a-partir-de-28-de-junho',
+    url: 'https://www.gov.br/antt/pt-br/assuntos/ultimas-noticias/antt-aprova-reajuste-tarifario-do-transporte-semiurbano-do-df-e-entorno-com-efeitos-condicionados-a-formalizacao-de-acordo',
     nature: 'official',
     publishedAt: '2026-06-28',
   },
