@@ -153,6 +153,9 @@ function collectApiCandidates() {
     try {
       const response = fetchApi(url);
       const rows = Array.isArray(response.payload?.candidatos) ? response.payload.candidatos : [];
+      if (!rows.length && response.transport === 'reader_proxy') {
+        console.warn('[TSE] transporte intermediado respondeu sem candidatos; chaves=' + Object.keys(response.payload ?? {}).join(',') + '; tipo=' + typeof response.payload);
+      }
       sources.push({ url, cargo: cargo.label, count: rows.length, transport: response.transport });
       for (const candidate of rows) candidates.push({ candidate, cargo, url, transport: response.transport });
     } catch (error) {
