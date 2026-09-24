@@ -10,9 +10,9 @@ const events = [
   { date: '2026-08-05', label: 'Fim das convenções', description: 'Data-limite para realização das convenções partidárias.', sourceId: 'tse-calendario-2026' },
   { date: '2026-08-15', label: 'Registro de candidaturas', description: 'Prazo final para partidos, federações e coligações apresentarem pedidos de registro.', sourceId: 'tse-calendario-2026' },
   { date: '2026-08-16', label: 'Propaganda eleitoral', description: 'Início da propaganda eleitoral geral nas ruas e na internet.', sourceId: 'tse-calendario-2026' },
+  { date: '2026-09-01', label: 'Consulta ao local de votação', description: 'A partir desta data, o local de votação pode ser consultado pelo e-Título e pelos portais da Justiça Eleitoral.', sourceId: 'tse-eleicoes-2026' },
   { date: '2026-09-09', label: 'Início do envio das contas parciais', description: 'Começa o período de envio da prestação de contas parcial.', sourceId: 'tse-contas-2026' },
   { date: '2026-09-13', label: 'Fim do envio das contas parciais', description: 'Data-limite para envio da prestação de contas parcial.', sourceId: 'tse-contas-2026' },
-  { date: '2026-09-01', label: 'Consulta ao local de votação', description: 'A partir desta data, o local de votação pode ser consultado pelo e-Título e pelos portais da Justiça Eleitoral.', sourceId: 'tse-eleicoes-2026' },
   { date: '2026-09-14', label: 'Prazo de substituição de candidaturas', description: 'Data-limite geral para pedidos de substituição de candidatas e candidatos, ressalvadas as hipóteses previstas em lei.', sourceId: 'tse-calendario-2026' },
   { date: '2026-09-15', label: 'Publicação das contas parciais', description: 'Dados da prestação parcial passam a ser disponibilizados na internet.', sourceId: 'tse-contas-2026' },
   { date: '2026-09-19', label: 'Regra de prisão para candidaturas', description: 'A partir desta data, candidatas e candidatos não podem ser presos ou detidos, salvo as exceções legais.', sourceId: 'tse-calendario-2026' },
@@ -54,7 +54,7 @@ export function ElectionTimeline() {
             <h3 className="mt-2 text-xl font-black text-white">{selected.label}</h3>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{selected.description}</p>
           </div>
-          {source?.url && <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-sky-300"><ExternalLink className="h-3.5 w-3.5" /> Fonte oficial</a>}
+          {source?.url && <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-sky-300"><ExternalLink className="h-3.5 w-3.5" /> {source.nature === 'official' ? 'Fonte oficial' : 'Ver fonte'}</a>}
         </div>
       </Card>
     </section>
