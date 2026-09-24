@@ -10,7 +10,7 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 interface Point { readonly label: string; readonly value: number; readonly sourceId: string; readonly referenceDate?: string; }
 interface LineChartProps { readonly title: string; readonly description: string; readonly points: readonly Point[]; readonly valueFormatter?: (value: number) => string; }
 interface TooltipState { readonly xPct: number; readonly yPct: number; readonly point: Point; }
-interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; readonly nature: string; }
+interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; readonly nature: string; readonly sourceLabel: string; }
 
 function lineChartGeometry(points: readonly Point[]) {
   const width = 620, height = 240, padX = 26, padY = 22;
@@ -135,11 +135,13 @@ export function DashboardMetrics() {
     { label: '2026', value: d.electoral.electorate, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
   ];
   const populationDelta = population2026 - population2022;
+  const plannedBudgetPerCapita = population2026 > 0 ? d.budget.totalBrl / population2026 : 0;
   const metricDetails: readonly MetricDetail[] = [
-    { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', simpleExplanation: 'Quantas pessoas moram na cidade, segundo a estimativa usada.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Estimativa' },
-    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot TSE', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Snapshot' },
-    { label: 'Nome social', value: formatNumber(inclusionCount), caption: 'registros no snapshot', simpleExplanation: 'Registros com nome social.', icon: Gauge, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate, nature: 'Snapshot' },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'cálculo: população ÷ área', simpleExplanation: 'Média de habitantes por km².', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado' },
+    { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', simpleExplanation: 'Quantas pessoas moram na cidade, segundo a estimativa usada.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Estimativa', sourceLabel: 'IBGE · estimativa 2026' },
+    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot TSE', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Snapshot', sourceLabel: 'TSE · snapshot 2026' },
+    { label: 'Orçamento 2026', value: formatCurrency(d.budget.totalBrl), caption: 'LOA 2026', simpleExplanation: 'Valor total previsto na LOA para o exercício de 2026.', icon: WalletCards, sourceId: d.budget.sourceId, referenceDate: '2026-01-01', nature: 'Orçamento', sourceLabel: 'LOA municipal · 2026' },
+    { label: 'Orçamento por habitante', value: formatCurrency(plannedBudgetPerCapita), caption: 'LOA ÷ população estimada', simpleExplanation: 'Valor orçamentário planejado dividido pela população estimada. É uma razão de planejamento, não gasto efetivamente realizado.', icon: Gauge, sourceId: d.budget.sourceId, referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · LOA 2026 ÷ IBGE 2026' },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'cálculo: população ÷ área', simpleExplanation: 'Média de habitantes por km².', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
   ];
 
   return (
@@ -182,14 +184,15 @@ export function DashboardMetrics() {
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature }) => (
-          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note })} className="metric-interactive text-left">
+          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive text-left">
             <Card className="dashboard-kpi-card">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
                   <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{value}</div>
+                  <div className="mt-1 text-[10px] font-semibold text-sky-300/80 light:text-sky-700">{sourceLabel}{referenceDate ? ' · ' + referenceDate.split('-').reverse().join('/') : ''}</div>
                   {languageMode === 'simple' ? (
                     <div className="simple-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">{simpleExplanation}</div>
                   ) : (
