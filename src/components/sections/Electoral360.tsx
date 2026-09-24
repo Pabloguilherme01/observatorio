@@ -162,7 +162,7 @@ export function Electoral360() {
             <div>
               <h3 className="text-lg font-black text-white">Perfil documental</h3>
               <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
-                {hasOfficialCandidateSnapshot
+                {hasLocalCandidateSnapshot
                   ? 'A captura oficial está disponível. Este perfil mostra somente atributos efetivamente carregados do snapshot estadual de Goiás; o vínculo com Águas Lindas é um recorte editorial de monitoramento.'
                   : 'A captura TSE ainda não está sincronizada. O perfil abaixo usa apenas o recorte editorial local e não representa o universo completo de candidaturas.'}
               </p>
@@ -171,12 +171,12 @@ export function Electoral360() {
           </div>
 
           <div className="mb-3 mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">
-            <strong className="text-amber-200">{hasOfficialCandidateSnapshot ? 'Fonte operacional: TSE' : 'Fonte operacional: recorte editorial local'}</strong>{' '}
+            <strong className="text-amber-200">{hasLocalCandidateSnapshot ? 'Fonte operacional: TSE' : 'Fonte operacional: recorte editorial local'}</strong>{' '}
             · estado do snapshot: {stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}. A ausência deste snapshot não equivale à ausência de candidaturas na fonte oficial.
           </div>
 
           <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Registros disponíveis para o perfil documental">
-            {(hasOfficialCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates).map(candidate => (
+            {(hasLocalCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates).map(candidate => (
               <button
                 key={candidate.name}
                 type="button"
@@ -192,7 +192,7 @@ export function Electoral360() {
             <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
               Selecione um registro para abrir o perfil documental. Nenhum nome é pré-selecionado.
             </div>
-          ) : hasOfficialCandidateSnapshot && selectedOfficial ? (
+          ) : hasLocalCandidateSnapshot && selectedOfficial ? (
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Info label="Identidade" value={selectedOfficial.name} />
               <Info label="Situação" value={selectedOfficial.status || 'Não informado'} />
