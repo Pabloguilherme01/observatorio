@@ -86,7 +86,7 @@ if (!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts'))) p
 else fail('pipeline municipal legado ainda está presente.');
 
 const summary = read('src/components/sections/ExecutiveSummary.tsx');
-if (summary.includes('brasiliaRoute?.fareBrl') && summary.includes('poll?.')) pass('Resumo executivo protege dependências opcionais.');
+if (summary.includes('poll?.nonePct') && summary.includes('poll?.notSurePct') && summary.includes('poll?.registrationNumber')) pass('Resumo executivo protege dependências opcionais.');
 else fail('Resumo executivo ainda possui dependências opcionais sem proteção.');
 
 if (failures.length) {
