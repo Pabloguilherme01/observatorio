@@ -168,6 +168,11 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   const selectResult = (id: string) => {
     onClose();
     const target = document.getElementById(id) ? id : navigation.find(item => document.getElementById(item.id))?.id ?? 'resumo';
+    const currentTarget = window.location.hash.replace('#', '');
+    if (currentTarget === target) {
+      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
+      return;
+    }
     window.history.replaceState(null, '', '#' + target);
     window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
   };
