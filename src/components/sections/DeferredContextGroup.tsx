@@ -8,16 +8,24 @@ import { TransportCalculator } from '../TransportCalculator';
 import { DataInsights } from './DataInsights';
 import { SanitationHealthSection } from './SanitationHealthSection';
 
+const contextSections = [
+  FreshnessBanner,
+  SnapshotChanges,
+  ResultsLiveBanner,
+  ContextComparison,
+  ElectoralProfile,
+  DemographicDynamic,
+  TransportCalculator,
+  DataInsights,
+  SanitationHealthSection,
+];
+
 export default function DeferredContextGroup() {
-  return <>
-    <FreshnessBanner />
-    <SnapshotChanges />
-    <ResultsLiveBanner />
-    <ContextComparison />
-    <ElectoralProfile />
-    <DemographicDynamic />
-    <TransportCalculator />
-    <DataInsights />
-    <SanitationHealthSection />
-  </>;
+  return (
+    <>
+      {contextSections.map((Section) => (
+        <Section key={Section.name} />
+      ))}
+    </>
+  );
 }
