@@ -5,7 +5,6 @@ import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
 import { useLanguageMode } from '../../context/LanguageModeContext';
-import { electoral360Snapshot } from '../../data/electoral360';
 
 function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -23,13 +22,11 @@ export function ExecutiveSummary() {
   const sanitationPct = d.sanitation.publicSewerServicePct;
   const sanitationSource = d.sources.find(sourceItem => sourceItem.id === d.sanitation.sourceId);
   const budget = d.budget.totalBrl;
+  const budgetPerCapita = population > 0 ? budget / population : 0;
   const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
   const [shareStatus, setShareStatus] = useState('');
-  const [openFact, setOpenFact] = useState<string | null>(null);
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
-  const [discoveryIndex, setDiscoveryIndex] = useState(0);
-  const [showMoreSummary, setShowMoreSummary] = useState(false);
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -38,10 +35,10 @@ export function ExecutiveSummary() {
   };
 
   const publicFacts = [
-    { id: 'eleitorado', label: 'Quem participa', value: electorate.electorate.toLocaleString('pt-BR'), note: 'eleitores no snapshot utilizado pelo observatório.', target: 'eleitorado' },
-    { id: 'populacao', label: 'Tamanho da cidade', value: population.toLocaleString('pt-BR'), note: 'habitantes na estimativa de 2026.', target: 'dashboard' },
-    { id: 'orcamento', label: 'Orçamento municipal', value: brl(budget), note: 'valor total da LOA 2026 registrada no dataset.', target: 'orcamento' },
-    { id: 'candidatos', label: 'Nomes acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral acompanhado em Águas Lindas.', target: 'eleitoral360' },
+    { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', target: 'dashboard' },
+    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', target: 'eleitorado' },
+    { id: 'orcamento-per-capita', label: 'Orçamento por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', target: 'orcamento' },
+    { id: 'saneamento', label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Indicador de serviço público de saneamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', target: 'dashboard' },
   ] as const;
 
   const quickStats = [
@@ -57,19 +54,6 @@ export function ExecutiveSummary() {
     { id: 'servicos', label: 'Serviços', target: 'dashboard', caption: 'saneamento e indicadores' },
     { id: 'recursos', label: 'Recursos', target: 'orcamento', caption: 'orçamento e atualizações' },
   ] as const;
-
-  const revealFact = (id: string, label: string) => {
-    const index = publicFacts.findIndex(fact => fact.id === id);
-    if (index >= 0) setDiscoveryIndex(index);
-    setOpenFact(current => current === id ? null : id);
-  };
-
-  const focusNextDiscovery = () => {
-    const nextIndex = (discoveryIndex + 1) % publicFacts.length;
-    const next = publicFacts[nextIndex];
-    setDiscoveryIndex(nextIndex);
-    revealFact(next.id, next.label);
-  };
 
   const openTopic = (topic: typeof topics[number]) => {
     setActiveTopic(topic.id);
@@ -87,8 +71,8 @@ export function ExecutiveSummary() {
       `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationPoint?.referenceDate ? ` (referência ${formatDate(populationPoint.referenceDate)})` : ''}.`,
       `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
-      `Nomes acompanhados em Águas Lindas: ${electoral360Snapshot.matchedCandidates.length}.`,
-      poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.` : '',
+      `Orçamento por habitante: ${brl(budgetPerCapita)} por ano (LOA 2026 ÷ população estimada).`,
+      poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.pollster}, registro ${poll.registrationNumber}.` : '',
     ].filter(Boolean).join(' ');
 
     try {
@@ -171,56 +155,21 @@ export function ExecutiveSummary() {
               <div className="summary-public-discovery-head">
                 <div>
                   <strong>4 dados para começar</strong>
-                  <span>Toque para ver a origem ou abrir o contexto completo.</span>
+                  <span>Valor, fonte e referência aparecem no próprio cartão.</span>
                 </div>
-                <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próximo <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
 
-              <div className="summary-public-facts" aria-label="Descobertas rápidas">
+              <div className="summary-public-facts" aria-label="Cartões de contexto rápido">
                 {publicFacts.map(fact => (
-                  <div key={fact.id} className={`summary-public-fact ${openFact === fact.id ? 'is-open' : ''}`}>
-                    <button type="button" aria-expanded={openFact === fact.id} aria-controls={`summary-fact-${fact.id}`} onClick={() => revealFact(fact.id, fact.label)}>
-                      <span>{fact.label}</span>
-                      <ChevronDown className="h-4 w-4" aria-hidden="true" />
-                    </button>
-                    {openFact === fact.id && (
-                      <div id={`summary-fact-${fact.id}`} className="summary-public-fact-body">
-                        <strong>{fact.value}</strong>
-                        <p>{fact.note}</p>
-                        <button type="button" onClick={() => goToSection(fact.target)}>Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
-                      </div>
-                    )}
-                  </div>
+                  <button key={fact.id} type="button" className="summary-public-fact is-static text-left" onClick={() => goToSection(fact.target)} aria-label={`Abrir contexto de ${fact.label}`}>
+                    <span className="block">{fact.label}</span>
+                    <strong className="mt-1 block mobile-safe-wrap">{fact.value}</strong>
+                    <small className="mt-1 block">{fact.source}</small>
+                    <em className="mt-1 block">{fact.note}</em>
+                    <ArrowRight className="summary-public-arrow mt-2 h-4 w-4" aria-hidden="true" />
+                  </button>
                 ))}
               </div>
-              <button
-                type="button"
-                className="summary-more-toggle"
-                aria-expanded={showMoreSummary}
-                onClick={() => setShowMoreSummary(current => !current)}
-              >
-                {showMoreSummary ? 'Menos indicadores' : 'Mais indicadores'}
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showMoreSummary ? 'rotate-180' : ''}`} aria-hidden="true" />
-              </button>
-              {showMoreSummary && (
-                <div className="summary-public-grid" aria-label="Indicadores adicionais do observatório">
-                  {quickStats.slice(0, 4).map(stat => (
-                    <button
-                      key={stat.label}
-                      type="button"
-                      className="summary-public-stat summary-public-stat-main"
-                      aria-label={`Ver contexto de ${stat.label}`}
-                      onClick={() => goToSection(stat.target)}
-                    >
-                      <span>{stat.label}</span>
-                      <strong className="mobile-safe-wrap">{stat.value}</strong>
-                      <small>{stat.caption}</small>
-                      <em>{stat.detail}</em>
-                      <ArrowRight className="summary-public-arrow h-4 w-4" aria-hidden="true" />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           )}
 
