@@ -2695,3 +2695,83 @@ button:disabled{cursor:not-allowed;opacity:.58}
 .summary-public-stat{cursor:pointer}
 .summary-public-stat-main{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;text-align:left}
 .summary-public-stat-main:focus-visible{outline:2px solid rgba(125,211,252,.55);outline-offset:3px;border-radius:10px}
+
+
+/* Public interaction polish v2026-09 */
+.summary-public-action,
+.summary-public-topic,
+.summary-public-fact > button,
+.summary-public-fact-body > button,
+.summary-public-stat-main,
+.summary-public-share,
+.summary-public-shareline > button,
+.summary-public-hint > button,
+.electoral-action-button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.summary-public-action,
+.summary-public-topic,
+.summary-public-fact > button,
+.summary-public-fact-body > button,
+.summary-public-share,
+.summary-public-shareline > button,
+.summary-public-hint > button,
+.electoral-action-button {
+  min-height: 44px;
+}
+.summary-public-action:focus-visible,
+.summary-public-topic:focus-visible,
+.summary-public-fact > button:focus-visible,
+.summary-public-fact-body > button:focus-visible,
+.summary-public-stat-main:focus-visible,
+.summary-public-share:focus-visible,
+.summary-public-shareline > button:focus-visible,
+.summary-public-hint > button:focus-visible,
+.electoral-action-button:focus-visible {
+  outline: 2px solid rgba(125,211,252,.72);
+  outline-offset: 2px;
+}
+.summary-public-action,
+.summary-public-topic,
+.summary-public-shareline > button,
+.electoral-action-button {
+  transition: transform .16s ease, border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+.summary-public-action:active,
+.summary-public-topic:active,
+.summary-public-shareline > button:active,
+.electoral-action-button:active,
+.summary-public-share:active {
+  transform: translateY(1px) scale(.985);
+}
+.summary-public-topic {
+  min-width: 118px;
+}
+.summary-public-stat-main {
+  display: block;
+  width: 100%;
+  min-height: 128px;
+  text-align: left;
+  padding: 14px;
+  border-radius: 18px;
+  touch-action: manipulation;
+}
+.summary-public-stat-main:hover {
+  background: rgba(255,255,255,.025);
+}
+.summary-public-stat.is-active .summary-public-stat-main {
+  border-color: rgba(125,211,252,.24);
+  box-shadow: 0 0 0 1px rgba(125,211,252,.08) inset;
+}
+.summary-public-shareline > button,
+.summary-public-action {
+  font-weight: 850;
+}
+@media (max-width: 640px) {
+  .summary-public-actions { display:grid; grid-template-columns:1fr; }
+  .summary-public-action { width:100%; justify-content:center; }
+  .summary-public-stat-main { min-height: 122px; padding: 13px; }
+  .summary-public-stat-footer { min-height: 44px; }
+}
+
