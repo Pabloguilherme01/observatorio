@@ -7,7 +7,7 @@ const generatedData = generated as {
     downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced' | 'local_filter_pending';
   };
-  coverage: 'watchlist' | 'municipality_required' | 'municipality';
+  coverage: 'watchlist' | 'municipality_required' | 'municipality' | 'state_watchlist';
   watchlist: string[];
   matched: Array<{
     sqCandidate: string;
@@ -39,7 +39,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'A lista pública mostra apenas candidaturas filtradas para Águas Lindas de Goiás. Redes sociais e fotos são mantidas como atributos separados da identidade eleitoral.',
+    description: 'A lista pública mostra candidaturas oficiais de Goiás dentro da watchlist monitorada no recorte editorial de Águas Lindas de Goiás. Isso não representa um universo municipal de candidaturas.',
     status: candidateStatus,
     frequency: 'conforme captura oficial',
     sourceId: 'tse-candidatos-2026',
@@ -95,7 +95,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
 export const electoral360Snapshot: Electoral360Snapshot = {
   capturedAt: generatedData.meta.downloadedAt ?? '',
   captureMode: generatedData.meta.state === 'not_synced' || generatedData.meta.state === 'local_filter_pending' ? 'static-local' : 'github-actions',
-  candidateUniverseScope: 'Águas Lindas de Goiás',
+  candidateUniverseScope: 'GO',
   localWatchlist: generatedData.watchlist,
   matchedCandidates: generatedData.matched.map(candidate => ({
     sqCandidate: candidate.sqCandidate,
