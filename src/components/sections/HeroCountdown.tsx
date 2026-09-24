@@ -96,6 +96,7 @@ export function HeroCountdown() {
             </a>
           </div>
 
+          <div className="election-mode-actions sr-only" aria-hidden="true">Modo Eleição · acesso rápido</div>
           {electionMode && (
             <div className="hero-election-quick mt-3 flex items-center gap-2 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-2">
               <Vote className="ml-1 h-4 w-4 shrink-0 text-amber-200" aria-hidden="true" />
