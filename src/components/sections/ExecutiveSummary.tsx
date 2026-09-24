@@ -169,14 +169,18 @@ export function ExecutiveSummary() {
                   ))}
                 </div>
                 <div className="summary-public-actions" aria-label="Ações rápidas do resumo">
-                  <button type="button" onClick={() => { void share(); }} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
-                  <button type="button" onClick={() => { setLastAction('Descobertas'); goToSection('descubra'); }} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
+                  <button type="button" onClick={() => { void share(); }} className="summary-public-action" disabled={shareBusy} aria-busy={shareBusy}>
+                    <Share2 className="h-3.5 w-3.5" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar resumo'}
+                  </button>
+                  <button type="button" onClick={() => { setLastAction('Descobertas'); goToSection('descubra'); }} className="summary-public-action">
+                    <Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar assuntos
+                  </button>
                 </div>
               </div>
               <div className="summary-public-discovery-head">
                 <div>
                   <strong>Descobertas rápidas</strong>
-                  <span>Toque, avance ou feche para navegar pelas descobertas.</span>
+                  <span>Toque em um cartão ou avance para encontrar outro dado.</span>
                 </div>
                 <span className="summary-public-discovery-count">{publicFacts.length} cartões</span>
               </div>
@@ -194,7 +198,7 @@ export function ExecutiveSummary() {
                   <span className="summary-public-pulse-label">Agora</span>
                   <strong>Veja o número, abra o contexto e compartilhe.</strong>
                 </div>
-                <button type="button" className="summary-public-pulse-link" onClick={() => goToSection('fontes')}>
+                <button type="button" className="summary-public-pulse-link" onClick={() => goToSection('fontes')} aria-label="Conferir as fontes dos dados">
                   Conferir fontes <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
               </div>
