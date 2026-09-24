@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "quality:check": "npm run typecheck && npm run audit:static && npm run audit:a11y && npm run audit:mobile",
     "audit:static": "node scripts/audit-static.mjs",
     "audit:a11y": "node scripts/audit-accessibility.mjs",
     "sync:tse": "node scripts/sync-tse-2026.mjs",
