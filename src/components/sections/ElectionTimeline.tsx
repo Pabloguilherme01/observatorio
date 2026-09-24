@@ -12,7 +12,11 @@ const events = [
   { date: '2026-08-16', label: 'Propaganda eleitoral', description: 'Início da propaganda eleitoral geral nas ruas e na internet.', sourceId: 'tse-calendario-2026' },
   { date: '2026-09-09', label: 'Início do envio das contas parciais', description: 'Começa o período de envio da prestação de contas parcial.', sourceId: 'tse-contas-2026' },
   { date: '2026-09-13', label: 'Fim do envio das contas parciais', description: 'Data-limite para envio da prestação de contas parcial.', sourceId: 'tse-contas-2026' },
+  { date: '2026-09-01', label: 'Consulta ao local de votação', description: 'A partir desta data, o local de votação pode ser consultado pelo e-Título e pelos portais da Justiça Eleitoral.', sourceId: 'tse-eleicoes-2026' },
+  { date: '2026-09-14', label: 'Prazo de substituição de candidaturas', description: 'Data-limite geral para pedidos de substituição de candidatas e candidatos, ressalvadas as hipóteses previstas em lei.', sourceId: 'tse-calendario-2026' },
   { date: '2026-09-15', label: 'Publicação das contas parciais', description: 'Dados da prestação parcial passam a ser disponibilizados na internet.', sourceId: 'tse-contas-2026' },
+  { date: '2026-09-19', label: 'Regra de prisão para candidaturas', description: 'A partir desta data, candidatas e candidatos não podem ser presos ou detidos, salvo as exceções legais.', sourceId: 'tse-calendario-2026' },
+  { date: '2026-09-29', label: 'Proteção do eleitorado', description: 'Começa o período em que eleitoras e eleitores não podem ser presos ou detidos, salvo as exceções legais, até 6 de outubro.', sourceId: 'tse-calendario-2026' },
   { date: '2026-10-04', label: '1º turno', description: 'Dia da votação do primeiro turno das Eleições Gerais de 2026.', sourceId: 'tse-calendario-2026' },
   { date: '2026-10-25', label: '2º turno eventual', description: 'Data prevista para eventual segundo turno nas disputas majoritárias.', sourceId: 'tse-calendario-2026' },
 ];
