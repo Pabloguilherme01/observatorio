@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, CalendarClock, CircleHelp, ExternalLink, Share2, Sparkles, Wallet } from 'lucide-react';
+import { Activity, ArrowRight, ExternalLink, Share2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -26,6 +26,18 @@ export function ExecutiveSummary() {
   const budget = d.budget.totalBrl;
   const [shareStatus, setShareStatus] = useState('');
   const { mode: languageMode } = useLanguageMode();
+
+  const goToSection = (id: string) => {
+    window.history.replaceState(null, '', '#' + id);
+    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+  };
+
+  const quickStats = [
+    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'TSE · 15/07/2026' : 'referência TSE', target: 'eleitorado' },
+    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? 'estimativa · 01/07/2026' : 'estimativa 2026', target: 'dashboard' },
+    { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? 'lei orçamentária' : 'orçamento municipal', target: 'orcamento' },
+    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? 'SINISA · 2024' : 'indicador de saneamento', target: 'saude' },
+  ] as const;
 
   const share = async () => {
     const text = languageMode === 'technical'
@@ -83,20 +95,25 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
-                <h3>Quatro números para entender a cidade antes de entrar nos detalhes.</h3>
-                <p>Escolha um cartão, veja o contexto e compartilhe a informação com um link direto.</p>
+                <h3>Quatro números para entender a cidade antes dos detalhes.</h3>
+                <p>Toque em um cartão para abrir o contexto completo. No celular, os dados cabem na tela sem perder a origem.</p>
               </div>
               <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
-                {[
-                  ['Eleitorado', electorate.electorate.toLocaleString('pt-BR'), 'eleitores', '#eleitorado'],
-                  ['População', population.toLocaleString('pt-BR'), 'habitantes', '#dashboard'],
-                  ['Orçamento', brl(budget), 'LOA 2026', '#orcamento'],
-                  ['Esgoto', sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', 'serviço público', '#saude'],
-                ].map(([label, value, caption, target]) => (
-                  <a key={label} href={target} className="summary-public-stat" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target.slice(1) }))}>
-                    <span>{label}</span>
-                    <strong>{value}</strong>
-                    <small>{caption}</small>
+                {quickStats.map(stat => (
+                  <a
+                    key={stat.label}
+                    href={'#' + stat.target}
+                    className="summary-public-stat"
+                    onClick={event => {
+                      event.preventDefault();
+                      goToSection(stat.target);
+                    }}
+                    aria-label={`Abrir contexto de ${stat.label}`}
+                  >
+                    <span>{stat.label}</span>
+                    <strong className="mobile-safe-wrap">{stat.value}</strong>
+                    <small>{stat.caption}</small>
+                    <em>{stat.detail}</em>
                     <ArrowRight className="summary-public-arrow h-4 w-4" aria-hidden="true" />
                   </a>
                 ))}
@@ -136,7 +153,13 @@ export function ExecutiveSummary() {
                     <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
                     <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
                   </>}
-                  {languageMode === 'technical' && (
+                  {languageMode === 'simple' && (
+          <div className="summary-simple-tip mt-3">
+            <strong className="text-slate-200">Como usar:</strong> toque em qualquer número para abrir os dados completos, com fonte e data de referência.
+          </div>
+        )}
+
+        {languageMode === 'technical' && (
                     <>
                       <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.registrationNumber ?? 'Registro não disponível'}</span>
                       <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.pollster ?? 'Instituto não informado'}</span>
@@ -161,8 +184,9 @@ export function ExecutiveSummary() {
               <div className="text-xs text-slate-500">
                 {languageMode === 'technical'
                   ? 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')
-                  : 'eleitores'}
+                  : 'eleitores · snapshot TSE'}
               </div>
+              {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Ver contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
             </Card>
 
             {languageMode === 'technical' && (
