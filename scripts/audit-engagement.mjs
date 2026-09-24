@@ -87,3 +87,11 @@ if (errors.length) {
 } else {
   pass('auditoria de engajamento concluída');
 }
+
+const transportSource = read('src/components/TransportCalculator.tsx');
+const transportDomain = read('src/lib/transport.ts');
+must(transportSource.includes('observatorio:transport-preferences:v1') && transportSource.includes('JSON.parse'), 'simulador persiste preferências com cache local opcional');
+must(transportDomain.includes('Number.isFinite') && transportDomain.includes('clamp('), 'simulador valida números finitos e limites lógicos');
+must(read('src/components/ProjectTrustPanel.tsx').includes('dadosabertos.tse.jus.br') && read('src/components/ProjectTrustPanel.tsx').includes('Nota de neutralidade'), 'painel oferece validação oficial e nota de neutralidade');
+must(read('src/components/sections/ExecutiveSummary.tsx').includes('Fonte pública') && read('src/components/sections/ExecutiveSummary.tsx').includes('Derivado'), 'resumo exibe badges de proveniência');
+must(read('public/404.html').includes('href="./"') && read('public/404.html').includes('Eleições Gerais 2026'), '404 é compatível com a base do GitHub Pages');
