@@ -140,11 +140,20 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//],
         runtimeCaching: [
           {
-            urlPattern: ({ request }) => ['script', 'style', 'image', 'font'].includes(request.destination),
+            urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
               cacheName: 'observatorio-static-v7',
               expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: ({ request }) => request.destination === 'font',
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'observatorio-fonts-v7',
+              expiration: { maxEntries: 16, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
