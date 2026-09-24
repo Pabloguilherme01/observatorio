@@ -56,23 +56,23 @@ export function Electoral360() {
         titleId="electoral360-title"
         eyebrow="Eleitoral 2026"
         title="Nomes acompanhados no recorte de Águas Lindas"
-        description="Consulte os registros públicos disponíveis e veja com clareza quando um dado ainda depende de confirmação oficial."
+        description="Consulte os nomes acompanhados e confira os dados disponíveis em suas fontes oficiais."
       />
 
-      <div className="mb-3 rounded-2xl border border-white/8 bg-white/[0.018] px-3 py-3">
-        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">O que você encontra aqui</div>
-        <div className="mt-2 grid gap-2 sm:grid-cols-3">
-          <div className="rounded-xl border border-white/6 px-3 py-2">
-            <strong className="block text-xs text-white">Perfis do recorte</strong>
-            <span className="text-[10px] leading-4 text-slate-500">nome, partido, número e dados cadastrais disponíveis.</span>
-          </div>
-          <div className="rounded-xl border border-white/6 px-3 py-2">
-            <strong className="block text-xs text-white">Eleitorado</strong>
-            <span className="text-[10px] leading-4 text-slate-500">participação, abstenção e composição do cadastro.</span>
-          </div>
-          <div className="rounded-xl border border-white/6 px-3 py-2">
-            <strong className="block text-xs text-white">Fontes</strong>
-            <span className="text-[10px] leading-4 text-slate-500">links para conferir os dados nas bases públicas.</span>
+      <div className="mb-3 grid gap-2 sm:grid-cols-3">
+        <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-3">
+          <strong className="block text-sm text-white">{localCandidateRecords.length} nomes</strong>
+          <span className="text-[10px] leading-4 text-slate-500">no recorte acompanhado</span>
+        </div>
+        <div className="rounded-2xl border border-white/7 bg-white/[0.02] px-3 py-3">
+          <strong className="block text-sm text-white">{electorate.electorate.toLocaleString('pt-BR')}</strong>
+          <span className="text-[10px] leading-4 text-slate-500">eleitores no snapshot</span>
+        </div>
+        <div className="rounded-2xl border border-white/7 bg-white/[0.02] px-3 py-3">
+          <strong className="block text-sm text-white">Fonte oficial</strong>
+          <span className="text-[10px] leading-4 text-slate-500">TSE e registros públicos</span>
+        </div>
+      </div> públicas.</span>
           </div>
         </div>
       </div>
