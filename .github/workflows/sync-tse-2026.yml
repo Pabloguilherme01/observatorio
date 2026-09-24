@@ -28,6 +28,7 @@ jobs:
 
       - name: Install and bootstrap lockfile
         run: |
+          npm install --package-lock-only --no-audit --no-fund
           npm ci --no-audit --no-fund
 
       - name: Capture official TSE candidate watchlist
