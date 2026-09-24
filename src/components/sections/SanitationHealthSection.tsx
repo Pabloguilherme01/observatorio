@@ -55,6 +55,7 @@ function MetricBar({ label, value, emphasis = false }: { readonly label: string;
 }
 
 function SewerCurve() {
+  const [selectedYear, setSelectedYear] = useState(sewerHistory[sewerHistory.length - 1].year);
   const chartMin = 0;
   const chartMax = 100;
   const points = sewerHistory.map((point, index) => ({
@@ -78,6 +79,27 @@ function SewerCurve() {
         <polyline points={points.map(point => `${point.x},${point.y}`).join(' ')} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
         {points.map(point => <g key={point.year} tabIndex={0} role="img" aria-label={`${point.year}: ${String(point.value).replace('.', ',')}%`}><circle cx={point.x} cy={point.y} r="6" className="fill-sky-300 light:fill-sky-600" /><text x={point.x} y={point.y - 12} textAnchor="middle" className="label-secondary fill-slate-400 text-[10px] light:fill-slate-600">{String(point.value).replace('.', ',')}%</text><text x={point.x} y="194" textAnchor="middle" className="label-secondary fill-slate-500 text-[10px]">{point.year}</text></g>)}
       </svg>
+      <div className="sewer-mobile-bars mt-4" aria-label="Histórico em barras tocáveis">
+        {sewerHistory.map(point => (
+          <button
+            key={point.year}
+            type="button"
+            className={'sewer-mobile-bar ' + (selectedYear === point.year ? 'is-selected' : '')}
+            onClick={() => setSelectedYear(point.year)}
+            aria-pressed={selectedYear === point.year}
+            aria-label={point.year + ': ' + String(point.value).replace('.', ',') + ' por cento'}
+          >
+            <span className="sewer-mobile-bar-value">{String(point.value).replace('.', ',')}%</span>
+            <span className="sewer-mobile-bar-track"><span style={{ height: Math.max(4, point.value) + '%' }} /></span>
+            <span className="sewer-mobile-bar-year">{point.year}</span>
+          </button>
+        ))}
+      </div>
+      <div className="sewer-mobile-selected" role="status" aria-live="polite">
+        <strong>{selectedYear}</strong>
+        <span>{String(sewerHistory.find(point => point.year === selectedYear)?.value ?? 0).replace('.', ',')}% de atendimento por rede pública</span>
+      </div>
+
       <div className="table-compact-mobile mt-3 grid gap-2 md:hidden">
         {sewerHistory.map(point => (
           <div key={point.year} className="flex items-center justify-between rounded-xl border border-white/8 px-3 py-2 light:border-slate-200">
