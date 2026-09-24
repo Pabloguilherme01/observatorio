@@ -9,10 +9,10 @@ type SummaryTodayCardProps = {
 };
 
 const items = [
-  ['Orçamento', 'budget'],
-  ['Eleitorado', 'electorate'],
-  ['Transporte', 'transport'],
-  ['Saneamento', 'sanitation'],
+  ['Orçamento', 'budget', 'orcamento'],
+  ['Eleitorado', 'electorate', 'eleitorado'],
+  ['Transporte', 'transport', 'transporte'],
+  ['Saneamento', 'sanitation', 'saude'],
 ] as const;
 
 export function SummaryTodayCard({ budget, electorate, transport, sanitation, onNavigate }: SummaryTodayCardProps) {
@@ -20,7 +20,7 @@ export function SummaryTodayCard({ budget, electorate, transport, sanitation, on
 
   return (
     <section className="today-rail grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4" aria-label="Indicadores principais">
-      {items.map(([label, key]) => (
+      {items.map(([label, key, target]) => (
         <article
           key={key}
           className="group flex min-h-[104px] flex-col rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-sky-400/50 dark:border-white/10 dark:bg-slate-900"
@@ -36,7 +36,7 @@ export function SummaryTodayCard({ budget, electorate, transport, sanitation, on
           <button
             type="button"
             aria-label={"Abrir detalhes de " + label}
-            onClick={() => onNavigate?.(key)}
+            onClick={() => onNavigate?.(target)}
             className="mt-auto inline-flex min-h-8 items-center gap-1 text-[10px] font-bold text-sky-600 dark:text-sky-300"
           >
             Detalhes
