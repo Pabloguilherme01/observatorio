@@ -316,8 +316,8 @@ export function ExecutiveSummary() {
               <strong>Achou um dado útil?</strong>
               <span>Compartilhe o Resumo ou envie um indicador específico. A página continua sendo a fonte de contexto.</span>
             </div>
-            <button type="button" onClick={() => { void share(); }}>
-              <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar tudo
+            <button type="button" onClick={() => { void share(); }} disabled={shareBusy} aria-busy={shareBusy}>
+              <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? "Compartilhando…" : "Compartilhar tudo"}
             </button>
           </div>
         )}
