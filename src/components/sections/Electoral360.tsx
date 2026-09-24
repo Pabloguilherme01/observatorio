@@ -1,4 +1,4 @@
-import { CheckCircle2, Database, ExternalLink, FileText, History, Search, ShieldAlert, UserRound } from 'lucide-react';
+import { CheckCircle2, Database, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { electoral360Diff, electoral360Modules, electoral360Snapshot } from '../../data/electoral360';
 import { observatorioData as d } from '../../data/observatorioData';
@@ -220,6 +220,11 @@ export function Electoral360() {
                 aria-label={hasOfficialCandidateSnapshot ? 'Buscar candidatura' : 'Filtrar recorte local'}
               />
           </label>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-3">
+          <div className="min-w-0"><strong className="block text-xs text-sky-100">Busca eleitoral rápida</strong><span className="mt-1 block text-[11px] leading-5 text-slate-500">Nome, partido, cargo, situação ou número. O filtro não classifica candidaturas.</span></div>
+          <ArrowRight className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
         </div>
 
         {hasOfficialCandidateSnapshot ? (
