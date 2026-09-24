@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, Brain, CheckCircle2, HeartPulse, Route, Users, XCircle } from 'lucide-react';
+import { HeartPulse, Route, Users } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { dispatchInspect } from '../DataInspector';
 import { Card } from '../ui/Card';
@@ -11,10 +11,6 @@ const clamp = (value: number, min: number, max: number) => Math.min(max, Math.ma
 export function DataInsights() {
   const [routeId, setRouteId] = useState('taguatinga');
   const [beds, setBeds] = useState(d.health.currentStatedWardBeds + d.health.currentStatedIcuBeds);
-  const [quizStep, setQuizStep] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [quizDone, setQuizDone] = useState(false);
   const selectedRoute = d.transport.routes.find(route => route.id === routeId) ?? d.transport.routes[0];
   const brasilia = d.transport.routes.find(route => route.id === 'brasilia') ?? d.transport.routes[0];
   const monthlySavings = Math.max(0, (brasilia.fareBrl - selectedRoute.fareBrl) * d.transport.defaultTripsPerDay * d.transport.defaultWorkDaysPerMonth);
@@ -27,31 +23,6 @@ export function DataInsights() {
     return { perBed, reduction, status };
   }, [beds]);
   const ageTotal = d.electoral.ageGroups.reduce((sum, group) => sum + group.voters, 0);
-  const questions = [
-    { question: 'Qual é a população estimada de 2026?', options: ['245.352', '249.978', '250.391'], correct: 1, explanation: 'A estimativa populacional usada nesta edição é de 249.978 habitantes, com referência em 1º de julho de 2026.', sourceId: 'ibge-estimativas-2026' },
-    { question: 'Qual é a tarifa informada para Brasília?', options: ['R$ 7,65', 'R$ 11,45', 'R$ 5,85'], correct: 1, explanation: 'O valor atual usado pelo observatório para Brasília é R$ 11,45 por trecho; Taguatinga e Ceilândia aparecem separadamente.', sourceId: 'utb-tarifas' },
-    { question: 'Quantos leitos são explicitados atualmente no portal do HEAL?', options: ['53', '85', '164'], correct: 1, explanation: 'A página atual da SES-GO explicita 32 leitos de enfermaria e 53 de UTI, totalizando 85 leitos.', sourceId: 'healgo' },
-    { question: 'Qual é o acesso ao serviço público de esgoto no recorte SINISA 2024?', options: ['49,7%', '84,8%', '95,8%'], correct: 1, explanation: 'O recorte SINISA 2024 usado pelo observatório registra 84,8% de acesso ao serviço público de esgoto.', sourceId: 'sinisa-2024' },
-    { question: 'Qual é o acesso à água no recorte SINISA 2024?', options: ['60,1%', '84,8%', '95,8%'], correct: 2, explanation: 'O recorte SINISA 2024 usado pelo observatório registra 95,8% de acesso à água.', sourceId: 'sinisa-2024' },
-  ];
-  const currentQuestion = questions[quizStep];
-  const answer = (index: number) => {
-    if (selectedAnswer !== null) return;
-    setSelectedAnswer(index);
-    if (index === currentQuestion.correct) setScore(value => value + 1);
-  };
-  const next = () => {
-    if (quizStep < questions.length - 1) { setQuizStep(value => value + 1); setSelectedAnswer(null); }
-    else setQuizDone(true);
-  };
-  const restart = () => { setQuizStep(0); setScore(0); setSelectedAnswer(null); setQuizDone(false); };
-  const shareHeal = async () => {
-    const text = `Simulador HEAL · ${beds} leitos. Cenário derivado: ${Math.round(pressure.perBed).toLocaleString('pt-BR')} atendimentos por leito e ${Math.max(0, pressure.reduction).toFixed(1).replace('.', ',')}% de redução teórica da pressão em relação à referência. #healgo`;
-    try {
-      if (navigator.share) { await navigator.share({ title: 'Simulador HEAL · Observatório', text, url: window.location.href + '#healgo' }); return; }
-      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text + '\\n' + window.location.href + '#healgo');
-    } catch {}
-  };
 
   const genderStyle = { background: `conic-gradient(#8cc8f2 0 ${d.electoral.womenPct}%, #315a75 ${d.electoral.womenPct}% 100%)` };
 
@@ -85,20 +56,6 @@ export function DataInsights() {
           </div>
         </Card>
 
-        <Card id="quiz">
-          <div className="flex items-center gap-3"><Brain className="h-5 w-5 text-violet-300" aria-hidden="true" /><div><h3 className="text-lg font-black text-white">Quiz do observatório</h3><p className="text-xs text-slate-400">Teste a leitura dos dados desta edição. As perguntas usam registros e indicadores já presentes no dataset publicado.</p></div></div>
-          {!quizDone ? <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
-            <div className="text-xs text-slate-500">Pergunta {quizStep + 1} de {questions.length} · acertos: {score}</div>
-            <h4 className="mt-2 text-base font-bold text-white">{currentQuestion.question}</h4>
-            <div className="mt-4 grid gap-2">{currentQuestion.options.map((option, index) => {
-              const selected = selectedAnswer === index, correct = index === currentQuestion.correct;
-              const cls = selectedAnswer === null ? 'border-white/10 hover:bg-white/[0.04]' : correct ? 'border-emerald-300/40 bg-emerald-300/10' : selected ? 'border-rose-300/40 bg-rose-300/10' : 'border-white/10 opacity-60';
-              return <button key={option} type="button" disabled={selectedAnswer !== null} onClick={() => answer(index)} className={`flex items-center justify-between rounded-xl border px-3 py-2 text-left text-sm text-slate-300 ${cls}`}><span>{option}</span>{selectedAnswer !== null && correct ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : selected && !correct ? <XCircle className="h-4 w-4 text-rose-300" /> : <ArrowRight className="h-4 w-4" aria-hidden="true" />}</button>;
-            })}</div>
-            {selectedAnswer !== null && <div className="mt-4 rounded-xl border border-white/8 p-3 text-xs leading-5 text-slate-400"><strong className="text-slate-300">{selectedAnswer === currentQuestion.correct ? 'Resposta correta.' : 'Resposta incorreta.'}</strong> {currentQuestion.explanation}<button type="button" onClick={() => dispatchInspect({ label: currentQuestion.question, value: currentQuestion.options[currentQuestion.correct], sourceId: currentQuestion.sourceId, status: 'explicação', note: currentQuestion.explanation })} className="ml-2 font-bold text-sky-300">Ver fonte</button></div>}
-            {selectedAnswer !== null && <button type="button" onClick={next} className="mt-3 rounded-xl bg-sky-300 px-4 py-2 text-xs font-black text-slate-950">{quizStep === questions.length - 1 ? 'Ver resultado' : 'Próxima pergunta'}</button>}
-          </div> : <div className="mt-5 rounded-2xl border border-sky-300/15 bg-sky-300/5 p-5"><div className="text-xs uppercase tracking-wider text-slate-500">Resultado</div><div className="mt-2 text-4xl font-black text-white">{score}/{questions.length}</div><p className="mt-2 text-sm text-slate-400">Você concluiu as três perguntas. O resultado é apenas uma interação de leitura, não uma avaliação política.</p><button type="button" onClick={restart} className="mt-4 rounded-xl border border-white/10 px-4 py-2 text-xs font-bold text-slate-300">Refazer quiz</button></div>}
-        </Card>
       </div>
     </section>
   );
