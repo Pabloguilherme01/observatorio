@@ -1,5 +1,5 @@
 import { BusFront, Coins, ExternalLink, Share2, Users } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { calculateTransportCost, formatBRL, workDaysPerMonthFromWeeks } from '../lib/transport';
 import { Card } from './ui/Card';
@@ -13,6 +13,34 @@ export function TransportCalculator() {
   const [trips, setTrips] = useState(d.transport.defaultTripsPerDay);
   const [people, setPeople] = useState(1);
   const [salary, setSalary] = useState(d.transport.minimumWageBrl);
+  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('observatorio:transport-preferences:v1');
+      if (raw) {
+        const saved = JSON.parse(raw) as Partial<{ routeId: string; daysPerWeek: number; trips: number; people: number; salary: number }>;
+        if (typeof saved.routeId === 'string' && routes.some(item => item.id === saved.routeId)) setRouteId(saved.routeId);
+        if (Number.isFinite(saved.daysPerWeek)) setDaysPerWeek(Math.min(7, Math.max(1, Math.trunc(saved.daysPerWeek!))));
+        if (Number.isFinite(saved.trips)) setTrips(Math.min(8, Math.max(1, Math.trunc(saved.trips!))));
+        if (Number.isFinite(saved.people)) setPeople(Math.min(20, Math.max(1, Math.trunc(saved.people!))));
+        if (Number.isFinite(saved.salary)) setSalary(Math.min(1_000_000, Math.max(1, saved.salary!)));
+      }
+    } catch {
+      // Preferências locais são opcionais; um cache inválido não impede a calculadora.
+    } finally {
+      setPreferencesLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!preferencesLoaded) return;
+    try {
+      localStorage.setItem('observatorio:transport-preferences:v1', JSON.stringify({ routeId, daysPerWeek, trips, people, salary }));
+    } catch {
+      // Armazenamento local pode estar indisponível em navegação privada ou políticas restritivas.
+    }
+  }, [preferencesLoaded, routeId, daysPerWeek, trips, people, salary]);
   const [shareStatus, setShareStatus] = useState('');
   const route = routes.find(r => r.id === routeId) ?? routes[0];
 
@@ -141,19 +169,19 @@ export function TransportCalculator() {
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Trechos por dia
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={8} value={trips} onChange={event => setTrips(Math.max(1, Number(event.target.value) || 1))} />
+              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={8} value={trips} onChange={event => setTrips(Math.min(8, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Dias por semana
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={7} value={daysPerWeek} onChange={event => setDaysPerWeek(Math.min(7, Math.max(1, Number(event.target.value) || 1)))} />
+              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={7} value={daysPerWeek} onChange={event => setDaysPerWeek(Math.min(7, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Pessoas
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={20} value={people} onChange={event => setPeople(Math.max(1, Number(event.target.value) || 1))} />
+              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={20} value={people} onChange={event => setPeople(Math.min(20, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Renda de referência
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} step={1} value={salary} onChange={event => setSalary(Math.max(1, Number(event.target.value) || 1))} />
+              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} step={1} value={salary} onChange={event => setSalary(Math.min(1_000_000, Math.max(1, Number.isFinite(Number(event.target.value)) ? Number(event.target.value) : 1)))} />
             </label>
           </div>
         </details>
