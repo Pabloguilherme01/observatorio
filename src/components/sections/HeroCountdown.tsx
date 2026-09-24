@@ -30,7 +30,7 @@ export function HeroCountdown() {
   const electorate = d.electoral.electorate;
   const loa = d.budget.totalBrl;
   const updatedAt = formatDate(d.meta.updatedAt);
-  const { mode: languageMode, setMode: setLanguageMode } = useLanguageMode();
+  const { mode: languageMode } = useLanguageMode();
   const [electionMode, setElectionMode] = useState<boolean>(() => {
     try {
       return localStorage.getItem(`${STORAGE_NAMESPACE}-election-mode`) === '1'
