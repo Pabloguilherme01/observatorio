@@ -159,7 +159,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'loa-2026',
     label: 'Lei Municipal 1.847/2026 — LOA',
     institution: 'Prefeitura de Águas Lindas de Goiás',
-    url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654/lei-1847-2026',
+    url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654',
     nature: 'official',
   },
   {
