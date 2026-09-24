@@ -634,9 +634,9 @@ export function QuickQuiz() {
             <div className="rounded-3xl border border-violet-300/10 bg-violet-300/[0.035] p-5">
               {selected === null ? (
                 <>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-violet-200/80">Como usar</div>
+                  <div className="flex items-center justify-between gap-2"><div className="text-[11px] font-bold uppercase tracking-[0.16em] text-violet-200/80">Fase {phase + 1} · {currentLevel}</div><span className="rounded-full border border-violet-300/10 px-2 py-1 text-[9px] font-black text-violet-200">Meta {phaseTarget}/25</span></div>
                   <p className="mt-3 text-sm leading-6 text-slate-400">Escolha uma resposta. A explicação aparece na hora e você pode seguir para a próxima.</p>
-                  <div className="mt-5 rounded-2xl border border-white/8 bg-black/10 p-4 text-xs leading-5 text-slate-500">O objetivo é reforçar leitura crítica de dados, não testar conhecimento político.</div>
+                  <div className="mt-5 rounded-2xl border border-white/8 bg-black/10 p-4 text-xs leading-5 text-slate-500">Esta fase mede compreensão de leitura de dados e libera a próxima etapa apenas ao atingir a meta.</div>
                 </>
               ) : (
                 <>
