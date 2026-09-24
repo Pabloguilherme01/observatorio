@@ -50,14 +50,14 @@ export function ExecutiveSummary() {
     { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : `${electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% participaram em 2024`, target: 'eleitoral360' },
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
-    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'saude' },
+    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
     { label: 'Candidatos', value: d.candidates.length.toLocaleString('pt-BR'), caption: 'acompanhados', detail: languageMode === 'technical' ? 'recorte TSE por nomes monitorados' : 'ver perfis', target: 'eleitoral360' },
   ] as const;
 
   const topics = [
     { id: 'eleitoral', label: 'Eleição', target: 'eleitoral360', caption: 'eleitorado, participação e candidaturas' },
     { id: 'cidade', label: 'Cidade', target: 'dashboard', caption: 'população e indicadores' },
-    { id: 'servicos', label: 'Serviços', target: 'saude', caption: 'saneamento e saúde' },
+    { id: 'servicos', label: 'Serviços', target: 'dashboard', caption: 'saneamento e indicadores' },
     { id: 'recursos', label: 'Recursos', target: 'orcamento', caption: 'orçamento e atualizações' },
   ] as const;
 
