@@ -224,7 +224,7 @@ export function ExecutiveSummary() {
             </div>
           )}
 
-          <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
+          {languageMode !== 'summary' && <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
             <div className="flex items-start gap-3">
               <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               <div>
@@ -272,9 +272,9 @@ export function ExecutiveSummary() {
                 )}
               </div>
             </div>
-          </Card>
+          </Card>}
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+          {languageMode !== 'summary' && <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             <Card className="p-4">
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado</div>
               <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div>
@@ -286,11 +286,28 @@ export function ExecutiveSummary() {
               {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Ver contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
             </Card>
 
-          </div>
+          </div>}
         </div>
 
         {languageMode === 'simple' && (
-          <div className="summary-simple-tip mt-3">
+          <>
+            <div className="summary-simple-grid mt-3" aria-label="Resumo dos principais indicadores">
+              {quickStats.map(stat => (
+                <button key={stat.label} type="button" className="summary-simple-card" onClick={() => goToSection(stat.target)}>
+                  <span>{stat.label}</span>
+                  <strong>{stat.value}</strong>
+                  <small>{stat.caption}</small>
+                  <em>{stat.detail}</em>
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+            <div className="summary-simple-tip mt-3">
+              <strong className="text-slate-200">Leitura simples</strong>
+              <span className="ml-2">Número primeiro; fonte e contexto ficam a um toque.</span>
+            </div>
+          </>
+        )}
             <strong className="text-slate-200">Leitura simples</strong>
             <span className="ml-2">Número primeiro; fonte e contexto quando você abrir.</span>
           </div>
