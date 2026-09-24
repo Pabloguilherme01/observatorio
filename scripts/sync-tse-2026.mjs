@@ -47,7 +47,7 @@ const API_CARGOS = [
 // mas o transporte pode passar por um reader/proxy público somente para contornar
 // a barreira de rede. O snapshot registra esse transporte explicitamente.
 const API_READER_PROXIES = [
-  { prefix: 'https://r.jina.ai/http://', encode: false, label: 'jina-reader' },
+  { prefix: 'https://r.jina.ai/', encode: false, label: 'jina-reader' },
   { prefix: 'https://api.allorigins.win/raw?url=', encode: true, label: 'allorigins' },
   { prefix: 'https://corsproxy.io/?url=', encode: true, label: 'corsproxy' },
 ];
@@ -100,13 +100,14 @@ function fetchApi(url) {
   } catch (directError) {
     console.warn('[TSE] acesso direto bloqueado/indisponível; tentando transporte intermediado.');
     for (const proxy of API_READER_PROXIES) {
-      const requestUrl = proxy.prefix + (proxy.encode ? encodeURIComponent(url) : url.replace(/^https:\/\//, ''));
+      const requestUrl = proxy.prefix + (proxy.encode ? encodeURIComponent(url) : url);
       try {
         const output = execFileSync('curl', [
           '--fail', '--location', '--http1.1', '--retry', '1', '--retry-delay', '1', '--retry-all-errors',
           '--connect-timeout', '10', '--max-time', '20',
           '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
           '--header', 'Accept: application/json,text/plain;q=0.9,*/*;q=0.8',
+          ...(proxy.label === 'jina-reader' ? ['--header', 'X-Respond-With: text'] : []),
           requestUrl,
         ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
         return { payload: parseJsonOutput(output), transport: 'reader_proxy', requestUrl, proxy: proxy.label };
