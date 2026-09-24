@@ -43,6 +43,18 @@ small{color:var(--text-secondary)}
 [data-language-mode=summary] .technical-detail,
 [data-language-mode=summary] .technical-only{display:none!important}
 
+/* Resumo: deixa a primeira camada realmente enxuta. O detalhamento continua acessível pelos cartões. */
+[data-language-mode=summary] #resumo .summary-public-hero ~ *{display:none!important}
+[data-language-mode=summary] #resumo .summary-public-hero{
+  grid-column:1 / -1;
+  border-color:rgba(125,211,252,.16);
+  box-shadow:0 18px 60px rgba(0,0,0,.14);
+}
+[data-language-mode=summary] #resumo .summary-public-lead{max-width:48rem}
+[data-language-mode=summary] #resumo .summary-public-facts{margin-top:14px}
+[data-language-mode=summary] #resumo .summary-more-toggle{margin-top:10px}
+[data-language-mode=summary] #resumo .summary-public-copy h3{max-width:760px}
+
 .light{
   --surface:#ffffff;
   --surface-strong:#f8fafc;
