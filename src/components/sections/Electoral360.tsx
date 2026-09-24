@@ -206,7 +206,19 @@ export function Electoral360() {
           <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
               <Search className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Buscar candidatura</span>
-              <input value={query} onChange={event => setQuery(event.target.value)} placeholder={hasOfficialCandidateSnapshot ? 'Buscar candidatura...' : 'Filtrar recorte...'} className="w-full min-w-0 bg-transparent outline-none placeholder:text-slate-600 sm:w-56" />
+              <input
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                placeholder={hasOfficialCandidateSnapshot ? 'Buscar candidatura...' : 'Filtrar recorte...'}
+                className="w-full min-w-0 bg-transparent text-base outline-none placeholder:text-slate-600 sm:w-56 sm:text-sm"
+                type="search"
+                inputMode="search"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="none"
+                spellCheck={false}
+                aria-label={hasOfficialCandidateSnapshot ? 'Buscar candidatura' : 'Filtrar recorte local'}
+              />
           </label>
         </div>
 
