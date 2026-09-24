@@ -41,7 +41,7 @@ export function SummaryTodayCard({ budget, electorate, transport, sanitation, on
             type="button"
             aria-label={`Ver detalhes de ${label}`}
             onClick={() => onNavigate?.(key)}
-            className="mt-auto pt-4 inline-flex min-h-11 w-fit items-center gap-1 rounded-xl bg-sky-500 px-3 py-2 text-xs font-bold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-1 rounded-xl bg-sky-500 px-3 py-2 text-xs font-bold text-white transition hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-400 sm:w-fit"
           >
             Ver detalhes
             <ArrowRight className="h-3.5 w-3.5" />
