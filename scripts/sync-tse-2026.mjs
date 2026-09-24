@@ -160,7 +160,7 @@ function loadPrevious() {
       payload?.schemaVersion !== 3
       || !['municipality_required', 'state_watchlist'].includes(payload?.coverage)
       || !Array.isArray(payload?.matched)
-      || !['first_capture', 'synced', 'unchanged', 'changed'].includes(payload?.meta?.state)
+      || !['first_capture', 'synced', 'unchanged', 'changed', 'local_filter_pending'].includes(payload?.meta?.state)
     ) return null;
     return payload;
   } catch {
