@@ -10,11 +10,11 @@
     "sourceRows": 905,
     "originalMatchedRows": 7,
     "matchedRows": 7,
-    "workflowRunId": null,
-    "state": "local_filter_pending",
+    "workflowRunId": "manual-2026-09-24",
+    "state": "changed",
     "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
-    "captureTransport": "historical_third_party_reader",
+    "captureTransport": "official_tse_snapshot_plus_documentary_local_evidence",
     "filterNote": "Recorte público de candidaturas estaduais com vínculo local documental mapeado para Águas Lindas de Goiás. A fonte oficial do TSE é usada para o cadastro estadual; o vínculo local é evidência documental separada e não é inferido de um campo municipal inexistente no cadastro estadual.",
     "sourceFileSha256": "ee67167e1a7b94495e30f0bc8eb8b4609b60b7397eac70cd506ebbf815ea26b1",
     "complementaryFile": {
@@ -364,6 +364,8 @@
           "watchlistName": "Felipe galdino"
         }
       }
-    ]
+    ],
+    "unresolved": 0,
+    "comparison": "local_evidence_merge"
   }
 }
