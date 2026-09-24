@@ -1,4 +1,4 @@
-import { CalendarDays, Command, Moon, Search, Sun, X } from 'lucide-react';
+import { CalendarDays, Command, Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SearchModal } from './SearchModal';
 import { useTheme } from '../../context/ThemeContext';
@@ -82,7 +82,7 @@ export function Header() {
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
             <button type="button" onClick={() => setToolsOpen(value => !value)} className="site-tools-button min-h-11 min-w-11 rounded-xl border border-white/10 bg-white/[0.025] p-2 text-slate-300 hover:bg-white/5 md:hidden" aria-expanded={toolsOpen} aria-controls="mobile-tools" aria-label={toolsOpen ? 'Fechar ferramentas' : 'Abrir ferramentas'}>
-              {toolsOpen ? <X className="h-4 w-4" aria-hidden="true" /> : <span aria-hidden="true" className="text-[11px] font-black tracking-[.22em]">•••</span>}
+              {toolsOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
