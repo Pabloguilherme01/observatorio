@@ -20,7 +20,6 @@ const links = [
   { label:'Portal municipal', href:'https://aguaslindasdegoias.go.gov.br/', note:'Serviços e informações da Prefeitura', icon:BookOpen },
 ];
 
-const topicTargets: Record<string,string> = Object.fromEntries(topics.map(topic => [topic.id, topic.id]));
 
 export function AudienceHub() {
   const { mode } = useLanguageMode();
