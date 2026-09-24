@@ -161,6 +161,7 @@ export const observatorioData: ObservatoryData = {
       date: '2026-08-13',
       law: 'Lei 1.900/2026',
       title: 'Escola em Tempo Integral',
+      // Lei municipal nº 1.900/2026, art. 1º: R$ 1.657.103,90. O valor R$ 1.657.104,00 não corresponde ao texto oficial da lei.
       amountBrl: 1_657_103.90,
       description: 'Crédito adicional especial para criação do projeto atividade Escola em Tempo Integral no orçamento de 2026.',
       sourceId: 'lei-1900-2026',
