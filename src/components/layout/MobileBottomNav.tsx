@@ -1,4 +1,4 @@
-import { BookOpen, Compass, FileSearch, Home, Menu, Search, Users } from 'lucide-react';
+import { BookOpen, Compass, FileSearch, Home, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 const items = [
@@ -115,14 +115,6 @@ export function MobileBottomNav() {
           <span>{label}</span>
         </button>
       ))}
-      <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))} className="mobile-bottom-search" aria-label="Buscar no observatório" title="Buscar no observatório">
-        <Search className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-        <span>Buscar</span>
-      </button>
-      <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))} className="mobile-bottom-more" aria-label="Abrir todas as áreas e ferramentas" title="Mais áreas e ferramentas">
-        <Menu className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-        <span>Mais</span>
-      </button>
     </nav>
   );
 }
