@@ -1,5 +1,5 @@
 import { BookOpen, Compass, FileSearch, Home, Menu, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const items = [
   { id: 'dashboard', label: 'Início', icon: Home },
@@ -30,11 +30,17 @@ function jump(id: string) {
 
 export function MobileBottomNav() {
   const [activeSection, setActiveSection] = useState('dashboard');
+  const activeSectionRef = useRef('dashboard');
 
   useEffect(() => {
+    const updateActiveSection = (next: string) => {
+      if (activeSectionRef.current === next) return;
+      activeSectionRef.current = next;
+      setActiveSection(next);
+    };
     const updateFromHash = () => {
       const id = window.location.hash.replace(/^#/, '');
-      if (id) setActiveSection(sectionToTab(id));
+      if (id) updateActiveSection(sectionToTab(id));
     };
 
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
@@ -43,7 +49,7 @@ export function MobileBottomNav() {
         if (!entry.isIntersecting || (visible && entry.intersectionRatio <= visible.intersectionRatio)) continue;
         visible = entry;
       }
-      if (visible?.target.id) setActiveSection(sectionToTab(visible.target.id));
+      if (visible?.target.id) updateActiveSection(sectionToTab(visible.target.id));
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
     const targetIds = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
@@ -83,7 +89,7 @@ export function MobileBottomNav() {
     });
 
     const onNavigate = (event: Event) => {
-      setActiveSection(sectionToTab((event as CustomEvent<string>).detail));
+      updateActiveSection(sectionToTab((event as CustomEvent<string>).detail));
       scheduleObserve();
     };
 
