@@ -182,6 +182,16 @@ export function ExecutiveSummary() {
                 <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact}>Fechar cartão</button>
                 <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próxima descoberta <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
+              <div className="summary-public-pulse" aria-label="Como usar o Resumo">
+                <div>
+                  <span className="summary-public-pulse-label">Agora</span>
+                  <strong>Veja o número, abra o contexto e compartilhe.</strong>
+                </div>
+                <button type="button" className="summary-public-pulse-link" onClick={() => goToSection('fontes')}>
+                  Conferir fontes <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </div>
+
               <div className="summary-public-facts" aria-label="Descobertas rápidas">
                 {publicFacts.map(fact => (
                   <div key={fact.id} className={`summary-public-fact ${openFact === fact.id ? 'is-open' : ''}`}>
