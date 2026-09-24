@@ -2912,3 +2912,23 @@ button:disabled{cursor:not-allowed;opacity:.58}
 .light .site-brand>span:first-child{color:#0f172a}
 .light .site-header nav a{color:#475569}
 .light .site-header nav a:hover{color:#0f172a;background:rgba(15,23,42,.05)}
+
+
+/* Public-first navigation refinement */
+@media(max-width:767px){
+  .mobile-bottom-nav{
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:3px;
+    min-height:var(--mobile-nav-height);
+  }
+  .mobile-bottom-nav button{
+    min-height:50px;
+    border-radius:13px;
+  }
+  .mobile-bottom-nav .mobile-bottom-more{
+    display:none;
+  }
+}
+@media(max-width:390px){
+  .mobile-bottom-nav button{min-height:52px;font-size:8.5px}
+}
