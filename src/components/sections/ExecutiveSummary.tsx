@@ -100,7 +100,7 @@ export function ExecutiveSummary() {
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Camada técnica' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
-            <button type="button" onClick={share} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
+            <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório">
               <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar
             </button>
             {shareStatus && <span className="text-[11px] font-semibold text-emerald-300" role="status" aria-live="polite">{shareStatus}</span>}
