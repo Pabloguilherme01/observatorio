@@ -226,24 +226,48 @@ export function SanitationHealthSection() {
           </div>
 
           <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Simulador de capacidade</div>
-                <div className="mt-1 text-sm text-slate-400">Ajuste hipotético entre a referência de inauguração e o planejamento registrado.</div>
+                <div className="mt-1 text-sm text-slate-400">Escolha a referência que deseja usar no cálculo hipotético.</div>
               </div>
-              <strong className="text-sky-300">{formatNumber(plannedBeds)} leitos</strong>
+              <label className="text-xs font-bold text-slate-500">
+                Referência
+                <select
+                  className="ml-2 min-h-10 rounded-xl border border-white/10 bg-slate-900 px-3 text-xs font-bold text-white light:border-slate-200 light:bg-white light:text-slate-900"
+                  value={plannedBeds === 164 ? 'opening' : plannedBeds === 85 ? 'current' : 'planning'}
+                  onChange={event => {
+                    const value = event.target.value;
+                    setPlannedBeds(value === 'opening' ? 164 : value === 'current' ? 85 : 298);
+                  }}
+                  aria-label="Selecionar referência de leitos"
+                >
+                  <option value="opening">164 · inauguração</option>
+                  <option value="current">85 · portal atual</option>
+                  <option value="planning">298 · planejamento</option>
+                </select>
+              </label>
+            </div>
+            <div className="mt-4 flex items-end justify-between gap-3">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Referência ativa</span>
+                <strong className="mt-1 block text-3xl font-black text-white light:text-slate-900">{formatNumber(plannedBeds)} leitos</strong>
+              </div>
+              <span className="text-right text-[11px] leading-5 text-slate-500">
+                164 = inauguração · 85 = capacidade explicitada no portal atual · 298 = planejamento registrado
+              </span>
             </div>
             <input
               className="mt-4 w-full accent-sky-400"
               type="range"
-              min={d.health.openingReportedBeds}
-              max={d.health.plannedBeds ?? d.health.openingReportedBeds}
+              min={85}
+              max={298}
               step={1}
               value={plannedBeds}
               onChange={event => setPlannedBeds(Number(event.target.value))}
               aria-label="Simular quantidade de leitos"
-              aria-valuemin={d.health.openingReportedBeds}
-              aria-valuemax={d.health.plannedBeds ?? d.health.openingReportedBeds}
+              aria-valuemin={85}
+              aria-valuemax={298}
               aria-valuenow={plannedBeds}
             />
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
