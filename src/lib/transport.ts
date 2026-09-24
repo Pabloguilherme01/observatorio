@@ -1,11 +1,20 @@
 import type { TransportCalculationInput, TransportCalculationResult } from '../types/observatorio';
 
+function finiteNumber(value: number, fallback = 0): number {
+  return Number.isFinite(value) ? value : fallback;
+}
+
+function clamp(value: number, min: number, max: number, fallback: number): number {
+  const finite = finiteNumber(value, fallback);
+  return Math.min(max, Math.max(min, finite));
+}
+
 export function calculateTransportCost(input: TransportCalculationInput): TransportCalculationResult {
-  const safeFare = Math.max(0, input.fareBrl);
-  const safeTrips = Math.max(0, input.tripsPerDay);
-  const safeDays = Math.max(0, input.workDaysPerMonth);
-  const safePeople = Math.max(0, input.people);
-  const safeMonths = Math.max(0, input.monthsPerYear);
+  const safeFare = clamp(input.fareBrl, 0, 10_000, 0);
+  const safeTrips = clamp(input.tripsPerDay, 0, 8, 0);
+  const safeDays = clamp(input.workDaysPerMonth, 0, 31, 0);
+  const safePeople = clamp(input.people, 0, 20, 0);
+  const safeMonths = clamp(input.monthsPerYear, 0, 12, 0);
   const monthlyPerPersonBrl = safeFare * safeTrips * safeDays;
   const annualPerPersonBrl = monthlyPerPersonBrl * safeMonths;
   const monthlyTotalBrl = monthlyPerPersonBrl * safePeople;
@@ -24,7 +33,7 @@ export function calculateTransportCost(input: TransportCalculationInput): Transp
 }
 
 export function workDaysPerMonthFromWeeks(daysPerWeek: number, weeksPerMonth = 4.4): number {
-  return Math.max(0, daysPerWeek) * weeksPerMonth;
+  return clamp(daysPerWeek, 0, 7, 0) * clamp(weeksPerMonth, 0, 5, 4.4);
 }
 
 export function formatBRL(value: number): string {
