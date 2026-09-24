@@ -81,10 +81,10 @@ export function PoliticalResearch() {
           <div className="flex items-start gap-3">
             <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-emerald-300" aria-hidden="true" />
             <div>
-              <h3 className="text-base font-black text-white">{municipalCaptureCompleted ? 'Nenhum registro da watchlist no recorte municipal' : 'Captura municipal pendente'}</h3>
+              <h3 className="text-base font-black text-white">{municipalCaptureCompleted ? 'Nenhum registro municipal no snapshot atual' : 'Captura municipal pendente'}</h3>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
                 {municipalCaptureCompleted
-                  ? 'A captura oficial do município foi concluída, mas nenhum dos nomes atualmente monitorados na watchlist apareceu no recorte municipal desta execução. A ausência aqui não significa ausência de outras candidaturas fora da watchlist.'
+                  ? 'A captura oficial do município foi concluída, mas nenhuma candidatura foi encontrada no snapshot municipal desta execução.'
                   : 'O último snapshot não contém correspondências municipais validadas. O observatório não transforma a watchlist estadual em candidatura local e mantém a seção vazia até existir evidência municipal no TSE.'}
               </p>
               <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-bold text-slate-200 hover:border-sky-300/20">Conferir dados oficiais do TSE <ExternalLink className="h-4 w-4" aria-hidden="true" /></a>
@@ -98,7 +98,7 @@ export function PoliticalResearch() {
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
           <div>
             <strong className="block text-sm font-black text-sky-100">Como ler esta lista</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">A lista é gerada pelo filtro municipal do arquivo oficial do TSE. Não há seleção manual de nomes: candidatos que atendem ao filtro entram automaticamente no snapshot.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">A lista é gerada pelo filtro municipal do arquivo oficial do TSE. Não há seleção manual de nomes: todas as candidaturas que atendem ao filtro entram automaticamente no snapshot.</p>
           </div>
         </div>
       </div>
