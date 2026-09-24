@@ -1,4 +1,5 @@
 import { ArrowRight, Command, Compass, Search, Sparkles, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';
@@ -28,6 +29,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   const [favorites, setFavorites] = useState<string[]>([]);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [mode, setMode] = useState<ExperienceMode>('overview');
+  const [pageFlip, setPageFlip] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -74,6 +76,28 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       window.removeEventListener('hashchange', onHashChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setPageFlip(null);
+      return;
+    }
+
+    let timerId = 0;
+    const onNavigate = (event: Event) => {
+      const id = (event as CustomEvent<string>).detail;
+      if (!isNavigationId(id)) return;
+      setPageFlip(id);
+      if (timerId) window.clearTimeout(timerId);
+      timerId = window.setTimeout(() => setPageFlip(null), 520);
+    };
+
+    window.addEventListener('observatorio:navigate', onNavigate);
+    return () => {
+      window.removeEventListener('observatorio:navigate', onNavigate);
+      if (timerId) window.clearTimeout(timerId);
+    };
+  }, [reducedMotion]);
 
   const activeModal = commandOpen || helpOpen;
   useEffect(() => {
@@ -180,6 +204,24 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, [normalizedNavigation, query, visibleNavigation]);
 
   return <>
+    <AnimatePresence initial={false}>
+      {pageFlip && !reducedMotion ? (
+        <motion.div
+          key={pageFlip}
+          className="observatorio-page-flip"
+          aria-hidden="true"
+          initial={{ rotateY: 0, opacity: 1 }}
+          animate={{ rotateY: -92, opacity: [1, 1, 0.92] }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="observatorio-page-flip-inner">
+            <span>Observatório</span>
+            <strong>{navigation.find(item => item.id === pageFlip)?.label ?? 'Nova seção'}</strong>
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
     <div ref={progressRef} className="reading-progress" style={{ width: '0%' }} aria-hidden="true" />
     {children}
     <MobileBottomNav />
