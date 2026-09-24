@@ -8,7 +8,7 @@ import { LanguageModeToggle } from './LanguageModeToggle';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
 
-const primaryNavigationIds = ['descubra', 'dashboard', 'eleitorado', 'transporte', 'orcamento', 'dados', 'acao'] as const;
+const primaryNavigationIds = ['descubra', 'dashboard', 'eleitorado', 'linha-do-tempo', 'eleitoral360', 'quiz', 'transporte', 'orcamento', 'dados', 'acao'] as const;
 const primaryNavigation = navigation.filter(item => primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
 
 export function Header() {
