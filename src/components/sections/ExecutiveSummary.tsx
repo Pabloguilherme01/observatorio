@@ -245,6 +245,18 @@ export function ExecutiveSummary() {
           </div>
         )}
 
+        {languageMode === 'summary' && (
+          <div className="summary-public-shareline">
+            <div>
+              <strong>Achou um dado útil?</strong>
+              <span>Compartilhe o Resumo ou envie um indicador específico. A página continua sendo a fonte de contexto.</span>
+            </div>
+            <button type="button" onClick={() => { void share(); }}>
+              <Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar tudo
+            </button>
+          </div>
+        )}
+
         {languageMode === 'simple' && (
           <div className="summary-simple-tip mt-3">
             <strong className="text-slate-200">Como usar:</strong> toque em qualquer número para abrir os dados completos, com fonte e data de referência.
