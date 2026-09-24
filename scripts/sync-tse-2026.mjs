@@ -326,6 +326,8 @@ async function main() {
   try {
     const previous = loadPrevious();
     const previousBySq = new Map((previous?.matched ?? []).map(candidate => [candidate.sqCandidate, candidate]));
+    let sourceRows = 0;
+    let municipalityRows = 0;
 
     const apiResult = collectApiCandidates();
     if (apiResult) {
@@ -429,11 +431,6 @@ async function main() {
     if (missingColumns.length) {
       throw new Error('Colunas essenciais ausentes no CSV TSE: ' + missingColumns.join(', '));
     }
-
-    let sourceRows = 0;
-    let municipalityRows = 0;
-    const previous = loadPrevious();
-    const previousBySq = new Map((previous?.matched ?? []).map(candidate => [candidate.sqCandidate, candidate]));
 
     const matched = [];
     const seen = new Set();
