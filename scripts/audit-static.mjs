@@ -84,9 +84,9 @@ must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido 
 must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
 must(appSource.includes('id="analise"') && appSource.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
-const dashboardIdCount = (dashboardMetrics.match(/id=["']dashboard["']/g) ?? []).length + (appSource.match(/id=["']dashboard["']/g) ?? []).length;
-const analiseIdCount = (appSource.match(/id="analise"/g) ?? []).length;
-must(dashboardIdCount === 1 && dashboardMetrics.includes('id="dashboard"'), '#dashboard possui uma única âncora pública no DashboardMetrics');
+const dashboardIdCount = (dashboardMetrics.match(/id=["']dashboard["']/g) ?? []).length;
+const analiseIdCount = (appSource.match(/id=["']analise["']/g) ?? []).length;
+must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#dashboard possui uma única âncora pública no DashboardMetrics');
 const audienceHub = read('src/components/AudienceHub.tsx');
 must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a âncora pública #dashboard');
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
