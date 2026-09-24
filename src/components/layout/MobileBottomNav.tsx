@@ -1,8 +1,9 @@
-import { BookOpen, Compass, FileSearch, Home, Menu, Search } from 'lucide-react';
+import { BookOpen, Compass, FileSearch, Home, Menu, Search, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 const items = [
   { id: 'dashboard', label: 'Início', icon: Home },
+  { id: 'eleitoral360', label: 'Eleitoral', icon: Users },
   { id: 'descubra', label: 'Explorar', icon: Compass },
   { id: 'dados', label: 'Dados', icon: BookOpen },
   { id: 'fontes', label: 'Fontes', icon: FileSearch },
@@ -18,7 +19,8 @@ const thematicIds = new Set([
 function sectionToTab(id: string) {
   if (id === 'dashboard' || id === 'resumo') return 'dashboard';
   if (id === 'descubra') return 'descubra';
-  if (id === 'dados' || id === 'eleitoral360' || id === 'eleitorado') return 'dados';
+  if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica') return 'eleitoral360';
+  if (id === 'dados' || id === 'eleitorado') return 'dados';
   if (id === 'fontes') return 'fontes';
   if (thematicIds.has(id)) return 'descubra';
   return 'dashboard';
@@ -53,7 +55,7 @@ export function MobileBottomNav() {
       if (visible?.target.id) updateActiveSection(sectionToTab(visible.target.id));
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
-    const targetIds = new Set(['dashboard', 'resumo', 'descubra', 'dados', 'fontes', ...thematicIds]);
+    const targetIds = new Set(['dashboard', 'resumo', 'descubra', 'eleitoral360', 'candidaturas', 'politica', 'dados', 'fontes', ...thematicIds]);
     const observedNodes = new WeakSet<Element>();
     const observedIds = new Set<string>();
     let mutations: MutationObserver | null = null;
@@ -108,7 +110,7 @@ export function MobileBottomNav() {
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular" data-mobile-nav="primary">
       {items.map(({ id, label, icon: Icon }) => (
-        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'page' : undefined} aria-label={label === 'Início' ? 'Ir para o início e resumo' : label === 'Explorar' ? 'Explorar assuntos do observatório' : label === 'Dados' ? 'Abrir dados e área eleitoral' : 'Abrir fontes'} title={label}>
+        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'page' : undefined} aria-label={label === 'Início' ? 'Ir para o início e resumo' : label === 'Eleitoral' ? 'Abrir candidatos e dados eleitorais' : label === 'Explorar' ? 'Explorar assuntos do observatório' : label === 'Dados' ? 'Abrir dados públicos' : 'Abrir fontes'} title={label}>
           <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           <span>{label}</span>
         </button>
