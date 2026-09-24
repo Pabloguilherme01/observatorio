@@ -223,12 +223,12 @@ export function ExecutiveSummary() {
               )}
             </div>
           )}
-          
+
           <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
             <div className="flex items-start gap-3">
               <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Pesquisa registrada</div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{hasPoll ? "Pesquisa registrada" : "Pesquisas"}</div>
                 {!hasPoll && <p className="mt-3 text-sm text-slate-400">Nenhuma pesquisa está disponível neste snapshot.</p>}
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:max-w-md">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
@@ -288,8 +288,6 @@ export function ExecutiveSummary() {
 
           </div>
         </div>
-
-
 
         {languageMode === 'simple' && (
           <div className="summary-simple-tip mt-3">
