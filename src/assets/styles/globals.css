@@ -2245,3 +2245,12 @@ button:disabled{cursor:not-allowed;opacity:.58}
 @media(prefers-reduced-motion:reduce){
   .mobile-bottom-nav button{transition:none!important}
 }
+
+/* 45.0 mobile contract: final navigation geometry */
+@media(max-width:767px){
+  :root{--mobile-nav-height:64px}
+  .mobile-bottom-nav{min-height:64px!important;padding-bottom:max(5px,env(safe-area-inset-bottom,0px))!important}
+  .mobile-bottom-nav button{min-height:48px!important}
+  .mobile-bottom-nav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .electoral360-filter{min-height:44px;width:100%;max-width:100%}
+}
