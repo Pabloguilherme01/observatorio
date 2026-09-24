@@ -3072,3 +3072,87 @@ button:disabled{cursor:not-allowed;opacity:.58}
 .summary-more-toggle:focus-visible{outline:2px solid rgba(125,211,252,.65);outline-offset:2px}
 .light .summary-more-toggle{border-color:#dbe5ec;background:#f8fafc;color:#475569}.light .summary-more-toggle:hover{border-color:#7dd3fc;background:#f0f9ff;color:#0f172a}
 @media(prefers-reduced-motion:reduce){.summary-more-toggle svg{transition:none!important}}
+
+
+/* Final UX precedence v45.1 */
+@media (max-width:767px){
+  .mobile-bottom-nav{
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    width:100%!important;
+    min-height:66px!important;
+    padding:4px 4px max(5px,env(safe-area-inset-bottom,0px))!important;
+    gap:2px!important;
+    overflow:hidden!important;
+  }
+  .mobile-bottom-nav button{
+    min-width:0!important;
+    min-height:50px!important;
+    width:100%!important;
+    padding:4px 2px!important;
+    border-radius:12px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:3px!important;
+  }
+  .mobile-bottom-nav button span{
+    max-width:100%!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    line-height:1!important;
+  }
+  .summary-public-hero{
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  .summary-public-topics{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  .summary-public-actions{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  .summary-public-action,
+  .summary-public-topic,
+  .summary-more-toggle{
+    min-width:0!important;
+    min-height:44px!important;
+  }
+  .summary-public-action{
+    overflow-wrap:anywhere!important;
+  }
+  .summary-public-grid{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  .summary-public-stat{
+    min-width:0!important;
+  }
+  .summary-public-stat-main{
+    width:100%!important;
+    min-width:0!important;
+    min-height:110px!important;
+    overflow:hidden!important;
+  }
+  .summary-public-stat-main strong,
+  .summary-public-stat-main em{
+    overflow-wrap:anywhere!important;
+  }
+}
+@media (max-width:390px){
+  .summary-public-topics,
+  .summary-public-actions,
+  .summary-public-grid{
+    grid-template-columns:1fr!important;
+  }
+  .summary-public-stat-main{
+    min-height:96px!important;
+  }
+}
