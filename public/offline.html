@@ -2,31 +2,57 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07111f">
-  <title>Observatório Águas Lindas 2026</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071018">
+  <title>Você está offline · Observatório</title>
   <style>
-    :root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:#07111f;color:#f8fafc}
-    *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top,#16304d,#07111f 55%)}
-    main{width:min(620px,100%);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:32px;background:rgba(15,23,42,.92);box-shadow:0 30px 90px rgba(0,0,0,.4);text-align:center}
-    .icon{width:84px;height:84px;margin:0 auto 20px;border-radius:24px;background:#0b1117;display:grid;place-items:center;border:1px solid rgba(125,211,252,.25)}
-    .icon span{font-size:34px;font-weight:900;color:#7dd3fc}
-    .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#7dd3fc;font-weight:800}
-    h1{font-size:clamp(2rem,7vw,3rem);line-height:1.05;margin:12px 0}
-    p{color:#cbd5e1;line-height:1.65}
-    a{display:inline-flex;min-height:48px;align-items:center;justify-content:center;margin-top:16px;padding:0 22px;border-radius:14px;background:#7dd3fc;color:#082032;font-weight:900;text-decoration:none}
-    .note{margin-top:20px;padding:16px;border:1px solid rgba(125,211,252,.18);border-radius:18px;color:#94a3b8;font-size:14px;text-align:left}
+    :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#071018;color:#f8fafc}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,rgba(56,189,248,.12),transparent 36%),#071018}
+    main{width:min(760px,100%);margin:auto;padding:clamp(24px,7vw,64px) 18px}
+    .eyebrow{font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc}
+    h1{margin:10px 0 0;font-size:clamp(2rem,8vw,3.5rem);line-height:.98;letter-spacing:-.05em}
+    .lead{max-width:620px;margin:16px 0 0;color:#cbd5e1;line-height:1.6}
+    .status{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:8px 11px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:#0d1822;font-size:12px;font-weight:800}
+    .dot{width:8px;height:8px;border-radius:50%;background:#fbbf24;box-shadow:0 0 0 4px rgba(251,191,36,.1)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:24px}
+    .card{padding:15px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.035)}
+    .label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;font-weight:900}.value{display:block;margin-top:6px;font-size:1.45rem;line-height:1.1;font-weight:950}.meta{display:block;margin-top:5px;font-size:10px;color:#94a3b8}
+    .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:20px}
+    a,button{min-height:46px;display:flex;align-items:center;justify-content:center;padding:10px 13px;border:1px solid rgba(125,211,252,.28);border-radius:13px;background:#0c2431;color:#e0f2fe;text-decoration:none;font:inherit;font-size:12px;font-weight:850;cursor:pointer}
+    a.secondary{border-color:rgba(255,255,255,.14);background:#0c141c;color:#cbd5e1}
+    section{margin-top:22px;padding:18px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(255,255,255,.025)}
+    h2{margin:0;font-size:15px}ol{margin:12px 0 0;padding-left:20px;color:#cbd5e1;line-height:1.65;font-size:13px}li+li{margin-top:6px}
+    .note{margin-top:16px;color:#64748b;font-size:10px;line-height:1.55}:focus-visible{outline:3px solid #fff;outline-offset:3px}
+    @media(max-width:520px){.grid,.actions{grid-template-columns:1fr}.value{font-size:1.3rem}}
+    @media(prefers-contrast:more){body{background:#000}.card,section{border-color:#fff;background:#080808}.lead,.note,ol{color:#fff}a,button{border-color:#fff;background:#111;color:#fff}}
   </style>
 </head>
 <body>
-  <main>
-    <div class="icon" aria-hidden="true"><span>O</span></div>
-    <div class="eyebrow">Observatório Águas Lindas 2026</div>
-    <h1>Você está offline</h1>
-    <p>A conexão com a internet foi interrompida. Algumas funções podem continuar disponíveis usando os dados já carregados no dispositivo.</p>
-    <a href="/">Tentar novamente</a>
-    <div class="note">Quando a conexão voltar, atualize o aplicativo para receber novos dados, melhorias e correções.</div>
-  </main>
+<main>
+  <div class="eyebrow">Observatório · Águas Lindas de Goiás · 2026</div>
+  <h1>Você está sem internet.</h1>
+  <p class="lead">Esta página foi salva pelo aplicativo para orientar o acesso aos dados básicos enquanto a conexão estiver indisponível.</p>
+  <div class="status"><span class="dot" aria-hidden="true"></span>Modo offline</div>
+  <div class="grid" aria-label="Dados básicos do observatório">
+    <div class="card"><span class="label">Eleitorado</span><strong class="value">125.062</strong><span class="meta">base TSE · 15/07/2026</span></div>
+    <div class="card"><span class="label">População</span><strong class="value">249.978</strong><span class="meta">estimativa IBGE · 2026</span></div>
+    <div class="card"><span class="label">Orçamento 2026</span><strong class="value">R$ 771,3 mi</strong><span class="meta">LOA · valor total</span></div>
+    <div class="card"><span class="label">Água</span><strong class="value">95,8%</strong><span class="meta">acesso ao abastecimento</span></div>
+  </div>
+  <div class="actions">
+    <a href="/observatorio/api/v1/observatorio.json">Abrir dados consolidados</a>
+    <a class="secondary" href="/observatorio/api/v1/sources.json">Abrir fontes</a>
+  </div>
+  <section>
+    <h2>Como continuar consultando</h2>
+    <ol>
+      <li>Use os links acima para consultar o snapshot de dados e o registro de fontes que já estiverem disponíveis no cache do aplicativo.</li>
+      <li>Se você já abriu o Observatório anteriormente, volte para a página anterior e tente recarregar: o Service Worker pode disponibilizar recursos armazenados localmente.</li>
+      <li>Não trate dados offline como atualização em tempo real. Quando a conexão voltar, recarregue o Observatório para receber a versão mais recente.</li>
+    </ol>
+    <p class="note">Os números exibidos nesta página são um resumo estático de referência. Para metodologia, datas, fontes e dados completos, use o Observatório conectado.</p>
+  </section>
+  <button type="button" onclick="location.reload()" style="margin-top:12px;width:100%">Tentar novamente</button>
+</main>
 </body>
 </html>
