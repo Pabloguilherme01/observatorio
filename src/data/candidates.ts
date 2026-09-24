@@ -13,6 +13,7 @@ export interface PublicCandidate {
   readonly socials?: readonly string[];
   readonly sourceUrls?: readonly string[];
   readonly localEvidence?: string;
+  readonly evidenceSourceUrls?: readonly string[];
 }
 
 export const publicCandidateSource = 'TSE — Candidatos 2026';
@@ -31,7 +32,9 @@ export const publicCandidates: readonly PublicCandidate[] = generatedCandidates.
   status: candidate.status ?? undefined,
   fullName: candidate.fullName ?? undefined,
   photoUrl: candidate.photoUrl ?? undefined,
-  sourceUrls: [generatedCandidates.meta.sourceUrl, generatedCandidates.meta.resourceUrl],
+  sourceUrls: [generatedCandidates.meta.sourceUrl, generatedCandidates.meta.resourceUrl, ...(candidate.evidenceSourceUrls ?? [])],
+  localEvidence: candidate.localEvidence ?? undefined,
+  evidenceSourceUrls: candidate.evidenceSourceUrls ?? undefined,
 }));
 
 export function searchCandidates(query: string): readonly PublicCandidate[] {
