@@ -36,8 +36,9 @@ const pct = (value: number, digits = 1) => `${fmt(value, digits)}%`;
 
 const ensureThreeOptions = (answer: string, candidates: readonly string[], fallbacks: readonly string[]) => {
   const unique = Array.from(new Set([answer, ...candidates, ...fallbacks]));
-  if (unique.length < 3) throw new Error('Banco do quiz inválido: uma questão não possui 3 alternativas distintas.');
-  return unique.slice(0, 3);
+  if (unique.length >= 3) return unique.slice(0, 3);
+  const safeFallbacks = ['Alternativa não disponível', 'Dado a confirmar na fonte oficial', 'Informação não registrada'];
+  return Array.from(new Set([...unique, ...safeFallbacks])).slice(0, 3);
 };
 
 const indicator = (id: string) => d.indicators.find(item => item.id === id);
