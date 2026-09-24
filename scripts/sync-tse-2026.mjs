@@ -67,20 +67,31 @@ function curlJson(url) {
 }
 
 function parseJsonOutput(output) {
-  const parsed = JSON.parse(output);
-  // r.jina.ai em modo JSON devolve {url,title,content}; o payload original
-  // do TSE fica dentro de content e precisa ser desserializado novamente.
-  if (parsed && typeof parsed === 'object' && typeof parsed.content === 'string') {
-    const content = parsed.content.trim();
+  const parseCandidate = value => {
     try {
-      return JSON.parse(content);
+      return JSON.parse(value);
     } catch {
-      const start = content.indexOf('{');
-      const end = content.lastIndexOf('}');
-      if (start >= 0 && end > start) return JSON.parse(content.slice(start, end + 1));
+      const firstObject = value.indexOf('{');
+      const lastObject = value.lastIndexOf('}');
+      if (firstObject >= 0 && lastObject > firstObject) {
+        try { return JSON.parse(value.slice(firstObject, lastObject + 1)); } catch {}
+      }
+      const firstArray = value.indexOf('[');
+      const lastArray = value.lastIndexOf(']');
+      if (firstArray >= 0 && lastArray > firstArray) {
+        try { return JSON.parse(value.slice(firstArray, lastArray + 1)); } catch {}
+      }
+      return null;
     }
+  };
+
+  const parsed = parseCandidate(output);
+  if (parsed && typeof parsed === 'object' && typeof parsed.content === 'string') {
+    const nested = parseCandidate(parsed.content.trim());
+    if (nested) return nested;
   }
-  return parsed;
+  if (parsed) return parsed;
+  throw new Error('A resposta intermediada não contém JSON do endpoint TSE.');
 }
 
 function fetchApi(url) {
