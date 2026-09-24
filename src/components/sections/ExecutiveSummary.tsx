@@ -191,7 +191,7 @@ export function ExecutiveSummary() {
               <div className="summary-public-status">
                 <span className="summary-public-status-dot" aria-hidden="true" />
                 <span>{lastAction ? `Aberto: ${lastAction}` : 'Pronto para explorar'}</span>
-                <span className="summary-public-status-count" aria-hidden="true">{electoral360Snapshot.matchedCandidates.length} nomes no recorte acompanhado</span>
+                <span className="summary-public-status-count">{electoral360Snapshot.matchedCandidates.length} nomes no recorte acompanhado</span>
               </div>
               <div className="summary-public-pulse" aria-label="Como usar o Resumo">
                 <div>
@@ -206,12 +206,12 @@ export function ExecutiveSummary() {
               <div className="summary-public-facts" aria-label="Descobertas rápidas">
                 {publicFacts.map(fact => (
                   <div key={fact.id} className={`summary-public-fact ${openFact === fact.id ? 'is-open' : ''}`}>
-                    <button type="button" aria-expanded={openFact === fact.id} onClick={() => revealFact(fact.id, fact.label)}>
+                    <button type="button" aria-expanded={openFact === fact.id} aria-controls={`summary-fact-${fact.id}`} onClick={() => revealFact(fact.id, fact.label)}>
                       <span>{fact.label}</span>
                       <ChevronDown className="h-4 w-4" aria-hidden="true" />
                     </button>
                     {openFact === fact.id && (
-                      <div className="summary-public-fact-body">
+                      <div id={`summary-fact-${fact.id}`} className="summary-public-fact-body">
                         <strong>{fact.value}</strong>
                         <p>{fact.note}</p>
                         <button type="button" onClick={() => goToSection(fact.target)}>Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
