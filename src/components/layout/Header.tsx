@@ -1,6 +1,7 @@
 import { CalendarDays, Command, Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SearchModal } from './SearchModal';
+import { ContrastModeToggle } from './ContrastModeToggle';
 import { useTheme } from '../../context/ThemeContext';
 import { navigation } from '../../config/navigation';
 import { LanguageModeToggle } from './LanguageModeToggle';
@@ -78,6 +79,7 @@ export function Header() {
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="hidden md:block"><LanguageModeToggle /></div>
+            <div className="hidden xl:block"><ContrastModeToggle /></div>
             <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
@@ -100,6 +102,7 @@ export function Header() {
                 </div>
                 <LanguageModeToggle />
               </div>
+              <div className="mobile-tools-contrast"><ContrastModeToggle /></div>
               <div className="mobile-tools-actions">
                 <button type="button" onClick={() => { toggle(); setToolsOpen(false); }} className="mobile-tool-action">
                   {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
