@@ -1,6 +1,8 @@
 name: Sync TSE 2026
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '0 */4 * * *'
