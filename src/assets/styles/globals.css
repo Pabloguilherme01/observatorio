@@ -110,6 +110,15 @@ html{scroll-padding-top:88px;scroll-padding-bottom:calc(76px + env(safe-area-ins
 
 
 
+
+/* Bottom navigation active state */
+@media (max-width: 767px) {
+  .mobile-bottom-nav button { position:relative; }
+  .mobile-bottom-nav button.is-active::after { content:""; position:absolute; left:50%; bottom:3px; width:18px; height:2px; border-radius:999px; background:#7dd3fc; transform:translateX(-50%); opacity:.9; }
+  .mobile-bottom-nav button:active { transform:translateY(1px); }
+}
+@media (prefers-reduced-motion:reduce) { .mobile-bottom-nav button { transform:none!important; } }
+
 /* Bottom navigation stability */
 @media (max-width: 767px) {
   .mobile-bottom-nav { height: var(--mobile-nav-height); max-height: calc(78px + env(safe-area-inset-bottom,0px)); }
