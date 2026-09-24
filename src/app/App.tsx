@@ -43,11 +43,6 @@ function performHashScroll(hash: string) {
   return true;
 }
 
-function navigateToHash(hash: string) {
-  if (!hash) return;
-  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
-}
-
 function scrollToHashWhenReady(hash: string, attempts = 0) {
   if (!hash) return;
   if (performHashScroll(hash)) return;
