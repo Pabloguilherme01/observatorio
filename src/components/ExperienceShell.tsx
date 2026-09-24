@@ -2,6 +2,7 @@ import { ArrowRight, Command, Compass, Search, Sparkles, X } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';
+import { useLanguageMode } from '../context/LanguageModeContext';
 import { STORAGE_NAMESPACE } from '../config/version';
 
 const RECENT_KEY = `${STORAGE_NAMESPACE}-recent-sections`, FAVORITES_KEY = `${STORAGE_NAMESPACE}-favorite-sections`, REDUCED_KEY = `${STORAGE_NAMESPACE}-reduced-motion`, MODE_KEY = `${STORAGE_NAMESPACE}-experience-mode`, ELECTION_KEY = `${STORAGE_NAMESPACE}-election-mode`;
@@ -19,6 +20,7 @@ function jump(id: string) {
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
+  const { mode: languageMode } = useLanguageMode();
   const [commandOpen, setCommandOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -132,7 +134,8 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
         return;
       }
       if (pendingG.current) {
-        const map: Record<string, NavigationId> = { d:'dashboard',c:'contexto',e:'eleitorado',t:'transporte',p:'politica',x:'eleitoral360',o:'orcamento',a:'dados',q:'qualidade',f:'fontes',v:'evidencias',u:'acao',l:'linha-do-tempo',r:'descubra',s:'instagram',n:'principios' };
+        const map: Record<string, NavigationId> = { d:'dashboard',c:'contexto',e:'eleitorado',t:'transporte',p:'politica',x:'eleitoral360',o:'orcamento',a:'dados',q:'qualidade',v:'evidencias',u:'acao',l:'linha-do-tempo',r:'descubra',s:'instagram',n:'principios' };
+        if (event.key.toLowerCase() === 'f' && languageMode === 'technical') map.f = 'fontes';
         const id = map[event.key.toLowerCase()]; pendingG.current = false; if (id) { event.preventDefault(); jump(id); remember(id); }
       }
     };
@@ -148,17 +151,21 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); writeStorage(RECENT_KEY, JSON.stringify(next)); return next; }); };
   const toggleFavorite = (id: string) => { setFavorites(current => { const next = current.includes(id) ? current.filter(item => item !== id) : [...current,id].slice(-6); writeStorage(FAVORITES_KEY, JSON.stringify(next)); return next; }); };
+  const visibleNavigation = useMemo(() => languageMode === 'technical'
+    ? navigation
+    : navigation.filter(item => item.id !== 'fontes'), [languageMode]);
+
   const normalizedNavigation = useMemo(() => {
     const normalize = (value: string) => value
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLocaleLowerCase('pt-BR')
       .trim();
-    return navigation.map(item => ({
+    return visibleNavigation.map(item => ({
       item,
       searchText: [item.label, item.description, item.shortcut].map(normalize).join(' '),
     }));
-  }, []);
+  }, [visibleNavigation]);
 
   const results = useMemo(() => {
     const normalized = query
@@ -166,11 +173,11 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       .replace(/[\u0300-\u036f]/g, '')
       .toLocaleLowerCase('pt-BR')
       .trim();
-    if (!normalized) return navigation;
+    if (!normalized) return visibleNavigation;
     return normalizedNavigation
       .filter(entry => entry.searchText.includes(normalized))
       .map(entry => entry.item);
-  }, [normalizedNavigation, query]);
+  }, [normalizedNavigation, query, visibleNavigation]);
 
   return <>
     <div ref={progressRef} className="reading-progress" style={{ width: '0%' }} aria-hidden="true" />
@@ -189,6 +196,6 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
           })}
         </div>
       </div>}<div className="mt-3 grid gap-2 sm:grid-cols-2">{results.map(item=><div key={item.id} className="command-item"><button type="button" onClick={()=>{jump(item.id);remember(item.id);setCommandOpen(false)}}><span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-sky-300/10 text-sky-200"><Sparkles className="h-4 w-4" aria-hidden="true"/></span><span className="min-w-0 text-left"><strong>{item.label}</strong><small>{item.description}</small></span></button><button type="button" className="favorite-btn" onClick={()=>toggleFavorite(item.id)} aria-label={(favorites.includes(item.id)?'Remover ':'Fixar ')+item.label}>{favorites.includes(item.id)?'★':'☆'}</button></div>)}</div></div><div className="border-t border-white/10 px-4 py-3 text-xs text-slate-600"><span>Ctrl/⌘ K</span> comandos · <span>?</span> atalhos · <span>G + tecla</span> navegação rápida · <span>Modo</span> {MODE_LABELS[mode]}</div></div></div>}
-    {helpOpen && <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="shortcut-title"><button className="command-backdrop" type="button" aria-label="Fechar atalhos" onClick={()=>setHelpOpen(false)} /><div ref={modalRef} className="command-panel max-w-lg"><div className="flex items-center justify-between border-b border-white/10 px-5 py-4"><div><div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Navegação</div><h2 id="shortcut-title" className="mt-1 text-lg font-black text-white">Atalhos personalizados</h2></div><button type="button" onClick={()=>setHelpOpen(false)} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar"><X className="h-4 w-4"/></button></div><div className="grid gap-2 p-4 sm:grid-cols-2">{navigation.map(item=><button key={item.id} type="button" onClick={()=>{jump(item.id);remember(item.id);setHelpOpen(false)}} className="shortcut-row"><span><strong>{item.label}</strong><small>{item.description}</small></span><kbd>{item.shortcut}</kbd></button>)}</div><div className="border-t border-white/10 p-4"><label className="flex items-center justify-between gap-4 text-xs text-slate-400"><span>Reduzir animações</span><input type="checkbox" checked={reducedMotion} onChange={event=>{const value=event.target.checked;setReducedMotion(value);writeStorage(REDUCED_KEY,value?'1':'0');document.documentElement.classList.toggle('reduced-motion',value)}} /></label><p className="mt-2 text-[11px] leading-5 text-slate-600">Atalhos de uma tecla ficam ativos somente fora de campos de entrada.</p></div></div></div>}
+    {helpOpen && <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="shortcut-title"><button className="command-backdrop" type="button" aria-label="Fechar atalhos" onClick={()=>setHelpOpen(false)} /><div ref={modalRef} className="command-panel max-w-lg"><div className="flex items-center justify-between border-b border-white/10 px-5 py-4"><div><div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Navegação</div><h2 id="shortcut-title" className="mt-1 text-lg font-black text-white">Atalhos personalizados</h2></div><button type="button" onClick={()=>setHelpOpen(false)} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar"><X className="h-4 w-4"/></button></div><div className="grid gap-2 p-4 sm:grid-cols-2">{visibleNavigation.map(item=><button key={item.id} type="button" onClick={()=>{jump(item.id);remember(item.id);setHelpOpen(false)}} className="shortcut-row"><span><strong>{item.label}</strong><small>{item.description}</small></span><kbd>{item.shortcut}</kbd></button>)}</div><div className="border-t border-white/10 p-4"><label className="flex items-center justify-between gap-4 text-xs text-slate-400"><span>Reduzir animações</span><input type="checkbox" checked={reducedMotion} onChange={event=>{const value=event.target.checked;setReducedMotion(value);writeStorage(REDUCED_KEY,value?'1':'0');document.documentElement.classList.toggle('reduced-motion',value)}} /></label><p className="mt-2 text-[11px] leading-5 text-slate-600">Atalhos de uma tecla ficam ativos somente fora de campos de entrada.</p></div></div></div>}
   </>;
 }
