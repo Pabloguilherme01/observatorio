@@ -1,4 +1,4 @@
-import { ExternalLink, MapPin, MessageCircle, Search, Share2, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
+import { ChevronDown, ExternalLink, MapPin, MessageCircle, Search, Share2, ShieldCheck, SlidersHorizontal, X } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -38,6 +38,45 @@ function shareCandidate(candidate: CandidateView, channel: 'native' | 'whatsapp'
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
 }
 
+
+function CandidateSummaryCard({ candidate }: { readonly candidate: CandidateView }) {
+  const [open, setOpen] = useState(false);
+  const status = candidate.status === '#NE' ? 'Situação não informada' : candidate.status;
+  return (
+    <article className={`candidate-summary-card${open ? ' is-open' : ''}`}>
+      <div className="candidate-summary-media">
+        {candidate.photoUrl
+          ? <img src={candidate.photoUrl} alt="" loading="lazy" decoding="async" />
+          : <span aria-hidden="true">{candidate.name.slice(0, 1)}</span>}
+      </div>
+      <div className="candidate-summary-body">
+        <div className="candidate-summary-topline">
+          <span className="candidate-summary-party">{candidate.party}</span>
+          <span className="candidate-summary-status">{status}</span>
+        </div>
+        <h3>{candidate.name}</h3>
+        <div className="candidate-summary-number">{candidate.ballotNumber}</div>
+        <p>{candidate.office}</p>
+        <button type="button" className="candidate-summary-detail-button" onClick={() => setOpen(value => !value)} aria-expanded={open}>
+          <span>{open ? 'Ocultar detalhes' : 'Ver detalhes'}</span>
+          <ChevronDown className="candidate-summary-chevron" aria-hidden="true" />
+        </button>
+      </div>
+      {open && (
+        <div className="candidate-summary-details">
+          <div><span>Recorte</span><strong>Águas Lindas de Goiás</strong></div>
+          <div><span>Snapshot</span><strong>{candidate.snapshotDate}</strong></div>
+          <div><span>Fonte</span><strong>TSE · Candidatos 2026</strong></div>
+          <div className="candidate-summary-links">
+            <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer"><ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> TSE</a>
+            <button type="button" onClick={() => shareCandidate(candidate, 'native')}><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar</button>
+          </div>
+        </div>
+      )}
+    </article>
+  );
+}
+
 export function PoliticalResearch() {
   const { mode } = useLanguageMode();
   const [query, setQuery] = useState('');
@@ -64,17 +103,19 @@ export function PoliticalResearch() {
       <SectionHeader
         titleId="research-title"
         eyebrow="Recorte eleitoral local"
-        title={mode !== 'technical' ? 'Candidatos ligados a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
-        description={mode !== 'technical'
-          ? 'Lista de candidaturas estaduais de 2026 com vínculo local documental acompanhado pelo Observatório. O vínculo local não é inferido do cadastro estadual.'
-          : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Campos ausentes permanecem identificados.'}
+        title={mode === 'summary' ? 'Candidatos acompanhados' : mode !== 'technical' ? 'Candidatos ligados a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
+        description={mode === 'summary'
+          ? '7 candidaturas acompanhadas com evidência documental de vínculo local.'
+          : mode !== 'technical'
+            ? 'Lista de candidaturas estaduais de 2026 com vínculo local documental acompanhado pelo Observatório. O vínculo local não é inferido do cadastro estadual.'
+            : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Campos ausentes permanecem identificados.'}
       />
 
-      <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
+      {mode !== 'summary' && <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
         <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · município</div></div>
         <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">nomes no snapshot acompanhado</div></div>
         <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Vínculo local</div><div className="mt-2 text-sm font-black text-amber-100">Evidência documental</div><div className="mt-1 text-xs text-slate-500">não é inferido do cadastro estadual</div></div>
-      </div>
+      </div>}
 
       {!hasLocalCandidates ? (
         <Card>
@@ -93,7 +134,7 @@ export function PoliticalResearch() {
         </Card>
       ) : null}
 
-      <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4">
+      {mode !== 'summary' && <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4">
         <div className="flex items-start gap-3">
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
           <div>
@@ -101,9 +142,15 @@ export function PoliticalResearch() {
             <p className="mt-1 text-xs leading-5 text-slate-500">A lista combina o cadastro oficial de candidaturas do TSE com evidências documentais de vínculo local. Não há ranking nem seleção por preferência.</p>
           </div>
         </div>
-      </div>
+      </div>}
 
-      {hasLocalCandidates && (
+      {mode === 'summary' && hasLocalCandidates && (
+        <div className="candidate-summary-grid mt-4">
+          {candidates.map(candidate => <CandidateSummaryCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />)}
+        </div>
+      )}
+
+      {hasLocalCandidates && mode !== 'summary' && (
         <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <label className="flex min-h-11 flex-1 items-center gap-2 rounded-xl border border-white/10 bg-black/10 px-3">
@@ -128,7 +175,7 @@ export function PoliticalResearch() {
         </div>
       )}
 
-      {hasLocalCandidates && (
+      {hasLocalCandidates && mode !== 'summary' && (
         <div className="mt-4 grid gap-4 md:grid-cols-2">{filteredCandidates.length ? filteredCandidates.map(candidate => <CandidateCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />) : <div className="md:col-span-2 rounded-2xl border border-dashed border-white/10 p-6 text-center text-sm text-slate-500">Nenhuma candidatura encontrada com esses filtros.</div>}</div>
       )}
 
