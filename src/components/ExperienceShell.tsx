@@ -77,7 +77,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       return;
     }
     setQuery('');
-    document.body.style.overflow = 'hidden';
+    if (window.matchMedia?.('(max-width: 767px)').matches) document.body.style.overflow = 'hidden';
     const isCompactViewport = window.matchMedia?.('(max-width: 767px)').matches;
     if (!isCompactViewport) {
       if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
