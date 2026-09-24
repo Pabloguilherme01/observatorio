@@ -303,7 +303,19 @@ export function Electoral360() {
               ))}
             </div>
           ) : (
-            <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhuma correspondência encontrada para a busca atual.</div>
+            <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
+              <strong className="block text-sm font-bold text-slate-300">Nenhum nome encontrado</strong>
+              <span className="mt-1 block">Tente outro termo ou limpe a busca para ver novamente os nomes acompanhados.</span>
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="mt-3 inline-flex min-h-10 items-center rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-black text-sky-100 hover:border-sky-300/30"
+                >
+                  Limpar busca
+                </button>
+              )}
+            </div>
           )
         ) : (
           <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
