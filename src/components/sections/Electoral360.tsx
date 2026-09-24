@@ -246,7 +246,7 @@ export function Electoral360() {
           ) : (
             <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhum registro corresponde ao filtro atual.</div>
           )
-        )
+        )}
 
         {candidateSource?.url && (
           <a href={candidateSource.url} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex min-h-11 items-center gap-1.5 text-xs font-semibold text-sky-300">
