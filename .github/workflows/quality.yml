@@ -27,6 +27,8 @@ jobs:
         run: npm run validate:observatorio
       - name: Validate TSE architecture isolation
         run: npm run audit:tse-architecture
+      - name: Functionality hardening audit
+        run: npm run audit:functionality
       - name: Static consistency audit
         run: npm run audit:static
       - name: Accessibility and contrast audit
