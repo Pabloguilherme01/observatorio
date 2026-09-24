@@ -79,7 +79,8 @@ if (violations.length) {
 
 console.log(JSON.stringify({
   valid: true,
-  proxyRuntimeDependency: true,
+  proxyRuntimeDependency: false,
+  proxyFallbackTransport: true,
   proxyScope: 'somente no sincronizador TSE, como fallback de transporte; a origem dos dados continua sendo o endpoint oficial TSE e o transporte é registrado no snapshot.',
   deployDependsOnTseNetwork: false,
   tseRefreshMode: 'manual-direct-official-source',
