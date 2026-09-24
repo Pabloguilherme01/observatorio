@@ -43,7 +43,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'A lista pública mostra candidaturas oficiais de Goiás dentro da watchlist monitorada no recorte editorial de Águas Lindas de Goiás. Isso não representa um universo municipal de candidaturas.',
+    description: 'A lista pública mostra apenas os nomes acompanhados pelo observatório no recorte editorial de Águas Lindas de Goiás. A base estadual usada aqui não confirma, sozinha, o município da candidatura.',
     status: candidateStatus,
     frequency: 'conforme captura oficial',
     sourceId: 'tse-candidatos-2026',
