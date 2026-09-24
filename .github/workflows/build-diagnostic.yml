@@ -11,15 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Build com captura de saida
+      - name: Capturar tudo
         run: |
           set +e
-          npm run build > build-output.log 2>&1
+          { npm ci && npm run build; } > build-output.log 2>&1
           echo "exit_code=$?" >> build-output.log
       - name: Reportar em issue
         if: always()
@@ -33,6 +28,6 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: "Diagnostico de build: saida completa de npm run build",
+              title: "Diagnostico de build v2: saida completa",
               body: "Ultimos 8000 caracteres:\n\n~~~\n" + log.slice(-8000) + "\n~~~"
             });
