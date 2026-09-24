@@ -48,7 +48,7 @@ export function Header() {
 
   return (
     <>
-      <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95">
+      <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95" data-theme={theme}>
         <div className="site-header-inner mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:px-6">
           <a href="#dashboard" className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
             <span className="block truncate text-[13px] font-black tracking-tight text-white light:text-slate-900">Observatório</span>
@@ -61,7 +61,7 @@ export function Header() {
                 key={item.id}
                 href={'#' + item.id}
                 className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
-                aria-current={activeSection === item.id ? 'location' : undefined}
+                aria-current={activeSection === item.id ? 'page' : undefined}
               >
                 {item.shortLabel}
               </a>
