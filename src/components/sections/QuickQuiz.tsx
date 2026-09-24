@@ -186,7 +186,9 @@ export function QuickQuiz() {
   const phases = QUIZ_LEVELS;
   const questions = useMemo(() => QUESTION_BANK.filter(q => q.difficulty === phase), [phase]);
   const question = questions[step];
-  const progress = finished ? 100 : Math.round(((step + 1) / questions.length) * 100);
+  const progress = finished ? 100 : Math.round(((step + 1) / Math.max(questions.length, 1)) * 100);
+  const answeredCount = selected ? step + 1 : step;
+  const phaseIndex = Math.max(0, phases.indexOf(phase));
 
   const options = useMemo(() => {
     if (!question) return [];
@@ -248,7 +250,11 @@ export function QuickQuiz() {
           <h2 id="quiz-title">Desafio do Observatório</h2>
           <p>Comece no Fácil e avance até Expert. Cada resposta mostra a explicação e a fonte usada no dado.</p>
         </div>
-        <span className="quiz-counter">{finished ? 'Fase concluída' : `${step + 1}/${QUESTIONS_PER_LEVEL}`}</span>
+        <div className="quiz-head-stats" aria-label="Status do quiz">
+          <span className="quiz-stat"><strong>{phaseIndex + 1}</strong><small>fase</small></span>
+          <span className="quiz-stat"><strong>{score}</strong><small>acertos</small></span>
+          <span className="quiz-counter">{finished ? 'Concluída' : `${step + 1}/${QUESTIONS_PER_LEVEL}`}</span>
+        </div>
       </div>
 
       <div className="quiz-phase-grid" role="tablist" aria-label="Fases de dificuldade">
@@ -262,6 +268,7 @@ export function QuickQuiz() {
         })}
       </div>
 
+      <div className="quiz-progress-meta"><span>{finished ? 'Fase concluída' : `Questão ${step + 1} de ${QUESTIONS_PER_LEVEL}`}</span><strong>{progress}%</strong></div>
       <div className="quiz-progress-track" aria-label={`Progresso da fase: ${progress}%`}><span style={{width:`${progress}%`}} /></div>
 
       {finished ? (
@@ -277,7 +284,8 @@ export function QuickQuiz() {
         </div>
       ) : question ? (
         <div className="quiz-question">
-          <div className="quiz-meta"><span>{question.difficulty}</span><span>{question.category}</span><span>{question.sourceLabel}</span></div>
+          <div className="quiz-meta"><span className="quiz-level">{question.difficulty}</span><span>{question.category}</span><span>{question.sourceLabel}</span></div>
+          <div className="quiz-context"><span>Baseado em dados do Observatório</span><span>{answeredCount} respondida{answeredCount === 1 ? '' : 's'}</span></div>
           <h3>{question.prompt}</h3>
           <div className="quiz-options">
             {options.map(option => {
