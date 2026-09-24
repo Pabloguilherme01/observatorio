@@ -20,8 +20,6 @@ export default function DeferredContextGroup() {
     <TransportCalculator />
     <DataInsights />
     <SanitationHealthSection />
-    <section id="quiz" className="scroll-mt-24">
-      <QuickQuiz />
-    </section>
+    <QuickQuiz />
   </>;
 }
