@@ -254,7 +254,7 @@ export function Electoral360() {
           <div>
             <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Candidatos acompanhados em Águas Lindas' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {hasLocalCandidateSnapshot ? 'Somente os nomes do recorte local são exibidos. Os dados de identificação vêm do arquivo oficial de Candidatos 2026 do TSE.' : 'Ainda não há registros de candidatos no snapshot local.'}
+              {hasLocalCandidateSnapshot ? 'Somente os nomes do recorte acompanhado são exibidos. A base usada para identificação é a oficial do TSE.' : 'Ainda não há registros de candidatos no snapshot local.'}
             </p>
           </div>
           <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
@@ -301,19 +301,9 @@ export function Electoral360() {
             <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhuma correspondência encontrada para a busca atual.</div>
           )
         ) : (
-          localCandidates.length ? (
-            <div className="mt-5 grid gap-3 md:grid-cols-2">
-              {localCandidates.map(candidate => (
-                <article key={candidate.name} className="rounded-2xl border border-white/8 p-4">
-                  <h4 className="font-black text-white break-words">{candidate.name}</h4>
-                  <p className="mt-1 text-xs text-slate-500 break-words">Registro editorial local · {candidate.party ?? 'partido não informado'}</p>
-                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="electoral-action-button mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-black text-sky-100">Abrir perfil documental</button>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhum registro corresponde ao filtro atual.</div>
-          )
+          <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
+            O recorte local ainda está aguardando dados de candidatos. O observatório não exibe outro universo no lugar dele.
+          </div>
         )}
 
         {candidateSource?.url && (
