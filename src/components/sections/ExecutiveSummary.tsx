@@ -197,10 +197,10 @@ export function ExecutiveSummary() {
               <div className="summary-public-pulse" aria-label="Como usar o Resumo">
                 <div>
                   <span className="summary-public-pulse-label">Agora</span>
-                  <strong>Veja o número, abra o contexto e compartilhe.</strong>
+                  <strong>Veja um número, abra o contexto e confira a fonte.</strong>
                 </div>
                 <button type="button" className="summary-public-pulse-link" onClick={() => goToSection('fontes')} aria-label="Conferir as fontes dos dados">
-                  Conferir fontes <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  Fontes <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
               </div>
 
@@ -335,11 +335,11 @@ export function ExecutiveSummary() {
         {languageMode === 'summary' && (
           <div className="summary-public-shareline">
             <div>
-              <strong>Achou um dado útil?</strong>
-              <span>Compartilhe o Resumo ou envie um indicador específico. A página continua sendo a fonte de contexto.</span>
+              <strong>Compartilhe um dado útil</strong>
+              <span>O link mantém o contexto completo da página.</span>
             </div>
             <button type="button" onClick={() => { void share(); }} disabled={shareBusy} aria-busy={shareBusy}>
-              <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? "Compartilhando…" : "Compartilhar tudo"}
+              <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? "Compartilhando…" : "Compartilhar"}
             </button>
           </div>
         )}
