@@ -73,6 +73,7 @@ export function ExecutiveSummary() {
 
   const openTopic = (topic: typeof topics[number]) => {
     setActiveTopic(topic.id);
+    setOpenFact(null);
     goToSection(topic.target);
   };
 
@@ -284,13 +285,7 @@ export function ExecutiveSummary() {
           </div>
         </div>
 
-        {languageMode === 'summary' && (
-          <div className="summary-public-hint" role="status" aria-live="polite">
-            <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Comece por um cartão ou abra uma descoberta rápida.</span>
-            <span className="summary-public-live">{lastAction ? 'Última ação: ' + lastAction : 'Escolha um cartão para explorar'}</span>
-            <button type="button" onClick={() => goToSection('fontes')}>Ver fontes</button>
-          </div>
-        )}
+
 
         {languageMode === 'simple' && (
           <div className="summary-simple-tip mt-3">
