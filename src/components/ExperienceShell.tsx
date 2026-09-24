@@ -17,7 +17,7 @@ function jump(id: string) {
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
-  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [recent, setRecent] = useState<string[]>([], [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview');
+  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview');
   const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), progressRef = useRef<HTMLDivElement>(null), pendingG = useRef(false), pendingGTimerRef = useRef<number | null>(null), focusTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
