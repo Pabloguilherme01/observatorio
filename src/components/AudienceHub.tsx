@@ -2,6 +2,7 @@ import { BarChart3, BusFront, Droplets, Landmark, Users, WalletCards } from 'luc
 import { observatorioData as d } from '../data/observatorioData';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { AudienceTodaySummary } from './AudienceTodaySummary';
+import { CandidatesPanel } from './CandidatesPanel';
 
 type Topic = {
   id: string;
@@ -46,7 +47,7 @@ export function AudienceHub() {
               key={id}
               type="button"
               onClick={() => go(id)}
-              className="topic-card text-left border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.035]"
+              className="topic-card min-h-32 text-left border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.035]"
             >
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-300/10 dark:text-sky-300">
                 <Icon className="h-5 w-5" />
@@ -62,7 +63,7 @@ export function AudienceHub() {
           ))}
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6" id="dashboard">
           <AudienceTodaySummary
             budget={d.budget.totalBrl.toLocaleString('pt-BR')}
             electorate={d.electoral.electorate.toLocaleString('pt-BR')}
@@ -70,6 +71,10 @@ export function AudienceHub() {
             sanitation={`${d.sanitation.publicSewerServicePct}%`}
             onNavigate={go}
           />
+        </div>
+
+        <div className="mt-8" id="politica">
+          <CandidatesPanel />
         </div>
       </div>
     </section>
