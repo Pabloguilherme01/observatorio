@@ -307,11 +307,6 @@ export function ExecutiveSummary() {
               <span className="ml-2">Número primeiro; fonte e contexto ficam a um toque.</span>
             </div>
           </>
-        )}
-            <strong className="text-slate-200">Leitura simples</strong>
-            <span className="ml-2">Número primeiro; fonte e contexto quando você abrir.</span>
-          </div>
-        )}
 
         {languageMode === 'technical' && (
           <div className="mt-3 grid gap-3 md:grid-cols-3">
