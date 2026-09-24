@@ -13,6 +13,9 @@ type Question = {
   readonly sourceLabel: string;
 };
 
+
+const DIFFICULTIES = ['Fácil', 'Médio', 'Difícil', 'Avançado'] as const;
+
 export function QuickQuiz() {
   const questions = useMemo<readonly Question[]>(() => [
     {
