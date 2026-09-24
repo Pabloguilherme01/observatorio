@@ -70,9 +70,14 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   useEffect(() => {
     if (!activeModal) {
       if (focusTimerRef.current) { window.clearTimeout(focusTimerRef.current); focusTimerRef.current = null; }
+      const opener = openerRef.current;
+      if (opener && opener.isConnected) window.requestAnimationFrame(() => opener.focus({ preventScroll: true }));
+      openerRef.current = null;
+      document.body.style.removeProperty('overflow');
       return;
     }
     setQuery('');
+    document.body.style.overflow = 'hidden';
     const isCompactViewport = window.matchMedia?.('(max-width: 767px)').matches;
     if (!isCompactViewport) {
       if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
@@ -94,6 +99,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     return () => {
       window.removeEventListener('keydown', onKey);
       if (focusTimerRef.current) { window.clearTimeout(focusTimerRef.current); focusTimerRef.current = null; }
+      document.body.style.removeProperty('overflow');
     };
   }, [activeModal, commandOpen]);
 
