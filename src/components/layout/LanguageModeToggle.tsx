@@ -10,7 +10,7 @@ export function LanguageModeToggle() {
       : 'Leitura direta ao ponto';
 
   return (
-    <div className="language-toggle language-toggle-v2" role="group" aria-label="Escolha como ler o observatório">
+    <div className="language-toggle language-toggle-v2" role="group" aria-label="Escolha o nível de detalhe da leitura">
       <button type="button" onClick={() => setMode('summary')} aria-pressed={mode === 'summary'} className={mode === 'summary' ? 'is-active' : ''} title="Mostrar apenas os pontos principais">
         <List className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Resumo</span>
