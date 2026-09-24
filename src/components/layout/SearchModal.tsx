@@ -1,23 +1,27 @@
-import { Search, X } from 'lucide-react';
+import { BarChart3, BookOpen, BusFront, Database, Droplets, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-const entries: readonly (readonly [string, string])[] = [
-  ['Dashboard', 'dashboard'],
-  ['Perfil eleitoral', 'eleitorado'],
-  ['Transporte', 'transporte'],
-  ['Saneamento e saúde', 'saude'],
-  ['Pesquisas', 'politica'],
-  ['Candidaturas', 'candidaturas'],
-  ['Orçamento', 'orcamento'],
-  ['Qualidade dos dados', 'qualidade'],
-  ['Fontes e metodologia', 'fontes'],
-  ['Exportação', 'exportacao'],
-  ['Pesquisa registrada', 'politica'],
-  ['HEALGO', 'saude'],
-  ['Resumo de leitura', 'resumo'],
+type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport';
+
+type SearchEntry = readonly [string, string, ResultKind];
+
+const entries: readonly SearchEntry[] = [
+  ['Dashboard', 'dashboard', 'primary'],
+  ['Perfil eleitoral', 'eleitorado', 'primary'],
+  ['Transporte', 'transporte', 'primary'],
+  ['Saneamento e saúde', 'saude', 'primary'],
+  ['Pesquisas', 'politica', 'primary'],
+  ['Candidaturas', 'candidaturas', 'primary'],
+  ['Orçamento', 'orcamento', 'primary'],
+  ['Qualidade dos dados', 'qualidade', 'primary'],
+  ['Fontes e metodologia', 'fontes', 'primary'],
+  ['Exportação', 'exportacao', 'primary'],
+  ['Pesquisa registrada', 'politica', 'primary'],
+  ['HEALGO', 'saude', 'primary'],
+  ['Resumo de leitura', 'resumo', 'primary'],
 ];
 
 const normalize = (value: string) =>
@@ -134,20 +138,25 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     const fare = Number(d.indicators.find(indicator => indicator.id === 'fare')?.value ?? 0);
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     const electorate = d.electoral.electorate;
-    const all: Array<readonly [string, string]> = [
+    const all: SearchEntry[] = [
       ...entries,
-      ['População 2026: ' + population.toLocaleString('pt-BR'), 'dashboard'],
-      ['Eleitorado 2026: ' + electorate.toLocaleString('pt-BR'), 'eleitorado'],
-      ['Tarifa Brasília: R$ ' + fare.toFixed(2).replace('.', ','), 'transporte'],
-      ['LOA 2026: R$ ' + brlMillions(d.budget.totalBrl), 'orcamento'],
-      ...d.sources.map(source => [source.label, 'fontes'] as [string, string]),
-      ...d.candidates.map(candidate => [candidate.name, 'candidaturas'] as [string, string]),
-      ...d.transport.routes.map(route => [route.label, 'transporte'] as [string, string]),
-      ...d.indicators.map(indicator => [indicator.label, 'dashboard'] as [string, string]),
+      ['População 2026: ' + population.toLocaleString('pt-BR'), 'dashboard', 'data'],
+      ['Eleitorado 2026: ' + electorate.toLocaleString('pt-BR'), 'eleitorado', 'data'],
+      ['Tarifa Brasília: R$ ' + fare.toFixed(2).replace('.', ','), 'transporte', 'data'],
+      ['LOA 2026: R$ ' + brlMillions(d.budget.totalBrl), 'orcamento', 'data'],
+      ...d.sources.map(source => [source.label, 'fontes', 'source'] as SearchEntry),
+      ...d.candidates.map(candidate => [candidate.name, 'candidaturas', 'candidate'] as SearchEntry),
+      ...d.transport.routes.map(route => [route.label, 'transporte', 'transport'] as SearchEntry),
+      ...d.indicators.map(indicator => [indicator.label, 'dashboard', 'data'] as SearchEntry),
     ];
+    const seen = new Set<string>();
     return all
-      .filter(([label], index, array) => array.findIndex(item => item[0] === label) === index)
-      .map(([label, id]) => ({ label, id, score: fuzzyScore(queryNormalized, normalize(label)) }))
+      .filter(([label]) => {
+        if (seen.has(label)) return false;
+        seen.add(label);
+        return true;
+      })
+      .map(([label, id, kind]) => ({ label, id, kind, score: fuzzyScore(queryNormalized, normalize(label)) }))
       .filter(item => Number.isFinite(item.score))
       .sort((a, b) => b.score - a.score)
       .slice(0, 30);
@@ -164,6 +173,63 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
   }, [activeIndex]);
 
   if (!open) return null;
+
+  const resultGroups: Array<{ key: ResultKind; label: string }> = [
+    { key: 'primary', label: 'Resultados principais' },
+    { key: 'data', label: 'Estatísticas e dados' },
+    { key: 'source', label: 'Fontes oficiais' },
+    { key: 'candidate', label: 'Candidaturas' },
+    { key: 'transport', label: 'Transporte' },
+  ];
+
+  const resultIcon = (id: string) => {
+    if (id === 'eleitorado') return Users;
+    if (id === 'transporte') return BusFront;
+    if (id === 'saude') return Droplets;
+    if (id === 'politica') return Vote;
+    if (id === 'candidaturas') return FileCheck2;
+    if (id === 'orcamento') return WalletCards;
+    if (id === 'fontes') return Database;
+    if (id === 'qualidade') return ShieldCheck;
+    if (id === 'exportacao') return BookOpen;
+    return BarChart3;
+  };
+
+  const renderResults = (items: typeof filtered) => resultGroups.map(group => {
+    const groupItems = items.filter(item => item.kind === group.key);
+    if (!groupItems.length) return null;
+    return (
+      <section key={group.key} className="search-result-group" aria-labelledby={'search-group-' + group.key}>
+        <h3 id={'search-group-' + group.key} className="search-result-group-title">{group.label}</h3>
+        <div className="search-result-group-list">
+          {groupItems.map(item => {
+            const Icon = resultIcon(item.id);
+            const index = filtered.indexOf(item);
+            return (
+              <button
+                key={item.label + '-' + item.id}
+                id={'search-result-' + index}
+                type="button"
+                data-search-index={index}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => selectResult(item.id)}
+                className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
+                role="option"
+                aria-selected={activeIndex === index}
+              >
+                <span className="search-result-icon"><Icon aria-hidden="true" /></span>
+                <span className="min-w-0 flex-1 text-left">
+                  <strong>{item.label}</strong>
+                  <small>{destinationLabel(item.id)}</small>
+                </span>
+                <span className="search-result-enter" aria-hidden="true">{activeIndex === index ? '↵' : '›'}</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    );
+  });
 
   const selectResult = (id: string) => {
     onClose();
@@ -227,22 +293,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
         </div>
 
         <div id="search-results" className="search-results" role="listbox" aria-label="Resultados da busca">
-          {filtered.map((item, index) => (
-            <button
-              key={item.label + '-' + item.id}
-              id={'search-result-' + index}
-              type="button"
-              data-search-index={index}
-              onMouseEnter={() => setActiveIndex(index)}
-              onClick={() => selectResult(item.id)}
-              className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
-              role="option"
-              aria-selected={activeIndex === index}
-            >
-              <span className="min-w-0 text-left"><strong>{item.label}</strong><small>{destinationLabel(item.id)}</small></span>
-              <span className="search-result-enter">↵</span>
-            </button>
-          ))}
+          {renderResults(filtered)}
           {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente orçamento, eleitorado, transporte, saneamento ou HEAL.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
         </div>
       </div>
