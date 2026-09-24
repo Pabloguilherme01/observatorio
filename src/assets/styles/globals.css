@@ -2880,3 +2880,35 @@ button:disabled{cursor:not-allowed;opacity:.58}
 .summary-public-pulse-link:active{transform:translateY(1px) scale(.985)}
 @media(max-width:640px){.summary-public-pulse{align-items:stretch;flex-direction:column}.summary-public-pulse-link{width:100%}}
 @media(prefers-reduced-motion:reduce){.summary-public-pulse-link{transition:none}}
+
+
+/* UX audit patch v2026-09-24
+   Public-first mobile hierarchy, touch targets and header stability. */
+.site-header-inner{min-height:58px}
+.site-brand{line-height:1.05}
+.site-header nav a{min-height:40px;display:inline-flex;align-items:center}
+.site-header-actions>button,.site-tools-button{min-width:44px;min-height:44px}
+@media(max-width:767px){
+  .site-header-inner{padding-top:8px;padding-bottom:8px}
+  .site-brand{max-width:58vw}
+  .site-brand>span:first-child{font-size:14px!important}
+  .site-brand>span:last-child{font-size:8px!important;letter-spacing:.14em!important}
+  .hero-shell{padding-top:28px!important;padding-bottom:30px!important}
+  .hero-shell h1{font-size:clamp(2rem,10vw,3rem)!important;line-height:.98!important}
+  .hero-shell>div>div{gap:24px!important}
+  .summary-hero-panel{margin-top:16px!important}
+  .summary-hero-card{min-height:76px}
+  .summary-public-hero{box-shadow:none}
+  #resumo{scroll-margin-top:74px}
+}
+@media(max-width:420px){
+  .hero-kpis{grid-template-columns:1fr!important}
+  .hero-kpis>div:last-child{grid-column:auto}
+  .summary-public-topics{grid-template-columns:1fr 1fr!important}
+  .summary-public-stat{min-height:128px!important}
+  .summary-public-stat-main{min-height:110px!important}
+}
+.light .site-header{border-color:#dbe5ec}
+.light .site-brand>span:first-child{color:#0f172a}
+.light .site-header nav a{color:#475569}
+.light .site-header nav a:hover{color:#0f172a;background:rgba(15,23,42,.05)}
