@@ -1,1063 +1,129 @@
-import { ArrowRight, CheckCircle2, RotateCcw } from 'lucide-react';
+import { CheckCircle2, ExternalLink, RotateCcw, Share2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-type Difficulty = 'Fácil' | 'Médio' | 'Difícil' | 'Avançado';
+type Difficulty = 'Fácil' | 'Médio' | 'Difícil';
 
 type Question = {
   readonly difficulty: Difficulty;
   readonly prompt: string;
   readonly options: readonly string[];
-  readonly answer: number;
+  readonly answer: string;
   readonly explanation: string;
   readonly anchor: string;
   readonly sourceLabel: string;
 };
 
-const LEVELS: readonly Difficulty[] = ['Fácil', 'Médio', 'Difícil', 'Avançado'];
+const QUESTIONS: readonly Question[] = [
+  { difficulty:'Fácil', prompt:'Ao abrir um indicador público, qual é a primeira dupla de informações que ajuda a interpretar o número?', options:['Fonte e data de referência','Cor e tamanho do gráfico','Título e animação'], answer:'Fonte e data de referência', explanation:'A origem e a data permitem saber quem publicou o dado e qual recorte temporal ele representa.', anchor:'fontes', sourceLabel:'Fontes e metodologia' },
+  { difficulty:'Fácil', prompt:'O que uma LOA representa?', options:['Planejamento orçamentário do exercício','Gasto já realizado em todos os programas','Resultado de uma pesquisa eleitoral'], answer:'Planejamento orçamentário do exercício', explanation:'A Lei Orçamentária Anual estima receitas e fixa despesas para o exercício. Ela não equivale automaticamente ao gasto realizado.', anchor:'orcamento', sourceLabel:'Orçamento' },
+  { difficulty:'Fácil', prompt:'O que é um snapshot de dados?', options:['Um recorte registrado em determinada data','Uma previsão do que acontecerá','Um resultado eleitoral definitivo'], answer:'Um recorte registrado em determinada data', explanation:'Snapshot é uma fotografia da base no momento da captura.', anchor:'dados', sourceLabel:'Dados e atualizações' },
+  { difficulty:'Fácil', prompt:'Por que um cálculo derivado precisa mostrar suas premissas?', options:['Para permitir conferência e reprodução','Para parecer mais técnico','Para substituir a fonte original'], answer:'Para permitir conferência e reprodução', explanation:'Premissas e fórmula permitem que outra pessoa confira como o resultado foi obtido.', anchor:'qualidade', sourceLabel:'Qualidade dos dados' },
+  { difficulty:'Médio', prompt:'Por que dois percentuais podem não ser diretamente comparáveis?', options:['Porque podem usar períodos ou denominadores diferentes','Porque percentuais nunca podem ser comparados','Porque o maior percentual sempre é mais relevante'], answer:'Porque podem usar períodos ou denominadores diferentes', explanation:'A comparação depende de período, universo, denominador e metodologia compatíveis.', anchor:'principios', sourceLabel:'Princípios' },
+  { difficulty:'Médio', prompt:'O que diferencia abstenção de voto branco?', options:['Abstenção é não comparecer; branco é um voto registrado sem escolha de candidatura','São exatamente a mesma coisa','Abstenção é voto anulado'], answer:'Abstenção é não comparecer; branco é um voto registrado sem escolha de candidatura', explanation:'Abstenção ocorre quando o eleitor não comparece. Voto branco ocorre dentro da votação.', anchor:'eleitorado', sourceLabel:'Eleitorado' },
+  { difficulty:'Médio', prompt:'O que uma fonte oficial do TSE permite conferir?', options:['Registros eleitorais publicados pela Justiça Eleitoral','Uma previsão de quem vencerá','A opinião dos eleitores'], answer:'Registros eleitorais publicados pela Justiça Eleitoral', explanation:'O TSE disponibiliza dados oficiais de candidaturas, contas e outros registros eleitorais.', anchor:'fontes', sourceLabel:'TSE' },
+  { difficulty:'Médio', prompt:'Por que o Observatório separa recorte estadual de vínculo local?', options:['Porque uma candidatura estadual não prova, sozinha, uma base municipal','Para criar um ranking de candidatos','Para eliminar candidaturas sem justificativa'], answer:'Porque uma candidatura estadual não prova, sozinha, uma base municipal', explanation:'O projeto trata evidência documental local separadamente para não transformar inferência em fato.', anchor:'politica', sourceLabel:'Candidaturas' },
+  { difficulty:'Médio', prompt:'O custo mensal de transporte calculado pelo Observatório é que tipo de informação?', options:['Um cálculo derivado das premissas informadas','Uma despesa oficial individual do cidadão','Um resultado eleitoral'], answer:'Um cálculo derivado das premissas informadas', explanation:'O valor depende de tarifa, frequência, dias e outras premissas escolhidas no calculador.', anchor:'transporte', sourceLabel:'Transporte' },
+  { difficulty:'Difícil', prompt:'O que torna uma cadeia de evidências mais auditável?', options:['Fonte identificada, data, natureza do dado e link de conferência','Somente um gráfico visual','Um número sem referência para facilitar a leitura'], answer:'Fonte identificada, data, natureza do dado e link de conferência', explanation:'Esses elementos permitem rastrear o caminho entre a informação publicada e sua apresentação no Observatório.', anchor:'evidencias', sourceLabel:'Evidências' },
+  { difficulty:'Difícil', prompt:'Uma pesquisa eleitoral deve ser lida como:', options:['Um levantamento com amostra, metodologia e data próprias','O resultado oficial da eleição','Uma probabilidade calculada automaticamente pelo Observatório'], answer:'Um levantamento com amostra, metodologia e data próprias', explanation:'Pesquisa e resultado oficial são categorias diferentes. A leitura deve considerar ficha técnica, período e situação de divulgação.', anchor:'politica', sourceLabel:'Pesquisas' },
+  { difficulty:'Difícil', prompt:'Se uma fonte municipal ainda não confirma determinada informação, qual conduta é mais adequada?', options:['Sinalizar a lacuna e não apresentar a informação como confirmada','Inferir pelo nome ou por uma notícia isolada','Preencher a lacuna com uma estimativa sem aviso'], answer:'Sinalizar a lacuna e não apresentar a informação como confirmada', explanation:'Transparência sobre limitações evita transformar ausência de evidência em certeza.', anchor:'qualidade', sourceLabel:'Qualidade dos dados' },
+];
+
+function shuffledOptions(question: Question, index: number): readonly string[] {
+  const offset = index % question.options.length;
+  return question.options.map((_, position) => question.options[(position + offset) % question.options.length]);
+}
 
 export function QuickQuiz() {
-  const questions = useMemo<readonly Question[]>(() => [
-    {
-      difficulty: 'Fácil',
-      prompt: "Para interpretar um número público corretamente, o que vale conferir junto com ele?",
-      options: ["Fonte e data de referência","A cor do gráfico","Somente o valor absoluto"],
-      answer: 0,
-      explanation: "A fonte e a data ajudam a identificar de onde veio o dado e qual período ou fotografia ele representa.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Um snapshot do eleitorado representa melhor qual ideia?",
-      options: ["Uma fotografia de uma base em determinada data","Uma previsão de voto","O resultado final da eleição"],
-      answer: 0,
-      explanation: "Snapshots representam uma fotografia de uma base em determinada data, não previsão nem resultado.",
-      anchor: "eleitorado",
-      sourceLabel: "Perfil eleitoral",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Como ler a LOA 2026 dentro do observatório?",
-      options: ["Como orçamento previsto para o exercício","Como gasto já executado integralmente","Como uma pesquisa de opinião"],
-      answer: 0,
-      explanation: "A LOA é uma peça orçamentária de planejamento e previsão.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Por que dois números podem não ser comparáveis diretamente?",
-      options: ["Porque podem ter datas, universos ou metodologias diferentes","Porque um número maior é sempre melhor","Porque gráficos diferentes usam cores diferentes"],
-      answer: 0,
-      explanation: "Datas, denominadores e metodologias diferentes podem mudar o significado da comparação.",
-      anchor: "principios",
-      sourceLabel: "Princípios e correções",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Onde conferir as fontes catalogadas pelo projeto?",
-      options: ["No Mapa de evidências","Apenas no rodapé do navegador","Somente nas redes sociais"],
-      answer: 0,
-      explanation: "O Mapa de evidências reúne instituição, natureza, datas e links usados pelo observatório.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "O que diferencia um dado observado de um cálculo derivado?",
-      options: ["O observado vem da fonte; o derivado é calculado a partir de outros dados","O derivado é sempre mais importante","Não existe diferença entre os dois"],
-      answer: 0,
-      explanation: "O projeto separa valores reproduzidos da fonte de cálculos derivados.",
-      anchor: "qualidade",
-      sourceLabel: "Qualidade dos dados",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Por que a data de referência importa ao comparar dois indicadores?",
-      options: ["Porque os indicadores podem representar momentos diferentes","Porque a data muda automaticamente o valor para melhor","Porque toda data é apenas informativa"],
-      answer: 0,
-      explanation: "Dois indicadores podem estar corretos e ainda representar períodos diferentes.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "O que fazer quando um registro ainda não tem evidência municipal suficiente?",
-      options: ["Mantê-lo como pendente e não tratá-lo como registro local validado","Inferir o município pelo nome","Publicá-lo como confirmado para completar a lista"],
-      answer: 0,
-      explanation: "Quando falta evidência municipal, o observatório mantém o estado pendente.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Para que serve um link para a fonte oficial?",
-      options: ["Permitir a conferência do registro original","Substituir a necessidade de ler a metodologia","Transformar uma estimativa em resultado"],
-      answer: 0,
-      explanation: "A fonte oficial permite conferência direta na instituição responsável.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "O que uma fonte secundária representa no catálogo do projeto?",
-      options: ["Um material de apoio que não substitui a fonte oficial quando ela existe","Uma fonte automaticamente mais precisa","Um resultado eleitoral"],
-      answer: 0,
-      explanation: "Fontes secundárias são tratadas como apoio e identificadas separadamente.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "O que significa dizer que uma métrica tem um denominador específico?",
-      options: ["Que o percentual depende do conjunto usado como base do cálculo","Que o número está automaticamente errado","Que o denominador pode ser ignorado"],
-      answer: 0,
-      explanation: "Percentuais só fazem sentido quando a base usada no cálculo está clara.",
-      anchor: "qualidade",
-      sourceLabel: "Qualidade dos dados",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Por que percentuais de cobertura não devem ser simplesmente somados?",
-      options: ["Porque podem usar bases e universos diferentes","Porque nenhum percentual pode ser comparado","Porque toda cobertura é uma estimativa"],
-      answer: 0,
-      explanation: "Cobertura, coleta e tratamento podem ter denominadores diferentes.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que uma série histórica de eleitorado mostra?",
-      options: ["Mudanças na quantidade registrada em diferentes bases de referência","Quem vencerá a próxima eleição","Quais candidatos tiveram mais votos"],
-      answer: 0,
-      explanation: "A série histórica acompanha contagens de eleitorado em diferentes referências.",
-      anchor: "eleitoral360",
-      sourceLabel: "Eleitoral 2026",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que é uma abstenção eleitoral?",
-      options: ["Eleitores aptos que não compareceram para votar","Votos brancos","Votos anulados por decisão judicial"],
-      answer: 0,
-      explanation: "Abstenção se refere à parcela de eleitores que não compareceu.",
-      anchor: "eleitorado",
-      sourceLabel: "Perfil eleitoral",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que são votos válidos em uma base eleitoral?",
-      options: ["Votos contabilizados para a escolha de candidatura ou opção válida","Todos os eleitores cadastrados","Somente votos brancos"],
-      answer: 0,
-      explanation: "Votos válidos são diferentes de eleitorado total, brancos, nulos e abstenções.",
-      anchor: "eleitoral360",
-      sourceLabel: "Eleitoral 2026",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Por que uma estimativa populacional não é igual a um censo?",
-      options: ["Porque a estimativa atualiza a população entre operações censitárias","Porque estimativas sempre substituem censos","Porque censo é uma pesquisa de opinião"],
-      answer: 0,
-      explanation: "Estimativas são diferentes das contagens censitárias e têm sua própria data de referência.",
-      anchor: "dashboard",
-      sourceLabel: "Cidade",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que uma densidade populacional relaciona?",
-      options: ["População e área territorial","Eleitorado e orçamento","Votos e pesquisas"],
-      answer: 0,
-      explanation: "Densidade relaciona quantidade de habitantes e área, geralmente em habitantes por km².",
-      anchor: "dashboard",
-      sourceLabel: "Cidade",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Uma tarifa de transporte publicada deve ser tratada como quê?",
-      options: ["Valor de referência da fonte na data considerada","Custo obrigatório para todas as viagens futuras","Previsão de reajuste"],
-      answer: 0,
-      explanation: "A tarifa é apresentada conforme a referência publicada e sua data.",
-      anchor: "transporte",
-      sourceLabel: "Transporte",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O cálculo de custo mensal de transporte é que tipo de dado?",
-      options: ["Cálculo derivado a partir de premissas explícitas","Dado oficial diretamente publicado pela fonte","Resultado eleitoral"],
-      answer: 0,
-      explanation: "O custo mensal depende de tarifa, viagens e dias usados no cálculo.",
-      anchor: "transporte",
-      sourceLabel: "Transporte",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que ajuda a tornar um cálculo derivado auditável?",
-      options: ["Mostrar as premissas e a fórmula","Esconder as variáveis","Apresentar só o resultado final"],
-      answer: 0,
-      explanation: "Premissas explícitas permitem reproduzir o cálculo.",
-      anchor: "qualidade",
-      sourceLabel: "Qualidade dos dados",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que significa uma informação estar em um snapshot?",
-      options: ["Ela está congelada na fotografia de dados daquela captura","Ela será atualizada automaticamente a cada segundo","Ela é necessariamente uma previsão"],
-      answer: 0,
-      explanation: "Snapshot significa uma fotografia de dados em determinado momento.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Qual é a função de um estado 'pendente' em um dado eleitoral?",
-      options: ["Sinalizar que falta confirmação suficiente para uma afirmação mais forte","Confirmar a informação por padrão","Indicar que o dado foi apagado"],
-      answer: 0,
-      explanation: "Estados pendentes evitam que lacunas sejam transformadas em certezas.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que uma fonte oficial do TSE permite conferir?",
-      options: ["Registros eleitorais publicados pela Justiça Eleitoral","Qualquer opinião sobre um candidato","Qualquer estimativa econômica"],
-      answer: 0,
-      explanation: "A fonte oficial é usada para conferir registros sob responsabilidade do TSE.",
-      anchor: "fontes",
-      sourceLabel: "Fonte TSE",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Por que o observatório separa universo estadual de recorte local?",
-      options: ["Para não apresentar uma base estadual como se fosse municipal","Para aumentar a quantidade de candidatos exibidos","Para eliminar todas as fontes"],
-      answer: 0,
-      explanation: "O universo estadual e o recorte local têm escopos diferentes e precisam ser identificados.",
-      anchor: "eleitoral360",
-      sourceLabel: "Eleitoral 2026",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "O que significa uma watchlist editorial?",
-      options: ["Uma lista de nomes definidos para acompanhamento no projeto","Uma lista oficial de eleitos","Um ranking automático"],
-      answer: 0,
-      explanation: "A watchlist é um recorte editorial de acompanhamento, não uma certificação de candidatura municipal.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Por que não se deve inferir município apenas pelo nome de urna?",
-      options: ["Porque o nome não prova o município da candidatura","Porque nomes de urna são secretos","Porque todo candidato concorre em todos os municípios"],
-      answer: 0,
-      explanation: "Correspondência de nome não substitui confirmação municipal oficial.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que uma pesquisa eleitoral registrada informa?",
-      options: ["Dados de um levantamento conforme o registro e ficha técnica disponíveis","O resultado oficial da eleição","Uma garantia sobre o futuro"],
-      answer: 0,
-      explanation: "Pesquisa é um levantamento registrado, diferente do resultado oficial.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que uma decisão judicial ligada a uma pesquisa pode mudar na leitura?",
-      options: ["Pode exigir contexto e cautela sobre divulgações específicas","Transforma automaticamente a pesquisa em resultado eleitoral","Elimina todos os dados públicos"],
-      answer: 0,
-      explanation: "Decisões podem afetar divulgação e contexto de registros específicos sem equivaler automaticamente ao resultado eleitoral.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Qual é a diferença entre pesquisa e resultado eleitoral?",
-      options: ["Pesquisa mede respostas de uma amostra; resultado decorre da votação apurada","São sinônimos","Resultado é sempre uma estimativa"],
-      answer: 0,
-      explanation: "Pesquisa e resultado são categorias distintas de informação.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que uma margem de erro publicada na ficha técnica representa?",
-      options: ["Uma medida estatística informada pelo responsável pelo levantamento","Uma garantia de acerto do resultado","Um cálculo feito automaticamente pelo observatório"],
-      answer: 0,
-      explanation: "O observatório não recalcula a margem; exibe o que estiver materializado na fonte registrada.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Como ler uma nota de saneamento com denominador diferente?",
-      options: ["Conferindo exatamente qual população ou domicílios entram na base","Somando a nota com outras coberturas","Ignorando a metodologia"],
-      answer: 0,
-      explanation: "O denominador define o que o percentual representa.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que é coleta de esgoto?",
-      options: ["Etapa relacionada à coleta do esgoto gerado","Sinônimo automático de tratamento","Percentual de água potável"],
-      answer: 0,
-      explanation: "Coleta e tratamento são etapas distintas.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que significa tratar 100% do esgoto coletado?",
-      options: ["Que o esgoto que foi coletado recebeu tratamento na base informada","Que 100% dos domicílios têm coleta","Que 100% da população tem rede"],
-      answer: 0,
-      explanation: "O percentual se refere ao esgoto coletado, não necessariamente a toda geração ou cobertura.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que um indicador de perdas na distribuição de água mede?",
-      options: ["Parcela de água que se perde entre produção/distribuição e consumo faturado conforme a metodologia","Qualidade da água na torneira","Quantidade de chuva"],
-      answer: 0,
-      explanation: "Perdas são uma métrica operacional da distribuição de água.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que torna um indicador educacional secundário?",
-      options: ["Quando ele depende de uma referência que ainda não foi materializada como dado municipal oficial no snapshot","Quando ele aparece em um gráfico","Quando ele tem um número decimal"],
-      answer: 0,
-      explanation: "O projeto diferencia referência secundária de valor municipal oficial.",
-      anchor: "dashboard",
-      sourceLabel: "Educação",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Por que uma faixa de valor não deve ser apresentada como nota pontual?",
-      options: ["Porque a faixa não informa um valor único confirmado","Porque faixas são sempre melhores","Porque qualquer intervalo é uma média"],
-      answer: 0,
-      explanation: "Uma faixa e um valor pontual são formas diferentes de informação.",
-      anchor: "dashboard",
-      sourceLabel: "Educação",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "O que representa uma LOA?",
-      options: ["Lei Orçamentária Anual","Levantamento de Opinião Anual","Lista Oficial de Arrecadação"],
-      answer: 0,
-      explanation: "LOA significa Lei Orçamentária Anual.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Qual a diferença entre orçamento previsto e gasto executado?",
-      options: ["O previsto é autorizado/planejado; o executado é o que efetivamente foi realizado na execução","São exatamente a mesma coisa","Executado sempre significa empenhado e pago"],
-      answer: 0,
-      explanation: "As etapas orçamentárias têm significados diferentes e não devem ser confundidas.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Por que um crédito adicional deve ser identificado como atualização?",
-      options: ["Porque ele altera a autorização orçamentária em relação à previsão original","Porque substitui automaticamente toda a LOA","Porque é uma pesquisa"],
-      answer: 0,
-      explanation: "Créditos adicionais são alterações legais do orçamento e merecem contexto próprio.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "O que ajuda a verificar se um valor orçamentário é confiável?",
-      options: ["Fonte legal, data e identificação do instrumento","Somente o tamanho do número","A aparência do gráfico"],
-      answer: 0,
-      explanation: "A documentação legal e a referência temporal ajudam a auditar o valor.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Para que serve um filtro de busca eleitoral no observatório?",
-      options: ["Localizar registros do recorte acompanhado","Criar um ranking automático","Predizer o vencedor"],
-      answer: 0,
-      explanation: "A busca serve para localizar informação já presente no recorte.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "O que deve acontecer quando a busca não encontra um nome?",
-      options: ["Mostrar um estado vazio claro e permitir limpar ou alterar o termo","Inventar uma correspondência aproximada","Trocar para outro universo sem avisar"],
-      answer: 0,
-      explanation: "Um estado vazio claro evita interpretações erradas.",
-      anchor: "eleitoral360",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Por que fontes e letras precisam de boa hierarquia visual?",
-      options: ["Para facilitar a leitura sem esconder contexto importante","Para deixar o conteúdo mais técnico","Para reduzir a transparência"],
-      answer: 0,
-      explanation: "Hierarquia visual ajuda a distinguir valor, contexto, fonte e detalhes.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "O que uma informação secundária discreta deve fazer?",
-      options: ["Apoiar a leitura sem competir com a informação principal","Substituir o dado principal","Ocupar mais espaço que o dado principal"],
-      answer: 0,
-      explanation: "Elementos secundários devem complementar sem dominar a leitura.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Qual é a vantagem de um cartão clicável no modo Resumo?",
-      options: ["Levar do número ao contexto completo sem exigir leitura técnica imediata","Eliminar a fonte do dado","Transformar opinião em fato"],
-      answer: 0,
-      explanation: "Cartões interativos ajudam a navegar do resumo para o contexto completo.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "O que um bom botão mobile deve oferecer?",
-      options: ["Alvo de toque confortável e estado visual claro","Texto minúsculo e sem foco","Área clicável imprevisível"],
-      answer: 0,
-      explanation: "Alvos de toque confortáveis e feedback ajudam a usabilidade no celular.",
-      anchor: "descubra",
-      sourceLabel: "Usabilidade",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Por que a barra inferior mobile deve ter poucas ações?",
-      options: ["Para manter decisões simples e reduzir poluição visual","Para esconder todas as seções","Para impedir a navegação por links"],
-      answer: 0,
-      explanation: "Poucas ações principais facilitam a orientação no celular.",
-      anchor: "descubra",
-      sourceLabel: "Navegação mobile",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Para que serve o modo Resumo?",
-      options: ["Entregar primeiro os pontos essenciais e deixar o detalhe para depois","Eliminar fontes","Substituir todos os dados técnicos"],
-      answer: 0,
-      explanation: "O modo Resumo prioriza compreensão rápida sem remover a rastreabilidade.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Para que serve o modo Técnico?",
-      options: ["Exibir mais contexto sobre fonte, método e limitações","Selecionar automaticamente um candidato","Ocultar os dados principais"],
-      answer: 0,
-      explanation: "O modo Técnico é destinado a quem precisa de mais rastreabilidade e metodologia.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "O que significa uma fonte rastreável?",
-      options: ["Que a pessoa pode identificar e conferir de onde o dado veio","Que o dado é necessariamente recente","Que o dado não possui limitações"],
-      answer: 0,
-      explanation: "Rastreabilidade permite localizar a origem do valor e suas referências.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 1 de leitura de dados públicos",
-      options: ["Fonte e data de referência","A cor do gráfico","Somente o valor absoluto"],
-      answer: 0,
-      explanation: "A fonte e a data ajudam a identificar de onde veio o dado e qual período ou fotografia ele representa.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 2 de leitura de dados públicos",
-      options: ["Uma fotografia de uma base em determinada data","Uma previsão de voto","O resultado final da eleição"],
-      answer: 0,
-      explanation: "Snapshots representam uma fotografia de uma base em determinada data, não previsão nem resultado.",
-      anchor: "eleitorado",
-      sourceLabel: "Perfil eleitoral",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 3 de leitura de dados públicos",
-      options: ["Como orçamento previsto para o exercício","Como gasto já executado integralmente","Como uma pesquisa de opinião"],
-      answer: 0,
-      explanation: "A LOA é uma peça orçamentária de planejamento e previsão.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 4 de leitura de dados públicos",
-      options: ["Porque podem ter datas, universos ou metodologias diferentes","Porque um número maior é sempre melhor","Porque gráficos diferentes usam cores diferentes"],
-      answer: 0,
-      explanation: "Datas, denominadores e metodologias diferentes podem mudar o significado da comparação.",
-      anchor: "principios",
-      sourceLabel: "Princípios e correções",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 5 de leitura de dados públicos",
-      options: ["No Mapa de evidências","Apenas no rodapé do navegador","Somente nas redes sociais"],
-      answer: 0,
-      explanation: "O Mapa de evidências reúne instituição, natureza, datas e links usados pelo observatório.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 6 de leitura de dados públicos",
-      options: ["O observado vem da fonte; o derivado é calculado a partir de outros dados","O derivado é sempre mais importante","Não existe diferença entre os dois"],
-      answer: 0,
-      explanation: "O projeto separa valores reproduzidos da fonte de cálculos derivados.",
-      anchor: "qualidade",
-      sourceLabel: "Qualidade dos dados",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 7 de leitura de dados públicos",
-      options: ["Porque os indicadores podem representar momentos diferentes","Porque a data muda automaticamente o valor para melhor","Porque toda data é apenas informativa"],
-      answer: 0,
-      explanation: "Dois indicadores podem estar corretos e ainda representar períodos diferentes.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 8 de leitura de dados públicos",
-      options: ["Mantê-lo como pendente e não tratá-lo como registro local validado","Inferir o município pelo nome","Publicá-lo como confirmado para completar a lista"],
-      answer: 0,
-      explanation: "Quando falta evidência municipal, o observatório mantém o estado pendente.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 9 de leitura de dados públicos",
-      options: ["Permitir a conferência do registro original","Substituir a necessidade de ler a metodologia","Transformar uma estimativa em resultado"],
-      answer: 0,
-      explanation: "A fonte oficial permite conferência direta na instituição responsável.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 10 de leitura de dados públicos",
-      options: ["Um material de apoio que não substitui a fonte oficial quando ela existe","Uma fonte automaticamente mais precisa","Um resultado eleitoral"],
-      answer: 0,
-      explanation: "Fontes secundárias são tratadas como apoio e identificadas separadamente.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 11 de leitura de dados públicos",
-      options: ["Que o percentual depende do conjunto usado como base do cálculo","Que o número está automaticamente errado","Que o denominador pode ser ignorado"],
-      answer: 0,
-      explanation: "Percentuais só fazem sentido quando a base usada no cálculo está clara.",
-      anchor: "qualidade",
-      sourceLabel: "Qualidade dos dados",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 12 de leitura de dados públicos",
-      options: ["Porque podem usar bases e universos diferentes","Porque nenhum percentual pode ser comparado","Porque toda cobertura é uma estimativa"],
-      answer: 0,
-      explanation: "Cobertura, coleta e tratamento podem ter denominadores diferentes.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Fácil',
-      prompt: "Aplicação prática 13 de leitura de dados públicos",
-      options: ["Mudanças na quantidade registrada em diferentes bases de referência","Quem vencerá a próxima eleição","Quais candidatos tiveram mais votos"],
-      answer: 0,
-      explanation: "A série histórica acompanha contagens de eleitorado em diferentes referências.",
-      anchor: "eleitoral360",
-      sourceLabel: "Eleitoral 2026",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 14 de leitura de dados públicos",
-      options: ["Eleitores aptos que não compareceram para votar","Votos brancos","Votos anulados por decisão judicial"],
-      answer: 0,
-      explanation: "Abstenção se refere à parcela de eleitores que não compareceu.",
-      anchor: "eleitorado",
-      sourceLabel: "Perfil eleitoral",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 15 de leitura de dados públicos",
-      options: ["Votos contabilizados para a escolha de candidatura ou opção válida","Todos os eleitores cadastrados","Somente votos brancos"],
-      answer: 0,
-      explanation: "Votos válidos são diferentes de eleitorado total, brancos, nulos e abstenções.",
-      anchor: "eleitoral360",
-      sourceLabel: "Eleitoral 2026",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 16 de leitura de dados públicos",
-      options: ["Porque a estimativa atualiza a população entre operações censitárias","Porque estimativas sempre substituem censos","Porque censo é uma pesquisa de opinião"],
-      answer: 0,
-      explanation: "Estimativas são diferentes das contagens censitárias e têm sua própria data de referência.",
-      anchor: "dashboard",
-      sourceLabel: "Cidade",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 17 de leitura de dados públicos",
-      options: ["População e área territorial","Eleitorado e orçamento","Votos e pesquisas"],
-      answer: 0,
-      explanation: "Densidade relaciona quantidade de habitantes e área, geralmente em habitantes por km².",
-      anchor: "dashboard",
-      sourceLabel: "Cidade",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 18 de leitura de dados públicos",
-      options: ["Valor de referência da fonte na data considerada","Custo obrigatório para todas as viagens futuras","Previsão de reajuste"],
-      answer: 0,
-      explanation: "A tarifa é apresentada conforme a referência publicada e sua data.",
-      anchor: "transporte",
-      sourceLabel: "Transporte",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 19 de leitura de dados públicos",
-      options: ["Cálculo derivado a partir de premissas explícitas","Dado oficial diretamente publicado pela fonte","Resultado eleitoral"],
-      answer: 0,
-      explanation: "O custo mensal depende de tarifa, viagens e dias usados no cálculo.",
-      anchor: "transporte",
-      sourceLabel: "Transporte",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 20 de leitura de dados públicos",
-      options: ["Mostrar as premissas e a fórmula","Esconder as variáveis","Apresentar só o resultado final"],
-      answer: 0,
-      explanation: "Premissas explícitas permitem reproduzir o cálculo.",
-      anchor: "qualidade",
-      sourceLabel: "Qualidade dos dados",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 21 de leitura de dados públicos",
-      options: ["Ela está congelada na fotografia de dados daquela captura","Ela será atualizada automaticamente a cada segundo","Ela é necessariamente uma previsão"],
-      answer: 0,
-      explanation: "Snapshot significa uma fotografia de dados em determinado momento.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 22 de leitura de dados públicos",
-      options: ["Sinalizar que falta confirmação suficiente para uma afirmação mais forte","Confirmar a informação por padrão","Indicar que o dado foi apagado"],
-      answer: 0,
-      explanation: "Estados pendentes evitam que lacunas sejam transformadas em certezas.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 23 de leitura de dados públicos",
-      options: ["Registros eleitorais publicados pela Justiça Eleitoral","Qualquer opinião sobre um candidato","Qualquer estimativa econômica"],
-      answer: 0,
-      explanation: "A fonte oficial é usada para conferir registros sob responsabilidade do TSE.",
-      anchor: "fontes",
-      sourceLabel: "Fonte TSE",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 24 de leitura de dados públicos",
-      options: ["Para não apresentar uma base estadual como se fosse municipal","Para aumentar a quantidade de candidatos exibidos","Para eliminar todas as fontes"],
-      answer: 0,
-      explanation: "O universo estadual e o recorte local têm escopos diferentes e precisam ser identificados.",
-      anchor: "eleitoral360",
-      sourceLabel: "Eleitoral 2026",
-    },
-    {
-      difficulty: 'Médio',
-      prompt: "Aplicação prática 25 de leitura de dados públicos",
-      options: ["Uma lista de nomes definidos para acompanhamento no projeto","Uma lista oficial de eleitos","Um ranking automático"],
-      answer: 0,
-      explanation: "A watchlist é um recorte editorial de acompanhamento, não uma certificação de candidatura municipal.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 26 de leitura de dados públicos",
-      options: ["Porque o nome não prova o município da candidatura","Porque nomes de urna são secretos","Porque todo candidato concorre em todos os municípios"],
-      answer: 0,
-      explanation: "Correspondência de nome não substitui confirmação municipal oficial.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 27 de leitura de dados públicos",
-      options: ["Dados de um levantamento conforme o registro e ficha técnica disponíveis","O resultado oficial da eleição","Uma garantia sobre o futuro"],
-      answer: 0,
-      explanation: "Pesquisa é um levantamento registrado, diferente do resultado oficial.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 28 de leitura de dados públicos",
-      options: ["Pode exigir contexto e cautela sobre divulgações específicas","Transforma automaticamente a pesquisa em resultado eleitoral","Elimina todos os dados públicos"],
-      answer: 0,
-      explanation: "Decisões podem afetar divulgação e contexto de registros específicos sem equivaler automaticamente ao resultado eleitoral.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 29 de leitura de dados públicos",
-      options: ["Pesquisa mede respostas de uma amostra; resultado decorre da votação apurada","São sinônimos","Resultado é sempre uma estimativa"],
-      answer: 0,
-      explanation: "Pesquisa e resultado são categorias distintas de informação.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 30 de leitura de dados públicos",
-      options: ["Uma medida estatística informada pelo responsável pelo levantamento","Uma garantia de acerto do resultado","Um cálculo feito automaticamente pelo observatório"],
-      answer: 0,
-      explanation: "O observatório não recalcula a margem; exibe o que estiver materializado na fonte registrada.",
-      anchor: "politica",
-      sourceLabel: "Pesquisas",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 31 de leitura de dados públicos",
-      options: ["Conferindo exatamente qual população ou domicílios entram na base","Somando a nota com outras coberturas","Ignorando a metodologia"],
-      answer: 0,
-      explanation: "O denominador define o que o percentual representa.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 32 de leitura de dados públicos",
-      options: ["Etapa relacionada à coleta do esgoto gerado","Sinônimo automático de tratamento","Percentual de água potável"],
-      answer: 0,
-      explanation: "Coleta e tratamento são etapas distintas.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 33 de leitura de dados públicos",
-      options: ["Que o esgoto que foi coletado recebeu tratamento na base informada","Que 100% dos domicílios têm coleta","Que 100% da população tem rede"],
-      answer: 0,
-      explanation: "O percentual se refere ao esgoto coletado, não necessariamente a toda geração ou cobertura.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 34 de leitura de dados públicos",
-      options: ["Parcela de água que se perde entre produção/distribuição e consumo faturado conforme a metodologia","Qualidade da água na torneira","Quantidade de chuva"],
-      answer: 0,
-      explanation: "Perdas são uma métrica operacional da distribuição de água.",
-      anchor: "saude",
-      sourceLabel: "Saneamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 35 de leitura de dados públicos",
-      options: ["Quando ele depende de uma referência que ainda não foi materializada como dado municipal oficial no snapshot","Quando ele aparece em um gráfico","Quando ele tem um número decimal"],
-      answer: 0,
-      explanation: "O projeto diferencia referência secundária de valor municipal oficial.",
-      anchor: "dashboard",
-      sourceLabel: "Educação",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 36 de leitura de dados públicos",
-      options: ["Porque a faixa não informa um valor único confirmado","Porque faixas são sempre melhores","Porque qualquer intervalo é uma média"],
-      answer: 0,
-      explanation: "Uma faixa e um valor pontual são formas diferentes de informação.",
-      anchor: "dashboard",
-      sourceLabel: "Educação",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 37 de leitura de dados públicos",
-      options: ["Lei Orçamentária Anual","Levantamento de Opinião Anual","Lista Oficial de Arrecadação"],
-      answer: 0,
-      explanation: "LOA significa Lei Orçamentária Anual.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Difícil',
-      prompt: "Aplicação prática 38 de leitura de dados públicos",
-      options: ["O previsto é autorizado/planejado; o executado é o que efetivamente foi realizado na execução","São exatamente a mesma coisa","Executado sempre significa empenhado e pago"],
-      answer: 0,
-      explanation: "As etapas orçamentárias têm significados diferentes e não devem ser confundidas.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 39 de leitura de dados públicos",
-      options: ["Porque ele altera a autorização orçamentária em relação à previsão original","Porque substitui automaticamente toda a LOA","Porque é uma pesquisa"],
-      answer: 0,
-      explanation: "Créditos adicionais são alterações legais do orçamento e merecem contexto próprio.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 40 de leitura de dados públicos",
-      options: ["Fonte legal, data e identificação do instrumento","Somente o tamanho do número","A aparência do gráfico"],
-      answer: 0,
-      explanation: "A documentação legal e a referência temporal ajudam a auditar o valor.",
-      anchor: "orcamento",
-      sourceLabel: "Orçamento",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 41 de leitura de dados públicos",
-      options: ["Localizar registros do recorte acompanhado","Criar um ranking automático","Predizer o vencedor"],
-      answer: 0,
-      explanation: "A busca serve para localizar informação já presente no recorte.",
-      anchor: "candidaturas",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 42 de leitura de dados públicos",
-      options: ["Mostrar um estado vazio claro e permitir limpar ou alterar o termo","Inventar uma correspondência aproximada","Trocar para outro universo sem avisar"],
-      answer: 0,
-      explanation: "Um estado vazio claro evita interpretações erradas.",
-      anchor: "eleitoral360",
-      sourceLabel: "Candidaturas locais",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 43 de leitura de dados públicos",
-      options: ["Para facilitar a leitura sem esconder contexto importante","Para deixar o conteúdo mais técnico","Para reduzir a transparência"],
-      answer: 0,
-      explanation: "Hierarquia visual ajuda a distinguir valor, contexto, fonte e detalhes.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 44 de leitura de dados públicos",
-      options: ["Apoiar a leitura sem competir com a informação principal","Substituir o dado principal","Ocupar mais espaço que o dado principal"],
-      answer: 0,
-      explanation: "Elementos secundários devem complementar sem dominar a leitura.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 45 de leitura de dados públicos",
-      options: ["Levar do número ao contexto completo sem exigir leitura técnica imediata","Eliminar a fonte do dado","Transformar opinião em fato"],
-      answer: 0,
-      explanation: "Cartões interativos ajudam a navegar do resumo para o contexto completo.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 46 de leitura de dados públicos",
-      options: ["Alvo de toque confortável e estado visual claro","Texto minúsculo e sem foco","Área clicável imprevisível"],
-      answer: 0,
-      explanation: "Alvos de toque confortáveis e feedback ajudam a usabilidade no celular.",
-      anchor: "descubra",
-      sourceLabel: "Usabilidade",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 47 de leitura de dados públicos",
-      options: ["Para manter decisões simples e reduzir poluição visual","Para esconder todas as seções","Para impedir a navegação por links"],
-      answer: 0,
-      explanation: "Poucas ações principais facilitam a orientação no celular.",
-      anchor: "descubra",
-      sourceLabel: "Navegação mobile",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 48 de leitura de dados públicos",
-      options: ["Entregar primeiro os pontos essenciais e deixar o detalhe para depois","Eliminar fontes","Substituir todos os dados técnicos"],
-      answer: 0,
-      explanation: "O modo Resumo prioriza compreensão rápida sem remover a rastreabilidade.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 49 de leitura de dados públicos",
-      options: ["Exibir mais contexto sobre fonte, método e limitações","Selecionar automaticamente um candidato","Ocultar os dados principais"],
-      answer: 0,
-      explanation: "O modo Técnico é destinado a quem precisa de mais rastreabilidade e metodologia.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      difficulty: 'Avançado',
-      prompt: "Aplicação prática 50 de leitura de dados públicos",
-      options: ["Que a pessoa pode identificar e conferir de onde o dado veio","Que o dado é necessariamente recente","Que o dado não possui limitações"],
-      answer: 0,
-      explanation: "Rastreabilidade permite localizar a origem do valor e suas referências.",
-      anchor: "fontes",
-      sourceLabel: "Mapa de evidências",
-    },
-  ], []);  const [phase, setPhase] = useState(0);
   const [step, setStep] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const filteredQuestions = useMemo(() => questions.filter(question => question.difficulty === LEVELS[phase]), [phase, questions]);
-  const current = filteredQuestions[step];
-  const finished = step >= filteredQuestions.length;
-  const currentLevel = LEVELS[phase];
-  const phaseTarget = phase === LEVELS.length - 1 ? 20 : 18;
-  const phasePassed = finished && score >= phaseTarget;
+  const [selected, setSelected] = useState<string | null>(null);
+  const [finished, setFinished] = useState(false);
+  const options = useMemo(() => shuffledOptions(QUESTIONS[step] ?? QUESTIONS[0], step), [step]);
 
-  const choose = (index: number) => {
-    if (selected !== null || !current) return;
-    setSelected(index);
-    if (index === current.answer) setScore(value => value + 1);
-  };
+  const question = QUESTIONS[step];
+  const progress = finished ? 100 : Math.round(((step + 1) / QUESTIONS.length) * 100);
 
-  const next = () => {
-    setSelected(null);
-    setStep(value => value + 1);
-  };
+  function answer(value: string) {
+    if (selected) return;
+    setSelected(value);
+    if (value === question.answer) setScore(current => current + 1);
+  }
 
-  const reset = () => {
-    setPhase(0);
+  function next() {
+    if (!selected) return;
+    if (step === QUESTIONS.length - 1) setFinished(true);
+    else {
+      setStep(current => current + 1);
+      setSelected(null);
+    }
+  }
+
+  function restart() {
     setStep(0);
-    setSelected(null);
     setScore(0);
-  };
+    setSelected(null);
+    setFinished(false);
+  }
 
-  const advancePhase = () => {
-    if (!phasePassed || phase >= LEVELS.length - 1) return;
-    setPhase(value => value + 1);
-    setStep(0);
-    setSelected(null);
-    setScore(0);
-  };
+  async function share() {
+    const text = `Completei o Quiz do Observatório: ${score}/${QUESTIONS.length} acertos.`;
+    if (navigator.share) await navigator.share({ title:'Quiz do Observatório', text, url:location.href });
+    else if (navigator.clipboard) await navigator.clipboard.writeText(text + ' ' + location.href);
+  }
 
   return (
-    <section id="quiz" className="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="quiz-title">
-      <div className="quiz-shell quiz-journey-shell">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-200/80">Aprendizado rápido</div>
-            <h2 id="quiz-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">1 minuto para testar o que você entendeu</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Jornada em quatro fases, com progressão obrigatória. Você precisa concluir cada etapa para desbloquear a próxima.</p>
-          </div>
-          {!finished && <div className="quiz-progress-wrap">
-            <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${filteredQuestions.length}`}>
-              <span>{String(step + 1).padStart(2, '0')}</span>/<span>{String(filteredQuestions.length).padStart(2, '0')}</span>
-            </div>
-            <div className="quiz-progress-track" aria-hidden="true">
-              <span style={{ width: (((step + 1) / filteredQuestions.length) * 100) + '%' }} />
-            </div>
-          </div>}
+    <section id="quiz" aria-labelledby="quiz-title" className="quiz-premium">
+      <div className="quiz-premium-head">
+        <div>
+          <span className="quiz-eyebrow">Interativo · 12 perguntas</span>
+          <h2 id="quiz-title">Quiz do Observatório</h2>
+          <p>Teste se você consegue interpretar dados públicos sem cair em conclusões automáticas.</p>
         </div>
-
-        <div className="quiz-phase-roadmap" aria-label="Progressão das fases">
-          {LEVELS.map((level, index) => {
-            const unlocked = index <= phase;
-            const completed = index < phase;
-            return <div key={level} className={`quiz-stage-node ${unlocked ? 'is-unlocked' : 'is-locked'} ${completed ? 'is-complete' : ''} ${index === phase ? 'is-active' : ''}`}>
-              <span className="quiz-stage-dot">{completed ? '✓' : index + 1}</span><span>{level}</span>
-            </div>;
-          })}
-        </div>
-
-
-
-        {!finished && current ? (
-          <div className="mt-5 grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
-            <div className="rounded-3xl border border-white/8 bg-white/[0.02] p-5">
-              <div className="flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600"><span>Pergunta {step + 1}</span><span className="rounded-full border border-white/10 px-2 py-1 text-[9px] text-violet-200">{current.difficulty}</span></div>
-              <h3 className="mt-3 text-xl font-black leading-tight text-white">{current.prompt}</h3>
-              <div className="mt-5 grid gap-2">
-                {current.options.map((option, index) => {
-                  const isSelected = selected === index;
-                  const isCorrect = index === current.answer;
-                  const state = selected === null
-                    ? 'idle'
-                    : isCorrect
-                      ? 'correct'
-                      : isSelected
-                        ? 'wrong'
-                        : 'muted';
-                  return (
-                    <button
-                      key={option}
-                      type="button"
-                      onClick={() => choose(index)}
-                      disabled={selected !== null}
-                      aria-pressed={isSelected}
-                      className={`quiz-option ${state}`}
-                    >
-                      <span className="quiz-option-key">{String.fromCharCode(65 + index)}</span>
-                      <span className="text-left">{option}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-violet-300/10 bg-violet-300/[0.035] p-5">
-              {selected === null ? (
-                <>
-                  <div className="flex items-center justify-between gap-2"><div className="text-[11px] font-bold uppercase tracking-[0.16em] text-violet-200/80">Fase {phase + 1} · {currentLevel}</div><span className="rounded-full border border-violet-300/10 px-2 py-1 text-[9px] font-black text-violet-200">Meta {phaseTarget}/25</span></div>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">Escolha uma resposta. A explicação aparece na hora e você pode seguir para a próxima.</p>
-                  <div className="mt-5 rounded-2xl border border-white/8 bg-black/10 p-4 text-xs leading-5 text-slate-500">Esta fase mede compreensão de leitura de dados e libera a próxima etapa apenas ao atingir a meta.</div>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center gap-2 text-sm font-black text-white">
-                    <CheckCircle2 className={selected === current.answer ? 'h-5 w-5 text-emerald-300' : 'h-5 w-5 text-amber-300'} aria-hidden="true" />
-                    {selected === current.answer ? 'Resposta correta' : 'Resposta revisada'}
-                  </div>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">{current.explanation}</p>
-                  <a href={`#${current.anchor}`} className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-violet-300/20">
-                    Ver {current.sourceLabel} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                  <button type="button" onClick={next} className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-violet-300 px-4 py-2 text-xs font-black text-slate-950">
-                    {step + 1 === filteredQuestions.length ? 'Concluir fase' : 'Próxima pergunta'}
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="mt-5 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
-            <div className="rounded-3xl border border-emerald-300/15 bg-emerald-300/[0.04] p-5">
-              <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-200/80">Resultado</div>
-              <div className="mt-2 text-3xl font-black text-white">{score}/{filteredQuestions.length}</div>
-              <div className="mt-1 text-xs font-bold text-violet-200">Fase {phase + 1} · {currentLevel}</div><div className="mt-1 text-xs text-slate-500">Meta: {phaseTarget}/25</div><p className="mt-2 text-sm leading-6 text-slate-400">Use o resultado como sinal de compreensão das regras de leitura do observatório, não como avaliação de pessoas, partidos ou candidatos.</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {phasePassed && phase < LEVELS.length - 1 && <button type="button" onClick={advancePhase} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-emerald-300 px-4 py-2 text-xs font-black text-slate-950">Desbloquear {LEVELS[phase + 1]} <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>}
-              {finished && !phasePassed && <div className="rounded-xl border border-amber-300/10 bg-amber-300/[0.04] px-3 py-2 text-xs text-amber-100">A próxima fase permanece bloqueada. Alcance {phaseTarget}/25 para avançar.</div>}
-              <a href="#fontes" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2 text-xs font-black text-slate-950">Conferir fontes <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
-              <button type="button" onClick={reset} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-xs font-bold text-slate-200"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Refazer</button>
-            </div>
-          </div>
-        )}
+        {!finished && <span className="quiz-counter">{step + 1}/{QUESTIONS.length}</span>}
       </div>
+
+      <div className="quiz-progress" aria-label={`Progresso: ${progress}%`}>
+        <span style={{ width: `${progress}%` }} />
+      </div>
+
+      {finished ? (
+        <div className="quiz-result">
+          <div className="quiz-result-icon"><CheckCircle2 aria-hidden="true" /></div>
+          <span className="quiz-eyebrow">Quiz concluído</span>
+          <strong>{score}/{QUESTIONS.length}</strong>
+          <p>{score >= 10 ? 'Você demonstrou domínio das regras centrais de leitura do Observatório.' : score >= 7 ? 'Você já domina boa parte da leitura. Use as fontes para aprofundar os pontos restantes.' : 'Vale revisar fontes, datas, denominadores e metodologia antes de avançar.'}</p>
+          <div className="quiz-actions">
+            <button type="button" onClick={restart}><RotateCcw aria-hidden="true" /> Refazer</button>
+            <button type="button" onClick={share} className="secondary"><Share2 aria-hidden="true" /> Compartilhar</button>
+          </div>
+        </div>
+      ) : (
+        <div className="quiz-question">
+          <div className="quiz-meta"><span>{question.difficulty}</span><span>{question.sourceLabel}</span></div>
+          <h3>{question.prompt}</h3>
+          <div className="quiz-options">
+            {options.map(option => {
+              const isSelected = selected === option;
+              const isCorrect = selected && option === question.answer;
+              return (
+                <button key={option} type="button" onClick={() => answer(option)} className={`quiz-option ${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''}`} disabled={Boolean(selected)}>
+                  <span className="quiz-option-dot" aria-hidden="true" />
+                  <span>{option}</span>
+                </button>
+              );
+            })}
+          </div>
+          {selected && <div className={`quiz-feedback ${selected === question.answer ? 'correct' : 'wrong'}`} role="status">
+            <strong>{selected === question.answer ? 'Resposta correta' : 'Revise este ponto'}</strong>
+            <p>{question.explanation}</p>
+            <a href={`#${question.anchor}`}>Abrir {question.sourceLabel} <ExternalLink aria-hidden="true" /></a>
+          </div>}
+          <div className="quiz-footer">
+            <span>{selected ? 'Resposta registrada' : 'Escolha uma alternativa'}</span>
+            <button type="button" onClick={next} disabled={!selected}>Próxima <ExternalLink aria-hidden="true" /></button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
