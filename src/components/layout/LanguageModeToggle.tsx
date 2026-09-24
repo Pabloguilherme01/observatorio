@@ -4,10 +4,10 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 export function LanguageModeToggle() {
   const { mode, setMode } = useLanguageMode();
   const status = mode === 'technical'
-    ? 'Modo técnico: fontes, método e detalhes dos dados'
+    ? 'Detalhes técnicos visíveis'
     : mode === 'summary'
-      ? 'Modo resumo: apenas os pontos principais'
-      : 'Modo simples: informações explicadas de forma clara';
+      ? 'Visão rápida com os pontos essenciais'
+      : 'Leitura direta ao ponto';
 
   return (
     <div className="language-toggle language-toggle-v2" role="group" aria-label="Escolha como ler o observatório">
@@ -26,7 +26,7 @@ export function LanguageModeToggle() {
         <span>Técnico</span>
         <small>detalhes</small>
       </button>
-      <span className="language-toggle-status" title={status} aria-label={status}>
+      <span className="language-toggle-status" title={status} aria-label={status} role="status">
         <Info className="h-3 w-3" aria-hidden="true" />
       </span>
     </div>
