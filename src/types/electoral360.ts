@@ -18,6 +18,9 @@ export interface ElectoralCandidateSnapshot {
   readonly party: string;
   readonly office: string;
   readonly status: string;
+  readonly municipality?: string | null;
+  readonly photoUrl?: string | null;
+  readonly instagramUrl?: string | null;
   readonly snapshotDate: string;
   readonly sourceId: string;
 }
