@@ -1,4 +1,4 @@
-export const RESULTS_FEED_URL = '/observatorio/data/tse-results.json';
+export const RESULTS_FEED_URL = '/data/tse-results.json';
 export const RESULTS_FEED_SCHEMA_VERSION = 3;
 
 export const RESULTS_WINDOW = {
