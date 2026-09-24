@@ -36,6 +36,7 @@ const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 
 const API_BASE_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1';
 const ELECTION_ID = '20322002026';
+const API_SCOPE = 'GO';
 const API_CARGOS = [
   // A watchlist atual é composta por nomes monitorados como deputado estadual.
   // Evitamos chamadas desnecessárias a cargos que não podem produzir matches.
@@ -149,7 +150,7 @@ function collectApiCandidates() {
   const candidates = [];
   const sources = [];
   for (const cargo of API_CARGOS) {
-    const url = API_BASE_URL + '/candidatura/listar/2026/' + MUNICIPALITY_CODE + '/' + ELECTION_ID + '/' + cargo.code + '/candidatos';
+    const url = API_BASE_URL + '/candidatura/listar/2026/' + API_SCOPE + '/' + ELECTION_ID + '/' + cargo.code + '/candidatos';
     try {
       const response = fetchApi(url);
       const rows = Array.isArray(response.payload?.candidatos) ? response.payload.candidatos : [];
