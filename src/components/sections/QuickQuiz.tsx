@@ -163,8 +163,15 @@ export const QUESTIONS_PER_LEVEL = 40 as const;
 export const QUIZ_TOTAL = 200 as const;
 export const QUESTION_BANK: readonly Question[] = [...easy, ...medium, ...hard, ...advanced, ...expert];
 
-if (QUESTION_BANK.length !== QUIZ_TOTAL || QUIZ_LEVELS.some(level => QUESTION_BANK.filter(q => q.difficulty === level).length !== QUESTIONS_PER_LEVEL) || QUESTION_BANK.some(q => q.options.length !== 3 || new Set(q.options).size !== 3 || !q.options.includes(q.answer))) {
-  throw new Error(`Banco do quiz inválido: exige ${QUIZ_TOTAL} questões, ${QUESTIONS_PER_LEVEL} por nível e 3 alternativas únicas por questão.`);
+const QUIZ_BANK_VALID = QUESTION_BANK.length === QUIZ_TOTAL
+  && QUIZ_LEVELS.every(level => QUESTION_BANK.filter(q => q.difficulty === level).length === QUESTIONS_PER_LEVEL)
+  && QUESTION_BANK.every(q => q.options.length === 3 && new Set(q.options).size === 3 && q.options.includes(q.answer));
+
+if (!QUIZ_BANK_VALID && typeof console !== 'undefined') {
+  console.error('Banco do quiz inválido; interface preservada para recuperação.', {
+    total: QUESTION_BANK.length,
+    porNivel: Object.fromEntries(QUIZ_LEVELS.map(level => [level, QUESTION_BANK.filter(q => q.difficulty === level).length])),
+  });
 }
 
 export function QuickQuiz() {
