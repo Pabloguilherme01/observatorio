@@ -1,69 +1,133 @@
 {
-  "schemaVersion": 1,
-  "source": "derived from tse2026-candidates.json",
-  "scope": "Águas Lindas de Goiás watchlist",
-  "snapshotId": "tse-candidatos-2026-local-2026-09-23",
-  "selection": "watchlist_only",
+  "schemaVersion": 2,
+  "source": "TSE 2026 + pesquisa pública de fontes secundárias",
+  "scope": "Candidatos a deputado estadual em Goiás mapeados com base eleitoral em Águas Lindas de Goiás",
+  "snapshotId": "public-research-2026-09-24",
+  "selection": "local_base_verified_public_sources",
+  "methodology": {
+    "note": "O TSE registra a candidatura para Goiás, não um campo municipal de 'base eleitoral'. A inclusão local combina cadastro oficial de candidatura com histórico eleitoral, mandato municipal ou cobertura pública que identifica Águas Lindas como base.",
+    "officialDataset": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
+    "checkedAt": "2026-09-24"
+  },
   "candidates": [
-    {
-      "id": "90002549161",
-      "name": "ANDERSON TEODORO",
-      "number": 25789,
-      "ballotNumber": 25789,
-      "party": "PRD",
-      "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "education": "SUPERIOR INCOMPLETO",
-      "occupation": "VEREADOR",
-      "photoUrl": null
-    },
-    {
-      "id": "90002543127",
-      "name": "ZÉ DA IMPERIAL",
-      "number": 33070,
-      "ballotNumber": 33070,
-      "party": "MOBILIZA",
-      "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "education": "ENSINO MÉDIO COMPLETO",
-      "occupation": "COMERCIANTE",
-      "photoUrl": null
-    },
     {
       "id": "90002537423",
       "name": "BAIANO DOS COCOS",
-      "number": 20070,
+      "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
       "ballotNumber": 20070,
       "party": "PODE",
       "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "education": "ENSINO MÉDIO COMPLETO",
-      "occupation": "COMERCIANTE",
-      "photoUrl": null
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/baianodoscocosoficial_/"
+      ],
+      "declaredAssetsTotal": 60000,
+      "localEvidence": "Vereador de Águas Lindas eleito em 2024 com 1.680 votos; histórico municipal identificado em fontes públicas.",
+      "sourceUrls": [
+        "https://www.tse.jus.br/",
+        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/baiano-dos-cocos/"
+      ]
+    },
+    {
+      "id": "90002549161",
+      "name": "ANDERSON TEODORO",
+      "fullName": "ANDERSON TEODORO DA CUNHA DOURADO",
+      "ballotNumber": 25789,
+      "party": "PRD",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/andersonteodorooficial/",
+        "https://www.facebook.com/andersonteodorooficial"
+      ],
+      "declaredAssetsTotal": 990000,
+      "localEvidence": "Deputado estadual eleito em 2022; votação municipal expressiva em Águas Lindas e base eleitoral declarada no município.",
+      "sourceUrls": [
+        "https://www.tse.jus.br/",
+        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/anderson-teodoro/"
+      ]
     },
     {
       "id": "90002547004",
       "name": "ABADYAS DAMASCENO",
-      "number": 44360,
+      "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
       "ballotNumber": 44360,
       "party": "UNIÃO",
       "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "education": "ENSINO MÉDIO INCOMPLETO",
-      "occupation": "ELETRICISTA E ASSEMELHADOS",
-      "photoUrl": null
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/abadyas_damasceno/",
+        "https://www.tiktok.com/@abadyasdamasceno2"
+      ],
+      "declaredAssetsTotal": 57531,
+      "localEvidence": "Vereador de Águas Lindas reeleito em 2024; histórico municipal confirmado em bases públicas.",
+      "sourceUrls": [
+        "https://www.tse.jus.br/",
+        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/abadyas-damasceno/"
+      ]
     },
     {
-      "id": "90002543768",
-      "name": "FELIPE GALDINO",
-      "number": 22133,
-      "ballotNumber": 22133,
-      "party": "PL",
+      "id": "90002543113",
+      "name": "KEKE DA VULKANIC",
+      "fullName": "CLERISTON ROCHA DA TRINDADE",
+      "ballotNumber": 33777,
+      "party": "MOBILIZA",
       "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "education": "SUPERIOR INCOMPLETO",
-      "occupation": "EMPRESÁRIO",
-      "photoUrl": null
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/kekevulkanic/",
+        "https://www.facebook.com/"
+      ],
+      "declaredAssetsTotal": 270700,
+      "localEvidence": "Vereador de Águas Lindas e candidato a deputado estadual em 2022; nova candidatura estadual registrada em 2026.",
+      "sourceUrls": [
+        "https://www.tse.jus.br/",
+        "https://meuvoto.org.br/candidato/90002543113.html"
+      ]
+    },
+    {
+      "id": "90002543127",
+      "name": "ZÉ DA IMPERIAL",
+      "fullName": "JOSE BARBOSA DA SILVA",
+      "ballotNumber": 33070,
+      "party": "MOBILIZA",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/zedaimperialoficial/",
+        "https://www.tiktok.com/@ecomzequeeuvou"
+      ],
+      "declaredAssetsTotal": 105000,
+      "localEvidence": "Ex-deputado estadual e vereador de Águas Lindas; 6.218 votos no município em 2022.",
+      "sourceUrls": [
+        "https://www.tse.jus.br/",
+        "https://www1.folha.uol.com.br/",
+        "https://pt.wikipedia.org/wiki/Z%C3%A9_da_Imperial"
+      ]
+    },
+    {
+      "id": "90002544890",
+      "name": "RIBEIRO DO TÚLLIO",
+      "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
+      "ballotNumber": 45007,
+      "party": "PSDB",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/tullioaguaslindas/"
+      ],
+      "declaredAssetsTotal": 2632041.93,
+      "localEvidence": "Candidatura de 2026 identificada em cobertura pública associada a Águas Lindas; a base local é tratada como evidência pública e não como campo oficial do TSE.",
+      "sourceUrls": [
+        "https://www.tse.jus.br/",
+        "https://www.gazetadopovo.com.br/eleicoes/2026/candidatos/go/deputado-estadual/ribeiro-do-tullio-psdb-45007/"
+      ]
     }
   ]
 }
