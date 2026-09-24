@@ -2553,3 +2553,122 @@ d,
 @media (prefers-reduced-motion:reduce){
   main button:active,main a:active,.mobile-bottom-nav button:active{transform:none}
 }
+
+
+/* Mobile polish 2026-09: prioritiza leitura, toque e navegação sem aumentar a densidade. */
+@media (max-width: 767px) {
+  .mobile-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 2px;
+    padding-inline: max(6px, env(safe-area-inset-left, 0px)) max(6px, env(safe-area-inset-right, 0px));
+    background: rgba(9, 15, 22, .96);
+    border-top: 1px solid rgba(148,163,184,.16);
+  }
+
+  .mobile-bottom-nav button {
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    padding: 6px 2px 4px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .mobile-bottom-nav button span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-bottom-nav button.is-active {
+    border-color: rgba(125,211,252,.16);
+  }
+
+  .hero-shell .mt-5.flex.flex-wrap > a,
+  .hero-shell .mt-5.flex.flex-wrap > button {
+    min-height: 46px;
+    justify-content: center;
+  }
+
+  .section-header,
+  [id] > .section-header {
+    max-width: 100%;
+  }
+
+  .section-header h2,
+  section h2 {
+    overflow-wrap: anywhere;
+  }
+
+  .card,
+  [class*="rounded-"][class*="border"] {
+    min-width: 0;
+  }
+
+  /* Trilhos horizontais continuam roláveis, mas sem cortar conteúdo na lateral. */
+  .overflow-x-auto {
+    max-width: 100%;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+  .overflow-x-auto::-webkit-scrollbar { display: none; }
+
+  /* Calendário: no celular a linha vira uma fita de marcos compacta. */
+  #linha-do-tempo .overflow-x-auto {
+    margin-inline: -2px;
+    padding-inline: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+  #linha-do-tempo .overflow-x-auto > div {
+    min-width: 980px;
+  }
+  #linha-do-tempo .mt-6 {
+    margin-top: 14px;
+    padding: 13px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.07);
+  }
+
+  /* Evita que cards de dados criem colunas microscópicas. */
+  .summary-public-facts,
+  .summary-public-topics,
+  .summary-public-actions,
+  .summary-simple-grid {
+    min-width: 0;
+  }
+
+  /* Formulários e filtros: sem zoom involuntário no iOS. */
+  input,
+  select,
+  textarea {
+    min-height: 46px;
+  }
+
+  /* Ações secundárias ficam acessíveis sem ocupar toda a primeira dobra. */
+  .technical-detail .overflow-x-auto,
+  .technical-only .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 390px) {
+  .mobile-bottom-nav button {
+    min-height: 50px;
+    border-radius: 11px;
+  }
+  .mobile-bottom-nav button span {
+    font-size: 9px !important;
+  }
+  #linha-do-tempo .overflow-x-auto > div {
+    min-width: 940px;
+  }
+}
