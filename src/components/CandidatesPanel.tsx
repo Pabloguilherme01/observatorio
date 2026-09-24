@@ -28,10 +28,10 @@ export function CandidatesPanel() {
     <section aria-labelledby="candidates-title" className="space-y-5">
       <div>
         <h2 id="candidates-title" className="text-xl font-black text-slate-900 dark:text-white sm:text-2xl">
-          Candidatos e dados eleitorais
+          Candidatos
         </h2>
         <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-          Consulte informações públicas organizadas por candidato.
+          Veja os nomes e informações eleitorais organizadas de forma simples.
         </p>
       </div>
 
@@ -42,7 +42,7 @@ export function CandidatesPanel() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Pesquisar candidato"
+            placeholder="Buscar nome do candidato"
             className="min-h-11 w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm text-slate-900 dark:border-white/10 dark:bg-white/[0.04] dark:text-white"
           />
         </label>
@@ -60,27 +60,29 @@ export function CandidatesPanel() {
         </select>
       </div>
 
-      <div className="flex justify-between text-xs text-slate-500">
-        <span>{candidates.length} candidatos encontrados</span>
+      <div className="text-xs text-slate-500">
+        {candidates.length} candidatos encontrados
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {candidates.map((candidate) => (
           <article
             key={candidate.id ?? candidate.name}
-            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.035]"
+            className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.035]"
           >
-            <h3 className="font-black text-slate-900 dark:text-white">{candidate.name}</h3>
-            <p className="mt-1 text-xs text-slate-500">{candidate.office ?? "Cargo não informado"}</p>
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">{candidate.name}</h3>
+            <p className="mt-1 text-sm text-sky-700 dark:text-sky-300">
+              {candidate.office ?? "Cargo não informado"}
+            </p>
 
-            <div className="mt-4 space-y-1 rounded-xl bg-slate-50 p-3 text-sm text-slate-700 dark:bg-white/[0.03] dark:text-slate-300">
-              <p><strong>Partido:</strong> {candidate.party ?? "Não informado"}</p>
-              {candidate.ballotNumber && <p><strong>Número:</strong> {candidate.ballotNumber}</p>}
+            <div className="mt-4 space-y-2 rounded-xl bg-slate-50 p-3 text-sm text-slate-700 dark:bg-white/[0.03] dark:text-slate-300">
+              <p>{candidate.party ?? "Partido não informado"}</p>
+              {candidate.ballotNumber && <p>Número: {candidate.ballotNumber}</p>}
             </div>
 
             {(candidate.occupation || candidate.education) && (
               <details className="mt-3 text-xs text-slate-500">
-                <summary className="cursor-pointer font-semibold">Mais informações</summary>
+                <summary className="cursor-pointer font-semibold">Ver detalhes</summary>
                 {candidate.occupation && <p className="mt-2">Ocupação: {candidate.occupation}</p>}
                 {candidate.education && <p>Escolaridade: {candidate.education}</p>}
               </details>
