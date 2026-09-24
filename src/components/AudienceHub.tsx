@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, CalendarDays, CheckCircle2, Droplets, ExternalLink, Landmark, Search, ShieldCheck, Users, WalletCards } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, CalendarDays, CheckCircle2, Droplets, ExternalLink, Landmark, Search, ShieldCheck, Users, WalletCards, Vote, FileCheck2, Database } from 'lucide-react';
 import { LanguageModeToggle } from './layout/LanguageModeToggle';
 import { useLanguageMode } from '../context/LanguageModeContext';
 
@@ -11,14 +11,21 @@ type Topic = {
 
 const topics: readonly Topic[] = [
   { id: 'dashboard', label: 'Cidade', simple: 'População, território e indicadores.', icon: BarChart3 },
-  { id: 'eleitorado', label: 'Eleitorado', simple: 'Perfil, participação e histórico.', icon: Users },
-  { id: 'orcamento', label: 'Orçamento', simple: 'Planejamento e funções públicas.', icon: WalletCards },
-  { id: 'transporte', label: 'Transporte', simple: 'Tarifas e custo do trajeto.', icon: BusFront },
-  { id: 'saude', label: 'Serviços', simple: 'Água, esgoto e capacidade de saúde.', icon: Droplets },
-  { id: 'eleitoral360', label: 'Eleitoral', simple: 'Candidaturas, pesquisa e registros.', icon: Landmark },
+  { id: 'eleitorado', label: 'Eleitorado', simple: 'Perfil, evolução e dados de 2026.', icon: Users },
+  { id: 'orcamento', label: 'Orçamento', simple: 'Receitas, despesas e planejamento público.', icon: WalletCards },
+  { id: 'transporte', label: 'Transporte', simple: 'Tarifas e custo relativo do deslocamento.', icon: BusFront },
+  { id: 'saude', label: 'Serviços', simple: 'Água, esgoto, saúde e capacidade de atendimento.', icon: Droplets },
+  { id: 'eleitoral360', label: 'Eleitoral', simple: 'Candidaturas, pesquisas, contas e registros.', icon: Landmark },
 ];
 
-const links = [
+const officialResources = [
+  { label: 'Resultados 2026', href: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados', note: 'Informações oficiais sobre divulgação', icon: Vote },
+  { label: 'Simulador da urna', href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/simulador-da-urna-eletronica-supera-205-mil-acessos-e-recebe-melhorias', note: 'Treine a navegação da votação', icon: FileCheck2 },
+  { label: 'Regras para votar', href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/por-dentro-das-eleicoes-confira-as-regras-para-o-dia-da-votacao', note: 'Orientações oficiais para o dia da votação', icon: ShieldCheck },
+  { label: 'Estatísticas eleitorais', href: 'https://www.tse.jus.br/eleicoes/estatisticas', note: 'Dados e séries oficiais do TSE', icon: Database },
+] as const;
+
+const technicalLinks = [
   { label: 'TSE · Candidatos 2026', href: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026', note: 'Base pública de candidaturas', icon: ShieldCheck },
   { label: 'DivulgaCandContas', href: 'https://divulgacandcontas.tse.jus.br/divulga/#/', note: 'Candidaturas e contas', icon: Search },
   { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores', icon: BarChart3 },
@@ -50,7 +57,7 @@ export function AudienceHub() {
           </h2>
           <p>
             {isSummary
-              ? 'Os números essenciais aparecem primeiro. O detalhe fica a um toque.'
+              ? 'Números essenciais primeiro. Detalhes e fontes ficam a um toque.'
               : isTechnical
                 ? 'Indicadores, snapshots, fontes e limitações ficam organizados por assunto.'
                 : 'Encontre um dado, confira a fonte e abra o contexto quando precisar.'}
@@ -75,7 +82,9 @@ export function AudienceHub() {
           <span>Atalhos</span>
           <h3>{isTechnical ? 'Investigue por assunto' : 'O que você quer saber?'}</h3>
         </div>
-        <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>{isTechnical ? 'Abrir mapa de evidências' : 'Abrir dados'} <ArrowRight aria-hidden="true" /></button>
+        <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>
+          {isTechnical ? 'Abrir mapa de evidências' : 'Abrir dados'} <ArrowRight aria-hidden="true" />
+        </button>
       </div>
 
       <div className="audience-topic-grid" aria-label="Principais áreas">
@@ -100,16 +109,37 @@ export function AudienceHub() {
 
         <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
           <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
-          <span><strong>Eleitoral 360°</strong><small>Eleitorado, recortes e snapshots.</small></span>
+          <span><strong>Eleitoral 360°</strong><small>Eleitorado, candidaturas, contas e pesquisas.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
 
         <button type="button" className="audience-action-card" onClick={() => jump('dados')}>
           <span className="audience-action-icon"><CalendarDays aria-hidden="true" /></span>
-          <span><strong>O que mudou?</strong><small>Atualizações e recortes recentes.</small></span>
+          <span><strong>O que mudou?</strong><small>Atualizações recentes, novos dados e fontes.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
       </div>
+
+      {!isTechnical && (
+        <div className="audience-resources" aria-label="Recursos oficiais">
+          <div className="audience-links-head">
+            <div>
+              <span className="audience-kicker">Recursos oficiais</span>
+              <h3>Consulte direto na fonte</h3>
+            </div>
+            <button type="button" onClick={() => jump('fontes')}>Ver fontes <ArrowRight aria-hidden="true" /></button>
+          </div>
+          <div className="audience-resource-grid">
+            {officialResources.map(({ label, href, note, icon: Icon }) => (
+              <a key={href} href={href} target="_blank" rel="noreferrer" className="audience-resource">
+                <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
+                <span><strong>{label}</strong><small>{note}</small></span>
+                <ExternalLink aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
 
       {isTechnical && (
         <div className="audience-links">
@@ -121,7 +151,7 @@ export function AudienceHub() {
             <button type="button" onClick={() => jump('fontes')}>Mapa de evidências <ArrowRight aria-hidden="true" /></button>
           </div>
           <div className="audience-links-grid">
-            {links.map(({ label, href, note, icon: Icon }) => (
+            {technicalLinks.map(({ label, href, note, icon: Icon }) => (
               <a key={href} href={href} target="_blank" rel="noreferrer" className="audience-link">
                 <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                 <span><strong>{label}</strong><small>{note}</small></span>
