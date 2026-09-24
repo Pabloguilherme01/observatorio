@@ -23,7 +23,7 @@ export const publicCandidateMethodology = {
   checkedAt: generatedCandidates.meta.downloadedAt?.slice(0, 10) ?? 'data não informada',
 };
 
-export const publicCandidates: readonly PublicCandidate[] = generatedCandidates.matched.map(candidate => ({
+export const publicCandidates: readonly PublicCandidate[] = Array.from(new Map(generatedCandidates.matched.map(candidate => [candidate.sqCandidate, candidate])).values()).map(candidate => ({
   id: candidate.sqCandidate,
   name: candidate.name,
   party: candidate.party ?? undefined,
@@ -32,7 +32,7 @@ export const publicCandidates: readonly PublicCandidate[] = generatedCandidates.
   status: candidate.status ?? undefined,
   fullName: candidate.fullName ?? undefined,
   photoUrl: candidate.photoUrl ?? undefined,
-  sourceUrls: [generatedCandidates.meta.sourceUrl, generatedCandidates.meta.resourceUrl, ...(candidate.evidenceSourceUrls ?? [])],
+  sourceUrls: Array.from(new Set([generatedCandidates.meta.sourceUrl, ...(candidate.evidenceSourceUrls ?? [])])),
   localEvidence: candidate.localEvidence ?? undefined,
   evidenceSourceUrls: candidate.evidenceSourceUrls ?? undefined,
 })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
