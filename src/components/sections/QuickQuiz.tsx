@@ -564,7 +564,7 @@ export function QuickQuiz() {
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-200/80">Aprendizado rápido</div>
             <h2 id="quiz-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">1 minuto para testar o que você entendeu</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Jornada guiada em 4 fases. A próxima fase só é liberada após atingir a meta da atual.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Jornada em quatro fases, com progressão obrigatória. Você precisa concluir cada etapa para desbloquear a próxima.</p>
           </div>
           {!finished && <div className="quiz-progress-wrap">
             <div className="quiz-progress" aria-label={`Pergunta ${step + 1} de ${filteredQuestions.length}`}>
