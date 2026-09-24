@@ -14,7 +14,7 @@ jobs:
       - name: Capturar tudo
         run: |
           set +e
-          { npm ci && npm run build; } > build-output.log 2>&1
+          { npm install --no-audit --no-fund && npm run build; } > build-output.log 2>&1
           echo "exit_code=$?" >> build-output.log
       - name: Reportar em issue
         if: always()
@@ -28,6 +28,6 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: "Diagnostico de build v2: saida completa",
-              body: "Ultimos 8000 caracteres:\n\n~~~\n" + log.slice(-8000) + "\n~~~"
+              title: "Diagnostico de build v3: saida completa",
+              body: "Ultimos 10000 caracteres:\n\n~~~\n" + log.slice(-10000) + "\n~~~"
             });
