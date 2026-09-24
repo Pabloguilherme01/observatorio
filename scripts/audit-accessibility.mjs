@@ -36,7 +36,7 @@ must(theme.includes('meta[name="theme-color"]') && theme.includes('#f5f7fa') && 
 must(css.includes(':focus-visible'), 'foco de teclado possui estilo visível');
 must(css.includes('prefers-reduced-motion'), 'redução de movimento está contemplada');
 must(css.includes('min-height: 44px') || css.includes('min-height:44px'), 'controles móveis usam alvo de toque confortável');
-must(/@media\s*\(max-width:\s*380px\)/.test(css), 'há ajuste dedicado para telas muito estreitas');
+must(/@media\s*\(max-width:\s*390px\)/.test(css), 'há ajuste dedicado para telas muito estreitas');
 must(hero.includes('aria-pressed') && hero.includes('hero-mobile-election-toggle'), 'alternância de linguagem informa estado ao leitor de tela');
 must(hero.includes('observatorio:election-mode') && hero.includes('aria-label'), 'Modo Eleição expõe estado e ação de forma acessível');
 must(comparison.includes('role=\"tablist\"') && comparison.includes('aria-selected'), 'abas de contexto têm semântica acessível');
