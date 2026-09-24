@@ -64,7 +64,7 @@ export function AudienceHub() {
           ))}
         </div>
 
-        <div className="mt-6" id="dashboard">
+        <div className="mt-6" id="resumo-indicadores">
           <SummaryTodayCard
             budget={d.budget.totalBrl.toLocaleString('pt-BR')}
             electorate={d.electoral.electorate.toLocaleString('pt-BR')}
