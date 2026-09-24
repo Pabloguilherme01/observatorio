@@ -74,7 +74,7 @@ export function Electoral360() {
         titleId="electoral360-title"
         eyebrow="Eleitoral 360°"
         title="Da fotografia ao perfil documental"
-        description="Cada perfil usa uma única origem de snapshot. O observatório não mistura atributos de uma captura TSE com patrimônio ou escolaridade de um recorte editorial diferente."
+        description="Veja os candidatos acompanhados em Águas Lindas, seus dados públicos e o contexto eleitoral da cidade."
       />
 
       <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -121,9 +121,9 @@ export function Electoral360() {
         <Card className="mb-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Dados complementares do TSE</div>
+              <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais dados eleitorais</div>
               <div className="mt-1 text-sm font-semibold text-white">905 registros · geração em 23/09/2026</div>
-              <p className="mt-1 text-[11px] leading-5 text-slate-500">Esta base complementa candidatos identificados por SQ_CANDIDATO. Ela não é usada para afirmar que um nome é candidato de Águas Lindas sem evidência municipal.</p>
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">Base oficial complementar usada para conferir os registros do recorte local. O município de candidatura não é informado neste arquivo estadual.</p>
             </div>
             <div className="grid grid-cols-2 gap-2 text-center sm:w-64">
               <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
