@@ -217,7 +217,7 @@ export function Electoral360() {
             <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
               O recorte local ainda não possui um perfil disponível neste snapshot.
             </div>
-          )
+          )}
 
           {profileName && (
             <details className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4">
@@ -226,7 +226,7 @@ export function Electoral360() {
                 Os dados do perfil vêm de um snapshot oficial do TSE. A relação com Águas Lindas identifica o recorte acompanhado pelo observatório, não a origem municipal da candidatura.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">snapshot {selectedLocalTseCandidate?.snapshotDate ?? selectedLocal?.snapshotDate ?? 'não informado'}</span>
+                <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">snapshot {selectedLocalTseCandidate?.snapshotDate ?? 'não informado'}</span>
                 <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">recorte acompanhado</span>
               </div>
             </details>
