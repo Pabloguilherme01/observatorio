@@ -115,7 +115,7 @@ export function DashboardMetrics() {
 
       <HistoricalTrendChart />
 
-      {languageMode === 'technical' ? (
+      {languageMode === 'technical' && (
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Mudança da população', value: '+' + formatPercent(populationGrowthPct, 2), sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', status: 'derivado' })}>
             <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">População</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div><div className="mt-1 text-xs text-slate-500">mudança desde 2022</div></Card>
