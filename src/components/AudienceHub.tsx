@@ -1,6 +1,5 @@
 import { BarChart3, BusFront, Droplets, Landmark, Users, WalletCards } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
-import { useLanguageMode } from '../context/LanguageModeContext';
 import { AudienceTodaySummary } from './AudienceTodaySummary';
 import { CandidatesPanel } from './CandidatesPanel';
 
@@ -21,8 +20,6 @@ const topics: Topic[] = [
 ];
 
 export function AudienceHub() {
-  const { mode } = useLanguageMode();
-
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -35,9 +32,7 @@ export function AudienceHub() {
             O que você quer saber?
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            {mode === 'technical'
-              ? 'Dados completos com fonte, método e auditoria.'
-              : 'Explore os principais dados da cidade de forma simples.'}
+            Explore os principais dados da cidade de forma simples.
           </p>
         </div>
 
@@ -54,11 +49,6 @@ export function AudienceHub() {
               </span>
               <strong className="mt-3 block text-slate-900 dark:text-white">{label}</strong>
               <span className="mt-1 block text-xs text-slate-600 dark:text-slate-400">{simple}</span>
-              {mode === 'technical' && (
-                <span className="mt-2 block text-[10px] text-slate-500 dark:text-slate-500">
-                  Auditoria disponível.
-                </span>
-              )}
             </button>
           ))}
         </div>
