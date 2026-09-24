@@ -66,7 +66,7 @@ export function Electoral360() {
 
   const selectedOfficial = officialCandidates.find(candidate => candidate.name === selectedName);
   const selectedLocal = d.candidates.find(candidate => candidate.name === selectedName);
-  const profileName = hasLocalCandidateSnapshot ? selectedOfficial?.name ?? '' : selectedLocal?.name ?? ';
+  const profileName = hasLocalCandidateSnapshot ? selectedOfficial?.name ?? '' : selectedLocal?.name ?? '';
 
   return (
     <section id="eleitoral360" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="electoral360-title">
