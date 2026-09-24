@@ -44,6 +44,7 @@ export function MobileBottomNav() {
 
     const targetIds = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
     const observedNodes = new WeakSet<Element>();
+    const observedIds = new Set<string>();
 
     const observe = () => {
       if (!observer) return;
@@ -51,9 +52,11 @@ export function MobileBottomNav() {
         const node = document.getElementById(id);
         if (node && !observedNodes.has(node)) {
           observedNodes.add(node);
+          observedIds.add(id);
           observer.observe(node);
         }
       });
+      if (observedIds.size === targetIds.size) mutations?.disconnect();
     };
 
     let observeRaf = 0;
