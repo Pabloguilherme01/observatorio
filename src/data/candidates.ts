@@ -41,7 +41,7 @@ export const publicCandidates: readonly PublicCandidate[] = Array.from(new Map(g
   occupation: candidate.occupation ?? undefined,
   declaredAssetsTotal: candidate.declaredAssetsTotal ?? undefined,
   socials: candidate.instagramUrl ? [candidate.instagramUrl] : undefined,
-  sourceUrls: Array.from(new Set([generatedCandidates.meta.sourceUrl, candidate.sourceResource, ...(candidate.evidenceSourceUrls ?? [])].filter(Boolean))),
+  sourceUrls: Array.from(new Set([generatedCandidates.meta.sourceUrl, candidate.sourceResource, ...(candidate.evidenceSourceUrls ?? [])].filter((value): value is string => Boolean(value)))),
   localEvidence: candidate.localEvidence ?? undefined,
   evidenceSourceUrls: candidate.evidenceSourceUrls ?? undefined,
 })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
