@@ -78,6 +78,11 @@ export function ExecutiveSummary() {
     revealFact(next.id, next.label);
   };
 
+  const shareCard = async (label: string, value: string) => {
+    await share(label, value);
+    setLastAction(`Compartilhar: ${label}`);
+  };
+
   const share = async (cardLabel?: string, cardValue?: string) => {
     if (shareBusy || (cardLabel && shareBusyCard)) return;
     if (cardLabel) setShareBusyCard(cardLabel);
@@ -234,7 +239,7 @@ export function ExecutiveSummary() {
                       <em>{stat.detail}</em>
                     </button>
                     <span className="summary-public-stat-footer">
-                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={() => { void share(stat.label, stat.value); }} disabled={shareBusyCard === stat.label || shareBusy}>
+                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={() => { void shareCard(stat.label, stat.value); }} disabled={shareBusyCard === stat.label || shareBusy}>
                         <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
                       </button>
                       <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
