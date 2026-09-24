@@ -30,7 +30,7 @@ jobs:
         run: npm run validate:results
 
       - name: Functionality hardening audit
-        run: npm run audit:functionality
+        run: npm run audit:all
       - name: Static consistency audit
         run: npm run audit:static
 
