@@ -106,7 +106,7 @@ export function MobileBottomNav() {
   }, []);
 
   return (
-    <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular">
+    <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular" data-mobile-nav="primary">
       {items.map(({ id, label, icon: Icon }) => (
         <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'page' : undefined} aria-label={label === 'Início' ? 'Ir para o início e resumo' : label === 'Explorar' ? 'Explorar assuntos do observatório' : label === 'Dados' ? 'Abrir dados e área eleitoral' : 'Abrir fontes'}>
           <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
