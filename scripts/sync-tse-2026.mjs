@@ -306,6 +306,8 @@ async function main() {
     }
 
     const missingWatchlist = WATCHLIST.filter(name => !matched.some(candidate => candidate.watchlistName === name));
+    if (municipalityRows <= 0) throw new Error('Nenhum registro municipal encontrado no CSV oficial do TSE para Águas Lindas de Goiás.');
+    if (matched.length <= 0) throw new Error('Nenhuma candidatura da watchlist foi validada no recorte municipal oficial do TSE.');
 
     const diff = diffRecords(previous?.matched ?? [], matched);
     const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
