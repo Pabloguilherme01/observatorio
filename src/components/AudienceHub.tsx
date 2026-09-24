@@ -94,7 +94,7 @@ export function AudienceHub() {
       <div className="audience-action-grid" aria-label="Ferramentas rápidas">
         <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
           <span className="audience-action-icon">?</span>
-          <span><strong>Quiz atualizado</strong><small>18 questões com fonte e explicação.</small></span>
+          <span><strong>Quiz atualizado</strong><small>200 questões · 5 níveis · 40 por fase.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
 
@@ -111,25 +111,26 @@ export function AudienceHub() {
         </button>
       </div>
 
-      <div className="audience-links">
-        <div className="audience-links-head">
-          <div>
-            <span className="audience-kicker">Conferência rápida</span>
-            <h3>Fontes oficiais</h3>
+      {isTechnical && (
+        <div className="audience-links">
+          <div className="audience-links-head">
+            <div>
+              <span className="audience-kicker">Conferência rápida</span>
+              <h3>Fontes oficiais</h3>
+            </div>
+            <button type="button" onClick={() => jump('fontes')}>Mapa de evidências <ArrowRight aria-hidden="true" /></button>
           </div>
-          <button type="button" onClick={() => jump('fontes')}>Mapa completo <ArrowRight aria-hidden="true" /></button>
+          <div className="audience-links-grid">
+            {links.map(({ label, href, note, icon: Icon }) => (
+              <a key={href} href={href} target="_blank" rel="noreferrer" className="audience-link">
+                <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
+                <span><strong>{label}</strong><small>{note}</small></span>
+                <ExternalLink aria-hidden="true" />
+              </a>
+            ))}
+          </div>
         </div>
-
-        <div className="audience-links-grid">
-          {links.map(({ label, href, note, icon: Icon }) => (
-            <a key={href} href={href} target="_blank" rel="noreferrer" className="audience-link">
-              <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
-              <span><strong>{label}</strong><small>{note}</small></span>
-              <ExternalLink aria-hidden="true" />
-            </a>
-          ))}
-        </div>
-      </div>
+      )}
     </section>
   );
 }
