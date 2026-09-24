@@ -34,6 +34,7 @@ export function ExecutiveSummary() {
   const [factToast, setFactToast] = useState('');
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
+  const [lastAction, setLastAction] = useState('');
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -66,6 +67,7 @@ export function ExecutiveSummary() {
   const revealFact = (id: string, label: string) => {
     setOpenFact(current => current === id ? null : id);
     setFactToast(label);
+    setLastAction(label);
     window.setTimeout(() => setFactToast(''), 1200);
   };
 
@@ -146,6 +148,7 @@ export function ExecutiveSummary() {
                       aria-pressed={activeTopic === topic.id}
                       onClick={() => {
                         setActiveTopic(topic.id);
+                        setLastAction(topic.label);
                         goToSection(topic.target);
                       }}
                     >
@@ -185,6 +188,7 @@ export function ExecutiveSummary() {
                       aria-label={`Abrir contexto de ${stat.label}`}
                       onClick={() => {
                         setActiveStat(stat.label);
+                        setLastAction(stat.label);
                         goToSection(stat.target);
                         window.setTimeout(() => setActiveStat(''), 900);
                       }}
@@ -281,7 +285,7 @@ export function ExecutiveSummary() {
         {languageMode === 'summary' && (
           <div className="summary-public-hint" role="status" aria-live="polite">
             <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Comece por um cartão ou abra uma descoberta rápida.</span>
-            <span className="summary-public-live">{factToast ? 'Abriu: ' + factToast : 'Interações rápidas ativas'}</span>
+            <span className="summary-public-live">{factToast ? 'Abriu: ' + factToast : lastAction ? 'Última ação: ' + lastAction : 'Interações rápidas ativas'}</span>
             <button type="button" onClick={() => goToSection('fontes')}>Ver fontes</button>
           </div>
         )}
