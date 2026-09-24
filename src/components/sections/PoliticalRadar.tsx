@@ -82,13 +82,13 @@ export function PoliticalRadar() {
 
         <div className="mt-4 space-y-2">
           {poll.results.map(r => (
-            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="block w-full rounded-xl px-2 py-1 text-left transition hover:bg-white/[0.03]" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
-              <div className="flex items-center gap-3">
-                <div className="w-32 shrink-0 text-xs text-slate-400">{r.label}</div>
-                <div className="h-2 flex-1 rounded-full bg-white/5">
+            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="block min-h-11 w-full rounded-xl px-2 py-2 text-left transition hover:bg-white/[0.03]" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
+              <div className="grid min-w-0 grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3.75rem] items-center gap-2 sm:flex sm:gap-3">
+                <div className="min-w-0 text-xs text-slate-400 break-words">{r.label}</div>
+                <div className="h-2 min-w-0 rounded-full bg-white/5">
                   <div className={'h-full rounded-full transition-all ' + (selectedCandidate === r.label ? 'bg-sky-300' : 'bg-sky-300/50')} style={{ width: `${Math.min(100, r.percentage * 2)}%` }} />
                 </div>
-                <div className="w-14 text-right text-xs font-bold text-white">{r.percentage.toFixed(2).replace('.', ',')}%</div>
+                <div className="text-right text-xs font-bold text-white">{r.percentage.toFixed(2).replace('.', ',')}%</div>
               </div>
             </button>
           ))}
