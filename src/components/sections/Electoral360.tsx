@@ -64,7 +64,7 @@ export function Electoral360() {
     );
   }, [normalizedQuery]);
 
-  const selectedOfficial = electoral360Snapshot.matchedCandidates.find(candidate => candidate.name === selectedName);
+  const selectedOfficial = officialCandidates.find(candidate => candidate.name === selectedName);
   const selectedLocal = d.candidates.find(candidate => candidate.name === selectedName);
   const profileName = hasOfficialCandidateSnapshot ? selectedOfficial?.name ?? '' : selectedLocal?.name ?? '';
 
