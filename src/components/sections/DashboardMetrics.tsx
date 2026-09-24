@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Activity, Gauge, Map, Users, ArrowUpRight, CalendarDays, Database, Info, Table2, AlertCircle } from 'lucide-react';
+import { Activity, Gauge, Map, Users, WalletCards, ArrowUpRight, CalendarDays, Database, Info, Table2, AlertCircle } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
