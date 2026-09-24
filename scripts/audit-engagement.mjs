@@ -25,9 +25,13 @@ must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo ele
 const quizPromptCount = (quiz.match(/\n      prompt:/g) || []).length;
 const quizPromptLines = [...quiz.matchAll(/\n      prompt:\s*([\"'`])([\\s\\S]*?)\1,/g)].map(match => match[2]);
 const uniqueQuizPrompts = new Set(quizPromptLines);
-must(quizPromptCount === 50 && quizPromptLines.length === 50, 'quiz possui exatamente 50 perguntas');
-must(uniqueQuizPrompts.size === 50, 'quiz possui 50 perguntas distintas');
-must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual');
+const quizDifficultyLines = [...quiz.matchAll(/difficulty:\s*['\"]([^'\"]+)['\"]/g)].map(match => match[1]);
+const quizDifficultyCount = new Map(quizDifficultyLines.map(level => [level, quizDifficultyLines.filter(value => value === level).length]));
+must(quizPromptCount === 100 && quizPromptLines.length === 100, 'quiz possui exatamente 100 perguntas');
+must(uniqueQuizPrompts.size === 100, 'quiz possui 100 perguntas distintas');
+must(['Fácil', 'Médio', 'Difícil', 'Avançado'].every(level => quizDifficultyCount.get(level) === 25), 'quiz possui 25 perguntas por nível');
+must(quiz.includes('filteredQuestions') && quiz.includes('Nível do quiz'), 'quiz possui filtros de dificuldade');
+must(quiz.includes('quiz-progress-track') && quiz.includes('filteredQuestions.length'), 'quiz possui progresso visual');
 must(read('src/components/layout/Footer.tsx').includes('https://www.instagram.com/pablo.builds.ia'), 'Instagram do autor está no rodapé');
 must(!search.includes('autoFocus'), 'busca não usa autoFocus');
 must(search.includes('min-width: 768px') && search.includes('focus()'), 'busca só força foco no desktop');
