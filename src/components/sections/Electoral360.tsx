@@ -1,4 +1,4 @@
-import { CheckCircle2, Database, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { electoral360Diff, electoral360Modules, electoral360Snapshot } from '../../data/electoral360';
 import { observatorioData as d } from '../../data/observatorioData';
@@ -14,12 +14,6 @@ const stateLabel: Record<string, string> = {
   failed: 'Falha na sincronização',
   not_synced: 'Ainda não sincronizado',
   local_filter_pending: 'Recorte local pendente',
-};
-
-const moduleStatusLabel: Record<string, string> = {
-  captured: 'Dados locais capturados',
-  cataloged: 'Catálogo disponível',
-  pending: 'Captura pendente',
 };
 
 export function Electoral360() {
@@ -157,8 +151,8 @@ export function Electoral360() {
               <h3 className="text-lg font-black text-white">Perfil documental</h3>
               <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
                 {hasLocalCandidateSnapshot
-                  ? 'A captura oficial está disponível. Este perfil mostra somente atributos efetivamente carregados do snapshot estadual de Goiás; o vínculo com Águas Lindas é um recorte editorial de monitoramento.'
-                  : 'A captura TSE ainda não está sincronizada. O perfil abaixo usa apenas o recorte editorial local e não representa o universo completo de candidaturas.'}
+                  ? 'Dados públicos do TSE para os nomes acompanhados pelo observatório.'
+                  : 'Os dados deste recorte ainda dependem de atualização oficial.'}
               </p>
             </div>
             <FileText className="h-5 w-5 text-sky-300" aria-hidden="true" />
