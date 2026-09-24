@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
 import { Activity, Gauge, Map, Users, WalletCards, ArrowUpRight, CalendarDays, Database, Info, Table2, AlertCircle } from 'lucide-react';
+import { HistoricalTrendChart } from './HistoricalTrendChart';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
@@ -7,115 +7,7 @@ import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
-interface Point { readonly label: string; readonly value: number; readonly sourceId: string; readonly referenceDate?: string; }
-interface LineChartProps { readonly title: string; readonly description: string; readonly points: readonly Point[]; readonly valueFormatter?: (value: number) => string; }
-interface TooltipState { readonly xPct: number; readonly yPct: number; readonly point: Point; }
 interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; readonly nature: string; readonly sourceLabel: string; }
-
-function lineChartGeometry(points: readonly Point[]) {
-  const width = 620, height = 240, padX = 26, padY = 22;
-  const plotWidth = width - padX * 2, plotHeight = height - padY * 2;
-  if (!points.length) return { width, height, plotHeight, coords: [] as Array<Point & { x: number; y: number }> };
-  const values = points.map(point => point.value);
-  const minValue = Math.min(...values), maxValue = Math.max(...values), range = Math.max(maxValue - minValue, 1);
-  const yMin = minValue - range * 0.12, yMax = maxValue + range * 0.12, yearCount = Math.max(points.length - 1, 1);
-  const coords = points.map((point, index) => ({ ...point, x: padX + (plotWidth * index) / yearCount, y: padY + ((yMax - point.value) / (yMax - yMin)) * plotHeight }));
-  return { width, height, plotHeight, coords };
-}
-
-function LineChart({ title, description, points, valueFormatter = value => formatNumber(value) }: LineChartProps) {
-  const hasData = points.length > 0;
-  const [showTable, setShowTable] = useState(false);
-  const latest = points[points.length - 1];
-  const previous = points.length > 1 ? points[points.length - 2] : undefined;
-  const change = latest && previous && previous.value !== 0
-    ? ((latest.value - previous.value) / previous.value) * 100
-    : null;
-  const geometry = useMemo(() => lineChartGeometry(points), [points]);
-  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
-  const polyline = geometry.coords.map(point => point.x + ',' + point.y).join(' ');
-  const guides = [0, 1, 2, 3].map(index => 22 + (geometry.plotHeight * index) / 3);
-
-  const showTooltip = (point: typeof geometry.coords[number]) => setTooltip({
-    xPct: Math.min(88, Math.max(12, (point.x / geometry.width) * 100)),
-    yPct: Math.min(88, Math.max(18, (point.y / geometry.height) * 100)),
-    point,
-  });
-
-  return (
-    <figure className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 sm:p-5 light:border-slate-200 light:bg-slate-50/70" aria-labelledby={title + '-caption'}>
-      <figcaption id={title + '-caption'}>
-        <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">{title}</div>
-        <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{description}</p>
-      </figcaption>
-      {hasData && (
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-          {latest && <span className="inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.02] px-2.5 py-1 light:border-slate-200 light:bg-white"><CalendarDays className="h-3 w-3" aria-hidden="true" /> Até {latest.label}</span>}
-          {change !== null && <span className={`inline-flex items-center gap-1 rounded-full border border-white/8 bg-white/[0.02] px-2.5 py-1 ${change >= 0 ? 'text-emerald-300' : 'text-amber-300'} light:border-slate-200 light:bg-white`}><ArrowUpRight className="h-3 w-3" aria-hidden="true" /> {change >= 0 ? '+' : ''}{formatPercent(change, 1)} vs. anterior</span>}
-        </div>
-      )}
-      <div className="relative mt-4 overflow-visible pb-1" onMouseLeave={() => setTooltip(null)}>
-        <svg viewBox={'0 0 ' + geometry.width + ' ' + geometry.height} role="img" aria-label={title + ': ' + points.map(point => point.label + ' ' + valueFormatter(point.value)).join('; ')} className="h-auto w-full max-w-full overflow-visible" preserveAspectRatio="xMidYMid meet">
-          <title>{title}</title><desc>{description}</desc>
-          {guides.map((y, index) => <line key={index} x1="26" x2="594" y1={y} y2={y} className="stroke-slate-700/40 light:stroke-slate-300/70" strokeWidth="1" />)}
-          {!hasData ? (
-            <text x="310" y="126" textAnchor="middle" className="fill-slate-500 text-[12px]">Sem dados para exibir</text>
-          ) : (
-          <>
-          <polyline points={polyline} fill="none" className="stroke-sky-300 light:stroke-sky-600" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-          {geometry.coords.map(point => (
-            <g key={point.label}>
-              <circle cx={point.x} cy={point.y} r="6" className="cursor-pointer fill-sky-300 transition-[r] duration-150 hover:r-[8px] focus:outline-none light:fill-sky-600" tabIndex={0} role="button" aria-label={point.label + ': ' + valueFormatter(point.value) + '. Abrir detalhes.'}
-                onMouseEnter={() => showTooltip(point)} onMouseLeave={() => setTooltip(null)} onFocus={() => showTooltip(point)} onBlur={() => setTooltip(null)}
-                onPointerDown={() => showTooltip(point)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); dispatchInspect({ label: title + ' · ' + point.label, value: valueFormatter(point.value), sourceId: point.sourceId, referenceDate: point.referenceDate, method: 'Ponto da série temporal.' }); } }} />
-              <text x={point.x} y="234" textAnchor="middle" className="chart-axis-label fill-slate-500 text-[12px]">{point.label}</text>
-            </g>
-          ))}
-          </>
-          )}
-        </svg>
-        {!hasData ? (
-          <div className="rounded-2xl border border-dashed border-white/10 px-4 py-6 text-center text-xs text-slate-500 light:border-slate-200">Ainda não há observações suficientes para esta série.</div>
-        ) : (
-          <>
-            <div className="mt-3 flex justify-end">
-              <button type="button" onClick={() => setShowTable(open => !open)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700" aria-expanded={showTable} aria-controls={title + '-table'}>
-                <Table2 className="h-3.5 w-3.5" aria-hidden="true" />
-                {showTable ? 'Ocultar dados em tabela' : 'Ver dados em tabela'}
-              </button>
-            </div>
-            {showTable && (
-              <div id={title + '-table'} className="mt-3 overflow-x-auto rounded-2xl border border-white/8 light:border-slate-200">
-                <table className="w-full text-left text-xs">
-                  <caption className="sr-only">{title}</caption>
-                  <thead className="bg-white/[0.03] light:bg-slate-50">
-                    <tr>
-                      <th scope="col" className="px-3 py-2 font-bold text-slate-500">Período</th>
-                      <th scope="col" className="px-3 py-2 text-right font-bold text-slate-500">Valor</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {points.map(point => (
-                      <tr key={point.label} className="border-t border-white/8 light:border-slate-200">
-                        <th scope="row" className="px-3 py-2 font-semibold text-slate-300 light:text-slate-700">{point.label}</th>
-                        <td className="px-3 py-2 text-right font-black text-white light:text-slate-900">{valueFormatter(point.value)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </>
-        )}
-        {tooltip && <button type="button" onClick={() => dispatchInspect({ label: title + ' · ' + tooltip.point.label, value: valueFormatter(tooltip.point.value), sourceId: tooltip.point.sourceId, referenceDate: tooltip.point.referenceDate, method: 'Ponto da série temporal.' })} className="absolute z-20 min-w-[150px] -translate-x-1/2 -translate-y-full rounded-lg border border-white/10 bg-gray-900/95 px-3 py-2 text-left text-xs text-white shadow-xl backdrop-blur-md light:border-slate-200 light:bg-white/95 light:text-slate-900" style={{ left: tooltip.xPct + '%', top: tooltip.yPct + '%' }}>
-          <div className="font-medium text-slate-300 light:text-slate-500">{tooltip.point.label}</div>
-          <div className="mt-0.5 text-sm font-semibold text-sky-300 light:text-sky-700">{valueFormatter(tooltip.point.value)}</div>
-          <div className="mt-1 text-[10px] text-slate-500">Abrir fonte e metodologia</div>
-        </button>}
-      </div>
-    </figure>
-  );
-}
 
 export function DashboardMetrics() {
   const { mode: languageMode } = useLanguageMode();
@@ -127,13 +19,6 @@ export function DashboardMetrics() {
   const electorateShare = population2026 ? (d.electoral.electorate / population2026) * 100 : 0;
   const inclusionCount = d.electoral.socialNameCount ?? 0;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
-  const populationPoints = d.populationSeries.filter(p => p.year >= 2022).map(p => ({ label: String(p.year), value: p.value, sourceId: p.sourceId, referenceDate: p.referenceDate }));
-  const electoratePoints: readonly Point[] = [
-    { label: '2018', value: d.electoral.electorate2018 ?? 0, sourceId: d.electoral.electorate2018SourceId ?? d.electoral.sourceId },
-    { label: '2022', value: d.electoral.electorate2022 ?? 0, sourceId: d.electoral.electorate2022SourceId ?? d.electoral.sourceId },
-    { label: '2024', value: d.electoral.electorate2024 ?? 0, sourceId: d.electoral.electorate2024SourceId ?? d.electoral.sourceId },
-    { label: '2026', value: d.electoral.electorate, sourceId: d.electoral.sourceId, referenceDate: d.electoral.snapshotDate },
-  ];
   const populationDelta = population2026 - population2022;
   const plannedBudgetPerCapita = population2026 > 0 ? d.budget.totalBrl / population2026 : 0;
   const metricDetails: readonly MetricDetail[] = [
@@ -228,12 +113,9 @@ export function DashboardMetrics() {
         </div>
       )}
 
+      <HistoricalTrendChart />
+
       {languageMode === 'technical' ? (
-        <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          <LineChart title="Crescimento populacional · 2022–2026" description="2022 é Censo; 2025/2026 são estimativas IBGE." points={populationPoints} valueFormatter={value => formatNumber(value) + ' hab.'} />
-          <LineChart title="Eleitorado · 2018–2026" description="Snapshots disponíveis no modelo; 2026 é fotografia da 28ª Zona." points={electoratePoints} valueFormatter={value => formatNumber(value) + ' eleitores'} />
-        </div>
-      ) : (
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Mudança da população', value: '+' + formatPercent(populationGrowthPct, 2), sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', status: 'derivado' })}>
             <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">População</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div><div className="mt-1 text-xs text-slate-500">mudança desde 2022</div></Card>
