@@ -94,8 +94,21 @@ function DeferredBlock({
 
   useEffect(() => {
     const initialHash = window.location.hash.slice(1);
-    const activate = () => setReady(true);
-    if (anchorIds.includes(initialHash)) activate();
+    let observer: IntersectionObserver | null = null;
+    let active = false;
+
+    const cleanup = () => {
+      observer?.disconnect();
+      observer = null;
+      window.removeEventListener('observatorio:navigate', onNavigate);
+    };
+
+    const activate = () => {
+      if (active) return;
+      active = true;
+      setReady(true);
+      cleanup();
+    };
 
     const onNavigate = (event: Event) => {
       const targetId = (event as CustomEvent<string>).detail;
@@ -104,27 +117,24 @@ function DeferredBlock({
 
     window.addEventListener('observatorio:navigate', onNavigate);
 
-    const node = ref.current;
-    if (!node || typeof IntersectionObserver === 'undefined') {
+    if (anchorIds.includes(initialHash)) {
       activate();
     } else {
-      const observer = new IntersectionObserver(
-        entries => {
-          if (entries.some(entry => entry.isIntersecting)) {
-            activate();
-            observer.disconnect();
-          }
-        },
-        { rootMargin: '320px 0px' },
-      );
-      observer.observe(node);
-      return () => {
-        observer.disconnect();
-        window.removeEventListener('observatorio:navigate', onNavigate);
-      };
+      const node = ref.current;
+      if (!node || typeof IntersectionObserver === 'undefined') {
+        activate();
+      } else {
+        observer = new IntersectionObserver(
+          entries => {
+            if (entries.some(entry => entry.isIntersecting)) activate();
+          },
+          { rootMargin: '320px 0px' },
+        );
+        observer.observe(node);
+      }
     }
 
-    return () => window.removeEventListener('observatorio:navigate', onNavigate);
+    return cleanup;
   }, [anchorIds]);
 
   const Component = useMemo(() => lazy(loader), [loader]);
