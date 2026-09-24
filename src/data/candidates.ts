@@ -39,6 +39,8 @@ export const publicCandidates: readonly PublicCandidate[] = Array.from(new Map(g
   gender: candidate.gender ?? undefined,
   education: candidate.education ?? undefined,
   occupation: candidate.occupation ?? undefined,
+  declaredAssetsTotal: candidate.declaredAssetsTotal ?? undefined,
+  socials: candidate.instagramUrl ? [candidate.instagramUrl] : undefined,
   sourceUrls: Array.from(new Set([generatedCandidates.meta.sourceUrl, candidate.sourceResource, ...(candidate.evidenceSourceUrls ?? [])].filter(Boolean))),
   localEvidence: candidate.localEvidence ?? undefined,
   evidenceSourceUrls: candidate.evidenceSourceUrls ?? undefined,
