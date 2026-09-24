@@ -87,25 +87,6 @@ function fetchApi(url) {
   }
 }
 
-function fetchApi(url) {
-  const output = execFileSync('curl', [
-    '--fail',
-    '--location',
-    '--http1.1',
-    '--retry', '2',
-    '--retry-delay', '2',
-    '--retry-all-errors',
-    '--connect-timeout', '20',
-    '--max-time', '60',
-    '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
-    '--header', 'Accept: application/json',
-    '--header', 'Accept-Language: pt-BR,pt;q=0.9',
-    '--referer', 'https://divulgacandcontas.tse.jus.br/divulga/',
-    url,
-  ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
-  return JSON.parse(output);
-}
-
 function apiCandidateToRecord(candidate, cargoLabel, previousRecord) {
   const id = String(candidate.id ?? candidate.sq_CANDIDATO ?? '');
   const name = String(candidate.nomeUrna ?? candidate.nm_URNA ?? candidate.nome ?? '').trim();
