@@ -150,13 +150,7 @@ export function ExecutiveSummary() {
                     <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
                     <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
                   </>}
-                  {languageMode === 'simple' && (
-          <div className="summary-simple-tip mt-3">
-            <strong className="text-slate-200">Como usar:</strong> toque em qualquer número para abrir os dados completos, com fonte e data de referência.
-          </div>
-        )}
-
-        {languageMode === 'technical' && (
+                  {languageMode === 'technical' && (
                     <>
                       <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.registrationNumber ?? 'Registro não disponível'}</span>
                       <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.pollster ?? 'Instituto não informado'}</span>
@@ -195,6 +189,12 @@ export function ExecutiveSummary() {
             )}
           </div>
         </div>
+
+        {languageMode === 'simple' && (
+          <div className="summary-simple-tip mt-3">
+            <strong className="text-slate-200">Como usar:</strong> toque em qualquer número para abrir os dados completos, com fonte e data de referência.
+          </div>
+        )}
 
         {languageMode === 'technical' && (
           <div className="mt-3 grid gap-3 md:grid-cols-3">
