@@ -1,4 +1,4 @@
-import { CheckCircle2, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { electoral360Diff, electoral360Snapshot } from '../../data/electoral360';
 import { observatorioData as d } from '../../data/observatorioData';
@@ -252,9 +252,9 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Candidatos acompanhados em Águas Lindas' : 'Registros do recorte local'}</h3>
+            <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Nomes acompanhados no recorte de Águas Lindas' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {hasLocalCandidateSnapshot ? 'Somente os nomes do recorte acompanhado são exibidos. A base usada para identificação é a oficial do TSE.' : 'Ainda não há registros de candidatos no snapshot local.'}
+              {hasLocalCandidateSnapshot ? 'Somente os nomes do recorte acompanhado são exibidos. A identificação vem da base oficial de Candidatos 2026 do TSE.' : 'Ainda não há registros de nomes no snapshot local.'}
             </p>
           </div>
           <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
@@ -271,8 +271,13 @@ export function Electoral360() {
                 autoCorrect="off"
                 autoCapitalize="none"
                 spellCheck={false}
-                aria-label={hasLocalCandidateSnapshot ? 'Buscar candidato' : 'Filtrar recorte local'}
+                aria-label={hasLocalCandidateSnapshot ? 'Buscar nome acompanhado' : 'Filtrar recorte local'}
               />
+            {query && (
+              <button type="button" onClick={() => setQuery('')} className="grid min-h-9 min-w-9 place-items-center rounded-lg text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Limpar busca">
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </label>
         </div>
 
@@ -290,7 +295,7 @@ export function Electoral360() {
                     <div className="min-w-0">
                       <h4 className="font-black text-white break-words">{candidate.name}</h4>
                       <p className="mt-1 text-xs text-slate-500 break-words">{candidate.party} · {candidate.office} · nº {candidate.ballotNumber}</p>
-                      <span className="mt-2 block text-[11px] text-slate-600">{candidate.occupation || 'ocupação não informada'}</span>
+                      <span className="mt-2 inline-flex max-w-full items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-semibold text-slate-500 break-words">{candidate.status || 'situação não informada'}</span>
                     </div>
                   </div>
                   <button type="button" onClick={() => setSelectedName(candidate.name)} className="electoral-action-button mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-black text-sky-100">Ver perfil</button>
