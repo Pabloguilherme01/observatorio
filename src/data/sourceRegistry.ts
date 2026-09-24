@@ -67,7 +67,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://dadosabertos.tse.jus.br/dataset/groups/eleitorado-2026',
     nature: 'official',
-    note: 'Inclui perfil do eleitorado, seção, local de votação e bases associadas.',
+    note: 'Inclui perfil do eleitorado, seção, local de votação e bases associadas. Para 2026, a consulta individual ao local de votação está disponível desde 1º de setembro pelo e-Título e pelos portais da Justiça Eleitoral.',
   },
   {
     id: 'tse-eleicoes-2026',
@@ -75,6 +75,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
     nature: 'official',
+    note: 'Hub oficial das Eleições 2026; reúne calendário, consulta de local de votação, serviços ao eleitor e orientações do pleito.',
   },
   {
     id: 'tse-resultados-2026',
@@ -106,7 +107,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-08',
     publishedAt: '2026-09-15',
-    note: 'Parcial: movimentação registrada até 8 de setembro de 2026.',
+    note: 'Parcial: movimentação registrada até 8 de setembro de 2026 e disponibilizada para consulta a partir de 15 de setembro de 2026 no DivulgaCandContas.'
   },
   {
     id: 'utb-tarifas',
