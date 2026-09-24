@@ -1,0 +1,36 @@
+name: Reparo de CSS v4
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+  issues: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reparar
+        run: node .github/scripts/repair.mjs
+      - name: Build de validacao
+        run: |
+          npm install --no-audit --no-fund > /dev/null 2>&1 || true
+          npm run build > build-output.log 2>&1 || true
+          true
+      - name: Commit e limpeza
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/repair-css.yml .github/workflows/repair-css-v3.yml .github/scripts/repair.mjs || true
+          git add -A
+          git commit -m "fix: reparar identificadores quebrados no globals.css" || echo "nada a commitar"
+          git push || echo "push falhou"
+      - name: Relatorio
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require("fs");
+            const rep = fs.existsSync("repair-report.txt") ? fs.readFileSync("repair-report.txt", "utf8") : "sem relatorio";
+            const log = fs.existsSync("build-output.log") ? fs.readFileSync("build-output.log", "utf8") : "sem log";
+            await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title: "Reparo globals.css v4", body: "~~~\n" + rep + "\n~~~\n\nBUILD:\n~~~\n" + log.slice(-1200) + "\n~~~" });
