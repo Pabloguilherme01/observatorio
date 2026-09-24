@@ -31,6 +31,7 @@ export function ExecutiveSummary() {
   const [shareStatus, setShareStatus] = useState('');
   const [activeStat, setActiveStat] = useState('');
   const [openFact, setOpenFact] = useState<string | null>(null);
+  const [factToast, setFactToast] = useState('');
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -50,6 +51,12 @@ export function ExecutiveSummary() {
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'saude' },
   ] as const;
+
+  const revealFact = (id: string, label: string) => {
+    setOpenFact(current => current === id ? null : id);
+    setFactToast(label);
+    window.setTimeout(() => setFactToast(''), 1200);
+  };
 
   const share = async (cardLabel?: string, cardValue?: string) => {
     const text = [
@@ -122,7 +129,7 @@ export function ExecutiveSummary() {
               <div className="summary-public-facts" aria-label="Descobertas rápidas">
                 {publicFacts.map(fact => (
                   <div key={fact.id} className={`summary-public-fact ${openFact === fact.id ? 'is-open' : ''}`}>
-                    <button type="button" aria-expanded={openFact === fact.id} onClick={() => setOpenFact(current => current === fact.id ? null : fact.id)}>
+                    <button type="button" aria-expanded={openFact === fact.id} onClick={() => revealFact(fact.id, fact.label)}>
                       <span>{fact.label}</span>
                       <ChevronDown className="h-4 w-4" aria-hidden="true" />
                     </button>
@@ -241,6 +248,7 @@ export function ExecutiveSummary() {
         {languageMode === 'summary' && (
           <div className="summary-public-hint" role="status" aria-live="polite">
             <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Comece por um cartão ou abra uma descoberta rápida.</span>
+            <span className="summary-public-live">{factToast ? 'Abriu: ' + factToast : 'Interações rápidas ativas'}</span>
             <button type="button" onClick={() => goToSection('fontes')}>Ver fontes</button>
           </div>
         )}
