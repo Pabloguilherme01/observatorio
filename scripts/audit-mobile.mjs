@@ -58,7 +58,7 @@ must(files.app.includes("behavior: reduceMotion ? 'auto' : 'smooth'"), 'navegaç
 must(files.header.includes('desktop-theme-toggle') && files.header.includes('mobile-tools-actions'), 'cabeçalho mobile não concentra controles demais na linha principal');
 must(files.css.includes('.mobile-tools-actions') && files.css.includes('.desktop-theme-toggle'), 'CSS possui sistema dedicado para ferramentas móveis');
 must(files.css.includes('overflow-x:hidden') && files.css.includes('overflow-x:clip'), 'contenção horizontal mobile está ativa');
-must(files.css.includes('--mobile-nav-height:74px'), 'altura da navegação inferior mobile está consolidada');
+must(files.css.includes('--mobile-nav-height:64px'), 'altura final da navegação inferior mobile está consolidada');
 must(!read('src/components/ExperienceShell.tsx').includes('className="quick-dock"'), 'dock flutuante redundante não é renderizado sobre a navegação mobile');
 const radar = read('src/components/sections/PoliticalRadar.tsx');
 must(radar.includes('Registrada') && radar.includes('min-h-11') && radar.includes('grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3.75rem]'), 'radar político mantém informação consistente e linhas utilizáveis em telas estreitas');
