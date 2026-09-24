@@ -75,7 +75,7 @@ export function AudienceHub() {
           <span>Atalhos</span>
           <h3>{isTechnical ? 'Investigue por assunto' : 'O que você quer saber?'}</h3>
         </div>
-        <button type="button" onClick={() => jump('fontes')}>Ver fontes <ArrowRight aria-hidden="true" /></button>
+        <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>{isTechnical ? 'Ver fontes' : 'Ver dados'} <ArrowRight aria-hidden="true" /></button>
       </div>
 
       <div className="audience-topic-grid" aria-label="Principais áreas">
