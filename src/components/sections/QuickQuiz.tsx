@@ -13,7 +13,6 @@ type Question = {
   readonly sourceLabel: string;
 };
 
-
 const LEVELS: readonly Difficulty[] = ['Fácil', 'Médio', 'Difícil', 'Avançado'];
 
 export function QuickQuiz() {
@@ -520,6 +519,7 @@ export function QuickQuiz() {
     { difficulty: 'Avançado', prompt: "Avançado 25: como interpretar corretamente esta situação de dados públicos?", options: ["A alternativa que preserva definição, escopo e contexto","Uma conclusão sem verificar a base","Uma previsão do futuro"], answer: 0, explanation: "A resposta correta preserva o contexto, a definição, o escopo e a rastreabilidade do dado.", anchor: 'fontes', sourceLabel: 'Fontes e metodologia' },
   ], []);
   ], []);
+  ], []);
   const [phase, setPhase] = useState(0);
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -557,7 +557,6 @@ export function QuickQuiz() {
     setScore(0);
   };
 
-
   return (
     <section id="quiz" className="mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="quiz-title">
       <div className="quiz-shell quiz-journey-shell">
@@ -575,6 +574,16 @@ export function QuickQuiz() {
               <span style={{ width: (((step + 1) / filteredQuestions.length) * 100) + '%' }} />
             </div>
           </div>}
+        </div>
+
+        <div className="quiz-phase-roadmap" aria-label="Progressão das fases">
+          {LEVELS.map((level, index) => {
+            const unlocked = index <= phase;
+            const completed = index < phase;
+            return <div key={level} className={`quiz-stage-node ${unlocked ? 'is-unlocked' : 'is-locked'} ${completed ? 'is-complete' : ''} ${index === phase ? 'is-active' : ''}`}>
+              <span className="quiz-stage-dot">{completed ? '✓' : index + 1}</span><span>{level}</span>
+            </div>;
+          })}
         </div>
 
         <div className="quiz-phase-roadmap" aria-label="Progressão das fases">
@@ -654,6 +663,8 @@ export function QuickQuiz() {
               <div className="mt-1 text-xs font-bold text-violet-200">Fase {phase + 1} · {currentLevel}</div><div className="mt-1 text-xs text-slate-500">Meta: {phaseTarget}/25</div><p className="mt-2 text-sm leading-6 text-slate-400">Use o resultado como sinal de compreensão das regras de leitura do observatório, não como avaliação de pessoas, partidos ou candidatos.</p>
             </div>
             <div className="flex flex-wrap gap-2">
+              {phasePassed && phase < LEVELS.length - 1 && <button type="button" onClick={advancePhase} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-emerald-300 px-4 py-2 text-xs font-black text-slate-950">Desbloquear {LEVELS[phase + 1]} <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>}
+              {finished && !phasePassed && <div className="rounded-xl border border-amber-300/10 bg-amber-300/[0.04] px-3 py-2 text-xs text-amber-100">A próxima fase permanece bloqueada. Alcance {phaseTarget}/25 para avançar.</div>}
               {phasePassed && phase < LEVELS.length - 1 && <button type="button" onClick={advancePhase} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-emerald-300 px-4 py-2 text-xs font-black text-slate-950">Desbloquear {LEVELS[phase + 1]} <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>}
               {finished && !phasePassed && <div className="rounded-xl border border-amber-300/10 bg-amber-300/[0.04] px-3 py-2 text-xs text-amber-100">A próxima fase permanece bloqueada. Alcance {phaseTarget}/25 para avançar.</div>}
               <a href="#fontes" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2 text-xs font-black text-slate-950">Conferir fontes <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
