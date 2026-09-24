@@ -1,5 +1,5 @@
 @import "tailwindcss";
-:root{--mobile-touch:44px;--surface:#111923;--surface-strong:#151f2b;--line:rgba(255,255,255,.08);--muted:#718096}
+:root{--mobile-touch:44px;--surface:#111923;--surface-strong:#151f2b;--line:rgba(255,255,255,.08);--muted:#718096;color-scheme:dark}
 html{scroll-padding-top:88px;scroll-padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 :focus-visible{outline:2px solid rgba(125,211,252,.95);outline-offset:3px}
