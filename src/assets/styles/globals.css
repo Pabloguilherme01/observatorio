@@ -2264,3 +2264,9 @@ button:disabled{cursor:not-allowed;opacity:.58}
 @media(prefers-reduced-motion:reduce){
   .deferred-section{content-visibility:auto}
 }
+
+/* 45.1 mobile anchor contract: keep hash navigation clear of fixed chrome. */
+@media(max-width:767px){
+  html{scroll-padding-top:74px;scroll-padding-bottom:var(--mobile-nav-height)}
+  main [id]{scroll-margin-top:74px}
+}
