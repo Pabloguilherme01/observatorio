@@ -75,7 +75,7 @@ export function AudienceHub() {
           <span>Atalhos</span>
           <h3>{isTechnical ? 'Investigue por assunto' : 'O que você quer saber?'}</h3>
         </div>
-        <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>{isTechnical ? 'Ver fontes' : 'Ver dados'} <ArrowRight aria-hidden="true" /></button>
+        <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>{isTechnical ? 'Abrir mapa de evidências' : 'Abrir dados'} <ArrowRight aria-hidden="true" /></button>
       </div>
 
       <div className="audience-topic-grid" aria-label="Principais áreas">
@@ -94,7 +94,7 @@ export function AudienceHub() {
       <div className="audience-action-grid" aria-label="Ferramentas rápidas">
         <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
           <span className="audience-action-icon">?</span>
-          <span><strong>Quiz atualizado</strong><small>200 questões · 5 níveis · 40 por fase.</small></span>
+          <span><strong>Quiz completo</strong><small>200 questões · 5 níveis · 40 por fase.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
 
