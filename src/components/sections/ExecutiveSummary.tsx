@@ -30,6 +30,8 @@ export function ExecutiveSummary() {
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const [lastAction, setLastAction] = useState('');
+  const [discoveryIndex, setDiscoveryIndex] = useState(0);
+  const shareTimerRef = useState<{ current: number | null }>({ current: null })[0];
     const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -59,13 +61,16 @@ export function ExecutiveSummary() {
   ] as const;
 
   const revealFact = (id: string, label: string) => {
+    const index = publicFacts.findIndex(fact => fact.id === id);
+    if (index >= 0) setDiscoveryIndex(index);
     setOpenFact(current => current === id ? null : id);
     setLastAction(label);
   };
 
   const focusNextDiscovery = () => {
-    const index = publicFacts.findIndex(fact => fact.id === openFact);
-    const next = publicFacts[(index + 1 + publicFacts.length) % publicFacts.length];
+    const nextIndex = (discoveryIndex + 1) % publicFacts.length;
+    const next = publicFacts[nextIndex];
+    setDiscoveryIndex(nextIndex);
     revealFact(next.id, next.label);
   };
 
