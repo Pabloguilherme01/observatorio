@@ -33,24 +33,21 @@ export function ExecutiveSummary() {
   };
 
   const quickStats = [
-    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'TSE · 15/07/2026' : 'referência TSE', target: 'eleitorado' },
-    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? 'estimativa · 01/07/2026' : 'estimativa 2026', target: 'dashboard' },
+    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : 'referência TSE', target: 'eleitorado' },
+    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? 'estimativa populacional · 2026' : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? 'lei orçamentária' : 'orçamento municipal', target: 'orcamento' },
-    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? 'SINISA · 2024' : 'indicador de saneamento', target: 'saude' },
+    { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? 'indicador SINISA · referência 2024' : 'indicador de saneamento', target: 'saude' },
   ] as const;
 
   const share = async () => {
-    const text = languageMode === 'technical'
-      ? [
-        'Observatório Eleitoral Águas Lindas 2026',
-        `Pesquisa registrada em ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
-        `Mobilidade: ${brl(monthlyPerPerson)} por pessoa/mês no cenário de 22 dias e 2 trechos/dia para Brasília.`,
-      ].join(' ')
-      : [
-        'Observatório Eleitoral Águas Lindas 2026',
-        `Pesquisa de ${poll ? formatDate(poll.collectionDate) : 'data não disponível'}: ${poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.`,
-        `Transporte: ${brl(monthlyPerPerson)} por pessoa/mês no cenário usado pelo Observatório.`,
-      ].join(' ');
+    const text = [
+      'Observatório Eleitoral — Águas Lindas de Goiás 2026',
+      `Eleitorado: ${electorate.electorate.toLocaleString('pt-BR')} eleitores.`,
+      `População estimada: ${population.toLocaleString('pt-BR')} habitantes.`,
+      `Orçamento LOA 2026: ${brl(budget)}.`,
+      `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
+      poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.` : '',
+    ].filter(Boolean).join(' ');
 
     try {
       if (navigator.share) {
