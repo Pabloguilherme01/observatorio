@@ -427,8 +427,8 @@ export function QuickQuiz() {
       explanation: "Compartilhamento útil preserva o contexto e a origem do conteúdo.",
       anchor: "resumo",
       sourceLabel: "Resumo público",
-    }
- []);
+    },
+  ], []);
 
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
