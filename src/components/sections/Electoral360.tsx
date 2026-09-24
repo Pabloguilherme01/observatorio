@@ -56,10 +56,10 @@ export function Electoral360() {
         titleId="electoral360-title"
         eyebrow="Eleitoral 2026"
         title="Nomes acompanhados no recorte de Águas Lindas"
-        description="Consulte os nomes acompanhados e confira os dados disponíveis em suas fontes oficiais."
+        description="Consulte o recorte editorial acompanhado pelo observatório e confira cada registro em sua fonte oficial."
       />
 
-      <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center">
+      <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center" aria-label="Resumo do recorte eleitoral">
         <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-3">
           <strong className="block text-sm text-white">{localCandidateRecords.length} nomes</strong>
           <span className="text-[10px] leading-4 text-slate-500">no recorte acompanhado</span>
@@ -75,7 +75,7 @@ export function Electoral360() {
       </div>
       <details className="mb-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
         <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-xs font-black text-sky-100"><span>Sobre o recorte local</span><span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span></summary>
-        <p className="mt-2 text-[11px] leading-5 text-slate-500">O observatório acompanha nomes relacionados a Águas Lindas. A confirmação do município da candidatura deve vir do registro oficial do TSE.</p>
+        <p className="mt-2 text-[11px] leading-5 text-slate-500">Este painel mostra somente os nomes do recorte editorial acompanhado pelo observatório. O snapshot estadual não informa município da candidatura; por isso, a lista não deve ser interpretada isoladamente como confirmação de candidatura por município.</p>
       </details>
       {electoral360Snapshot.captureMode === 'static-local' && (
         <div className="electoral-scope-note mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
