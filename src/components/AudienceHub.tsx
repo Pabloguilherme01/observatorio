@@ -19,9 +19,20 @@ const topics: Topic[] = [
   { id: 'politica', label: 'Eleições', simple: 'Candidatos e dados eleitorais.', icon: Landmark },
 ];
 
+const topicTargets: Record<string, string> = {
+  dashboard: 'analise',
+  eleitorado: 'eleitorado',
+  orcamento: 'orcamento',
+  transporte: 'transporte',
+  saude: 'saude',
+  politica: 'politica',
+};
+
 export function AudienceHub() {
   const go = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const target = topicTargets[id] ?? id;
+    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
+    document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -58,7 +69,7 @@ export function AudienceHub() {
             budget={d.budget.totalBrl.toLocaleString('pt-BR')}
             electorate={d.electoral.electorate.toLocaleString('pt-BR')}
             transport={String(d.transport.routes[0]?.fareBrl ?? 0)}
-            sanitation={`${d.sanitation.publicSewerServicePct}%`}
+            sanitation={d.sanitation.publicSewerServicePct + '%'}
             onNavigate={go}
           />
         </div>
