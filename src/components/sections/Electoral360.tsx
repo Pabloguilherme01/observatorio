@@ -25,7 +25,8 @@ const moduleStatusLabel: Record<string, string> = {
 export function Electoral360() {
   const [query, setQuery] = useState('');
   const [selectedName, setSelectedName] = useState('');
-  const hasOfficialCandidateSnapshot = electoral360Snapshot.matchedCandidates.some(candidate => candidate.municipality?.toLocaleLowerCase('pt-BR') === 'águas lindas de goiás');
+  const localCandidateRecords = electoral360Snapshot.matchedCandidates;
+  const hasLocalCandidateSnapshot = localCandidateRecords.length > 0;
   const captured = electoral360Modules.filter(module => module.status === 'captured').length;
   const cataloged = electoral360Modules.filter(module => module.status === 'cataloged').length;
   const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state));
@@ -44,15 +45,14 @@ export function Electoral360() {
   const normalizedQuery = query.trim().toLocaleLowerCase('pt-BR');
 
   const officialCandidates = useMemo(() => {
-    const localOfficial = electoral360Snapshot.matchedCandidates.filter(candidate => candidate.municipality?.toLocaleLowerCase('pt-BR') === 'águas lindas de goiás');
-    if (!normalizedQuery) return localOfficial;
-    return localOfficial.filter(candidate =>
+    if (!normalizedQuery) return localCandidateRecords;
+    return localCandidateRecords.filter(candidate =>
       [candidate.name, candidate.party, candidate.office, candidate.status, candidate.ballotNumber]
         .join(' ')
         .toLocaleLowerCase('pt-BR')
         .includes(normalizedQuery),
     );
-  }, [normalizedQuery]);
+  }, [normalizedQuery, localCandidateRecords]);
 
   const localCandidates = useMemo(() => {
     if (!normalizedQuery) return d.candidates;
@@ -66,7 +66,7 @@ export function Electoral360() {
 
   const selectedOfficial = officialCandidates.find(candidate => candidate.name === selectedName);
   const selectedLocal = d.candidates.find(candidate => candidate.name === selectedName);
-  const profileName = hasOfficialCandidateSnapshot ? selectedOfficial?.name ?? '' : selectedLocal?.name ?? '';
+  const profileName = hasLocalCandidateSnapshot ? selectedOfficial?.name ?? '' : selectedLocal?.name ?? ';
 
   return (
     <section id="eleitoral360" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="electoral360-title">
@@ -265,9 +265,9 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas oficiais monitoradas' : 'Registros do recorte local'}</h3>
+            <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Candidatos acompanhados em Águas Lindas' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE de Goiás.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais permanecem identificados como recorte editorial.'}
+              {hasLocalCandidateSnapshot ? 'Somente os nomes do recorte local são exibidos. Os dados de identificação vêm do arquivo oficial de Candidatos 2026 do TSE.' : 'Ainda não há registros de candidatos no snapshot local.'}
             </p>
           </div>
           <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
@@ -276,7 +276,7 @@ export function Electoral360() {
               <input
                 value={query}
                 onChange={event => setQuery(event.target.value)}
-                placeholder={hasOfficialCandidateSnapshot ? 'Buscar candidatura...' : 'Filtrar recorte...'}
+                placeholder={hasLocalCandidateSnapshot ? 'Buscar candidato...' : 'Filtrar recorte...'}
                 className="w-full min-w-0 bg-transparent text-base outline-none placeholder:text-slate-600 sm:w-56 sm:text-sm"
                 type="search"
                 inputMode="search"
@@ -284,7 +284,7 @@ export function Electoral360() {
                 autoCorrect="off"
                 autoCapitalize="none"
                 spellCheck={false}
-                aria-label={hasOfficialCandidateSnapshot ? 'Buscar candidatura' : 'Filtrar recorte local'}
+                aria-label={hasLocalCandidateSnapshot ? 'Buscar candidato' : 'Filtrar recorte local'}
               />
           </label>
         </div>
@@ -294,7 +294,7 @@ export function Electoral360() {
           <ArrowRight className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
         </div>
 
-        {hasOfficialCandidateSnapshot ? (
+        {hasLocalCandidateSnapshot ? (
           officialCandidates.length ? (
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {officialCandidates.map(candidate => (
