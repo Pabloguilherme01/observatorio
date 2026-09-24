@@ -24,7 +24,7 @@ const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const executive = read('src/components/sections/ExecutiveSummary.tsx');
 const formatters = read('src/utils/formatters.ts');
 
-must(modeToggle.includes("setMode('summary')") && modeToggle.includes("setMode('simple')") && modeToggle.includes("setMode('technical')"), '3 modos neutros de leitura disponíveis');
+must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '3 modos neutros de leitura disponíveis');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
 const quizPromptCount = (quiz.match(/\n      prompt:/g) || []).length;
 const quizPromptLines = [...quiz.matchAll(/\n      prompt:\s*([\"'`])([\s\S]*?)\1,/g)].map(match => match[2]);
@@ -57,7 +57,7 @@ must(search.includes('search-empty-action') && !search.includes('document.getEle
 must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
 const versionMatch = version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
 must(versionMatch?.[1] === '44.9.1', 'versão marcada como 44.9.1');
-must((quiz.match(/quiz-phase-grid/g) || []).length === 1 && quiz.includes('Bloqueada'), 'quiz possui apenas um roadmap visual de fases');
+must((quiz.match(/quiz-phase-grid/g) || []).length === 1 && quiz.includes('Fase {index + 1}') && quiz.includes('Bloqueada'), 'quiz possui apenas um roadmap visual de fases');
 must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
 must(executive.includes('poll?.pollster') && executive.includes('poll?.method') && executive.includes('poll?.registrationNumber'), 'card de pesquisa exibe identificação e cenário');
