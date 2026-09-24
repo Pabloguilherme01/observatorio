@@ -146,7 +146,7 @@ export function Electoral360() {
         <Card>
           <UserRound className="h-5 w-5 text-amber-300" aria-hidden="true" />
           <div className="mt-3 text-3xl font-black text-white">{electoral360Snapshot.matchedCandidates.length}</div>
-          <div className="text-xs text-slate-500">correspondências na captura TSE</div>
+          <div className="text-xs text-slate-500">nomes acompanhados</div>
         </Card>
       </div>
 
@@ -164,10 +164,7 @@ export function Electoral360() {
             <FileText className="h-5 w-5 text-sky-300" aria-hidden="true" />
           </div>
 
-          <div className="mb-3 mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">
-            <strong className="text-amber-200">{hasLocalCandidateSnapshot ? 'Fonte operacional: TSE' : 'Fonte operacional: recorte editorial local'}</strong>{' '}
-            · estado do snapshot: {stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}. A ausência deste snapshot não equivale à ausência de candidaturas na fonte oficial.
-          </div>
+
 
           <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Registros disponíveis para o perfil documental">
             {(hasLocalCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates).map(candidate => (
@@ -189,7 +186,7 @@ export function Electoral360() {
           ) : hasLocalCandidateSnapshot && selectedLocalTseCandidate ? (
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Info label="Nome completo" value={selectedLocalTseCandidate.fullName || selectedLocalTseCandidate.name} />
-              <Info label="Nome de urna" value={selectedOfficial.name} />
+              <Info label="Nome de urna" value={selectedLocalTseCandidate.name} />
               <Info label="Partido" value={selectedLocalTseCandidate.party || 'Não informado'} />
               <Info label="Número" value={String(selectedLocalTseCandidate.ballotNumber || 'Não informado')} />
               <Info label="Cargo" value={selectedLocalTseCandidate.office || 'Não informado'} />
