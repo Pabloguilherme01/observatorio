@@ -26,6 +26,8 @@ const pollMeta = {
   date: "25/08/2026",
   interviews: 400,
   question: "Deputado estadual, resposta espontânea",
+  status: "divulgação suspensa por decisão da Justiça Eleitoral",
+  statusDate: "21/09/2026",
   source: "https://aguaslindasnews.com.br/noticia/3513/pesquisa-eleitoral-em-aguas-lindas-mostra-lideranca-de-keke-para-deputado-estadual-e-indefinicao-para-federal-e-governador",
 };
 
@@ -57,7 +59,7 @@ function PollCard({ candidate }: { candidate: PublicCandidate }) {
     <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-slate-950">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Pesquisa publicada</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Levantamento de 25/08/2026</p>
           <h3 className="mt-1 text-base font-black text-slate-900 dark:text-white">{candidate.name}</h3>
         </div>
         <span className="rounded-xl bg-sky-50 px-3 py-2 text-lg font-black text-sky-700 dark:bg-sky-400/10 dark:text-sky-300">{percentage}</span>
@@ -69,10 +71,10 @@ function PollCard({ candidate }: { candidate: PublicCandidate }) {
         <span>Amostra: {pollMeta.interviews} entrevistas</span>
       </div>
       <p className="mt-3 text-xs leading-5 text-slate-500">
-        Este percentual é intenção espontânea de voto na pesquisa publicada. Não é percentual de votos válidos e não representa uma previsão do resultado.
+        Este é o percentual divulgado originalmente para a pergunta espontânea. Como a divulgação do levantamento foi posteriormente suspensa por decisão da Justiça Eleitoral, o dado deve ser tratado como registro histórico, não como retrato vigente. Não é percentual de votos válidos nem previsão do resultado.
       </p>
       <a href={pollMeta.source} target="_blank" rel="noreferrer" className="mt-3 inline-flex min-h-9 items-center gap-1.5 text-xs font-bold text-sky-700 underline dark:text-sky-300">
-        Ver pesquisa <ExternalLink className="h-3 w-3" aria-hidden="true" />
+        Ver fonte do levantamento <ExternalLink className="h-3 w-3" aria-hidden="true" />
       </a>
     </div>
   );
@@ -126,7 +128,7 @@ function CandidateCard({ candidate }: { candidate: PublicCandidate }) {
           <div className="mt-3 space-y-3 border-t border-slate-100 pt-3 dark:border-white/10">
             <PollCard candidate={candidate} />
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-100">
-              <strong>Probabilidade de ganhar:</strong> não calculada. A pesquisa publicada mede intenção espontânea e não fornece uma probabilidade estatística de vitória. O Observatório não transforma esse percentual em previsão de resultado.
+              <strong>Probabilidade de ganhar:</strong> não calculada. A pesquisa publicada mede intenção espontânea e não fornece uma probabilidade estatística de vitória. O Observatório não transforma esse percentual em previsão de resultado e não calcula uma probabilidade de vitória.
             </div>
           </div>
         ) : null}
@@ -164,8 +166,8 @@ export function CandidatesPanel() {
 
       <details className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500 dark:border-white/10 dark:bg-white/[0.03]">
         <summary className="cursor-pointer font-semibold text-slate-600 dark:text-slate-300">Metodologia do recorte e da pesquisa</summary>
-        <p className="mt-2 leading-5">O TSE registra a candidatura para Goiás, mas não possui um campo municipal de “base eleitoral”. “Base local” é uma classificação documental do Observatório. A pesquisa exibida é um levantamento espontâneo do município e não uma projeção do resultado.</p>
-        <p className="mt-2">Fonte primária de candidatura: {publicCandidateSource}. Pesquisa: {pollMeta.institute}, registro {pollMeta.registration}, {pollMeta.interviews} entrevistas, referência {pollMeta.date}.</p>
+        <p className="mt-2 leading-5">O TSE registra a candidatura para Goiás, mas não possui um campo municipal de “base eleitoral”. “Base local” é uma classificação documental do Observatório. O levantamento exibido é um registro histórico de pesquisa espontânea do município. A divulgação foi posteriormente suspensa por decisão da Justiça Eleitoral, portanto o painel não o apresenta como pesquisa vigente nem como projeção do resultado.</p>
+        <p className="mt-2">Fonte primária de candidatura: {publicCandidateSource}. Pesquisa: {pollMeta.institute}, registro {pollMeta.registration}, {pollMeta.interviews} entrevistas, referência {pollMeta.date}. Status atual no Observatório: {pollMeta.status}.</p>
         <p className="mt-2">Pesquisa eleitoral: <a className="font-semibold text-sky-700 underline dark:text-sky-300" href={pollMeta.source} target="_blank" rel="noreferrer">ver fonte publicada</a>.</p>
         <p className="mt-2">Dados cadastrais verificados pelo Observatório em {publicCandidateMethodology?.checkedAt ?? "data não informada"}.</p>
       </details>
