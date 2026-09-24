@@ -32,6 +32,7 @@ export function ExecutiveSummary() {
   const [activeStat, setActiveStat] = useState('');
   const [openFact, setOpenFact] = useState<string | null>(null);
   const [factToast, setFactToast] = useState('');
+  const [activeTopic, setActiveTopic] = useState('eleitoral');
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -50,6 +51,13 @@ export function ExecutiveSummary() {
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'saude' },
+  ] as const;
+
+  const topics = [
+    { id: 'eleitoral', label: 'Eleição', target: 'eleitoral360', caption: 'eleitorado, participação e candidaturas' },
+    { id: 'cidade', label: 'Cidade', target: 'dashboard', caption: 'população e indicadores' },
+    { id: 'servicos', label: 'Serviços', target: 'saude', caption: 'saneamento e saúde' },
+    { id: 'recursos', label: 'Recursos', target: 'orcamento', caption: 'orçamento e atualizações' },
   ] as const;
 
   const revealFact = (id: string, label: string) => {
@@ -121,6 +129,23 @@ export function ExecutiveSummary() {
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
                 <h3>Entenda a cidade em poucos toques.</h3>
                 <p>Explore os números mais úteis primeiro. Cada cartão leva ao contexto completo e preserva a origem do dado.</p>
+                <div className="summary-public-topics" aria-label="Explorar por assunto">
+                  {topics.map(topic => (
+                    <button
+                      key={topic.id}
+                      type="button"
+                      className={`summary-public-topic ${activeTopic === topic.id ? 'is-active' : ''}`}
+                      aria-pressed={activeTopic === topic.id}
+                      onClick={() => {
+                        setActiveTopic(topic.id);
+                        goToSection(topic.target);
+                      }}
+                    >
+                      <strong>{topic.label}</strong>
+                      <span>{topic.caption}</span>
+                    </button>
+                  ))}
+                </div>
                 <div className="summary-public-actions" aria-label="Ações rápidas do resumo">
                   <button type="button" onClick={() => { void share(); }} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
                   <button type="button" onClick={() => goToSection('descubra')} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
