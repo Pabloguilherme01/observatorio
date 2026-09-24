@@ -13,6 +13,7 @@ const stateLabel: Record<string, string> = {
   stale: 'Desatualizado',
   failed: 'Falha na sincronização',
   not_synced: 'Ainda não sincronizado',
+  local_filter_pending: 'Filtro local pendente',
 };
 
 const moduleStatusLabel: Record<string, string> = {
@@ -30,16 +31,17 @@ export function Electoral360() {
   const snapshotWarning = ['not_synced', 'stale', 'failed'].includes(String(electoral360Diff.state));
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
 
+  const candidatePool = hasOfficialCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates;
   const candidates = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase('pt-BR');
-    if (!normalized) return electoral360Snapshot.matchedCandidates;
-    return electoral360Snapshot.matchedCandidates.filter(candidate =>
+    if (!normalized) return candidatePool;
+    return candidatePool.filter(candidate =>
       [candidate.name, candidate.party, candidate.office, candidate.status, candidate.ballotNumber]
         .join(' ')
         .toLocaleLowerCase('pt-BR')
         .includes(normalized),
     );
-  }, [query]);
+  }, [query, candidatePool]);
 
   const selectedOfficial = electoral360Snapshot.matchedCandidates.find(candidate => candidate.name === selectedName);
   const selectedLocal = d.candidates.find(candidate => candidate.name === selectedName);
@@ -82,7 +84,7 @@ export function Electoral360() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="text-lg font-black text-white">Perfil documental</h3>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
+              <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
                 {hasOfficialCandidateSnapshot
                   ? 'A captura oficial está disponível. Este perfil mostra somente atributos efetivamente carregados desse snapshot; campos não capturados permanecem vazios.'
                   : 'A captura TSE ainda não está sincronizada. O perfil abaixo usa apenas o recorte editorial local e não representa o universo completo de candidaturas.'}
@@ -93,16 +95,16 @@ export function Electoral360() {
 
           <div className="mb-3 mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3 text-xs leading-5 text-slate-500">
             <strong className="text-amber-200">{hasOfficialCandidateSnapshot ? 'Fonte operacional: TSE' : 'Fonte operacional: recorte editorial local'}</strong>{' '}
-            · estado do snapshot: {stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}. A ausência da captura local não equivale à ausência de candidaturas na fonte oficial.
+            · estado do snapshot: {stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}. A ausência deste snapshot não equivale à ausência de candidaturas na fonte oficial.
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Registros disponíveis para o perfil documental">
             {(hasOfficialCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates).map(candidate => (
               <button
                 key={candidate.name}
                 type="button"
                 onClick={() => setSelectedName(candidate.name)}
-                className={`rounded-xl border px-3 py-2 text-xs font-bold ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400'}`}
+                className={`min-h-11 rounded-xl border px-3 py-2 text-left text-xs font-bold ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400'}`}
               >
                 {candidate.name}
               </button>
@@ -164,7 +166,7 @@ export function Electoral360() {
             <div className="mt-3 text-lg font-black text-white">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}</div>
             <p className="mt-2 text-xs leading-5 text-slate-500">Cobertura do TSE e recorte editorial são mantidos separados.</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{electoral360Snapshot.localWatchlist.length} nomes monitorados</span>
+              <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{electoral360Snapshot.localWatchlist.length} nomes no recorte</span>
               <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">identidade por SQ_CANDIDATO</span>
             </div>
           </Card>
@@ -172,7 +174,7 @@ export function Electoral360() {
           <Card>
             <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte operacional</div>
             <p className="mt-2 text-xs leading-5 text-slate-500">
-              A watchlist é um recorte para cruzamento com o universo de Goiás; não representa o universo completo e não deve ser lida como lista exaustiva.
+              Este recorte serve para cruzamento com o universo de Goiás; não representa o universo completo e não deve ser lido como lista exaustiva.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {electoral360Snapshot.localWatchlist.map(name => (
@@ -186,18 +188,16 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas capturadas' : 'Candidaturas do recorte local'}</h3>
+            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas capturadas' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais estão identificados como recorte editorial.'}
+              {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais permanecem identificados como recorte editorial.'}
             </p>
           </div>
-          {hasOfficialCandidateSnapshot && (
-            <label className="flex items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400">
+          <label className="flex items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400">
               <Search className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Buscar candidatura</span>
-              <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Buscar..." className="w-full bg-transparent outline-none placeholder:text-slate-600 sm:w-48" />
-            </label>
-          )}
+              <input value={query} onChange={event => setQuery(event.target.value)} placeholder={hasOfficialCandidateSnapshot ? 'Buscar candidatura...' : 'Filtrar recorte...'} className="w-full min-w-0 bg-transparent outline-none placeholder:text-slate-600 sm:w-56" />
+          </label>
         </div>
 
         {hasOfficialCandidateSnapshot ? (
@@ -223,9 +223,19 @@ export function Electoral360() {
             <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhuma correspondência encontrada para a busca atual.</div>
           )
         ) : (
-          <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-            Nenhuma correspondência TSE está disponível neste snapshot local. O bloco acima continua usando apenas o recorte editorial desta edição.
-          </div>
+          candidates.length ? (
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              {candidates.map(candidate => (
+                <article key={candidate.name} className="rounded-2xl border border-white/8 p-4">
+                  <h4 className="font-black text-white">{candidate.name}</h4>
+                  <p className="mt-1 text-xs text-slate-500">Registro editorial local · {candidate.party ?? 'partido não informado'}</p>
+                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="mt-3 min-h-11 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">Abrir perfil documental</button>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-5 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">Nenhum registro corresponde ao filtro atual.</div>
+          )
         )}
 
         {candidateSource?.url && (
