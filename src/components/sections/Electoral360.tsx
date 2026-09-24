@@ -59,7 +59,7 @@ export function Electoral360() {
         description="Consulte os nomes acompanhados e confira os dados disponíveis em suas fontes oficiais."
       />
 
-      <div className="mb-3 grid gap-2 sm:grid-cols-3">
+      <div className="mb-4 grid gap-2 sm:grid-cols-3">
         <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-3">
           <strong className="block text-sm text-white">{localCandidateRecords.length} nomes</strong>
           <span className="text-[10px] leading-4 text-slate-500">no recorte acompanhado</span>
@@ -71,9 +71,6 @@ export function Electoral360() {
         <div className="rounded-2xl border border-white/7 bg-white/[0.02] px-3 py-3">
           <strong className="block text-sm text-white">Fonte oficial</strong>
           <span className="text-[10px] leading-4 text-slate-500">TSE e registros públicos</span>
-        </div>
-      </div> públicas.</span>
-          </div>
         </div>
       </div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
