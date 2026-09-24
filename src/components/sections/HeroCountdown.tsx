@@ -20,7 +20,7 @@ function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<type
 }
 
 function brl(value: number) {
-  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 1 });
+  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 export function HeroCountdown() {
@@ -81,6 +81,10 @@ export function HeroCountdown() {
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
+            <button type="button" onClick={toggleElectionMode} aria-pressed={electionMode} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-4 py-2.5 text-sm font-bold text-amber-100 transition hover:bg-amber-300/[0.1]">
+              <Vote className="h-4 w-4" aria-hidden="true" />
+              {electionMode ? 'Modo Eleição ativo' : 'Ativar Modo Eleição'}
+            </button>
             <a href="#descubra" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">
               {languageMode === 'simple' ? 'Começar' : 'Escolher um assunto'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -100,10 +104,10 @@ export function HeroCountdown() {
               </div>
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                 {[
-                  { id: 'dashboard', label: 'Cidade', value: population.toLocaleString('pt-BR'), note: 'população estimada', icon: BarChart3 },
-                  { id: 'eleitorado', label: 'Eleitorado', value: electorate.toLocaleString('pt-BR'), note: 'snapshot do eleitorado', icon: Users },
-                  { id: 'orcamento', label: 'Orçamento', value: brl(loa), note: 'LOA 2026', icon: WalletCards },
-                  { id: 'transporte', label: 'Transporte', value: transportFare != null ? brl(transportFare) : '—', note: transportFare != null ? 'tarifa de referência' : 'valor não informado', icon: BusFront },
+                  { id: 'dashboard', label: 'Cidade', value: population.toLocaleString('pt-BR'), note: 'Fonte: IBGE · estimativa 2026', icon: BarChart3 },
+                  { id: 'eleitorado', label: 'Eleitorado', value: electorate.toLocaleString('pt-BR'), note: 'Fonte: TSE · 15/07/2026', icon: Users },
+                  { id: 'orcamento', label: 'Orçamento', value: brl(loa), note: 'Fonte: LOA municipal · 2026', icon: WalletCards },
+                  { id: 'transporte', label: 'Transporte', value: transportFare != null ? brl(transportFare) : '—', note: transportFare != null ? 'Fonte: tarifa semiurbana · Entorno-DF' : 'valor não informado', icon: BusFront },
                 ].map(({ id, label, value, note, icon: Icon }) => (
                   <a key={id} href={'#' + id} className="summary-hero-card group">
                     <span className="summary-hero-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span>
@@ -118,7 +122,7 @@ export function HeroCountdown() {
               </div>
               <div className="mt-3 flex items-center gap-2 rounded-2xl border border-white/8 bg-black/10 px-3 py-2.5 text-[11px] leading-5 text-slate-400">
                 <Droplets className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
-                <span>Os números têm datas e fontes próprias. Abra cada cartão para conferir o contexto.</span>
+                <span>Cada número já mostra sua fonte e referência. Abra o detalhe apenas quando precisar de metodologia.</span>
               </div>
             </div>
           )}
