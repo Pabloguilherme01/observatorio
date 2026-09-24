@@ -127,7 +127,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'salario-minimo-2026',
     label: 'Decreto 12.797/2025 — Salário mínimo 2026',
     institution: 'Presidência da República',
-    url: 'https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12797.htm',
+    url: 'https://www.gov.br/planejamento/pt-br/acesso-a-informacao/institucional/atos-normativos/2025/decretos',
     nature: 'official',
     referenceDate: '2026-01-01',
   },
