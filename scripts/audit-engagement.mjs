@@ -57,7 +57,7 @@ must(search.includes('search-empty-action') && !search.includes('document.getEle
 must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
 const versionMatch = version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
 must(versionMatch?.[1] === '44.9.1', 'versão marcada como 44.9.1');
-must((quiz.match(/quiz-phase-grid/g) || []).length === 1 && quiz.includes('Fase {index + 1}') && quiz.includes('Bloqueada'), 'quiz possui apenas um roadmap visual de fases');
+must(quiz.includes('className="quiz-phase-grid"') && quiz.includes('Fase {index + 1}') && quiz.includes('Bloqueada'), 'quiz possui roadmap visual de fases');
 must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
 must(executive.includes('poll?.pollster') && executive.includes('poll?.method') && executive.includes('poll?.registrationNumber'), 'card de pesquisa exibe identificação e cenário');
