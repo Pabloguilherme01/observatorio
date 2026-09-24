@@ -58,7 +58,7 @@ export function EvidenceChain() {
             <div><strong className="text-slate-200 light:text-slate-800">Captura local:</strong> {candidateCaptured ? captureLabel(generated.meta.downloadedAt) : 'ainda não realizada'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Estado:</strong> {candidateState}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Registros lidos:</strong> {generated.meta.sourceRows.toLocaleString('pt-BR')} · encontrados no recorte estadual: {(generated.meta.originalMatchedRows ?? 0).toLocaleString('pt-BR')}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Validados em Águas Lindas:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')} · pendentes: {unresolved.toLocaleString('pt-BR')}</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Mapeados por evidência local:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')} · pendentes: {unresolved.toLocaleString('pt-BR')}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Cobertura:</strong> watchlist de {generated.watchlist.length} nomes, não universo completo.</div>
           </div>
           <a href={editorialSource?.url ?? candidateSource?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300">
