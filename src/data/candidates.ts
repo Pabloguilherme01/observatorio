@@ -9,6 +9,9 @@ export interface PublicCandidate {
   readonly status?: string;
   readonly fullName?: string;
   readonly declaredAssetsTotal?: number;
+  readonly gender?: string;
+  readonly education?: string;
+  readonly occupation?: string;
   readonly photoUrl?: string;
   readonly socials?: readonly string[];
   readonly sourceUrls?: readonly string[];
@@ -32,7 +35,10 @@ export const publicCandidates: readonly PublicCandidate[] = Array.from(new Map(g
   status: candidate.status ?? undefined,
   fullName: candidate.fullName ?? undefined,
   photoUrl: candidate.photoUrl ?? undefined,
-  sourceUrls: Array.from(new Set([generatedCandidates.meta.sourceUrl, ...(candidate.evidenceSourceUrls ?? [])])),
+  gender: candidate.gender ?? undefined,
+  education: candidate.education ?? undefined,
+  occupation: candidate.occupation ?? undefined,
+  sourceUrls: Array.from(new Set([generatedCandidates.meta.sourceUrl, candidate.sourceResource, ...(candidate.evidenceSourceUrls ?? [])].filter(Boolean))),
   localEvidence: candidate.localEvidence ?? undefined,
   evidenceSourceUrls: candidate.evidenceSourceUrls ?? undefined,
 })).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
