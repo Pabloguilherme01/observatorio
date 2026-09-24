@@ -115,7 +115,7 @@ export function App() {
   useEffect(() => {
     const navigateFromLocation = () => {
       const hash = window.location.hash.slice(1);
-      if (hash) scrollToHashWhenReady(hash);
+      if (hash) navigateToHash(hash);
     };
     const onNavigate = (event: Event) => {
       const hash = (event as CustomEvent<string>).detail;
