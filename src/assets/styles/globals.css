@@ -201,7 +201,7 @@ small{color:var(--text-secondary)}
   .summary-public-action,.summary-public-topic,.summary-more-toggle{min-width:0;min-height:44px}
 }
 @media (max-width:390px){
-  :root{--mobile-page-gutter:14px;--mobile-nav-height:70px}
+  :root{--mobile-page-gutter:14px;--mobile-nav-height:64px}
   .today-card{flex-basis:min(84vw,300px)}
   .summary-public-topics,.summary-public-facts,.summary-public-grid,.summary-public-actions{grid-template-columns:1fr!important}
   .summary-simple-grid{grid-template-columns:1fr}
