@@ -4,19 +4,19 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 export function LanguageModeToggle() {
   const { mode, setMode } = useLanguageMode();
   const status = mode === 'technical'
-    ? 'Detalhes técnicos visíveis'
+    ? 'Detalhes técnicos, fontes e método visíveis'
     : mode === 'summary'
-      ? 'Visão rápida com os pontos essenciais'
-      : 'Leitura direta ao ponto';
+      ? 'Somente os dados essenciais e ações rápidas'
+      : 'Leitura clara com contexto sob demanda';
 
   return (
     <div className="language-toggle language-toggle-v2" role="group" aria-label="Escolha o nível de detalhe da leitura">
-      <button type="button" onClick={() => setMode('summary')} aria-pressed={mode === 'summary'} className={mode === 'summary' ? 'is-active' : ''} title="Mostrar apenas os pontos principais">
+      <button type="button" onClick={() => setMode('summary')} aria-pressed={mode === 'summary'} className={mode === 'summary' ? 'is-active' : ''} title="Somente os dados essenciais e ações rápidas">
         <List className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Resumo</span>
         <small>essencial</small>
       </button>
-      <button type="button" onClick={() => setMode('simple')} aria-pressed={mode === 'simple'} className={mode === 'simple' ? 'is-active' : ''} title="Mostrar informações em linguagem mais simples">
+      <button type="button" onClick={() => setMode('simple')} aria-pressed={mode === 'simple'} className={mode === 'simple' ? 'is-active' : ''} title="Leitura clara com contexto sob demanda">
         <FileText className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Simples</span>
         <small>claro</small>
