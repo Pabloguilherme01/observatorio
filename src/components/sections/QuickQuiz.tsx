@@ -983,15 +983,7 @@ export function QuickQuiz() {
           })}
         </div>
 
-        <div className="quiz-phase-roadmap" aria-label="Progressão das fases">
-          {LEVELS.map((level, index) => {
-            const unlocked = index <= phase;
-            const completed = index < phase;
-            return <div key={level} className={`quiz-stage-node ${unlocked ? 'is-unlocked' : 'is-locked'} ${completed ? 'is-complete' : ''} ${index === phase ? 'is-active' : ''}`}>
-              <span className="quiz-stage-dot">{completed ? '✓' : index + 1}</span><span>{level}</span>
-            </div>;
-          })}
-        </div>
+
 
         {!finished && current ? (
           <div className="mt-5 grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
