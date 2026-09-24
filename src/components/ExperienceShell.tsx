@@ -17,8 +17,8 @@ function jump(id: string) {
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
-  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [progress, setProgress] = useState(0), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview');
-  const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), pendingG = useRef(false), pendingGTimerRef = useRef<number | null>(null), focusTimerRef = useRef<number | null>(null);
+  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [recent, setRecent] = useState<string[]>([], [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview');
+  const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), progressRef = useRef<HTMLDivElement>(null), pendingG = useRef(false), pendingGTimerRef = useRef<number | null>(null), focusTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     setRecent(readList(RECENT_KEY)); setFavorites(readList(FAVORITES_KEY)); const reduced = readStorage(REDUCED_KEY) === '1'; setReducedMotion(reduced); document.documentElement.classList.toggle('reduced-motion', reduced); const electionStored = readStorage(ELECTION_KEY) === '1'; document.documentElement.classList.toggle('mode-election', electionStored); const storedMode = readStorage(MODE_KEY) as ExperienceMode | null; const initialMode: ExperienceMode = storedMode === 'overview' || storedMode === 'investigation' || storedMode === 'evidence' ? storedMode : 'overview'; setMode(initialMode); document.documentElement.dataset.experienceMode = initialMode; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + initialMode);
@@ -27,7 +27,8 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       if (scrollRaf) return;
       scrollRaf = window.requestAnimationFrame(() => {
         const max = document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0);
+        const progress = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0;
+        progressRef.current?.style.setProperty('width', progress + '%');
         scrollRaf = 0;
       });
     };
@@ -158,7 +159,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, [normalizedNavigation, query]);
 
   return <>
-    <div className="reading-progress" style={{ width: progress + '%' }} aria-hidden="true" />
+    <div ref={progressRef} className="reading-progress" style={{ width: '0%' }} aria-hidden="true" />
     {children}
     <MobileBottomNav />
     {commandOpen && <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="command-title"><button className="command-backdrop" type="button" aria-label="Fechar central de comandos" onClick={() => setCommandOpen(false)} /><div ref={modalRef} className="command-panel"><div className="flex items-center gap-3 border-b border-white/10 px-4 py-3"><Search className="h-4 w-4 text-slate-500" aria-hidden="true" /><input ref={inputRef} value={query} onChange={event=>setQuery(event.target.value)} placeholder="Buscar uma área do observatório…" className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-slate-600" aria-label="Buscar uma área do observatório" autoComplete="off" autoCorrect="off" autoCapitalize="none" spellCheck={false} inputMode="search" /><kbd>Esc</kbd></div><div className="px-4 pt-4"><div id="command-title" className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500"><Compass className="h-3.5 w-3.5" aria-hidden="true" /> Explorar</div>{!query && recent.length > 0 && <div className="mb-4">
