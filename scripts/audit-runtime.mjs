@@ -10,6 +10,10 @@ const files = [
   'src/components/sections/ExecutiveSummary.tsx',
   'src/components/sections/HeroCountdown.tsx',
   'src/components/layout/MobileBottomNav.tsx',
+  'src/components/ExperienceShell.tsx',
+  'src/components/ShareDataButton.tsx',
+  'src/components/DataExportActions.tsx',
+  'src/components/InstagramSyncHub.tsx',
 ];
 
 const failures = [];
@@ -26,6 +30,26 @@ for (const file of files) {
 const app = read('src/app/App.tsx');
 if (app.includes('IntersectionObserver') && app.includes('rootMargin: \'320px 0px\'')) pass('carregamento diferido mantém margem de pré-carregamento otimizada.');
 else fail('carregamento diferido perdeu proteção de pré-carregamento.');
+
+const experience = read('src/components/ExperienceShell.tsx');
+if (
+  experience.includes('pendingGTimerRef')
+  && experience.includes('focusTimerRef')
+  && experience.includes('writeStorage')
+  && experience.includes('readStorage')
+  && experience.includes('clearTimeout')
+) pass('Experiência protege timers de foco/atalho e storage opcional.');
+else fail('Experiência possui timer ou acesso ao storage sem hardening suficiente.');
+
+for (const [file, label] of [
+  ['src/components/ShareDataButton.tsx', 'compartilhamento'],
+  ['src/components/DataExportActions.tsx', 'exportação'],
+  ['src/components/InstagramSyncHub.tsx', 'estúdio social'],
+]) {
+  const source = read(file);
+  if (source.includes('statusTimerRef') && source.includes('clearTimeout') && source.includes('flash(')) pass(label + ' possui cleanup de timer de status.');
+  else fail(label + ' possui timer de status sem cleanup.');
+}
 
 const main = read('src/main.tsx');
 if (main.includes('observatorioMounted') && main.includes('observatorio:last-runtime-error')) pass('bootstrap possui marcador de montagem e diagnóstico runtime.');

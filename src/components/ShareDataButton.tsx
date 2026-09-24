@@ -1,5 +1,5 @@
 import { Check, Share2 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ShareDataButtonProps {
   readonly title: string;
@@ -33,15 +33,28 @@ async function copyText(value: string) {
 
 export function ShareDataButton({ title, text, url, compact = false }: ShareDataButtonProps) {
   const [status, setStatus] = useState('');
+  const statusTimerRef = useRef<number | null>(null);
   const payload = text + '\n' + url;
+
+  useEffect(() => () => {
+    if (statusTimerRef.current) window.clearTimeout(statusTimerRef.current);
+  }, []);
+
+  const flash = (message: string) => {
+    setStatus(message);
+    if (statusTimerRef.current) window.clearTimeout(statusTimerRef.current);
+    statusTimerRef.current = window.setTimeout(() => {
+      statusTimerRef.current = null;
+      setStatus('');
+    }, 1800);
+  };
   const buttonPadding = compact ? 'px-2.5' : 'px-3';
 
   const share = async () => {
     try {
       if (navigator.share) {
         await navigator.share({ title, text, url });
-        setStatus('Compartilhado');
-        window.setTimeout(() => setStatus(''), 1800);
+        flash('Compartilhado');
         return;
       }
     } catch (error) {
@@ -49,8 +62,7 @@ export function ShareDataButton({ title, text, url, compact = false }: ShareData
     }
 
     const copied = await copyText(payload);
-    setStatus(copied ? 'Link copiado' : 'Não foi possível compartilhar');
-    window.setTimeout(() => setStatus(''), 1800);
+    flash(copied ? 'Link copiado' : 'Não foi possível compartilhar');
   };
 
   const whatsappHref = 'https://wa.me/?text=' + encodeURIComponent(payload);

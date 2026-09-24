@@ -32,15 +32,16 @@ export function PoliticalRadar() {
   }, [selectedCandidate]);
 
   const selectedResult = poll.results.find(result => result.label === selectedCandidate);
+  const theoreticalMargin = poll.theoreticalMarginErrorPct;
 
   return <section id="politica" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="politica-title">
     <SectionHeader titleId="politica-title" eyebrow="Eleições 2026" title="Pesquisa, contas e integridade em um mesmo radar" description="Registros documentais, percentuais e contexto. O componente não produz recomendação eleitoral." />
     <div className="grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
       <Card>
         <div className="flex items-start justify-between gap-4">
-          <div>
+          <div className="min-w-0">
             <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Pesquisa registrada</div>
-            <h3 className="mt-2 text-xl font-black text-white">{poll.pollster}</h3>
+            <h3 className="mt-2 text-xl font-black text-white break-words">{poll.pollster}</h3>
             <p className="mt-1 text-xs text-slate-500">{poll.collectionDate} · {poll.interviews} entrevistas · pesquisa {poll.method === 'spontaneous' ? 'espontânea' : poll.method}</p>
           </div>
           <Badge tone="warning">Registro: {poll.registrationNumber}</Badge>
@@ -50,7 +51,7 @@ export function PoliticalRadar() {
           <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             Foco do radar
             <select
-              className="mt-2 h-10 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm font-semibold normal-case tracking-normal text-white outline-none focus:border-sky-300/40 sm:min-w-[220px]"
+              className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm font-semibold normal-case tracking-normal text-white outline-none focus:border-sky-300/40 sm:min-w-[220px]"
               value={selectedCandidate}
               onChange={event => setSelectedCandidate(event.target.value)}
               aria-label="Selecionar nome da pesquisa para destacar no radar"
@@ -65,7 +66,7 @@ export function PoliticalRadar() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem teórica registrada: <strong className="text-slate-300">{poll.theoreticalMarginErrorPct?.toFixed(1).replace('.', ',') ?? 'não informada'}%</strong>. O observatório não calcula uma margem própria.</div>
+        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-3 text-xs text-slate-500">Contratante: <strong className="text-slate-300">{poll.contractor ?? 'não informado'}</strong><br />Margem teórica registrada: <strong className="text-slate-300">{theoreticalMargin != null ? theoreticalMargin.toFixed(1).replace('.', ',') + '%' : 'não informada'}</strong>. O observatório não calcula uma margem própria.</div>
         <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500">
           <strong className="text-slate-300">Recorte temporal:</strong> este painel contém um único snapshot de pesquisa, com coleta em {poll.collectionDate}. Não há série temporal suficiente neste conjunto para afirmar tendência de alta ou queda entre pesquisas.
         </div>
@@ -75,20 +76,20 @@ export function PoliticalRadar() {
           return (
             <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400">
               <strong className="text-amber-200">Contexto jurídico da divulgação:</strong> decisão de {poll.judicialContext.referenceDate.split('-').reverse().join('/')} relacionada a <strong className="text-slate-200">{poll.judicialContext.scope === 'specific_disclosures' ? 'publicações específicas do resultado' : 'esta pesquisa'}</strong>. {poll.judicialContext.summary} O painel preserva os percentuais como <strong className="text-slate-200">snapshot histórico</strong>, não como atualização de setembro.
-              {legalSource?.url && <a href={legalSource.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Abrir fonte documental</a>}
+              {legalSource?.url && <a href={legalSource.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center font-bold text-sky-300 hover:text-sky-200">Abrir fonte documental</a>}
             </div>
           );
         })()}
 
         <div className="mt-4 space-y-2">
           {poll.results.map(r => (
-            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="block w-full rounded-xl px-2 py-1 text-left transition hover:bg-white/[0.03]" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
-              <div className="flex items-center gap-3">
-                <div className="w-32 shrink-0 text-xs text-slate-400">{r.label}</div>
-                <div className="h-2 flex-1 rounded-full bg-white/5">
+            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="block min-h-11 w-full rounded-xl px-2 py-2 text-left transition hover:bg-white/[0.03]" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
+              <div className="grid min-w-0 grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3.75rem] items-center gap-2 sm:flex sm:gap-3">
+                <div className="min-w-0 break-words text-xs text-slate-400">{r.label}</div>
+                <div className="h-2 min-w-0 rounded-full bg-white/5">
                   <div className={'h-full rounded-full transition-all ' + (selectedCandidate === r.label ? 'bg-sky-300' : 'bg-sky-300/50')} style={{ width: `${Math.min(100, r.percentage * 2)}%` }} />
                 </div>
-                <div className="w-14 text-right text-xs font-bold text-white">{r.percentage.toFixed(2).replace('.', ',')}%</div>
+                <div className="text-right text-xs font-bold text-white">{r.percentage.toFixed(2).replace('.', ',')}%</div>
               </div>
             </button>
           ))}
@@ -98,7 +99,7 @@ export function PoliticalRadar() {
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Nenhum</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">NS/NR</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Não classificado</span></div>
-          <div className="rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-3"><strong className="block text-amber-100">Não informada</strong><span className="text-slate-500">margem teórica registrada: 4,9%</span></div>
+          <div className="rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-3"><strong className="block text-amber-100">Margem registrada</strong><span className="text-slate-500">{theoreticalMargin != null ? theoreticalMargin.toFixed(1).replace('.', ',') + '%' : 'não informada'}</span></div>
         </div>
         <p className="mt-4 text-xs leading-5 text-slate-500">As respostas publicadas no snapshot somam 92,25%; os 7,75 pontos restantes ficam explicitamente como “não classificados” para evitar completar a distribuição por inferência.</p>
       </Card>
@@ -107,7 +108,7 @@ export function PoliticalRadar() {
         <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Checklist IA / 72h</div>
         <div className="mt-4 space-y-3">
           <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><strong className="block text-white">Rotulagem</strong><p className="mt-1 text-xs leading-5 text-slate-400">Conteúdo sintético usado em propaganda deve identificar explicitamente a manipulação e a tecnologia utilizada.</p></div></div>
-          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><strong className="block text-white">Janela especial · 2026</strong><p className="mt-1 text-xs leading-5 text-slate-400">Para o 1º turno, a janela indicada pelo TSE vai de 01/10 às 08h até 05/10 às 17h. Para eventual 2º turno, de 22/10 às 08h até 26/10 às 17h. A regra alcança novos conteúdos sintéticos com imagem, voz ou manifestação de candidato ou pessoa pública nos termos da norma eleitoral.</p><a href="https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-755-de-2-de-marco-de-2026" target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex font-bold text-sky-300 hover:text-sky-200">Ver Resolução TSE nº 23.755/2026</a></div></div>
+          <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-300" /><div><strong className="block text-white">Janela especial · 2026</strong><p className="mt-1 text-xs leading-5 text-slate-400">Para o 1º turno, a janela indicada pelo TSE vai de 01/10 às 08h até 05/10 às 17h. Para eventual 2º turno, de 22/10 às 08h até 26/10 às 17h. A regra alcança novos conteúdos sintéticos com imagem, voz ou manifestação de candidato ou pessoa pública nos termos da norma eleitoral.</p><a href="https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-755-de-2-de-marco-de-2026" target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-11 items-center font-bold text-sky-300 hover:text-sky-200">Ver Resolução TSE nº 23.755/2026</a></div></div>
           <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><FileSearch className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" /><div><strong className="block text-white">Prestação de contas</strong><p className="mt-1 text-xs leading-5 text-slate-400">A consulta oficial permite acompanhar bens, arrecadação, despesas e movimentação financeira. O snapshot parcial cobre fatos até 08/09/2026.</p></div></div>
         </div>
       </Card>

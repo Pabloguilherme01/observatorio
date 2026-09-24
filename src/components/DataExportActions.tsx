@@ -1,5 +1,5 @@
 import { Braces, Copy, Download, ExternalLink, Image as ImageIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
 import { Card } from './ui/Card';
@@ -44,9 +44,17 @@ async function copyText(text: string): Promise<boolean> {
 
 export function DataExportActions() {
   const [status, setStatus] = useState('');
+  const statusTimerRef = useRef<number | null>(null);
+  useEffect(() => () => {
+    if (statusTimerRef.current) window.clearTimeout(statusTimerRef.current);
+  }, []);
   const flash = (message: string) => {
     setStatus(message);
-    window.setTimeout(() => setStatus(''), 1800);
+    if (statusTimerRef.current) window.clearTimeout(statusTimerRef.current);
+    statusTimerRef.current = window.setTimeout(() => {
+      statusTimerRef.current = null;
+      setStatus('');
+    }, 1800);
   };
 
   const exportJson = () => {

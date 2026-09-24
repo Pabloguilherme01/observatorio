@@ -1,5 +1,5 @@
 import { Camera, Check, Download, ExternalLink, MessageCircle, Share2, Sparkles } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
 import { useLanguageMode } from '../context/LanguageModeContext';
@@ -95,6 +95,18 @@ export function InstagramSyncHub() {
   const [selectedId, setSelectedId] = useState('orcamento');
   const [format, setFormat] = useState<Format>('story');
   const [status, setStatus] = useState('');
+  const statusTimerRef = useRef<number | null>(null);
+  useEffect(() => () => {
+    if (statusTimerRef.current) window.clearTimeout(statusTimerRef.current);
+  }, []);
+  const flash = (message: string) => {
+    setStatus(message);
+    if (statusTimerRef.current) window.clearTimeout(statusTimerRef.current);
+    statusTimerRef.current = window.setTimeout(() => {
+      statusTimerRef.current = null;
+      setStatus('');
+    }, 1800);
+  };
   const item = items.find(entry => entry.id === selectedId) ?? items[0];
 
   const caption = useMemo(() => (
@@ -111,9 +123,10 @@ export function InstagramSyncHub() {
       await navigator.clipboard.writeText(caption);
       setStatus('Legenda copiada');
     } catch {
-      setStatus('Não foi possível copiar');
+      flash('Não foi possível copiar');
+      return;
     }
-    window.setTimeout(() => setStatus(''), 1800);
+    flash('Legenda copiada');
   };
 
   const generate = async (shareFirst: boolean) => {
@@ -131,8 +144,7 @@ export function InstagramSyncHub() {
             url: trackedUrl(item.anchor),
             files: [file],
           });
-          setStatus('Conteúdo enviado ao compartilhamento');
-          window.setTimeout(() => setStatus(''), 1800);
+          flash('Conteúdo enviado ao compartilhamento');
           return;
         }
       } catch (error) {
@@ -141,8 +153,7 @@ export function InstagramSyncHub() {
     }
 
     downloadBlob(filename, blob, 'image/png');
-    setStatus(format === 'story' ? 'Story gerado' : 'Post gerado');
-    window.setTimeout(() => setStatus(''), 1800);
+    flash(format === 'story' ? 'Story gerado' : 'Post gerado');
   };
 
   return (
