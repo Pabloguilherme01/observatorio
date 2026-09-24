@@ -2796,6 +2796,13 @@ button:disabled{cursor:not-allowed;opacity:.58}
 @media(max-width:640px){.summary-public-status{align-items:flex-start}.summary-public-status-count{margin-left:auto;max-width:45%;text-align:right}}
 @media(prefers-reduced-motion:reduce){.summary-public-status-dot{box-shadow:none}}
 
+
+/* Summary + electoral feedback refinement */
+.summary-public-status{min-height:34px}
+.electoral-scope-note{display:flex;align-items:center;gap:8px}
+.electoral-scope-note strong{letter-spacing:-.01em}
+@media(max-width:640px){.electoral-scope-note{align-items:flex-start}.electoral-scope-note .summary-public-status-count{max-width:none}}
+
 /* Public summary pulse */
 .summary-public-pulse{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding:11px 12px;border:1px solid rgba(125,211,252,.1);border-radius:15px;background:linear-gradient(90deg,rgba(125,211,252,.05),rgba(255,255,255,.018))}
 .summary-public-pulse>div{min-width:0}
