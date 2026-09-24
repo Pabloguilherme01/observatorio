@@ -46,7 +46,7 @@ export function ExecutiveSummary() {
   ] as const;
 
   const quickStats = [
-    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : 'referência TSE', target: 'eleitorado' },
+    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : `${electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% participaram em 2024`, target: 'eleitoral360' },
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'saude' },
