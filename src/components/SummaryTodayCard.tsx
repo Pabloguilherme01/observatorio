@@ -39,7 +39,7 @@ export function SummaryTodayCard({ budget, electorate, transport, sanitation, on
             onClick={() => onNavigate?.(target)}
             className="mt-auto inline-flex min-h-8 items-center gap-1 text-[10px] font-bold text-sky-600 dark:text-sky-300"
           >
-            Detalhes
+            Abrir
             <ArrowRight className="h-3 w-3" aria-hidden="true" />
           </button>
         </article>
