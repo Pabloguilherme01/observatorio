@@ -48,11 +48,30 @@ function performHashScroll(hash: string) {
   return true;
 }
 
-function scrollToHashWhenReady(hash: string, attempts = 0) {
+function scrollToHashWhenReady(hash: string) {
   if (!hash) return;
   if (performHashScroll(hash)) return;
-  if (attempts >= 8) return;
-  window.requestAnimationFrame(() => scrollToHashWhenReady(hash, attempts + 1));
+
+  const root = document.getElementById('main-content') ?? document.body;
+  let observer: MutationObserver | null = null;
+  let timeoutId = 0;
+
+  const cleanup = () => {
+    observer?.disconnect();
+    if (timeoutId) window.clearTimeout(timeoutId);
+  };
+
+  const check = () => {
+    if (performHashScroll(hash)) cleanup();
+  };
+
+  if (typeof MutationObserver !== 'undefined') {
+    observer = new MutationObserver(check);
+    observer.observe(root, { childList: true, subtree: true });
+    timeoutId = window.setTimeout(cleanup, 4000);
+  }
+
+  window.requestAnimationFrame(check);
 }
 
 function DeferredBlock({
