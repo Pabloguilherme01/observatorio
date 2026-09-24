@@ -28,6 +28,13 @@ export interface Electoral360Snapshot {
   readonly candidateUniverseScope: 'GO' | 'Águas Lindas de Goiás';
   readonly localWatchlist: readonly string[];
   readonly matchedCandidates: readonly ElectoralCandidateSnapshot[];
+  readonly complementaryStats?: {
+    readonly sourceRows: number;
+    readonly uniqueCandidateIds: number;
+    readonly generationDate: string;
+    readonly byGender: Record<string, number>;
+    readonly byJudgment: Record<string, number>;
+  };
 }
 
 export type ElectoralSyncState =
