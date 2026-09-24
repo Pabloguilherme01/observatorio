@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Share2, Sparkles } from 'lucide-react';
+import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -29,6 +29,7 @@ export function ExecutiveSummary() {
   const budget = d.budget.totalBrl;
   const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
   const [shareStatus, setShareStatus] = useState('');
+  const [activeStat, setActiveStat] = useState('');
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -43,13 +44,14 @@ export function ExecutiveSummary() {
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'saude' },
   ] as const;
 
-  const share = async () => {
+  const share = async (cardLabel?: string, cardValue?: string) => {
     const text = [
       'Observatório Eleitoral — Águas Lindas de Goiás 2026',
       `Eleitorado: ${electorate.electorate.toLocaleString('pt-BR')} eleitores.`,
       `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationPoint?.referenceDate ? ` (referência ${formatDate(populationPoint.referenceDate)})` : ''}.`,
       `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%${sanitationSource?.label ? ` (${sanitationSource.label})` : ''}.`,
+      cardLabel && cardValue ? `${cardLabel}: ${cardValue}.` : '',
       poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.` : '',
     ].filter(Boolean).join(' ');
 
@@ -103,8 +105,12 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
-                <h3>Quatro números para entender a cidade antes dos detalhes.</h3>
-                <p>Toque em um cartão para abrir o contexto completo. No celular, os dados cabem na tela sem perder a origem.</p>
+                <h3>Entenda a cidade em poucos toques.</h3>
+                <p>Explore os números mais úteis primeiro. Cada cartão leva ao contexto completo e preserva a origem do dado.</p>
+                <div className="summary-public-actions" aria-label="Ações rápidas do resumo">
+                  <button type="button" onClick={() => share()} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
+                  <button type="button" onClick={() => goToSection('descubra')} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
+                </div>
               </div>
               <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
                 {quickStats.map(stat => (
@@ -114,7 +120,9 @@ export function ExecutiveSummary() {
                     className="summary-public-stat"
                     onClick={event => {
                       event.preventDefault();
+                      setActiveStat(stat.label);
                       goToSection(stat.target);
+                      window.setTimeout(() => setActiveStat(''), 900);
                     }}
                     aria-label={`Abrir contexto de ${stat.label}`}
                   >
@@ -122,7 +130,12 @@ export function ExecutiveSummary() {
                     <strong className="mobile-safe-wrap">{stat.value}</strong>
                     <small>{stat.caption}</small>
                     <em>{stat.detail}</em>
-                    <ArrowRight className="summary-public-arrow h-4 w-4" aria-hidden="true" />
+                    <span className="summary-public-stat-footer">
+                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={event => { event.preventDefault(); event.stopPropagation(); share(stat.label, stat.value); }}>
+                        <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
+                      </button>
+                      <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
+                    </span>
                   </a>
                 ))}
               </div>
@@ -200,6 +213,13 @@ export function ExecutiveSummary() {
             )}
           </div>
         </div>
+
+        {languageMode === 'summary' && (
+          <div className="summary-public-hint" role="status" aria-live="polite">
+            <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Dica: toque no número para navegar ou no ícone de compartilhar para enviar aquele dado.</span>
+            <button type="button" onClick={() => goToSection('fontes')}>Ver fontes</button>
+          </div>
+        )}
 
         {languageMode === 'simple' && (
           <div className="summary-simple-tip mt-3">
