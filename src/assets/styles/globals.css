@@ -1262,3 +1262,121 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
 @media (prefers-reduced-motion:reduce){
   #descubra .topic-card:active{transform:none}
 }
+
+/* Mobile visual refinement v2 — stronger rhythm, depth and premium cards */
+@media (max-width:767px){
+  .hero-shell{
+    border-radius:0 0 28px 28px;
+    box-shadow:0 18px 50px rgba(0,0,0,.18);
+  }
+  .hero-shell .hero-badges>*{
+    border:1px solid rgba(125,211,252,.13);
+    background:rgba(125,211,252,.045);
+    backdrop-filter:blur(8px);
+  }
+  .hero-shell .summary-hero-panel{
+    border:1px solid rgba(125,211,252,.12)!important;
+    background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018))!important;
+    box-shadow:0 14px 42px rgba(0,0,0,.16);
+  }
+  .hero-shell .summary-hero-card{
+    background:rgba(255,255,255,.028);
+    border-color:rgba(255,255,255,.065);
+  }
+
+  #descubra{
+    position:relative;
+  }
+  #descubra .topic-card{
+    min-height:112px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    border:1px solid rgba(255,255,255,.085)!important;
+    background:
+      radial-gradient(circle at 100% 0%,rgba(56,189,248,.075),transparent 42%),
+      linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.018))!important;
+    box-shadow:0 8px 26px rgba(0,0,0,.11);
+  }
+  #descubra .topic-card>span:last-child{
+    color:#8fa0b4;
+  }
+  #descubra .topic-card strong{
+    letter-spacing:-.015em;
+  }
+
+  #politica>section{
+    gap:14px!important;
+  }
+  #politica .candidate-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:20px!important;
+    box-shadow:0 12px 34px rgba(0,0,0,.14);
+  }
+  #politica .candidate-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:2px;
+    background:linear-gradient(90deg,rgba(56,189,248,.7),rgba(129,140,248,.35),transparent);
+    opacity:.8;
+  }
+  #politica .candidate-card>div:first-child{
+    padding:14px!important;
+  }
+  #politica .candidate-card h3{
+    letter-spacing:-.025em;
+  }
+  #politica .candidate-card img,
+  #politica .candidate-card>div:first-child>div:first-child{
+    border-radius:16px;
+  }
+
+  .summary-simple-card,
+  .summary-public-fact,
+  .summary-public-topic{
+    border-radius:18px!important;
+    border-color:rgba(255,255,255,.075)!important;
+    background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015))!important;
+  }
+
+  .mobile-bottom-nav{
+    border-radius:20px 20px 0 0;
+    padding-top:6px!important;
+  }
+  .mobile-bottom-nav button{
+    transition:background .18s ease,transform .18s ease;
+  }
+  .mobile-bottom-nav button:active{
+    transform:scale(.94);
+  }
+
+  .search-modal-backdrop,
+  .command-overlay{
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+  .search-modal-panel,
+  .command-panel,
+  .mobile-tools-sheet{
+    border-radius:24px!important;
+    background:linear-gradient(180deg,#111b26,#0b1219)!important;
+  }
+
+  .reading-progress{
+    height:3px;
+    box-shadow:0 0 10px rgba(56,189,248,.25);
+  }
+}
+@media (max-width:390px){
+  .hero-shell{border-radius:0 0 24px 24px}
+  #descubra .topic-card{min-height:104px}
+  #politica .candidate-card{border-radius:18px!important}
+  .mobile-bottom-nav{border-radius:17px 17px 0 0}
+}
+@media (prefers-reduced-motion:reduce){
+  .mobile-bottom-nav button:active{transform:none}
+}
