@@ -2254,3 +2254,13 @@ button:disabled{cursor:not-allowed;opacity:.58}
   .mobile-bottom-nav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .electoral360-filter{min-height:44px;width:100%;max-width:100%}
 }
+
+
+/* Performance: keep off-screen deferred sections cheap to render. */
+.deferred-section{
+  content-visibility:auto;
+  contain-intrinsic-size:240px;
+}
+@media(prefers-reduced-motion:reduce){
+  .deferred-section{content-visibility:auto}
+}
