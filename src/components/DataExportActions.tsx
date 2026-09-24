@@ -4,6 +4,7 @@ import { observatorioData as d } from '../data/observatorioData';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
 import { Card } from './ui/Card';
 import { EDITION } from '../config/version';
+import { useLanguageMode } from '../context/LanguageModeContext';
 
 const categoryFor = (id: string) => {
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
@@ -43,6 +44,7 @@ async function copyText(text: string): Promise<boolean> {
 }
 
 export function DataExportActions() {
+  const { mode } = useLanguageMode();
   const [status, setStatus] = useState('');
   const statusTimerRef = useRef<number | null>(null);
   useEffect(() => () => {
@@ -106,14 +108,14 @@ export function DataExportActions() {
   };
 
   return (
-    <Card id="exportacao">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <Card id="exportacao" className={mode === 'summary' ? 'summary-export-card' : undefined}>
+      <div className={`flex flex-col gap-4 md:flex-row md:items-center md:justify-between ${mode === 'summary' ? 'summary-export-head' : ''}`}>
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados e exportação</div>
-          <h3 className="mt-2 text-xl font-black text-white">Leve os dados para fora da aplicação</h3>
-          <p className="mt-1 text-sm text-slate-400">CSV com categoria, unidade, status, fonte e data de referência; JSON do dataset normalizado; metadados, API pública e card 1080×1920.</p>
+          <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Levar dados' : 'Leve os dados para fora da aplicação'}</h3>
+          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com categoria, unidade, status, fonte e data de referência; JSON do dataset normalizado; metadados, API pública e card 1080×1920.</p>}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className={`flex flex-wrap gap-2 ${mode === 'summary' ? 'summary-export-actions' : ''}`}>
           <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
           <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
           <button type="button" onClick={exportStory} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><ImageIcon className="h-4 w-4" aria-hidden="true" />Story</button>
