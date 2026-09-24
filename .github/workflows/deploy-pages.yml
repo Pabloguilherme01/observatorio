@@ -36,6 +36,8 @@ jobs:
         run: npm run audit:a11y
       - name: Validate mobile UX
         run: npm run audit:mobile
+      - name: Audit engagement and public summary regressions
+        run: npm run audit:engagement
       - name: Validate TSE architecture isolation
         run: npm run audit:tse-architecture
       - name: Validate data contracts
