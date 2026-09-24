@@ -159,13 +159,13 @@ export function Electoral360() {
 
 
 
-          <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Registros disponíveis para o perfil documental">
+          <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Candidatos disponíveis para o perfil">
             {(hasLocalCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates).map(candidate => (
               <button
                 key={candidate.name}
                 type="button"
                 onClick={() => setSelectedName(candidate.name)}
-                className={`min-h-11 max-w-full rounded-xl border px-3 py-2 text-left text-xs font-bold break-words ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400'}`}
+                className={`min-h-11 max-w-full rounded-xl border px-3 py-2 text-left text-xs font-bold break-words ${candidate.name === profileName ? 'border-sky-300/40 bg-sky-300/10 text-sky-100' : 'border-white/10 text-slate-400'}`}
               >
                 {candidate.name}
               </button>
@@ -274,7 +274,7 @@ export function Electoral360() {
                       <span className="mt-2 block text-[11px] text-slate-600">{candidate.occupation || 'ocupação não informada'}</span>
                     </div>
                   </div>
-                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="mt-4 min-h-11 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">Ver perfil</button>
+                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="electoral-action-button mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-black text-sky-100">Ver perfil</button>
                 </article>
               ))}
             </div>
@@ -288,7 +288,7 @@ export function Electoral360() {
                 <article key={candidate.name} className="rounded-2xl border border-white/8 p-4">
                   <h4 className="font-black text-white break-words">{candidate.name}</h4>
                   <p className="mt-1 text-xs text-slate-500 break-words">Registro editorial local · {candidate.party ?? 'partido não informado'}</p>
-                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="mt-3 min-h-11 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">Abrir perfil documental</button>
+                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="electoral-action-button mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-black text-sky-100">Abrir perfil documental</button>
                 </article>
               ))}
             </div>
