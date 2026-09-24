@@ -159,7 +159,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'loa-2026',
     label: 'Lei Municipal 1.847/2026 — LOA',
     institution: 'Prefeitura de Águas Lindas de Goiás',
-    url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654',
+    url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654/lei-1847-2026',
     nature: 'official',
   },
   {
@@ -225,7 +225,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'lei-1900-2026',
     label: 'Lei Municipal 1.900/2026 — Escola em Tempo Integral',
     institution: 'Prefeitura de Águas Lindas de Goiás',
-    url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1714',
+    url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis',
     nature: 'official',
     referenceDate: '2026-08-13',
     publishedAt: '2026-08-13',
