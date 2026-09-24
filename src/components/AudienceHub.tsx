@@ -31,8 +31,8 @@ const topicTargets: Record<string, string> = {
 export function AudienceHub() {
   const go = (id: string) => {
     const target = topicTargets[id] ?? id;
+    window.history.replaceState(null, '', '#' + target);
     window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
-    document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
