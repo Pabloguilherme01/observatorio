@@ -43,7 +43,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
   {
     id: 'candidates',
     title: 'Candidaturas',
-    description: 'A lista pública mostra apenas os nomes acompanhados pelo observatório no recorte editorial de Águas Lindas de Goiás. A base estadual usada aqui não confirma, sozinha, o município da candidatura.',
+    description: 'A lista pública é gerada pelo recorte municipal oficial de Águas Lindas de Goiás. Candidaturas entram automaticamente quando o código do município corresponde ao município-alvo.',
     status: candidateStatus,
     frequency: 'conforme captura oficial',
     sourceId: 'tse-candidatos-2026',
@@ -100,7 +100,7 @@ export const electoral360Snapshot: Electoral360Snapshot = {
   capturedAt: generatedData.meta.downloadedAt ?? '',
   captureMode: generatedData.meta.state === 'not_synced' || generatedData.meta.state === 'local_filter_pending' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
-  localWatchlist: generatedData.watchlist,
+  localWatchlist: [],
   complementaryStats: {
     sourceRows: 905,
     uniqueCandidateIds: 905,
