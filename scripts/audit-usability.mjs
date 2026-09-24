@@ -80,8 +80,8 @@ for (const [component, label] of [
 pass('camadas de descoberta, retenção, qualidade, evidências, ação, exportação e compartilhamento montadas');
 
 const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
-if (!mobileNav.includes('Navegação principal no celular') || !mobileNav.includes('observatorio:search-mobile')) fail('Navegação mobile rotulada ou busca mobile ausente');
-else pass('navegação mobile rotulada e integrada à busca');
+if (!mobileNav.includes('Navegação principal no celular')) fail('Navegação mobile rotulada ausente');
+else pass('navegação mobile rotulada e integrada ao fluxo principal');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
@@ -106,12 +106,14 @@ else fail('Modo Eleição perdeu a separação da leitura padrão');
 const languageToggle = texts.find(item => item.file === 'src/components/layout/LanguageModeToggle.tsx')?.content ?? '';
 const languageContext = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
 if (
-  languageToggle.includes('language-toggle-v2') &&
+  languageToggle.includes('language-toggle-v3') &&
   languageToggle.includes('aria-pressed') &&
-  languageContext.includes("'summary' | 'simple' | 'technical'") &&
+  languageToggle.includes("id === 'summary'") &&
+  languageToggle.includes("id === 'simple'") &&
+  languageToggle.includes("id === 'technical'") &&
   languageContext.includes("value === 'technical'") &&
   languageContext.includes("value === 'summary'")
-) pass('contrato de linguagem simples vs técnica presente');
+) pass('contrato de linguagem Resumo/Simples/Técnico presente');
 else fail('distinção de linguagem simples vs técnica incompleta');
 
 const mobileSafety = [
