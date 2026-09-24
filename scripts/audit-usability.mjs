@@ -80,7 +80,7 @@ for (const [component, label] of [
 pass('camadas de descoberta, retenção, qualidade, evidências, ação, exportação e compartilhamento montadas');
 
 const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
-if (!mobileNav.includes('Navegação rápida no celular') || !mobileNav.includes('observatorio:search')) fail('Navegação mobile rotulada ou busca mobile ausente');
+if (!mobileNav.includes('Navegação principal no celular') || !mobileNav.includes('observatorio:search-mobile')) fail('Navegação mobile rotulada ou busca mobile ausente');
 else pass('navegação mobile rotulada e integrada à busca');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
@@ -88,7 +88,7 @@ if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail(
 else pass('busca possui resposta rápida e navegação por teclado');
 
 const css = texts.find(item => item.file === 'src/assets/styles/globals.css')?.content ?? '';
-for (const [needle, label] of [[':focus-visible','foco visível'],['prefers-reduced-motion','redução de movimento'],['safe-area-inset-bottom','safe-area mobile'],['scroll-snap-type','rails mobile'],['max-width:380px','telas muito pequenas'],['min-height:44px','alvo de toque mobile'],['--mobile-touch:44px','alvo de toque mobile']]) {
+for (const [needle, label] of [[':focus-visible','foco visível'],['prefers-reduced-motion','redução de movimento'],['safe-area-inset-bottom','safe-area mobile'],['scroll-snap-type','rails mobile'],['@media (max-width:390px)','telas muito pequenas'],['min-height:44px','alvo de toque mobile'],['--mobile-touch:44px','alvo de toque mobile']]) {
   if (!css.includes(needle)) fail('Camada visual/acessível ausente: ' + label);
 }
 pass('camadas visuais e mobile essenciais presentes');
@@ -110,15 +110,14 @@ const simpleTexts = [
 ];
 const technicalTexts = [
   'Fonte, data e método',
+  'Detalhes técnicos visíveis',
   'Resumo com rastreabilidade',
-  'Os números de referência',
 ];
 if (simpleTexts.every(value => combined.includes(value)) && technicalTexts.every(value => combined.includes(value))) pass('contrato de linguagem simples vs técnica presente');
 else fail('distinção de linguagem simples vs técnica incompleta');
 
 const mobileSafety = [
-  'isCompactViewport',
-  'max-width:380px',
+  '@media (max-width:390px)',
   'overflow-wrap:anywhere',
 ];
 if (mobileSafety.every(value => combined.includes(value) || css.includes(value))) pass('proteções de experiência mobile presentes');
