@@ -9,6 +9,7 @@ const index = read('index.html');
 const app = read('src/app/App.tsx');
 const hero = read('src/components/sections/HeroCountdown.tsx');
 const dashboard = read('src/components/sections/DashboardMetrics.tsx');
+const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const comparison = read('src/components/sections/ContextComparison.tsx');
 const context = read('src/context/LanguageModeContext.tsx');
 const theme = read('src/context/ThemeContext.tsx');
