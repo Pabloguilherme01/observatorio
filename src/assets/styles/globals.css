@@ -1568,3 +1568,96 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   }
   #descubra .topic-card>span:last-child{display:none}
 }
+
+/* Mobile update v2 — 2026-09-24 */
+@media (max-width:767px){
+  html{scroll-padding-top:64px}
+  body{overflow-x:hidden; -webkit-text-size-adjust:100%}
+  button,a,input,select,textarea{touch-action:manipulation}
+  input,select,textarea{font-size:16px!important}
+
+  .mobile-bottom-nav{
+    z-index:80!important;
+    left:8px!important;
+    right:8px!important;
+    bottom:max(8px,env(safe-area-inset-bottom))!important;
+    width:auto!important;
+    height:62px!important;
+    min-height:62px!important;
+    padding:4px!important;
+    border:1px solid rgba(148,163,184,.16)!important;
+    border-radius:20px!important;
+    box-shadow:0 10px 35px rgba(0,0,0,.28)!important;
+    backdrop-filter:blur(18px);
+  }
+  .mobile-bottom-nav button{
+    min-width:0!important;
+    min-height:52px!important;
+    height:52px!important;
+    padding:5px 3px!important;
+    border-radius:15px!important;
+  }
+
+  #descubra{scroll-margin-top:70px}
+  #politica{scroll-margin-top:70px}
+
+  #descubra .discovery-shell>.grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+
+  #politica .candidate-card{
+    min-width:0;
+  }
+  #politica .candidate-card h3{
+    overflow-wrap:anywhere;
+    white-space:normal!important;
+  }
+  #politica .candidate-card .grid.grid-cols-2{
+    grid-template-columns:1fr!important;
+  }
+  #politica .candidate-card a,
+  #politica .candidate-card button{
+    min-height:44px!important;
+  }
+  #politica details{
+    overflow:hidden;
+  }
+
+  /* Avoid horizontal overflow from wide data panels/tables. */
+  .overflow-x-auto{
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    max-width:100%;
+  }
+
+  /* Compact secondary metadata without shrinking primary actions. */
+  .text-xs{
+    line-height:1.4;
+  }
+}
+
+@media (max-width:390px){
+  .mobile-bottom-nav{
+    left:5px!important;
+    right:5px!important;
+    bottom:max(5px,env(safe-area-inset-bottom))!important;
+  }
+  .mobile-bottom-nav button span{
+    font-size:8px!important;
+  }
+  #descubra .discovery-shell>.grid{gap:7px!important}
+  #descubra .topic-card{
+    min-height:98px!important;
+    padding:9px!important;
+  }
+}
+
+@media (max-width:340px){
+  #descubra .discovery-shell>.grid{
+    grid-template-columns:1fr!important;
+  }
+  #descubra .topic-card{
+    min-height:78px!important;
+  }
+  .mobile-bottom-nav button span{display:none!important}
+}
