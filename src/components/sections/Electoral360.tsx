@@ -69,6 +69,23 @@ export function Electoral360() {
         description="Consulte nomes acompanhados em Águas Lindas, dados públicos de identificação e informações do eleitorado."
       />
 
+      <div className="mb-3 rounded-2xl border border-white/8 bg-white/[0.018] px-3 py-3">
+        <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">O que você encontra aqui</div>
+        <div className="mt-2 grid gap-2 sm:grid-cols-3">
+          <div className="rounded-xl border border-white/6 px-3 py-2">
+            <strong className="block text-xs text-white">Perfis públicos</strong>
+            <span className="text-[10px] leading-4 text-slate-500">nome, partido, número e dados cadastrais disponíveis.</span>
+          </div>
+          <div className="rounded-xl border border-white/6 px-3 py-2">
+            <strong className="block text-xs text-white">Eleitorado</strong>
+            <span className="text-[10px] leading-4 text-slate-500">participação, abstenção e composição do cadastro.</span>
+          </div>
+          <div className="rounded-xl border border-white/6 px-3 py-2">
+            <strong className="block text-xs text-white">Fontes</strong>
+            <span className="text-[10px] leading-4 text-slate-500">links para conferir os dados nas bases públicas.</span>
+          </div>
+        </div>
+      </div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
         <div className="min-w-0">
           <strong className="block text-xs font-black text-sky-100">Recorte local</strong>
