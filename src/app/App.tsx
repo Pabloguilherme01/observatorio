@@ -4,6 +4,7 @@ import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { HeroCountdown } from '../components/sections/HeroCountdown';
 import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { ThemeProvider } from '../context/ThemeContext';
+import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
 import { LanguageModeProvider } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
@@ -171,6 +172,7 @@ export function App() {
     <>
       <LanguageModeProvider>
       <ThemeProvider>
+        <ContrastProvider>
         <ExperienceShell>
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><HeroCountdown /></SectionErrorBoundary>
@@ -188,6 +190,7 @@ export function App() {
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
         </ExperienceShell>
+        </ContrastProvider>
       </ThemeProvider>
       </LanguageModeProvider>
     </>
