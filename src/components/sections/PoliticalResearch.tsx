@@ -132,7 +132,24 @@ export function PoliticalResearch() {
         <div className="mt-4 grid gap-4 md:grid-cols-2">{filteredCandidates.length ? filteredCandidates.map(candidate => <CandidateCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />) : <div className="md:col-span-2 rounded-2xl border border-dashed border-white/10 p-6 text-center text-sm text-slate-500">Nenhuma candidatura encontrada com esses filtros.</div>}</div>
       )}
 
-      <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Redes sociais:</strong> o Instagram só aparece quando a URL foi declarada na base. O Observatório não deduz contas por semelhança de nome.</div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 transition hover:border-sky-300/25">
+          <span className="text-[10px] font-black uppercase tracking-widest text-sky-300">Fonte oficial</span>
+          <strong className="mt-1 block text-sm font-black text-white">DivulgaCandContas</strong>
+          <span className="mt-1 block text-xs leading-5 text-slate-500">Consulte por cargo, estado ou município.</span>
+        </a>
+        <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-4 transition hover:border-white/20">
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Dados</span>
+          <strong className="mt-1 block text-sm font-black text-white">Candidatos 2026</strong>
+          <span className="mt-1 block text-xs leading-5 text-slate-500">Base pública usada no snapshot do Observatório.</span>
+        </a>
+        <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-4 transition hover:border-white/20">
+          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Eleições</span>
+          <strong className="mt-1 block text-sm font-black text-white">Portal Eleições 2026</strong>
+          <span className="mt-1 block text-xs leading-5 text-slate-500">Calendário, estatísticas e serviços oficiais.</span>
+        </a>
+      </div>
+      <div className="mt-3 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Redes sociais:</strong> o Instagram só aparece quando a URL foi declarada na base. O Observatório não deduz contas por semelhança de nome.</div>
     </section>
   );
 }
@@ -159,9 +176,10 @@ function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
       </div>
       <div className="flex flex-wrap gap-2 p-4">
         {hasInstagram ? <a href={candidate.instagramUrl!} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.06] px-3 py-2 text-xs font-bold text-pink-100" aria-label={'Abrir Instagram de ' + candidate.name}><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram</a> : <span className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-500"><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram não informado</span>}
+        <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.05] px-3 py-2 text-xs font-bold text-sky-100" aria-label={'Consultar ' + candidate.name + ' no DivulgaCandContas'}><ShieldCheck className="h-4 w-4" aria-hidden="true" /> Consultar no TSE</a>
         <button type="button" onClick={() => shareCandidate(candidate, 'whatsapp')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-2 text-xs font-bold text-emerald-200"><MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp</button>
         <button type="button" onClick={() => shareCandidate(candidate, 'native')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
-        <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-slate-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> TSE</a>
+        <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-slate-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> Dados abertos</a>
       </div>
     </Card>
   );
