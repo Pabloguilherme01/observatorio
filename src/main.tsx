@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './assets/styles/globals.css';
+import './assets/styles/mobile-final.css';
 import { App } from './app/App';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
 import { captureObservatorioException } from './lib/sentry';
