@@ -7,7 +7,7 @@ import {
   publicCandidates,
   searchCandidates,
   type PublicCandidate,
-} from "@/data/candidates";
+} from "../data/candidates";
 
 type CandidateTab = "profile" | "poll";
 
