@@ -106,7 +106,7 @@ const publicApiPlugin = (): Plugin => ({
 });
 
 export default defineConfig({
-  base: '/',
+  base: '/observatorio/',
   plugins: [
     publicApiPlugin(),
     react(),
@@ -119,13 +119,13 @@ export default defineConfig({
         description: 'Dados públicos eleitorais e municipais de Águas Lindas de Goiás, com fontes rastreáveis.',
         lang: 'pt-BR',
         dir: 'ltr',
-        id: '/',
+        id: '/observatorio/',
         theme_color: '#0d1117',
         background_color: '#0d1117',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: '/',
-        scope: '/',
+        start_url: '/observatorio/',
+        scope: '/observatorio/',
         categories: ['public-services', 'education'],
         prefer_related_applications: false,
         icons: [
