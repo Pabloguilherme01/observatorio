@@ -45,6 +45,7 @@ export function MobileBottomNav() {
     const targetIds = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
     const observedNodes = new WeakSet<Element>();
     const observedIds = new Set<string>();
+    let mutations: MutationObserver | null = null;
 
     const observe = () => {
       if (!observer) return;
@@ -68,7 +69,7 @@ export function MobileBottomNav() {
       });
     };
 
-    const mutations = typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleObserve);
+    mutations = typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleObserve);
 
     updateFromHash();
     observe();
