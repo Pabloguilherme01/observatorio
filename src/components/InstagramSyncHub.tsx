@@ -1,6 +1,7 @@
 import { Camera, Check, Download, ExternalLink, MessageCircle, Share2, Sparkles } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
+import { electoral360Snapshot } from '../data/electoral360';
 import { EDITION } from '../config/version';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { downloadBlob } from '../lib/export';
@@ -12,7 +13,7 @@ const items: readonly SocialItem[] = [
   { id: 'orcamento', label: 'LOA 2026', value: 'R$ ' + (d.budget.totalBrl / 1_000_000).toFixed(1).replace('.', ',') + ' mi', note: 'orçamento total informado', anchor: 'orcamento' },
   { id: 'eleitorado', label: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR'), note: 'snapshot local', anchor: 'eleitorado' },
   { id: 'transporte', label: 'Transporte', value: d.transport.routes[0]?.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'R$ 0,00', note: 'trecho de referência para Brasília', anchor: 'transporte' },
-  { id: 'eleitoral', label: 'Candidatos acompanhados', value: d.candidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral local', anchor: 'eleitoral360' },
+  { id: 'eleitoral', label: 'Nomes acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), note: 'recorte eleitoral acompanhado em Águas Lindas', anchor: 'eleitoral360' },
   { id: 'populacao', label: 'População 2026', value: (d.populationSeries.find(point => point.year === 2026)?.value ?? 0).toLocaleString('pt-BR'), note: 'estimativa IBGE', anchor: 'dashboard' },
 ];
 
