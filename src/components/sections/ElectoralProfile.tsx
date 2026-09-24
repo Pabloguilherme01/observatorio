@@ -33,7 +33,9 @@ export function ElectoralProfile() {
               <span><i className="mr-1 inline-block h-2 w-2 rounded-full bg-slate-600" aria-hidden="true" />homens</span>
             </div>
           </div>
-          <div className="space-y-3">
+          <details className="electoral-profile-detail mt-4 rounded-2xl border border-white/8 p-3 light:border-slate-200">
+            <summary className="cursor-pointer list-none text-xs font-bold text-slate-300 light:text-slate-700">Abrir detalhe · faixas etárias</summary>
+            <div className="mt-3"><div className="space-y-3">
             {d.electoral.ageGroups.map(group => {
               const pct = totalAgeVoters ? (group.voters / totalAgeVoters) * 100 : 0;
               return (
@@ -49,7 +51,8 @@ export function ElectoralProfile() {
               );
             })}
           </div>
-        </div>
+        </div></div>
+          </details>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <div className="rounded-2xl border border-white/8 p-4"><UserRound className="mb-2 h-4 w-4 text-sky-300" aria-hidden="true" /><strong className="block text-white">{(d.electoral.womenPct ?? 0).toFixed(2).replace('.', ',')}%</strong><span className="text-xs text-slate-500">mulheres</span></div>
           <div className="rounded-2xl border border-white/8 p-4"><UsersRound className="mb-2 h-4 w-4 text-sky-300" aria-hidden="true" /><strong className="block text-white">{(d.electoral.menPct ?? 0).toFixed(2).replace('.', ',')}%</strong><span className="text-xs text-slate-500">homens</span></div>
