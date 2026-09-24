@@ -599,6 +599,21 @@ async function main() {
 }
 
 main().catch(error => {
+  const previous = loadPrevious();
+  if (previous?.meta?.snapshotId && Array.isArray(previous?.matched)) {
+    console.warn(JSON.stringify({
+      valid: true,
+      state: 'upstream_unavailable',
+      message: 'A origem oficial do TSE está temporariamente indisponível para o runner. O último snapshot validado foi preservado e não será sobrescrito.',
+      snapshotId: previous.meta.snapshotId,
+      sourceUrl: previous.meta.sourceUrl,
+      lastState: previous.meta.state,
+      matched: previous.matched.length,
+      error: error instanceof Error ? error.message : String(error),
+    }, null, 2));
+    process.exitCode = 0;
+    return;
+  }
   console.error(error);
   process.exitCode = 1;
 });
