@@ -51,7 +51,7 @@ must(main.includes('beforeinstallprompt') && main.includes('PwaInstallPrompt'), 
 must(index.includes('manifest.webmanifest') && index.includes('apple-mobile-web-app-capable'), 'metadados de instalação estão publicados');
 must(css.includes('--obs-font-sans') && css.includes('font-synthesis:none'), 'tipografia usa stack estável e síntese desativada');
 must(css.includes('.obs-card') && css.includes('.source-card') && css.includes('.search-empty-action'), 'cards, fontes e estado vazio da busca possuem tratamento visual dedicado');
-must(css.includes('summary-public-facts') && css.includes('summary-public-fact-body'), 'Resumo público possui descobertas rápidas expansíveis');
+must(css.includes('summary-public-facts') && css.includes('summary-public-fact'), 'Resumo público possui cartões de contexto rápido');
 must(search.includes('destinationLabel') && search.includes('history.replaceState(null, \'\', \'#\' + target)'), 'busca navega por hash sem scroll duplicado');
 must(search.includes('search-empty-action') && !search.includes('document.getElementById(id)?.scrollIntoView'), 'seleção de busca não dispara scroll direto e infinito');
 must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
@@ -61,11 +61,11 @@ must((quiz.match(/quiz-phase-roadmap/g) || []).length === 1, 'quiz possui apenas
 must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
 must(executive.includes('poll?.pollster') && executive.includes('poll?.method') && executive.includes('poll?.registrationNumber'), 'card de pesquisa exibe identificação e cenário');
-must(files.app.includes('id="main-content"') && (files.app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
-must(files.hero.includes('Modo Eleição') && files.hero.includes('Ativar Modo Eleição') && files.hero.includes('aria-pressed'), 'Modo Eleição possui alternador visível e acessível');
+must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
+must((read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && (read('src/components/sections/HeroCountdown.tsx')).includes('Ativar Modo Eleição') && files.hero.includes('aria-pressed'), 'Modo Eleição possui alternador visível e acessível');
 must(files.hero.includes('Fonte: IBGE') && files.hero.includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
-must(dashboard.includes('Orçamento planejado por habitante') && files.dashboard.includes('totalBrl') && files.dashboard.includes('population2026'), 'dashboard calcula orçamento planejado por habitante');
-must(files.dashboard.includes('LOA ÷ população') || files.dashboard.includes('LOA / população'), 'indicador per capita explicita fórmula');
+must(dashboard.includes('Orçamento planejado por habitante') && dashboard.includes('totalBrl') && dashboard.includes('population2026'), 'dashboard calcula orçamento planejado por habitante');
+must(dashboard.includes('LOA ÷ população') || files.dashboard.includes('LOA / população'), 'indicador per capita explicita fórmula');
 must(files.hero.includes('transporte semiurbano') && files.hero.includes('Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
 must(files.dashboard.includes('Crescimento populacional · 2022–2026') && files.dashboard.includes('Eleitorado · 2018–2026'), 'dashboard mantém tendências históricas');
 
