@@ -64,5 +64,19 @@ export function ElectoralProfile() {
         <div className="mt-4 text-xs text-slate-500">Fonte do consolidado: reconciliação editorial local. Indígenas: 941 pessoas no Censo · 33 registros eleitorais informados no material de origem.</div>
       </Card>
     </div>
+
+      <Card className="lg:col-span-2 border-sky-300/12 bg-sky-300/[0.025]">
+        <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Contexto de mobilidade eleitoral</div>
+        <div className="mt-3 grid gap-4 lg:grid-cols-[auto_1fr] lg:items-center">
+          <div>
+            <div className="text-4xl font-black text-white light:text-slate-900">4.063</div>
+            <div className="text-xs text-slate-500">títulos transferidos do DF para Águas Lindas em 2024</div>
+          </div>
+          <div className="text-sm leading-6 text-slate-400">
+            Em levantamento com dados do TRE-GO, Águas Lindas foi o município do Entorno que mais recebeu títulos transferidos da capital no ciclo de 2022–2024. O dado é histórico e não deve ser interpretado como composição atual do eleitorado de 2026.
+            <a className="ml-1 inline-flex items-center gap-1 font-bold text-sky-300 hover:text-sky-200" href="https://www12.senado.leg.br/tv/programas/noticias-1/2024/10/aguas-lindas-e-o-municipio-do-entorno-do-df-que-mais-recebeu-titulos-transferidos-da-capital-federal" target="_blank" rel="noopener noreferrer">Fonte: TV Senado · dados TRE-GO</a>
+          </div>
+        </div>
+      </Card>
   </section>;
 }
