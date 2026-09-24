@@ -42,17 +42,28 @@ export function MobileBottomNav() {
       if (visible?.target.id) setActiveSection(sectionToTab(visible.target.id));
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
+    const targetIds = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
+    const observedNodes = new WeakSet<Element>();
+
     const observe = () => {
       if (!observer) return;
-      const ids = new Set(['dashboard', 'descubra', 'dados', 'fontes', ...thematicIds]);
-      ids.forEach(id => {
+      targetIds.forEach(id => {
         const node = document.getElementById(id);
-        if (node) observer.observe(node);
+        if (node && !observedNodes.has(node)) {
+          observedNodes.add(node);
+          observer.observe(node);
+        }
       });
     };
 
+    const mutations = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => observe());
+
     updateFromHash();
     observe();
+    mutations?.observe(document.getElementById('main-content') ?? document.body, {
+      childList: true,
+      subtree: true,
+    });
 
     const onNavigate = (event: Event) => {
       setActiveSection(sectionToTab((event as CustomEvent<string>).detail));
@@ -63,6 +74,7 @@ export function MobileBottomNav() {
     window.addEventListener('observatorio:navigate', onNavigate);
     return () => {
       observer?.disconnect();
+      mutations?.disconnect();
       window.removeEventListener('hashchange', updateFromHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
     };
