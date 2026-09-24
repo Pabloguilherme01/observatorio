@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "source": "derived from tse2026-candidates.json",
+  "scope": "Águas Lindas de Goiás watchlist",
+  "candidates": [
+    {
+      "id": "90002549161",
+      "name": "ANDERSON TEODORO",
+      "number": 25789,
+      "party": "PRD",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "education": "SUPERIOR INCOMPLETO",
+      "occupation": "VEREADOR",
+      "photoUrl": null
+    },
+    {
+      "id": "90002543127",
+      "name": "ZÉ DA IMPERIAL",
+      "number": 33070,
+      "party": "MOBILIZA",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "education": "ENSINO MÉDIO COMPLETO",
+      "occupation": "COMERCIANTE",
+      "photoUrl": null
+    },
+    {
+      "id": "90002537423",
+      "name": "BAIANO DOS COCOS",
+      "number": 20070,
+      "party": "PODE",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "education": "ENSINO MÉDIO COMPLETO",
+      "occupation": "COMERCIANTE",
+      "photoUrl": null
+    },
+    {
+      "id": "90002547004",
+      "name": "ABADYAS DAMASCENO",
+      "number": 44360,
+      "party": "UNIÃO",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "education": "ENSINO MÉDIO INCOMPLETO",
+      "occupation": "ELETRICISTA E ASSEMELHADOS",
+      "photoUrl": null
+    },
+    {
+      "id": "90002543768",
+      "name": "FELIPE GALDINO",
+      "number": 22133,
+      "party": "PL",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "education": "SUPERIOR INCOMPLETO",
+      "occupation": "EMPRESÁRIO",
+      "photoUrl": null
+    }
+  ]
+}
