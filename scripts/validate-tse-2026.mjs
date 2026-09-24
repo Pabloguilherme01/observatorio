@@ -30,7 +30,7 @@ const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 
 if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
-  if (requireSynced && !isMunicipalitySnapshot) errors.push('Placeholder estadual não pode passar quando REQUIRE_TSE_SYNC=true.');
+  if (requireSynced && !isMunicipalitySnapshot && !allowUpstreamUnavailable) errors.push('Placeholder estadual não pode passar quando REQUIRE_TSE_SYNC=true.');
   if (requireSynced && isMunicipalitySnapshot && state === 'local_filter_pending' && !allowUpstreamUnavailable) errors.push('Snapshot municipal ainda pendente; sincronização oficial municipal é necessária antes da publicação de novos registros de candidatura.');
   if (requireSynced && isStateWatchlistSnapshot && !payload.matched.length && !allowUpstreamUnavailable) errors.push('Snapshot estadual sincronizado sem correspondências da watchlist.');
   if (allowUpstreamUnavailable && state === 'local_filter_pending') warnings.push('Origem oficial TSE indisponível no runner; snapshot anterior foi preservado sem promover novos registros.');
