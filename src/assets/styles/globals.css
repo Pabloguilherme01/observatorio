@@ -2392,7 +2392,7 @@ button:disabled{cursor:not-allowed;opacity:.58}
 .light .summary-public-copy h3,.light .summary-public-stat strong{color:#0f172a}
 @media(min-width:768px){
   .summary-public-hero{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:stretch;padding:18px}
-  .summary-public-grid{grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch}
+  .summary-public-grid{grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch}
   .summary-public-stat{min-height:126px}
 }
 @media(max-width:390px){
