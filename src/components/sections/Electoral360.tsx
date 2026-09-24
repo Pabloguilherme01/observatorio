@@ -137,8 +137,7 @@ export function Electoral360() {
         <details className="mb-4 rounded-3xl border border-white/8 bg-white/[0.015] p-4">
           <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Complementos do universo estadual</summary>
           <div className="mt-3">
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais contexto eleitoral</div>
               <div className="mt-1 text-sm font-semibold text-white">Base complementar consultada</div>
@@ -148,8 +147,7 @@ export function Electoral360() {
               <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
               <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.MASCULINO ?? 0}</strong><span className="text-[9px] text-slate-600">masculino</span></div>
             </div>
-          </div>
-        </Card>
+            </div>
           </div>
         </details>
       )}
