@@ -1,4 +1,4 @@
-import { ArrowRight, BusFront, Command, Compass, Droplets, LayoutDashboard, Search, Sparkles, Vote, X } from 'lucide-react';
+import { ArrowRight, Command, Compass, Search, Sparkles, X } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';
@@ -17,11 +17,11 @@ function jump(id: string) {
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
-  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [progress, setProgress] = useState(0), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview'), [electionMode, setElectionModeState] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [progress, setProgress] = useState(0), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview');
   const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), pendingG = useRef(false), pendingGTimerRef = useRef<number | null>(null), focusTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setRecent(readList(RECENT_KEY)); setFavorites(readList(FAVORITES_KEY)); const reduced = readStorage(REDUCED_KEY) === '1'; setReducedMotion(reduced); document.documentElement.classList.toggle('reduced-motion', reduced); const electionStored = readStorage(ELECTION_KEY) === '1'; setElectionModeState(electionStored); document.documentElement.classList.toggle('mode-election', electionStored); const storedMode = readStorage(MODE_KEY) as ExperienceMode | null; const initialMode: ExperienceMode = storedMode === 'overview' || storedMode === 'investigation' || storedMode === 'evidence' ? storedMode : 'overview'; setMode(initialMode); document.documentElement.dataset.experienceMode = initialMode; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + initialMode);
+    setRecent(readList(RECENT_KEY)); setFavorites(readList(FAVORITES_KEY)); const reduced = readStorage(REDUCED_KEY) === '1'; setReducedMotion(reduced); document.documentElement.classList.toggle('reduced-motion', reduced); const electionStored = readStorage(ELECTION_KEY) === '1'; document.documentElement.classList.toggle('mode-election', electionStored); const storedMode = readStorage(MODE_KEY) as ExperienceMode | null; const initialMode: ExperienceMode = storedMode === 'overview' || storedMode === 'investigation' || storedMode === 'evidence' ? storedMode : 'overview'; setMode(initialMode); document.documentElement.dataset.experienceMode = initialMode; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + initialMode);
     let scrollRaf = 0;
     const onScroll = () => {
       if (scrollRaf) return;
@@ -45,7 +45,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     window.addEventListener('observatorio:navigate', onNavigate);
     window.addEventListener('hashchange', onHashChange);
     const onOpen = () => { openerRef.current = document.activeElement as HTMLElement; setCommandOpen(true); };
-    const onElection = (event: Event) => { const next = (event as CustomEvent<boolean>).detail; setElectionModeState(next); writeStorage(ELECTION_KEY, next ? '1' : '0'); document.documentElement.classList.toggle('mode-election', next); window.dispatchEvent(new CustomEvent('observatorio:election-mode-changed', { detail: next })); };
+    const onElection = (event: Event) => { const next = (event as CustomEvent<boolean>).detail; writeStorage(ELECTION_KEY, next ? '1' : '0'); document.documentElement.classList.toggle('mode-election', next); window.dispatchEvent(new CustomEvent('observatorio:election-mode-changed', { detail: next })); };
     window.addEventListener('observatorio:command', onOpen);
     window.addEventListener('observatorio:election-mode', onElection as EventListener);
     return () => {
@@ -130,7 +130,6 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, [activeModal]);
 
   const setExperienceMode = (next: ExperienceMode) => { setMode(next); writeStorage(MODE_KEY, next); document.documentElement.dataset.experienceMode = next; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + next); window.dispatchEvent(new CustomEvent('observatorio:mode-changed', { detail: next })); };
-  const setElectionMode = (next: boolean) => { setElectionModeState(next); writeStorage(ELECTION_KEY, next ? '1' : '0'); document.documentElement.classList.toggle('mode-election', next); window.dispatchEvent(new CustomEvent('observatorio:election-mode-changed', { detail: next })); };
 
   const remember = (id: string) => { setRecent(current => { const next = [id,...current.filter(item => item !== id)].slice(0,5); writeStorage(RECENT_KEY, JSON.stringify(next)); return next; }); };
   const toggleFavorite = (id: string) => { setFavorites(current => { const next = current.includes(id) ? current.filter(item => item !== id) : [...current,id].slice(-6); writeStorage(FAVORITES_KEY, JSON.stringify(next)); return next; }); };
