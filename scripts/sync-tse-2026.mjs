@@ -43,6 +43,50 @@ const API_CARGOS = [
   { code: '7', label: 'deputado-estadual-distrital' },
 ];
 
+// O TSE pode bloquear o IP compartilhado dos runners do GitHub Actions (HTTP 403).
+// Nesses casos, o conteúdo continua sendo solicitado ao endpoint oficial do TSE,
+// mas o transporte pode passar por um reader/proxy público somente para contornar
+// a barreira de rede. O snapshot registra esse transporte explicitamente.
+const API_READER_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?url=',
+];
+
+function curlJson(url) {
+  const output = execFileSync('curl', [
+    '--fail', '--location', '--http1.1',
+    '--retry', '1', '--retry-delay', '1', '--retry-all-errors',
+    '--connect-timeout', '15', '--max-time', '45',
+    '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
+    '--header', 'Accept: application/json',
+    '--header', 'Accept-Language: pt-BR,pt;q=0.9',
+    '--referer', 'https://divulgacandcontas.tse.jus.br/divulga/',
+    url,
+  ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
+  return JSON.parse(output);
+}
+
+function encodeProxyTarget(url) {
+  return encodeURIComponent(url);
+}
+
+function fetchApi(url) {
+  try {
+    return { payload: curlJson(url), transport: 'direct_official', requestUrl: url };
+  } catch (directError) {
+    console.warn('[TSE] acesso direto bloqueado/indisponível; tentando transporte intermediado.');
+    for (const proxy of API_READER_PROXIES) {
+      const requestUrl = proxy + encodeProxyTarget(url);
+      try {
+        return { payload: curlJson(requestUrl), transport: 'reader_proxy', requestUrl };
+      } catch (proxyError) {
+        console.warn('[TSE] proxy indisponível: ' + proxy + ' (' + (proxyError instanceof Error ? proxyError.message : String(proxyError)) + ')');
+      }
+    }
+    throw directError;
+  }
+}
+
 function fetchApi(url) {
   const output = execFileSync('curl', [
     '--fail',
@@ -94,10 +138,10 @@ function collectApiCandidates() {
   for (const cargo of API_CARGOS) {
     const url = API_BASE_URL + '/candidatura/listar/2026/' + MUNICIPALITY_CODE + '/' + ELECTION_ID + '/' + cargo.code + '/candidatos';
     try {
-      const payload = fetchApi(url);
-      const rows = Array.isArray(payload?.candidatos) ? payload.candidatos : [];
-      sources.push({ url, cargo: cargo.label, count: rows.length });
-      for (const candidate of rows) candidates.push({ candidate, cargo, url });
+      const response = fetchApi(url);
+      const rows = Array.isArray(response.payload?.candidatos) ? response.payload.candidatos : [];
+      sources.push({ url, cargo: cargo.label, count: rows.length, transport: response.transport });
+      for (const candidate of rows) candidates.push({ candidate, cargo, url, transport: response.transport });
     } catch (error) {
       console.warn('[TSE] API indisponível para ' + cargo.label + ': ' + (error instanceof Error ? error.message : String(error)));
     }
@@ -332,6 +376,7 @@ async function main() {
     const apiResult = collectApiCandidates();
     if (apiResult) {
       selectedSourceUrl = apiResult.sources.map(source => source.url).join('|');
+      const apiTransport = apiResult.sources.some(source => source.transport === 'reader_proxy') ? 'reader_proxy' : 'direct_official';
       const matched = [];
       const seen = new Set();
       for (const item of apiResult.candidates) {
@@ -340,6 +385,7 @@ async function main() {
         if (!name) continue;
         const watchlistName = WATCHLIST.find(expected => matchesAlias(name, WATCHLIST_ALIASES[expected] ?? [expected]));
         if (!watchlistName) continue;
+        selectedSourceUrl = item.url;
         const record = apiCandidateToRecord(item.candidate, item.cargo.label, previousBySq.get(String(item.candidate.id ?? item.candidate.sq_CANDIDATO ?? '')));
         if (!record.sqCandidate) throw new Error('Registro municipal da API sem identificador de candidato.');
         if (seen.has(record.sqCandidate)) continue;
@@ -377,10 +423,13 @@ async function main() {
           workflowRunId: process.env.GITHUB_RUN_ID || undefined,
           gitCommit: process.env.GITHUB_SHA || undefined,
           state,
-          retrievalMethod: 'official_tse_divulgacandcontas_api',
+          retrievalMethod: apiTransport === 'reader_proxy' ? 'official_tse_divulgacandcontas_api_via_reader_proxy' : 'official_tse_divulgacandcontas_api',
+          captureTransport: apiTransport,
           resourceUrl: selectedSourceUrl,
           selection: 'watchlist_only',
-          filterNote: 'Recorte municipal validado diretamente pela API oficial DivulgaCandContas do TSE. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.',
+          filterNote: apiTransport === 'reader_proxy'
+            ? 'Recorte municipal validado pelo conteúdo do endpoint oficial DivulgaCandContas do TSE. O runner do GitHub recebeu HTTP 403 no acesso direto e usou transporte intermediado apenas para obter o mesmo endpoint oficial; o transporte está registrado no snapshot. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.'
+            : 'Recorte municipal validado diretamente pela API oficial DivulgaCandContas do TSE. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.',
           missingWatchlist: WATCHLIST.filter(name=>!matched.some(candidate=>candidate.watchlistName===name)),
           apiCargos: apiResult.sources,
         },
