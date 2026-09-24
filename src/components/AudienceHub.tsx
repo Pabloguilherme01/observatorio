@@ -1,5 +1,4 @@
 import { ArrowRight, BarChart3, BookOpen, BusFront, CalendarDays, CheckCircle2, Droplets, ExternalLink, Landmark, Search, ShieldCheck, Users, WalletCards, Vote, FileCheck2, Database } from 'lucide-react';
-import { LanguageModeToggle } from './layout/LanguageModeToggle';
 import { useLanguageMode } from '../context/LanguageModeContext';
 
 type Topic = {
@@ -45,10 +44,6 @@ export function AudienceHub() {
 
   return (
     <section id="descubra" className="audience-home mx-auto max-w-7xl px-4 py-7 sm:px-6" aria-labelledby="audience-title">
-      <div className="audience-mode-mobile" aria-label="Modo de leitura">
-        <LanguageModeToggle />
-      </div>
-
       <div className="audience-intro">
         <div className="min-w-0">
           <span className="audience-kicker"><CheckCircle2 aria-hidden="true" /> Observatório · Águas Lindas de Goiás</span>
@@ -71,7 +66,7 @@ export function AudienceHub() {
             <kbd>⌘K</kbd>
           </button>
           <button type="button" className="audience-primary-action" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-            {isSummary ? 'Abrir resumo' : 'Começar agora'}
+            {isSummary ? 'Abrir resumo' : 'Explorar agora'}
             <ArrowRight aria-hidden="true" />
           </button>
         </div>
@@ -83,7 +78,7 @@ export function AudienceHub() {
           <h3>{isTechnical ? 'Investigue por assunto' : 'O que você quer saber?'}</h3>
         </div>
         <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>
-          {isTechnical ? 'Abrir mapa de evidências' : 'Abrir dados'} <ArrowRight aria-hidden="true" />
+          {isTechnical ? 'Abrir evidências' : 'Abrir dados'} <ArrowRight aria-hidden="true" />
         </button>
       </div>
 
@@ -127,7 +122,7 @@ export function AudienceHub() {
               <span className="audience-kicker">Recursos oficiais</span>
               <h3>Consulte direto na fonte</h3>
             </div>
-            <button type="button" onClick={() => jump('fontes')}>Ver fontes <ArrowRight aria-hidden="true" /></button>
+            <button type="button" onClick={() => jump('fontes')}>Conferir fontes <ArrowRight aria-hidden="true" /></button>
           </div>
           <div className="audience-resource-grid">
             {officialResources.map(({ label, href, note, icon: Icon }) => (
@@ -148,7 +143,7 @@ export function AudienceHub() {
               <span className="audience-kicker">Conferência rápida</span>
               <h3>Fontes oficiais</h3>
             </div>
-            <button type="button" onClick={() => jump('fontes')}>Mapa de evidências <ArrowRight aria-hidden="true" /></button>
+            <button type="button" onClick={() => jump('fontes')}>Abrir evidências <ArrowRight aria-hidden="true" /></button>
           </div>
           <div className="audience-links-grid">
             {technicalLinks.map(({ label, href, note, icon: Icon }) => (
