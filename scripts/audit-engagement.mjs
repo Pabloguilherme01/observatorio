@@ -77,6 +77,15 @@ must(transport.includes('bilhetagem') && transport.includes('terminal'), 'simula
 const electoralProfile = read('src/components/sections/ElectoralProfile.tsx');
 must(electoralProfile.includes('4.063') && electoralProfile.includes('2024') && electoralProfile.includes('DF'), 'perfil eleitoral registra migração de títulos do DF com ano e quantidade');
 must(index.includes('og:image') && index.includes('twitter:card') && index.includes('canonical'), 'SEO e compartilhamento social possuem metadados completos');
+const candidateData = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
+const candidateNames = candidateData.matched.map(candidate => candidate.name);
+const candidateIds = candidateData.matched.map(candidate => candidate.sqCandidate);
+must(candidateData.matched.length === 7, 'recorte público de candidatos possui 7 nomes mapeados');
+must(new Set(candidateIds).size === candidateIds.length, 'candidatos não possuem SQ_CANDIDATO duplicado');
+must(['KEKE DA VULKANIC','RIBEIRO DO TÚLLIO','FELIPE GALDINO'].every(name => candidateNames.includes(name)), 'candidatos locais adicionados ao recorte');
+must(candidateData.matched.every(candidate => candidate.status === 'DEFERIDO'), 'status cadastral publicado está atualizado para DEFERIDO');
+must(candidateData.matched.every(candidate => candidate.localEvidence && Array.isArray(candidate.evidenceSourceUrls) && candidate.evidenceSourceUrls.length > 0), 'cada candidato possui evidência documental de vínculo local');
+must(!candidateData.meta.selection.includes('watchlist_only') || candidateData.matched.length === candidateData.watchlist.length, 'seleção do recorte não fica menor que a watchlist publicada');
 
 
 
