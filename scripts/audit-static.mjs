@@ -42,11 +42,12 @@ must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'site
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 const searchModal = read('src/components/layout/SearchModal.tsx');
 const dashboardMetrics = read('src/components/sections/DashboardMetrics.tsx');
+const historicalTrendChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const budgetSection = read('src/components/sections/BudgetSection.tsx');
 const budgetImpact = read('src/components/sections/BudgetImpact.tsx');
 must(budgetSection.includes('formatBudgetCurrency') && budgetImpact.includes('formatBudgetCurrency'), 'valores da LOA usam formatação sem casas decimais artificiais');
 must(searchModal.includes("role=\"combobox\"") && searchModal.includes('aria-activedescendant') && searchModal.includes('filteredLengthRef'), 'busca usa semântica combobox e evita closure stale na navegação por teclado');
-must(dashboardMetrics.includes('Ver dados em tabela') && dashboardMetrics.includes('<table'), 'gráficos principais possuem alternativa explícita em tabela acessível');
+must((dashboardMetrics.includes('Ver dados em tabela') && dashboardMetrics.includes('<table')) || (historicalTrendChart.includes('Ver dados em tabela') && historicalTrendChart.includes('<table')), 'gráficos principais possuem alternativa explícita em tabela acessível');
 must(index.includes('id="boot-fallback"') && index.includes('obs-skeleton') && index.includes('Recarregar'), 'fallback inicial combina skeleton e recuperação explícita');
 
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');

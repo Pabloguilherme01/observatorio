@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './assets/styles/globals.css';
 import { App } from './app/App';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
+import { captureObservatorioException } from './lib/sentry';
 
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
 const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';
@@ -122,6 +123,7 @@ function captureGlobalError(source: string, value: unknown): void {
     ? persistError(RUNTIME_ERROR_KEY, 'RUNTIME', value, source)
     : persistError(BOOT_ERROR_KEY, 'BOOT', value, source);
   console.error('[Observatório]', source, value);
+  captureObservatorioException(value, { source, errorId });
   window.dispatchEvent(new CustomEvent('observatorio:global-error', { detail: { source, message, errorId } }));
 }
 

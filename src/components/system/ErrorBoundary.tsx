@@ -1,5 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { RefreshCw, TriangleAlert } from 'lucide-react';
+import { captureObservatorioException } from '../../lib/sentry';
 
 interface Props {
   readonly children: ReactNode;
@@ -25,6 +26,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: unknown, info: ErrorInfo): void {
+    captureObservatorioException(error, { componentStack: info.componentStack?.trim() || 'unknown' });
     const componentStack = info.componentStack?.trim() || '';
     try {
       const previous = sessionStorage.getItem('observatorio:last-ui-error');
