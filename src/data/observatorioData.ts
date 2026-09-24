@@ -7,7 +7,7 @@ const rawGeneratedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt?
 const generatedCandidateSnapshotDate: ISODate =
   rawGeneratedCandidateSnapshotDate && /^\d{4}-\d{2}-\d{2}$/.test(rawGeneratedCandidateSnapshotDate)
     ? (rawGeneratedCandidateSnapshotDate as ISODate)
-    : '2026-09-23';
+    : '2026-09-24';
 
 const generatedMatched: CandidateSnapshot[] = generatedCandidates.matched.map(candidate => ({
   name: candidate.name,
@@ -21,7 +21,7 @@ const generatedMatched: CandidateSnapshot[] = generatedCandidates.matched.map(ca
 const candidateSnapshots: ObservatoryData['candidates'] = generatedMatched;
 
 /**
- * Dataset V43, normalizado para o domínio React.
+ * Dataset V44, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília usa a tarifa atual publicada pela UTB (R$ 11,45);
@@ -34,7 +34,7 @@ export const observatorioData: ObservatoryData = {
     edition: `${EDITION} • leitura pública + investigação + evidências`,
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
-    updatedAt: '2026-09-23',
+    updatedAt: '2026-09-24',
   },
   sources: sourceRegistry,
 
