@@ -28,7 +28,7 @@ function sectionToTab(id: string) {
 function jump(id: string) {
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
-  window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' }));
+  window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' }));
 }
 
 export function MobileBottomNav() {
