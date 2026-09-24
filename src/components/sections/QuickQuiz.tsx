@@ -128,7 +128,7 @@ const hard = pairs.map(({a,b},i): Question => {
   return {
     id:`hard-${i+1}`, difficulty:'Difícil', phase:3, category:a.category,
     prompt:`Considerando os valores de "${a.label}" e "${b.label}", qual é a razão aproximada do primeiro pelo segundo?`,
-    options:[answer,`${fmt(ratio*10,2)}×`,`${fmt(ratio/2,2)}×`],
+    options:Array.from(new Set([answer,`${fmt(ratio*10,2)}×`,`${fmt(ratio/2,2)}×`,`${fmt(ratio+1,2)}×`])).slice(0, 3),
     answer, explanation:`Razão derivada: ${fmt(aNum,2)} ÷ ${fmt(bNum,2)} = ${answer}. É uma relação matemática entre os dois dados, não um indicador oficial adicional.`,
     anchor:a.anchor, sourceId:a.sourceId, sourceLabel:a.sourceLabel,
   };
@@ -166,8 +166,8 @@ export const QUESTIONS_PER_LEVEL = 40 as const;
 export const QUIZ_TOTAL = 200 as const;
 export const QUESTION_BANK: readonly Question[] = [...easy, ...medium, ...hard, ...advanced, ...expert];
 
-if (QUESTION_BANK.length !== QUIZ_TOTAL || QUIZ_LEVELS.some(level => QUESTION_BANK.filter(q => q.difficulty === level).length !== QUESTIONS_PER_LEVEL)) {
-  throw new Error(`Banco do quiz deve ter ${QUIZ_TOTAL} questões, com ${QUESTIONS_PER_LEVEL} por nível; recebeu ${QUESTION_BANK.length}`);
+if (QUESTION_BANK.length !== QUIZ_TOTAL || QUIZ_LEVELS.some(level => QUESTION_BANK.filter(q => q.difficulty === level).length !== QUESTIONS_PER_LEVEL) || QUESTION_BANK.some(q => q.options.length !== 3 || new Set(q.options).size !== 3 || !q.options.includes(q.answer))) {
+  throw new Error(`Banco do quiz inválido: exige ${QUIZ_TOTAL} questões, ${QUESTIONS_PER_LEVEL} por nível e 3 alternativas únicas por questão.`);
 }
 
 export function QuickQuiz() {
