@@ -23,7 +23,7 @@ const index = read('index.html');
 must(modeToggle.includes("setMode('summary')") && modeToggle.includes("setMode('simple')") && modeToggle.includes("setMode('technical')"), '3 modos neutros de leitura disponíveis');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
 const quizPromptCount = (quiz.match(/\n      prompt:/g) || []).length;
-const quizPromptLines = [...quiz.matchAll(/\n      prompt:\s*([\"'`])([\\s\\S]*?)\1,/g)].map(match => match[2]);
+const quizPromptLines = [...quiz.matchAll(/\n      prompt:\s*([\"'`])([\s\S]*?)\1,/g)].map(match => match[2]);
 const uniqueQuizPrompts = new Set(quizPromptLines);
 const quizDifficultyLines = [...quiz.matchAll(/difficulty:\s*['\"]([^'\"]+)['\"]/g)].map(match => match[1]);
 const quizDifficultyCount = new Map(quizDifficultyLines.map(level => [level, quizDifficultyLines.filter(value => value === level).length]));
