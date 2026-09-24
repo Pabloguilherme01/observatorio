@@ -448,8 +448,8 @@ async function main() {
           resourceUrl: selectedSourceUrl,
           selection: 'watchlist_only',
           filterNote: apiTransport === 'reader_proxy'
-            ? 'Recorte municipal validado pelo conteúdo do endpoint oficial DivulgaCandContas do TSE. O runner do GitHub recebeu HTTP 403 no acesso direto e usou transporte intermediado apenas para obter o mesmo endpoint oficial; o transporte está registrado no snapshot. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.'
-            : 'Recorte municipal validado diretamente pela API oficial DivulgaCandContas do TSE. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.',
+            ? 'Candidaturas capturadas no universo oficial de Goiás pelo endpoint DivulgaCandContas do TSE. O runner recebeu HTTP 403 no acesso direto e usou transporte intermediado apenas para obter o mesmo endpoint oficial; o transporte está registrado no snapshot. Águas Lindas de Goiás é recorte editorial de monitoramento, não município de candidatura.'
+            : 'Candidaturas capturadas no universo oficial de Goiás pelo endpoint DivulgaCandContas do TSE. Águas Lindas de Goiás é recorte editorial de monitoramento, não município de candidatura.',
           missingWatchlist: WATCHLIST.filter(name=>!matched.some(candidate=>candidate.watchlistName===name)),
           apiCargos: apiResult.sources,
         },
