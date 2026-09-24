@@ -55,23 +55,31 @@ function scrollToHashWhenReady(hash: string) {
   const root = document.getElementById('main-content') ?? document.body;
   let observer: MutationObserver | null = null;
   let timeoutId = 0;
+  let checkRaf = 0;
 
   const cleanup = () => {
     observer?.disconnect();
     if (timeoutId) window.clearTimeout(timeoutId);
+    if (checkRaf) window.cancelAnimationFrame(checkRaf);
   };
 
   const check = () => {
+    checkRaf = 0;
     if (performHashScroll(hash)) cleanup();
   };
 
+  const scheduleCheck = () => {
+    if (checkRaf) return;
+    checkRaf = window.requestAnimationFrame(check);
+  };
+
   if (typeof MutationObserver !== 'undefined') {
-    observer = new MutationObserver(check);
+    observer = new MutationObserver(scheduleCheck);
     observer.observe(root, { childList: true, subtree: true });
     timeoutId = window.setTimeout(cleanup, 4000);
   }
 
-  window.requestAnimationFrame(check);
+  scheduleCheck();
 }
 
 function DeferredBlock({
