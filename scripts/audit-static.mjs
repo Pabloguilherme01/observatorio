@@ -51,7 +51,9 @@ must(index.includes('id="boot-fallback"') && index.includes('obs-skeleton') && i
 
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
 must(appSource.includes('skip-link') && appSource.includes('Pular para o conteúdo principal'), 'navegação por teclado possui atalho de salto para o conteúdo');
-must(vite.includes('offline.html') && vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui página offline, cache rápido de documento e NetworkFirst para API');
+must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
+must(vite.includes("includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html']") && vite.includes("navigateFallback: '/observatorio/offline.html'"), 'VitePWA registra offline.html como fallback de navegação');
+must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
 must(appSource.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente');
 must(read('src/components/sections/HeroCountdown.tsx').includes('electionMode') && read('src/components/sections/HeroCountdown.tsx').includes('observatorio:election-mode'), 'Modo Eleição mantém o controle do estado no hero');
 must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
