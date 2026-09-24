@@ -1918,3 +1918,23 @@ html[data-language-mode="technical"] .simple-detail{display:none!important}
   .quiz-phase-grid{grid-template-columns:repeat(5,76px)}
   .evidence-mini-grid{grid-template-columns:1fr}
 }
+
+
+/* Reading modes: summary = signal, simple = context, technical = audit */
+html[data-language-mode="summary"] #fontes,
+html[data-language-mode="summary"] #qualidade,
+html[data-language-mode="summary"] #evidencias,
+html[data-language-mode="summary"] #principios,
+html[data-language-mode="summary"] #acao,
+html[data-language-mode="summary"] #politica,
+html[data-language-mode="summary"] #linha-do-tempo,
+html[data-language-mode="summary"] .electoral-scope-note,
+html[data-language-mode="summary"] .hero-kpis-guide{display:none!important}
+
+html[data-language-mode="simple"] #fontes,
+html[data-language-mode="simple"] #qualidade,
+html[data-language-mode="simple"] #evidencias,
+html[data-language-mode="simple"] .electoral-scope-note{display:none!important}
+
+html[data-language-mode="summary"] .source-card,
+html[data-language-mode="simple"] .source-card{display:none!important}
