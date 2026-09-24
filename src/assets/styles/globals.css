@@ -1760,3 +1760,18 @@ ra{
 @media(prefers-reduced-motion:reduce){
   #candidaturas .candidate-summary-card{transition:none}
 }
+
+
+
+.candidate-summary-wrap{min-width:0}
+.candidate-summary-hint{margin-top:7px;text-align:center;font-size:9px;color:#64748b}
+@media(min-width:768px){.candidate-summary-hint{display:none}}
+@media(max-width:767px){
+  #candidaturas .candidate-summary-grid{
+    contain:layout paint;
+  }
+  #candidaturas .candidate-summary-card:focus-within{
+    border-color:rgba(125,211,252,.35);
+    box-shadow:0 10px 24px rgba(2,6,23,.16);
+  }
+}
