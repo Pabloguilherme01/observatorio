@@ -1051,7 +1051,7 @@ export function QuickQuiz() {
             </div>
             <div className="flex flex-wrap gap-2">
               {phasePassed && phase < LEVELS.length - 1 && <button type="button" onClick={advancePhase} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-emerald-300 px-4 py-2 text-xs font-black text-slate-950">Desbloquear {LEVELS[phase + 1]} <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>}
-              {finished && !phasePassed && <div className="rounded-xl border border-amber-300/10 bg-amber-300/[0.04] px-3 py-2 text-xs text-amber-100">A próxima fase permanece bloqueada. Alcance {phaseTarget}/25 para avançar.</div>
+              {finished && !phasePassed && <div className="rounded-xl border border-amber-300/10 bg-amber-300/[0.04] px-3 py-2 text-xs text-amber-100">A próxima fase permanece bloqueada. Alcance {phaseTarget}/25 para avançar.</div>}
               <a href="#fontes" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2 text-xs font-black text-slate-950">Conferir fontes <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
               <button type="button" onClick={reset} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-xs font-bold text-slate-200"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Refazer</button>
             </div>
