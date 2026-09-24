@@ -30,7 +30,9 @@ const quizDifficultyCount = new Map(quizDifficultyLines.map(level => [level, qui
 must(quizPromptCount === 100 && quizPromptLines.length === 100, 'quiz possui exatamente 100 perguntas');
 must(uniqueQuizPrompts.size === 100, 'quiz possui 100 perguntas distintas');
 must(['Fácil', 'Médio', 'Difícil', 'Avançado'].every(level => quizDifficultyCount.get(level) === 25), 'quiz possui 25 perguntas por nível');
-must(quiz.includes('filteredQuestions') && quiz.includes('Nível do quiz'), 'quiz possui filtros de dificuldade');
+must(quiz.includes('phasePassed') && quiz.includes('advancePhase') && quiz.includes('LEVELS[phase]'), 'quiz possui progressão obrigatória por fases');
+must(quiz.includes('phaseTarget') && quiz.includes('quiz-phase-roadmap'), 'quiz possui meta e mapa visual de fases');
+must(!quiz.includes('setDifficulty') && !quiz.includes('Nível do quiz'), 'quiz não permite troca manual de fase');
 must(quiz.includes('quiz-progress-track') && quiz.includes('filteredQuestions.length'), 'quiz possui progresso visual');
 must(read('src/components/layout/Footer.tsx').includes('https://www.instagram.com/pablo.builds.ia'), 'Instagram do autor está no rodapé');
 must(!search.includes('autoFocus'), 'busca não usa autoFocus');
