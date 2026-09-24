@@ -36,7 +36,7 @@ export function Electoral360() {
   const officialCandidates = useMemo(() => {
     if (!normalizedQuery) return electoral360Snapshot.matchedCandidates;
     return electoral360Snapshot.matchedCandidates.filter(candidate =>
-      [candidate.name, candidate.party, candidate.office, candidate.status, candidate.ballotNumber]
+      [candidate.name, candidate.party, candidate.status, candidate.ballotNumber]
         .join(' ')
         .toLocaleLowerCase('pt-BR')
         .includes(normalizedQuery),
