@@ -15,9 +15,9 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
   const [mode, setModeState] = useState<LanguageMode>(() => {
     try {
       const value = localStorage.getItem(STORAGE_KEY);
-      return value === 'technical' || value === 'summary' ? value : 'simple';
+      return value === 'technical' || value === 'summary' || value === 'simple' ? value : 'summary';
     } catch {
-      return 'simple';
+      return 'summary';
     }
   });
 
