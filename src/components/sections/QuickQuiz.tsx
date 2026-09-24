@@ -412,22 +412,6 @@ export function QuickQuiz() {
       anchor: "fontes",
       sourceLabel: "Mapa de evidências",
     },
-    {
-      prompt: "Por que um estado de atualização deve ser visível?",
-      options: ["Para informar quando a base foi capturada ou atualizada","Para garantir que nenhum dado possa mudar","Para transformar snapshot em tempo real"],
-      answer: 0,
-      explanation: "A data de atualização ajuda a contextualizar a atualidade da informação.",
-      anchor: "fontes",
-      sourceLabel: "Fontes e metodologia",
-    },
-    {
-      prompt: "Qual é a função de uma integração inteligente de compartilhamento?",
-      options: ["Facilitar o envio de um contexto já ligado à informação original","Remover a origem do dado","Criar uma opinião automática"],
-      answer: 0,
-      explanation: "Compartilhamento útil preserva o contexto e a origem do conteúdo.",
-      anchor: "resumo",
-      sourceLabel: "Resumo público",
-    },
   ], []);
 
   const [step, setStep] = useState(0);
