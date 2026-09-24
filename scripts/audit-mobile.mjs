@@ -54,12 +54,12 @@ must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
 
 must(files.hero.includes('hero-mobile-election-toggle') && files.hero.includes('aria-pressed'), 'Modo Eleição possui controle acessível no mobile');
-must(files.language.includes("setMode('summary')") && files.language.includes("setMode('simple')") && files.language.includes("setMode('technical')"), 'os três modos de leitura continuam disponíveis');
+must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed'), 'os três modos de leitura continuam disponíveis');
 must(files.radar.includes('Margem registrada') && files.radar.includes('min-h-11'), 'radar político mantém informação registrada e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
 must(files.instagram.includes('navigator.canShare') && files.instagram.includes('wa.me/?text='), 'estúdio social mantém compartilhamento de arquivo e WhatsApp');
-must(files.quiz.includes('quiz-progress-track') && ((files.quiz.match(/prompt:\s*/g) || []).length >= 12), 'quiz mantém doze ou mais perguntas e progresso visual');
+must(files.quiz.includes('quiz-progress-track') && files.quiz.includes('QUIZ_TOTAL = 200') && files.quiz.includes('QUESTIONS_PER_LEVEL = 40') && files.quiz.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
 must(files.version.match(/APP_VERSION\s*=\s*['"]44\./), 'versão atual continua na linha 44 consolidada');
