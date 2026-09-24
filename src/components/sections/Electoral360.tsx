@@ -73,7 +73,7 @@ export function Electoral360() {
         <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">O que você encontra aqui</div>
         <div className="mt-2 grid gap-2 sm:grid-cols-3">
           <div className="rounded-xl border border-white/6 px-3 py-2">
-            <strong className="block text-xs text-white">Perfis públicos</strong>
+            <strong className="block text-xs text-white">Perfis do recorte</strong>
             <span className="text-[10px] leading-4 text-slate-500">nome, partido, número e dados cadastrais disponíveis.</span>
           </div>
           <div className="rounded-xl border border-white/6 px-3 py-2">
@@ -134,7 +134,10 @@ export function Electoral360() {
         </Card>
       </div>
       {complementaryStats && (
-        <Card className="mb-4">
+        <details className="mb-4 rounded-3xl border border-white/8 bg-white/[0.015] p-4">
+          <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Complementos do universo estadual</summary>
+          <div className="mt-3">
+
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais contexto eleitoral</div>
@@ -147,6 +150,8 @@ export function Electoral360() {
             </div>
           </div>
         </Card>
+          </div>
+        </details>
       )}
 
       <div className="grid gap-3 sm:grid-cols-3">
