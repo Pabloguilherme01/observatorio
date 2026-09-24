@@ -59,7 +59,7 @@ must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v
 const pkgScripts = packageJson.scripts ?? {};
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
-must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação municipal');
+must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
 must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')), 'não existem dois workflows concorrentes para a mesma captura TSE');
@@ -102,10 +102,10 @@ for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto'
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
 
-must(candidates.schemaVersion === 3 && candidates.coverage === 'municipality_required', 'snapshot atual usa exclusivamente o contrato municipal versionado');
+must(candidates.schemaVersion === 3 && candidates.coverage === 'state_watchlist', 'snapshot atual usa o contrato estadual com watchlist local');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
-must(candidates.meta.localFilter === 'Águas Lindas de Goiás' && (candidates.meta.state === 'local_filter_pending' || candidates.meta.municipalityCodeTse === '92737'), 'snapshot registra filtro municipal explícito');
-must(candidates.meta.state === 'local_filter_pending' || candidates.meta.retrievalMethod === 'official_tse_zip_csv', 'snapshot municipal usa fonte oficial direta quando sincronizado');
+must(candidates.meta.localFilter === 'Águas Lindas de Goiás' && candidates.meta.localFilterType === 'editorial_watchlist' && candidates.meta.candidateUniverseScope === 'GO', 'snapshot separa universo oficial de Goiás do recorte editorial local');
+must(candidates.meta.state === 'local_filter_pending' || ['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy'].includes(candidates.meta.retrievalMethod), 'snapshot TSE usa fonte oficial suportada quando sincronizado');
 
 const runtimeFiles = [
   'src/app/App.tsx',
