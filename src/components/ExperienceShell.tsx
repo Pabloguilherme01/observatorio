@@ -7,7 +7,8 @@ import { STORAGE_NAMESPACE } from '../config/version';
 const RECENT_KEY = `${STORAGE_NAMESPACE}-recent-sections`, FAVORITES_KEY = `${STORAGE_NAMESPACE}-favorite-sections`, REDUCED_KEY = `${STORAGE_NAMESPACE}-reduced-motion`, MODE_KEY = `${STORAGE_NAMESPACE}-experience-mode`, ELECTION_KEY = `${STORAGE_NAMESPACE}-election-mode`;
 type ExperienceMode = 'overview' | 'investigation' | 'evidence';
 const MODE_LABELS: Record<ExperienceMode, string> = { overview: 'Visão geral', investigation: 'Investigação', evidence: 'Evidências' };
-const navigationIds = new Set(navigation.map(item => item.id));
+const navigationIds = new Set<NavigationId>(navigation.map(item => item.id));
+const isNavigationId = (id: string): id is NavigationId => navigationIds.has(id as NavigationId);
 
 function readStorage(key: string): string | null { try { return localStorage.getItem(key); } catch { return null; } }
 function writeStorage(key: string, value: string): void { try { localStorage.setItem(key, value); } catch {} }
@@ -49,7 +50,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     window.addEventListener('scroll', onScroll, { passive: true });
     const onNavigate = (event: Event) => {
       const id = (event as CustomEvent<string>).detail;
-      if (navigationIds.has(id)) remember(id);
+      if (isNavigationId(id)) remember(id);
     };
     const onHashChange = () => {
       const id = window.location.hash.replace('#', '');
