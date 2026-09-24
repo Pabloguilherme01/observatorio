@@ -1040,8 +1040,7 @@ d,
   }
 
   /* Discovery: visual cards instead of dense list */
-  #descub
-ra{
+  #descubra{
     padding:22px var(--mobile-page-gutter) 18px!important;
   }
   #descubra .discovery-shell>div:first-child{
@@ -1073,9 +1072,11 @@ ra{
     margin-top:9px;
     font-size:13px;
   }
-  #descub
-
-... [Content truncated]
+  #descubra .topic-card>span:last-child{
+    margin-top:3px;
+    font-size:10px;
+    line-height:1.25;
+  }
 }
 
 /* ============================================================
