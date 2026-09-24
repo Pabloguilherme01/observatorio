@@ -93,6 +93,15 @@ export function Electoral360() {
         </div>
         <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} acompanhados</span>
       </div>
+      {electoral360Snapshot.captureMode === 'static-local' && (
+        <div className="mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
+          <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-amber-200/70" aria-hidden="true" />
+          <div className="min-w-0">
+            <strong className="block text-xs font-black text-amber-100">Recorte disponível</strong>
+            <span className="mt-1 block text-[11px] leading-5 text-slate-500">Os nomes abaixo são o recorte atualmente disponível. A confirmação do município da candidatura deve ser feita no registro oficial.</span>
+          </div>
+        </div>
+      )}
       <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado atual</div><div className="mt-2 text-2xl font-black text-white">{electorate.electorate.toLocaleString('pt-BR')}</div><div className="text-xs text-slate-500">snapshot · {electorate.snapshotDate}</div></Card>
         <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Participação 2024</div><div className="mt-2 text-2xl font-black text-white">{electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.validVotes2024Count.toLocaleString('pt-BR')} votos válidos</div></Card>
