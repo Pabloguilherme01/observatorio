@@ -7,25 +7,39 @@
     "scope": "GO",
     "localFilter": "Águas Lindas de Goiás",
     "downloadedAt": "2026-09-23T08:16:17.987Z",
-    "sourceRows": 594,
-    "originalMatchedRows": 10,
-    "matchedRows": 0,
+    "sourceRows": 905,
+    "originalMatchedRows": 7,
+    "matchedRows": 7,
     "workflowRunId": "35836117975",
     "state": "local_filter_pending",
     "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
     "captureTransport": "historical_third_party_reader",
-    "filterNote": "A captura existente é estadual e não carrega município de candidatura em cada registro. Os 10 nomes encontrados no recorte estadual permanecem pendentes de validação municipal e não são tratados como candidaturas de Águas Lindas.",
-    "sourceFileSha256": null,
+    "filterNote": "Registros do recorte de candidatos acompanhados em Águas Lindas, identificados por correspondência de nome de urna com a watchlist local. O arquivo estadual não informa município da candidatura; portanto estes registros não são apresentados como candidaturas municipais.",
+    "sourceFileSha256": "ee67167e1a7b94495e30f0bc8eb8b4609b60b7397eac70cd506ebbf815ea26b1",
     "complementaryFile": {
       "name": "consulta_cand_complementar_2026_GO.csv",
       "generationDate": "2026-09-23",
       "sourceRows": 905,
       "uniqueCandidateIds": 905,
       "sha256": ""
+    },
+    "photoArchive": {
+      "name": "foto_cand2026_GO_div.zip",
+      "sourceRows": 905,
+      "matchedPhotoIds": 7,
+      "verifiedCandidateIds": [
+        "90002549161",
+        "90002543127",
+        "90002537423",
+        "90002547032",
+        "90002547004",
+        "90002543768",
+        "90002547039"
+      ]
     }
   },
-  "coverage": "municipality_required",
+  "coverage": "state_watchlist",
   "watchlist": [
     "Keké",
     "Anderson Teodoro",
@@ -38,14 +52,90 @@
     "Ribeiro do Túlio",
     "André do Premium"
   ],
-  "matched": [],
+  "matched": [
+    {
+      "sqCandidate": "90002549161",
+      "ballotNumber": 25789,
+      "name": "ANDERSON TEODORO",
+      "party": "PRD",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    },
+    {
+      "sqCandidate": "90002543127",
+      "ballotNumber": 33070,
+      "name": "ZÉ DA IMPERIAL",
+      "party": "MOBILIZA",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    },
+    {
+      "sqCandidate": "90002537423",
+      "ballotNumber": 20070,
+      "name": "BAIANO DOS COCOS",
+      "party": "PODE",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    },
+    {
+      "sqCandidate": "90002547032",
+      "ballotNumber": 44555,
+      "name": "WILDE CAMBÃO",
+      "party": "UNIÃO",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    },
+    {
+      "sqCandidate": "90002547004",
+      "ballotNumber": 44360,
+      "name": "ABADYAS DAMASCENO",
+      "party": "UNIÃO",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    },
+    {
+      "sqCandidate": "90002543768",
+      "ballotNumber": 22133,
+      "name": "FELIPE GALDINO",
+      "party": "PL",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    },
+    {
+      "sqCandidate": "90002547039",
+      "ballotNumber": 44333,
+      "name": "ANDRÉ DO PREMIUM",
+      "party": "UNIÃO",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "#NE",
+      "municipality": null,
+      "photoUrl": null,
+      "instagramUrl": null
+    }
+  ],
   "diff": {
-    "state": "local_filter_pending",
-    "added": 0,
+    "state": "synced",
+    "added": 7,
     "removed": 0,
     "changed": 0,
-    "unresolved": 10,
-    "comparison": "blocked_by_missing_municipality_evidence",
     "records": []
   }
 }
