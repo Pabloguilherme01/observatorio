@@ -2,6 +2,9 @@ name: Sync TSE 2026
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/sync-tse-2026.mjs'
   schedule:
     - cron: '0 */4 * * *'
 
@@ -31,10 +34,10 @@ jobs:
           npm install --package-lock-only --no-audit --no-fund
           npm ci --no-audit --no-fund
 
-      - name: Capture official TSE candidate watchlist
+      - name: Capture official TSE municipal candidate list
         run: npm run sync:tse
 
-      - name: Validate TSE watchlist snapshot
+      - name: Validate TSE municipal snapshot
         env:
           REQUIRE_TSE_SYNC: 'true'
           ALLOW_UPSTREAM_UNAVAILABLE: 'true'
@@ -52,7 +55,7 @@ jobs:
       - name: Production build
         run: npm run build
 
-      - name: Commit validated TSE watchlist snapshot
+      - name: Commit validated TSE municipal snapshot
         shell: bash
         run: |
           set -euo pipefail
@@ -60,5 +63,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package-lock.json src/data/generated/tse2026-candidates.json src/data/generated/tse2026-diff.json src/data/generated/history
           git diff --cached --quiet && echo "No candidate snapshot change." && exit 0
-          git commit -m "data: sync TSE 2026 candidate watchlist"
+          git commit -m "data: sync TSE 2026 municipal candidates"
           git push
