@@ -5,6 +5,7 @@ import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import '../../assets/styles/summary-polish.css';
 
 function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -28,7 +29,6 @@ export function ExecutiveSummary() {
   const [shareStatus, setShareStatus] = useState('');
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
-  const [openFact, setOpenFact] = useState<string | null>(null);
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -37,42 +37,10 @@ export function ExecutiveSummary() {
   };
 
   const publicFacts = [
-    {
-      id: 'populacao',
-      label: 'População',
-      value: population.toLocaleString('pt-BR') + ' hab.',
-      source: d.sources.find(item => item.id === 'ibge-estimativas-2026'),
-      badge: 'IBGE · 2026',
-      target: 'dashboard',
-      detail: 'Estimativa municipal com referência em 01/07/2026.',
-    },
-    {
-      id: 'eleitorado',
-      label: 'Eleitorado',
-      value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores',
-      source: d.sources.find(item => item.id === 'tse-eleitorado-2026'),
-      badge: 'TSE · 2026',
-      target: 'eleitorado',
-      detail: 'Snapshot com referência em 15/07/2026.',
-    },
-    {
-      id: 'orcamento-per-capita',
-      label: 'Orçamento por habitante',
-      value: brl(budgetPerCapita) + '/ano',
-      source: d.sources.find(item => item.id === 'loa-2026'),
-      badge: 'Cálculo · LOA 2026',
-      target: 'orcamento',
-      detail: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.',
-    },
-    {
-      id: 'saneamento',
-      label: 'Esgoto',
-      value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%',
-      source: sanitationSource,
-      badge: 'SINISA · 2024',
-      target: 'dashboard',
-      detail: 'Indicador de serviço público de saneamento; o ano-base deve ser mantido ao comparar com outros dados.',
-    },
+    { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', badge: 'Fonte pública', target: 'dashboard' },
+    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', badge: 'Fonte pública', target: 'eleitorado' },
+    { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 ÷ população estimada. É uma razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', badge: 'Derivado', target: 'orcamento' },
+    { id: 'saneamento', label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'Indicador de serviço público de saneamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'dashboard' },
   ] as const;
 
   const quickStats = [
@@ -188,46 +156,21 @@ export function ExecutiveSummary() {
               <div className="summary-public-discovery-head">
                 <div>
                   <strong>4 dados para começar</strong>
-                  <span>Cartões pequenos. Toque para abrir o detalhe.</span>
+                  <span>Valor, fonte e referência aparecem no próprio cartão.</span>
                 </div>
               </div>
 
               <div className="summary-public-facts" aria-label="Cartões de contexto rápido">
-                {publicFacts.map(fact => {
-                  const isOpen = openFact === fact.id;
-                  return (
-                    <div key={fact.id} className={`summary-public-fact ${isOpen ? 'is-open' : ''}`}>
-                      <button
-                        type="button"
-                        className="summary-public-fact-trigger text-left"
-                        onClick={() => setOpenFact(isOpen ? null : fact.id)}
-                        aria-expanded={isOpen}
-                        aria-controls={`summary-fact-${fact.id}`}
-                      >
-                        <span className="summary-public-fact-label">{fact.label}</span>
-                        <strong className="summary-public-fact-value mobile-safe-wrap">{fact.value}</strong>
-                        <span className="summary-public-badge">{fact.badge}</span>
-                        <span className="summary-public-fact-source">{fact.source?.institution ?? 'Fonte registrada'}</span>
-                        <ChevronDown className="summary-public-arrow" aria-hidden="true" />
-                      </button>
-
-                      {isOpen && (
-                        <div id={`summary-fact-${fact.id}`} className="summary-public-fact-detail">
-                          <p>{fact.detail}</p>
-                          <span>Referência: {fact.source?.referenceDate ? formatDate(fact.source.referenceDate) : 'data específica no indicador'}</span>
-                          <div className="summary-public-fact-actions">
-                            <button type="button" onClick={() => goToSection(fact.target)}>Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
-                            {fact.source?.url && (
-                              <a href={fact.source.url} target="_blank" rel="noopener noreferrer">
-                                Ver fonte <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {publicFacts.map(fact => (
+                  <button key={fact.id} type="button" className="summary-public-fact is-static text-left" onClick={() => goToSection(fact.target)} aria-label={`Abrir contexto de ${fact.label}`}>
+                    <span className="block">{fact.label}</span>
+                    <strong className="mt-1 block mobile-safe-wrap">{fact.value}</strong>
+                    <span className={'summary-public-badge'}>{fact.badge}</span>
+                    <small className="mt-1 block">{fact.source}</small>
+                    <em className="mt-1 block">{fact.note}</em>
+                    <ArrowRight className="summary-public-arrow mt-2 h-4 w-4" aria-hidden="true" />
+                  </button>
+                ))}
               </div>
             </div>
           )}
