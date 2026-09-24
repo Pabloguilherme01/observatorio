@@ -35,6 +35,7 @@ export function ExecutiveSummary() {
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const [lastAction, setLastAction] = useState('');
+  const [shareBusyCard, setShareBusyCard] = useState('');
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
@@ -72,7 +73,8 @@ export function ExecutiveSummary() {
   };
 
   const share = async (cardLabel?: string, cardValue?: string) => {
-    if (shareBusy) return;
+    if (shareBusy || (cardLabel && shareBusyCard)) return;
+    if (cardLabel) setShareBusyCard(cardLabel);
     setShareBusy(true);
     const text = [
       'Observatório Eleitoral — Águas Lindas de Goiás 2026',
@@ -106,6 +108,7 @@ export function ExecutiveSummary() {
       window.setTimeout(() => setShareStatus(''), 2400);
     } finally {
       setShareBusy(false);
+      setShareBusyCard('');
     }
   };
 
@@ -206,7 +209,7 @@ export function ExecutiveSummary() {
                       <em>{stat.detail}</em>
                     </button>
                     <span className="summary-public-stat-footer">
-                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={() => { void share(stat.label, stat.value); }}>
+                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={() => { void share(stat.label, stat.value); }} disabled={shareBusyCard === stat.label || shareBusy}>
                         <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
                       </button>
                       <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
