@@ -64,16 +64,16 @@ export function PoliticalResearch() {
       <SectionHeader
         titleId="research-title"
         eyebrow="Recorte eleitoral local"
-        title={mode !== 'technical' ? 'Candidaturas de Águas Lindas de Goiás' : 'Candidaturas municipais de Águas Lindas de Goiás'}
+        title={mode !== 'technical' ? 'Candidatos ligados a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
         description={mode !== 'technical'
-          ? 'Candidaturas registradas no recorte municipal oficial. Cada cartão reúne os dados disponíveis na fonte e aponta diretamente para a consulta oficial.'
-          : 'O painel usa o município informado na base oficial como filtro principal. Campos ausentes permanecem identificados como não informados.'}
+          ? 'Lista de candidaturas estaduais de 2026 com vínculo local documental acompanhado pelo Observatório. O vínculo local não é inferido do cadastro estadual.'
+          : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Campos ausentes permanecem identificados.'}
       />
 
       <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
         <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · município</div></div>
         <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">nomes no snapshot acompanhado</div></div>
-        <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Leitura do recorte</div><div className="mt-2 text-sm font-black text-amber-100">Recorte municipal oficial</div><div className="mt-1 text-xs text-slate-500">consulte o registro individual para detalhes atualizados</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Vínculo local</div><div className="mt-2 text-sm font-black text-amber-100">Evidência documental</div><div className="mt-1 text-xs text-slate-500">não é inferido do cadastro estadual</div></div>
       </div>
 
       {!hasLocalCandidates ? (
@@ -98,7 +98,7 @@ export function PoliticalResearch() {
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
           <div>
             <strong className="block text-sm font-black text-sky-100">Como ler esta lista</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">A lista é gerada pelo filtro municipal do arquivo oficial do TSE. Não há seleção manual de nomes: todas as candidaturas que atendem ao filtro entram automaticamente no snapshot.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">A lista combina o cadastro oficial de candidaturas do TSE com evidências documentais de vínculo local. Não há ranking nem seleção por preferência.</p>
           </div>
         </div>
       </div>
