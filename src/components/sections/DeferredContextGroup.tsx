@@ -7,7 +7,7 @@ import { DemographicDynamic } from './DemographicDynamic';
 import { TransportCalculator } from '../TransportCalculator';
 import { DataInsights } from './DataInsights';
 import { SanitationHealthSection } from './SanitationHealthSection';
-import { QuizObservatorio } from '../QuizObservatorio';
+import { QuickQuiz } from './QuickQuiz';
 
 export default function DeferredContextGroup() {
   return <>
@@ -21,7 +21,7 @@ export default function DeferredContextGroup() {
     <DataInsights />
     <SanitationHealthSection />
     <section id="quiz" className="scroll-mt-24">
-      <QuizObservatorio />
+      <QuickQuiz />
     </section>
   </>;
 }
