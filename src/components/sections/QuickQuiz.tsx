@@ -97,7 +97,11 @@ const easy = seeds.map((s, i): Question => ({
   answer:s.value, explanation:s.note + '.', anchor:s.anchor, sourceId:s.sourceId, sourceLabel:s.sourceLabel,
 }));
 
-const pairs = seeds.map((s,i)=>({a:s,b:seeds[(i+1)%seeds.length]}));
+const pairs = seeds.map((s, i) => {
+  const sameUnit = seeds.find((candidate, j) => j !== i && candidate.unit === s.unit);
+  const sameCategory = seeds.find((candidate, j) => j !== i && candidate.category === s.category);
+  return { a: s, b: sameUnit ?? sameCategory ?? seeds[(i + 1) % seeds.length] };
+});
 const medium = pairs.map(({a,b},i): Question => {
   const aNum=a.numeric ?? 0, bNum=b.numeric ?? 0;
   const larger = aNum >= bNum ? a.value : b.value;
