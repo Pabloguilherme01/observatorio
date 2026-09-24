@@ -126,6 +126,11 @@ export function HeroCountdown() {
             <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">Calendário oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
           </div>
         </div>
+        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-semibold text-slate-500" aria-label="Referências rápidas dos dados">
+          <span>População · Fonte: IBGE · estimativa 2026</span>
+          <span>Eleitorado · Fonte: TSE · snapshot 2026</span>
+          <span>Transporte · tarifa semiurbana · Entorno-DF</span>
+        </div>
       </div>
     </div>
   </section>;
