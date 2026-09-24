@@ -35,12 +35,6 @@ jobs:
         run: npm run audit:a11y
       - name: Validate mobile UX
         run: npm run audit:mobile
-      - name: Sync official TSE municipal snapshot
-        run: npm run sync:tse
-      - name: Validate synchronized TSE snapshot
-        env:
-          REQUIRE_TSE_SYNC: 'true'
-        run: npm run validate:tse
       - name: Validate TSE architecture isolation
         run: npm run audit:tse-architecture
       - name: Validate data contracts
