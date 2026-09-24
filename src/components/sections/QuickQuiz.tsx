@@ -1,6 +1,7 @@
-import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
-import { useState } from 'react';
+import { CheckCircle2, Lock, Medal, RotateCcw, Share2, Trophy } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import '../../assets/styles/summary-polish.css';
+import { readQuizHighScores, recordQuizHighScore, type QuizHighScore } from '../../lib/quizLeaderboard';
 
 type Difficulty = 'Fácil' | 'Médio' | 'Difícil' | 'Avançado' | 'Expert';
 
@@ -240,6 +241,11 @@ export function QuickQuiz() {
   const [best, setBest] = useState<readonly number[]>([0, 0, 0, 0, 0]);
   const [showResult, setShowResult] = useState(false);
   const [shared, setShared] = useState('');
+  const [leaderboard, setLeaderboard] = useState<readonly QuizHighScore[]>([]);
+
+  useEffect(() => {
+    setLeaderboard(readQuizHighScores());
+  }, []);
 
   const phaseData = PHASES[activePhase];
   const questions = phaseData?.questions ?? [];
@@ -268,10 +274,20 @@ export function QuickQuiz() {
   const next = () => {
     if (selected === null) return;
     if (isLast) {
-      setBest(previous => previous.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, score) : value)));
+      const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, score) : value));
+      setBest(nextScores);
       if (score >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
       }
+      const nextLeaderboard = recordQuizHighScore({
+        phase: activePhase + 1,
+        level: phaseData?.level ?? 'Nível',
+        score,
+        total: QUESTIONS_PER_LEVEL,
+        percentage: Math.round((score / QUESTIONS_PER_LEVEL) * 100),
+        playedAt: new Date().toISOString(),
+      });
+      setLeaderboard(nextLeaderboard);
       setShowResult(true);
       return;
     }
@@ -328,6 +344,32 @@ export function QuickQuiz() {
           );
         })}
       </div>
+
+      <aside className="quiz-high-scores" aria-labelledby="quiz-high-scores-title">
+        <div className="quiz-high-scores-head">
+          <div>
+            <div className="quiz-phase-kicker">Neste dispositivo</div>
+            <h3 id="quiz-high-scores-title"><Trophy className="h-4 w-4" aria-hidden="true" /> High Scores</h3>
+          </div>
+          <span>{leaderboard.length ? leaderboard.length + ' registros' : 'Seu primeiro resultado entra aqui'}</span>
+        </div>
+        {leaderboard.length ? (
+          <ol className="quiz-high-scores-list">
+            {leaderboard.slice(0, 5).map((entry, index) => (
+              <li key={entry.id} className="quiz-high-score-row">
+                <span className="quiz-high-score-rank"><Medal className="h-3.5 w-3.5" aria-hidden="true" /> {index + 1}</span>
+                <span className="min-w-0">
+                  <strong>Fase {entry.phase} · {entry.level}</strong>
+                  <small>{new Date(entry.playedAt).toLocaleDateString('pt-BR')} · {entry.percentage}%</small>
+                </span>
+                <b>{entry.score}/{entry.total}</b>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="quiz-high-scores-empty">Conclua uma fase para criar o ranking local. Nada é enviado para um servidor.</p>
+        )}
+      </aside>
 
       {showResult ? (
         <div className="quiz-card quiz-result" role="status">
