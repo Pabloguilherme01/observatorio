@@ -2665,3 +2665,14 @@ button:disabled{cursor:not-allowed;opacity:.58}
 @media(max-width:640px){
   .summary-public-facts{grid-template-columns:1fr}
 }
+
+.summary-public-shareline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px;padding:13px 14px;border:1px solid rgba(125,211,252,.10);border-radius:16px;background:linear-gradient(90deg,rgba(125,211,252,.055),rgba(255,255,255,.018))}
+.summary-public-shareline>div{min-width:0}
+.summary-public-shareline strong{display:block;color:#e6f6ff;font-size:11px;font-weight:900}
+.summary-public-shareline span{display:block;margin-top:3px;color:#6e8198;font-size:9px;line-height:1.45}
+.summary-public-shareline>button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;flex:0 0 auto;gap:7px;padding:8px 11px;border:1px solid rgba(125,211,252,.16);border-radius:11px;background:rgba(125,211,252,.07);color:#cfefff;font-size:10px;font-weight:900;touch-action:manipulation}
+.summary-public-shareline>button:hover{border-color:rgba(125,211,252,.28);background:rgba(125,211,252,.11)}
+@media(max-width:640px){
+ .summary-public-shareline{align-items:stretch;flex-direction:column}
+ .summary-public-shareline>button{width:100%}
+}
