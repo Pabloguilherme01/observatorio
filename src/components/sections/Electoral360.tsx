@@ -89,7 +89,7 @@ export function Electoral360() {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
         <div className="min-w-0">
           <strong className="block text-xs font-black text-sky-100">Nomes acompanhados em Águas Lindas</strong>
-          <span className="text-[11px] text-slate-500">Este recorte reúne somente os nomes monitorados pelo observatório para a cidade.</span>
+          <span className="text-[11px] text-slate-500">Este recorte reúne somente os nomes monitorados pelo observatório para a cidade; ele não substitui a confirmação do município da candidatura no registro oficial.</span>
         </div>
         <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} acompanhados</span>
       </div>
