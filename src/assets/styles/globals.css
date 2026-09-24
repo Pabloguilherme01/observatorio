@@ -1380,3 +1380,191 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
 @media (prefers-reduced-motion:reduce){
   .mobile-bottom-nav button:active{transform:none}
 }
+
+/* Mobile update — 2026-09-24: compact, polished and consistent */
+@media (max-width:767px){
+  :root{
+    --mobile-page-gutter:16px;
+    --mobile-nav-height:66px;
+  }
+
+  body{
+    padding-bottom:calc(var(--mobile-nav-height) + 8px + env(safe-area-inset-bottom,0px));
+  }
+
+  /* Header */
+  .site-header{
+    background:rgba(7,13,20,.9)!important;
+    border-bottom:1px solid rgba(125,211,252,.1);
+  }
+  .site-header-inner{
+    min-height:56px;
+    padding:6px var(--mobile-page-gutter);
+  }
+  .site-brand{
+    max-width:56vw;
+  }
+  .site-brand>span:first-child{
+    font-size:13px;
+    letter-spacing:-.02em;
+  }
+  .site-header-actions{
+    gap:5px;
+  }
+
+  /* Hero */
+  .hero-shell{
+    padding:18px var(--mobile-page-gutter) 22px!important;
+    border-radius:0 0 24px 24px;
+  }
+  .hero-shell h1{
+    max-width:17ch;
+    font-size:clamp(2rem,9.2vw,2.5rem)!important;
+    line-height:.98!important;
+    letter-spacing:-.055em!important;
+  }
+  .hero-shell p{
+    max-width:36rem;
+    font-size:14px!important;
+    line-height:1.45!important;
+  }
+  .hero-shell .mt-5.flex.flex-wrap{
+    margin-top:12px!important;
+    gap:7px;
+  }
+  .hero-shell .mt-5.flex.flex-wrap>*{
+    min-height:44px;
+  }
+
+  /* Discovery */
+  #descubra{
+    padding:20px var(--mobile-page-gutter) 18px!important;
+  }
+  #descubra .discovery-shell>div:first-child{
+    margin-bottom:12px!important;
+  }
+  #descubra .discovery-shell h2{
+    font-size:1.3rem;
+  }
+  #descubra .discovery-shell>div:first-child p{
+    font-size:12px;
+  }
+  #descubra .discovery-shell>.grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+  #descubra .topic-card{
+    min-height:106px;
+    padding:11px;
+    border-radius:17px;
+  }
+  #descubra .topic-card>span:first-child{
+    width:34px;
+    height:34px;
+  }
+  #descubra .topic-card strong{
+    margin-top:7px;
+    font-size:12.5px;
+  }
+  #descubra .topic-card>span:last-child{
+    font-size:9.5px;
+    line-height:1.25;
+  }
+
+  /* Candidate area */
+  #politica{
+    margin-top:20px!important;
+    padding-top:20px;
+  }
+  #politica h2{
+    font-size:1.28rem!important;
+  }
+  #politica input{
+    min-height:48px!important;
+    border-radius:14px;
+  }
+  #politica .candidate-card{
+    border-radius:18px!important;
+  }
+  #politica .candidate-card>div:first-child{
+    padding:12px!important;
+    gap:10px;
+  }
+  #politica .candidate-card h3{
+    font-size:14px;
+  }
+  #politica .candidate-card .flex.flex-wrap.gap-2{
+    gap:7px;
+  }
+  #politica .candidate-card .flex.flex-wrap.gap-2>*{
+    min-height:44px!important;
+  }
+
+  /* Summary */
+  .summary-simple-grid{
+    gap:8px!important;
+  }
+  .summary-simple-card{
+    min-height:118px;
+    padding:11px;
+    border-radius:16px;
+  }
+  .summary-simple-card>strong{
+    font-size:1.3rem;
+  }
+
+  /* Bottom navigation */
+  .mobile-bottom-nav{
+    height:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))!important;
+    min-height:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))!important;
+    padding:4px 7px env(safe-area-inset-bottom,0px)!important;
+    border-radius:18px 18px 0 0;
+  }
+  .mobile-bottom-nav button{
+    height:54px!important;
+    min-height:54px!important;
+    border-radius:13px!important;
+    gap:3px;
+  }
+  .mobile-bottom-nav button span{
+    font-size:8.5px!important;
+  }
+}
+
+@media (max-width:390px){
+  :root{--mobile-page-gutter:14px}
+  .site-brand{max-width:51vw}
+  .hero-shell{
+    padding-top:16px!important;
+    padding-bottom:19px!important;
+    border-radius:0 0 20px 20px;
+  }
+  .hero-shell h1{font-size:1.95rem!important}
+  #descubra .discovery-shell>.grid{gap:7px}
+  #descubra .topic-card{
+    min-height:100px;
+    padding:10px;
+  }
+  #descubra .topic-card>span:first-child{
+    width:32px;height:32px;
+  }
+  #descubra .topic-card>span:last-child{
+    font-size:9px;
+  }
+  .summary-simple-card{min-height:112px}
+}
+
+@media (max-width:340px){
+  .site-icon-button,.site-tools-button{
+    width:40px!important;
+    min-width:40px!important;
+    height:40px!important;
+    min-height:40px!important;
+  }
+  .hero-shell h1{font-size:1.82rem!important}
+  #descubra .topic-card{
+    min-height:92px;
+    padding:9px;
+  }
+  #descubra .topic-card>span:last-child{display:none}
+}
