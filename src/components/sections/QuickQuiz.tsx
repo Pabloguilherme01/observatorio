@@ -92,7 +92,16 @@ const seeds: readonly Seed[] = [
 
 const easy = seeds.map((s, i): Question => {
   const alternatives = seeds.filter(candidate => candidate.unit === s.unit && candidate.value !== s.value).slice(0, 2).map(candidate => candidate.value);
-  const fallback = s.unit === 'R
+  const fallback = s.unit === 'R$'
+    ? [money((s.numeric ?? 0) / 2), money((s.numeric ?? 0) * 1.5)]
+    : [fmt((s.numeric ?? 0) / 2, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0), fmt((s.numeric ?? 0) * 1.5, s.unit === 'km²' || s.unit === 'hab/km²' ? 1 : 0)];
+  const options = Array.from(new Set([s.value, ...alternatives, ...fallback])).slice(0, 3);
+  return {
+    id:`easy-${i+1}`, difficulty:'Fácil', phase:1, category:s.category,
+    prompt:`Qual é o valor registrado para ${s.label}?`,
+    options, answer:s.value, explanation:s.note + '.', anchor:s.anchor, sourceId:s.sourceId, sourceLabel:s.sourceLabel,
+  };
+});
 
 const pairs = seeds.map((s, i) => {
   const sameUnit = seeds.find((candidate, j) => j !== i && candidate.unit === s.unit);
