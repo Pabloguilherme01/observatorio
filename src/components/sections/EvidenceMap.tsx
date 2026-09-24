@@ -1,58 +1,51 @@
 import { ExternalLink } from 'lucide-react';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 import { observatorioData as d } from '../../data/observatorioData';
-import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
 
 function natureLabel(nature: string) {
-  if (nature === 'official') return 'Fonte oficial';
-  if (nature === 'secondary') return 'Fonte secundária';
-  return 'Fonte registrada';
-}
-
-function dateLabel(value: string | undefined) {
-  return value ? formatDate(value) : 'Data de referência não registrada';
+  if (nature === 'official') return 'Oficial';
+  if (nature === 'secondary') return 'Secundária';
+  return 'Registrada';
 }
 
 export function EvidenceMap() {
-  return (
-    <section id="fontes" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="fontes-title">
-      <SectionHeader
-        titleId="fontes-title"
-        eyebrow="Rastreabilidade"
-        title="Mapa de evidências"
-        description="Cada cartão identifica a instituição, a natureza da fonte e as datas disponíveis. Acesse a origem original para conferir o contexto completo."
-      />
+  const { mode } = useLanguageMode();
 
-      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+  // Resumo e Simples já recebem proveniência nos próprios indicadores.
+  // O mapa completo é uma ferramenta de auditoria e fica reservado ao Técnico.
+  if (mode !== 'technical') return null;
+
+  return (
+    <section id="fontes" className="evidence-map-tech mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="fontes-title">
+      <div className="evidence-tech-head">
+        <div>
+          <span className="quiz-eyebrow">Técnico · rastreabilidade</span>
+          <h2 id="fontes-title">Mapa de evidências</h2>
+          <p>Mini cards para auditoria rápida. Abra a fonte original quando precisar conferir o dado, a data e a natureza do registro.</p>
+        </div>
+        <span className="evidence-tech-count">{d.sources.length} fontes</span>
+      </div>
+
+      <div className="evidence-mini-grid">
         {d.sources.map(source => (
           <a
             key={source.id}
             href={source.url}
             target="_blank"
             rel="noopener noreferrer"
+            className="evidence-mini-card"
             title={'Abrir fonte: ' + source.label}
-            className="source-card group"
           >
-            <div className="source-card-header">
-              <div className="min-w-0">
-                <div className="source-card-title">{source.label}</div>
-                <div className="source-card-institution">{source.institution}</div>
-              </div>
-              <span className="source-card-icon" aria-hidden="true">
-                <ExternalLink className="h-4 w-4" />
-              </span>
+            <div className="evidence-mini-top">
+              <span>{natureLabel(source.nature)}</span>
+              <ExternalLink aria-hidden="true" />
             </div>
-
-            <div className="source-card-meta">
-              <span className={'source-nature source-nature-' + source.nature}>{natureLabel(source.nature)}</span>
-              <span>{dateLabel(source.referenceDate ?? source.publishedAt)}</span>
-            </div>
-
-            {source.note && <p className="source-card-note">{source.note}</p>}
-
-            <div className="source-card-footer">
-              <span>Conferir fonte original</span>
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            <strong>{source.label}</strong>
+            <small>{source.institution}</small>
+            <div className="evidence-mini-meta">
+              <span>{source.referenceDate ? formatDate(source.referenceDate) : source.publishedAt ? formatDate(source.publishedAt) : 'Data não registrada'}</span>
+              <span>abrir fonte</span>
             </div>
           </a>
         ))}
