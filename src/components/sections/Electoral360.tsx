@@ -47,19 +47,8 @@ export function Electoral360() {
     );
   }, [normalizedQuery, localCandidateRecords]);
 
-  const localCandidates = useMemo(() => {
-    if (!normalizedQuery) return d.candidates;
-    return d.candidates.filter(candidate =>
-      [candidate.name, candidate.party, candidate.status, candidate.ballotNumber]
-        .join(' ')
-        .toLocaleLowerCase('pt-BR')
-        .includes(normalizedQuery),
-    );
-  }, [normalizedQuery]);
-
   const selectedLocalTseCandidate = localTseCandidates.find(candidate => candidate.name === selectedName);
-  const selectedLocal = d.candidates.find(candidate => candidate.name === selectedName);
-  const profileName = hasLocalCandidateSnapshot ? selectedLocalTseCandidate?.name ?? '' : selectedLocal?.name ?? '';
+  const profileName = selectedLocalTseCandidate?.name ?? '';
 
   return (
     <section id="eleitoral360" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="electoral360-title">
@@ -197,7 +186,7 @@ export function Electoral360() {
 
 
           <div className="mt-4 flex max-h-44 flex-wrap gap-2 overflow-y-auto pr-1" aria-label="Candidatos disponíveis para o perfil">
-            {(hasLocalCandidateSnapshot ? electoral360Snapshot.matchedCandidates : d.candidates).map(candidate => (
+            {electoral360Snapshot.matchedCandidates.map(candidate => (
               <button
                 key={candidate.name}
                 type="button"
@@ -211,7 +200,7 @@ export function Electoral360() {
 
           {!profileName ? (
             <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
-              Selecione um registro para abrir o perfil documental. Nenhum nome é pré-selecionado.
+              Selecione um nome acompanhado para abrir o perfil documental. Nenhum nome é pré-selecionado.
             </div>
           ) : hasLocalCandidateSnapshot && selectedLocalTseCandidate ? (
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -224,18 +213,11 @@ export function Electoral360() {
               <Info label="Escolaridade" value={selectedLocalTseCandidate.education || 'Não informado'} />
               <Info label="Snapshot" value={selectedLocalTseCandidate.snapshotDate} />
             </div>
-          ) : selectedLocal ? (
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Info label="Identidade" value={selectedLocal.name} />
-              <Info label="Situação" value={selectedLocal.status} />
-              <Info label="Partido" value={selectedLocal.party ?? 'Não informado'} />
-              <Info label="Número" value={String(selectedLocal.ballotNumber ?? 'Não informado')} />
-              <Info label="Ocupação" value={selectedLocal.occupation ?? 'Não informado'} />
-              <Info label="Escolaridade" value={selectedLocal.education ?? 'Não informado'} />
-              <Info label="Bens declarados" value={selectedLocal.declaredAssetsBrl != null ? selectedLocal.declaredAssetsBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'Não informado'} />
-              <Info label="Snapshot editorial" value={selectedLocal.snapshotDate} />
+          ) : (
+            <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
+              O recorte local ainda não possui um perfil disponível neste snapshot.
             </div>
-          ) : null}
+          )
 
           {profileName && (
             <details className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4">
