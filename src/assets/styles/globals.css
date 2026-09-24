@@ -269,3 +269,89 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .quiz-phase-roadmap { gap: .2rem; }
   .quiz-stage-node { font-size: 8px; }
 }
+
+
+/* Mobile UI refresh: hierarchy, spacing and navigation. */
+@media (max-width: 767px) {
+  html { scroll-padding-top: 72px; scroll-padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  .site-header { position: sticky; top: 0; z-index: 50; }
+  .site-header-inner { min-height: 60px; padding: 7px 14px; gap: 8px; }
+  .site-brand { max-width: 52vw; }
+  .site-brand > span:first-child { font-size: 14px; }
+  .site-brand > span:last-child { font-size: 8px; letter-spacing: .14em; }
+  .site-header-actions { gap: 3px; }
+  .site-icon-button, .site-tools-button { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+
+  .hero-shell { padding: 24px 14px 28px !important; }
+  .hero-shell h1 { max-width: 100%; font-size: clamp(2.05rem, 10vw, 2.7rem) !important; line-height: .98 !important; }
+  .hero-shell .hero-badges { margin-bottom: 12px; gap: 6px; }
+  .hero-shell .hero-badges > * { font-size: 9px; padding: 5px 8px; }
+  .hero-shell p { font-size: 14px !important; line-height: 1.5 !important; }
+  .hero-shell .mt-5.flex.flex-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .hero-shell .mt-5.flex.flex-wrap > button:first-child { grid-column: 1 / -1; }
+  .hero-shell .mt-5.flex.flex-wrap > a { width: 100%; justify-content: center; }
+
+  #descubra { padding: 24px 14px 20px !important; }
+  #descubra .discovery-shell > div:first-child { margin-bottom: 16px; }
+  #descubra .discovery-shell h2 { font-size: 1.45rem; line-height: 1.1; }
+  #descubra .discovery-shell > div:nth-child(2) { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  #descubra .topic-card { min-height: 118px; padding: 13px; border-radius: 16px; }
+  #descubra .topic-card strong { margin-top: 9px; font-size: 14px; }
+  #descubra .topic-card > span:last-child { font-size: 11px; line-height: 1.35; }
+
+  .summary-simple-grid { gap: 8px; }
+  .summary-simple-card { min-height: 124px; padding: 12px; border-radius: 16px; }
+  .summary-simple-card > strong { font-size: 1.35rem; }
+
+  .mobile-bottom-nav {
+    position: fixed !important;
+    left: 0; right: 0; bottom: 0;
+    z-index: 70;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    min-height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding: 4px 6px env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid rgba(255,255,255,.1);
+    background: rgba(9,15,22,.94);
+    box-shadow: 0 -10px 32px rgba(0,0,0,.28);
+  }
+  .mobile-bottom-nav button {
+    min-width: 0 !important;
+    min-height: 52px !important;
+    height: 52px;
+    padding: 5px 2px;
+    border: 1px solid transparent;
+    border-radius: 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+  }
+  .mobile-bottom-nav button.is-active { color: #dff6ff; border-color: rgba(125,211,252,.16); background: rgba(125,211,252,.1); }
+  .mobile-bottom-nav button span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9px; }
+
+  .search-modal-backdrop { padding: env(safe-area-inset-top, 8px) 8px 12px; }
+  .search-modal-panel { margin-top: 8px; border-radius: 18px; }
+  .search-modal-head { min-height: 60px; }
+  .search-modal-close, .search-modal-icon { min-width: 44px; min-height: 44px; }
+
+  .mobile-tools-sheet { padding: 10px 14px !important; }
+  .mobile-tools-grid { gap: 10px; }
+  .mobile-tools-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mobile-tool-action { min-height: 44px; width: 100%; }
+
+  .candidate-card { border-radius: 16px; }
+  .candidate-card > div:first-child { padding: 12px !important; }
+}
+@media (max-width: 390px) {
+  #descubra .discovery-shell > div:nth-child(2) { grid-template-columns: 1fr; }
+  #descubra .topic-card { min-height: 88px; }
+  .hero-shell .mt-5.flex.flex-wrap { grid-template-columns: 1fr; }
+  .hero-shell .mt-5.flex.flex-wrap > button:first-child { grid-column: auto; }
+}
