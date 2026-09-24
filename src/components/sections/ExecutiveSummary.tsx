@@ -115,7 +115,7 @@ export function ExecutiveSummary() {
                 <h3>Entenda a cidade em poucos toques.</h3>
                 <p>Explore os números mais úteis primeiro. Cada cartão leva ao contexto completo e preserva a origem do dado.</p>
                 <div className="summary-public-actions" aria-label="Ações rápidas do resumo">
-                  <button type="button" onClick={() => share()} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
+                  <button type="button" onClick={() => { void share(); }} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
                   <button type="button" onClick={() => goToSection('descubra')} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
                 </div>
               </div>
@@ -155,7 +155,7 @@ export function ExecutiveSummary() {
                     <small>{stat.caption}</small>
                     <em>{stat.detail}</em>
                     <span className="summary-public-stat-footer">
-                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={event => { event.preventDefault(); event.stopPropagation(); share(stat.label, stat.value); }}>
+                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={event => { event.preventDefault(); event.stopPropagation(); void share(stat.label, stat.value); }}>
                         <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
                       </button>
                       <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
