@@ -39,12 +39,24 @@ function shareCandidate(candidate: CandidateView, channel: 'native' | 'whatsapp'
 
 export function PoliticalResearch() {
   const { mode } = useLanguageMode();
+  const [query, setQuery] = useState('');
+  const [officeFilter, setOfficeFilter] = useState('all');
   const hasLocalCandidates = electoral360Snapshot.matchedCandidates.length > 0;
   const municipalCaptureCompleted = electoral360Snapshot.captureMode === 'github-actions' && Boolean(electoral360Snapshot.capturedAt);
   const candidates: CandidateView[] = electoral360Snapshot.matchedCandidates.map(candidate => {
     const raw = candidate as typeof candidate & { municipality?: string; photoUrl?: string | null; instagramUrl?: string | null };
     return { ...candidate, municipality: raw.municipality, photoUrl: raw.photoUrl, instagramUrl: raw.instagramUrl };
   });
+
+  const filteredCandidates = useMemo(() => {
+    const normalized = query.trim().toLocaleLowerCase('pt-BR');
+    return candidates.filter(candidate => {
+      const matchesQuery = !normalized || [candidate.name, candidate.party, candidate.office, candidate.ballotNumber].join(' ').toLocaleLowerCase('pt-BR').includes(normalized);
+      const matchesOffice = officeFilter === 'all' || candidate.office === officeFilter;
+      return matchesQuery && matchesOffice;
+    });
+  }, [candidates, officeFilter, query]);
+  const offices = useMemo(() => Array.from(new Set(candidates.map(candidate => candidate.office))).sort(), [candidates]);
 
   return (
     <section id="candidaturas" className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14" aria-labelledby="research-title">
@@ -78,9 +90,7 @@ export function PoliticalResearch() {
             </div>
           </div>
         </Card>
-      ) : (
-        <div className="grid gap-4 md:grid-cols-2">{candidates.map(candidate => <CandidateCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />)}</div>
-      )}
+      ) : null}
 
       <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4">
         <div className="flex items-start gap-3">
