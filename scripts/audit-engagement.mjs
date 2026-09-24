@@ -19,6 +19,9 @@ const pwaConfig = read('vite.config.ts');
 const sync = read('.github/workflows/sync-tse-2026.yml');
 const version = read('src/config/version.ts');
 const index = read('index.html');
+const audience = read('src/components/AudienceHub.tsx');
+const executive = read('src/components/sections/ExecutiveSummary.tsx');
+const formatters = read('src/utils/formatters.ts');
 
 must(modeToggle.includes("setMode('summary')") && modeToggle.includes("setMode('simple')") && modeToggle.includes("setMode('technical')"), '3 modos neutros de leitura disponíveis');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
@@ -53,6 +56,11 @@ must(search.includes('search-empty-action') && !search.includes('document.getEle
 must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
 const versionMatch = version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
 must(versionMatch?.[1] === '44.9.0', 'versão marcada como 44.9.0');
+must((quiz.match(/quiz-phase-roadmap/g) || []).length === 1, 'quiz possui apenas um roadmap de fases');
+must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
+must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
+must(executive.includes('poll?.pollster') && executive.includes('poll?.method') && executive.includes('poll?.registrationNumber'), 'card de pesquisa exibe identificação e cenário');
+
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
