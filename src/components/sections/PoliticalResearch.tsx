@@ -145,8 +145,11 @@ export function PoliticalResearch() {
       </div>}
 
       {mode === 'summary' && hasLocalCandidates && (
-        <div className="candidate-summary-grid mt-4">
-          {candidates.map(candidate => <CandidateSummaryCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />)}
+        <div className="candidate-summary-wrap mt-4">
+          <div className="candidate-summary-grid">
+            {candidates.map(candidate => <CandidateSummaryCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />)}
+          </div>
+          <div className="candidate-summary-hint" aria-hidden="true">Toque em um candidato para ver detalhes</div>
         </div>
       )}
 
