@@ -23,7 +23,6 @@ export function ExecutiveSummary() {
   const electorate = d.electoral;
   const populationPoint = d.populationSeries.find(point => point.year === 2026);
   const population = populationPoint?.value ?? 0;
-  const populationSource = d.sources.find(sourceItem => sourceItem.id === populationPoint?.sourceId);
   const sanitationPct = d.sanitation.publicSewerServicePct;
   const sanitationSource = d.sources.find(sourceItem => sourceItem.id === d.sanitation.sourceId);
   const budget = d.budget.totalBrl;
@@ -170,29 +169,28 @@ export function ExecutiveSummary() {
               </div>
               <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
                 {quickStats.map(stat => (
-                  <a
+                  <div
                     key={stat.label}
-                    href={'#' + stat.target}
                     className="summary-public-stat"
-                    onClick={event => {
-                      event.preventDefault();
+                    onClick={() => {
                       setActiveStat(stat.label);
                       goToSection(stat.target);
                       window.setTimeout(() => setActiveStat(''), 900);
                     }}
-                    aria-label={`Abrir contexto de ${stat.label}`}
                   >
-                    <span>{stat.label}</span>
-                    <strong className="mobile-safe-wrap">{stat.value}</strong>
-                    <small>{stat.caption}</small>
-                    <em>{stat.detail}</em>
+                    <button type="button" className="summary-public-stat-main" aria-label={`Abrir contexto de ${stat.label}`} onClick={() => goToSection(stat.target)}>
+                      <span>{stat.label}</span>
+                      <strong className="mobile-safe-wrap">{stat.value}</strong>
+                      <small>{stat.caption}</small>
+                      <em>{stat.detail}</em>
+                    </button>
                     <span className="summary-public-stat-footer">
-                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={event => { event.preventDefault(); event.stopPropagation(); void share(stat.label, stat.value); }}>
+                      <button type="button" className="summary-public-share" aria-label={`Compartilhar ${stat.label}`} onClick={() => { void share(stat.label, stat.value); }}>
                         <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
                       </button>
                       <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
                     </span>
-                  </a>
+                  </div>
                 ))}
               </div>
             </div>
