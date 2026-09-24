@@ -2676,3 +2676,6 @@ button:disabled{cursor:not-allowed;opacity:.58}
  .summary-public-shareline{align-items:stretch;flex-direction:column}
  .summary-public-shareline>button{width:100%}
 }
+
+.summary-public-live{display:inline-flex;align-items:center;min-height:28px;padding:4px 8px;border:1px solid rgba(125,211,252,.08);border-radius:999px;color:#668099;font-size:9px;font-weight:900}
+@media(max-width:640px){.summary-public-live{order:2;justify-content:center}}
