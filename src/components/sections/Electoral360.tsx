@@ -78,7 +78,7 @@ export function Electoral360() {
 
       <div className="mb-4 grid gap-4 lg:grid-cols-[1fr_.9fr]">
         <Card>
-          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Evolução do eleitorado</div>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Como o eleitorado mudou</div>
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {ballotHistory.map(point => (
               <div key={point.year} className="rounded-2xl border border-white/8 bg-white/[0.02] p-3">
@@ -92,7 +92,7 @@ export function Electoral360() {
         </Card>
 
         <Card>
-          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Perfil do eleitorado</div>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Quem compõe o eleitorado</div>
           <div className="mt-4 space-y-3">
             {electorate.ageGroups.map(group => (
               <div key={group.id}>
@@ -113,9 +113,9 @@ export function Electoral360() {
         <Card className="mb-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais dados eleitorais</div>
-              <div className="mt-1 text-sm font-semibold text-white">905 registros · geração em 23/09/2026</div>
-              <p className="mt-1 text-[11px] leading-5 text-slate-500">Base oficial complementar usada para conferir os registros do recorte local. O município de candidatura não é informado neste arquivo estadual.</p>
+              <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais contexto eleitoral</div>
+              <div className="mt-1 text-sm font-semibold text-white">Base complementar consultada</div>
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">Base complementar usada para conferir atributos dos nomes acompanhados. O arquivo estadual não traz município da candidatura.</p>
             </div>
             <div className="grid grid-cols-2 gap-2 text-center sm:w-64">
               <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
@@ -125,7 +125,7 @@ export function Electoral360() {
         </Card>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
           <div className="mt-3 text-3xl font-black text-white">{captured}</div>
@@ -258,7 +258,7 @@ export function Electoral360() {
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-3">
-          <div className="min-w-0"><strong className="block text-xs text-sky-100">Busca eleitoral rápida</strong><span className="mt-1 block text-[11px] leading-5 text-slate-500">Nome, partido, cargo, situação ou número. O filtro não classifica candidaturas.</span></div>
+          <div className="min-w-0"><strong className="block text-xs text-sky-100">Encontre um nome</strong><span className="mt-1 block text-[11px] leading-5 text-slate-500">Busque por nome, partido, cargo ou número. A busca apenas localiza registros.</span></div>
           <ArrowRight className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
         </div>
 
