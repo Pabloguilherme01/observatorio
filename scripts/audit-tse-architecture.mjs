@@ -61,12 +61,25 @@ if (existsSync(deployWorkflow)) {
 }
 
 const syncWorkflow = join(ROOT, '.github/workflows/sync-tse-2026.yml');
-if (existsSync(syncWorkflow)) {
+if (!existsSync(syncWorkflow)) {
+  violations.push({ file: '.github/workflows/sync-tse-2026.yml', token: 'workflow TSE 2026 ausente' });
+} else {
   const content = readFileSync(syncWorkflow, 'utf8');
   if (!content.includes('workflow_dispatch:')) {
     violations.push({ file: '.github/workflows/sync-tse-2026.yml', token: 'workflow_dispatch ausente' });
   }
+  if (!content.includes('npm run sync:tse')) {
+    violations.push({ file: '.github/workflows/sync-tse-2026.yml', token: 'sync:tse ausente' });
+  }
+}
 
+if (existsSync(syncScript)) {
+  const content = readFileSync(syncScript, 'utf8');
+  for (const token of ['loadPrevious()', "state: 'upstream_unavailable'", 'não será sobrescrito']) {
+    if (!content.includes(token)) {
+      violations.push({ file: 'scripts/sync-tse-2026.mjs', token: 'fallback de snapshot validado ausente: ' + token });
+    }
+  }
 }
 
 if (violations.length) {
