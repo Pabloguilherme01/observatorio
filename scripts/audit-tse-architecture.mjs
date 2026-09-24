@@ -60,11 +60,11 @@ if (existsSync(deployWorkflow)) {
   }
 }
 
-const syncWorkflow = join(ROOT, '.github/workflows/sync-tse-candidates.yml');
+const syncWorkflow = join(ROOT, '.github/workflows/sync-tse-2026.yml');
 if (existsSync(syncWorkflow)) {
   const content = readFileSync(syncWorkflow, 'utf8');
   if (!content.includes('workflow_dispatch:')) {
-    violations.push({ file: '.github/workflows/sync-tse-candidates.yml', token: 'workflow_dispatch ausente' });
+    violations.push({ file: '.github/workflows/sync-tse-2026.yml', token: 'workflow_dispatch ausente' });
   }
 
 }
