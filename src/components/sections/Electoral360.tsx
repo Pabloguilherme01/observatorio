@@ -204,7 +204,7 @@ export function Electoral360() {
             <details className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4">
               <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais informações sobre a fonte</summary>
               <p className="mt-3 text-xs leading-5 text-slate-500">
-                Os dados do perfil vêm de um snapshot oficial do TSE. O vínculo com Águas Lindas corresponde ao recorte acompanhado pelo observatório.
+                Os dados do perfil vêm de um snapshot oficial do TSE. A relação com Águas Lindas identifica o recorte acompanhado pelo observatório, não a origem municipal da candidatura.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">snapshot {selectedLocalTseCandidate?.snapshotDate ?? selectedLocal?.snapshotDate ?? 'não informado'}</span>
@@ -220,7 +220,7 @@ export function Electoral360() {
             <div className="mt-3 space-y-4">
               <div>
                 <div className="flex items-center gap-2 text-sm font-bold text-white"><ShieldAlert className="h-4 w-4 text-sky-300" aria-hidden="true" /> Dados públicos</div>
-                <p className="mt-2 text-xs leading-5 text-slate-500">O observatório separa o recorte acompanhado da base estadual para não apresentar o arquivo como uma lista municipal.</p>
+                <p className="mt-2 text-xs leading-5 text-slate-500">O observatório apresenta estes nomes como um recorte acompanhado em Águas Lindas. A base estadual do TSE não informa o município da candidatura.</p>
               </div>
               <div>
                 <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Nomes acompanhados</div>
