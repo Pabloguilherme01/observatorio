@@ -27,6 +27,7 @@ export function HeroCountdown() {
   const election = useCountdown('2026-10-04T08:00:00-03:00');
   const secondRound = useCountdown('2026-10-25T08:00:00-03:00');
   const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+  const transportFare = d.transport.routes[0]?.fareBrl;
   const electorate = d.electoral.electorate;
   const loa = d.budget.totalBrl;
   const updatedAt = formatDate(d.meta.updatedAt);
@@ -102,7 +103,7 @@ export function HeroCountdown() {
                   { id: 'dashboard', label: 'Cidade', value: population.toLocaleString('pt-BR'), note: 'população estimada', icon: BarChart3 },
                   { id: 'eleitorado', label: 'Eleitorado', value: electorate.toLocaleString('pt-BR'), note: 'snapshot do eleitorado', icon: Users },
                   { id: 'orcamento', label: 'Orçamento', value: brl(loa), note: 'LOA 2026', icon: WalletCards },
-                  { id: 'transporte', label: 'Transporte', value: brl(d.transport.routes[0]?.fareBrl ?? 0), note: 'tarifa de referência', icon: BusFront },
+                  { id: 'transporte', label: 'Transporte', value: transportFare != null ? brl(transportFare) : '—', note: transportFare != null ? 'tarifa de referência' : 'valor não informado', icon: BusFront },
                 ].map(({ id, label, value, note, icon: Icon }) => (
                   <a key={id} href={'#' + id} className="summary-hero-card group">
                     <span className="summary-hero-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span>
