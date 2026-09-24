@@ -17,8 +17,20 @@ function jump(id: string) {
 }
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
-  const [commandOpen, setCommandOpen] = useState(false), [helpOpen, setHelpOpen] = useState(false), [query, setQuery] = useState(''), [recent, setRecent] = useState<string[]>([]), [favorites, setFavorites] = useState<string[]>([]), [reducedMotion, setReducedMotion] = useState(false), [mode, setMode] = useState<ExperienceMode>('overview');
-  const inputRef = useRef<HTMLInputElement>(null), modalRef = useRef<HTMLDivElement>(null), openerRef = useRef<HTMLElement | null>(null), progressRef = useRef<HTMLDivElement>(null), pendingG = useRef(false), pendingGTimerRef = useRef<number | null>(null), focusTimerRef = useRef<number | null>(null);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [recent, setRecent] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [mode, setMode] = useState<ExperienceMode>('overview');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const pendingG = useRef(false);
+  const pendingGTimerRef = useRef<number | null>(null);
+  const focusTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     setRecent(readList(RECENT_KEY)); setFavorites(readList(FAVORITES_KEY)); const reduced = readStorage(REDUCED_KEY) === '1'; setReducedMotion(reduced); document.documentElement.classList.toggle('reduced-motion', reduced); const electionStored = readStorage(ELECTION_KEY) === '1'; document.documentElement.classList.toggle('mode-election', electionStored); const storedMode = readStorage(MODE_KEY) as ExperienceMode | null; const initialMode: ExperienceMode = storedMode === 'overview' || storedMode === 'investigation' || storedMode === 'evidence' ? storedMode : 'overview'; setMode(initialMode); document.documentElement.dataset.experienceMode = initialMode; document.documentElement.classList.remove('mode-overview','mode-investigation','mode-evidence'); document.documentElement.classList.add('mode-' + initialMode);
