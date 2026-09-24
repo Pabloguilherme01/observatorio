@@ -36,6 +36,7 @@ jobs:
       - name: Validate TSE watchlist snapshot
         env:
           REQUIRE_TSE_SYNC: 'true'
+          ALLOW_UPSTREAM_UNAVAILABLE: 'true'
         run: npm run validate:tse
 
       - name: Validate observatory data contracts
