@@ -1621,3 +1621,110 @@
   .quiz-high-score-row small { font-size: .58rem; }
   .quiz-high-score-row b { font-size: .75rem; }
 }
+
+
+/* Mobile interaction polish · v44.9.3 */
+.audience-topic:focus-visible,
+.audience-action-card:focus-visible,
+.audience-resource:focus-visible,
+.summary-hero-card:focus-visible,
+.summary-simple-card:focus-visible,
+.today-rail article:focus-within,
+.context-comparison-card:focus-within {
+  outline: 2px solid #38bdf8;
+  outline-offset: 3px;
+}
+.today-rail::-webkit-scrollbar,
+.context-comparison-cards::-webkit-scrollbar { display: none; }
+.sewer-mobile-bars,
+.sewer-mobile-selected { display: none; }
+
+@media (max-width: 419px) {
+  .today-rail {
+    scroll-padding-inline: .25rem;
+  }
+  .context-comparison-cards {
+    scroll-padding-inline: .25rem;
+  }
+  .sewer-mobile-bars {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(30px, 1fr));
+    align-items: end;
+    gap: 5px;
+    min-height: 150px;
+    border-radius: 1rem;
+    background: linear-gradient(to top, rgba(148,163,184,.08), transparent);
+    padding: .75rem .45rem .5rem;
+  }
+  .sewer-mobile-bar {
+    display: flex;
+    min-width: 0;
+    height: 140px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+  .sewer-mobile-bar-value,
+  .sewer-mobile-bar-year {
+    font-size: 8px;
+    font-weight: 800;
+    line-height: 1;
+    color: rgb(100 116 139);
+  }
+  .sewer-mobile-bar-track {
+    display: flex;
+    width: 100%;
+    height: 92px;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(148,163,184,.08);
+    overflow: hidden;
+  }
+  .sewer-mobile-bar-track > span {
+    display: block;
+    width: 72%;
+    min-height: 4px;
+    border-radius: 7px 7px 3px 3px;
+    background: rgb(125 211 252);
+  }
+  .sewer-mobile-bar.is-selected .sewer-mobile-bar-value,
+  .sewer-mobile-bar.is-selected .sewer-mobile-bar-year {
+    color: rgb(56 189 248);
+  }
+  .sewer-mobile-bar:focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+  .sewer-mobile-selected {
+    align-items: center;
+    gap: .5rem;
+    border-radius: .85rem;
+    border: 1px solid rgba(56,189,248,.16);
+    background: rgba(56,189,248,.04);
+    padding: .55rem .7rem;
+    font-size: .68rem;
+    line-height: 1.4;
+    color: rgb(100 116 139);
+  }
+  .sewer-mobile-selected strong {
+    color: rgb(226 232 240);
+    font-size: .72rem;
+  }
+  .sewer-mobile-selected { display: flex; }
+  .sewer-mobile-bars + .sewer-mobile-selected { margin-bottom: .35rem; }
+  .light .sewer-mobile-bar-track { background: rgb(226 232 240); }
+  .light .sewer-mobile-selected { border-color: rgb(186 230 253); background: rgb(240 249 255); }
+  .light .sewer-mobile-selected strong { color: rgb(15 23 42); }
+  .table-compact-mobile { display: none; }
+}
+@media (min-width: 420px) {
+  .sewer-mobile-bars,
+  .sewer-mobile-selected { display: none !important; }
+}
