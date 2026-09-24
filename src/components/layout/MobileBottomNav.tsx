@@ -1,4 +1,4 @@
-import { Compass, FileSearch, Home, MoreHorizontal, Users } from 'lucide-react';
+import { Compass, FileSearch, FileText, Home, MoreHorizontal, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
@@ -19,7 +19,7 @@ function sectionToTab(id: string) {
   if (id === 'descubra') return 'descubra';
   if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica' || id === 'eleitorado') return 'eleitoral360';
   if (id === 'dados') return 'dados';
-  if (id === 'fontes') return 'mais';
+  if (id === 'fontes') return 'fontes';
   if (thematicIds.has(id)) return 'descubra';
   return 'dashboard';
 }
@@ -34,7 +34,7 @@ export function MobileBottomNav() {
   const { mode } = useLanguageMode();
   const isTechnical = mode === 'technical';
   const items = isTechnical
-    ? [...baseItems, { id: 'dados', label: 'Dados', icon: FileSearch }, { id: 'fontes', label: 'Fontes', icon: FileSearch }]
+    ? [...baseItems, { id: 'dados', label: 'Dados', icon: FileSearch }, { id: 'fontes', label: 'Fontes', icon: FileText }]
     : [...baseItems, { id: 'dados', label: 'Dados', icon: FileSearch }, { id: 'quiz', label: 'Quiz', icon: MoreHorizontal }];
 
   const [activeSection, setActiveSection] = useState('dashboard');
