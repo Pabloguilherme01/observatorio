@@ -21,6 +21,75 @@ const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
 const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 
 
+function normalize(value) {
+  return String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\\u0300-\\u036f]/g, '')
+    .trim()
+    .toLocaleLowerCase('pt-BR');
+}
+
+function headerMap(headerRow) {
+  return Object.fromEntries(
+    headerRow.map((name, index) => [String(name).replace(/^\\uFEFF/, '').trim(), index]),
+  );
+}
+
+function valueOf(row, header, keys) {
+  for (const key of keys) {
+    const index = header[key];
+    if (index === undefined) continue;
+    const value = String(row[index] ?? '').trim();
+    if (value) return value;
+  }
+  return '';
+}
+
+function parseCsv(content) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let quoted = false;
+
+  for (let i = 0; i < content.length; i += 1) {
+    const char = content[i];
+    const next = content[i + 1];
+
+    if (quoted) {
+      if (char === '"' && next === '"') {
+        field += '"';
+        i += 1;
+      } else if (char === '"') {
+        quoted = false;
+      } else {
+        field += char;
+      }
+      continue;
+    }
+
+    if (char === '"') {
+      quoted = true;
+    } else if (char === ',') {
+      row.push(field);
+      field = '';
+    } else if (char === '\\n') {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = '';
+    } else if (char !== '\\r') {
+      field += char;
+    }
+  }
+
+  if (field.length || row.length) {
+    row.push(field);
+    if (row.some(value => value.length)) rows.push(row);
+  }
+
+  return rows;
+}
+
 function municipalityMatch(row, header) {
   const code = valueOf(row, header, ['CD_MUNICIPIO', 'CD_MUNICIPIO_TSE', 'NR_MUNICIPIO']);
   const name = valueOf(row, header, ['NM_MUNICIPIO']);
@@ -142,7 +211,8 @@ async function main() {
     let municipalityRows = 0;
 
     // Para o recorte completo do município, usamos exclusivamente o CSV oficial do TSE.
-    // O endpoint estadual do DivulgaCandContas não contém município no registro retornado.\n    let lastError = null;
+    // O endpoint estadual do DivulgaCandContas não contém município no registro retornado.
+    let lastError = null;
 
     for (const candidateUrl of ZIP_URLS) {
       try {
@@ -241,7 +311,7 @@ async function main() {
         filterNote: 'Recorte municipal completo pelo código TSE do município. O snapshot publica todas as candidaturas encontradas no arquivo oficial para Águas Lindas de Goiás, sem watchlist editorial.',
       },
       coverage: 'municipality_required',
-      watchlist: WATCHLIST,
+      watchlist: [],
       matched,
       diff: {
         state,
