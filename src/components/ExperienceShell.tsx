@@ -54,7 +54,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     };
     const onHashChange = () => {
       const id = window.location.hash.replace('#', '');
-      if (navigationIds.has(id)) remember(id);
+      if (isNavigationId(id)) remember(id);
     };
     if (window.location.hash) onHashChange();
     window.addEventListener('observatorio:navigate', onNavigate);
