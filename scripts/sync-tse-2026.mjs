@@ -37,9 +37,8 @@ const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 const API_BASE_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1';
 const ELECTION_ID = '20322002026';
 const API_CARGOS = [
-  { code: '3', label: 'governador' },
-  { code: '5', label: 'senador' },
-  { code: '6', label: 'deputado-federal' },
+  // A watchlist atual é composta por nomes monitorados como deputado estadual.
+  // Evitamos chamadas desnecessárias a cargos que não podem produzir matches.
   { code: '7', label: 'deputado-estadual-distrital' },
 ];
 
@@ -56,7 +55,7 @@ function curlJson(url) {
   const output = execFileSync('curl', [
     '--fail', '--location', '--http1.1',
     '--retry', '1', '--retry-delay', '1', '--retry-all-errors',
-    '--connect-timeout', '15', '--max-time', '45',
+    '--connect-timeout', '15', '--max-time', '20',
     '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
     '--header', 'Accept: application/json',
     '--header', 'Accept-Language: pt-BR,pt;q=0.9',
