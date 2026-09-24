@@ -100,7 +100,7 @@ function DeferredBlock({
   if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="deferred-section">
       <Deferred><Component /></Deferred>
     </div>
   );
