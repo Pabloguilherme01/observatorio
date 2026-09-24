@@ -1,0 +1,6 @@
+CORRIGIDOS:
+/--surface-st\s+rong/g -> --surface-strong (1x)
+/\bov\s+erflow\b/g -> overflow (1x)
+/--obs-fon\s+t-sans/g -> --obs-font-sans (1x)
+/\bmin-widt\s+h\b/g -> min-width (1x)
+/\bdis\s+play\b/g -> display (1x)
