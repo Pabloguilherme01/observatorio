@@ -20,7 +20,7 @@ const topics: Topic[] = [
 ];
 
 const topicTargets: Record<string, string> = {
-  dashboard: 'analise',
+  dashboard: 'dashboard',
   eleitorado: 'eleitorado',
   orcamento: 'orcamento',
   transporte: 'transporte',
