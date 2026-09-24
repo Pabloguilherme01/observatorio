@@ -115,6 +115,7 @@ function SewerCurve() {
 
 export function SanitationHealthSection() {
   const [plannedBeds, setPlannedBeds] = useState(d.health.plannedBeds ?? d.health.openingReportedBeds);
+  const [bedReference, setBedReference] = useState<'opening' | 'current' | 'planning'>('planning');
   const minimumAttendancesPerOpeningBed = healthCapacity(d.health.firstYearAttendancesAtLeast, d.health.openingReportedBeds);
   const openingToPlanIncreasePct = ((plannedBeds - d.health.openingReportedBeds) / d.health.openingReportedBeds) * 100;
   const currentStatedBeds = d.health.currentStatedWardBeds + d.health.currentStatedIcuBeds;
@@ -235,9 +236,10 @@ export function SanitationHealthSection() {
                 Referência
                 <select
                   className="ml-2 min-h-10 rounded-xl border border-white/10 bg-slate-900 px-3 text-xs font-bold text-white light:border-slate-200 light:bg-white light:text-slate-900"
-                  value={plannedBeds === 164 ? 'opening' : plannedBeds === 85 ? 'current' : 'planning'}
+                  value={bedReference}
                   onChange={event => {
-                    const value = event.target.value;
+                    const value = event.target.value as 'opening' | 'current' | 'planning';
+                    setBedReference(value);
                     setPlannedBeds(value === 'opening' ? 164 : value === 'current' ? 85 : 298);
                   }}
                   aria-label="Selecionar referência de leitos"
