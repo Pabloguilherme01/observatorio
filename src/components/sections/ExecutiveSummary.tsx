@@ -1,4 +1,4 @@
-import { Activity, CalendarClock, CircleHelp, ExternalLink, Share2, Wallet } from 'lucide-react';
+import { Activity, ArrowRight, CalendarClock, CircleHelp, ExternalLink, Share2, Sparkles, Wallet } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -21,6 +21,9 @@ export function ExecutiveSummary() {
   const hasPoll = Boolean(poll);
   
   const electorate = d.electoral;
+  const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+  const sanitationPct = d.sanitation.publicSewerServicePct;
+  const budget = d.budget.totalBrl;
   const [shareStatus, setShareStatus] = useState('');
   const { mode: languageMode } = useLanguageMode();
 
@@ -76,6 +79,31 @@ export function ExecutiveSummary() {
         </div>
 
         <div className="grid gap-3 lg:grid-cols-[1.35fr_.65fr]">
+          {languageMode === 'summary' && (
+            <div className="summary-public-hero">
+              <div className="summary-public-copy">
+                <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
+                <h3>Quatro números para entender a cidade antes de entrar nos detalhes.</h3>
+                <p>Escolha um cartão, veja o contexto e compartilhe a informação com um link direto.</p>
+              </div>
+              <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
+                {[
+                  ['Eleitorado', electorate.electorate.toLocaleString('pt-BR'), 'eleitores', '#eleitorado'],
+                  ['População', population.toLocaleString('pt-BR'), 'habitantes', '#dashboard'],
+                  ['Orçamento', brl(budget), 'LOA 2026', '#orcamento'],
+                  ['Esgoto', sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', 'serviço público', '#saude'],
+                ].map(([label, value, caption, target]) => (
+                  <a key={label} href={target} className="summary-public-stat" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target.slice(1) }))}>
+                    <span>{label}</span>
+                    <strong>{value}</strong>
+                    <small>{caption}</small>
+                    <ArrowRight className="summary-public-arrow h-4 w-4" aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          
           <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
             <div className="flex items-start gap-3">
               <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
