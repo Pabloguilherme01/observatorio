@@ -19,11 +19,11 @@ export function SummaryTodayCard({ budget, electorate, transport, sanitation, on
   const values = { budget, electorate, transport, sanitation };
 
   return (
-    <section className="today-rail grid grid-cols-2 gap-2 sm:grid-cols-2 xl:grid-cols-4" aria-label="Indicadores principais">
+    <section className="today-rail flex gap-2 overflow-x-auto snap-x snap-mandatory pb-1 sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-4" aria-label="Indicadores principais">
       {items.map(([label, key, target]) => (
         <article
           key={key}
-          className="group flex min-h-[104px] flex-col rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-sky-400/50 dark:border-white/10 dark:bg-slate-900"
+          className="group flex min-h-[104px] min-w-[82vw] snap-start flex-col sm:min-w-0 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-sky-400/50 dark:border-white/10 dark:bg-slate-900"
         >
           <span className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
             {label}
