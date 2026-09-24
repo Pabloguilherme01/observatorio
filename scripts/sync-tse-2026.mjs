@@ -340,7 +340,7 @@ function loadPrevious() {
     const payload = JSON.parse(readFileSync(OUTPUT, 'utf8'));
     if (
       payload?.schemaVersion !== 3
-      || payload?.coverage !== 'municipality_required'
+      || !['municipality_required', 'state_watchlist'].includes(payload?.coverage)
       || !Array.isArray(payload?.matched)
       || !['first_capture', 'synced', 'unchanged', 'changed'].includes(payload?.meta?.state)
     ) return null;
