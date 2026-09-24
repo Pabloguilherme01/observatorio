@@ -54,7 +54,6 @@ export function ExecutiveSummary() {
     { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
     { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
     { label: 'Esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
-    { label: 'Nomes acompanhados', value: electoral360Snapshot.matchedCandidates.length.toLocaleString('pt-BR'), caption: 'recorte local', detail: languageMode === 'technical' ? 'TSE por nomes monitorados' : 'ver perfis', target: 'eleitoral360' },
   ] as const;
 
   const topics = [
