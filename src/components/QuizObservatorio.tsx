@@ -2,18 +2,23 @@ import { useState } from 'react';
 
 const questions = [
   {
-    text: 'Qual é o objetivo principal do Observatório?',
-    options: ['Analisar dados públicos', 'Prever resultados eleitorais', 'Substituir fontes oficiais'],
+    text: 'O que o Observatório apresenta?',
+    options: ['Dados e análises públicas', 'Resultados oficiais futuros', 'Opiniões sem fonte'],
     answer: 0,
   },
   {
-    text: 'Qual fonte é usada para dados eleitorais oficiais?',
-    options: ['TSE', 'Redes sociais', 'Opiniões de usuários'],
+    text: 'Qual fonte é referência para dados eleitorais oficiais?',
+    options: ['TSE', 'Comentários online', 'Enquetes informais'],
     answer: 0,
   },
   {
-    text: 'Como os dados derivados devem ser apresentados?',
-    options: ['Como cálculos explicados', 'Como fatos sem contexto', 'Sem indicar origem'],
+    text: 'Como interpretar uma análise derivada?',
+    options: ['Entendendo a origem e o método', 'Como garantia de previsão', 'Sem verificar a fonte'],
+    answer: 0,
+  },
+  {
+    text: 'Qual é a melhor forma de usar o Observatório?',
+    options: ['Comparar informações e consultar fontes', 'Substituir todos os dados oficiais', 'Ignorar contexto'],
     answer: 0,
   },
 ];
@@ -24,9 +29,9 @@ export function QuizObservatorio() {
   const [finished, setFinished] = useState(false);
 
   const choose = (index: number) => {
-    if (index === questions[step].answer) setScore(value => value + 1);
-    if (step + 1 >= questions.length) setFinished(true);
-    else setStep(value => value + 1);
+    if (index === questions[step].answer) setScore((value) => value + 1);
+    if (step === questions.length - 1) setFinished(true);
+    else setStep((value) => value + 1);
   };
 
   const restart = () => {
@@ -35,30 +40,31 @@ export function QuizObservatorio() {
     setFinished(false);
   };
 
-  if (finished) {
-    return (
-      <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-        <h2 className="text-xl font-black text-white">Resultado do quiz</h2>
-        <p className="mt-2 text-sm text-slate-300">Você acertou {score} de {questions.length} perguntas.</p>
-        <button type="button" onClick={restart} className="mt-4 rounded-xl bg-sky-300 px-4 py-2 font-bold text-slate-950">Tentar novamente</button>
-      </section>
-    );
-  }
-
-  const question = questions[step];
-
   return (
     <section id="quiz" className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-      <div className="text-xs font-bold uppercase tracking-wider text-sky-300">Quiz do Observatório</div>
-      <h2 className="mt-2 text-xl font-black text-white">{question.text}</h2>
-      <div className="mt-4 grid gap-3">
-        {question.options.map((option, index) => (
-          <button key={option} type="button" onClick={() => choose(index)} className="rounded-xl border border-white/10 p-3 text-left text-sm text-white hover:bg-white/10">
-            {option}
+      <div className="text-xs font-bold uppercase tracking-wider text-sky-300">Interação</div>
+      <h2 className="mt-2 text-xl font-black text-white">Teste seus conhecimentos sobre o Observatório</h2>
+
+      {finished ? (
+        <div className="mt-5">
+          <p className="text-sm text-slate-300">Você acertou {score} de {questions.length} perguntas.</p>
+          <button type="button" onClick={restart} className="mt-4 rounded-xl bg-sky-300 px-4 py-2 font-bold text-slate-950">
+            Refazer quiz
           </button>
-        ))}
-      </div>
-      <p className="mt-4 text-xs text-slate-400">Pergunta {step + 1} de {questions.length}</p>
+        </div>
+      ) : (
+        <>
+          <p className="mt-4 text-sm font-bold text-white">{questions[step].text}</p>
+          <div className="mt-4 grid gap-3">
+            {questions[step].options.map((option, index) => (
+              <button key={option} type="button" onClick={() => choose(index)} className="rounded-xl border border-white/10 p-3 text-left text-sm text-white transition hover:bg-white/10">
+                {option}
+              </button>
+            ))}
+          </div>
+          <p className="mt-4 text-xs text-slate-400">Pergunta {step + 1} de {questions.length}</p>
+        </>
+      )}
     </section>
   );
 }
