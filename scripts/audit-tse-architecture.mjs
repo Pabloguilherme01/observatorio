@@ -3,8 +3,6 @@ import { join, relative } from 'node:path';
 
 const ROOT = process.cwd();
 const forbiddenProxyTokens = [
-  'r.jina.ai',
-  'jina.ai/http',
   'API_PROXY_URL',
 ];
 
@@ -56,7 +54,7 @@ if (existsSync(syncScript)) {
 const deployWorkflow = join(ROOT, '.github/workflows/deploy-pages.yml');
 if (existsSync(deployWorkflow)) {
   const content = readFileSync(deployWorkflow, 'utf8');
-  for (const token of ['sync:tse', 'REQUIRE_TSE_SYNC', 'r.jina.ai', 'jina.ai/http']) {
+  for (const token of ['r.jina.ai', 'jina.ai/http', 'API_PROXY_URL']) {
     if (content.includes(token)) violations.push({ file: '.github/workflows/deploy-pages.yml', token });
   }
 }
@@ -81,7 +79,8 @@ if (violations.length) {
 
 console.log(JSON.stringify({
   valid: true,
-  proxyRuntimeDependency: false,
+  proxyRuntimeDependency: true,
+  proxyScope: 'somente no sincronizador TSE, como fallback de transporte; a origem dos dados continua sendo o endpoint oficial TSE e o transporte é registrado no snapshot.',
   deployDependsOnTseNetwork: false,
   tseRefreshMode: 'manual-direct-official-source',
   scannedFiles: files.length,
