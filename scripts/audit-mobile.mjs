@@ -59,7 +59,7 @@ must(files.radar.includes('Margem registrada') && files.radar.includes('min-h-11
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
 must(files.instagram.includes('navigator.canShare') && files.instagram.includes('wa.me/?text='), 'estúdio social mantém compartilhamento de arquivo e WhatsApp');
-must(files.quiz.includes('quiz-progress-track') && (files.quiz.match(/prompt:\s*'/g) || []).length >= 10, 'quiz mantém dez ou mais perguntas e progresso visual');
+must(files.quiz.includes('quiz-progress-track') && ((files.quiz.match(/prompt:\s*["'`]/g) || []).length >= 10), 'quiz mantém dez ou mais perguntas e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
 must(files.version.match(/APP_VERSION\s*=\s*['"]44\./), 'versão atual continua na linha 44 consolidada');
