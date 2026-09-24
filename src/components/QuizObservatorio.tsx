@@ -1,11 +1,16 @@
 import { useMemo, useState } from 'react';
 
 const questions = [
-  { text: 'Qual é a proposta principal do Observatório?', options: ['Organizar dados públicos para facilitar a compreensão', 'Divulgar previsões eleitorais garantidas', 'Substituir órgãos oficiais'], answer: 0 },
-  { text: 'Qual instituição é referência para dados eleitorais oficiais?', options: ['TSE', 'Comentários de redes sociais', 'Enquetes sem metodologia'], answer: 0 },
-  { text: 'Ao ver uma análise, o que deve ser observado?', options: ['Fonte, contexto e explicação dos dados', 'Somente o resultado final', 'Apenas opiniões pessoais'], answer: 0 },
-  { text: 'Como aproveitar melhor o Observatório?', options: ['Comparando informações e explorando os dados', 'Tratando análises como certezas futuras', 'Ignorando as fontes'], answer: 0 },
-  { text: 'Qual é a função dos dados públicos?', options: ['Ajudar na compreensão da realidade local', 'Criar resultados sem análise', 'Eliminar a necessidade de fontes'], answer: 0 },
+  ['Para interpretar um número público corretamente, o que conferir junto?', ['Fonte e data de referência', 'Somente o gráfico', 'Apenas o valor'], 0],
+  ['Qual é a função de uma fonte oficial?', ['Indicar a origem do dado', 'Garantir uma previsão futura', 'Substituir análise'], 0],
+  ['Um snapshot representa:', ['Um recorte em determinado momento', 'Uma certeza permanente', 'Uma opinião'], 0],
+  ['Ao comparar dados, é importante observar:', ['Período e metodologia', 'Somente cores', 'Somente títulos'], 0],
+  ['Um cálculo derivado deve informar:', ['Como foi calculado', 'Apenas o resultado', 'Somente a imagem'], 0],
+  ['Dados públicos devem ser lidos com:', ['Contexto e limitações', 'Pressa', 'Conclusões automáticas'], 0],
+  ['Uma correção de dado deve apresentar:', ['Fonte para conferência', 'Apenas comentário', 'Novo número sem origem'], 0],
+  ['O Observatório organiza:', ['Dados, fontes e evidências', 'Resultados eleitorais futuros', 'Opiniões pessoais'], 0],
+  ['Uma comparação justa precisa:', ['Usar referências equivalentes', 'Misturar anos diferentes', 'Ignorar origem'], 0],
+  ['A melhor forma de usar o projeto é:', ['Explorar dados e conferir fontes', 'Aceitar tudo sem verificar', 'Ignorar metodologia'], 0],
 ] as const;
 
 export function QuizObservatorio() {
@@ -15,106 +20,37 @@ export function QuizObservatorio() {
   const [answered, setAnswered] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const progress = useMemo(() => ((step + (finished ? 1 : 0)) / questions.length) * 100, [step, finished]);
+  const progress = useMemo(() => finished ? 100 : ((step) / questions.length) * 100, [step, finished]);
 
-  const choose = (index: number) => {
+  function answer(index: number) {
     if (answered !== null) return;
     setAnswered(index);
-    if (index === questions[step].answer) setScore((value) => value + 1);
-
-    window.setTimeout(() => {
+    if (index === questions[step][2]) setScore(v => v + 1);
+    setTimeout(() => {
       if (step === questions.length - 1) setFinished(true);
-      else setStep((value) => value + 1);
+      else setStep(v => v + 1);
       setAnswered(null);
-    }, 450);
-  };
+    }, 500);
+  }
 
-  const restart = () => {
-    setStep(0);
-    setScore(0);
-    setFinished(false);
-    setAnswered(null);
-    setCopied(false);
-  };
+  function restart() {
+    setStep(0); setScore(0); setFinished(false); setAnswered(null); setCopied(false);
+  }
 
-  const share = async () => {
-    const text = 'Fiz o Quiz do Observatório: acertei ' + score + ' de ' + questions.length + ' perguntas.';
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'Quiz do Observatório', text, url: window.location.href });
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 1800);
-      }
-    } catch {
-      setCopied(false);
+  async function share() {
+    const text = `Fiz o Quiz do Observatório e acertei ${score}/10 perguntas.`;
+    if (navigator.share) await navigator.share({ title: 'Quiz do Observatório', text, url: location.href });
+    else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
     }
-  };
+  }
 
-  return (
-    <section id="quiz" aria-labelledby="quiz-title" className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
-      <div className="text-xs font-bold uppercase tracking-wider text-sky-300">Interação</div>
-      <div className="mt-2 flex items-start justify-between gap-4">
-        <div>
-          <h2 id="quiz-title" className="text-xl font-black text-white">Teste seus conhecimentos sobre o Observatório</h2>
-          <p className="mt-1 text-sm text-slate-400">Responda às perguntas e veja seu resultado.</p>
-        </div>
-        <span className="shrink-0 rounded-full bg-white/5 px-3 py-1 text-xs font-bold text-slate-300">5 perguntas</span>
-      </div>
-
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={'Progresso: ' + Math.round(progress) + '%'} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)}>
-        <div className="h-full rounded-full bg-sky-300 transition-all duration-300" style={{ width: Math.min(100, progress) + '%' }} />
-      </div>
-
-      {finished ? (
-        <div className="mt-6 rounded-2xl border border-sky-300/15 bg-sky-300/5 p-5">
-          <p className="text-xs font-bold uppercase tracking-wider text-sky-300">Resultado</p>
-          <p className="mt-2 text-3xl font-black text-white">{score}/{questions.length}</p>
-          <p className="mt-1 text-sm text-slate-300">
-            Você acertou {score === questions.length ? 'todas as perguntas' : score + ' de ' + questions.length}.
-            Continue explorando os dados e fontes do projeto.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" onClick={restart} className="min-h-11 rounded-xl bg-sky-300 px-4 py-2 font-bold text-slate-950">Refazer quiz</button>
-            <button type="button" onClick={share} className="min-h-11 rounded-xl border border-white/10 px-4 py-2 font-bold text-white hover:bg-white/10">
-              {copied ? 'Resultado copiado' : 'Compartilhar resultado'}
-            </button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <div className="mt-4 flex justify-between text-xs text-slate-400">
-            <span>Pergunta {step + 1} de {questions.length}</span>
-            <span>{score} ponto{score === 1 ? '' : 's'}</span>
-          </div>
-          <p className="mt-4 text-base font-bold leading-6 text-white">{questions[step].text}</p>
-          <div className="mt-4 grid gap-3">
-            {questions[step].options.map((option, index) => {
-              const selected = answered === index;
-              const correct = answered !== null && index === questions[step].answer;
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  disabled={answered !== null}
-                  aria-pressed={selected}
-                  onClick={() => choose(index)}
-                  className={'min-h-12 rounded-xl border p-3 text-left text-sm text-white transition ' + (
-                    selected
-                      ? 'border-sky-300 bg-sky-300/10'
-                      : correct
-                        ? 'border-emerald-300/50 bg-emerald-300/5'
-                        : 'border-white/10 hover:bg-white/10'
-                  )}
-                >
-                  {option}
-                </button>
-              );
-            })}
-          </div>
-        </>
-      )}
-    </section>
-  );
+  return <section id="quiz" className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
+    <p className="text-xs font-bold uppercase text-sky-300">Aprendizado rápido · 1 minuto</p>
+    <h2 className="mt-2 text-xl font-black text-white">Teste sua leitura de dados</h2>
+    <p className="mt-1 text-sm text-slate-400">Dez perguntas curtas. Cada resposta reforça uma regra de interpretação.</p>
+    <div className="mt-5 h-2 rounded-full bg-white/10"><div className="h-full rounded-full bg-sky-300" style={{width: `${progress}%`}} /></div>
+    {finished ? <div className="mt-6 rounded-2xl bg-white/5 p-5"><p className="text-3xl font-black text-white">{score}/10</p><p className="mt-2 text-slate-300">Resultado concluído. Continue conferindo fontes e limitações.</p><div className="mt-4 flex gap-2"><button onClick={restart} className="rounded-xl bg-sky-300 px-4 py-2 font-bold text-slate-950">Refazer</button><button onClick={share} className="rounded-xl border border-white/10 px-4 py-2 text-white">{copied ? 'Copiado' : 'Compartilhar'}</button></div></div> : <div className="mt-5"><p className="font-bold text-white">{String(step + 1).padStart(2,'0')} / 10</p><p className="mt-3 text-white">{questions[step][0]}</p><div className="mt-4 grid gap-3">{questions[step][1].map((option,i)=><button key={option} disabled={answered !== null} onClick={()=>answer(i)} className="rounded-xl border border-white/10 p-3 text-left text-white">{option}</button>)}</div></div>}
+  </section>;
 }
