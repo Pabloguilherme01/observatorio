@@ -3065,3 +3065,10 @@ button:disabled{cursor:not-allowed;opacity:.58}
 
 /* Summary visual layer cleanup: legacy rules above remain for compatibility; final overrides below standardize compact cards. */
 .summary-public-shareline,.summary-public-hint,.summary-public-status,.summary-public-pulse{max-width:100%;}
+
+/* Progressive summary toggle */
+.summary-more-toggle{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:40px;margin-top:8px;padding:8px 10px;border:1px solid rgba(125,211,252,.10);border-radius:11px;background:rgba(125,211,252,.035);color:#89a0b7;font-size:9px;font-weight:900;touch-action:manipulation}
+.summary-more-toggle:hover{border-color:rgba(125,211,252,.22);background:rgba(125,211,252,.065);color:#dff6ff}
+.summary-more-toggle:focus-visible{outline:2px solid rgba(125,211,252,.65);outline-offset:2px}
+.light .summary-more-toggle{border-color:#dbe5ec;background:#f8fafc;color:#475569}.light .summary-more-toggle:hover{border-color:#7dd3fc;background:#f0f9ff;color:#0f172a}
+@media(prefers-reduced-motion:reduce){.summary-more-toggle svg{transition:none!important}}
