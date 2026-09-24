@@ -31,7 +31,6 @@ export function ExecutiveSummary() {
   const [shareStatus, setShareStatus] = useState('');
   const [activeStat, setActiveStat] = useState('');
   const [openFact, setOpenFact] = useState<string | null>(null);
-  const [factToast, setFactToast] = useState('');
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
   const [lastAction, setLastAction] = useState('');
@@ -67,9 +66,7 @@ export function ExecutiveSummary() {
 
   const revealFact = (id: string, label: string) => {
     setOpenFact(current => current === id ? null : id);
-    setFactToast(label);
     setLastAction(label);
-    window.setTimeout(() => setFactToast(''), 1200);
   };
 
   const focusNextDiscovery = () => {
@@ -325,7 +322,7 @@ export function ExecutiveSummary() {
         {languageMode === 'summary' && (
           <div className="summary-public-hint" role="status" aria-live="polite">
             <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Comece por um cartão ou abra uma descoberta rápida.</span>
-            <span className="summary-public-live">{factToast ? 'Abriu: ' + factToast : lastAction ? 'Última ação: ' + lastAction : 'Escolha um cartão para explorar'}</span>
+            <span className="summary-public-live">{lastAction ? 'Última ação: ' + lastAction : 'Escolha um cartão para explorar'}</span>
             <button type="button" onClick={() => goToSection('fontes')}>Ver fontes</button>
           </div>
         )}
