@@ -15,7 +15,7 @@ export function ExecutiveSummary() {
   const groupedUnknown = (poll?.nonePct ?? 0) + (poll?.notSurePct ?? 0);
   const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
   const hasPoll = Boolean(poll);
-  const pollScenario = poll?.method === 'spontaneous' ? '{pollScenario}' : poll?.method === 'stimulated' ? 'Deputado estadual · pergunta estimulada' : 'Cenário da pesquisa';
+  const pollScenario = poll?.method === 'spontaneous' ? 'Deputado estadual · pergunta espontânea' : poll?.method === 'stimulated' ? 'Deputado estadual · pergunta estimulada' : 'Cenário da pesquisa';
   
   const electorate = d.electoral;
   const populationPoint = d.populationSeries.find(point => point.year === 2026);
