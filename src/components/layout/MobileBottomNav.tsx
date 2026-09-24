@@ -38,7 +38,11 @@ export function MobileBottomNav() {
     };
 
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
-      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      let visible: IntersectionObserverEntry | null = null;
+      for (const entry of entries) {
+        if (!entry.isIntersecting || (visible && entry.intersectionRatio <= visible.intersectionRatio)) continue;
+        visible = entry;
+      }
       if (visible?.target.id) setActiveSection(sectionToTab(visible.target.id));
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
