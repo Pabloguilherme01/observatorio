@@ -22,6 +22,7 @@ export function Electoral360() {
   const localCandidateRecords = electoral360Snapshot.matchedCandidates;
   const hasLocalCandidateSnapshot = localCandidateRecords.length > 0;
   const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state));
+  const snapshotStateLabel = stateLabel[String(electoral360Diff.state)] ?? 'Atualização em acompanhamento';
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
   const complementaryStats = electoral360Snapshot.complementaryStats;
   const electorate = d.electoral;
@@ -94,10 +95,10 @@ export function Electoral360() {
         <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} acompanhados</span>
       </div>
       {electoral360Snapshot.captureMode === 'static-local' && (
-        <div className="mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
+        <div className="electoral-scope-note mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
           <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-amber-200/70" aria-hidden="true" />
           <div className="min-w-0">
-            <strong className="block text-xs font-black text-amber-100">Recorte disponível</strong>
+            <strong className="block text-xs font-black text-amber-100">{snapshotWarning ? snapshotStateLabel : 'Recorte disponível'}</strong>
             <span className="mt-1 block text-[11px] leading-5 text-slate-500">Os nomes abaixo são o recorte atualmente disponível. A confirmação do município da candidatura deve ser feita no registro oficial.</span>
           </div>
         </div>
