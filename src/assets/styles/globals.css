@@ -2672,3 +2672,167 @@ d,
     min-width: 940px;
   }
 }
+
+
+/* Mobile final polish · 2026-09-24 */
+@media (max-width: 767px) {
+  :root {
+    --mobile-page-gutter: 14px;
+    --mobile-nav-height: 64px;
+  }
+
+  html {
+    scroll-padding-top: 72px;
+    scroll-padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  body {
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-header-inner {
+    min-height: 56px;
+  }
+
+  .hero-shell {
+    padding-top: 22px !important;
+    padding-bottom: 26px !important;
+  }
+
+  .hero-shell .mt-5.flex.flex-wrap {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-shell .mt-5.flex.flex-wrap > * {
+    min-height: 46px;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 70;
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: var(--mobile-nav-height);
+    height: auto;
+    padding: 4px max(6px, env(safe-area-inset-left, 0px)) env(safe-area-inset-bottom, 0px);
+    gap: 3px;
+  }
+
+  .mobile-bottom-nav button {
+    min-width: 0;
+    min-height: 50px;
+    padding: 5px 2px;
+    gap: 3px;
+    border-radius: 12px;
+  }
+
+  .mobile-bottom-nav button svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .mobile-bottom-nav button span {
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .mobile-bottom-nav button.is-active {
+    background: rgba(56, 189, 248, .11);
+    border-color: rgba(125, 211, 252, .24);
+  }
+
+  .summary-simple-grid,
+  .summary-public-topics,
+  .summary-public-facts {
+    gap: 8px !important;
+  }
+
+  .summary-simple-card {
+    min-height: 116px;
+    padding: 12px;
+  }
+
+  .topic-card,
+  .candidate-card,
+  .source-card,
+  .obs-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .candidate-card .flex.flex-wrap.gap-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .candidate-card .flex.flex-wrap.gap-2 > * {
+    min-width: 0;
+  }
+
+  #linha-do-tempo .overflow-x-auto > div {
+    min-width: max-content;
+    width: max-content;
+  }
+
+  #linha-do-tempo .overflow-x-auto {
+    scroll-snap-type: x proximity;
+    padding-bottom: 8px;
+  }
+
+  #linha-do-tempo .overflow-x-auto button {
+    scroll-snap-align: center;
+  }
+
+  .quiz-option {
+    min-height: 50px !important;
+    border-radius: 14px;
+  }
+
+  input, select, textarea {
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .search-modal-panel {
+    margin-top: 12px;
+    max-height: calc(100dvh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 390px) {
+  :root {
+    --mobile-page-gutter: 12px;
+  }
+
+  .mobile-bottom-nav button {
+    min-height: 48px;
+    border-radius: 10px;
+  }
+
+  .mobile-bottom-nav button span {
+    font-size: 8px;
+  }
+
+  .hero-shell h1 {
+    font-size: clamp(1.85rem, 9.4vw, 2.35rem) !important;
+  }
+
+  .summary-simple-grid,
+  .summary-public-topics,
+  .summary-public-facts,
+  .candidate-card .flex.flex-wrap.gap-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-bottom-nav button,
+  .candidate-card,
+  .summary-simple-card {
+    transition: none !important;
+  }
+}
