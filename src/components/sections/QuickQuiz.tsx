@@ -14,7 +14,7 @@ type Question = {
 };
 
 
-const DIFFICULTIES = ['Fácil', 'Médio', 'Difícil', 'Avançado'] as const;
+const LEVELS: readonly Difficulty[] = ['Fácil', 'Médio', 'Difícil', 'Avançado'];
 
 export function QuickQuiz() {
   const questions = useMemo<readonly Question[]>(() => [  const questions = useMemo<readonly Question[]>(() => [
