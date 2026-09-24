@@ -1380,3 +1380,57 @@ ra{
 @media(prefers-reduced-motion:reduce){
   .summary-public-fact,.summary-public-arrow{transition:none}
 }
+
+
+/* Modo Resumo · distribuição social compacta */
+@media(max-width:767px){
+  .instagram-shell{padding:13px!important;border-radius:18px!important}
+}
+.instagram-summary-layout{gap:9px!important}
+.instagram-summary-layout .instagram-mobile-column{min-width:0}
+.instagram-summary-layout .instagram-data-choice{
+  min-height:58px;
+  padding:9px 10px!important;
+  border-radius:13px!important;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.instagram-summary-layout .instagram-data-choice:hover{transform:translateY(-1px)}
+.instagram-summary-layout .instagram-data-choice span:first-child{font-size:10px}
+.instagram-summary-layout .instagram-data-choice span:last-child{font-size:9px;line-height:1.25}
+.instagram-summary-preview{
+  padding:13px!important;
+  border-radius:18px!important;
+}
+.instagram-summary-preview .text-4xl{font-size:1.65rem!important;line-height:1.05!important}
+.instagram-summary-preview p{font-size:10px!important;line-height:1.35!important}
+.instagram-summary-actions{gap:6px!important}
+.instagram-summary-actions button{
+  min-height:40px!important;
+  padding:8px 10px!important;
+  border-radius:10px!important;
+  font-size:9px!important;
+}
+.summary-export-card{padding:13px!important;border-radius:17px!important}
+.summary-export-head{gap:10px!important}
+.summary-export-actions{gap:5px!important}
+.summary-export-actions button,.summary-export-actions a{
+  min-height:36px!important;
+  padding:7px 9px!important;
+  border-radius:9px!important;
+  font-size:9px!important;
+}
+@media(max-width:767px){
+  .instagram-head-compact .inline-flex{min-height:38px!important;padding:8px 10px!important;font-size:10px!important}
+  .instagram-summary-layout{grid-template-columns:1fr!important}
+  .instagram-summary-layout .instagram-mobile-rail{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+  .instagram-summary-layout .instagram-mobile-column:first-child .mt-3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px!important}
+  .instagram-summary-layout .instagram-mobile-column:first-child .mt-3 .instagram-data-choice{margin:0!important}
+  .instagram-summary-layout .instagram-mobile-column:nth-child(2){padding-top:0}
+  .instagram-summary-layout .instagram-mobile-column:nth-child(2) > .mt-3.flex{margin-top:7px!important}
+  .instagram-summary-layout .instagram-mobile-column:nth-child(2) > .mt-5{margin-top:9px!important}
+  .summary-export-card .flex-wrap{justify-content:flex-start}
+}
+@media(max-width:390px){
+  .instagram-summary-layout .instagram-mobile-column:first-child .mt-3{grid-template-columns:1fr 1fr}
+  .instagram-summary-layout .instagram-data-choice{min-height:54px}
+}
