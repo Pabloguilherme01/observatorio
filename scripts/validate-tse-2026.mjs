@@ -13,7 +13,7 @@ if (payload.schemaVersion !== 2 && payload.schemaVersion !== 3) errors.push('sch
 if (isMunicipalitySnapshot) {
   if (payload.meta?.localFilter !== 'Águas Lindas de Goiás') errors.push('localFilter municipal ausente ou divergente.');
   if (state !== 'local_filter_pending' && payload.meta?.municipalityCodeTse !== '5200258') errors.push('municipalityCodeTse inválido para Águas Lindas de Goiás.');
-  if (state !== 'local_filter_pending' && payload.meta?.retrievalMethod !== 'official_tse_zip_csv') errors.push('snapshot municipal sincronizado deve usar official_tse_zip_csv.');
+  if (state !== 'local_filter_pending' && !new Set(['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy']).has(payload.meta?.retrievalMethod)) errors.push('snapshot municipal sincronizado deve usar uma fonte oficial TSE suportada.');
   if (state !== 'local_filter_pending' && payload.meta?.selection !== 'watchlist_only') warnings.push('selection do snapshot municipal não informa explicitamente o recorte monitorado.');
 }
 
@@ -62,10 +62,11 @@ if (state !== 'not_synced' && state !== 'local_filter_pending' && state !== 'syn
   if (typeof payload.meta?.resourceUrl !== 'string') errors.push('resourceUrl oficial do TSE ausente.');
   if ((payload.meta?.retrievalMethod === 'official_tse_open_data_csv' || payload.meta?.retrievalMethod === 'official_tse_zip_csv') && !payload.meta.resourceUrl.includes('tse.jus.br/')) errors.push('resourceUrl do pacote CSV oficial do TSE ausente.');
   if ((payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api' || payload.meta?.retrievalMethod === 'official_tse_divulgacandcontas_api_via_reader_proxy') && !payload.meta.resourceUrl.includes('divulgacandcontas.tse.jus.br/divulga/rest/')) errors.push('resourceUrl da API oficial DivulgaCandContas ausente.');
-  if (payload.meta?.captureTransport && payload.meta.captureTransport !== 'historical_third_party_reader' && payload.meta.captureTransport !== 'direct_official') {
+  if (payload.meta?.captureTransport && !new Set(['historical_third_party_reader', 'direct_official', 'reader_proxy']).has(payload.meta.captureTransport)) {
     errors.push('captureTransport do snapshot TSE inválido.');
   }
   if (payload.meta?.captureTransport === 'historical_third_party_reader') warnings.push('Snapshot registra transporte histórico intermediado; esse transporte não participa da produção atual.');
+  if (payload.meta?.captureTransport === 'reader_proxy') warnings.push('Snapshot foi obtido do endpoint oficial TSE por transporte intermediado devido a bloqueio HTTP do runner; o endpoint de origem permanece oficial e o transporte está explicitamente registrado.');
   if (!isMunicipalitySnapshot) {
     for (const expected of payload.watchlist ?? []) {
       if (!payload.matched.some(candidate => candidate.watchlistName === expected)) errors.push('Watchlist sem correspondência TSE: ' + expected);
