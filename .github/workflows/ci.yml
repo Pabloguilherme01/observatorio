@@ -26,14 +26,16 @@ jobs:
 
       - name: Validate production results feed contract
         run: npm run validate:results
+
       - name: Validate synthetic results contract fixture
         env:
           RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
 
-      - name: Functionality hardening audit
-        run: npm run audit:all
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Static consistency audit
         run: npm run audit:static
 
@@ -43,8 +45,26 @@ jobs:
       - name: Mobile UX audit
         run: npm run audit:mobile
 
-      - name: Typecheck
-        run: npm run typecheck
+      - name: Runtime hardening audit
+        run: npm run audit:runtime
+
+      - name: Usability audit
+        run: npm run audit:usability
+
+      - name: Sources audit
+        run: npm run audit:sources
+
+      - name: Engagement audit
+        run: npm run audit:engagement
+
+      - name: Verify TSE architecture
+        run: npm run audit:tse-architecture
+
+      - name: Validate TSE snapshot
+        run: npm run validate:tse
+
+      - name: Validate candidate source guard
+        run: node scripts/test-candidate-source-guard.mjs
 
       - name: Verify JWS implementation
         run: npm run test:jws
