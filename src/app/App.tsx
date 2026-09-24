@@ -169,7 +169,6 @@ export function App() {
 
   return (
     <>
-      <a className="skip-link" href="#main-content">Pular para o conteúdo principal</a>
       <LanguageModeProvider>
       <ThemeProvider>
         <ExperienceShell>
