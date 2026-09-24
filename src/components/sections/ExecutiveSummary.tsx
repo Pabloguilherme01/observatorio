@@ -182,6 +182,11 @@ export function ExecutiveSummary() {
                 <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact}>Fechar cartão</button>
                 <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próxima descoberta <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
+              <div className="summary-public-status" role="status" aria-live="polite" aria-atomic="true">
+                <span className="summary-public-status-dot" aria-hidden="true" />
+                <span>{lastAction ? `Aberto: ${lastAction}` : 'Pronto para explorar'}</span>
+                <span className="summary-public-status-count">{electoral360Snapshot.matchedCandidates.length} nomes no recorte acompanhado</span>
+              </div>
               <div className="summary-public-pulse" aria-label="Como usar o Resumo">
                 <div>
                   <span className="summary-public-pulse-label">Agora</span>
