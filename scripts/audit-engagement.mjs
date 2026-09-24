@@ -66,8 +66,17 @@ must((read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleiçã
 must((read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: IBGE') && (read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
 must(dashboard.includes('Orçamento planejado por habitante') && dashboard.includes('totalBrl') && dashboard.includes('population2026'), 'dashboard calcula orçamento planejado por habitante');
 must(dashboard.includes('LOA ÷ população') || dashboard.includes('LOA / população'), 'indicador per capita explicita fórmula');
-must(files.hero.includes('transporte semiurbano') && files.hero.includes('Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
+must(read('src/components/sections/HeroCountdown.tsx').includes('tarifa semiurbana') && read('src/components/sections/HeroCountdown.tsx').includes('Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
 must(dashboard.includes('Crescimento populacional · 2022–2026') && dashboard.includes('Eleitorado · 2018–2026'), 'dashboard mantém tendências históricas');
+const transport = read('src/components/TransportCalculator.tsx');
+const transportLib = read('src/lib/transport.ts');
+must(transport.includes('Dias por semana'), 'simulador permite informar dias de trabalho por semana');
+must(transportLib.includes('4.4') || transportLib.includes('daysPerWeek'), 'cálculo do transporte suporta conversão semanal para mensal');
+must(transport.includes('minimumWageBrl'), 'simulador usa salário mínimo do dataset como referência');
+must(transport.includes('bilhetagem') && transport.includes('terminal'), 'simulador contextualiza integração de transporte');
+const electoralProfile = read('src/components/sections/ElectoralProfile.tsx');
+must(electoralProfile.includes('4.063') && electoralProfile.includes('2024') && electoralProfile.includes('DF'), 'perfil eleitoral registra migração de títulos do DF com ano e quantidade');
+must(index.includes('og:image') && index.includes('twitter:card') && index.includes('canonical'), 'SEO e compartilhamento social possuem metadados completos');
 
 
 
