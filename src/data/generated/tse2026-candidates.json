@@ -16,7 +16,7 @@
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
     "captureTransport": "historical_third_party_reader",
     "filterNote": "A captura existente é estadual e não carrega município de candidatura em cada registro. Os 10 nomes encontrados no recorte estadual permanecem pendentes de validação municipal e não são tratados como candidaturas de Águas Lindas.",
-    "sourceFileSha256": "upload-unavailable",
+    "sourceFileSha256": null,
     "complementaryFile": {
       "name": "consulta_cand_complementar_2026_GO.csv",
       "generationDate": "2026-09-23",
