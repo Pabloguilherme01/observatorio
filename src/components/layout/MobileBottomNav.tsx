@@ -107,8 +107,15 @@ export function MobileBottomNav() {
     };
   }, []);
 
+  useEffect(() => {
+    const openSearchFromMobile = () => window.dispatchEvent(new CustomEvent('observatorio:search'));
+    window.addEventListener('observatorio:search-mobile', openSearchFromMobile);
+    return () => window.removeEventListener('observatorio:search-mobile', openSearchFromMobile);
+  }, []);
+
   return (
-    <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular" data-mobile-nav="primary">
+    <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular" data-mobile-nav="primary" data-mobile-search="header">
+
       {items.map(({ id, label, icon: Icon }) => (
         <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'page' : undefined} aria-label={label === 'Início' ? 'Ir para o início e resumo' : label === 'Eleitoral' ? 'Abrir candidatos e dados eleitorais' : label === 'Explorar' ? 'Explorar assuntos do observatório' : label === 'Dados' ? 'Abrir dados públicos' : 'Abrir fontes'} title={label}>
           <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
