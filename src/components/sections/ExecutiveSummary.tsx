@@ -162,6 +162,13 @@ export function ExecutiveSummary() {
                   <button type="button" onClick={() => goToSection('descubra')} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
                 </div>
               </div>
+              <div className="summary-public-discovery-head">
+                <div>
+                  <strong>Descobertas rápidas</strong>
+                  <span>Toque em um cartão para abrir o contexto completo.</span>
+                </div>
+                <span className="summary-public-discovery-count">{publicFacts.length} cartões</span>
+              </div>
               <div className="summary-public-facts" aria-label="Descobertas rápidas">
                 {publicFacts.map(fact => (
                   <div key={fact.id} className={`summary-public-fact ${openFact === fact.id ? 'is-open' : ''}`}>
