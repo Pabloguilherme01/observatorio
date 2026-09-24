@@ -168,7 +168,7 @@ export function ExecutiveSummary() {
                 </div>
                 <div className="summary-public-actions" aria-label="Ações rápidas do resumo">
                   <button type="button" onClick={() => { void share(); }} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
-                  <button type="button" onClick={() => goToSection('descubra')} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
+                  <button type="button" onClick={() => { setLastAction('Descobertas'); goToSection('descubra'); }} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
                 </div>
               </div>
               <div className="summary-public-discovery-head">
