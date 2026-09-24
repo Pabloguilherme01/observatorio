@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Fingerprint, UserRound, UsersRound } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber } from '../../utils/formatters';
@@ -23,6 +23,11 @@ function Donut({ women, men }: { readonly women: number; readonly men: number })
 export function ElectoralProfile() {
   const { mode } = useLanguageMode();
   const totalAgeVoters = useMemo(() => d.electoral.ageGroups.reduce((sum, group) => sum + group.voters, 0), []);
+  const [ageDetailsOpen, setAgeDetailsOpen] = useState(mode === 'technical');
+
+  useEffect(() => {
+    setAgeDetailsOpen(mode === 'technical');
+  }, [mode]);
 
   return (
     <section id="eleitorado" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="eleitorado-title">
@@ -66,7 +71,7 @@ export function ElectoralProfile() {
             </div>
           </div>
 
-          <details className="electoral-profile-detail mt-5 rounded-2xl border border-white/8 p-3 light:border-slate-200" defaultOpen={mode === 'technical'}>
+          <details className="electoral-profile-detail mt-5 rounded-2xl border border-white/8 p-3 light:border-slate-200" open={ageDetailsOpen} onToggle={event => setAgeDetailsOpen(event.currentTarget.open)}>
             <summary className="cursor-pointer list-none text-xs font-bold text-slate-300 light:text-slate-700">Abrir detalhe · faixas etárias</summary>
             <div className="mt-3 space-y-3">
               {d.electoral.ageGroups.map(group => {
