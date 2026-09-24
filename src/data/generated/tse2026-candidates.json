@@ -133,10 +133,19 @@
   "diff": {
     "state": "local_filter_pending",
     "added": 5,
-    "removed": 0,
+    "removed": 2,
     "changed": 0,
     "unresolved": 3,
     "comparison": "local_watchlist_matched_from_official_state_file",
-    "records": []
+    "records": [
+      {
+        "candidate": "WILDE CAMBÃO",
+        "reason": "removed_from_local_watchlist_by_project_scope"
+      },
+      {
+        "candidate": "ANDRÉ DO PREMIUM",
+        "reason": "removed_from_local_watchlist_by_project_scope"
+      }
+    ]
   }
 }
