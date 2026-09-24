@@ -9,7 +9,7 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
   if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
-  return <div className="grid grid-cols-4 gap-2 text-center" role="timer" aria-live="off">
+  return <div className="grid grid-cols-4 gap-2 text-center" role="timer" aria-live="polite">
     {[['Dias', value.days], ['Horas', value.hours], ['Min', value.minutes], ['Seg', value.seconds]].map(([label, amount]) => (
       <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] px-2 py-3">
         <div className="text-xl font-bold tabular-nums text-white">{String(amount).padStart(2, '0')}</div>
@@ -93,41 +93,6 @@ export function HeroCountdown() {
             </a>
           </div>
 
-          {languageMode === 'summary' && (
-            <div className="summary-hero-panel mt-5 rounded-[24px] border border-sky-300/15 bg-gradient-to-br from-sky-300/[0.09] via-white/[0.035] to-transparent p-3 sm:p-4" aria-label="Resumo rápido do observatório">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-sky-200/80">Em 1 minuto</div>
-                  <h2 className="mt-1 text-base font-black text-white sm:text-lg">Quatro pontos para entender a cidade</h2>
-                </div>
-                <span className="text-[10px] font-semibold text-slate-500">Toque para explorar</span>
-              </div>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                {[
-                  { id: 'dashboard', label: 'Cidade', value: population.toLocaleString('pt-BR'), note: 'Fonte: IBGE · estimativa 2026', icon: BarChart3 },
-                  { id: 'eleitorado', label: 'Eleitorado', value: electorate.toLocaleString('pt-BR'), note: 'Fonte: TSE · 15/07/2026', icon: Users },
-                  { id: 'orcamento', label: 'Orçamento', value: brl(loa), note: 'Fonte: LOA municipal · 2026', icon: WalletCards },
-                  { id: 'transporte', label: 'Transporte', value: transportFare != null ? brl(transportFare) : '—', note: transportFare != null ? 'Fonte: tarifa semiurbana · Entorno-DF' : 'valor não informado', icon: BusFront },
-                ].map(({ id, label, value, note, icon: Icon }) => (
-                  <a key={id} href={'#' + id} className="summary-hero-card group">
-                    <span className="summary-hero-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">{label}</span>
-                      <strong className="mt-1 block truncate text-base font-black text-white">{value}</strong>
-                      <span className="mt-0.5 block text-[11px] text-slate-500">{note}</span>
-                    </span>
-                    <ArrowRight className="h-4 w-4 shrink-0 text-slate-600 transition-transform group-hover:translate-x-0.5 group-hover:text-sky-300" aria-hidden="true" />
-                  </a>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center gap-2 rounded-2xl border border-white/8 bg-black/10 px-3 py-2.5 text-[11px] leading-5 text-slate-400">
-                <Droplets className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
-                <span>Cada número já mostra sua fonte e referência. Abra o detalhe apenas quando precisar de metodologia.</span>
-              </div>
-            </div>
-          )}
-
-
           <div className="election-mode-actions sr-only" aria-hidden="true">Modo Eleição · acesso rápido</div>
           {electionMode && (
             <div className="hero-election-quick mt-3 flex items-center gap-2 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-2">
@@ -136,28 +101,6 @@ export function HeroCountdown() {
               <button type="button" className="hero-mobile-election-toggle min-h-10 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 text-[11px] font-black text-amber-100" onClick={toggleElectionMode} aria-pressed={true} aria-label="Desativar Modo Eleição">Desativar</button>
             </div>
           )}
-          <div className="hero-section-label mt-6"><span>Escolha seu caminho</span><small>Comece pelo resumo ou vá direto ao assunto que procura.</small></div>
-          <div className="hero-kpis hero-kpis-guide mt-3 grid gap-2 sm:grid-cols-3" aria-label="Atalhos de leitura">
-            <a href="#resumo" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
-              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Comece</span>
-              <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Resumo público</strong>
-              <span className="mt-1 block text-[11px] leading-5 text-slate-600">os números essenciais ficam logo abaixo</span>
-              <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Abrir <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
-            </a>
-            <a href="#descubra" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
-              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Explore</span>
-              <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Assuntos da cidade</strong>
-              <span className="mt-1 block text-[11px] leading-5 text-slate-600">eleição, cidade, serviços e recursos</span>
-              <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Explorar <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
-            </a>
-            <a href={languageMode === 'technical' ? '#fontes' : '#evidencias'} className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
-              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Confira</span>
-              <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Fontes e datas</strong>
-              <span className="mt-1 block text-[11px] leading-5 text-slate-600">cada dado mantém sua origem visível</span>
-              <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Conferir <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
-            </a>
-          </div>
-
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium text-slate-600" aria-label="Atualização do conjunto de dados">
             {languageMode === 'simple' ? (
               <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Atualizado em {updatedAt}</span>
@@ -177,8 +120,8 @@ export function HeroCountdown() {
             <Timer value={election} />
             <div className="hero-second-round-note mt-2 hidden text-xs font-semibold text-slate-500">2º turno: 25/10, se houver.</div>
           </div>
-          <div className="hero-secondary-round rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-            <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-white"><CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />2º turno · 25/10 · se houver</div>
+          <div className="hero-secondary-round rounded-2xl border border-white/8 bg-white/[0.02] p-3 opacity-80">
+            <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-300"><span className="rounded-full border border-white/10 px-2 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-slate-500">Se houver</span><CalendarClock className="h-4 w-4 text-sky-400" aria-hidden="true" />2º turno · 25/10</div>
             <Timer value={secondRound} />
             <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">Calendário oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
           </div>
