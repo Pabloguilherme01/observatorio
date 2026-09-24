@@ -14,7 +14,7 @@ export function LanguageModeToggle() {
     <div className="language-toggle language-toggle-v3" role="group" aria-label="Escolha o nível de detalhe da leitura">
       <div className="language-toggle-label">
         <Info aria-hidden="true" />
-        <span>Modo de leitura</span>
+        <span><strong>Modo de leitura</strong><small>Escolha quanto detalhe você quer ver</small></span>
       </div>
       <div className="language-toggle-options">
         {items.map(({ id, label, sub, description, icon: Icon }) => (
@@ -29,6 +29,7 @@ export function LanguageModeToggle() {
           >
             <Icon aria-hidden="true" />
             <span><strong>{label}</strong><small>{sub}</small></span>
+            {mode === id && <em>Ativo</em>}
           </button>
         ))}
       </div>
