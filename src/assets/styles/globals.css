@@ -252,3 +252,20 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
 
 
 .transport-input{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;background-image:linear-gradient(90deg,rgba(125,211,252,0),rgba(125,211,252,.025));}.transport-input:focus{border-color:rgba(125,211,252,.62)!important;box-shadow:0 0 0 3px rgba(56,189,248,.08);transform:translateY(-1px);}.transport-input:valid:not(:focus){border-color:rgba(52,211,153,.18);}@media (prefers-reduced-motion:reduce){.transport-input{transition:none;transform:none!important;}}.badge-official{display:inline-flex;align-items:center;gap:.3rem;border:1px solid rgba(52,211,153,.16);background:rgba(52,211,153,.055);color:#86efac;border-radius:999px;padding:.2rem .45rem;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;}.badge-derived{display:inline-flex;align-items:center;gap:.3rem;border:1px solid rgba(125,211,252,.16);background:rgba(125,211,252,.055);color:#bae6fd;border-radius:999px;padding:.2rem .45rem;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;}
+
+/* Mobile hardening: prevent horizontal overflow and keep primary actions thumb-friendly. */
+@media (max-width: 767px) {
+  html, body, #root { max-width: 100%; overflow-x: clip; }
+  button, a, input, select, textarea { max-width: 100%; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  input, select, textarea { font-size: 16px; }
+  .quiz-journey-shell { padding-inline: .75rem; }
+  .quiz-phase-roadmap { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .35rem; }
+  .quiz-stage-node { min-width: 0; padding-inline: .25rem; font-size: 9px; }
+  .quiz-option { width: 100%; min-height: 48px; }
+  .transport-input { min-height: 48px; }
+}
+@media (max-width: 390px) {
+  .quiz-phase-roadmap { gap: .2rem; }
+  .quiz-stage-node { font-size: 8px; }
+}
