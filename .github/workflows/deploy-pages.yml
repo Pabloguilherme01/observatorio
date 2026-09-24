@@ -69,6 +69,7 @@ jobs:
 
   verify:
     needs: deploy
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Verify published site and public API
