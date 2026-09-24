@@ -10,7 +10,7 @@
     "sourceRows": 905,
     "originalMatchedRows": 7,
     "matchedRows": 7,
-    "workflowRunId": "35836117975",
+    "workflowRunId": null,
     "state": "local_filter_pending",
     "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
@@ -157,7 +157,7 @@
     }
   ],
   "diff": {
-    "state": "synced",
+    "state": "local_filter_pending",
     "added": 7,
     "removed": 0,
     "changed": 0,
