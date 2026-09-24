@@ -43,9 +43,9 @@ must(!files.experience.includes('market') && !files.experience.includes('hype'),
 
 must(files.header.includes('IntersectionObserver') && files.header.includes('observatorio:navigate'), 'cabeçalho acompanha seções carregadas tardiamente');
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
-must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'"), 'navegação inferior usa o evento central e mantém Explorar');
+must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("if (id === 'quiz') return 'quiz';"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
 
-must(files.css.includes('--mobile-nav-height:64px'), 'altura final da navegação inferior mobile está consolidada em 64px');
+must(files.css.includes('--mobile-nav-height:64px') && files.css.includes('--mobile-nav-height:68px'), 'altura base e altura mobile da navegação inferior estão definidas explicitamente');
 must(files.css.includes('env(safe-area-inset-bottom'), 'safe-area inferior está contemplada');
 must(/min-height:\s*(44|46|48|52|54)px/.test(files.css), 'há alvos de toque móveis explicitamente dimensionados');
 must(files.css.includes('overflow-x:hidden') && files.css.includes('overflow-x:clip'), 'contenção horizontal mobile está ativa');
