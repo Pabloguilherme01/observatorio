@@ -163,7 +163,7 @@ export function ExecutiveSummary() {
                   <button type="button" onClick={() => { void share(); }} className="summary-public-action" disabled={shareBusy} aria-busy={shareBusy}>
                     <Share2 className="h-3.5 w-3.5" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar resumo'}
                   </button>
-                  <button type="button" onClick={() => { setLastAction('Descobertas'); goToSection('descubra'); }} className="summary-public-action">
+                  <button type="button" onClick={() => { goToSection('descubra'); }} className="summary-public-action">
                     <Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar assuntos
                   </button>
                 </div>
