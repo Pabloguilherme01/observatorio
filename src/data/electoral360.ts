@@ -108,7 +108,7 @@ export const electoral360Snapshot: Electoral360Snapshot = {
     byGender: { 'MASCULINO': 551, 'FEMININO': 339, '#NULO': 15 },
     byJudgment: { 'DEFERIDO': 844, '#NULO': 47, 'INDEFERIDO EM PRAZO RECURSAL OU COM RECURSO': 8, 'PENDENTE DE JULGAMENTO': 5, 'DEFERIDO COM RECURSO': 1 },
   },
-  matchedCandidates: generatedData.coverage === 'municipality_required' && generatedData.meta.state !== 'local_filter_pending'
+  matchedCandidates: generatedData.meta.state !== 'local_filter_pending'
     ? generatedData.matched.map(candidate => ({
     sqCandidate: candidate.sqCandidate,
     ballotNumber: candidate.ballotNumber ?? 0,
