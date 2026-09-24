@@ -76,7 +76,7 @@ try {
 const tseSync = read('scripts/sync-tse-2026.mjs');
 if (
   tseSync.includes('function parseCsv')
-  && tseSync.includes("MUNICIPALITY_CODE = '92737'")
+  && tseSync.includes("MUNICIPALITY_CODE = '5200258'")
   && tseSync.includes("coverage: 'municipality_required'")
   && tseSync.includes("retrievalMethod: 'official_tse_zip_csv'")
 ) pass('captura TSE é autocontida, municipal e baseada no pacote oficial.');
