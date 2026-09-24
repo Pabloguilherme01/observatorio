@@ -59,7 +59,7 @@ export function Electoral360() {
         description="Consulte os nomes acompanhados e confira os dados disponíveis em suas fontes oficiais."
       />
 
-      <div className="mb-4 grid gap-2 sm:grid-cols-3">
+      <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center">
         <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-3">
           <strong className="block text-sm text-white">{localCandidateRecords.length} nomes</strong>
           <span className="text-[10px] leading-4 text-slate-500">no recorte acompanhado</span>
@@ -73,13 +73,10 @@ export function Electoral360() {
           <span className="text-[10px] leading-4 text-slate-500">TSE e registros públicos</span>
         </div>
       </div>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
-        <div className="min-w-0">
-          <strong className="block text-xs font-black text-sky-100">Recorte eleitoral local</strong>
-          <span className="text-[11px] leading-5 text-slate-500">O observatório acompanha nomes relacionados a Águas Lindas. A confirmação do município da candidatura deve vir do registro oficial do TSE.</span>
-        </div>
-        <span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span>
-      </div>
+      <details className="mb-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
+        <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-xs font-black text-sky-100"><span>Sobre o recorte local</span><span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span></summary>
+        <p className="mt-2 text-[11px] leading-5 text-slate-500">O observatório acompanha nomes relacionados a Águas Lindas. A confirmação do município da candidatura deve vir do registro oficial do TSE.</p>
+      </details>
       {electoral360Snapshot.captureMode === 'static-local' && (
         <div className="electoral-scope-note mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
           <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-amber-200/70" aria-hidden="true" />
@@ -89,7 +86,7 @@ export function Electoral360() {
           </div>
         </div>
       )}
-      <div className="mb-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado atual</div><div className="mt-2 text-2xl font-black text-white">{electorate.electorate.toLocaleString('pt-BR')}</div><div className="text-xs text-slate-500">snapshot · {electorate.snapshotDate}</div></Card>
         <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Participação 2024</div><div className="mt-2 text-2xl font-black text-white">{electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.validVotes2024Count.toLocaleString('pt-BR')} votos válidos</div></Card>
         <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Abstenção 2024</div><div className="mt-2 text-2xl font-black text-white">{electorate.abstention2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.abstention2024Count.toLocaleString('pt-BR')} eleitores</div></Card>
@@ -170,7 +167,7 @@ export function Electoral360() {
         <Card>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-lg font-black text-white">Perfil documental</h3>
+              <h3 className="text-base font-black text-white">Perfil documental</h3>
               <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
                 {hasLocalCandidateSnapshot
                   ? 'Dados públicos do TSE para os nomes acompanhados pelo observatório.'
@@ -251,7 +248,7 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasLocalCandidateSnapshot ? 'Registros acompanhados' : 'Registros do recorte local'}</h3>
+            <h3 className="text-base font-black text-white">{hasLocalCandidateSnapshot ? 'Registros acompanhados' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs leading-5 text-slate-500">
               {hasLocalCandidateSnapshot ? 'Os nomes abaixo pertencem ao recorte acompanhado. O município da candidatura é exibido apenas quando confirmado pela fonte oficial.' : 'Ainda não há registros de nomes no snapshot local.'}
             </p>
@@ -280,8 +277,8 @@ export function Electoral360() {
           </label>
         </div>
 
-        <div className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-3">
-          <div className="min-w-0"><strong className="block text-xs text-sky-100">Encontre um nome</strong><span className="mt-1 block text-[11px] leading-5 text-slate-500">Busque por nome, partido, cargo ou número. A busca apenas localiza registros.</span></div>
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-sky-300/10 bg-sky-300/[0.025] p-2.5">
+          <div className="min-w-0"><strong className="block text-[11px] text-sky-100">Buscar no recorte</strong><span className="ml-1 text-[10px] leading-4 text-slate-500">nome, partido, cargo ou número</span></div>
           <ArrowRight className="h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
         </div>
 
