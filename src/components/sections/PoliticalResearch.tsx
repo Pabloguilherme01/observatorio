@@ -3,7 +3,8 @@ import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { electoral360Snapshot } from '../../data/electoral360';
-import { useLanguageMode } from '../../context/LanguageModeContext';\nimport { useMemo, useState } from 'react';
+import { useLanguageMode } from '../../context/LanguageModeContext';
+import { useMemo, useState } from 'react';
 
 type CandidateView = {
   name: string;
