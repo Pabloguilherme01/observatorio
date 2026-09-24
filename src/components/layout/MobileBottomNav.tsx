@@ -16,11 +16,12 @@ const thematicIds = new Set([
 ]);
 
 function sectionToTab(id: string) {
-  if (id === 'dashboard') return 'dashboard';
+  if (id === 'dashboard' || id === 'resumo') return 'dashboard';
   if (id === 'descubra') return 'descubra';
-  if (id === 'dados') return 'dados';
+  if (id === 'dados' || id === 'eleitoral360' || id === 'eleitorado') return 'dados';
   if (id === 'fontes') return 'fontes';
-  return 'descubra';
+  if (thematicIds.has(id)) return 'descubra';
+  return 'dashboard';
 }
 
 function jump(id: string) {
@@ -107,7 +108,7 @@ export function MobileBottomNav() {
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação rápida no celular">
       {items.map(({ id, label, icon: Icon }) => (
-        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'location' : undefined}>
+        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'page' : undefined} aria-label={label === 'Início' ? 'Ir para o início e resumo' : label === 'Explorar' ? 'Explorar assuntos do observatório' : label === 'Dados' ? 'Abrir dados e área eleitoral' : 'Abrir fontes'}>
           <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           <span>{label}</span>
         </button>
