@@ -1,4 +1,4 @@
-import { Check, CircleHalf, Contrast } from 'lucide-react';
+import { Check, Circle, Contrast } from 'lucide-react';
 import { useContrast, type ContrastMode } from '../../context/ContrastContext';
 
 const options: readonly { id: ContrastMode; label: string; short: string }[] = [
@@ -30,7 +30,7 @@ export function ContrastModeToggle() {
             aria-label={option.label + ' · ' + option.short}
             title={option.short}
           >
-            {mode === option.id ? <Check aria-hidden="true" /> : <CircleHalf aria-hidden="true" />}
+            {mode === option.id ? <Check aria-hidden="true" /> : <Circle aria-hidden="true" />}
             <span>
               <strong>{option.label}</strong>
               <small>{option.short}</small>
