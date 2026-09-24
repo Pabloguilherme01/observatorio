@@ -14,17 +14,17 @@ export function LanguageModeToggle() {
       <button type="button" onClick={() => setMode('summary')} aria-pressed={mode === 'summary'} className={mode === 'summary' ? 'is-active' : ''}>
         <List className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Resumo</span>
-        <small>visão rápida</small>
+        <small>essencial</small>
       </button>
       <button type="button" onClick={() => setMode('simple')} aria-pressed={mode === 'simple'} className={mode === 'simple' ? 'is-active' : ''}>
         <FileText className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Simples</span>
-        <small>direto ao ponto</small>
+        <small>claro</small>
       </button>
       <button type="button" onClick={() => setMode('technical')} aria-pressed={mode === 'technical'} className={mode === 'technical' ? 'is-active' : ''}>
         <Code2 className="h-3.5 w-3.5" aria-hidden="true" />
         <span>Técnico</span>
-        <small>fonte + método</small>
+        <small>detalhes</small>
       </button>
       <span className="language-toggle-status" title={status} aria-label={status}>
         <Info className="h-3 w-3" aria-hidden="true" />
