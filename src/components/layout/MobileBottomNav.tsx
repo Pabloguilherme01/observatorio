@@ -56,7 +56,16 @@ export function MobileBottomNav() {
       });
     };
 
-    const mutations = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => observe());
+    let observeRaf = 0;
+    const scheduleObserve = () => {
+      if (observeRaf || !observer) return;
+      observeRaf = window.requestAnimationFrame(() => {
+        observeRaf = 0;
+        observe();
+      });
+    };
+
+    const mutations = typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleObserve);
 
     updateFromHash();
     observe();
@@ -67,7 +76,7 @@ export function MobileBottomNav() {
 
     const onNavigate = (event: Event) => {
       setActiveSection(sectionToTab((event as CustomEvent<string>).detail));
-      window.requestAnimationFrame(observe);
+      scheduleObserve();
     };
 
     window.addEventListener('hashchange', updateFromHash);
@@ -75,6 +84,7 @@ export function MobileBottomNav() {
     return () => {
       observer?.disconnect();
       mutations?.disconnect();
+      if (observeRaf) window.cancelAnimationFrame(observeRaf);
       window.removeEventListener('hashchange', updateFromHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
     };
