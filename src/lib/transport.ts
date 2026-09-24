@@ -23,6 +23,10 @@ export function calculateTransportCost(input: TransportCalculationInput): Transp
   };
 }
 
+export function workDaysPerMonthFromWeeks(daysPerWeek: number, weeksPerMonth = 4.4): number {
+  return Math.max(0, daysPerWeek) * weeksPerMonth;
+}
+
 export function formatBRL(value: number): string {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 }
