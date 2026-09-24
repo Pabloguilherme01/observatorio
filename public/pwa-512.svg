@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 192 192" role="img" aria-labelledby="t">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="t">
 <title id="t">Observatório</title>
-<rect width="192" height="192" rx="42" fill="#0b1117"/>
-<circle cx="96" cy="96" r="64" fill="#0f1720" stroke="#334155" stroke-width="4"/>
-<path d="M52 104c0-25 20-45 45-45h33" fill="none" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round"/>
-<path d="M52 104V77h27" fill="none" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M77 104V82h49v22" fill="none" stroke="#dbeafe" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="96" cy="51" r="7" fill="#f8fafc"/>
+<rect width="192" height="192" rx="112" fill="#0b1117"/>
+<circle cx="256" cy="256" r="171" fill="#0f1720" stroke="#334155" stroke-width="4"/>
+<path d="M139 277c0-67 54-121 121-121h88" fill="none" stroke="#7dd3fc" stroke-width="21" stroke-linecap="round"/>
+<path d="M139 277V205h72" fill="none" stroke="#7dd3fc" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M205 277V219h130v58" fill="none" stroke="#dbeafe" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="256" cy="136" r="18 fill="#f8fafc"/>
 </svg>
