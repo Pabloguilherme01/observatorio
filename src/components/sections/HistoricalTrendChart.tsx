@@ -121,6 +121,31 @@ export function HistoricalTrendChart() {
         <span><strong className="text-slate-400">Eleitorado:</strong> snapshots TSE de 2022, 2024 e 2026.</span>
         <span><strong className="text-slate-400">Leitura:</strong> universos diferentes, com escalas próprias.</span>
       </div>
+
+      <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.015] px-3 py-2 light:border-slate-200 light:bg-white">
+        <summary className="cursor-pointer list-none text-xs font-bold text-slate-300 light:text-slate-700">Ver dados em tabela</summary>
+        <div className="mt-2 overflow-x-auto">
+          <table className="w-full min-w-[420px] text-left text-xs">
+            <caption className="sr-only">Dados históricos de população e eleitorado entre 2022 e 2026</caption>
+            <thead>
+              <tr className="border-b border-white/8 light:border-slate-200">
+                <th scope="col" className="px-2 py-2 font-bold text-slate-500">Ano</th>
+                <th scope="col" className="px-2 py-2 font-bold text-slate-500">População</th>
+                <th scope="col" className="px-2 py-2 font-bold text-slate-500">Eleitorado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {trendData.map(point => (
+                <tr key={point.year} className="border-b border-white/6 last:border-0 light:border-slate-100">
+                  <th scope="row" className="px-2 py-2 font-semibold text-slate-300 light:text-slate-700">{point.year}</th>
+                  <td className="px-2 py-2 text-slate-400 light:text-slate-600">{point.population === null ? 'Sem observação' : formatNumber(point.population)}</td>
+                  <td className="px-2 py-2 text-slate-400 light:text-slate-600">{point.electorate === null ? 'Sem observação' : formatNumber(point.electorate)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </details>
     </figure>
   );
 }
