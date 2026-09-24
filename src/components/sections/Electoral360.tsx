@@ -13,7 +13,7 @@ const stateLabel: Record<string, string> = {
   stale: 'Desatualizado',
   failed: 'Falha na sincronização',
   not_synced: 'Ainda não sincronizado',
-  local_filter_pending: 'Filtro local pendente',
+  local_filter_pending: 'Recorte local pendente',
 };
 
 const moduleStatusLabel: Record<string, string> = {
@@ -96,7 +96,7 @@ export function Electoral360() {
               <h3 className="text-lg font-black text-white">Perfil documental</h3>
               <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
                 {hasOfficialCandidateSnapshot
-                  ? 'A captura oficial está disponível. Este perfil mostra somente atributos efetivamente carregados desse snapshot; campos não capturados permanecem vazios.'
+                  ? 'A captura oficial está disponível. Este perfil mostra somente atributos efetivamente carregados do snapshot estadual de Goiás; o vínculo com Águas Lindas é um recorte editorial de monitoramento.'
                   : 'A captura TSE ainda não está sincronizada. O perfil abaixo usa apenas o recorte editorial local e não representa o universo completo de candidaturas.'}
               </p>
             </div>
@@ -174,7 +174,7 @@ export function Electoral360() {
               Estado do snapshot
             </div>
             <div className="mt-3 text-lg font-black text-white">{stateLabel[String(electoral360Diff.state)] ?? String(electoral360Diff.state)}</div>
-            <p className="mt-2 text-xs leading-5 text-slate-500">Cobertura do TSE e recorte editorial são mantidos separados.</p>
+            <p className="mt-2 text-xs leading-5 text-slate-500">O universo oficial de candidaturas e o recorte editorial de Águas Lindas são mantidos separados.</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">{electoral360Snapshot.localWatchlist.length} nomes no recorte</span>
               <span className="rounded-full border border-white/8 px-2.5 py-1 text-[11px] text-slate-400">identidade por SQ_CANDIDATO</span>
@@ -184,7 +184,7 @@ export function Electoral360() {
           <Card>
             <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte operacional</div>
             <p className="mt-2 text-xs leading-5 text-slate-500">
-              Este recorte serve para cruzamento com o universo de Goiás; não representa o universo completo e não deve ser lido como lista exaustiva.
+              Este recorte monitora nomes selecionados dentro do universo oficial de Goiás; não representa a lista completa de candidaturas nem uma lista municipal.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               {electoral360Snapshot.localWatchlist.map(name => (
@@ -198,9 +198,9 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas capturadas' : 'Registros do recorte local'}</h3>
+            <h3 className="text-lg font-black text-white">{hasOfficialCandidateSnapshot ? 'Candidaturas oficiais monitoradas' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais permanecem identificados como recorte editorial.'}
+              {hasOfficialCandidateSnapshot ? 'Pesquisa por identidade, nome, partido, cargo ou situação na captura TSE de Goiás.' : 'O snapshot TSE ainda não foi sincronizado; os registros locais permanecem identificados como recorte editorial.'}
             </p>
           </div>
           <label className="flex min-h-11 w-full min-w-0 items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm text-slate-400 sm:w-auto">
