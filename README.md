@@ -20,6 +20,20 @@ Aplicação web de dados públicos e contexto municipal, construída com Vite + 
 - `src/services`: fronteira para integrações futuras
 - `src/components/system`: recuperação de erros de runtime
 
+## Modos de leitura
+
+O site adapta o conteúdo e o visual a três modos, persistidos no navegador:
+
+- **Resumo** — modo inicial. Foco em beleza, números essenciais e utilidade. A maior parte das camadas técnicas fica oculta.
+- **Simples** — linguagem clara e direta, com os mesmos números centrais. Mapa de evidências oculto.
+- **Técnico** — detalhes, metodologia e rastreabilidade completas. O **Mapa de Evidências** aparece aqui, em mini cards de auditoria com natureza da fonte, data e link original.
+
+O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo e Simples (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Técnico.
+
+## Quiz do Observatório
+
+200 perguntas distribuídas em 5 fases de dificuldade — Fácil, Médio, Difícil, Avançado e Expert — com 40 perguntas por fase. Cada fase é desbloqueada ao concluir a anterior. Cada resposta traz explicação e link para a fonte do dado.
+
 ## Desenvolvimento
 
 ```bash
@@ -42,7 +56,7 @@ npm run sync:results
 npm run build
 ```
 
-O CI executa auditoria estática, contratos de dados, typecheck e build a cada push/PR. O deploy do GitHub Pages publica o diretório `dist`.
+O CI executa em cada pull request **e a cada push na main**: auditoria estática, contratos de dados, typecheck, build e verificação pós-publicação do site. O deploy do GitHub Pages publica o diretório `dist`.
 
 ## Princípios de dados
 
@@ -63,72 +77,18 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-V43.3 — Observatório de Dados Cívicos e Eleitorais.
+**V44.9.1 — Observatório de Dados Cívicos e Eleitorais.**
 
-### Foco V43.3
-- Navegação programática respeita a preferência de redução de movimento também em interações móveis e atalhos internos.
-- Barra de progresso de leitura usa requestAnimationFrame para reduzir atualizações de estado durante rolagem.
-- theme-color acompanha o tema claro/escuro no navegador e no PWA, inclusive na primeira pintura.
-- Metadados de instalação mobile e preview social foram reforçados.
-- Busca responde diretamente a consultas de PIB per capita, Ideb e HEAL e corrige o destino da busca por candidaturas e saneamento.
-- Busca devolve foco ao controle que a abriu.
-- Navegação inferior mobile usa aria-current="location".
-- A camada de candidaturas não exibe links vazios quando uma referência não possui URL.
-- Seções abaixo da dobra são carregadas em grupos somente quando se aproximam da viewport, reduzindo o JavaScript inicial.
-- Navegação por âncora, hash direto e atalhos continuam funcionando mesmo com o carregamento diferido.
-
-### Foco V41
-- Camada pública de confiança com método, atualização e canal de correção por evidência.
-- CTAs para serviços eleitorais oficiais: e-Título, Pardal e página de Eleições 2026/DivulgaCandContas.
-- Hierarquia mobile mais enxuta no hero, preservando os três indicadores centrais e reduzindo ruído secundário.
-- Quiz ampliado para cinco perguntas usando dados já presentes no dataset.
-- Auditorias estática e mobile reforçadas para as novas camadas.
-
-### Foco V40
-- Hub de descoberta no primeiro terço da página, com trilhas por assunto, leitura de 5 minutos e radar de atualização.
-- Compartilhamento individual por dado via Web Share API, fallback de cópia e WhatsApp.
-- Trilhos horizontais mobile-first com scroll-snap para navegação por toque.
-- Auditoria estática específica para mobile e integração dessa checagem ao CI.
-- Kit de distribuição para Instagram com Story 1080×1920, Post 1080×1350, legenda, UTM e Web Share com arquivo.
-
-### Foco V39
-- Camada de linguagem simples/técnica com preferência persistida no navegador.
-- Contexto comparativo descritivo com municípios do Entorno do DF e anos-base preservados.
-- Hub “Como usar” com SIC, Câmara, Transparência municipal, TCMGO e MPGO.
-- Compartilhamento direto no WhatsApp e preview social com imagem Open Graph.
-- Exportação do dataset normalizado em JSON além do CSV.
-- Auditoria estática ampliada para validar as novas camadas e o cartão social.
-
-### Foco V38
-- Hierarquia inicial reforçada no hero com indicadores de referência, acesso direto às evidências e identificação explícita da última atualização local.
-- Atalhos de descoberta mantidos navegáveis na Visão geral, sem apontar para seções ocultas.
-- Auditoria estática versionada no CI para detectar regressões de edição, URL base, PWA, navegação, proveniência e estados de snapshot.
-
-### Foco V37
-- Mobile-first com navegação rápida, áreas de toque >=44px e safe-area para barras fixas.
-- Compartilhamento nativo de resumo e cenários de mobilidade.
-- Estados TSE explicitamente diferenciados entre capturado, desatualizado, falha e aguardando captura.
-- Visualização histórica de saneamento com escala 0–100% e tabela compacta no celular.
-- Feed de resultados com contrato contextualizado: eleição, turno, UF, município, cargo, arquivo-fonte e estado de captura.
-- Validação dedicada do feed de resultados antes de CI e publicação.
-- Contrato de produção com pleito, ambiente, escopo municipal e compatibilidade entre código de eleição, UF e cargo.
-- Estado de frescor do feed para impedir que um arquivo antigo permaneça rotulado como ao vivo.
-- Verificador isolado do simulado oficial do TSE para 22–24/09/2026, sem misturar dados simulados à produção.
-- Visão geral como modo padrão para não esconder fontes e camadas documentais do primeiro acesso.
-- Histórico de eleitorado com fonte individual por ano e reconciliação editorial separada do consolidado.
-- Eleitoral 360° sem mistura de campos de snapshots diferentes.
-- Compartilhamento do inspetor sem âncoras falsas.
-- Verificador JWS EdDSA/Ed25519 alinhado ao manual oficial do TSE 2026, com `kid` e chave pública oficial fixados.
-- Feed de resultados V3 agregado por cargo, com uma prova JWS por arquivo e validação exata do host, município e cargo.
-- Pipeline automático de resultados preparado para JSON + JWS, comparação dos payloads e snapshot em `public/data/tse-results.json`.
-- Scheduler do primeiro e eventual segundo turno respeitando a janela local de Brasília e sem publicar dados antes dos arquivos oficiais existirem.
-- Código municipal de Águas Lindas validado pela configuração TSE como `93343`.
-- Estados de captura e cobertura reforçados na camada de pesquisa documental.
-- Registros políticos estáticos separados da proveniência oficial do TSE enquanto a sincronização local permanece `not_synced`.
-- Camada Evidências com cadeia explícita de fonte, captura local, hash, workflow e limitações.
-- Três modos de leitura: Visão geral, Investigação e Evidências; Visão geral é o modo padrão.
+- Três modos de leitura (Resumo, Simples, Técnico) com preferência persistida.
+- Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
+- Mapa de evidências reservado ao modo Técnico, em mini cards de auditoria.
+- Navegação mobile com barra inferior, `aria-current`, áreas de toque >=44px e safe-area.
+- Carregamento diferido por proximidade da viewport, reduzindo o JavaScript inicial.
+- Compartilhamento por dado individual (Web Share API com fallback de cópia), kit para Instagram e exportação JSON/CSV.
+- PWA com cache local e `theme-color` acompanhando o tema claro/escuro.
 
 ### Camadas atuais
+
 - Cadeia de evidências com distinção explícita entre fonte oficial e captura local
 - Dashboard municipal e eleitoral
 - Eleitorado e perfil demográfico
@@ -136,7 +96,7 @@ V43.3 — Observatório de Dados Cívicos e Eleitorais.
 - Saneamento e saúde com cálculos derivados explicitados
 - Candidaturas e Eleitoral 360° com proveniência de snapshots
 - Linha do tempo eleitoral baseada em fontes oficiais
-- Orçamento, exportação e mapa de evidências
+- Orçamento, exportação e mapa de evidências (modo Técnico)
 - Central de qualidade, fontes e inspeção de dados
 - Demografia dinâmica com série temporal e metodologia reutilizável
 - Leitura orçamentária per capita com denominadores preservados
@@ -144,15 +104,18 @@ V43.3 — Observatório de Dados Cívicos e Eleitorais.
 - PWA com cache local para recursos da aplicação
 
 ### Estado da sincronização eleitoral
+
 A edição atual contém uma primeira captura de candidatos em escopo `watchlist`, com 594 linhas de origem e 10 correspondências locais no snapshot versionado. O estado é `first_capture`. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-candidates.yml` é manual por desenho e valida uma nova captura direta antes de publicar alterações.
 
 A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
 
-### Auditoria V43.1
-A auditoria desta edição cobre arquitetura, navegação mobile, acessibilidade estática, proveniência, contratos de dados, CI/deploy e coerência editorial. A validação visual em navegador externo não foi possível nesta sessão porque a ferramenta de automação de navegador não está disponível no ambiente e a URL pública não pôde ser carregada pelo analisador web. Os workflows recentes da main confirmam CI e Quality aprovados e um deploy do GitHub Pages concluído com sucesso no commit eda7cea5.
-
 ### Limitações editoriais
+
 - Dados de anos-base diferentes não são tratados como uma série homogênea sem indicação explícita.
 - Cálculos derivados são identificados como derivados.
 - Denúncias, processos e situações cadastrais são apresentados de forma descritiva, sem inferência de culpa ou mérito.
 - O observatório não produz ranking, recomendação eleitoral ou previsão de resultado.
+
+## Licença
+
+MIT — veja [LICENSE](LICENSE).

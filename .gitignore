@@ -1,5 +1,28 @@
+# Dependências
 node_modules/
+
+# Build
 dist/
+dist-ssr/
+*.local
+
+# Ambiente
 .env
-coverage/
+.env.*
+!.env.example
+
+# Editores e sistema
+.vscode/*
+!.vscode/extensions.json
+.idea/
 .DS_Store
+Thumbs.db
+*.swp
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testes
+coverage/
