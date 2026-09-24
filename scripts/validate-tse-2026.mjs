@@ -22,6 +22,7 @@ if (payload.schemaVersion === 2 && payload.coverage !== 'watchlist') errors.push
 if (payload.schemaVersion === 3 && !isMunicipalitySnapshot && !isStateWatchlistSnapshot) errors.push('coverage inválido no contrato TSE.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
 const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
+const allowUpstreamUnavailable = process.env.ALLOW_UPSTREAM_UNAVAILABLE === 'true';
 const sha = payload.meta?.sourceFileSha256;
 const allowedStates = new Set(['not_synced', 'first_capture', 'unchanged', 'changed', 'local_filter_pending', 'synced']);
 if (!allowedStates.has(state)) errors.push('state do snapshot inválido: ' + String(state));
@@ -30,8 +31,9 @@ const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Placeholder não sincronizado deve usar SHA nulo ou um SHA-256 válido.');
   if (requireSynced && !isMunicipalitySnapshot) errors.push('Placeholder estadual não pode passar quando REQUIRE_TSE_SYNC=true.');
-  if (requireSynced && isMunicipalitySnapshot && state === 'local_filter_pending') errors.push('Snapshot municipal ainda pendente; sincronização oficial municipal é necessária antes da publicação de novos registros de candidatura.');
-  if (requireSynced && isStateWatchlistSnapshot && !payload.matched.length) errors.push('Snapshot estadual sincronizado sem correspondências da watchlist.');
+  if (requireSynced && isMunicipalitySnapshot && state === 'local_filter_pending' && !allowUpstreamUnavailable) errors.push('Snapshot municipal ainda pendente; sincronização oficial municipal é necessária antes da publicação de novos registros de candidatura.');
+  if (requireSynced && isStateWatchlistSnapshot && !payload.matched.length && !allowUpstreamUnavailable) errors.push('Snapshot estadual sincronizado sem correspondências da watchlist.');
+  if (allowUpstreamUnavailable && state === 'local_filter_pending') warnings.push('Origem oficial TSE indisponível no runner; snapshot anterior foi preservado sem promover novos registros.');
 } else if (!validSha) {
   errors.push('SHA-256 da fonte ausente ou inválido.');
 }
