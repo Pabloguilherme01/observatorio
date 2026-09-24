@@ -8,14 +8,14 @@
     "localFilter": "Águas Lindas de Goiás",
     "downloadedAt": "2026-09-23T08:16:17.987Z",
     "sourceRows": 905,
-    "originalMatchedRows": 7,
-    "matchedRows": 7,
+    "originalMatchedRows": 5,
+    "matchedRows": 5,
     "workflowRunId": null,
     "state": "local_filter_pending",
     "retrievalMethod": "official_tse_divulgacandcontas_api",
     "resourceUrl": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
     "captureTransport": "historical_third_party_reader",
-    "filterNote": "Registros do recorte de candidatos acompanhados em Águas Lindas, identificados por correspondência de nome de urna com a watchlist local. O arquivo estadual não informa município da candidatura; portanto estes registros não são apresentados como candidaturas municipais.",
+    "filterNote": "Registros do recorte de candidatos acompanhados em Águas Lindas, identificados por correspondência de nome de urna com a watchlist local. O arquivo estadual não informa município da candidatura; portanto estes registros não são apresentados como candidaturas municipais. Wilde Cambão e André do Premium foram removidos do recorte local.",
     "sourceFileSha256": "ee67167e1a7b94495e30f0bc8eb8b4609b60b7397eac70cd506ebbf815ea26b1",
     "complementaryFile": {
       "name": "consulta_cand_complementar_2026_GO.csv",
@@ -27,15 +27,13 @@
     "photoArchive": {
       "name": "foto_cand2026_GO_div.zip",
       "sourceRows": 905,
-      "matchedPhotoIds": 7,
+      "matchedPhotoIds": 5,
       "verifiedCandidateIds": [
         "90002549161",
         "90002543127",
         "90002537423",
-        "90002547032",
         "90002547004",
-        "90002543768",
-        "90002547039"
+        "90002543768"
       ]
     },
     "selection": "watchlist_only",
@@ -47,10 +45,8 @@
     "Anderson Teodoro",
     "Zé da Imperial",
     "Baiano dos Cocos",
-    "Cambão",
     "Abadyas Damasceno",
-    "Felipe Galdino",
-    "André do Premium"
+    "Felipe Galdino"
   ],
   "matched": [
     {
@@ -102,22 +98,6 @@
       "watchlistName": "Baiano dos cocos"
     },
     {
-      "sqCandidate": "90002547032",
-      "ballotNumber": 44555,
-      "name": "WILDE CAMBÃO",
-      "party": "UNIÃO",
-      "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "municipality": null,
-      "photoUrl": null,
-      "instagramUrl": null,
-      "fullName": "WILDE LOPES RORIZ",
-      "gender": "MASCULINO",
-      "education": "SUPERIOR COMPLETO",
-      "occupation": "DEPUTADO",
-      "watchlistName": "Wilde cambão"
-    },
-    {
       "sqCandidate": "90002547004",
       "ballotNumber": 44360,
       "name": "ABADYAS DAMASCENO",
@@ -148,27 +128,11 @@
       "education": "SUPERIOR INCOMPLETO",
       "occupation": "EMPRESÁRIO",
       "watchlistName": "Felipe galdino"
-    },
-    {
-      "sqCandidate": "90002547039",
-      "ballotNumber": 44333,
-      "name": "ANDRÉ DO PREMIUM",
-      "party": "UNIÃO",
-      "office": "DEPUTADO ESTADUAL",
-      "status": "#NE",
-      "municipality": null,
-      "photoUrl": null,
-      "instagramUrl": null,
-      "fullName": "ANDRE LUIZ GOMES GONTIJO",
-      "gender": "MASCULINO",
-      "education": "ENSINO MÉDIO INCOMPLETO",
-      "occupation": "DEPUTADO",
-      "watchlistName": "André do premium"
     }
   ],
   "diff": {
     "state": "local_filter_pending",
-    "added": 7,
+    "added": 5,
     "removed": 0,
     "changed": 0,
     "unresolved": 3,
