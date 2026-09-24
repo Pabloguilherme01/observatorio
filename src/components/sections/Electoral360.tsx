@@ -194,14 +194,14 @@ export function Electoral360() {
             </div>
           ) : hasLocalCandidateSnapshot && selectedOfficial ? (
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Info label="Identidade" value={selectedOfficial.name} />
-              <Info label="Situação" value={selectedOfficial.status || 'Não informado'} />
+              <Info label="Nome completo" value={selectedOfficial.fullName || selectedOfficial.name} />
+              <Info label="Nome de urna" value={selectedOfficial.name} />
               <Info label="Partido" value={selectedOfficial.party || 'Não informado'} />
               <Info label="Número" value={String(selectedOfficial.ballotNumber || 'Não informado')} />
               <Info label="Cargo" value={selectedOfficial.office || 'Não informado'} />
+              <Info label="Ocupação" value={selectedOfficial.occupation || 'Não informado'} />
+              <Info label="Escolaridade" value={selectedOfficial.education || 'Não informado'} />
               <Info label="Snapshot" value={selectedOfficial.snapshotDate} />
-              <Info label="Ocupação" value="Não capturado nesta camada" />
-              <Info label="Escolaridade / bens" value="Não capturados nesta camada" />
             </div>
           ) : selectedLocal ? (
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
