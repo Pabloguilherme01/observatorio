@@ -58,7 +58,6 @@ export function ExecutiveSummary() {
 
   const openTopic = (topic: typeof topics[number]) => {
     setActiveTopic(topic.id);
-    setOpenFact(null);
     goToSection(topic.target);
   };
 
