@@ -131,22 +131,25 @@ export function HeroCountdown() {
               <button type="button" className="hero-mobile-election-toggle min-h-10 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 text-[11px] font-black text-amber-100" onClick={toggleElectionMode} aria-pressed={true} aria-label="Desativar Modo Eleição">Desativar</button>
             </div>
           )}
-          <div className="hero-kpis hero-kpis-guide mt-5" aria-label="Atalhos de leitura">
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Comece</div>
-              <div className="mt-1 text-sm font-black text-white light:text-slate-900">Resumo público</div>
-              <div className="mt-1 text-[11px] text-slate-600">os números essenciais ficam logo abaixo</div>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Explore</div>
-              <div className="mt-1 text-sm font-black text-white light:text-slate-900">Assuntos da cidade</div>
-              <div className="mt-1 text-[11px] text-slate-600">eleição, cidade, serviços e recursos</div>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50/70">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Confira</div>
-              <div className="mt-1 text-sm font-black text-white light:text-slate-900">Fontes e datas</div>
-              <div className="mt-1 text-[11px] text-slate-600">cada dado mantém sua origem visível</div>
-            </div>
+          <div className="hero-kpis hero-kpis-guide mt-5 grid gap-2 sm:grid-cols-3" aria-label="Atalhos de leitura">
+            <a href="#resumo" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
+              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Comece</span>
+              <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Resumo público</strong>
+              <span className="mt-1 block text-[11px] leading-5 text-slate-600">os números essenciais ficam logo abaixo</span>
+              <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Abrir <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
+            </a>
+            <a href="#descubra" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
+              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Explore</span>
+              <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Assuntos da cidade</strong>
+              <span className="mt-1 block text-[11px] leading-5 text-slate-600">eleição, cidade, serviços e recursos</span>
+              <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Explorar <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
+            </a>
+            <a href="#fontes" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
+              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Confira</span>
+              <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Fontes e datas</strong>
+              <span className="mt-1 block text-[11px] leading-5 text-slate-600">cada dado mantém sua origem visível</span>
+              <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Conferir <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
+            </a>
           </div>
 
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-medium text-slate-600" aria-label="Atualização do conjunto de dados">
