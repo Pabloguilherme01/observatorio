@@ -697,3 +697,63 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
     font-size: 8px;
   }
 }
+
+/* Mobile final pass: remove wrapper padding collisions and simplify the first viewport. */
+@media (max-width: 767px) {
+  .mx-auto.max-w-7xl,
+  .mx-auto.max-w-6xl,
+  .mx-auto.max-w-5xl {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .hero-kpis-guide,
+  .hero-shell .hero-secondary-round {
+    display: none !important;
+  }
+
+  .hero-shell .hero-second-round-note {
+    display: block !important;
+  }
+
+  .hero-shell .summary-hero-panel {
+    margin-top: 14px;
+    border-radius: 18px;
+    padding: 12px !important;
+  }
+
+  .hero-shell .summary-hero-card {
+    min-width: 0;
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  #resumo,
+  #dashboard,
+  #eleitorado,
+  #orcamento,
+  #transporte,
+  #dados,
+  #fontes {
+    scroll-margin-top: 72px;
+  }
+
+  .mobile-bottom-nav {
+    padding-left: max(6px, env(safe-area-inset-left, 0px));
+    padding-right: max(6px, env(safe-area-inset-right, 0px));
+  }
+}
+
+@media (max-width: 430px) {
+  .hero-shell h1 {
+    font-size: 2.15rem !important;
+  }
+
+  .hero-shell .summary-hero-panel > div:nth-child(2) {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-shell .mt-5.flex.flex-wrap > * {
+    min-height: 46px;
+  }
+}
