@@ -197,8 +197,6 @@ export function ExecutiveSummary() {
                   </div>
                 ))}
               </div>
-                ))}
-              </div>
             </div>
           )}
           
