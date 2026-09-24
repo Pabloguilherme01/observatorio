@@ -165,21 +165,21 @@ export function InstagramSyncHub() {
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
               <Camera className="h-3.5 w-3.5" aria-hidden="true" /> Distribuição social
             </div>
-            <h2 id="instagram-title" className="mt-2 text-2xl font-black text-white sm:text-3xl">Estúdio social</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode === 'simple' ? 'Escolha o dado, gere o card e compartilhe.' : 'Escolha o dado, gere Story/Post, copie uma legenda factual e use o compartilhamento nativo do celular.'}</p>
+            <h2 id="instagram-title" className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-lg' : 'text-2xl sm:text-3xl'}`}>{mode === 'summary' ? 'Compartilhe um dado' : 'Estúdio social'}</h2>
+            <p className={`mt-2 max-w-3xl text-slate-400 ${mode === 'summary' ? 'text-xs' : 'text-sm leading-6'}`}>{mode === 'summary' ? 'Escolha um número e gere uma imagem pronta para compartilhar.' : mode === 'simple' ? 'Escolha o dado, gere o card e compartilhe.' : 'Escolha o dado, gere Story/Post, copie uma legenda factual e use o compartilhamento nativo do celular.'}</p>
           </div>
           <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
             Abrir Instagram <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
 
-        <div className="mt-5 grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
+        <div className={`mt-5 grid gap-4 lg:grid-cols-[.8fr_1.2fr] ${mode === 'summary' ? 'instagram-summary-layout' : ''}`}>
           <div className="instagram-mobile-rail gap-2">
             <div className="instagram-mobile-column">
-              <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">1 · Escolha o dado</div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{mode === 'summary' ? 'Escolha o dado' : '1 · Escolha o dado'}</div>
               <div className="mt-3 grid gap-2">
                 {items.map(entry => (
-                  <button key={entry.id} type="button" onClick={() => setSelectedId(entry.id)} aria-pressed={selectedId === entry.id} className={'rounded-2xl border p-3 text-left ' + (selectedId === entry.id ? 'border-sky-300/25 bg-sky-300/10' : 'border-white/8 bg-white/[0.02]')}>
+                  <button key={entry.id} type="button" onClick={() => setSelectedId(entry.id)} aria-pressed={selectedId === entry.id} className={'instagram-data-choice rounded-2xl border p-3 text-left ' + (selectedId === entry.id ? 'border-sky-300/25 bg-sky-300/10' : 'border-white/8 bg-white/[0.02]')}>
                     <span className="block text-xs font-bold text-white">{entry.label}</span>
                     <span className="mt-1 block text-[11px] text-slate-500">{entry.value} · {entry.note}</span>
                   </button>
@@ -194,15 +194,15 @@ export function InstagramSyncHub() {
                 <button type="button" onClick={() => setFormat('post')} aria-pressed={format === 'post'} className={'min-h-11 rounded-xl border px-3 py-2 text-xs font-bold ' + (format === 'post' ? 'border-sky-300/25 bg-sky-300/10 text-sky-200' : 'border-white/10 text-slate-400')}>Post · 1080×1350</button>
               </div>
 
-              <div className="mt-5 rounded-3xl border border-sky-300/10 bg-sky-300/[0.04] p-4">
+              <div className={`mt-5 rounded-3xl border border-sky-300/10 bg-sky-300/[0.04] p-4 ${mode === 'summary' ? 'instagram-summary-preview' : ''}`}>
                 <div className="flex items-center gap-2 text-xs font-bold text-sky-200"><Sparkles className="h-4 w-4" aria-hidden="true" /> {item.label}</div>
                 <div className="mt-3 text-4xl font-black text-white">{item.value}</div>
                 <p className="mt-2 text-sm text-slate-400">{item.note}</p>
-                <p className="mt-4 whitespace-pre-line text-xs leading-5 text-slate-500">{caption}</p>
+                {mode !== 'summary' && <p className="mt-4 whitespace-pre-line text-xs leading-5 text-slate-500">{caption}</p>}
               </div>
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                <button type="button" onClick={() => generate(false)} aria-label={format === 'story' ? 'Baixar Story' : 'Baixar Feed'} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-xs font-black text-slate-950">
+              <div className={`mt-4 flex flex-wrap gap-2 ${mode === 'summary' ? 'instagram-summary-actions' : ''}`}>
+                <button type="button" onClick={() => generate(false)} aria-label={format === 'story' ? 'Baixar Story' : 'Baixar Feed'} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-xs font-black text-slate-950">
                   <Download className="h-4 w-4" aria-hidden="true" /> Baixar {format === 'story' ? 'Story' : 'Feed'}
                 </button>
                 <button type="button" onClick={() => generate(true)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-bold text-slate-200 hover:border-sky-300/20">
@@ -213,7 +213,7 @@ export function InstagramSyncHub() {
                   {status === 'Legenda copiada' ? <Check className="h-4 w-4 text-emerald-300" aria-hidden="true" /> : <Share2 className="h-4 w-4 text-sky-300" aria-hidden="true" />} {status || 'Copiar legenda'}
                 </button>
               </div>
-              <p className="mt-3 text-[11px] leading-5 text-slate-600">O fluxo é assistido pelo navegador. No Instagram, o compartilhamento é feito pelo sistema do celular; publicação automática exigiria autenticação da Meta.</p>
+              {mode !== 'summary' && <p className="mt-3 text-[11px] leading-5 text-slate-600">O fluxo é assistido pelo navegador. No Instagram, o compartilhamento é feito pelo sistema do celular; publicação automática exigiria autenticação da Meta.</p>}
             </div>
           </div>
         </div>
