@@ -37,7 +37,10 @@
         "90002543768",
         "90002547039"
       ]
-    }
+    },
+    "selection": "watchlist_only",
+    "candidateUniverseScope": "GO",
+    "localFilterType": "editorial_watchlist"
   },
   "coverage": "state_watchlist",
   "watchlist": [
@@ -63,7 +66,8 @@
       "fullName": "ANDERSON TEODORO DA CUNHA DOURADO",
       "gender": "MASCULINO",
       "education": "SUPERIOR INCOMPLETO",
-      "occupation": "VEREADOR"
+      "occupation": "VEREADOR",
+      "watchlistName": "Anderson teodoro"
     },
     {
       "sqCandidate": "90002543127",
@@ -78,7 +82,8 @@
       "fullName": "JOSE BARBOSA DA SILVA",
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO COMPLETO",
-      "occupation": "COMERCIANTE"
+      "occupation": "COMERCIANTE",
+      "watchlistName": "Zé da imperial"
     },
     {
       "sqCandidate": "90002537423",
@@ -93,7 +98,8 @@
       "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO COMPLETO",
-      "occupation": "COMERCIANTE"
+      "occupation": "COMERCIANTE",
+      "watchlistName": "Baiano dos cocos"
     },
     {
       "sqCandidate": "90002547032",
@@ -108,7 +114,8 @@
       "fullName": "WILDE LOPES RORIZ",
       "gender": "MASCULINO",
       "education": "SUPERIOR COMPLETO",
-      "occupation": "DEPUTADO"
+      "occupation": "DEPUTADO",
+      "watchlistName": "Wilde cambão"
     },
     {
       "sqCandidate": "90002547004",
@@ -123,7 +130,8 @@
       "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO INCOMPLETO",
-      "occupation": "ELETRICISTA E ASSEMELHADOS"
+      "occupation": "ELETRICISTA E ASSEMELHADOS",
+      "watchlistName": "Abadyas damasceno"
     },
     {
       "sqCandidate": "90002543768",
@@ -138,7 +146,8 @@
       "fullName": "FELIPE DE MOURA GALDINO FERNANDES",
       "gender": "MASCULINO",
       "education": "SUPERIOR INCOMPLETO",
-      "occupation": "EMPRESÁRIO"
+      "occupation": "EMPRESÁRIO",
+      "watchlistName": "Felipe galdino"
     },
     {
       "sqCandidate": "90002547039",
@@ -153,7 +162,8 @@
       "fullName": "ANDRE LUIZ GOMES GONTIJO",
       "gender": "MASCULINO",
       "education": "ENSINO MÉDIO INCOMPLETO",
-      "occupation": "DEPUTADO"
+      "occupation": "DEPUTADO",
+      "watchlistName": "André do premium"
     }
   ],
   "diff": {
