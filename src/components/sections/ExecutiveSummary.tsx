@@ -229,6 +229,11 @@ export function ExecutiveSummary() {
               <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               <div>
                 <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{hasPoll ? "Pesquisa registrada" : "Pesquisas"}</div>
+                {poll && <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="font-black text-white light:text-slate-900">{poll.pollster}</span>
+                  <span className="rounded-full border border-white/10 px-2 py-1 text-slate-500 light:border-slate-200">Deputado estadual · pergunta espontânea</span>
+                  <span className="rounded-full border border-white/10 px-2 py-1 text-slate-500 light:border-slate-200">{poll.registrationNumber}</span>
+                </div>}
                 {!hasPoll && <p className="mt-3 text-sm text-slate-400">Nenhuma pesquisa está disponível neste snapshot.</p>}
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:max-w-md">
                   <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
