@@ -16,32 +16,10 @@ const ZIP_URLS = [
 ];
 
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
-const WATCHLIST = [
-  'Keké',
-  'Anderson Teodoro',
-  'Zé da Imperial',
-  'Baiano dos Cocos',
-  'Cambão',
-  'Abadyas Damasceno',
-  'Pábio Mossoró',
-  'Felipe Galdino',
-  'Ribeiro do Túlio',
-  'André do Premium',
-];
-
 const MUNICIPALITY_CODE = '5200258';
 const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
 const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 
-
-const API_BASE_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1';
-const ELECTION_ID = '20322002026';
-const API_SCOPE = 'GO';
-const API_CARGOS = [
-  // A watchlist atual é composta por nomes monitorados como deputado estadual.
-  // Evitamos chamadas desnecessárias a cargos que não podem produzir matches.
-  { code: '7', label: 'deputado-estadual-distrital' },
-];
 
 // O TSE pode bloquear o IP compartilhado dos runners do GitHub Actions (HTTP 403).
 // Nesses casos, o conteúdo continua sendo solicitado ao endpoint oficial do TSE,
@@ -67,214 +45,10 @@ function curlJson(url) {
   return JSON.parse(output);
 }
 
-function parseJsonOutput(output) {
-  const parseCandidate = value => {
-    try {
-      return JSON.parse(value);
-    } catch {
-      const firstObject = value.indexOf('{');
-      const lastObject = value.lastIndexOf('}');
-      if (firstObject >= 0 && lastObject > firstObject) {
-        try { return JSON.parse(value.slice(firstObject, lastObject + 1)); } catch {}
-      }
-      const firstArray = value.indexOf('[');
-      const lastArray = value.lastIndexOf(']');
-      if (firstArray >= 0 && lastArray > firstArray) {
-        try { return JSON.parse(value.slice(firstArray, lastArray + 1)); } catch {}
-      }
-      return null;
-    }
-  };
-
-  const parsed = parseCandidate(output);
-  if (parsed && typeof parsed === 'object' && typeof parsed.content === 'string') {
-    const nested = parseCandidate(parsed.content.trim());
-    if (nested) return nested;
-  }
-  if (parsed) return parsed;
-  throw new Error('A resposta intermediada não contém JSON do endpoint TSE.');
-}
-
-function fetchApi(url) {
-  try {
-    return { payload: curlJson(url), transport: 'direct_official', requestUrl: url };
-  } catch (directError) {
-    console.warn('[TSE] acesso direto bloqueado/indisponível; tentando transporte intermediado.');
-    for (const proxy of API_READER_PROXIES) {
-      const requestUrl = proxy.prefix + (proxy.encode ? encodeURIComponent(url) : url);
-      try {
-        const output = execFileSync('curl', [
-          '--fail', '--location', '--http1.1', '--retry', '1', '--retry-delay', '1', '--retry-all-errors',
-          '--connect-timeout', '10', '--max-time', '20',
-          '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
-          '--header', 'Accept: application/json,text/plain;q=0.9,*/*;q=0.8',
-          requestUrl,
-        ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
-        return { payload: parseJsonOutput(output), transport: 'reader_proxy', requestUrl, proxy: proxy.label };
-      } catch (proxyError) {
-        console.warn('[TSE] proxy indisponível: ' + proxy.label + ' (' + (proxyError instanceof Error ? proxyError.message : String(proxyError)) + ')');
-      }
-    }
-    throw directError;
-  }
-}
-
-function apiCandidateToRecord(candidate, cargoLabel, previousRecord) {
-  const id = String(candidate.id ?? candidate.sq_CANDIDATO ?? '');
-  const name = String(candidate.nomeUrna ?? candidate.nm_URNA ?? candidate.nome ?? '').trim();
-  const fullName = String(candidate.nomeCompleto ?? candidate.nm_CANDIDATO ?? '').trim();
-  const ballot = Number(candidate.numero ?? candidate.nr_CANDIDATO);
-  return {
-    sqCandidate: id,
-    ballotNumber: Number.isFinite(ballot) ? ballot : null,
-    name,
-    fullName: fullName || null,
-    party: candidate.partido?.sigla ?? candidate.sg_PARTIDO ?? null,
-    office: candidate.cargo?.nome ?? candidate.ds_CARGO ?? cargoLabel,
-    status: candidate.descricaoSituacao ?? candidate.situacaoCandidato ?? null,
-    federation: candidate.nomeColigacao ?? null,
-    generationDate: null,
-    generationTime: null,
-    candidateIdKind: 'tse_divulgacand_api',
-    municipality: null,
-    municipalityCodeTse: null,
-    localRelevance: MUNICIPALITY_NAME,
-    localRelevanceType: 'editorial_watchlist',
-    photoUrl: candidate.fotoUrl ?? candidate.urlFoto ?? previousRecord?.photoUrl ?? null,
-    instagramUrl: previousRecord?.instagramUrl ?? null,
-    sourceResource: selectedSourceUrl,
-    apiCargo: cargoLabel,
-  };
-}
-
-function collectApiCandidates() {
-  const candidates = [];
-  const sources = [];
-  for (const cargo of API_CARGOS) {
-    const url = API_BASE_URL + '/candidatura/listar/2026/' + API_SCOPE + '/' + ELECTION_ID + '/' + cargo.code + '/candidatos';
-    try {
-      const response = fetchApi(url);
-      const rows = Array.isArray(response.payload?.candidatos) ? response.payload.candidatos : [];
-      if (!rows.length && response.transport === 'reader_proxy') {
-        console.warn('[TSE] transporte intermediado respondeu sem candidatos; chaves=' + Object.keys(response.payload ?? {}).join(',') + '; tipo=' + typeof response.payload);
-      }
-      sources.push({ url, cargo: cargo.label, count: rows.length, transport: response.transport });
-      for (const candidate of rows) candidates.push({ candidate, cargo, url, transport: response.transport });
-    } catch (error) {
-      console.warn('[TSE] API indisponível para ' + cargo.label + ': ' + (error instanceof Error ? error.message : String(error)));
-    }
-  }
-  if (!sources.some(source => source.count > 0)) return null;
-  return { candidates, sources };
-}
-
-const WATCHLIST_ALIASES = {
-  'Keké': ['KEKE', 'KEKE DA VULKANIC'],
-  'Anderson Teodoro': ['ANDERSON TEODORO'],
-  'Zé da Imperial': ['ZE DA IMPERIAL', 'JOSE IMPERIAL'],
-  'Baiano dos Cocos': ['BAIANO DOS COCOS', 'BAIANO DO COCOS', 'BAIANO COCOS'],
-  'Cambão': ['CAMBAO', 'WILDE CAMBAO'],
-  'Abadyas Damasceno': ['ABADYAS DAMASCENO'],
-  'Pábio Mossoró': ['PABIO MOSSORO'],
-  'Felipe Galdino': ['FELIPE GALDINO'],
-  'Ribeiro do Túlio': ['RIBEIRO DO TULIO', 'RIBEIRO DO TULLIO', 'RIBEIRO TULLIO'],
-  'André do Premium': ['ANDRE DO PREMIUM'],
-};
-
-function normalize(value = '') {
-  return String(value)
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toUpperCase()
-    .replace(/[^A-Z0-9]+/g, ' ')
-    .trim();
-}
-
-function matchesAlias(candidateName, aliases) {
-  const candidateTokens = normalize(candidateName).split(' ').filter(Boolean);
-  return aliases.some(alias => {
-    const aliasTokens = normalize(alias).split(' ').filter(Boolean);
-    if (!aliasTokens.length || aliasTokens.length > candidateTokens.length) return false;
-    for (let start = 0; start <= candidateTokens.length - aliasTokens.length; start += 1) {
-      if (aliasTokens.every((token, index) => candidateTokens[start + index] === token)) return true;
-    }
-    return false;
-  });
-}
-
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let field = '';
-  let quoted = false;
-
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-
-    if (quoted) {
-      if (char === '"' && text[index + 1] === '"') {
-        field += '"';
-        index += 1;
-      } else if (char === '"') {
-        quoted = false;
-      } else {
-        field += char;
-      }
-      continue;
-    }
-
-    if (char === '"') {
-      quoted = true;
-    } else if (char === ',') {
-      row.push(field);
-      field = '';
-    } else if (char === '\n') {
-      row.push(field);
-      rows.push(row);
-      row = [];
-      field = '';
-    } else if (char !== '\r') {
-      field += char;
-    }
-  }
-
-  if (field.length || row.length) {
-    row.push(field);
-    if (row.some(value => value.length)) rows.push(row);
-  }
-
-  return rows;
-}
-
-function headerMap(headerRow) {
-  return Object.fromEntries(
-    headerRow.map((name, index) => [String(name).replace(/^\uFEFF/, '').trim(), index]),
-  );
-}
-
-function valueOf(row, header, keys) {
-  for (const key of keys) {
-    const index = header[key];
-    if (index === undefined) continue;
-    const value = String(row[index] ?? '').trim();
-    if (value) return value;
-  }
-  return '';
-}
-
 function municipalityMatch(row, header) {
   const code = valueOf(row, header, ['CD_MUNICIPIO', 'CD_MUNICIPIO_TSE', 'NR_MUNICIPIO']);
   const name = valueOf(row, header, ['NM_MUNICIPIO']);
   return code === MUNICIPALITY_CODE || normalize(name) === MUNICIPALITY_NORMALIZED;
-}
-
-function watchlisted(row, header) {
-  const urn = valueOf(row, header, ['NM_URNA_CANDIDATO', 'NM_URNA']);
-  if (!urn) return false;
-  return WATCHLIST.some(name => {
-    const aliases = WATCHLIST_ALIASES[name] ?? [name];
-    return matchesAlias(urn, aliases);
-  });
 }
 
 function toRecord(row, header, previousRecord) {
@@ -391,80 +165,7 @@ async function main() {
     let sourceRows = 0;
     let municipalityRows = 0;
 
-    const apiResult = collectApiCandidates();
-    if (apiResult) {
-      selectedSourceUrl = apiResult.sources.map(source => source.url).join('|');
-      const apiTransport = apiResult.sources.some(source => source.transport === 'reader_proxy') ? 'reader_proxy' : 'direct_official';
-      const matched = [];
-      const seen = new Set();
-      for (const item of apiResult.candidates) {
-        if (!item.candidate) continue;
-        const name = String(item.candidate.nomeUrna ?? item.candidate.nm_URNA ?? '').trim();
-        if (!name) continue;
-        const watchlistName = WATCHLIST.find(expected => matchesAlias(name, WATCHLIST_ALIASES[expected] ?? [expected]));
-        if (!watchlistName) continue;
-        selectedSourceUrl = item.url;
-        const record = apiCandidateToRecord(item.candidate, item.cargo.label, previousBySq.get(String(item.candidate.id ?? item.candidate.sq_CANDIDATO ?? '')));
-        if (!record.sqCandidate) throw new Error('Registro municipal da API sem identificador de candidato.');
-        if (seen.has(record.sqCandidate)) continue;
-        record.watchlistName = watchlistName;
-        matched.push(record);
-        seen.add(record.sqCandidate);
-      }
-      municipalityRows = apiResult.candidates.length;
-      sourceRows = apiResult.candidates.length;
-      if (matched.length <= 0) throw new Error('A API oficial DivulgaCandContas respondeu para o município, mas nenhuma candidatura da watchlist foi encontrada.');
-      const diff = diffRecords(previous?.matched ?? [], matched);
-      const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
-      if (state === 'unchanged') {
-        console.log(JSON.stringify({ valid:true, state, sourceRows, municipalityRows, matched:matched.length, retrievalMethod:'official_tse_divulgacandcontas_api', missingWatchlist:WATCHLIST.filter(name=>!matched.some(candidate=>candidate.watchlistName===name)), changed:false }, null, 2));
-        return;
-      }
-      const now = new Date();
-      const snapshotId = 'tse-candidatos-2026-local-' + now.toISOString().replace(/[:.]/g, '-');
-      const payload = {
-        schemaVersion: 3,
-        meta: {
-          snapshotId,
-          source: 'TSE — Candidatos 2026',
-          sourceUrl: SOURCE_URL,
-          scope: 'GO',
-          localFilter: MUNICIPALITY_NAME,
-          localFilterType: 'editorial_watchlist',
-          candidateUniverseScope: API_SCOPE,
-          downloadedAt: now.toISOString(),
-          sourceFileSha256: createHash('sha256').update(JSON.stringify(apiResult.candidates)).digest('hex'),
-          sourceHashKind: 'official_api_payload',
-          sourceRows,
-          municipalityRows,
-          originalMatchedRows: matched.length,
-          matchedRows: matched.length,
-          workflowRunId: process.env.GITHUB_RUN_ID || undefined,
-          gitCommit: process.env.GITHUB_SHA || undefined,
-          state,
-          retrievalMethod: apiTransport === 'reader_proxy' ? 'official_tse_divulgacandcontas_api_via_reader_proxy' : 'official_tse_divulgacandcontas_api',
-          captureTransport: apiTransport,
-          resourceUrl: selectedSourceUrl,
-          selection: 'watchlist_only',
-          filterNote: apiTransport === 'reader_proxy'
-            ? 'Candidaturas capturadas no universo oficial de Goiás pelo endpoint DivulgaCandContas do TSE. O runner recebeu HTTP 403 no acesso direto e usou transporte intermediado apenas para obter o mesmo endpoint oficial; o transporte está registrado no snapshot. Águas Lindas de Goiás é recorte editorial de monitoramento, não município de candidatura.'
-            : 'Candidaturas capturadas no universo oficial de Goiás pelo endpoint DivulgaCandContas do TSE. Águas Lindas de Goiás é recorte editorial de monitoramento, não município de candidatura.',
-          missingWatchlist: WATCHLIST.filter(name=>!matched.some(candidate=>candidate.watchlistName===name)),
-          apiCargos: apiResult.sources,
-        },
-        coverage: 'state_watchlist',
-        watchlist: WATCHLIST,
-        matched,
-        diff: { state, added:diff.filter(item=>item.type==='added').length, removed:diff.filter(item=>item.type==='removed').length, changed:diff.filter(item=>item.type==='changed').length, records:diff },
-      };
-      writeFileSync(OUTPUT, JSON.stringify(payload,null,2)+'\n','utf8');
-      writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff,null,2)+'\n','utf8');
-      writeFileSync(join(HISTORY_DIR,snapshotId+'.json'),JSON.stringify(payload,null,2)+'\n','utf8');
-      console.log(JSON.stringify({valid:true,state,snapshotId,sourceRows,municipalityRows,matched:matched.length,retrievalMethod:'official_tse_divulgacandcontas_api'},null,2));
-      return;
-    }
-
-    let lastError = null;
+    // Para o recorte completo do município, usamos exclusivamente o CSV oficial do TSE.\n    // O endpoint estadual do DivulgaCandContas não contém município no registro retornado.\n    let lastError = null;
 
     for (const candidateUrl of ZIP_URLS) {
       try {
@@ -508,20 +209,17 @@ async function main() {
       sourceRows += 1;
       if (!municipalityMatch(row, header)) continue;
       municipalityRows += 1;
-      if (!watchlisted(row, header)) continue;
 
       const record = toRecord(row, header, previousBySq.get(valueOf(row, header, ['SQ_CANDIDATO'])));
       if (!record.sqCandidate) throw new Error('Registro municipal sem SQ_CANDIDATO.');
       if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte municipal: ' + record.sqCandidate);
 
-      record.watchlistName = WATCHLIST.find(name => matchesAlias(record.name, WATCHLIST_ALIASES[name] ?? [name])) ?? record.name;
       matched.push(record);
       seen.add(record.sqCandidate);
     }
 
-    const missingWatchlist = WATCHLIST.filter(name => !matched.some(candidate => candidate.watchlistName === name));
     if (municipalityRows <= 0) throw new Error('Nenhum registro municipal encontrado no CSV oficial do TSE para Águas Lindas de Goiás.');
-    if (matched.length <= 0) throw new Error('Nenhuma candidatura da watchlist foi validada no recorte municipal oficial do TSE.');
+    if (matched.length <= 0) throw new Error('Nenhuma candidatura foi validada no recorte municipal oficial do TSE.');
 
     const diff = diffRecords(previous?.matched ?? [], matched);
     const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
@@ -532,7 +230,6 @@ async function main() {
         sourceRows,
         municipalityRows,
         matched: matched.length,
-        missingWatchlist,
         retrievalMethod: 'official_tse_zip_csv',
         changed: false,
       }, null, 2));
@@ -563,9 +260,8 @@ async function main() {
         state,
         retrievalMethod: 'official_tse_zip_csv',
         resourceUrl: selectedSourceUrl,
-        selection: 'watchlist_only',
-        filterNote: 'Recorte municipal validado pelo código TSE do município. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.',
-        missingWatchlist,
+        selection: 'all_municipality',
+        filterNote: 'Recorte municipal completo pelo código TSE do município. O snapshot publica todas as candidaturas encontradas no arquivo oficial para Águas Lindas de Goiás, sem watchlist editorial.',
       },
       coverage: 'municipality_required',
       watchlist: WATCHLIST,
@@ -590,7 +286,6 @@ async function main() {
       sourceRows,
       municipalityRows,
       matched: matched.length,
-      missingWatchlist,
       retrievalMethod: 'official_tse_zip_csv',
     }, null, 2));
   } finally {
