@@ -76,7 +76,7 @@ export function ExecutiveSummary() {
   };
 
 
-  const share = async (cardLabel?: string, cardValue?: string) => {
+  const share = async () => {
     if (shareBusy) return;
     setShareBusy(true);
     const text = [
@@ -86,7 +86,6 @@ export function ExecutiveSummary() {
       `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
       `Nomes acompanhados em Águas Lindas: ${electoral360Snapshot.matchedCandidates.length}.`,
-      cardLabel && cardValue ? `${cardLabel}: ${cardValue}.` : '',
       poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.nonePct?.toFixed(2).replace('.', ',') ?? '—'}% “Nenhum” e ${poll.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}% “Não sabe/NR”.` : '',
     ].filter(Boolean).join(' ');
 
