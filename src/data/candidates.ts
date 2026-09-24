@@ -35,7 +35,7 @@ export const publicCandidates: readonly PublicCandidate[] = generatedCandidates.
   sourceUrls: [generatedCandidates.meta.sourceUrl, generatedCandidates.meta.resourceUrl, ...(candidate.evidenceSourceUrls ?? [])],
   localEvidence: candidate.localEvidence ?? undefined,
   evidenceSourceUrls: candidate.evidenceSourceUrls ?? undefined,
-}));
+})).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
 
 export function searchCandidates(query: string): readonly PublicCandidate[] {
   const normalized = query.trim().toLocaleLowerCase('pt-BR');
