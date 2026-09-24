@@ -163,25 +163,25 @@ export function TransportCalculator() {
           <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <label className="text-sm text-slate-300 light:text-slate-700">
               Destino
-              <select className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" value={route.id} onChange={event => setRouteId(event.target.value)}>
+              <select className="transport-input mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" value={route.id} onChange={event => setRouteId(event.target.value)}>
                 {routes.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}
               </select>
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Trechos por dia
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={8} value={trips} onChange={event => setTrips(Math.min(8, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
+              <input className="transport-input mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={8} value={trips} onChange={event => setTrips(Math.min(8, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Dias por semana
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={7} value={daysPerWeek} onChange={event => setDaysPerWeek(Math.min(7, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
+              <input className="transport-input mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={7} value={daysPerWeek} onChange={event => setDaysPerWeek(Math.min(7, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Pessoas
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={20} value={people} onChange={event => setPeople(Math.min(20, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
+              <input className="transport-input mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={20} value={people} onChange={event => setPeople(Math.min(20, Math.max(1, Number.isFinite(Number(event.target.value)) ? Math.trunc(Number(event.target.value)) : 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Renda de referência
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} step={1} value={salary} onChange={event => setSalary(Math.min(1_000_000, Math.max(1, Number.isFinite(Number(event.target.value)) ? Number(event.target.value) : 1)))} />
+              <input className="transport-input mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} step={1} value={salary} onChange={event => setSalary(Math.min(1_000_000, Math.max(1, Number.isFinite(Number(event.target.value)) ? Number(event.target.value) : 1)))} />
             </label>
           </div>
         </details>
