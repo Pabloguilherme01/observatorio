@@ -967,3 +967,173 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .topic-card::after,.summary-simple-card::after,.today-card::after,.candidate-card::after,
   .summary-hero-card{transition:none}
 }
+
+/* Mobile visual focus — composition-first pass */
+@media (max-width:767px){
+  :root{
+    --mobile-page-gutter:16px;
+    --mobile-nav-height:68px;
+  }
+  body{
+    padding-bottom:calc(var(--mobile-nav-height) + 10px + env(safe-area-inset-bottom,0px));
+  }
+
+  /* Header: brand + two actions, with less visual noise */
+  .site-header{
+    background:rgba(8,14,21,.88)!important;
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(125,211,252,.09);
+  }
+  .site-header-inner{
+    min-height:56px;
+    padding:6px var(--mobile-page-gutter);
+  }
+  .site-brand{max-width:52vw}
+  .site-brand>span:first-child{font-size:13px}
+  .site-header-actions{gap:5px}
+  .site-icon-button,.site-tools-button{
+    width:42px!important;height:42px!important;
+    min-width:42px!important;min-height:42px!important;
+    border-radius:12px;
+  }
+
+  /* Hero: one strong message, less vertical weight */
+  .hero-shell{
+    min-height:0!important;
+    padding:20px var(--mobile-page-gutter) 22px!important;
+    border-bottom:1px solid rgba(255,255,255,.05);
+  }
+  .hero-shell h1{
+    max-width:18ch;
+    margin-top:8px;
+    font-size:clamp(2rem,9.5vw,2.55rem)!important;
+    line-height:.99!important;
+    text-wrap:balance;
+  }
+  .hero-shell p{
+    max-width:34rem;
+    margin-top:10px!important;
+    font-size:14px!important;
+    line-height:1.45!important;
+  }
+  .hero-shell .hero-badges{
+    margin-bottom:8px!important;
+  }
+  .hero-shell .mt-5.flex.flex-wrap{
+    margin-top:14px!important;
+  }
+
+  /* Discovery: visual cards instead of dense list */
+  #descubra{
+    padding:22px var(--mobile-page-gutter) 18px!important;
+  }
+  #descubra .discovery-shell>div:first-child{
+    margin-bottom:13px!important;
+  }
+  #descubra .discovery-shell h2{
+    font-size:1.3rem;
+    letter-spacing:-.03em;
+  }
+  #descubra .discovery-shell>div:first-child p{
+    font-size:12px;
+    margin-top:4px;
+  }
+  #descubra .discovery-shell>.grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+  }
+  #descubra .topic-card{
+    min-height:112px;
+    padding:12px;
+    border-radius:18px;
+    box-shadow:0 8px 24px rgba(0,0,0,.09);
+  }
+  #descubra .topic-card>span:first-child{
+    width:36px;height:36px;
+    border-radius:11px;
+  }
+  #descubra .topic-card strong{
+    margin-top:9px;
+    font-size:13px;
+  }
+  #descubra .topic-card>span:last-child{
+    margin-top:3px;
+    font-size:10px;
+    line-height:1.25;
+  }
+
+  /* Candidates: clearer section header and cards */
+  #politica{
+    margin-top:20px!important;
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  #politica>section>div:first-child{
+    margin-bottom:2px;
+  }
+  #politica h2{
+    font-size:1.3rem!important;
+    line-height:1.1;
+  }
+  #politica input{
+    min-height:48px!important;
+    border-radius:14px;
+  }
+  .candidate-card{
+    border-radius:18px!important;
+    box-shadow:0 9px 28px rgba(0,0,0,.11);
+  }
+  .candidate-card>div:first-child{
+    padding:13px!important;
+    gap:11px;
+  }
+  .candidate-card .flex.flex-wrap.gap-2{
+    gap:7px;
+  }
+  .candidate-card .flex.flex-wrap.gap-2>button,
+  .candidate-card .flex.flex-wrap.gap-2>a{
+    min-height:44px!important;
+    border-radius:11px;
+  }
+
+  /* Bottom nav: stronger active state, less bulk */
+  .mobile-bottom-nav{
+    height:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))!important;
+    min-height:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))!important;
+    padding:4px 8px env(safe-area-inset-bottom,0px)!important;
+    background:rgba(7,12,18,.97)!important;
+    border-top:1px solid rgba(125,211,252,.12)!important;
+  }
+  .mobile-bottom-nav button{
+    height:56px!important;
+    min-height:56px!important;
+    border-radius:14px!important;
+    gap:3px;
+  }
+  .mobile-bottom-nav button.is-active{
+    background:linear-gradient(180deg,rgba(125,211,252,.13),rgba(125,211,252,.05));
+    box-shadow:inset 0 0 0 1px rgba(125,211,252,.11);
+  }
+  .mobile-bottom-nav button span{
+    font-size:9px!important;
+    font-weight:800;
+  }
+}
+@media (max-width:390px){
+  .site-brand{max-width:49vw}
+  .hero-shell h1{font-size:2rem!important}
+  #descubra .discovery-shell>.grid{gap:7px}
+  #descubra .topic-card{min-height:102px;padding:10px}
+  #descubra .topic-card>span:first-child{width:32px;height:32px}
+  #descubra .topic-card strong{font-size:12px}
+  #descubra .topic-card>span:last-child{font-size:9px}
+  #politica h2{font-size:1.2rem!important}
+}
+@media (max-width:340px){
+  .site-icon-button,.site-tools-button{width:40px!important;min-width:40px!important;height:40px!important;min-height:40px!important}
+  .hero-shell{padding-top:17px!important}
+  .hero-shell h1{font-size:1.85rem!important}
+  #descubra .topic-card{min-height:94px}
+  #descubra .topic-card>span:last-child{display:none}
+}
