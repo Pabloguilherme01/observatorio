@@ -149,7 +149,7 @@ export function HeroCountdown() {
               <span className="mt-1 block text-[11px] leading-5 text-slate-600">eleição, cidade, serviços e recursos</span>
               <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-black text-sky-300">Explorar <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
             </a>
-            <a href="#fontes" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
+            <a href={languageMode === 'technical' ? '#fontes' : '#evidencias'} className="group rounded-2xl border border-white/8 bg-white/[0.02] p-3 transition hover:-translate-y-0.5 hover:border-sky-300/20 hover:bg-sky-300/[0.03] light:border-slate-200 light:bg-slate-50/70">
               <span className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Confira</span>
               <strong className="mt-1 block text-sm font-black text-white light:text-slate-900">Fontes e datas</strong>
               <span className="mt-1 block text-[11px] leading-5 text-slate-600">cada dado mantém sua origem visível</span>
