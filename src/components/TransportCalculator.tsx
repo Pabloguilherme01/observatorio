@@ -1,14 +1,15 @@
 import { BusFront, Coins, ExternalLink, Share2, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
-import { calculateTransportCost, formatBRL } from '../lib/transport';
+import { calculateTransportCost, formatBRL, workDaysPerMonthFromWeeks } from '../lib/transport';
 import { Card } from './ui/Card';
 import { SectionHeader } from './ui/SectionHeader';
 
 export function TransportCalculator() {
   const routes = d.transport.routes;
   const [routeId, setRouteId] = useState('brasilia');
-  const [days, setDays] = useState(d.transport.defaultWorkDaysPerMonth);
+  const [daysPerWeek, setDaysPerWeek] = useState(5);
+  const days = workDaysPerMonthFromWeeks(daysPerWeek);
   const [trips, setTrips] = useState(d.transport.defaultTripsPerDay);
   const [people, setPeople] = useState(1);
   const [salary, setSalary] = useState(d.transport.minimumWageBrl);
@@ -55,7 +56,7 @@ export function TransportCalculator() {
         titleId="transporte-title"
         eyebrow="Mobilidade"
         title="Simulador de bolso"
-        description="Escolha quantas pessoas da família fazem esse deslocamento e veja o custo mensal. As premissas detalhadas ficam abertas abaixo."
+        description="Informe quantos dias por semana você faz o trajeto, veja o custo mensal e compare esse gasto com o salário mínimo de 2026. As premissas ficam abertas abaixo."
         action={source?.url ? (
           <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">
             Fonte da tarifa <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -105,7 +106,7 @@ export function TransportCalculator() {
                 Por pessoa / mês
               </div>
               <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatBRL(result.monthlyPerPersonBrl)}</div>
-              <div className="mt-1 text-xs text-slate-500">{trips} trechos/dia · {days} dias</div>
+              <div className="mt-1 text-xs text-slate-500">{trips} trechos/dia · {daysPerWeek} dias/semana · 4,4 semanas/mês</div>
               <button type="button" onClick={share} className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700">
                 <Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar cenário
               </button>
@@ -143,8 +144,8 @@ export function TransportCalculator() {
               <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={8} value={trips} onChange={event => setTrips(Math.max(1, Number(event.target.value) || 1))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
-              Dias/mês
-              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={31} value={days} onChange={event => setDays(Math.max(1, Number(event.target.value) || 1))} />
+              Dias por semana
+              <input className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm text-white outline-none focus:border-sky-300/40 light:bg-white light:text-slate-900" type="number" min={1} max={7} value={daysPerWeek} onChange={event => setDaysPerWeek(Math.min(7, Math.max(1, Number(event.target.value) || 1)))} />
             </label>
             <label className="text-sm text-slate-300 light:text-slate-700">
               Pessoas
@@ -157,9 +158,14 @@ export function TransportCalculator() {
           </div>
         </details>
 
+        <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 text-xs leading-5 text-slate-400">
+          <strong className="text-slate-300 light:text-slate-700">Integração em acompanhamento:</strong> Águas Lindas foi definida como projeto-piloto para integração do transporte no Entorno, com previsão de terminal de integração e unificação da bilhetagem. O observatório registra isso como iniciativa pública em acompanhamento, não como obra concluída.
+          <a className="ml-1 inline-flex items-center gap-1 font-bold text-sky-300 hover:text-sky-200" href="https://goias.gov.br/entorno/aguas-lindas-sera-projeto-piloto-para-integracao-do-transporte-no-entorno/" target="_blank" rel="noopener noreferrer">Fonte oficial <ExternalLink className="h-3 w-3" aria-hidden="true" /></a>
+        </div>
+
         <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500">
-          <strong className="text-slate-300 light:text-slate-700">Como o valor é calculado:</strong> tarifa × trechos/dia × dias/mês × pessoas.
-          O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados. A referência salarial é apenas um denominador de contexto.
+          <strong className="text-slate-300 light:text-slate-700">Como o valor é calculado:</strong> tarifa × trechos/dia × dias/semana × 4,4 semanas/mês × pessoas.
+          O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados. A referência salarial de R$ 1.621,00 é o salário mínimo nacional vigente em 2026 e serve apenas como denominador de contexto.
         </div>
       </Card>
     </section>
