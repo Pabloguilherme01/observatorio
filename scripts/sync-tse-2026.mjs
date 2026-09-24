@@ -33,6 +33,79 @@ const MUNICIPALITY_CODE = '5200258';
 const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
 const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 
+
+const API_BASE_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1';
+const ELECTION_ID = '20322002026';
+const API_CARGOS = [
+  { code: '3', label: 'governador' },
+  { code: '5', label: 'senador' },
+  { code: '6', label: 'deputado-federal' },
+  { code: '7', label: 'deputado-estadual-distrital' },
+];
+
+function fetchApi(url) {
+  const output = execFileSync('curl', [
+    '--fail',
+    '--location',
+    '--http1.1',
+    '--retry', '2',
+    '--retry-delay', '2',
+    '--retry-all-errors',
+    '--connect-timeout', '20',
+    '--max-time', '60',
+    '--user-agent', 'observatorio-eleitoral/44.9 (dados oficiais TSE)',
+    '--header', 'Accept: application/json',
+    '--header', 'Accept-Language: pt-BR,pt;q=0.9',
+    '--referer', 'https://divulgacandcontas.tse.jus.br/divulga/',
+    url,
+  ], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
+  return JSON.parse(output);
+}
+
+function apiCandidateToRecord(candidate, cargoLabel, previousRecord) {
+  const id = String(candidate.id ?? candidate.sq_CANDIDATO ?? '');
+  const name = String(candidate.nomeUrna ?? candidate.nm_URNA ?? candidate.nome ?? '').trim();
+  const fullName = String(candidate.nomeCompleto ?? candidate.nm_CANDIDATO ?? '').trim();
+  const ballot = Number(candidate.numero ?? candidate.nr_CANDIDATO);
+  return {
+    sqCandidate: id,
+    ballotNumber: Number.isFinite(ballot) ? ballot : null,
+    name,
+    fullName: fullName || null,
+    party: candidate.partido?.sigla ?? candidate.sg_PARTIDO ?? null,
+    office: candidate.cargo?.nome ?? candidate.ds_CARGO ?? cargoLabel,
+    status: candidate.descricaoSituacao ?? candidate.situacaoCandidato ?? null,
+    federation: candidate.nomeColigacao ?? null,
+    generationDate: null,
+    generationTime: null,
+    candidateIdKind: 'tse_divulgacand_api',
+    municipality: MUNICIPALITY_NAME,
+    municipalityCodeTse: MUNICIPALITY_CODE,
+    photoUrl: candidate.fotoUrl ?? candidate.urlFoto ?? previousRecord?.photoUrl ?? null,
+    instagramUrl: previousRecord?.instagramUrl ?? null,
+    sourceResource: selectedSourceUrl,
+    apiCargo: cargoLabel,
+  };
+}
+
+function collectApiCandidates() {
+  const candidates = [];
+  const sources = [];
+  for (const cargo of API_CARGOS) {
+    const url = API_BASE_URL + '/candidatura/listar/2026/' + MUNICIPALITY_CODE + '/' + ELECTION_ID + '/' + cargo.code + '/candidatos';
+    try {
+      const payload = fetchApi(url);
+      const rows = Array.isArray(payload?.candidatos) ? payload.candidatos : [];
+      sources.push({ url, cargo: cargo.label, count: rows.length });
+      for (const candidate of rows) candidates.push({ candidate, cargo, url });
+    } catch (error) {
+      console.warn('[TSE] API indisponível para ' + cargo.label + ': ' + (error instanceof Error ? error.message : String(error)));
+    }
+  }
+  if (!sources.some(source => source.count > 0)) return null;
+  return { candidates, sources };
+}
+
 const WATCHLIST_ALIASES = {
   'Keké': ['KEKE', 'KEKE DA VULKANIC'],
   'Anderson Teodoro': ['ANDERSON TEODORO'],
@@ -291,6 +364,73 @@ async function main() {
     let municipalityRows = 0;
     const previous = loadPrevious();
     const previousBySq = new Map((previous?.matched ?? []).map(candidate => [candidate.sqCandidate, candidate]));
+
+    const apiResult = collectApiCandidates();
+    if (apiResult) {
+      selectedSourceUrl = apiResult.sources.map(source => source.url).join('|');
+      const matched = [];
+      const seen = new Set();
+      for (const item of apiResult.candidates) {
+        if (!item.candidate) continue;
+        const name = String(item.candidate.nomeUrna ?? item.candidate.nm_URNA ?? '').trim();
+        if (!name) continue;
+        const watchlistName = WATCHLIST.find(expected => matchesAlias(name, WATCHLIST_ALIASES[expected] ?? [expected]));
+        if (!watchlistName) continue;
+        const record = apiCandidateToRecord(item.candidate, item.cargo.label, previousBySq.get(String(item.candidate.id ?? item.candidate.sq_CANDIDATO ?? '')));
+        if (!record.sqCandidate) throw new Error('Registro municipal da API sem identificador de candidato.');
+        if (seen.has(record.sqCandidate)) continue;
+        record.watchlistName = watchlistName;
+        matched.push(record);
+        seen.add(record.sqCandidate);
+      }
+      municipalityRows = apiResult.candidates.length;
+      sourceRows = apiResult.candidates.length;
+      if (matched.length <= 0) throw new Error('A API oficial DivulgaCandContas respondeu para o município, mas nenhuma candidatura da watchlist foi encontrada.');
+      const diff = diffRecords(previous?.matched ?? [], matched);
+      const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
+      if (state === 'unchanged') {
+        console.log(JSON.stringify({ valid:true, state, sourceRows, municipalityRows, matched:matched.length, retrievalMethod:'official_tse_divulgacandcontas_api', missingWatchlist:WATCHLIST.filter(name=>!matched.some(candidate=>candidate.watchlistName===name)), changed:false }, null, 2));
+        return;
+      }
+      const now = new Date();
+      const snapshotId = 'tse-candidatos-2026-local-' + now.toISOString().replace(/[:.]/g, '-');
+      const payload = {
+        schemaVersion: 3,
+        meta: {
+          snapshotId,
+          source: 'TSE — Candidatos 2026',
+          sourceUrl: SOURCE_URL,
+          scope: 'GO',
+          localFilter: MUNICIPALITY_NAME,
+          municipalityCodeTse: MUNICIPALITY_CODE,
+          downloadedAt: now.toISOString(),
+          sourceFileSha256: createHash('sha256').update(JSON.stringify(apiResult.candidates)).digest('hex'),
+          sourceHashKind: 'official_api_payload',
+          sourceRows,
+          municipalityRows,
+          originalMatchedRows: matched.length,
+          matchedRows: matched.length,
+          workflowRunId: process.env.GITHUB_RUN_ID || undefined,
+          gitCommit: process.env.GITHUB_SHA || undefined,
+          state,
+          retrievalMethod: 'official_tse_divulgacandcontas_api',
+          resourceUrl: selectedSourceUrl,
+          selection: 'watchlist_only',
+          filterNote: 'Recorte municipal validado diretamente pela API oficial DivulgaCandContas do TSE. O snapshot publica apenas a watchlist configurada; ele não representa a lista completa de candidaturas do município.',
+          missingWatchlist: WATCHLIST.filter(name=>!matched.some(candidate=>candidate.watchlistName===name)),
+          apiCargos: apiResult.sources,
+        },
+        coverage: 'municipality_required',
+        watchlist: WATCHLIST,
+        matched,
+        diff: { state, added:diff.filter(item=>item.type==='added').length, removed:diff.filter(item=>item.type==='removed').length, changed:diff.filter(item=>item.type==='changed').length, records:diff },
+      };
+      writeFileSync(OUTPUT, JSON.stringify(payload,null,2)+'\n','utf8');
+      writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff,null,2)+'\n','utf8');
+      writeFileSync(join(HISTORY_DIR,snapshotId+'.json'),JSON.stringify(payload,null,2)+'\n','utf8');
+      console.log(JSON.stringify({valid:true,state,snapshotId,sourceRows,municipalityRows,matched:matched.length,retrievalMethod:'official_tse_divulgacandcontas_api'},null,2));
+      return;
+    }
     const matched = [];
     const seen = new Set();
 
