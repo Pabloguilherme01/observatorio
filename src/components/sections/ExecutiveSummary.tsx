@@ -172,16 +172,17 @@ export function ExecutiveSummary() {
               </div>
               <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
                 {quickStats.map(stat => (
-                  <div
-                    key={stat.label}
-                    className="summary-public-stat"
-                    onClick={() => {
-                      setActiveStat(stat.label);
-                      goToSection(stat.target);
-                      window.setTimeout(() => setActiveStat(''), 900);
-                    }}
-                  >
-                    <button type="button" className="summary-public-stat-main" aria-label={`Abrir contexto de ${stat.label}`} onClick={() => goToSection(stat.target)}>
+                  <div key={stat.label} className={`summary-public-stat ${activeStat === stat.label ? 'is-active' : ''}`}>
+                    <button
+                      type="button"
+                      className="summary-public-stat-main"
+                      aria-label={`Abrir contexto de ${stat.label}`}
+                      onClick={() => {
+                        setActiveStat(stat.label);
+                        goToSection(stat.target);
+                        window.setTimeout(() => setActiveStat(''), 900);
+                      }}
+                    >
                       <span>{stat.label}</span>
                       <strong className="mobile-safe-wrap">{stat.value}</strong>
                       <small>{stat.caption}</small>
@@ -194,6 +195,8 @@ export function ExecutiveSummary() {
                       <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
                     </span>
                   </div>
+                ))}
+              </div>
                 ))}
               </div>
             </div>
