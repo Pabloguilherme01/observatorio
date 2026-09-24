@@ -96,7 +96,7 @@ function CandidateCard({ candidate }: { candidate: PublicCandidate }) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <h3 className="min-w-0 truncate text-base font-black text-slate-900 dark:text-white">{candidate.name}</h3>
-            {candidate.status ? <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-extrabold uppercase tracking-wide text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">{candidate.status}</span> : null}
+            {candidate.status ? <span title={"Situação registrada no snapshot de " + publicCandidateMethodology.checkedAt} className="shrink-0 rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-extrabold uppercase tracking-wide text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300">Registro: {candidate.status}</span> : null}
           </div>
           <p className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{candidate.office ?? "Cargo não informado"}</p>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
