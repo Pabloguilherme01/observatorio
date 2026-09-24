@@ -51,16 +51,16 @@ export function PoliticalResearch() {
       <SectionHeader
         titleId="research-title"
         eyebrow="Candidaturas locais"
-        title={mode !== 'technical' ? 'Candidatos do município' : 'Candidaturas com recorte municipal'}
+        title={mode !== 'technical' ? 'Candidaturas acompanhadas de Águas Lindas' : 'Candidaturas com recorte de Águas Lindas'}
         description={mode !== 'technical'
-          ? 'Só aparecem nomes validados para Águas Lindas na captura oficial.'
-          : 'A interface publica somente registros com evidência municipal no snapshot oficial. Instagram e foto só entram quando declarados na base do TSE.'}
+          ? 'Nomes acompanhados pelo Observatório a partir do recorte local. O perfil mostra claramente o que está confirmado no registro oficial.'
+          : 'O painel separa o recorte editorial local dos campos oficiais da candidatura. Município, situação, foto e redes sociais só são tratados como confirmados quando constam na fonte correspondente.'}
       />
 
       <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
         <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · município</div></div>
         <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">{hasLocalCandidates ? 'registros municipais no snapshot' : 'nenhum registro municipal validado nesta captura'}</div></div>
-        <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Critério</div><div className="mt-2 text-sm font-black text-amber-100">Recorte municipal</div><div className="mt-1 text-xs text-slate-500">sem misturar registros estaduais</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Leitura do recorte</div><div className="mt-2 text-sm font-black text-amber-100">Acompanhamento local</div><div className="mt-1 text-xs text-slate-500">não substitui a confirmação individual no TSE</div></div>
       </div>
 
       {!hasLocalCandidates ? (
@@ -98,7 +98,7 @@ function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
           <div className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-sky-300/15 bg-sky-300/[0.05] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-sky-200">{candidate.office}</span><Badge tone="info">{candidate.status}</Badge></div>
           <h3 className="mt-3 text-xl font-black text-white">{candidate.name}</h3>
           <p className="mt-1 text-xs text-slate-500">{candidate.party} · nº {candidate.ballotNumber}</p>
-          {mode !== 'technical' ? <span className="mt-2 inline-flex rounded-full border border-sky-300/10 bg-sky-300/[0.04] px-2 py-1 text-[10px] font-bold text-sky-200">Dados básicos</span> : <span className="technical-detail mt-2 inline-flex rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold text-slate-400">Registro + fonte + snapshot</span>}
+          {mode !== 'technical' ? <span className="mt-2 inline-flex rounded-full border border-sky-300/10 bg-sky-300/[0.04] px-2 py-1 text-[10px] font-bold text-sky-200">Registro público</span> : <span className="technical-detail mt-2 inline-flex rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold text-slate-400">Registro + fonte + snapshot</span>}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-px border-y border-white/8 bg-white/8">
