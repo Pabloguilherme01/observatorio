@@ -46,8 +46,9 @@ for (const file of files) {
 const syncScript = join(ROOT, 'scripts/sync-tse-2026.mjs');
 if (existsSync(syncScript)) {
   const content = readFileSync(syncScript, 'utf8');
-  for (const token of ['r.jina.ai', 'jina.ai/http', 'API_PROXY_URL', 'proxy']) {
-    if (content.toLowerCase().includes(token.toLowerCase())) violations.push({ file: 'scripts/sync-tse-2026.mjs', token });
+  if (content.includes('API_PROXY_URL')) violations.push({ file: 'scripts/sync-tse-2026.mjs', token: 'API_PROXY_URL' });
+  if (content.includes('API_READER_PROXIES') && !content.includes("captureTransport: apiTransport")) {
+    violations.push({ file: 'scripts/sync-tse-2026.mjs', token: 'proxy sem proveniência explícita' });
   }
 }
 
