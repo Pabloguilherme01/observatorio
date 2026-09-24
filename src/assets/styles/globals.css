@@ -1652,3 +1652,111 @@ ra{
 .light .candidate-summary-body p,
 .light .candidate-summary-details span{color:#64748b}
 .light .candidate-summary-details{background:#f8fafc;border-color:#e2e8f0}
+
+
+
+/* Candidatos · mobile first — leitura rápida sem esmagar conteúdo */
+@media(max-width:767px){
+  #candidaturas{
+    padding-top:28px!important;
+    padding-bottom:34px!important;
+  }
+  #candidaturas .section-header,
+  #candidaturas [aria-labelledby="research-title"]{
+    min-width:0;
+  }
+  #candidaturas .candidate-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    overflow:visible;
+    padding:0;
+  }
+  #candidaturas .candidate-summary-card{
+    min-width:0;
+    width:100%;
+    border-radius:15px;
+    box-shadow:0 7px 18px rgba(2,6,23,.12);
+    transform:none;
+  }
+  #candidaturas .candidate-summary-card:hover{
+    transform:none;
+  }
+  #candidaturas .candidate-summary-media{
+    aspect-ratio:1/0.82;
+    margin:7px 7px 0;
+    border-radius:11px;
+  }
+  #candidaturas .candidate-summary-media span{
+    font-size:22px;
+  }
+  #candidaturas .candidate-summary-body{
+    padding:8px;
+  }
+  #candidaturas .candidate-summary-topline{
+    gap:4px;
+  }
+  #candidaturas .candidate-summary-party,
+  #candidaturas .candidate-summary-status{
+    max-width:50%;
+    padding:3px 5px;
+    font-size:7px;
+  }
+  #candidaturas .candidate-summary-body h3{
+    min-height:29px;
+    margin-top:7px;
+    font-size:11px;
+    line-height:1.22;
+  }
+  #candidaturas .candidate-summary-number{
+    margin-top:5px;
+    font-size:17px;
+  }
+  #candidaturas .candidate-summary-body p{
+    margin:3px 0 7px;
+    font-size:7px;
+  }
+  #candidaturas .candidate-summary-detail-button{
+    min-height:30px;
+    padding:6px;
+    font-size:8px;
+  }
+  #candidaturas .candidate-summary-details{
+    padding:8px;
+  }
+  #candidaturas .candidate-summary-details>div:not(.candidate-summary-links){
+    gap:5px;
+    padding:3px 0;
+  }
+  #candidaturas .candidate-summary-details span,
+  #candidaturas .candidate-summary-details strong{
+    font-size:7px;
+  }
+  #candidaturas .candidate-summary-links a,
+  #candidaturas .candidate-summary-links button{
+    min-height:28px;
+    font-size:7px;
+  }
+}
+@media(max-width:380px){
+  #candidaturas .candidate-summary-grid{
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+  }
+  #candidaturas .candidate-summary-body{
+    padding:7px;
+  }
+  #candidaturas .candidate-summary-media{
+    margin:6px 6px 0;
+  }
+  #candidaturas .candidate-summary-body h3{
+    font-size:10px;
+    min-height:27px;
+  }
+  #candidaturas .candidate-summary-number{
+    font-size:16px;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #candidaturas .candidate-summary-card{transition:none}
+}
