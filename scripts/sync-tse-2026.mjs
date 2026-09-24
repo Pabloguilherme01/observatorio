@@ -184,6 +184,11 @@ function download(url, destination) {
       '--max-time', '120',
       '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/153 Safari/537.36',
       '--header', 'Accept: application/zip, application/octet-stream;q=0.9, */*;q=0.8',
+      '--header', 'Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+      '--referer', 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
+      '--header', 'Sec-Fetch-Dest: document',
+      '--header', 'Sec-Fetch-Mode: navigate',
+      '--header', 'Sec-Fetch-Site: same-site',
       '--output', destination,
       url,
     ], { stdio: 'inherit' });
