@@ -22,8 +22,7 @@
     "audit:usability": "node scripts/audit-usability.mjs",
     "audit:sources": "node scripts/audit-sources.mjs",
     "audit:runtime": "node scripts/audit-runtime.mjs",
-    "audit:engagement": "node scripts/audit-engagement.mjs",
-    "audit:functionality": "node scripts/audit-runtime.mjs"
+    "audit:engagement": "node scripts/audit-engagement.mjs"
   },
   "dependencies": {
     "lucide-react": "1.47.0",
