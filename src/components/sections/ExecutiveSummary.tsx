@@ -72,6 +72,12 @@ export function ExecutiveSummary() {
     window.setTimeout(() => setFactToast(''), 1200);
   };
 
+  const focusNextDiscovery = () => {
+    const index = publicFacts.findIndex(fact => fact.id === openFact);
+    const next = publicFacts[(index + 1 + publicFacts.length) % publicFacts.length];
+    revealFact(next.id, next.label);
+  };
+
   const share = async (cardLabel?: string, cardValue?: string) => {
     if (shareBusy || (cardLabel && shareBusyCard)) return;
     if (cardLabel) setShareBusyCard(cardLabel);
@@ -171,6 +177,10 @@ export function ExecutiveSummary() {
                   <span>Toque em um cartão para abrir o contexto completo.</span>
                 </div>
                 <span className="summary-public-discovery-count">{publicFacts.length} cartões</span>
+              </div>
+              <div className="summary-public-discovery-tools" aria-label="Controles das descobertas rápidas">
+                <button type="button" className="summary-public-mini-action" onClick={() => setOpenFact(null)} disabled={!openFact}>Fechar cartão</button>
+                <button type="button" className="summary-public-mini-action" onClick={focusNextDiscovery}>Próxima descoberta <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
               </div>
               <div className="summary-public-facts" aria-label="Descobertas rápidas">
                 {publicFacts.map(fact => (
