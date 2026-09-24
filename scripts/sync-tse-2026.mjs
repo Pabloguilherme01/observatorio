@@ -29,7 +29,7 @@ const WATCHLIST = [
   'André do Premium',
 ];
 
-const MUNICIPALITY_CODE = '92737';
+const MUNICIPALITY_CODE = '5200258';
 const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
 const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
 
