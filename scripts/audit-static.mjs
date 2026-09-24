@@ -84,6 +84,11 @@ must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido 
 must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
 must(appSource.includes('id="analise"') && appSource.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
+const dashboardIdCount = (appSource.match(/id="dashboard"/g) ?? []).length + (read('src/components/AudienceHub.tsx').match(/id="dashboard"/g) ?? []).length;
+const analiseIdCount = (appSource.match(/id="analise"/g) ?? []).length;
+must(dashboardIdCount === 1, '#dashboard possui uma única âncora pública');
+must(analiseIdCount === 1, '#analise possui uma única âncora legada');
+must(appSource.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && (appSource.includes('DeferredTrustGroup') || appSource.includes('<ProjectTrustPanel />')), 'descoberta, confiança e modo de linguagem montados');
 
 const allRuntimeText = [
