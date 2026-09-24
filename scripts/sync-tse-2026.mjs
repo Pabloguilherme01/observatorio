@@ -67,14 +67,20 @@ function curlJson(url) {
 }
 
 function parseJsonOutput(output) {
-  try {
-    return JSON.parse(output);
-  } catch {
-    const start = output.indexOf('{');
-    const end = output.lastIndexOf('}');
-    if (start >= 0 && end > start) return JSON.parse(output.slice(start, end + 1));
-    throw new Error('A resposta intermediada não contém JSON válido.');
+  const parsed = JSON.parse(output);
+  // r.jina.ai em modo JSON devolve {url,title,content}; o payload original
+  // do TSE fica dentro de content e precisa ser desserializado novamente.
+  if (parsed && typeof parsed === 'object' && typeof parsed.content === 'string') {
+    const content = parsed.content.trim();
+    try {
+      return JSON.parse(content);
+    } catch {
+      const start = content.indexOf('{');
+      const end = content.lastIndexOf('}');
+      if (start >= 0 && end > start) return JSON.parse(content.slice(start, end + 1));
+    }
   }
+  return parsed;
 }
 
 function fetchApi(url) {
