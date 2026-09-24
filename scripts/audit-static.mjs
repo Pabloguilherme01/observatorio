@@ -50,7 +50,8 @@ must(dashboardMetrics.includes('Ver dados em tabela') && dashboardMetrics.includ
 must(index.includes('id="boot-fallback"') && index.includes('obs-skeleton') && index.includes('Recarregar'), 'fallback inicial combina skeleton e recuperação explícita');
 
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
-must(appSource.includes('skip-link') && appSource.includes('Pular para o conteúdo principal'), 'navegação por teclado possui atalho de salto para o conteúdo');
+const headerSource = read('src/components/layout/Header.tsx');
+must((appSource.includes('skip-link') && appSource.includes('Pular para o conteúdo principal')) || (headerSource.includes('skip-link') && headerSource.includes('Pular para o conteúdo principal')), 'navegação por teclado possui atalho de salto para o conteúdo');
 must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
 must(vite.includes("includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html']") && vite.includes("navigateFallback: '/observatorio/offline.html'"), 'VitePWA registra offline.html como fallback de navegação');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
