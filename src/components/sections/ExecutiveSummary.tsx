@@ -203,30 +203,23 @@ export function ExecutiveSummary() {
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${showMoreSummary ? 'rotate-180' : ''}`} aria-hidden="true" />
               </button>
               {showMoreSummary && (
-              <div className="summary-public-grid" aria-label="Indicadores adicionais do observatório">
-                {quickStats.slice(0, 4).map(stat => (
-                  <div key={stat.label} className={`summary-public-stat ${activeStat === stat.label ? 'is-active' : ''}`}>
+                <div className="summary-public-grid" aria-label="Indicadores adicionais do observatório">
+                  {quickStats.slice(0, 4).map(stat => (
                     <button
+                      key={stat.label}
                       type="button"
-                      className="summary-public-stat-main"
-                      aria-label={`Abrir contexto de ${stat.label}`}
-                      onClick={() => {
-                        setActiveStat(stat.label);
-                        goToSection(stat.target);
-                        window.setTimeout(() => setActiveStat(''), 900);
-                      }}
+                      className="summary-public-stat summary-public-stat-main"
+                      aria-label={`Ver contexto de ${stat.label}`}
+                      onClick={() => goToSection(stat.target)}
                     >
                       <span>{stat.label}</span>
                       <strong className="mobile-safe-wrap">{stat.value}</strong>
                       <small>{stat.caption}</small>
                       <em>{stat.detail}</em>
+                      <ArrowRight className="summary-public-arrow h-4 w-4" aria-hidden="true" />
                     </button>
-                    <span className="summary-public-stat-footer">
-                      <ArrowRight className={`summary-public-arrow h-4 w-4 ${activeStat === stat.label ? 'is-active' : ''}`} aria-hidden="true" />
-                    </span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
               )}
             </div>
           )}
