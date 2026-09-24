@@ -29,6 +29,8 @@ jobs:
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
 
+      - name: Functionality hardening audit
+        run: npm run audit:functionality
       - name: Static consistency audit
         run: npm run audit:static
 
