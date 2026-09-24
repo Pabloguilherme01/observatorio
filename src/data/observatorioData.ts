@@ -9,9 +9,7 @@ const generatedCandidateSnapshotDate: ISODate =
     ? (rawGeneratedCandidateSnapshotDate as ISODate)
     : '2026-09-23';
 
-const generatedMatched = generatedCandidates.matched as CandidateSnapshot[];
-
-const candidateSnapshots: ObservatoryData['candidates'] = generatedMatched.map(candidate => ({
+const generatedMatched: CandidateSnapshot[] = generatedCandidates.matched.map(candidate => ({
   name: candidate.name,
   party: candidate.party ?? undefined,
   ballotNumber: candidate.ballotNumber ?? undefined,
@@ -19,6 +17,8 @@ const candidateSnapshots: ObservatoryData['candidates'] = generatedMatched.map(c
   sourceId: 'tse-candidatos-2026',
   snapshotDate: generatedCandidateSnapshotDate,
 }));
+
+const candidateSnapshots: ObservatoryData['candidates'] = generatedMatched;
 
 /**
  * Dataset V43, normalizado para o domínio React.
