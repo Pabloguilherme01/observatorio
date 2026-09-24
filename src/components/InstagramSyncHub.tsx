@@ -12,7 +12,7 @@ const items: readonly SocialItem[] = [
   { id: 'orcamento', label: 'LOA 2026', value: 'R$ ' + (d.budget.totalBrl / 1_000_000).toFixed(1).replace('.', ',') + ' mi', note: 'orçamento total informado', anchor: 'orcamento' },
   { id: 'eleitorado', label: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR'), note: 'snapshot local', anchor: 'eleitorado' },
   { id: 'transporte', label: 'Transporte', value: d.transport.routes[0]?.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'R$ 0,00', note: 'trecho de referência para Brasília', anchor: 'transporte' },
-  { id: 'saneamento', label: 'Saneamento', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'acesso ao serviço público de esgoto', anchor: 'saneamento' },
+  { id: 'eleitoral', label: 'Candidatos acompanhados', value: d.candidates.length.toLocaleString('pt-BR'), note: 'nomes do recorte eleitoral local', anchor: 'eleitoral360' },
   { id: 'populacao', label: 'População 2026', value: (d.populationSeries.find(point => point.year === 2026)?.value ?? 0).toLocaleString('pt-BR'), note: 'estimativa IBGE', anchor: 'dashboard' },
 ];
 
