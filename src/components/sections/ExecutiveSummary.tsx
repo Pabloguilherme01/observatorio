@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap } from 'lucide-react';
+import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -30,12 +30,19 @@ export function ExecutiveSummary() {
   const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
   const [shareStatus, setShareStatus] = useState('');
   const [activeStat, setActiveStat] = useState('');
+  const [openFact, setOpenFact] = useState<string | null>(null);
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
     window.history.replaceState(null, '', '#' + id);
     window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
   };
+
+  const publicFacts = [
+    { id: 'eleitorado', label: 'Quem participa', value: electorate.electorate.toLocaleString('pt-BR'), note: 'eleitores no snapshot utilizado pelo observatório.', target: 'eleitorado' },
+    { id: 'populacao', label: 'Tamanho da cidade', value: population.toLocaleString('pt-BR'), note: 'habitantes na estimativa de 2026.', target: 'dashboard' },
+    { id: 'orcamento', label: 'Orçamento municipal', value: brl(budget), note: 'valor total da LOA 2026 registrada no dataset.', target: 'orcamento' },
+  ] as const;
 
   const quickStats = [
     { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : 'referência TSE', target: 'eleitorado' },
@@ -111,6 +118,23 @@ export function ExecutiveSummary() {
                   <button type="button" onClick={() => share()} className="summary-public-action"><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhe o resumo</button>
                   <button type="button" onClick={() => goToSection('descubra')} className="summary-public-action"><Zap className="h-3.5 w-3.5" aria-hidden="true" /> Explorar por assunto</button>
                 </div>
+              </div>
+              <div className="summary-public-facts" aria-label="Descobertas rápidas">
+                {publicFacts.map(fact => (
+                  <div key={fact.id} className={`summary-public-fact ${openFact === fact.id ? 'is-open' : ''}`}>
+                    <button type="button" aria-expanded={openFact === fact.id} onClick={() => setOpenFact(current => current === fact.id ? null : fact.id)}>
+                      <span>{fact.label}</span>
+                      <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                    {openFact === fact.id && (
+                      <div className="summary-public-fact-body">
+                        <strong>{fact.value}</strong>
+                        <p>{fact.note}</p>
+                        <button type="button" onClick={() => goToSection(fact.target)}>Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
               <div className="summary-public-grid" aria-label="Indicadores rápidos do observatório">
                 {quickStats.map(stat => (
@@ -216,7 +240,7 @@ export function ExecutiveSummary() {
 
         {languageMode === 'summary' && (
           <div className="summary-public-hint" role="status" aria-live="polite">
-            <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Dica: toque no número para navegar ou no ícone de compartilhar para enviar aquele dado.</span>
+            <span><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Comece por um cartão ou abra uma descoberta rápida.</span>
             <button type="button" onClick={() => goToSection('fontes')}>Ver fontes</button>
           </div>
         )}
