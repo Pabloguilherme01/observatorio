@@ -161,6 +161,8 @@
     "added": 7,
     "removed": 0,
     "changed": 0,
+    "unresolved": 3,
+    "comparison": "local_watchlist_matched_from_official_state_file",
     "records": []
   }
 }
