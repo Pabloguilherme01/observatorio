@@ -1,7 +1,7 @@
 import { BarChart3, BusFront, Droplets, Landmark, Users, WalletCards } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
-import { AudienceTodaySummary } from './AudienceTodaySummary';
 import { CandidatesPanel } from './CandidatesPanel';
+import { SummaryTodayCard } from './SummaryTodayCard';
 
 type Topic = {
   id: string;
@@ -65,7 +65,7 @@ export function AudienceHub() {
         </div>
 
         <div className="mt-6" id="dashboard">
-          <AudienceTodaySummary
+          <SummaryTodayCard
             budget={d.budget.totalBrl.toLocaleString('pt-BR')}
             electorate={d.electoral.electorate.toLocaleString('pt-BR')}
             transport={String(d.transport.routes[0]?.fareBrl ?? 0)}
