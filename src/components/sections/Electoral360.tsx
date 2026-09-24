@@ -128,13 +128,13 @@ export function Electoral360() {
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{captured}</div>
-          <div className="text-xs text-slate-500">módulos com captura</div>
+          <div className="mt-3 text-sm font-black text-white">Dados públicos disponíveis</div>
+          <div className="text-xs text-slate-500">recorte eleitoral acompanhado</div>
         </Card>
         <Card>
           <History className="h-5 w-5 text-violet-300" aria-hidden="true" />
-          <div className="mt-3 text-sm font-black text-white">{hasLocalCandidateSnapshot ? 'Dados públicos disponíveis' : 'Atualização pendente'}</div>
-          <div className="mt-1 text-xs text-slate-500">recorte eleitoral acompanhado</div>
+          <div className="mt-3 text-sm font-black text-white">{hasLocalCandidateSnapshot ? 'Snapshot disponível' : 'Atualização pendente'}</div>
+          <div className="mt-1 text-xs text-slate-500">dados de identificação pública</div>
         </Card>
         <Card>
           <UserRound className="h-5 w-5 text-amber-300" aria-hidden="true" />
