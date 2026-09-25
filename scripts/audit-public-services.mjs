@@ -68,7 +68,7 @@ if (insecureLinks.length) {
   pass('links públicos externos preservam noopener em target=_blank');
 }
 const allPublicActionLinks = urls.length;
-if (allPublicActionLinks < 60) {
+if (allPublicActionLinks < 61) {
   fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
 } else {
   pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
@@ -82,8 +82,8 @@ for (const expectedCategory of ['Prefeitura', 'Saúde', 'Transparência e contro
 if (categories.length !== 28) fail.push(`ações categorizadas esperado=28 atual=${categories.length}`);
 else pass('28 serviços complementares estão categorizados');
 const additionalUrls = [...additionalBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]);
-if (additionalUrls.length !== 24) fail.push(`catálogo adicional esperado=24 atual=${additionalUrls.length}`);
-else pass('24 serviços oficiais adicionais estão catalogados');
+if (additionalUrls.length !== 25) fail.push(`catálogo adicional esperado=25 atual=${additionalUrls.length}`);
+else pass('25 serviços oficiais adicionais estão catalogados');
 
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
