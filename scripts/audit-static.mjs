@@ -44,11 +44,14 @@ must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não exist
 must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
 must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
 must(vite.includes('start_url: BASE_PATH') && vite.includes('scope: BASE_PATH'), 'PWA mantém start_url e scope no subcaminho publicado');
+must(viteSource.includes('freshness') && viteSource.includes('maxAgeHours = 24') && viteSource.includes('tseCandidates'), 'API health expõe contrato de frescor TSE');
 must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 const searchModal = read('src/components/layout/SearchModal.tsx');
+const publicServiceSearch = read('src/data/publicServiceSearch.ts');
+const viteSource = read('vite.config.ts');
 const dashboardMetrics = read('src/components/sections/DashboardMetrics.tsx');
 const historicalTrendChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const budgetSection = read('src/components/sections/BudgetSection.tsx');
