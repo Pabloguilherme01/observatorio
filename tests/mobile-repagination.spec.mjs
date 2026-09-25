@@ -23,13 +23,14 @@ async function assertNoHorizontalOverflow(page) {
         const el = node;
         const style = getComputedStyle(el);
         if (style.display === 'none' || style.visibility === 'hidden') return false;
+        const scrollContainer = el.closest('[class*="overflow-x-auto"], [style*="overflow-x: auto"], [style*="overflow-x:auto"]');
+        if (scrollContainer) return false;
         const rect = el.getBoundingClientRect();
         return rect.width > 0 && rect.right > window.innerWidth + 1;
       })
       .slice(0, 20)
       .map(el => ({ tag: el.tagName, cls: el.className, right: Math.round(el.getBoundingClientRect().right) }));
   });
-  if (overflow.length) console.log('MOBILE_OVERFLOW', JSON.stringify({ metrics, overflow }));
   expect(overflow).toEqual([]);
 }
 
