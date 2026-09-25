@@ -560,3 +560,171 @@ html {
     transition: none;
   }
 }
+
+
+/* Final mobile hardening · 2026-09-25
+ * Last-in-file rules intentionally settle conflicts between the legacy
+ * premium/mobile layers without changing application behavior or data.
+ */
+@media (max-width: 767px) {
+  html {
+    overflow-x: clip;
+    scroll-padding-top: 76px;
+  }
+
+  body {
+    overflow-x: clip !important;
+    padding-bottom: calc(
+      var(--mobile-nav-height, 64px) +
+      env(safe-area-inset-bottom, 0px)
+    ) !important;
+  }
+
+  #main-content {
+    width: 100%;
+    min-width: 0;
+    padding-bottom: 24px !important;
+  }
+
+  .language-toggle-v3 {
+    width: 100%;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .language-toggle-v3 .language-toggle-options > button {
+    min-width: 0 !important;
+    min-height: 54px !important;
+    white-space: normal;
+  }
+
+  .language-toggle-v3 .language-toggle-options > button strong,
+  .language-toggle-v3 .language-toggle-options > button small {
+    max-width: 100%;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .mobile-bottom-nav {
+    min-height: calc(64px + env(safe-area-inset-bottom, 0px)) !important;
+    padding:
+      5px
+      max(6px, env(safe-area-inset-left, 0px))
+      max(5px, env(safe-area-inset-bottom, 0px))
+      max(6px, env(safe-area-inset-right, 0px)) !important;
+  }
+
+  .mobile-bottom-nav button {
+    min-width: 0 !important;
+    min-height: 48px !important;
+    font-size: 9px !important;
+    line-height: 1.15;
+  }
+
+  .mobile-bottom-nav button span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hero-shell {
+    overflow: hidden;
+  }
+
+  .hero-shell::after {
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  :where(
+    .summary-public-fact,
+    .summary-simple-card,
+    .candidate-card,
+    .quiz-card
+  ) {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+
+  .today-rail,
+  .topic-rail,
+  .mobile-rail,
+  .quiz-phase-grid {
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .today-rail::-webkit-scrollbar,
+  .topic-rail::-webkit-scrollbar,
+  .mobile-rail::-webkit-scrollbar,
+  .quiz-phase-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  :where(button, a, [role="button"], summary) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :where(button, a, [role="button"], summary):focus-visible {
+    outline: 2px solid #7dd3fc !important;
+    outline-offset: 2px;
+  }
+}
+
+@media (max-width: 390px) {
+  :root {
+    --mobile-page-gutter: 12px;
+  }
+
+  .language-toggle-v3 .language-toggle-options {
+    gap: 5px !important;
+  }
+
+  .language-toggle-v3 .language-toggle-options > button {
+    min-height: 54px !important;
+    padding-inline: 4px !important;
+  }
+
+  .mobile-bottom-nav button {
+    min-height: 46px !important;
+    font-size: 9px !important;
+  }
+
+  .mobile-bottom-nav button svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  .hero-shell h1 {
+    text-wrap: balance;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+}
+
+@media (max-width: 350px) {
+  .site-brand {
+    max-width: 44vw !important;
+  }
+
+  .site-brand > span:last-child {
+    font-size: 13px !important;
+  }
+
+  .mobile-bottom-nav button {
+    font-size: 8.5px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .language-toggle-v3 .language-toggle-options > button,
+  .mobile-bottom-nav button,
+  .hero-shell a,
+  .quiz-option,
+  .quiz-action,
+  .quiz-next {
+    transition: none !important;
+  }
+}
