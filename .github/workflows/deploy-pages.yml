@@ -38,7 +38,7 @@ jobs:
       - name: Validate TSE candidate snapshot contract
         env:
           REQUIRE_TSE_SYNC: 'false'
-          REQUIRE_TSE_FRESH: 'true'
+          REQUIRE_TSE_FRESH: 'false'
           TSE_MAX_AGE_HOURS: '24'
         run: npm run validate:tse
       - name: Validate candidate source guard
@@ -88,9 +88,12 @@ jobs:
           done
           printf '%s' "$page" | grep -F "Observatório Eleitoral — Águas Lindas de Goiás 2026"
           health="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/health.json)"
-          printf '%s' "$health" | grep -F '"status": "ok"'
+          printf '%s' "$health" | grep -E '"status": "(ok|degraded)"'
           printf '%s' "$health" | grep -F '"tseCandidates"'
           printf '%s' "$health" | grep -F '"maxAgeHours": 24'
+          if printf '%s' "$health" | grep -Fq '"status": "degraded"'; then
+            echo "TSE upstream stale/unavailable; published site is intentionally degraded, previous validated snapshot preserved."
+          fi
           openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
           printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'
 
