@@ -27,6 +27,7 @@ export function MobileBottomNav() {
   const activeSectionRef = useRef('dashboard');
   const moreOpenRef = useRef(false);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const update = (next: string) => {
@@ -44,6 +45,22 @@ export function MobileBottomNav() {
       setMoreOpen(false);
       window.requestAnimationFrame(() => moreButtonRef.current?.focus());
     };
+    const onMenuKeyDown = (event: KeyboardEvent) => {
+      if (!moreOpenRef.current || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+      const menu = moreMenuRef.current;
+      if (!menu) return;
+      const items = Array.from(menu.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'));
+      if (!items.length) return;
+      const current = items.indexOf(document.activeElement as HTMLButtonElement);
+      const next = event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? items.length - 1
+          : (current + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      event.preventDefault();
+      items[next]?.focus();
+    };
+
     const onOutside = (event: MouseEvent) => {
       if (!(event.target instanceof Node)) return;
       const menu = document.getElementById('mobile-bottom-more');
@@ -80,6 +97,7 @@ export function MobileBottomNav() {
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('click', onOutside);
     document.addEventListener('keydown', onEscape);
+    document.addEventListener('keydown', onMenuKeyDown);
     onHash();
 
     return () => {
@@ -89,6 +107,7 @@ export function MobileBottomNav() {
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('click', onOutside);
       document.removeEventListener('keydown', onEscape);
+      document.removeEventListener('keydown', onMenuKeyDown);
     };
   }, []);
 
@@ -125,7 +144,7 @@ export function MobileBottomNav() {
           id="mobile-bottom-more-trigger"
           ref={moreButtonRef}
           type="button"
-          onClick={() => setMoreOpen(value => { const next = !value; moreOpenRef.current = next; return next; })}
+          onClick={() => setMoreOpen(value => { const next = !value; moreOpenRef.current = next; if (next) window.requestAnimationFrame(() => moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus()); else window.requestAnimationFrame(() => moreButtonRef.current?.focus()); return next; })}
           className={'w-full ' + (moreOpen || activeSection === 'more' ? 'is-active' : '')}
           aria-expanded={moreOpen}
           aria-haspopup="menu"
@@ -136,7 +155,7 @@ export function MobileBottomNav() {
           <span>Mais</span>
         </button>
         {moreOpen && (
-          <div id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
+          <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
             {moreItems.map(item => (
               <button
                 key={item.id}
