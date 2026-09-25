@@ -365,3 +365,29 @@
 .quiz-option:hover:not(:disabled){border-color:rgba(125,211,252,.32)!important;background:rgba(125,211,252,.045)!important}
 .quiz-option.is-selected{border-color:rgba(125,211,252,.42)!important}
 .quiz-feedback{border-radius:14px!important}
+
+
+/* Quiz-specific refinements moved out of the summary layer. */
+@media (max-width: 767px) {
+  .quiz-head { gap: 5px; }
+  .quiz-head h2 { font-size: 1.45rem; }
+  .quiz-subtitle { font-size: 12px; line-height: 1.45; }
+  .quiz-result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .quiz-result-actions .is-primary { grid-column: 1 / -1; }
+}
+@media (max-width: 390px) {
+  .quiz-result-actions { grid-template-columns: 1fr; }
+  .quiz-result-actions .is-primary { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quiz-shell :where(button,a),
+  .quiz-phase-card,
+  .quiz-option,
+  .quiz-progress-fill,
+  .quiz-next,
+  .quiz-action { transition: none; }
+  .quiz-phase-card:hover:not(:disabled),
+  .quiz-option:hover:not(:disabled) { transform: none; }
+}
+:where(.quiz-shell) :where(h2,h3) { text-wrap: balance; }
+:where(.quiz-shell) :where(button,a) { -webkit-tap-highlight-color: transparent; }
