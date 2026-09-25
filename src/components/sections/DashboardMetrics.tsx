@@ -3,7 +3,6 @@ import { HistoricalTrendChart } from './HistoricalTrendChart';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
-import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
@@ -66,14 +65,14 @@ export function DashboardMetrics() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Quatro números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
+          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Cinco números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature, sourceLabel }) => (
-          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive text-left">
-            <Card className="dashboard-kpi-card">
+          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
+
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
@@ -99,7 +98,6 @@ export function DashboardMetrics() {
                 </div>
                 <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               </div>
-            </Card>
           </button>
         ))}
       </div>
