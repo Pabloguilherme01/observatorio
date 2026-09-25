@@ -26,13 +26,37 @@ const events = [
 const month = (date: string) => new Intl.DateTimeFormat('pt-BR', { month: 'short' }).format(new Date(date + 'T12:00:00')).replace('.', '');
 const day = (date: string) => new Intl.DateTimeFormat('pt-BR', { day: '2-digit' }).format(new Date(date + 'T12:00:00'));
 
+const nextEventIndex = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const index = events.findIndex(event => new Date(event.date + 'T12:00:00') >= today);
+  return index >= 0 ? index : events.length - 1;
+};
+
+const daysUntil = (date: string) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(date + 'T12:00:00');
+  return Math.max(0, Math.ceil((target.getTime() - today.getTime()) / 86400000));
+};
+
 export function ElectionTimeline() {
-  const [selected, setSelected] = useState(events[3]);
+  const [selected, setSelected] = useState(() => events[nextEventIndex()]);
   const source = useMemo(() => d.sources.find(item => item.id === selected.sourceId), [selected.sourceId]);
+  const remaining = daysUntil(selected.date);
+  const isFuture = remaining > 0;
   return (
     <section id="linha-do-tempo" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="timeline-title">
-      <SectionHeader titleId="timeline-title" eyebrow="Calendário" title="A eleição como linha do tempo" description="Eventos oficiais navegáveis, com data, contexto e fonte. O painel não interpreta o impacto político dos eventos." />
+      <SectionHeader titleId="timeline-title" eyebrow="Calendário" title="A eleição como linha do tempo" description="Eventos oficiais navegáveis, com destaque automático para o próximo marco a partir da data atual. O painel não interpreta o impacto político dos eventos." />
       <Card>
+        <div className="mb-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4" aria-live="polite">
+          <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300">Próximo marco</div>
+          <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <strong className="text-xl font-black text-white">{selected.label}</strong>
+            <span className="text-sm font-semibold text-slate-400">{day(selected.date)}/{selected.date.slice(5, 7)}/{selected.date.slice(0, 4)}</span>
+          </div>
+          <p className="mt-1 text-xs text-slate-500">{isFuture ? `Faltam ${remaining} dia${remaining === 1 ? '' : 's'}.` : 'Este marco já está em andamento ou já ocorreu.'}</p>
+        </div>
         <div className="overflow-x-auto pb-2">
           <div className="flex min-w-[760px] items-start">
             {events.map((event, index) => (
@@ -54,7 +78,7 @@ export function ElectionTimeline() {
             <h3 className="mt-2 text-xl font-black text-white">{selected.label}</h3>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{selected.description}</p>
           </div>
-          {source?.url && <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-sky-300"><ExternalLink className="h-3.5 w-3.5" /> {source.nature === 'official' ? 'Fonte oficial' : 'Ver fonte'}</a>}
+          {source?.url && <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 text-xs font-bold text-sky-300"><ExternalLink className="h-3.5 w-3.5" /> {source.nature === 'official' ? 'Fonte oficial' : 'Ver fonte'}</a>}
         </div>
       </Card>
     </section>
