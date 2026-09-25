@@ -35,7 +35,7 @@ const actions = [
     icon: FileQuestion,
     title: 'Consultar legislação municipal',
     description: 'Pesquise leis e normas no portal oficial de legislação do município.',
-    href: 'https://legislacao.aguaslindasdegoias.go.gov.br/',
+    href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis',
     cta: 'Abrir Legislação',
   },
   {
