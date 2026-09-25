@@ -4,7 +4,6 @@ import { formatBRL } from '../../lib/transport';
 import { formatBudgetCurrency } from '../../utils/formatters';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
-import { MethodologyFooter } from '../MethodologyFooter';
 
 export function BudgetImpact() {
   const source = d.sources.find(s => s.id === 'loa-2026')!;
@@ -35,7 +34,7 @@ export function BudgetImpact() {
         <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4"><div className="text-xs font-bold uppercase tracking-wide text-slate-500">Recorte analítico</div><div className="mt-1 text-lg font-black text-white">{formatBudgetCurrency(shownTotal)}</div><p className="mt-1 text-xs leading-5 text-slate-500">As 3 funções exibidas representam {shownShare.toFixed(1).replace(".", ",")}% da LOA 2026 de {formatBudgetCurrency(d.budget.totalBrl)}. Não são o orçamento inteiro e não devem ser somadas a unidades ou órgãos.</p></div><div className="mt-5 flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span className="rounded-full border border-white/8 px-3 py-1.5">Receita/Despesa → Função</span><ArrowRight className="h-4 w-4" aria-hidden="true" /><span className="rounded-full border border-white/8 px-3 py-1.5">Função → denominador</span><ArrowDown className="h-4 w-4" aria-hidden="true" /><span className="rounded-full border border-white/8 px-3 py-1.5">interpretação pelo leitor</span>
         </div>
-        <MethodologyFooter source={source} denominator="população estimada de 2026 para o cálculo per capita" formula="valor da função ÷ população 2026" limitations="Alocação orçamentária não é execução financeira nem mede, isoladamente, resultado do serviço." />
+        <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500"><div className="font-bold text-slate-400">Fonte e método</div><p className="mt-1">{source.label} · referência {source.referenceDate}. Cálculo per capita: valor da função ÷ população estimada de 2026. Alocação orçamentária não é execução financeira nem mede, isoladamente, resultado do serviço.</p><a className="mt-2 inline-flex min-h-11 items-center font-semibold text-sky-300 underline decoration-sky-300/30 underline-offset-4" href={source.url} target="_blank" rel="noopener noreferrer">Abrir fonte oficial</a></div>
       </Card>
     </section>
   );
