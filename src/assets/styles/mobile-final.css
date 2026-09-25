@@ -88,3 +88,51 @@ section{scroll-margin-top:72px}
 @media (prefers-reduced-motion:reduce){
 .site-icon-button,.site-tools-button,.hero-shell a,.hero-shell button,.quiz-option,.quiz-phase-card,.mobile-bottom-nav button{transition:none!important}
 }
+
+/* Mobile structural polish · hierarchy, rhythm and containment */
+@media (max-width:767px){
+  main{padding-bottom:0}
+  main>section,main>div>section{margin-inline:0}
+  main h2{font-size:clamp(1.25rem,5.2vw,1.55rem);line-height:1.12;letter-spacing:-.025em}
+  main h3{line-height:1.2}
+  main p{max-width:68ch}
+  .section-shell,.content-shell,.dashboard-section,.observatory-section{padding-inline:var(--mobile-page-gutter)!important}
+  .section-header,.section-heading,.section-title-row{gap:8px!important;margin-bottom:12px!important}
+  .section-header>div:first-child,.section-heading>div:first-child{min-width:0}
+  .section-header p,.section-heading p{font-size:12px!important;line-height:1.45!important;color:#94a3b8}
+  .section-header a,.section-heading a{min-height:44px;display:inline-flex;align-items:center}
+  .card,.panel,.surface-card,[class*="rounded-2xl"],[class*="rounded-3xl"]{min-width:0}
+  .grid{min-width:0}
+  .grid>*,.flex>*{min-width:0}
+  .overflow-x-auto{overflow-x:auto;overflow-y:hidden}
+  table{min-width:560px}
+  .prose,.text-balance{overflow-wrap:anywhere}
+  button,a{touch-action:manipulation}
+  :where(button,a,[role="button"],summary):focus-visible{outline:2px solid #7dd3fc;outline-offset:2px}
+  .hero-shell .hero-reading-guide[open]{max-height:42vh;overflow:auto}
+  .hero-shell .hero-reading-guide div{font-size:12px!important;line-height:1.5!important}
+  .hero-shell .hero-reading-guide a{min-height:40px}
+  .today-rail,.topic-rail,.mobile-rail{padding-inline:2px 14px}
+  .today-card,.topic-card{overflow:hidden}
+  .summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.quiz-card{overflow:hidden}
+  .summary-simple-card strong,.summary-public-fact strong,.candidate-card h3,.quiz-prompt{overflow-wrap:anywhere}
+  .candidate-card{padding:13px!important;border-radius:16px!important}
+  .candidate-card .flex.flex-wrap.gap-2>*{font-size:12px}
+  .quiz-card{padding:13px!important}
+  .quiz-option{width:100%;text-align:left;line-height:1.35;overflow-wrap:anywhere}
+  .quiz-phase-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .quiz-phase-card{min-width:0}
+  .mobile-bottom-nav{padding-top:5px!important}
+  .mobile-bottom-nav button{overflow:hidden}
+}
+@media (max-width:390px){
+  main h2{font-size:1.2rem}
+  .section-header,.section-heading,.section-title-row{margin-bottom:10px!important}
+  .section-header p,.section-heading p{font-size:11px!important}
+  .quiz-phase-grid{grid-template-columns:1fr!important}
+  .today-rail,.topic-rail,.mobile-rail{padding-right:12px}
+}
+@media (max-width:350px){
+  main h2{font-size:1.12rem}
+  .section-header p,.section-heading p{font-size:10.5px!important}
+}
