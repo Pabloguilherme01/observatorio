@@ -12,6 +12,7 @@ const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const comparison = read('src/components/sections/ContextComparison.tsx');
 const context = read('src/context/LanguageModeContext.tsx');
+const language = read('src/components/layout/LanguageModeToggle.tsx');
 const theme = read('src/context/ThemeContext.tsx');
 
 const errors = [];
