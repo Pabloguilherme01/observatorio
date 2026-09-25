@@ -395,7 +395,7 @@ export function CivicActionHub() {
               );
             })}
           </div>
-        </details>
+        </details>}
       </div>
 
       <div className="official-source-note">
