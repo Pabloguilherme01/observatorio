@@ -38,12 +38,16 @@ jobs:
       - name: Capture official TSE candidate snapshot
         run: npm run sync:tse
 
+      - name: Mark successful TSE freshness check
+        shell: bash
+        run: echo "TSE_FRESHNESS_CHECKED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+
       - name: Validate TSE candidate snapshot
         env:
           REQUIRE_TSE_SYNC: 'true'
           REQUIRE_TSE_FRESH: 'true'
           TSE_MAX_AGE_HOURS: '12'
-          ALLOW_UPSTREAM_UNAVAILABLE: 'true'
+          ALLOW_UPSTREAM_UNAVAILABLE: 'false'
         run: npm run validate:tse
 
       - name: Validate observatory data contracts
