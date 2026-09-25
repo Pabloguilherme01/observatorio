@@ -95,13 +95,19 @@
   box-shadow:0 16px 36px rgba(0,0,0,.16);
 }
 
-.metric-interactive:hover .dashboard-kpi-card{
+.metric-interactive{
+  cursor:pointer;
+}
+
+.dashboard-kpi-card:hover,
+.metric-interactive:hover.dashboard-kpi-card{
   transform:translateY(-2px);
   border-color:rgba(125,211,252,.25)!important;
   box-shadow:0 18px 44px rgba(0,0,0,.20)!important;
 }
 
-.metric-interactive:active .dashboard-kpi-card{
+.dashboard-kpi-card:active,
+.metric-interactive:active.dashboard-kpi-card{
   transform:translateY(0) scale(.995);
 }
 
@@ -848,6 +854,32 @@
   .quiz-action{
     min-height:48px;
     width:100%;
+  }
+}
+
+
+@media (max-width:620px){
+  .language-toggle-v3 .language-toggle-options{
+    gap:6px;
+  }
+  .language-toggle-v3 .language-toggle-options > button{
+    min-height:54px;
+    padding:9px 8px;
+    gap:7px;
+    border-radius:13px;
+  }
+  .language-toggle-v3 .language-toggle-options > button > svg{
+    width:16px;
+    height:16px;
+  }
+  .language-toggle-v3 .language-toggle-options > button strong{
+    font-size:10px;
+  }
+  .language-toggle-v3 .language-toggle-options > button small{
+    font-size:7px;
+  }
+  .language-toggle-v3 .language-toggle-options > button em{
+    display:none;
   }
 }
 
