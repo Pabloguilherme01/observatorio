@@ -856,7 +856,6 @@
 .light #politica select,
 .light .quiz-shell,
 .light .quiz-phase-card,
-.light .quiz-high-scores,
 .light .quiz-card,
 .light #acao .civic-service-card{
   border-color:#dbe5ec!important;
@@ -884,8 +883,7 @@
 .light .quiz-phase-meta,
 .light .quiz-phase-best,
 .light .quiz-phase-lock,
-.light .quiz-progress-label,
-.light .quiz-high-scores .text-slate-500{
+.light .quiz-progress-label{
   color:#475569!important;
 }
 .light #eleitoral360 .text-white{
@@ -922,7 +920,6 @@
 
 .light #resumo .summary-public-hero,
 .light .quiz-card,
-.light .quiz-high-scores,
 .light .quiz-phase-card,
 .light #acao .civic-service-card{
   background:#fff!important;
@@ -1485,7 +1482,6 @@
 
 #dashboard .dashboard-kpi-card,
 #candidaturas .candidate-card,
-#eleitoral360 .radar-card,
 #acao .civic-service-card,
 .quiz-card{
   background:
@@ -1494,7 +1490,6 @@
 }
 #dashboard .dashboard-kpi-card::after,
 #candidaturas .candidate-card::after,
-#eleitoral360 .radar-card::after,
 #acao .civic-service-card::after,
 .quiz-card::after{
   content:"";
