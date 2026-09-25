@@ -1,12 +1,13 @@
 import { CalendarDays, Command, Menu, Moon, Search, Sun, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { SearchModal } from './SearchModal';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ContrastModeToggle } from './ContrastModeToggle';
 import { useTheme } from '../../context/ThemeContext';
 import { navigation } from '../../config/navigation';
 import { LanguageModeToggle } from './LanguageModeToggle';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
+
+const SearchModal = lazy(() => import('./SearchModal').then(module => ({ default: module.SearchModal })));
 
 const primaryNavigationIds = ['descubra', 'dashboard', 'eleitoral360'] as const;
 const primaryNavigation = navigation.filter(item => primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
@@ -272,7 +273,11 @@ export function Header() {
           </div>
         )}
       </header>
-      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      {searchOpen && (
+        <Suspense fallback={null}>
+          <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+        </Suspense>
+      )}
     </>
   );
 }
