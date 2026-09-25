@@ -91,10 +91,10 @@ export function HeroCountdown() {
               {electionMode ? 'Modo Eleição ativo' : 'Ativar Modo Eleição'}
             </button>
             <a href="#descubra" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-transparent px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:border-sky-300/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
-              {languageMode === 'simple' ? 'Explorar' : 'Explorar dados'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              Explorar <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a href="#evidencias" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-transparent px-4 py-2.5 text-sm font-bold text-slate-300 transition hover:border-sky-300/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
-              {languageMode === 'simple' ? 'Conferir fontes' : 'Ver fontes'}
+              Conferir fontes
             </a>
           </div>
 
