@@ -40,7 +40,6 @@ export function MobileBottomNav() {
       if (event.key !== 'Escape' || !moreOpenRef.current) return;
       event.preventDefault();
       moreOpenRef.current = false;
-      moreOpenRef.current = false;
       setMoreOpen(false);
     };
     const onOutside = (event: MouseEvent) => {
@@ -48,6 +47,7 @@ export function MobileBottomNav() {
       const menu = document.getElementById('mobile-bottom-more');
       const button = document.getElementById('mobile-bottom-more-trigger');
       if (menu?.contains(event.target) || button?.contains(event.target)) return;
+      moreOpenRef.current = false;
       setMoreOpen(false);
     };
 
@@ -110,7 +110,7 @@ export function MobileBottomNav() {
       {quizItem && (
         <button
           type="button"
-          onClick={() => { setMoreOpen(false); jump(quizItem.id); }}
+          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(quizItem.id); }}
           className={activeSection === 'quiz' ? 'is-active' : ''}
           aria-current={activeSection === 'quiz' ? 'page' : undefined}
         >
