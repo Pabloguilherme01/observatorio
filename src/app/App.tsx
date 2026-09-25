@@ -88,6 +88,7 @@ function scrollToHashWhenReady(hash: string) {
 }
 
 const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes']);
+const SUMMARY_DESTINATIONS = new Set(['resumo']);
 
 function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
@@ -95,6 +96,10 @@ function NavigationModeBridge() {
   useEffect(() => {
     const prepareMode = (target: string) => {
       if (!target || target === 'descubra' || target === 'dashboard') return;
+      if (SUMMARY_DESTINATIONS.has(target)) {
+        if (mode !== 'summary') setMode('summary');
+        return;
+      }
       if (TECHNICAL_ONLY_DESTINATIONS.has(target)) {
         if (mode !== 'technical') setMode('technical');
         return;
