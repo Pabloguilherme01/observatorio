@@ -846,3 +846,73 @@ main summary:focus-visible{
 .light .language-toggle-v3 .language-toggle-options>button em{
   color:#0369a1!important;
 }
+
+/* Final interaction polish */
+main p a{
+  text-decoration:underline!important;
+  text-underline-offset:2px;
+  text-decoration-thickness:1px;
+}
+.language-toggle-v3{
+  max-width:100%;
+  overflow:hidden;
+}
+.language-toggle-v3 .language-toggle-label{
+  min-width:0;
+}
+.language-toggle-v3 .language-toggle-label span{
+  min-width:0;
+  overflow-wrap:break-word;
+}
+.language-toggle-v3 .language-toggle-options{
+  min-width:0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:5px;
+}
+.language-toggle-v3 .language-toggle-options>button{
+  min-width:0;
+  overflow:hidden;
+  text-align:left;
+}
+.language-toggle-v3 .language-toggle-options>button>span{
+  min-width:0;
+  overflow:hidden;
+}
+@media(max-width:767px){
+  .language-toggle-v3{
+    width:100%!important;
+    padding:5px!important;
+    border-radius:16px!important;
+  }
+  .language-toggle-v3 .language-toggle-label{
+    padding:8px 9px!important;
+    margin-bottom:5px!important;
+  }
+  .language-toggle-v3 .language-toggle-options>button{
+    min-height:50px!important;
+    padding:8px 7px!important;
+    border-radius:12px!important;
+  }
+  .language-toggle-v3 .language-toggle-options>button>span strong{
+    display:block;
+    font-size:10px!important;
+    line-height:1.1!important;
+  }
+  .language-toggle-v3 .language-toggle-options>button>span small{
+    display:block;
+    font-size:8px!important;
+    line-height:1.2!important;
+  }
+  .language-toggle-v3 .language-toggle-options>button em{
+    display:none!important;
+  }
+}
+@media(max-width:390px){
+  .language-toggle-v3 .language-toggle-options>button{
+    min-height:48px!important;
+    padding:7px 5px!important;
+  }
+  .language-toggle-v3 .language-toggle-options>button>span strong{font-size:9px!important}
+  .language-toggle-v3 .language-toggle-options>button>span small{font-size:7.5px!important}
+}
