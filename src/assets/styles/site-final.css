@@ -1595,3 +1595,9 @@ main p a:not(.official-resource-card):not(.hero-action){
     max-width:100%;
   }
 }
+
+.light .trust-shell a.font-bold.text-sky-200,
+.light .trust-shell a.font-bold.text-sky-300,
+.light .trust-shell a.text-sky-300{
+  color:#075985!important;
+}
