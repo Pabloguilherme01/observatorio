@@ -11,16 +11,20 @@ import { QuickQuiz } from './QuickQuiz';
 
 export default function DeferredContextGroup() {
   const { mode } = useLanguageMode();
+  const technical = mode === 'technical';
+  const summary = mode === 'summary';
 
   return <>
     <FreshnessBanner />
-    {mode === 'technical' && <SnapshotChanges />}
     <ResultsLiveBanner />
-    <ContextComparison />
-    <ElectoralProfile />
-    <DemographicDynamic />
-    <TransportCalculator />
-    <SanitationHealthSection />
-    <QuickQuiz />
+
+    {!summary && <DemographicDynamic />}
+    {!summary && <TransportCalculator />}
+    {!summary && <SanitationHealthSection />}
+    {!summary && <QuickQuiz />}
+
+    {technical && <SnapshotChanges />}
+    {technical && <ContextComparison />}
+    {technical && <ElectoralProfile />}
   </>;
 }
