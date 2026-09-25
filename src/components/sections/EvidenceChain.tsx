@@ -61,8 +61,10 @@ export function EvidenceChain() {
             <div><strong className="text-slate-200 light:text-slate-800">Mapeados por evidência local:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')} · pendentes: {unresolved.toLocaleString('pt-BR')}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Cobertura:</strong> watchlist de {generated.watchlist.length} nomes, não universo completo.</div>
           </div>
-          <a href={editorialSource?.url ?? candidateSource?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300">
-            Abrir fonte de referência <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
+          <a href={editorialSource?.url ?? candidateSource?.url} target="_blank" rel="noopener noreferrer" className="evidence-source-card mt-4" aria-label="Abrir a fonte de referência dos dados de candidatos">
+            <span className="evidence-source-card-icon"><Link2 className="h-4 w-4" aria-hidden="true" /></span>
+            <span><strong>Abrir fonte de referência</strong><small>Ver registro original e conferir a proveniência.</small></span>
+            <span className="evidence-source-card-arrow" aria-hidden="true">↗</span>
           </a>
         </Card>
 
@@ -91,8 +93,10 @@ export function EvidenceChain() {
             <div><strong className="text-slate-200 light:text-slate-800">Integridade:</strong> JSON/JWS e contexto municipal são validados antes da publicação.</div>
             <div><strong className="text-slate-200 light:text-slate-800">Estado atual:</strong> {currentResultPhase.label} — {currentResultPhase.detail}</div>
           </div>
-          <a href={resultSource?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300">
-            Documentação técnica TSE <FileCheck2 className="h-3.5 w-3.5" aria-hidden="true" />
+          <a href={resultSource?.url} target="_blank" rel="noopener noreferrer" className="evidence-source-card mt-4" aria-label="Abrir a documentação técnica do TSE sobre resultados">
+            <span className="evidence-source-card-icon"><FileCheck2 className="h-4 w-4" aria-hidden="true" /></span>
+            <span><strong>Documentação técnica TSE</strong><small>Consultar método, contexto e validação dos resultados.</small></span>
+            <span className="evidence-source-card-arrow" aria-hidden="true">↗</span>
           </a>
         </Card>
       </div>
