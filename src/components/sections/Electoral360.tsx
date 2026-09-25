@@ -216,6 +216,31 @@ export function Electoral360() {
               <Info label="Ocupação" value={selectedLocalTseCandidate.occupation || 'Não informado'} />
               <Info label="Escolaridade" value={selectedLocalTseCandidate.education || 'Não informado'} />
               <Info label="Snapshot" value={selectedLocalTseCandidate.snapshotDate} />
+              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 sm:col-span-2">
+                <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Mídia oficial</div>
+                {selectedLocalTseCandidate.photoAvailableInTseArchive ? (
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <span className="rounded-full border border-emerald-300/20 bg-emerald-300/5 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">
+                      Foto presente no arquivo TSE validado
+                    </span>
+                    {selectedLocalTseCandidate.photoArchiveUrl && (
+                      <a
+                        href={selectedLocalTseCandidate.photoArchiveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:border-sky-300/30 hover:text-sky-200"
+                      >
+                        Abrir acervo oficial
+                        <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                      </a>
+                    )}
+                  </div>
+                ) : (
+                  <p className="mt-2 text-xs leading-5 text-slate-500">
+                    Não há foto validada para este registro no snapshot atual. O observatório não substitui a mídia por imagem de terceiros.
+                  </p>
+                )}
+              </div>
             </div>
           ) : (
             <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
