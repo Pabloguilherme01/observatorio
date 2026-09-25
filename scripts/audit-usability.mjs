@@ -66,6 +66,34 @@ if (
   app.includes("setMode('technical')")
 ) pass('deep links e navegação central sincronizam o modo de leitura com a seção');
 else fail('navegação por hash pode abrir uma seção escondida no modo de leitura atual');
+const header = texts.find(item => item.file === 'src/components/layout/Header.tsx')?.content ?? '';
+if (
+  header.includes('aria-haspopup="menu"') &&
+  header.includes("ArrowDown") &&
+  header.includes("ArrowUp") &&
+  header.includes("event.key === 'Home'") &&
+  header.includes("event.key === 'End'") &&
+  header.includes("items[0]?.focus()")
+) pass('menu desktop Mais possui navegação por teclado e foco previsível');
+else fail('menu desktop Mais não possui navegação de teclado completa');
+
+const civic = texts.find(item => item.file === 'src/components/sections/CivicActionHub.tsx')?.content ?? '';
+for (const [needle, label] of [
+  ['Consultar situação eleitoral', 'situação eleitoral'],
+  ['Justificar ausência', 'justificativa eleitoral'],
+  ['Emitir certidões eleitorais', 'certidões eleitorais'],
+  ['Quitar débitos eleitorais', 'débitos eleitorais'],
+  ['autoatendimento-eleitoral', 'Autoatendimento TSE'],
+  ['justificativa-eleitoral', 'justificativa TSE'],
+  ['servicos-eleitorais/certidoes', 'certidões TSE'],
+  ['quitacao-de-multas', 'multas TSE'],
+]) {
+  if (!civic.includes(needle)) fail('Serviço público eleitoral ausente: ' + label);
+}
+if (civic.includes('Consultar situação eleitoral') && civic.includes('Emitir certidões eleitorais') && civic.includes('Quitar débitos eleitorais')) {
+  pass('hub cívico oferece os principais serviços eleitorais oficiais');
+}
+
 const mountedSources = [
   app,
   texts.find(item => item.file === 'src/components/sections/DeferredCivicGroup.tsx')?.content ?? '',
