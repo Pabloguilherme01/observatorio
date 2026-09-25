@@ -41,6 +41,8 @@ jobs:
       - name: Validate TSE candidate snapshot
         env:
           REQUIRE_TSE_SYNC: 'true'
+          REQUIRE_TSE_FRESH: 'true'
+          TSE_MAX_AGE_HOURS: '12'
           ALLOW_UPSTREAM_UNAVAILABLE: 'true'
         run: npm run validate:tse
 
