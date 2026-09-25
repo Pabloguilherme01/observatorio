@@ -25,6 +25,7 @@ export function MobileBottomNav() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
+  const moreOpenRef = useRef(false);
 
   useEffect(() => {
     const update = (next: string) => {
@@ -36,7 +37,10 @@ export function MobileBottomNav() {
     const onHash = () => update(sectionToTab(window.location.hash.replace(/^#/, '')));
     const onNavigate = (event: Event) => update(sectionToTab((event as CustomEvent<string>).detail));
     const onEscape = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || !moreOpen) return;
+      if (event.key !== 'Escape' || !moreOpenRef.current) return;
+      event.preventDefault();
+      moreOpenRef.current = false;
+      moreOpenRef.current = false;
       setMoreOpen(false);
     };
     const onOutside = (event: MouseEvent) => {
@@ -95,7 +99,7 @@ export function MobileBottomNav() {
         <button
           key={id}
           type="button"
-          onClick={() => { setMoreOpen(false); jump(id); }}
+          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(id); }}
           className={activeSection === id ? 'is-active' : ''}
           aria-current={activeSection === id ? 'page' : undefined}
         >
@@ -118,7 +122,7 @@ export function MobileBottomNav() {
         <button
           id="mobile-bottom-more-trigger"
           type="button"
-          onClick={() => setMoreOpen(value => !value)}
+          onClick={() => setMoreOpen(value => { const next = !value; moreOpenRef.current = next; return next; })}
           className={'w-full ' + (moreOpen || activeSection === 'more' ? 'is-active' : '')}
           aria-expanded={moreOpen}
           aria-controls="mobile-bottom-more"
@@ -134,7 +138,7 @@ export function MobileBottomNav() {
                 key={item.id}
                 type="button"
                 role="menuitem"
-                onClick={() => { setMoreOpen(false); jump(item.id); }}
+                onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(item.id); }}
               >
                 <span>{item.shortLabel}</span>
                 <small>{item.description}</small>
