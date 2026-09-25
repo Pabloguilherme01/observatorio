@@ -72,12 +72,6 @@ export function Header() {
         window.requestAnimationFrame(() => moreButtonRef.current?.focus());
       }
     };
-    const focusMenuItem = (position: 'first' | 'last') => {
-      window.requestAnimationFrame(() => {
-        const items = Array.from(document.querySelectorAll<HTMLElement>('#desktop-more-menu [role="menuitem"]'));
-        (position === 'first' ? items[0] : items.at(-1))?.focus();
-      });
-    };
     const onKeyDown = (event: KeyboardEvent) => {
       if (!moreOpenRef.current) return;
       if (event.key === 'Escape') {
@@ -99,27 +93,11 @@ export function Header() {
       items[next]?.focus();
     };
 
-    const onButtonKeyDown = (event: KeyboardEvent) => {
-      if (!['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(event.key)) return;
-      if (event.key === 'Enter' || event.key === ' ') {
-        if (moreOpenRef.current) return;
-        event.preventDefault();
-        setMoreOpen(true);
-        focusMenuItem('first');
-        return;
-      }
-      event.preventDefault();
-      setMoreOpen(true);
-      focusMenuItem(event.key === 'ArrowUp' ? 'last' : 'first');
-    };
-
     document.addEventListener('mousedown', onDocumentPointer);
     document.addEventListener('keydown', onKeyDown);
-    moreButtonRef.current?.addEventListener('keydown', onButtonKeyDown);
     return () => {
       document.removeEventListener('mousedown', onDocumentPointer);
       document.removeEventListener('keydown', onKeyDown);
-      moreButtonRef.current?.removeEventListener('keydown', onButtonKeyDown);
     };
   }, []);
 
@@ -173,7 +151,20 @@ export function Header() {
                 ref={moreButtonRef}
                 type="button"
                 onClick={() => setMoreOpen(value => !value)}
-                onKeyDown={onKeyDown}
+                onKeyDown={(event) => {
+                  if (!['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(event.key)) return;
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    if (moreOpen) return;
+                    event.preventDefault();
+                  } else {
+                    event.preventDefault();
+                  }
+                  setMoreOpen(true);
+                  window.requestAnimationFrame(() => {
+                    const items = Array.from(document.querySelectorAll<HTMLElement>('#desktop-more-menu [role="menuitem"]'));
+                    (event.key === 'ArrowUp' ? items.at(-1) : items[0])?.focus();
+                  });
+                }}
                 className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-400 transition hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2"
                 aria-expanded={moreOpen}
                 aria-haspopup="menu"
