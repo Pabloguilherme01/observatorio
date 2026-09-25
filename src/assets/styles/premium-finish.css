@@ -984,3 +984,223 @@
     transition:none!important;
   }
 }
+
+
+/* Final override pass: remove ambiguity left by legacy visual layers. */
+.section-header{
+  min-width:0;
+}
+.section-header > div:first-child{
+  min-width:0;
+}
+.section-header h2{
+  max-width:22ch;
+  overflow-wrap:anywhere;
+}
+.section-header p{
+  max-width:66ch;
+}
+.section-header .text-\[11px\]{
+  color:#7dd3fc;
+  font-weight:900;
+}
+
+.language-toggle-v3 .language-toggle-options{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  width:100%;
+}
+.language-toggle-v3 .language-toggle-options > button{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  min-width:0;
+  min-height:58px;
+  gap:9px;
+  padding:10px 11px;
+  border:1px solid var(--obs-line);
+  border-radius:15px;
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  color:#94a3b8;
+  text-align:left;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+.language-toggle-v3 .language-toggle-options > button > svg{
+  width:18px;
+  height:18px;
+  flex:0 0 auto;
+}
+.language-toggle-v3 .language-toggle-options > button strong{
+  display:block;
+  overflow:hidden;
+  color:inherit;
+  font-size:11px;
+  font-weight:900;
+  line-height:1.15;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.language-toggle-v3 .language-toggle-options > button small{
+  display:block;
+  margin-top:3px;
+  overflow:hidden;
+  color:#64748b;
+  font-size:8px;
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:.07em;
+  text-overflow:ellipsis;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.language-toggle-v3 .language-toggle-options > button.is-active{
+  color:#f8fafc;
+  border-color:rgba(125,211,252,.42);
+  background:
+    radial-gradient(circle at 0 0,rgba(125,211,252,.13),transparent 55%),
+    linear-gradient(180deg,rgba(56,189,248,.14),rgba(255,255,255,.035));
+  box-shadow:inset 0 0 0 1px rgba(125,211,252,.07),0 10px 28px rgba(14,116,144,.12);
+}
+.language-toggle-v3 .language-toggle-options > button.is-active > svg{
+  color:#7dd3fc;
+}
+.language-toggle-v3 .language-toggle-options > button:focus-visible{
+  outline:2px solid rgba(125,211,252,.85);
+  outline-offset:2px;
+}
+.language-toggle-v3 .language-toggle-options > button em{
+  right:7px;
+  top:7px;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  padding:2px 5px;
+  border:1px solid rgba(125,211,252,.22);
+  border-radius:999px;
+  background:rgba(56,189,248,.08);
+  color:#7dd3fc;
+  font-size:7px;
+  font-style:normal;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.language-toggle-v3 .language-toggle-options > button em svg{
+  width:9px;
+  height:9px;
+}
+
+:root[data-language-mode="summary"] .language-toggle-v3 .language-toggle-options > button.is-active{
+  border-color:rgba(52,211,153,.46);
+  background:
+    radial-gradient(circle at 0 0,rgba(52,211,153,.13),transparent 55%),
+    linear-gradient(180deg,rgba(16,185,129,.13),rgba(255,255,255,.035));
+  box-shadow:inset 0 0 0 1px rgba(52,211,153,.07),0 10px 28px rgba(16,185,129,.10);
+}
+:root[data-language-mode="summary"] .language-toggle-v3 .language-toggle-options > button.is-active > svg{
+  color:#6ee7b7;
+}
+:root[data-language-mode="technical"] .language-toggle-v3 .language-toggle-options > button.is-active{
+  border-color:rgba(167,139,250,.46);
+  background:
+    radial-gradient(circle at 0 0,rgba(167,139,250,.14),transparent 55%),
+    linear-gradient(180deg,rgba(124,58,237,.12),rgba(255,255,255,.035));
+  box-shadow:inset 0 0 0 1px rgba(167,139,250,.07),0 10px 28px rgba(124,58,237,.10);
+}
+:root[data-language-mode="technical"] .language-toggle-v3 .language-toggle-options > button.is-active > svg{
+  color:#c4b5fd;
+}
+
+.light .section-header .text-\[11px\]{
+  color:#0369a1!important;
+}
+.light .section-header h2{
+  color:#0f172a!important;
+}
+.light .section-header p{
+  color:#475569!important;
+}
+.light .language-toggle-v3 .language-toggle-options > button{
+  background:#f8fafc!important;
+  border-color:#dbe5ec!important;
+  color:#475569!important;
+}
+.light .language-toggle-v3 .language-toggle-options > button small{
+  color:#64748b!important;
+}
+.light .language-toggle-v3 .language-toggle-options > button.is-active{
+  background:#eff6ff!important;
+  border-color:#7dd3fc!important;
+  color:#0f172a!important;
+  box-shadow:0 8px 22px rgba(15,23,42,.06);
+}
+.light .language-toggle-v3 .language-toggle-options > button.is-active > svg{
+  color:#0369a1!important;
+}
+
+@media (max-width:767px){
+  .section-header{
+    margin-bottom:16px!important;
+    gap:10px!important;
+  }
+  .section-header h2{
+    max-width:none;
+    font-size:clamp(1.4rem,7vw,1.82rem)!important;
+    line-height:1.06!important;
+    letter-spacing:-.035em;
+  }
+  .section-header p{
+    max-width:none;
+    font-size:13px!important;
+    line-height:1.55!important;
+  }
+  .language-toggle-v3 .language-toggle-options{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+  .language-toggle-v3 .language-toggle-options > button{
+    min-height:60px;
+    grid-template-columns:1fr;
+    justify-items:center;
+    gap:4px;
+    padding:8px 6px;
+    border-radius:14px;
+    text-align:center;
+  }
+  .language-toggle-v3 .language-toggle-options > button > svg{
+    width:18px;
+    height:18px;
+  }
+  .language-toggle-v3 .language-toggle-options > button strong{
+    font-size:11px;
+    line-height:1.1;
+  }
+  .language-toggle-v3 .language-toggle-options > button small{
+    margin-top:2px;
+    font-size:8px;
+    line-height:1.1;
+  }
+  .language-toggle-v3 .language-toggle-options > button em{
+    display:none;
+  }
+}
+@media (max-width:390px){
+  .language-toggle-v3 .language-toggle-options{
+    gap:5px;
+  }
+  .language-toggle-v3 .language-toggle-options > button{
+    min-height:58px;
+    padding-inline:4px;
+  }
+  .language-toggle-v3 .language-toggle-options > button > svg{
+    width:17px;
+    height:17px;
+  }
+  .language-toggle-v3 .language-toggle-options > button strong{
+    font-size:10px;
+  }
+  .language-toggle-v3 .language-toggle-options > button small{
+    font-size:7px;
+  }
+}
