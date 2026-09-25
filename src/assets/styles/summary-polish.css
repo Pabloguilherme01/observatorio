@@ -2036,3 +2036,27 @@ main{
 .light .summary-technical-kpi-cta{
   font-weight:900;
 }
+
+
+/* ==========================================================================
+   Visual quality pass · 2026-09-25
+   ========================================================================== */
+.summary-technical-kpis{align-items:stretch}
+.summary-technical-kpi{display:flex;flex-direction:column;justify-content:space-between;min-height:158px;padding:15px!important;border-radius:18px!important;border:1px solid rgba(148,163,184,.14)!important;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018))!important;box-shadow:0 12px 30px -24px rgba(0,0,0,.7)}
+.summary-technical-kpi:focus-visible,.summary-evidence-card:focus-visible,.evidence-source-card:focus-visible{outline:2px solid #38bdf8!important;outline-offset:2px}
+.summary-technical-kpi-label{font-size:10px!important;line-height:1.25!important;letter-spacing:.08em!important}
+.summary-technical-kpi-source{margin-top:5px!important;font-size:9px!important;line-height:1.35!important}
+.summary-technical-kpi-note{margin-top:7px!important;font-size:9px!important;line-height:1.42!important}
+.summary-technical-kpi-cta{margin-top:11px!important;font-size:9px!important;font-weight:850!important}
+.summary-technical-audit{gap:8px!important}
+.summary-technical-audit .summary-evidence{min-height:82px;padding:11px 12px!important;border-radius:14px!important}
+.evidence-source-grid{align-items:stretch}
+.evidence-source-card{min-height:108px;padding:13px!important;border-radius:16px!important;display:flex;align-items:flex-start;gap:10px}
+.evidence-source-card p{line-height:1.42!important}
+.light .summary-technical-kpi,.light .evidence-source-card{background:linear-gradient(145deg,#fff,#f8fafc)!important;border-color:#dbe5ec!important;box-shadow:0 12px 28px -24px rgba(15,23,42,.32)}
+.light .summary-technical-kpi-label,.light .summary-technical-kpi-cta{color:#5b21b6!important}
+.light .summary-technical-kpi-source{color:#334155!important}.light .summary-technical-kpi-note{color:#475569!important}
+@media(hover:hover) and (min-width:768px){.summary-technical-kpi:hover,.evidence-source-card:hover{transform:translateY(-2px);border-color:rgba(56,189,248,.32)!important;box-shadow:0 18px 36px -25px rgba(14,165,233,.5)}}
+@media(max-width:767px){.summary-technical-kpis{grid-template-columns:1fr!important;gap:7px!important}.summary-technical-kpi{min-height:0;padding:12px!important;border-radius:15px!important}.summary-technical-kpi-value{font-size:1.15rem!important}.summary-technical-audit{grid-template-columns:1fr!important}.summary-technical-audit .summary-evidence{min-height:70px;padding:10px!important}.evidence-source-grid{grid-template-columns:1fr!important;gap:7px!important}.evidence-source-card{min-height:0;padding:11px!important;border-radius:14px!important}}
+@media(max-width:390px){.summary-technical-kpi{padding:10px!important}.summary-technical-kpi-label,.summary-technical-kpi-cta,.summary-technical-kpi-source,.summary-technical-kpi-note{font-size:8px!important}}
+@media(prefers-reduced-motion:reduce){.summary-technical-kpi,.evidence-source-card{transition:none!important;transform:none!important}}
