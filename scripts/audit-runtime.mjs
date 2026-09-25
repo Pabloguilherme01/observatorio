@@ -12,6 +12,8 @@ const files = [
   'src/components/layout/MobileBottomNav.tsx',
   'src/components/ExperienceShell.tsx',
   'src/components/DataExportActions.tsx',
+  'src/components/sections/BudgetImpact.tsx',
+  'src/components/sections/DemographicDynamic.tsx',
 ];
 
 const failures = [];
