@@ -37,7 +37,7 @@ export function PoliticalRadar() {
   return <section id="politica" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="politica-title">
     <SectionHeader titleId="politica-title" eyebrow="Eleições 2026" title="Pesquisa, contas e integridade em um mesmo radar" description="Registros documentais, percentuais e contexto. O componente não produz recomendação eleitoral." />
     <div className="grid gap-4 lg:grid-cols-[1.1fr_.9fr]">
-      <Card>
+      <Card className="radar-card">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Pesquisa registrada</div>
@@ -47,8 +47,8 @@ export function PoliticalRadar() {
           <Badge tone="warning">Registro: {poll.registrationNumber}</Badge>
         </div>
 
-        <div className="mt-5 grid gap-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:grid-cols-[1fr_auto] sm:items-end">
-          <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="radar-control mt-5 grid gap-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:grid-cols-[1fr_auto] sm:items-end">
+          <label className="radar-select-label text-xs font-semibold uppercase tracking-wide text-slate-500">
             Foco do radar
             <select
               className="mt-2 h-11 w-full rounded-xl border border-white/10 bg-[#0b1117] px-3 text-sm font-semibold normal-case tracking-normal text-white outline-none focus:border-sky-300/40 sm:min-w-[220px]"
@@ -60,7 +60,7 @@ export function PoliticalRadar() {
               {candidateOptions.map(option => <option key={option} value={option}>{option}</option>)}
             </select>
           </label>
-          <div className="rounded-xl border border-sky-400/10 bg-sky-400/[0.03] px-4 py-3 text-right">
+          <div className="radar-highlight rounded-xl border border-sky-400/10 bg-sky-400/[0.03] px-4 py-3 text-right">
             <span className="block text-[11px] uppercase tracking-wide text-slate-500">{selectedCandidate ? 'Valor destacado' : 'Foco neutro'}</span>
             <strong className="text-lg font-black text-sky-300">{selectedResult ? selectedResult.percentage.toFixed(2).replace('.', ',') + '%' : 'Selecione um nome'}</strong>
           </div>
@@ -83,7 +83,7 @@ export function PoliticalRadar() {
 
         <div className="mt-4 space-y-2">
           {poll.results.map(r => (
-            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="block min-h-11 w-full rounded-xl px-2 py-2 text-left transition hover:bg-white/[0.03]" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
+            <button key={r.label} type="button" onClick={() => setSelectedCandidate(r.label)} className="radar-result-row block min-h-11 w-full rounded-xl px-2 py-2 text-left transition" aria-pressed={selectedCandidate === r.label} aria-label={'Destacar ' + r.label}>
               <div className="grid min-w-0 grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3.75rem] items-center gap-2 sm:flex sm:gap-3">
                 <div className="min-w-0 break-words text-xs text-slate-400">{r.label}</div>
                 <div className="h-2 min-w-0 rounded-full bg-white/5">
@@ -95,7 +95,7 @@ export function PoliticalRadar() {
           ))}
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-4 text-xs">
+        <div className="radar-meta-grid mt-5 grid gap-3 sm:grid-cols-4 text-xs">
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Nenhum</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">NS/NR</span></div>
           <div className="rounded-2xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-slate-500">Não classificado</span></div>
@@ -104,7 +104,7 @@ export function PoliticalRadar() {
         <p className="mt-4 text-xs leading-5 text-slate-500">As respostas publicadas no snapshot somam 92,25%; os 7,75 pontos restantes ficam explicitamente como “não classificados” para evitar completar a distribuição por inferência.</p>
       </Card>
 
-      <Card>
+      <Card className="radar-checklist">
         <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Checklist IA / 72h</div>
         <div className="mt-4 space-y-3">
           <div className="flex gap-3 rounded-2xl border border-white/8 p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><strong className="block text-white">Rotulagem</strong><p className="mt-1 text-xs leading-5 text-slate-400">Conteúdo sintético usado em propaganda deve identificar explicitamente a manipulação e a tecnologia utilizada.</p></div></div>
