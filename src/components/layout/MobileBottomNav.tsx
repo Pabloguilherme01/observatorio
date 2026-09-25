@@ -37,14 +37,24 @@ export function MobileBottomNav() {
       setActiveSection(next);
     };
 
-    const onHash = () => update(sectionToTab(window.location.hash.replace(/^#/, '')));
-    const onNavigate = (event: Event) => update(sectionToTab((event as CustomEvent<string>).detail));
+    const closeMore = (restoreFocus = false) => {
+      if (!moreOpenRef.current) return;
+      moreOpenRef.current = false;
+      setMoreOpen(false);
+      if (restoreFocus) window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+    };
+    const onHash = () => {
+      closeMore();
+      update(sectionToTab(window.location.hash.replace(/^#/, '')));
+    };
+    const onNavigate = (event: Event) => {
+      closeMore();
+      update(sectionToTab((event as CustomEvent<string>).detail));
+    };
     const onEscape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape' || !moreOpenRef.current) return;
       event.preventDefault();
-      moreOpenRef.current = false;
-      setMoreOpen(false);
-      window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+      closeMore(true);
     };
     const onMenuKeyDown = (event: KeyboardEvent) => {
       if (!moreOpenRef.current || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
@@ -67,8 +77,7 @@ export function MobileBottomNav() {
       const menu = document.getElementById('mobile-bottom-more');
       const button = document.getElementById('mobile-bottom-more-trigger');
       if (menu?.contains(event.target) || button?.contains(event.target)) return;
-      moreOpenRef.current = false;
-      setMoreOpen(false);
+      closeMore();
     };
 
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
