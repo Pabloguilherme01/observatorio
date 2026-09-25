@@ -87,7 +87,7 @@ function scrollToHashWhenReady(hash: string) {
   scheduleCheck();
 }
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes']);
+const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']);
 const SUMMARY_DESTINATIONS = new Set(['resumo']);
 
 function NavigationModeBridge() {
