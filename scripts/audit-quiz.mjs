@@ -22,6 +22,15 @@ const questions = [...quiz.matchAll(
 }));
 
 const registryIds = new Set([...registry.matchAll(/id:\s*'([^']+)'/g)].map(match => match[1]));
+const quickQuizSource = quiz;
+if (!quickQuizSource.includes('const displayedScore = score;')) fail('Pontuação exibida deve usar o score já contabilizado.');
+else pass('Pontuação exibida do Quiz não duplica a resposta selecionada.');
+
+if (!quickQuizSource.includes('const finalScore = score;')) fail('Pontuação final deve usar o score já contabilizado.');
+else pass('Pontuação final do Quiz não duplica a última resposta.');
+
+if (!quickQuizSource.includes('recordQuizHighScore')) fail('Quiz perdeu o registro de resultados.');
+else if (!quiz.includes('recordQuizHighScore')) pass('Quiz mantém registro de resultados.');
 const expectedLevels = ['Fácil', 'Médio', 'Difícil', 'Avançado', 'Expert'];
 const expectedTotal = 200;
 const perLevel = 40;
