@@ -46,6 +46,10 @@ function performHashScroll(hash: string) {
     behavior: reduceMotion ? 'auto' : 'smooth',
     block: 'start',
   });
+  if (target instanceof HTMLElement) {
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    window.setTimeout(() => target.focus({ preventScroll: true }), reduceMotion ? 0 : 180);
+  }
   return true;
 }
 
@@ -180,7 +184,7 @@ export function App() {
           <main id="main-content">
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Dashboard"><div id="dashboard" className="scroll-mt-24"><div id="analise"><DashboardMetrics /></div></div></SectionErrorBoundary>
+            <SectionErrorBoundary label="Dashboard"><div><div id="analise"><DashboardMetrics /></div></div></SectionErrorBoundary>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} /></div>
