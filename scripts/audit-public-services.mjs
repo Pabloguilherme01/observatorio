@@ -14,6 +14,10 @@ const required = [
   ['Contratos', 'sgcontratos'],
   ['Acompanhamento de obras', '/cidadao/informacao/obras'],
   ['Lista de espera em creches', '/lista-de-espera-em-creches/'],
+  ['CRAS e assistência social', 'estrutura/secretaria-de-assistencia-social-cidadania-e-juventude'],
+  ['CREAS', 'centro-de-referencia-especializado-de-assistencia-social-creas'],
+  ['Defesa Civil', 'prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes'],
+  ['Regulação de água e esgoto', 'legislacao.aguaslindasdegoias.go.gov.br/leis/1475'],
   ['Serviços de saúde (escalas)', 'escalasmedicas'],
   ['Medicamentos de alto custo', 'medicamentos_altocusto'],
   ['Obras paralisadas', 'obras_paralisadas'],
@@ -69,7 +73,7 @@ if (insecureLinks.length) {
   pass('links públicos externos preservam noopener em target=_blank');
 }
 const allPublicActionLinks = urls.length;
-if (allPublicActionLinks < 64) {
+if (allPublicActionLinks < 68) {
   fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
 } else {
   pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
