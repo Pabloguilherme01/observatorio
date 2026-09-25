@@ -1,4 +1,4 @@
-import { Code2, FileText, Info, List } from 'lucide-react';
+import { Check, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
@@ -29,7 +29,7 @@ export function LanguageModeToggle() {
           >
             <Icon aria-hidden="true" />
             <span><strong>{label}</strong><small>{sub}</small></span>
-            {mode === id && <em>Ativo</em>}
+            {mode === id && <em><Check aria-hidden="true" /> Ativo</em>}
           </button>
         ))}
       </div>
