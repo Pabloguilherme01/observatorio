@@ -49,13 +49,13 @@ export function AudienceHub() {
         <div className="min-w-0">
           <span className={`audience-kicker audience-mode-kicker mode-${mode}`}><CheckCircle2 aria-hidden="true" /> {isSummary ? 'Resumo · essencial' : isSimple ? 'Simples · claro' : 'Técnico · evidências'}</span>
           <h2 id="audience-title">
-            {isSummary ? 'O essencial em poucos dados.' : isTechnical ? 'Explore dados, fontes e método.' : 'Entenda os dados sem jargão.'}
+            {isSummary ? 'Veja o que importa agora.' : isTechnical ? 'Confira como os dados foram construídos.' : 'Entenda o que os números mostram.'}
           </h2>
           <p>
             {isSummary
-              ? 'Poucos números, leitura rápida e ações essenciais. Detalhes ficam fora deste modo.'
+              ? 'Poucos números, estado atual e ações rápidas. Use este modo para se situar.'
               : isTechnical
-                ? 'Indicadores, fontes, recortes, cálculos e limitações ficam organizados para conferência.'
+                ? 'Fontes, recortes, cálculos, qualidade e limitações ficam visíveis para conferência.'
                 : 'Indicadores claros, comparações e contexto para entender o que os números significam.'}
           </p>
         </div>
@@ -76,10 +76,10 @@ export function AudienceHub() {
       <div className={`audience-section-heading audience-mode-section mode-${mode}`}>
         <div>
           <span>Atalhos</span>
-          <h3>{isSummary ? 'Acesso rápido' : isTechnical ? 'Explore por evidência' : 'Escolha um assunto'}</h3>
+          <h3>{isSummary ? 'Agora' : isTechnical ? 'Conferir por evidência' : 'Explore por assunto'}</h3>
         </div>
         <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>
-          {isSummary ? 'Ver resumo' : isTechnical ? 'Abrir evidências' : 'Ver dados'} <ArrowRight aria-hidden="true" />
+          {isSummary ? 'Abrir visão geral' : isTechnical ? 'Abrir evidências' : 'Ver indicadores'} <ArrowRight aria-hidden="true" />
         </button>
       </div>
 
