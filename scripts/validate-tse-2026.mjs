@@ -66,7 +66,11 @@ for (const candidate of payload.matched ?? []) {
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
   if (!candidate.watchlistName) errors.push('Registro TSE sem watchlistName: ' + candidate.sqCandidate);
   if (!candidate.localEvidence) errors.push('Registro TSE sem evidência local: ' + candidate.sqCandidate);
-  if (!Array.isArray(candidate.evidenceSourceUrls) || candidate.evidenceSourceUrls.length === 0) errors.push('Registro TSE sem URL de evidência local: ' + candidate.sqCandidate);
+  if (!Array.isArray(candidate.evidenceSourceUrls) || candidate.evidenceSourceUrls.length === 0) {
+    errors.push('Registro TSE sem URL de evidência local: ' + candidate.sqCandidate);
+  } else if (candidate.evidenceSourceUrls.some(url => typeof url !== 'string' || !/^https:\/\//i.test(url))) {
+    errors.push('Registro TSE possui URL de evidência local inválida: ' + candidate.sqCandidate);
+  }
 }
 
 const normalize = value => String(value ?? '').trim().toLocaleLowerCase('pt-BR');
