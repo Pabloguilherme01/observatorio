@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "quality:check": "npm run typecheck && npm run audit:static && npm run audit:a11y && npm run audit:mobile",
-    "audit:all": "npm run quality:check && npm run audit:public-services && npm run audit:runtime && npm run audit:usability && npm run audit:sources && npm run audit:engagement",
+    "audit:all": "npm run quality:check && npm run audit:public-services && npm run audit:runtime && npm run audit:usability && npm run audit:sources && npm run audit:engagement && npm run audit:quiz && npm run audit:tse-architecture",
     "check:deploy": "npm run build && npm run audit:all",
     "audit:ci": "npm run check:deploy",
     "audit:static": "node scripts/audit-static.mjs",
@@ -28,7 +28,8 @@
     "audit:runtime": "node scripts/audit-runtime.mjs",
     "audit:engagement": "node scripts/audit-engagement.mjs",
     "audit:quiz": "node scripts/audit-quiz.mjs",
-    "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs"
+    "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs",
+    "test:browser": "npx --yes playwright@1.55.0 test --config=playwright.config.mjs"
   },
   "dependencies": {
     "@sentry/react": "10.74.0",
