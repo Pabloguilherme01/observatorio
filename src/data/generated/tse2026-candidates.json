@@ -17,13 +17,6 @@
     "captureTransport": "official_tse_snapshot_plus_documentary_local_evidence",
     "filterNote": "Recorte público de candidaturas estaduais com vínculo local documental mapeado para Águas Lindas de Goiás. A fonte oficial do TSE é usada para o cadastro estadual; o vínculo local é evidência documental separada e não é inferido de um campo municipal inexistente no cadastro estadual.",
     "sourceFileSha256": "ee67167e1a7b94495e30f0bc8eb8b4609b60b7397eac70cd506ebbf815ea26b1",
-    "complementaryFile": {
-      "name": "consulta_cand_complementar_2026_GO.csv",
-      "generationDate": "2026-09-23",
-      "sourceRows": 905,
-      "uniqueCandidateIds": 905,
-      "sha256": ""
-    },
     "photoArchive": {
       "name": "foto_cand2026_GO_div.zip",
       "sourceRows": 905,
