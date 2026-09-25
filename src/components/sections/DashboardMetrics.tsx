@@ -10,6 +10,7 @@ interface MetricDetail { readonly label: string; readonly value: string; readonl
 
 export function DashboardMetrics() {
   const { mode: languageMode } = useLanguageMode();
+  const isSummary = languageMode === 'summary';
   const density = Number(d.indicators.find(i => i.id === 'density')?.value ?? 0);
   const area = Number(d.indicators.find(i => i.id === 'area')?.value ?? 0);
   const population2022 = d.populationSeries.find(p => p.year === 2022)?.value ?? 0;
@@ -34,37 +35,41 @@ export function DashboardMetrics() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             titleId="dashboard-title"
-            eyebrow={languageMode === 'simple' ? 'Números da cidade' : 'Visão geral'}
-            title={languageMode === 'simple' ? 'Os principais números' : 'Os números de referência'}
-            description={languageMode === 'simple'
-              ? 'Toque em um número para ver a fonte.'
-              : 'Indicadores principais em uma camada enxuta. Clique em um número para abrir fonte, referência e metodologia.'}
+            eyebrow={isSummary ? 'Essencial' : languageMode === 'simple' ? 'Números da cidade' : 'Visão geral'}
+            title={isSummary ? 'Cinco números de referência' : languageMode === 'simple' ? 'Os principais números' : 'Os números de referência'}
+            description={isSummary
+              ? 'Dados principais, fonte e data. Toque em um cartão para conferir.'
+              : languageMode === 'simple'
+                ? 'Toque em um número para ver a fonte.'
+                : 'Indicadores principais em uma camada enxuta. Clique em um número para abrir fonte, referência e metodologia.'}
           />
           <div className="flex flex-wrap items-center gap-2" aria-label="Estado do painel">
-            <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> Dados rastreáveis</span>
+            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> Dados rastreáveis</span>}
             <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Atualizado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
           </div>
         </div>
       </div>
 
-      <div className="mb-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.025] p-4 light:border-amber-300/50 light:bg-amber-50/60">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-200 light:text-amber-700" aria-hidden="true" />
-          <div>
-            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/80 light:text-amber-700">O que merece atenção</div>
-            <div className="mt-2 grid gap-2 text-xs leading-5 text-slate-400 sm:grid-cols-3 light:text-slate-600">
-              <p>População: 2022 é Censo; 2025 e 2026 são estimativas do IBGE.</p>
-              <p>Eleitorado: o valor de 2026 é um snapshot e tem data própria de referência.</p>
-              <p>Indicadores do painel podem usar anos-base diferentes; compare sempre a referência.</p>
+      {!isSummary && (
+        <div className="mb-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.025] p-4 light:border-amber-300/50 light:bg-amber-50/60">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-200 light:text-amber-700" aria-hidden="true" />
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/80 light:text-amber-700">O que merece atenção</div>
+              <div className="mt-2 grid gap-2 text-xs leading-5 text-slate-400 sm:grid-cols-3 light:text-slate-600">
+                <p>População: 2022 é Censo; 2025 e 2026 são estimativas do IBGE.</p>
+                <p>Eleitorado: o valor de 2026 é um snapshot e tem data própria de referência.</p>
+                <p>Indicadores do painel podem usar anos-base diferentes; compare sempre a referência.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Cinco números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Agora' : languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
+          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Fonte e data já aparecem no cartão.' : languageMode === 'simple' ? 'Cinco números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
         </div>
       </div>
 
@@ -77,7 +82,9 @@ export function DashboardMetrics() {
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
                   <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{value}</div>
                   <div className="mt-1 text-[10px] font-semibold text-sky-300/80 light:text-sky-700">{sourceLabel}{referenceDate ? ' · ' + referenceDate.split('-').reverse().join('/') : ''}</div>
-                  {languageMode === 'simple' ? (
+                  {isSummary ? (
+                    <div className="mt-1 text-[11px] leading-4 text-slate-500 light:text-slate-600">{caption}</div>
+                  ) : languageMode === 'simple' ? (
                     <div className="simple-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">{simpleExplanation}</div>
                   ) : (
                     <>
@@ -88,7 +95,7 @@ export function DashboardMetrics() {
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     <span className="kpi-source-pill inline-flex items-center rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide">{nature}</span>
                     <span className="inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">
-                      {languageMode === 'simple' ? 'Conferir' : 'Abrir'}
+                      {isSummary ? 'Ver fonte' : languageMode === 'simple' ? 'Conferir' : 'Abrir'}
                     </span>
                   </div>
                   {languageMode === 'technical' && (
@@ -101,7 +108,11 @@ export function DashboardMetrics() {
         ))}
       </div>
 
-      {languageMode === 'simple' ? (
+      {isSummary ? (
+        <div className="dashboard-summary-note mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-500 light:border-sky-200 light:bg-sky-50/70 light:text-slate-600">
+          Cada número tem sua própria data de referência. Toque para abrir a fonte e o método.
+        </div>
+      ) : languageMode === 'simple' ? (
         <div className="simple-detail mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] px-4 py-3 text-xs leading-5 text-slate-300 light:text-slate-600">
           Cada número tem sua própria data. Toque para conferir a fonte.
         </div>
