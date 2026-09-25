@@ -65,7 +65,7 @@ export function DashboardMetrics() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Quatro números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
+          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Cinco números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
         </div>
       </div>
 
