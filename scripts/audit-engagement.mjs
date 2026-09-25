@@ -98,6 +98,7 @@ must(new Set(candidateIds).size === candidateIds.length, 'candidatos não possue
 must(['KEKE DA VULKANIC','RIBEIRO DO TÚLLIO','FELIPE GALDINO'].every(name => candidateNames.includes(name)), 'candidatos locais adicionados ao recorte');
 must(candidateData.matched.every(candidate => candidate.status === 'DEFERIDO'), 'status cadastral publicado está atualizado para DEFERIDO');
 must(candidateData.matched.every(candidate => candidate.localEvidence && Array.isArray(candidate.evidenceSourceUrls) && candidate.evidenceSourceUrls.length > 0), 'cada candidato possui evidência documental de vínculo local');
+must(read('src/components/sections/PoliticalResearch.tsx').includes('Fonte do vínculo') && read('src/components/sections/PoliticalResearch.tsx').includes('Abrir fonte do vínculo'), 'interface expõe a proveniência do vínculo local');
 must(!candidateData.meta.selection.includes('watchlist_only') || candidateData.matched.length === candidateData.watchlist.length, 'seleção do recorte não fica menor que a watchlist publicada');
 
 
