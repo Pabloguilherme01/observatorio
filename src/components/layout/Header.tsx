@@ -18,6 +18,8 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const moreOpenRef = useRef(false);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
   const toolsButtonRef = useRef<HTMLButtonElement>(null);
   const toolsPanelRef = useRef<HTMLDivElement>(null);
   const updatedAt = formatDate(d.meta.updatedAt);
@@ -28,6 +30,10 @@ export function Header() {
     ? Math.max(0, Math.floor((now.getTime() - captureDate.getTime()) / 86400000))
     : 0;
   const updateState = ageDays > 7 ? 'stale' : 'today';
+
+  useEffect(() => {
+    moreOpenRef.current = moreOpen;
+  }, [moreOpen]);
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') return;
@@ -65,10 +71,17 @@ export function Header() {
     const onDocumentPointer = (event: MouseEvent) => {
       if (!(event.target instanceof Node)) return;
       const target = event.target as HTMLElement;
-      if (moreOpen && !target.closest('[aria-haspopup="menu"]') && !target.closest('[role="menu"]')) setMoreOpen(false);
+      if (moreOpenRef.current && !target.closest('[aria-haspopup="menu"]') && !target.closest('[role="menu"]')) {
+        setMoreOpen(false);
+        window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+      }
     };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && moreOpen) setMoreOpen(false);
+      if (event.key === 'Escape' && moreOpenRef.current) {
+        event.preventDefault();
+        setMoreOpen(false);
+        window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+      }
     };
 
   useEffect(() => {
@@ -118,16 +131,18 @@ export function Header() {
             ))}
             <div className="relative">
               <button
+                ref={moreButtonRef}
                 type="button"
                 onClick={() => setMoreOpen(value => !value)}
                 className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-400 transition hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2"
                 aria-expanded={moreOpen}
                 aria-haspopup="menu"
+                aria-controls="desktop-more-menu"
               >
                 Mais
               </button>
               {moreOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 grid max-h-[min(70vh,560px)] w-64 gap-1 overflow-auto rounded-2xl border border-white/10 bg-[#0f1822]/98 p-2 shadow-2xl" role="menu" aria-label="Mais áreas do observatório">
+                <div id="desktop-more-menu" className="absolute right-0 top-full z-50 mt-2 grid max-h-[min(70vh,560px)] w-64 gap-1 overflow-auto rounded-2xl border border-white/10 bg-[#0f1822]/98 p-2 shadow-2xl" role="menu" aria-label="Mais áreas do observatório">
                   {moreNavigation.map(item => (
                     <a
                       key={item.id}
