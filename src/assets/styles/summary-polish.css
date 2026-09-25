@@ -1613,6 +1613,34 @@
 .light .quiz-feedback p,
 .light .quiz-result-hint,
 .light .quiz-footer > span { color: #475569; }
+.light .quiz-shell .quiz-head h2,
+.light .quiz-shell .quiz-prompt,
+.light .quiz-shell .quiz-phase-name,
+.light .quiz-shell .quiz-option,
+.light .quiz-shell .quiz-option-text,
+.light .quiz-shell .quiz-result h3 { color: #0f172a; }
+.light .quiz-shell .quiz-phase-card,
+.light .quiz-shell .quiz-card {
+  background: #fff;
+  border-color: #dbe5ec;
+  box-shadow: 0 12px 30px rgba(15,23,42,.08);
+}
+.light .quiz-shell .quiz-option {
+  background: #f8fafc;
+  border-color: #dbe5ec;
+}
+.light .quiz-shell .quiz-option.is-selected {
+  background: #eff6ff;
+  border-color: #7dd3fc;
+}
+.light .quiz-shell .quiz-feedback {
+  background: #f8fafc;
+  border-color: #dbe5ec;
+}
+.light .quiz-shell .quiz-result-score { color: #0369a1; }
+.light .quiz-shell .quiz-next,
+.light .quiz-shell .quiz-action { color: #0369a1; }
+.light .quiz-shell .quiz-action.is-primary { color: #fff; }
 .light .quiz-phase-lock { color: #475569; }
 .light .quiz-high-score-row {
   border-color: rgb(226 232 240);
