@@ -18,6 +18,7 @@ const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
 const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
+const viteSource = vite;
 
 const errors = [];
 const pass = message => console.log('PASS', message);
@@ -51,7 +52,6 @@ must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'site
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
 const searchModal = read('src/components/layout/SearchModal.tsx');
 const publicServiceSearch = read('src/data/publicServiceSearch.ts');
-const viteSource = read('vite.config.ts');
 const dashboardMetrics = read('src/components/sections/DashboardMetrics.tsx');
 const historicalTrendChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const budgetSection = read('src/components/sections/BudgetSection.tsx');
