@@ -11,7 +11,7 @@ const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 
 const questions = [...quiz.matchAll(
-  /\{\s*id:\s*"(q\d+)",\s*difficulty:\s*'([^']+)',\s*prompt:\s*"([^"]+)",\s*options:\s*\[([^\]]+)\],\s*answerIndex:\s*(\d+),[\s\S]*?sourceId:\s*"([^"]+)"\s*\}/g,
+  /\{\s*id:\s*"(q\d+)",\s*difficulty:\s*'([^']+)',\s*prompt:\s*"((?:\\.|[^"\\])*)",\s*options:\s*\[([^\]]+)\],\s*answerIndex:\s*(\d+),[\s\S]*?sourceId:\s*"([^"]+)"\s*\}/g,
 )].map(match => ({
   id: match[1],
   difficulty: match[2],
