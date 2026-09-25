@@ -121,6 +121,7 @@ const allowedHosts = new Set([
   'www.mpgo.mp.br',
   'pardal-web.tse.jus.br',
   'portalsei.aguaslindasdegoias.go.gov.br',
+  'www.saneago.com.br',
 ]);
 
 for (const url of urls) {
