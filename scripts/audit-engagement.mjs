@@ -71,6 +71,8 @@ must(quiz.includes('className="quiz-phase-grid"') && quiz.includes('Fase {index 
 must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
 must(executive.includes('poll?.pollster') && executive.includes('poll?.method') && executive.includes('poll?.registrationNumber'), 'card de pesquisa exibe identificação e cenário');
+must(audience.includes('<strong>Serviços públicos</strong>') && audience.includes("jump('acao')"), 'Home oferece atalho direto para serviços públicos');
+must(electoral360.includes('Nomes acompanhados no recorte') && electoral360.includes('não representa uma lista completa de candidaturas') && electoral360.includes('recorte editorial acompanhado'), 'Eleitoral 360 deixa explícito o caráter editorial e não exaustivo do recorte');
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
 must((read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && (read('src/components/sections/HeroCountdown.tsx')).includes('Ativar Modo Eleição') && (read('src/components/sections/HeroCountdown.tsx')).includes('aria-pressed'), 'Modo Eleição possui alternador visível e acessível');
 must((read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: IBGE') && (read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
