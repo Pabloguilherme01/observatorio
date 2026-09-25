@@ -1,8 +1,7 @@
-import { ArrowRight, CalendarClock, Database, ExternalLink, Vote } from 'lucide-react';
+import { ArrowRight, CalendarClock, Database, ExternalLink } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { useCountdown } from '../../hooks/useCountdown';
-import { useEffect, useState } from 'react';
-import { EDITION, STORAGE_NAMESPACE } from '../../config/version';
+import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -26,26 +25,6 @@ export function HeroCountdown() {
   const secondRound = useCountdown('2026-10-25T08:00:00-03:00');
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode: languageMode } = useLanguageMode();
-  const [electionMode, setElectionMode] = useState<boolean>(() => {
-    try {
-      return localStorage.getItem(`${STORAGE_NAMESPACE}-election-mode`) === '1'
-        || document.documentElement.classList.contains('mode-election');
-    } catch {
-      return document.documentElement.classList.contains('mode-election');
-    }
-  });
-
-  useEffect(() => {
-    const onElectionModeChanged = (event: Event) => {
-      setElectionMode(Boolean((event as CustomEvent<boolean>).detail));
-    };
-    window.addEventListener('observatorio:election-mode-changed', onElectionModeChanged);
-    return () => window.removeEventListener('observatorio:election-mode-changed', onElectionModeChanged);
-  }, []);
-
-  const toggleElectionMode = () => {
-    window.dispatchEvent(new CustomEvent('observatorio:election-mode', { detail: !electionMode }));
-  };
 
   return <section className="hero-shell relative overflow-hidden border-b border-white/10 px-4 py-8 sm:px-6 sm:py-14 lg:px-8" aria-labelledby="hero-title">
     <div className="mx-auto max-w-7xl">
@@ -86,26 +65,13 @@ export function HeroCountdown() {
           </details>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" onClick={toggleElectionMode} aria-pressed={electionMode} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-200/10 bg-amber-300 px-4 py-2.5 text-sm font-black text-slate-950 shadow-lg shadow-amber-950/20 transition hover:-translate-y-0.5 hover:bg-amber-200 focus-visible:outline-2 focus-visible:outline-amber-200 focus-visible:outline-offset-2">
-              <Vote className="h-4 w-4" aria-hidden="true" />
-              {electionMode ? 'Modo Eleição ativo' : 'Ativar Modo Eleição'}
-            </button>
-            <a href="#descubra" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-transparent px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:border-sky-300/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
+            <a href="#descubra" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/[0.08] px-4 py-2.5 text-sm font-bold text-sky-100 transition hover:border-sky-300/40 hover:bg-sky-300/[0.13] focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
               Explorar <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a href="#evidencias" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-transparent px-4 py-2.5 text-sm font-bold text-slate-300 transition hover:border-sky-300/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
               Conferir fontes
             </a>
           </div>
-
-          <div className="election-mode-actions sr-only" aria-hidden="true">Modo Eleição · acesso rápido</div>
-          {electionMode && (
-            <div className="hero-election-quick mt-3 flex items-center gap-2 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-2">
-              <Vote className="ml-1 h-4 w-4 shrink-0 text-amber-200" aria-hidden="true" />
-              <span className="min-w-0 flex-1 text-xs font-bold text-amber-100">Modo Eleição ativo</span>
-              <button type="button" className="hero-mobile-election-toggle min-h-10 rounded-xl border border-amber-300/20 bg-amber-300/[0.045] px-3 text-[11px] font-black text-amber-100" onClick={toggleElectionMode} aria-pressed={true} aria-label="Desativar Modo Eleição">Desativar</button>
-            </div>
-          )}
 
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-medium text-slate-600" aria-label="Atualização do conjunto de dados">
             {languageMode === 'simple' ? (
