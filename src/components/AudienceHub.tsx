@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, CalendarDays, CheckCircle2, Droplets, ExternalLink, Landmark, Search, ShieldCheck, Users, WalletCards, Vote, FileCheck2, Database } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, CalendarDays, Droplets, ExternalLink, Landmark, Search, ShieldCheck, Users, WalletCards, Vote, FileCheck2, Database } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
 
 type Topic = {
@@ -13,13 +13,13 @@ const topics: readonly Topic[] = [
   { id: 'eleitorado', label: 'Eleitorado', simple: 'Perfil, evolução e dados de 2026.', icon: Users },
   { id: 'orcamento', label: 'Orçamento', simple: 'Receitas, despesas e planejamento público.', icon: WalletCards },
   { id: 'transporte', label: 'Transporte', simple: 'Tarifas e custo relativo do deslocamento.', icon: BusFront },
-  { id: 'saude', label: 'Serviços', simple: 'Água, esgoto, saúde e capacidade de atendimento.', icon: Droplets },
+  { id: 'acao', label: 'Serviços', simple: 'Água, esgoto, saúde e canais públicos.', icon: Droplets },
   { id: 'eleitoral360', label: 'Eleitoral', simple: 'Candidaturas, pesquisas, contas e registros.', icon: Landmark },
 ];
 
 const officialResources = [
   { label: 'Resultados 2026', href: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados', note: 'Informações oficiais sobre divulgação', icon: Vote },
-  { label: 'Simulador da urna', href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/simulador-da-urna-eletronica-supera-205-mil-acessos-e-recebe-melhorias', note: 'Treine a navegação da votação', icon: FileCheck2 },
+  { label: 'Simulador da urna', href: 'https://www.justicaeleitoral.jus.br/simulador-votacao/', note: 'Treine a navegação da votação', icon: FileCheck2 },
   { label: 'Regras para votar', href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/por-dentro-das-eleicoes-confira-as-regras-para-o-dia-da-votacao', note: 'Orientações oficiais para o dia da votação', icon: ShieldCheck },
   { label: 'Estatísticas eleitorais', href: 'https://www.tse.jus.br/eleicoes/estatisticas', note: 'Dados e séries oficiais do TSE', icon: Database },
 ] as const;
@@ -59,7 +59,7 @@ export function AudienceHub() {
         </div>
 
         <div className="audience-hero-actions">
-          <button type="button" className="audience-search" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))}>
+          <button type="button" className="audience-search" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
             <Search aria-hidden="true" />
             <span>Buscar um assunto</span>
             <kbd>Ctrl/⌘ K</kbd>
