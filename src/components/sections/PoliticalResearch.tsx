@@ -21,7 +21,7 @@ type CandidateView = {
 };
 
 function evidenceSourceLabel(urls: readonly string[]) {
-  const primary = urls.some(url => /(^https?:\/\/)?([^/]*\.)?(gov\.br|jus\.br|go\.gov\.br)(\/|$)/i.test(url));
+  const primary = urls.some(url => /(^https?:\/\/)?([^/]*\.)?(gov\.br|jus\.br|go\.gov\.br|go\.leg\.br|leg\.br)(\/|$)/i.test(url));
   return primary ? 'Fonte institucional' : 'Fonte secundária';
 }
 
