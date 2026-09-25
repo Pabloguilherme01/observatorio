@@ -267,12 +267,6 @@ main{padding-bottom:0}
   [data-language-mode="summary"] .audience-home .audience-intro{padding-bottom:12px}
   [data-language-mode="summary"] .audience-home .audience-intro h2{font-size:1.55rem}
   [data-language-mode="summary"] .audience-home .audience-primary-action{width:100%;min-height:48px}
-  [data-language-mode="summary"] .mode-scope-context,
-  [data-language-mode="summary"] .mode-scope-civic,
-  [data-language-mode="summary"] .mode-scope-election,
-  [data-language-mode="summary"] .mode-scope-public,
-  [data-language-mode="summary"] .mode-scope-trust,
-  [data-language-mode="summary"] .mode-scope-evidence{display:none!important}
   [data-language-mode="simple"] .audience-home .audience-topic-grid,
   [data-language-mode="technical"] .audience-home .audience-topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
   [data-language-mode="simple"] .audience-home .audience-action-grid,
@@ -462,14 +456,6 @@ main{padding-bottom:0}
 .deferred-section{
     content-visibility:auto;
     contain-intrinsic-size:auto 420px;
-  }
-  .mode-scope-context,
-  .mode-scope-civic,
-  .mode-scope-election,
-  .mode-scope-public,
-  .mode-scope-trust,
-  .mode-scope-evidence{
-    contain:layout paint;
   }
   .audience-home .audience-topic-grid,
   .audience-home .audience-action-grid,
