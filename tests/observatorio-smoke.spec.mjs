@@ -51,8 +51,8 @@ test.describe('Observatório smoke flows', () => {
 
     await openSection(page, 'principios');
     await expect(page.getByRole('heading', { name: /Como conferir os dados/i })).toBeVisible();
-    await expect(page.getByText(/Publicação pública/i)).toBeVisible();
-    await expect(page.getByText(/Paridade de publicação/i)).toBeVisible();
+    await expect(page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first()).toBeVisible();
+    await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
     await openSection(page, 'acao');
     await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
