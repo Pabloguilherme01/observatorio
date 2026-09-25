@@ -28,7 +28,7 @@ export function PoliticalResearch() {
           <div className="flex items-start gap-3">
             <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
             <div className="min-w-0 w-full">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">1 snapshot disponível</div>
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Pesquisas registradas · 1 snapshot</div>
               <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">{poll.pollster}</h3>
               <p className="mt-1 text-xs leading-5 text-slate-500">
                 {poll.collectionDate} · {poll.interviews} entrevistas · {poll.method === 'spontaneous' ? 'pergunta espontânea' : poll.method} · registro {poll.registrationNumber}
