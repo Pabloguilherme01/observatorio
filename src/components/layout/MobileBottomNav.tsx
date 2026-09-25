@@ -18,7 +18,7 @@ const sectionToTab = (id: string) => {
   return 'more';
 };
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes']);
+const TECHNICAL_ONLY_DESTINATIONS = new Set(['contexto', 'eleitorado', 'politica', 'candidaturas', 'eleitoral360', 'principios', 'qualidade', 'evidencias', 'fontes', 'exportacao', 'orcamento-impacto', 'quiz']);
 
 function jump(id: string, mode: 'summary' | 'simple' | 'technical', setMode: (mode: 'summary' | 'simple' | 'technical') => void) {
   const requiresTechnical = TECHNICAL_ONLY_DESTINATIONS.has(id);
