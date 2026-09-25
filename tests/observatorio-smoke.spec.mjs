@@ -39,6 +39,7 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.getByRole('status').filter({ hasText: /Resposta correta|Resposta conferida/i })).toBeVisible();
     await expect(page.getByRole('button', { name: /Próxima|Finalizar fase/i })).toBeEnabled();
     await page.getByRole('button', { name: /Próxima|Finalizar fase/i }).click();
+    await expect(page.getByText(/200 perguntas · 5 fases · 40 por fase/i)).toBeVisible();
 
     await openSection(page, 'acao');
     await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
