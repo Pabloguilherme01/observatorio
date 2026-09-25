@@ -108,6 +108,12 @@ export function AudienceHub() {
           <ArrowRight aria-hidden="true" />
         </button>
 
+        <button type="button" className="audience-action-card" onClick={() => jump('acao')}>
+          <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
+          <span><strong>Serviços públicos</strong><small>Acesse serviços municipais, saúde, legislação e canais oficiais.</small></span>
+          <ArrowRight aria-hidden="true" />
+        </button>
+
         <button type="button" className="audience-action-card" onClick={() => jump('dados')}>
           <span className="audience-action-icon"><CalendarDays aria-hidden="true" /></span>
           <span><strong>Atualizações</strong><small>Mudanças recentes, novos dados e fontes.</small></span>
