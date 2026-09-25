@@ -1,7 +1,7 @@
 import type { CandidateSnapshot, ISODate, ObservatoryData } from '../types/observatorio';
-import { sourceRegistry } from './sourceRegistry';
-import { EDITION } from '../config/version';
-import generatedCandidates from './generated/tse2026-candidates.json';
+import { sourceRegistry } from './sourceRegistry.js';
+import { EDITION } from '../config/version.js';
+import generatedCandidates from './generated/tse2026-candidates.json' with { type: 'json' };
 
 const rawGeneratedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt?.slice(0, 10);
 const generatedCandidateSnapshotDate: ISODate =
