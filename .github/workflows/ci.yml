@@ -33,35 +33,8 @@ jobs:
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
 
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Static consistency audit
-        run: npm run audit:static
-
-      - name: Accessibility and contrast audit
-        run: npm run audit:a11y
-
-      - name: Mobile UX audit
-        run: npm run audit:mobile
-
-      - name: Runtime hardening audit
-        run: npm run audit:runtime
-
-      - name: Usability audit
-        run: npm run audit:usability
-
-      - name: Sources audit
-        run: npm run audit:sources
-
-      - name: Engagement audit
-        run: npm run audit:engagement
-
-      - name: Quiz audit
-        run: npm run audit:quiz
-
-      - name: Verify TSE architecture
-        run: npm run audit:tse-architecture
+      - name: Complete audit gate
+        run: npm run audit:all
 
       - name: Validate TSE snapshot
         run: npm run validate:tse
