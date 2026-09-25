@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RESULTS_FEED_SCHEMA_VERSION, RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT } from '../data/resultsConfig';
+import { RESULTS_FEED_SCHEMA_VERSION, RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT, electionCodeMatchesCargo } from '../data/resultsConfig';
 
 export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'stale' | 'complete' | 'ended_unavailable';
 
@@ -127,8 +127,9 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   return payload.entries.every(entry => {
     if (!entry || typeof entry !== 'object') return false;
     const row = entry as Record<string, unknown>;
-    if (!Number.isInteger(row.electionCode) || (row.electionCode as number) < 1) return false;
+    if (!Number.isInteger(row.electionCode) || !OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes.includes(row.electionCode as number)) return false;
     if (typeof row.cargo !== 'string' || !row.cargo.trim()) return false;
+    if (!electionCodeMatchesCargo(row.electionCode as number, payload.uf as string, row.cargo as string)) return false;
     if (typeof row.sourceFile !== 'string' || !row.sourceFile.trim()) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
     if (!Array.isArray(row.items)) return false;
