@@ -33,7 +33,7 @@ const downloadedAt = payload.meta?.downloadedAt;
 const parsedDownloadedAt = downloadedAt ? Date.parse(downloadedAt) : NaN;
 const freshnessCheckedAt = process.env.TSE_FRESHNESS_CHECKED_AT || downloadedAt;
 const parsedFreshnessCheckedAt = freshnessCheckedAt ? Date.parse(freshnessCheckedAt) : NaN;
-const maxAgeHours = Number(process.env.TSE_MAX_AGE_HOURS || 36);
+const maxAgeHours = Number(process.env.TSE_MAX_AGE_HOURS || 24);
 const ageHours = Number.isFinite(parsedFreshnessCheckedAt)
   ? Math.max(0, (Date.now() - parsedFreshnessCheckedAt) / 3_600_000)
   : Infinity;
