@@ -1,18 +1,18 @@
-/* Mobile final layer · 2026-09-24
-   Isolated overrides so the mobile pass remains easy to audit and rollback. */
+/* Mobile final layer · 2026-09-24 */
 @media (max-width:767px){
 :root{--mobile-page-gutter:14px;--mobile-nav-height:64px}
 html{scroll-padding-top:72px;scroll-padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))}
-body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px));overflow-x:clip}
-#root,main,section{min-width:0;max-width:100%} section{scroll-margin-top:72px}
+body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px));overflow-x:clip;-webkit-text-size-adjust:100%}
+#root,main,section{min-width:0;max-width:100%}
+section{scroll-margin-top:72px}
 .site-header-inner{min-height:56px;padding:6px var(--mobile-page-gutter);gap:4px}
-.site-brand{max-width:50vw}
+.site-brand{max-width:50vw;min-width:0}
 .site-brand>span:first-child{font-size:8px!important;letter-spacing:.16em!important;color:#64748b!important}
 .site-brand>span:last-child{margin-top:2px!important;font-size:15px!important;letter-spacing:-.02em!important;color:#f8fafc!important}
 .site-brand>span:nth-child(2){width:24px!important;margin-block:2px!important}
 .site-icon-button,.site-tools-button{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;border-radius:12px}
 .hero-shell{padding:20px var(--mobile-page-gutter) 24px!important}
-.hero-shell h1{font-size:clamp(2rem,9.6vw,2.55rem)!important;line-height:1!important}
+.hero-shell h1{font-size:clamp(2rem,9.6vw,2.55rem)!important;line-height:1!important;letter-spacing:-.04em}
 .hero-shell p{font-size:13px!important;line-height:1.45!important}
 .hero-reading-guide{margin-top:9px!important}
 .hero-reading-guide summary{min-height:40px!important;padding:9px 11px!important}
@@ -22,18 +22,18 @@ body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0
 .hero-shell>.mx-auto>.grid>div:last-child{gap:8px}
 .hero-shell>.mx-auto>.grid>div:last-child>div{padding:11px!important;border-radius:16px}
 .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4{gap:5px}
-.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4>div{padding:8px 3px!important;border-radius:10px}
+.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4>div{padding:8px 3px!important;border-radius:10px;min-width:0}
 .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-xl{font-size:1rem}
-.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:8px}
+.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:8px;line-height:1.15}
 .hero-shell>.mx-auto>.mt-2.flex{margin-top:8px!important;gap:6px 10px;font-size:8px!important}
 .hero-shell>.mx-auto>.mt-2.flex>span{min-width:0;overflow-wrap:anywhere}
-.mobile-tools-sheet{max-height:calc(100dvh - 56px);overflow:auto;overscroll-behavior:contain;padding:10px var(--mobile-page-gutter) 14px!important}
+.mobile-tools-sheet{max-height:calc(100dvh - 56px);overflow:auto;overscroll-behavior:contain;padding:10px var(--mobile-page-gutter) 14px!important;-webkit-overflow-scrolling:touch}
 .mobile-tools-sheet nav a,.mobile-tools-sheet nav summary,.mobile-tool-action{min-height:44px}
 .today-rail,.topic-rail,.mobile-rail,.overflow-x-auto{max-width:100%;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .today-rail::-webkit-scrollbar,.topic-rail::-webkit-scrollbar,.mobile-rail::-webkit-scrollbar,.overflow-x-auto::-webkit-scrollbar{display:none}
 .today-rail,.topic-rail,.mobile-rail{gap:8px;scroll-snap-type:x proximity}
-.today-card{flex-basis:min(78vw,292px);min-height:108px;padding:12px}
-.topic-card{min-width:150px;min-height:104px;padding:11px}
+.today-card{flex:0 0 min(78vw,292px);min-height:108px;padding:12px;scroll-snap-align:start}
+.topic-card{flex:0 0 150px;min-width:150px;min-height:104px;padding:11px;scroll-snap-align:start}
 .summary-simple-grid,.summary-public-topics,.summary-public-facts{gap:7px!important;min-width:0}
 .summary-simple-card{min-height:112px;padding:11px}
 .summary-simple-card>strong{font-size:1.2rem;line-height:1.08}
@@ -45,11 +45,11 @@ body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0
 .quiz-phase-grid{gap:6px}
 .quiz-phase-card{min-height:48px;padding:9px;border-radius:12px}
 .quiz-prompt{font-size:1rem;line-height:1.42}
-.quiz-option{min-height:50px!important;padding:10px!important;border-radius:13px}
+.quiz-option{min-height:50px!important;padding:10px!important;border-radius:13px;text-align:left}
 .quiz-footer{align-items:stretch}
 .quiz-footer .quiz-next,.quiz-footer .quiz-action{min-height:46px;justify-content:center}
-.search-modal-backdrop{padding-inline:8px}
-.search-modal-panel{width:100%;margin-top:8px;border-radius:18px;max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+.search-modal-backdrop{padding:8px}
+.search-modal-panel{width:100%;margin-top:8px;border-radius:18px;max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow:hidden}
 .search-modal-input,input,select,textarea{font-size:16px!important}
 .mobile-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:70;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;min-height:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))!important;padding:4px max(4px,env(safe-area-inset-left,0px)) env(safe-area-inset-bottom,0px)!important;gap:3px!important;background:rgba(9,15,22,.96);border-top:1px solid rgba(148,163,184,.16);box-shadow:0 -12px 32px rgba(0,0,0,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 .mobile-bottom-nav button{width:100%;min-width:0!important;min-height:48px!important;max-height:56px;padding:5px 2px!important;gap:3px!important;border:1px solid transparent;border-radius:12px;font-size:9px!important;font-weight:800;line-height:1.05}
@@ -70,9 +70,20 @@ body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0
 .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:7px}
 .today-card{flex-basis:82vw}
 .summary-simple-grid,.summary-public-topics,.summary-public-facts,.candidate-card .flex.flex-wrap.gap-2{grid-template-columns:1fr!important}
-.quiz-phase-card{padding:8px 6px}.quiz-phase-name{font-size:.9rem}
+.quiz-phase-card{padding:8px 6px}
+.quiz-phase-name{font-size:.9rem}
 .mobile-bottom-nav button{min-height:46px!important;font-size:8.5px!important}
 .mobile-bottom-nav button svg{width:17px!important;height:17px!important}
+}
+@media (max-width:350px){
+:root{--mobile-page-gutter:10px}
+.site-brand{max-width:42vw}
+.site-brand>span:last-child{font-size:14px!important}
+.hero-shell h1{font-size:1.85rem!important}
+.hero-shell .mt-4.flex.flex-wrap,.hero-shell .mt-5.flex.flex-wrap{gap:6px}
+.hero-shell .mt-4.flex.flex-wrap>*,.hero-shell .mt-5.flex.flex-wrap>*{min-height:44px}
+.mobile-bottom-nav button{padding-inline:1px!important;font-size:8px!important}
+.mobile-bottom-nav button svg{width:16px!important;height:16px!important}
 }
 @media (prefers-reduced-motion:reduce){
 .site-icon-button,.site-tools-button,.hero-shell a,.hero-shell button,.quiz-option,.quiz-phase-card,.mobile-bottom-nav button{transition:none!important}
