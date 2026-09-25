@@ -144,7 +144,7 @@ if (process.env.AUDIT_PUBLIC_SERVICES_LIVE === 'true') {
     }
     if ([404, 410].includes(result.status)) {
       fail.push(`endpoint público responde com ${result.status}: ${url}`);
-    } else if (result.status >= 500 && /legislacao\\.aguaslindasdegoias\\.go\\.gov\\.br/i.test(url)) {
+    } else if (result.status >= 500 && /legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(url)) {
       console.warn('WARN', url, `retornou ${result.status}; portal de legislação pode bloquear o runner, mas a fonte oficial permanece registrada`);
     } else if (result.status >= 500) {
       fail.push(`endpoint público responde com ${result.status}: ${url}`);
