@@ -26,6 +26,7 @@ const required = [
   ['Ordem cronológica de pagamentos', 'ordem_cronologica_pagamentos_pdt'],
   ['Dados abertos e API', 'acesso_automatizado'],
   ['Registrar reclamação', 'ouvidoria/reclamacao'],
+  ['Consultar o Pardal', 'pardal-web.tse.jus.br'],
 ];
 
 async function checkLive(url) {
@@ -94,6 +95,7 @@ const allowedHosts = new Set([
   'www.tse.jus.br',
   'divulgacandcontas.tse.jus.br',
   'www.mpgo.mp.br',
+  'pardal-web.tse.jus.br',
   'portalsei.aguaslindasdegoias.go.gov.br',
 ]);
 
