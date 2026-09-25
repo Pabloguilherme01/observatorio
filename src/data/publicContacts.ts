@@ -1,0 +1,38 @@
+export const immediatePublicContacts = [
+  {
+    id: 'samu-192',
+    title: 'SAMU',
+    phone: '192',
+    tel: 'tel:192',
+    description: 'Emergência médica',
+    sourceUrl: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/',
+    verifiedAt: '2026-09-25',
+  },
+  {
+    id: 'defesa-civil',
+    title: 'Defesa Civil',
+    phone: '(61) 99669-9434',
+    tel: 'tel:+5561996699434',
+    description: 'Emergências e proteção civil',
+    sourceUrl: 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/',
+    verifiedAt: '2026-09-25',
+  },
+  {
+    id: 'conselho-tutelar',
+    title: 'Conselho Tutelar',
+    phone: '(61) 99303-8040',
+    tel: 'tel:+5561993038040',
+    description: 'Proteção de crianças e adolescentes',
+    sourceUrl: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/',
+    verifiedAt: '2026-09-25',
+  },
+  {
+    id: 'caps',
+    title: 'CAPS',
+    phone: '(61) 3618-1559',
+    tel: 'tel:+556136181559',
+    description: 'Atendimento em saúde mental',
+    sourceUrl: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/',
+    verifiedAt: '2026-09-25',
+  },
+] as const;

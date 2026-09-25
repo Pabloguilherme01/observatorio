@@ -17,7 +17,7 @@ const required = [
   ['CRAS e assistência social', 'estrutura/secretaria-de-assistencia-social-cidadania-e-juventude'],
   ['CREAS', 'centro-de-referencia-especializado-de-assistencia-social-creas'],
   ['Defesa Civil', 'prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes'],
-  ['Regulação de água e esgoto', 'legislacao.aguaslindasdegoias.go.gov.br/leis/1475'],
+  ['Água e esgoto — atendimento', 'saneago.com.br/site'],
   ['Conselho Tutelar', 'estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar'],
   ['CAPS', 'estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial'],
   ['SAMU', 'estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia'],
@@ -84,6 +84,17 @@ if (allPublicActionLinks < 74) {
   fail.push(`quantidade de atalhos públicos cadastrados abaixo do esperado: ${allPublicActionLinks}`);
 } else {
   pass(`${allPublicActionLinks} atalhos públicos cadastrados possuem URL auditável (${urls.length} URLs únicas)`);
+}
+
+const contactContract = [
+  ['SAMU', 'tel:192', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/'],
+  ['Defesa Civil', 'tel:+5561996699434', 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/'],
+  ['Conselho Tutelar', 'tel:+5561993038040', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/'],
+  ['CAPS', 'tel:+556136181559', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/'],
+];
+for (const [label, tel, sourceUrl] of contactContract) {
+  if (!source.includes(label) || !source.includes(tel) || !source.includes(sourceUrl)) fail.push(label + ' sem contrato de contato/fonte');
+  else pass(label + ' possui telefone e fonte oficial vinculados');
 }
 
 const categories = [...actionsBlock.matchAll(/category:\s*'([^']+)'/g)].map(match => match[1]);

@@ -1,6 +1,7 @@
 import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { immediatePublicContacts } from '../../data/publicContacts';
 
 const priorityPublicServices = [
   { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
@@ -14,7 +15,7 @@ const priorityPublicServices = [
   { icon: ShieldCheck, title: 'CRAS e assistência social', description: 'Consulte unidades, contatos e horários da rede municipal de assistência social.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/' },
   { icon: Scale, title: 'CREAS', description: 'Consulte o serviço especializado de assistência social, contatos e horário oficial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/centro-de-referencia-especializado-de-assistencia-social-creas/' },
   { icon: ShieldCheck, title: 'Defesa Civil', description: 'Acesse informações municipais de emergência e o contato oficial da Defesa Civil.', href: 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/' },
-  { icon: Droplets, title: 'Regulação de água e esgoto', description: 'Consulte a legislação oficial sobre a AMAE e a regulação, controle e fiscalização desses serviços.', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1475' },
+  { icon: Droplets, title: 'Água e esgoto — atendimento', description: 'Acesse os canais oficiais da Saneago para atendimento, ocorrências e serviços de abastecimento e esgotamento sanitário.', href: 'https://www.saneago.com.br/site' },
   { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Consulte endereço, horário e contato oficial do Conselho Tutelar.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/' },
   { icon: Stethoscope, title: 'CAPS', description: 'Consulte endereço, horário e contato oficial do Centro de Atenção Psicossocial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/' },
   { icon: Stethoscope, title: 'SAMU', description: 'Acesse o serviço oficial e o número de emergência 192.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/' },
@@ -332,26 +333,21 @@ export function CivicActionHub() {
           </span>
           <div>
             <h3 className="text-base font-black text-white light:text-slate-900">Contatos de utilidade imediata</h3>
-            <p className="mt-1 text-xs leading-5 text-slate-500">Canais oficiais publicados pela Prefeitura; confirme o horário e o contexto no órgão responsável.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Telefones oficiais verificados em 25/09/2026. O link da fonte permite conferir o contato diretamente no órgão responsável.</p>
           </div>
         </div>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          <a href="tel:192" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-            <span className="block text-sm font-black text-white light:text-slate-900">SAMU · 192</span>
-            <span className="text-[11px] text-slate-500">Emergência médica</span>
-          </a>
-          <a href="tel:+5561996699434" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-            <span className="block text-sm font-black text-white light:text-slate-900">Defesa Civil</span>
-            <span className="text-[11px] text-slate-500">(61) 99669-9434</span>
-          </a>
-          <a href="tel:+5561993038040" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-            <span className="block text-sm font-black text-white light:text-slate-900">Conselho Tutelar</span>
-            <span className="text-[11px] text-slate-500">(61) 99303-8040</span>
-          </a>
-          <a href="tel:+556136181559" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-            <span className="block text-sm font-black text-white light:text-slate-900">CAPS</span>
-            <span className="text-[11px] text-slate-500">(61) 3618-1559</span>
-          </a>
+          {immediatePublicContacts.map(contact => (
+            <div key={contact.id} className="rounded-xl border border-white/8 bg-white/[0.025] p-3">
+              <a href={contact.tel} className="block min-h-11 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                <span className="block text-sm font-black text-white light:text-slate-900">{contact.title} · {contact.phone}</span>
+                <span className="text-[11px] text-slate-500">{contact.description}</span>
+              </a>
+              <a href={contact.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-9 items-center gap-1 text-[10px] font-bold text-sky-300 hover:text-sky-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                Fonte oficial <ExternalLink className="h-3 w-3" aria-hidden="true" />
+              </a>
+            </div>
+          ))}
         </div>
       </Card>
 
