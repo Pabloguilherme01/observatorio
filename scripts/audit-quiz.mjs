@@ -31,6 +31,10 @@ else pass('Pontuação final do Quiz não duplica a última resposta.');
 
 if (!quickQuizSource.includes('recordQuizHighScore')) fail('Quiz perdeu o registro de resultados.');
 else if (!quiz.includes('recordQuizHighScore')) pass('Quiz mantém registro de resultados.');
+const leaderboard = read('src/lib/quizLeaderboard.ts');
+if (!leaderboard.includes('BEST_KEY') || !leaderboard.includes('localStorage.setItem(BEST_KEY')) fail('Progresso por fase não está persistido de forma independente.');
+else pass('Melhor pontuação de cada fase fica persistida independentemente do ranking global.');
+
 const expectedLevels = ['Fácil', 'Médio', 'Difícil', 'Avançado', 'Expert'];
 const expectedTotal = 200;
 const perLevel = 40;
