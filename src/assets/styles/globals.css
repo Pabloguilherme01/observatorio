@@ -2205,7 +2205,6 @@ d,
 
   [data-language-mode="summary"] .hero-section-label,
   [data-language-mode="summary"] .hero-kpis-guide,
-  [data-language-mode="summary"] .hero-election-quick,
   [data-language-mode="summary"] .hero-shell .hero-section-label + .hero-kpis-guide {
     display: none !important;
   }
