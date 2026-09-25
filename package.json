@@ -31,8 +31,7 @@
     "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs",
     "test:browser": "playwright test --config=playwright.config.mjs",
     "test:a11y:browser": "playwright test --config=playwright.config.mjs tests/accessibility-smoke.spec.mjs",
-    "test:browser:prepare": "npm install --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.13.0",
-    "audit:browser": "npm run test:browser:prepare && npx playwright install --with-deps chromium && npm run test:browser && npm run test:a11y:browser"
+    "audit:browser": "playwright install --with-deps chromium && npm run test:browser && npm run test:a11y:browser"
   },
   "dependencies": {
     "@sentry/react": "10.74.0",
@@ -50,6 +49,8 @@
     "@vitejs/plugin-react": "6.1.1",
     "typescript": "7.0.2",
     "vite": "8.3.0",
-    "vite-plugin-pwa": "1.3.0"
+    "vite-plugin-pwa": "1.3.0",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0"
   }
 }
