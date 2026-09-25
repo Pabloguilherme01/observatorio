@@ -623,3 +623,48 @@ section{scroll-margin-top:72px}
     grid-column:auto;
   }
 }
+
+
+/* Mobile interaction polish · tactile feedback and mode focus */
+@media(max-width:767px){
+  .language-toggle-v3 .language-toggle-options button{
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+  .language-toggle-v3 .language-toggle-options button:active{
+    transform:scale(.975);
+  }
+  .audience-home button,
+  .audience-home a{
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+  }
+  .audience-home .audience-topic,
+  .audience-home .audience-action-card,
+  .audience-home .audience-resource,
+  .audience-home .audience-link{
+    transition:transform .12s ease,background .18s ease,border-color .18s ease;
+  }
+  .audience-home .audience-topic:active,
+  .audience-home .audience-action-card:active,
+  .audience-home .audience-resource:active,
+  .audience-home .audience-link:active{
+    transform:scale(.985);
+  }
+  [data-language-mode="summary"] .audience-home .audience-intro p{
+    max-width:34ch!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-intro p{
+    max-width:42ch!important;
+  }
+  [data-language-mode="technical"] .audience-home .audience-intro p{
+    max-width:46ch!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .language-toggle-v3 .language-toggle-options button,
+  .audience-home .audience-topic,
+  .audience-home .audience-action-card,
+  .audience-home .audience-resource,
+  .audience-home .audience-link{transition:none!important}
+}
