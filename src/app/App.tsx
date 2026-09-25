@@ -246,7 +246,7 @@ export function App() {
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
             <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados', 'instagram']} /></div>
-                        <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} errorLabel="Qualidade e evidências" anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']} /></div>
+            <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} errorLabel="Qualidade e evidências" anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']} /></div>
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
