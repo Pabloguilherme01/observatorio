@@ -30,11 +30,11 @@ export function Electoral360() {
   const snapshotAgeHours = electoral360Snapshot.capturedAt
     ? Math.max(0, (nowMs - Date.parse(electoral360Snapshot.capturedAt)) / 3_600_000)
     : Infinity;
-  const snapshotFreshnessWarning = Number.isFinite(snapshotAgeHours) && snapshotAgeHours > 12;
+  const snapshotFreshnessWarning = Number.isFinite(snapshotAgeHours) && snapshotAgeHours > 24;
   const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state))
     || snapshotFreshnessWarning;
   const snapshotStateLabel = snapshotFreshnessWarning
-    ? 'Captura com mais de 12h'
+    ? 'Captura com mais de 24h'
     : (stateLabel[String(electoral360Diff.state)] ?? 'Atualização em acompanhamento');
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
   const complementaryStats = electoral360Snapshot.complementaryStats;
@@ -76,7 +76,7 @@ export function Electoral360() {
         <strong className={snapshotWarning ? 'text-amber-100' : 'text-sky-100'}>Atualização:</strong> o projeto agenda uma verificação da fonte oficial do TSE a cada 4 horas. A data exibida abaixo corresponde à última captura persistida do snapshot, não a uma consulta em tempo real.
         {snapshotFreshnessWarning && (
           <span className="mt-1 block text-amber-200/80">
-            A captura ultrapassou 12 horas; trate os dados como potencialmente desatualizados até a próxima captura oficial válida.
+            A captura ultrapassou 24 horas; trate os dados como potencialmente desatualizados até a próxima captura oficial válida. A verificação editorial usa a mesma janela de 24 horas adotada pelo pipeline.
           </span>
         )}
       </div>
@@ -84,7 +84,7 @@ export function Electoral360() {
       <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center" aria-label="Resumo do recorte eleitoral">
         <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-3">
           <strong className="block text-sm text-white">{localCandidateRecords.length} nomes</strong>
-          <span className="text-[10px] leading-4 text-slate-500">no recorte acompanhado</span>
+          <span className="text-[10px] leading-4 text-slate-500">watchlist documental local</span>
         </div>
         <div className="rounded-2xl border border-white/7 bg-white/[0.02] px-3 py-3">
           <strong className="block text-sm text-white">{electorate.electorate.toLocaleString('pt-BR')}</strong>
@@ -97,7 +97,7 @@ export function Electoral360() {
       </div>
       <details className="mb-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5">
         <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-xs font-black text-sky-100"><span>Sobre o recorte local</span><span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span></summary>
-        <p className="mt-2 text-[11px] leading-5 text-slate-500">Este painel mostra somente os nomes do recorte editorial acompanhado pelo observatório. O snapshot estadual não informa município da candidatura; por isso, a lista não deve ser interpretada isoladamente como confirmação de candidatura por município.</p>
+        <p className="mt-2 text-[11px] leading-5 text-slate-500">Este painel mostra somente os nomes do recorte editorial acompanhado pelo observatório. O snapshot estadual não informa município da candidatura; por isso, a lista não deve ser interpretada isoladamente como confirmação de candidatura por município. Para a cobertura completa, consulte o catálogo oficial do TSE.</p>
       </details>
       <div className="mb-4 flex items-start gap-2 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] px-3 py-2.5 text-[11px] leading-5 text-slate-400" role="note">
         <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-200" aria-hidden="true" />
