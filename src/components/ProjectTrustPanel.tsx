@@ -20,7 +20,7 @@ export function ProjectTrustPanel() {
             <h2 id="principles-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Como conferir os dados</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode !== 'technical' ? 'Cada número tem fonte e data. Veja a origem antes de tirar uma conclusão.' : 'Fonte, data, natureza do dado e limitações acompanham a leitura.'}</p>
           </div>
-          {mode === 'technical' && <div className="freshness-pill"><span className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Edição / atualização</span><strong className="mt-1 block text-sm text-white">{EDITION} · {formatDate(d.meta.updatedAt)}</strong></div>}
+          {mode === 'technical' && <div className="freshness-pill"><span className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 light:text-slate-700">Edição / atualização</span><strong className="mt-1 block text-sm text-slate-900 light:text-slate-900">{EDITION} · {formatDate(d.meta.updatedAt)}</strong></div>}
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
