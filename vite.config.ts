@@ -9,6 +9,8 @@ import { sourceRegistry } from './src/data/sourceRegistry.js';
 
 const BASE_PATH = '/observatorio/';
 const API_ROOT = '/api/v1/';
+const PUBLIC_COMMIT_SHA = process.env.GITHUB_SHA ?? 'local-development';
+const PUBLIC_BUILD_ENV = process.env.GITHUB_ACTIONS === 'true' ? 'github-actions' : 'local';
 
 const getApiRequestPath = (value: string) => {
   const path = value.split('?')[0];
@@ -42,6 +44,12 @@ const getHealthPayload = () => {
     datasetUpdatedAt: observatorioData.meta.updatedAt,
     buildGeneratedAt: new Date().toISOString(),
     publicPath: BASE_PATH,
+    publication: {
+      commitSha: PUBLIC_COMMIT_SHA,
+      commitShort: PUBLIC_COMMIT_SHA !== 'local-development' ? PUBLIC_COMMIT_SHA.slice(0, 12) : PUBLIC_COMMIT_SHA,
+      environment: PUBLIC_BUILD_ENV,
+      contract: 'publication-parity-v1',
+    },
     freshness: {
       maxAgeHours,
       tseCandidates: {
@@ -82,7 +90,7 @@ const getOpenApiPayload = () => ({
       get: { summary: 'Especificação OpenAPI', responses: { '200': { description: 'OpenAPI JSON' } } },
     },
     '/api/v1/health.json': {
-      get: { summary: 'Estado do build publicado', responses: { '200': { description: 'Metadados do build e dataset' } } },
+      get: { summary: 'Estado do build publicado e paridade de publicação', responses: { '200': { description: 'Metadados do build, dataset, snapshot e commit publicado' } } },
     },
     '/api/v1/sources.json': {
       get: { summary: 'Registro de fontes do observatório', responses: { '200': { description: 'Fontes e metadados de referência' } } },
