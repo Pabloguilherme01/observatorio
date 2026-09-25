@@ -13,11 +13,11 @@ const priorityPublicServices = [
   { icon: GraduationCap, title: 'Lista de espera em creches', description: 'Consulte a lista oficial publicada pela Prefeitura.', href: 'https://aguaslindasdegoias.go.gov.br/lista-de-espera-em-creches/' },
   { icon: ShieldCheck, title: 'CRAS e assistência social', description: 'Consulte unidades, contatos e horários da rede municipal de assistência social.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/' },
   { icon: Scale, title: 'CREAS', description: 'Consulte o serviço especializado de assistência social, contatos e horário oficial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/centro-de-referencia-especializado-de-assistencia-social-creas/' },
-  { icon: ShieldCheck, title: 'Defesa Civil', description: 'Consulte a unidade municipal de Defesa Civil e a estrutura oficial de atendimento.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: ShieldCheck, title: 'Defesa Civil', description: 'Acesse informações municipais de emergência e o contato oficial da Defesa Civil.', href: 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/' },
   { icon: Droplets, title: 'Regulação de água e esgoto', description: 'Consulte a legislação oficial sobre a AMAE e a regulação, controle e fiscalização desses serviços.', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1475' },
-  { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Localize a unidade e a estrutura oficial do Conselho Tutelar municipal.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
-  { icon: Stethoscope, title: 'CAPS', description: 'Localize o Centro de Atenção Psicossocial na estrutura oficial da Saúde municipal.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
-  { icon: Stethoscope, title: 'SAMU', description: 'Localize o Serviço de Atendimento Móvel de Urgência na estrutura oficial da Saúde municipal.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Consulte endereço, horário e contato oficial do Conselho Tutelar.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/' },
+  { icon: Stethoscope, title: 'CAPS', description: 'Consulte endereço, horário e contato oficial do Centro de Atenção Psicossocial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/' },
+  { icon: Stethoscope, title: 'SAMU', description: 'Acesse o serviço oficial e o número de emergência 192.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/' },
   { icon: Smartphone, title: 'Atendimento à pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
   { icon: ShieldCheck, title: 'Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
   { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
@@ -322,6 +322,36 @@ export function CivicActionHub() {
               <span className="mt-1 block text-[11px] leading-5 text-slate-500">{description}</span>
             </a>
           ))}
+        </div>
+      </Card>
+
+      <Card className="mb-4 p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-amber-300/10 bg-amber-300/[0.06] text-amber-200">
+            <Smartphone className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <div>
+            <h3 className="text-base font-black text-white light:text-slate-900">Contatos de utilidade imediata</h3>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Canais oficiais publicados pela Prefeitura; confirme o horário e o contexto no órgão responsável.</p>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <a href="tel:192" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+            <span className="block text-sm font-black text-white light:text-slate-900">SAMU · 192</span>
+            <span className="text-[11px] text-slate-500">Emergência médica</span>
+          </a>
+          <a href="tel:+5561996699434" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+            <span className="block text-sm font-black text-white light:text-slate-900">Defesa Civil</span>
+            <span className="text-[11px] text-slate-500">(61) 99669-9434</span>
+          </a>
+          <a href="tel:+5561993038040" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+            <span className="block text-sm font-black text-white light:text-slate-900">Conselho Tutelar</span>
+            <span className="text-[11px] text-slate-500">(61) 99303-8040</span>
+          </a>
+          <a href="tel:+556136181559" className="min-h-11 rounded-xl border border-white/8 bg-white/[0.025] px-3 py-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+            <span className="block text-sm font-black text-white light:text-slate-900">CAPS</span>
+            <span className="text-[11px] text-slate-500">(61) 3618-1559</span>
+          </a>
         </div>
       </Card>
 
