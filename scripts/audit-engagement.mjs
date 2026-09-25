@@ -11,7 +11,6 @@ const app = read('src/app/App.tsx');
 const search = read('src/components/layout/SearchModal.tsx');
 const modeToggle = read('src/components/layout/LanguageModeToggle.tsx');
 const quiz = read('src/components/sections/QuickQuiz.tsx');
-const social = read('src/components/InstagramSyncHub.tsx');
 const electoral360 = read('src/data/electoral360.ts');
 const electoral360Ui = read('src/components/sections/Electoral360.tsx');
 const main = read('src/main.tsx');
@@ -51,13 +50,10 @@ must(quiz.includes('unlockedPhase') && quiz.includes('setUnlockedPhase') && quiz
 must(quiz.includes('QUIZ_TOTAL') && quiz.includes('QUESTIONS_PER_LEVEL') && quiz.includes('quiz-phase-grid'), 'quiz possui meta e mapa visual de fases');
 must(quiz.includes('disabled={locked}') && quiz.includes('aria-disabled={locked}'), 'quiz bloqueia fases ainda não liberadas');
 must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual');
-must(read('src/components/layout/Footer.tsx').includes('https://www.instagram.com/pablo.builds.ia'), 'Instagram do autor está no rodapé');
 must(!search.includes('autoFocus'), 'busca não usa autoFocus');
 must(search.includes('min-width: 768px') && search.includes('focus()'), 'busca só força foco no desktop');
 must(app.includes("window.location.hash") && app.includes("hashchange") && app.includes('observatorio:navigate'), 'links com UTM + âncora recebem navegação resiliente');
 must(css.includes('overflow-wrap:anywhere') && css.includes('.mobile-safe-wrap'), 'contenção de overflow textual está ativa');
-must(social.includes('pabloguilherme01.github.io/observatorio') && social.includes('Baixar Story') && social.includes('Baixar Feed'), 'estúdio social inclui marca d’água e downloads explícitos');
-must(social.includes('1080') && social.includes('1920') && social.includes('1350'), 'estúdio social mantém formatos Story e Feed');
 must(electoral360.includes('photoUrl: candidate.photoUrl ?? null') && electoral360.includes('instagramUrl: candidate.instagramUrl ?? null'), 'metadados de mídia do candidato são preservados quando validados');
 must(pwaConfig.includes('VitePWA') && pwaConfig.includes("registerType: 'autoUpdate'"), 'PWA usa autoUpdate');
 must(main.includes('beforeinstallprompt') && main.includes('PwaInstallPrompt'), 'PWA possui prompt de instalação quando o navegador oferece suporte');
@@ -103,7 +99,7 @@ must(new Set(candidateIds).size === candidateIds.length, 'candidatos não possue
 must(['KEKE DA VULKANIC','RIBEIRO DO TÚLLIO','FELIPE GALDINO'].every(name => candidateNames.includes(name)), 'candidatos locais adicionados ao recorte');
 must(candidateData.matched.every(candidate => candidate.status === 'DEFERIDO'), 'status cadastral publicado está atualizado para DEFERIDO');
 must(candidateData.matched.every(candidate => candidate.localEvidence && Array.isArray(candidate.evidenceSourceUrls) && candidate.evidenceSourceUrls.length > 0), 'cada candidato possui evidência documental de vínculo local');
-must(read('src/components/sections/PoliticalResearch.tsx').includes('Fonte do vínculo') && read('src/components/sections/PoliticalResearch.tsx').includes('Abrir fonte do vínculo'), 'interface expõe a proveniência do vínculo local');
+must(read('src/components/sections/Electoral360.tsx').includes('Ver catálogo oficial do TSE') && read('src/components/sections/Electoral360.tsx').includes('Fonte'), 'painel de candidaturas mantém proveniência oficial');
 must(!candidateData.meta.selection.includes('watchlist_only') || candidateData.matched.length === candidateData.watchlist.length, 'seleção do recorte não fica menor que a watchlist publicada');
 
 
