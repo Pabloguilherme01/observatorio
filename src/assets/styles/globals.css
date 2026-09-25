@@ -3055,3 +3055,26 @@ d,
   background: #eff6ff !important;
   border-color: #bfdbfe !important;
 }
+
+/* V44.9.4 · Contraste real do tema claro. */
+:root.light[data-language-mode="summary"] #resumo .summary-public-discovery-head span{color:#0f172a!important}
+:root.light[data-language-mode="summary"] #resumo .summary-public-discovery-head small{color:#475569!important}
+.light [class~="text-sky-300/80"],
+.light [class~="text-sky-300/70"]{color:#0369a1!important}
+.light .site-header-status[class~="text-emerald-200"]{color:#047857!important}
+.light .site-header-status[class~="text-amber-200"]{color:#92400e!important}
+.light [class~="bg-amber-400/10"][class~="text-amber-200"],
+.light [class~="bg-amber-300/10"][class~="text-amber-200"]{color:#92400e!important}
+.light [class*="bg-amber-400/"] [class~="text-amber-100"],
+.light [class*="bg-amber-400/"] [class~="text-amber-200"],
+.light [class*="bg-amber-300/"] [class~="text-amber-100"],
+.light [class*="bg-amber-300/"] [class~="text-amber-200"]{color:#92400e!important}
+.light .obs-card [class~="text-amber-300"]{color:#92400e!important}
+.light [class~="bg-white/[0.02]"] [class~="text-sky-300"],
+.light [class~="bg-white/[0.02]"] [class~="text-sky-300/70"]{color:#0369a1!important}
+.light [class~="bg-white/[0.02]"] [class~="text-emerald-300"]{color:#047857!important}
+.light select.transport-input{
+  background:#fff!important;color:#0f172a!important;border-color:#dbe5ec!important
+}
+.light [class~="bg-[#0b1117]"] [class~="text-sky-300"]{color:#7dd3fc!important}
+.light [class~="bg-[#0b1117]"] [class~="text-amber-300"]{color:#fbbf24!important}
