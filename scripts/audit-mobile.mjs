@@ -15,6 +15,7 @@ const files = {
   share: read('src/components/ShareDataButton.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
+  quizData: read('src/data/quiz/questionBank.ts'),
   research: read('src/components/sections/PoliticalResearch.tsx'),
   electoral: read('src/components/sections/Electoral360.tsx'),
   pkg: JSON.parse(read('package.json')),
@@ -57,7 +58,7 @@ must(files.language.includes("id: 'summary'") && files.language.includes("id: 's
 must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
-must(files.quiz.includes('quiz-progress-track') && files.quiz.includes('QUIZ_TOTAL = 200') && files.quiz.includes('QUESTIONS_PER_LEVEL = 40') && files.quiz.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
+must(files.quiz.includes('quiz-progress-track') && files.quizData.includes('QUIZ_TOTAL = 200') && files.quizData.includes('QUESTIONS_PER_LEVEL = 40') && files.quizData.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
 must(files.version.match(/APP_VERSION\s*=\s*['"]44\./), 'versão atual continua na linha 44 consolidada');
