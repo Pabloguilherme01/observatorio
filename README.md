@@ -77,7 +77,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-**V44.9.1 — Observatório de Dados Cívicos e Eleitorais.**
+**V44.9.3 — Observatório de Dados Cívicos e Eleitorais.**
 
 - Três modos de leitura (Resumo, Simples, Técnico) com preferência persistida.
 - Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
@@ -105,7 +105,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ### Estado da sincronização eleitoral
 
-A edição atual contém uma primeira captura de candidatos em escopo `watchlist`, com 594 linhas de origem e 10 correspondências locais no snapshot versionado. O estado é `first_capture`. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-candidates.yml` é manual por desenho e valida uma nova captura direta antes de publicar alterações.
+A edição atual contém uma primeira captura de candidatos em escopo `watchlist`, com 905 linhas de origem e 7 correspondências no snapshot versionado. O estado do snapshot atual é `changed`. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-2026.yml` executa captura e validação automatizadas. O recorte atual é uma watchlist estadual com evidência documental de vínculo local, não uma lista municipal completa.
 
 A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
 
