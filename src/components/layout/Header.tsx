@@ -263,9 +263,9 @@ export function Header() {
                   {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
                   <span>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</span>
                 </button>
-                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:command')); closeTools(); }} className="mobile-tool-action">
+                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:search')); closeTools(); }} className="mobile-tool-action">
                   <Command className="h-4 w-4" aria-hidden="true" />
-                  <span>Explorar áreas</span>
+                  <span>Buscar áreas</span>
                 </button>
               </div>
             </div>
