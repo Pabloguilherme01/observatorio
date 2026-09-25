@@ -345,7 +345,7 @@ export function CivicActionHub() {
         <details className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
           <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
             Mais serviços oficiais
-            <span className="ml-2 text-[11px] font-semibold text-slate-500">+{additional.length} caminhos</span>
+            <span className="ml-2 text-[11px] font-semibold text-slate-500">+{additionalPublicServices.length} caminhos</span>
           </summary>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {additionalPublicServices.map(({ icon: Icon, title, description, href, cta }) => (
