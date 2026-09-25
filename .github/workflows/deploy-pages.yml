@@ -38,6 +38,8 @@ jobs:
       - name: Validate TSE candidate snapshot contract
         env:
           REQUIRE_TSE_SYNC: 'false'
+          REQUIRE_TSE_FRESH: 'true'
+          TSE_MAX_AGE_HOURS: '24'
         run: npm run validate:tse
       - name: Validate candidate source guard
         run: node scripts/test-candidate-source-guard.mjs
