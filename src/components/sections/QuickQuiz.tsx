@@ -1,7 +1,7 @@
-import { CheckCircle2, Lock, Medal, RotateCcw, Share2, Trophy } from 'lucide-react';
+import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import '../../assets/styles/summary-polish.css';
-import { readQuizBestScores, readQuizHighScores, readQuizUnlockedPhase, recordQuizHighScore, type QuizHighScore } from '../../lib/quizLeaderboard';
+import '../../assets/styles/quick-quiz.css';
+import { readQuizBestScores, readQuizUnlockedPhase } from '../../lib/quizLeaderboard';
 
 type Difficulty = 'Fácil' | 'Médio' | 'Difícil' | 'Avançado' | 'Expert';
 
@@ -241,11 +241,6 @@ export function QuickQuiz() {
   const [best, setBest] = useState<readonly number[]>(() => readQuizBestScores());
   const [showResult, setShowResult] = useState(false);
   const [shared, setShared] = useState('');
-  const [leaderboard, setLeaderboard] = useState<readonly QuizHighScore[]>([]);
-
-  useEffect(() => {
-    setLeaderboard(readQuizHighScores());
-  }, []);
 
   const phaseData = PHASES[activePhase];
   const questions = phaseData?.questions ?? [];
@@ -282,15 +277,6 @@ export function QuickQuiz() {
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
       }
-      const nextLeaderboard = recordQuizHighScore({
-        phase: activePhase + 1,
-        level: phaseData?.level ?? 'Nível',
-        score: finalScore,
-        total: QUESTIONS_PER_LEVEL,
-        percentage: Math.round((finalScore / QUESTIONS_PER_LEVEL) * 100),
-        playedAt: new Date().toISOString(),
-      });
-      setLeaderboard(nextLeaderboard);
       setShowResult(true);
       return;
     }
@@ -348,38 +334,12 @@ export function QuickQuiz() {
         })}
       </div>
 
-      <aside className="quiz-high-scores" aria-labelledby="quiz-high-scores-title">
-        <div className="quiz-high-scores-head">
-          <div>
-            <div className="quiz-phase-kicker">Sua marca</div>
-            <h3 id="quiz-high-scores-title"><Trophy className="h-4 w-4" aria-hidden="true" /> Melhores resultados</h3>
-          </div>
-          <span>{leaderboard.length ? leaderboard.length + ' registros' : 'Seu primeiro resultado aparece aqui'}</span>
-        </div>
-        {leaderboard.length ? (
-          <ol className="quiz-high-scores-list">
-            {leaderboard.slice(0, 5).map((entry, index) => (
-              <li key={entry.id} className="quiz-high-score-row">
-                <span className="quiz-high-score-rank"><Medal className="h-3.5 w-3.5" aria-hidden="true" /> {index + 1}</span>
-                <span className="min-w-0">
-                  <strong>Fase {entry.phase} · {entry.level}</strong>
-                  <small>{new Date(entry.playedAt).toLocaleDateString('pt-BR')} · {entry.percentage}%</small>
-                </span>
-                <b>{entry.score}/{entry.total}</b>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="quiz-high-scores-empty">Conclua uma fase para registrar sua marca neste dispositivo. Nada é enviado para um servidor.</p>
-        )}
-      </aside>
-
       {showResult ? (
         <div className="quiz-card quiz-result" role="status">
           <CheckCircle2 className="quiz-result-icon" aria-hidden="true" />
           <h3>Fase {activePhase + 1} · {phaseData?.level} concluída</h3>
           <p className="quiz-result-score">{displayedScore} de {QUESTIONS_PER_LEVEL} acertos</p>
-          <p className="quiz-result-hint">{displayedScore >= PASS_THRESHOLD ? 'Resultado registrado. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o Resumo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
+          <p className="quiz-result-hint">{displayedScore >= PASS_THRESHOLD ? 'Sua melhor marca fica salva neste dispositivo. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o Resumo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
           <div className="quiz-result-actions">
             <button type="button" onClick={restart} className="quiz-action"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Refazer fase</button>
             <button type="button" onClick={() => { void share(); }} className="quiz-action"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
