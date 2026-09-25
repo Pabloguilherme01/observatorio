@@ -30,7 +30,8 @@
     "audit:quiz": "node scripts/audit-quiz.mjs",
     "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs",
     "test:browser": "playwright test --config=playwright.config.mjs",
-    "test:a11y:browser": "playwright test --config=playwright.config.mjs tests/accessibility-smoke.spec.mjs"
+    "test:a11y:browser": "playwright test --config=playwright.config.mjs tests/accessibility-smoke.spec.mjs",
+    "test:browser:prepare": "npm install --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.13.0"
   },
   "dependencies": {
     "@sentry/react": "10.74.0",
