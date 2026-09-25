@@ -1,7 +1,7 @@
-import { Activity, Gauge, Map, Users, WalletCards, ArrowUpRight, CalendarDays, Database, Info, Table2, AlertCircle } from 'lucide-react';
+import { Activity, Gauge, Map, Users, Database, Info, AlertCircle } from 'lucide-react';
 import { HistoricalTrendChart } from './HistoricalTrendChart';
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatCurrency, formatNumber, formatPercent } from '../../utils/formatters';
+import { formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -20,7 +20,6 @@ export function DashboardMetrics() {
   const electorate2026 = d.electoral.electorate;
   const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
-  const populationDelta = population2026 - population2022;
   const metricDetails: readonly MetricDetail[] = [
     { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: population2022 + ' → ' + population2026, simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
     { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: electorate2022 + ' → ' + electorate2026, simpleExplanation: 'Mudança percentual do eleitorado entre os snapshots disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
