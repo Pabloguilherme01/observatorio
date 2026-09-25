@@ -255,6 +255,7 @@ export function QuickQuiz() {
   const nextIndex = safeIndex + 1;
   const isLast = nextIndex >= totalQuestions;
   const unlockedNext = activePhase < QUIZ_LEVELS.length - 1 && unlockedPhase > activePhase;
+  const displayedScore = score + (selected === question?.answerIndex ? 1 : 0);
 
   const startPhase = (phaseIndex: number) => {
     setActivePhase(phaseIndex);
@@ -378,8 +379,8 @@ export function QuickQuiz() {
         <div className="quiz-card quiz-result" role="status">
           <CheckCircle2 className="quiz-result-icon" aria-hidden="true" />
           <h3>Fase {activePhase + 1} · {phaseData?.level} concluída</h3>
-          <p className="quiz-result-score">{score + (selected === question?.answerIndex ? 1 : 0)} de {QUESTIONS_PER_LEVEL} acertos</p>
-          <p className="quiz-result-hint">{score >= PASS_THRESHOLD ? 'Resultado registrado. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o Resumo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
+          <p className="quiz-result-score">{displayedScore} de {QUESTIONS_PER_LEVEL} acertos</p>
+          <p className="quiz-result-hint">{displayedScore >= PASS_THRESHOLD ? 'Resultado registrado. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o Resumo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
           <div className="quiz-result-actions">
             <button type="button" onClick={restart} className="quiz-action"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Refazer fase</button>
             <button type="button" onClick={() => { void share(); }} className="quiz-action"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
