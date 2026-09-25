@@ -20,14 +20,18 @@ function persistError(key: string, prefix: string, error: unknown, source: strin
   const errorId = prefix + '-' + Date.now().toString(36).toUpperCase();
   const message = normalizeError(error);
   try {
-    sessionStorage.setItem(key, JSON.stringify({
-      errorId, message, source, at: new Date().toISOString(), href: window.location.href,
-    }));
+    const payload = import.meta.env.DEV
+      ? { errorId, message, source, at: new Date().toISOString(), href: window.location.href }
+      : { errorId, source, at: new Date().toISOString() };
+    sessionStorage.setItem(key, JSON.stringify(payload));
   } catch {}
   return errorId;
 }
 
 function BootstrapFallback({ errorId, message }: { readonly errorId: string; readonly message: string }) {
+  const publicMessage = import.meta.env.DEV
+    ? message
+    : 'A interface não concluiu a inicialização. Recarregue para tentar novamente.';
   return (
     <main className="grid min-h-screen place-items-center bg-[#0b1117] px-6 py-16 text-white">
       <section className="w-full max-w-xl rounded-3xl border border-amber-300/15 bg-white/[0.035] p-7 text-center shadow-2xl" role="alert">
@@ -39,7 +43,11 @@ function BootstrapFallback({ errorId, message }: { readonly errorId: string; rea
         <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-3 text-left">
           <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">Código</div>
           <code className="mt-1 block text-xs font-bold text-slate-300">{errorId}</code>
-          <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-xs text-slate-500">{message}</pre>
+          {import.meta.env.DEV && (
+            <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap text-xs text-slate-500">
+              {publicMessage}
+            </pre>
+          )}
         </div>
         <button type="button" onClick={() => window.location.reload()} className="mt-6 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950">
           Recarregar

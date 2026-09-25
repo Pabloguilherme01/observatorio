@@ -108,8 +108,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          fallback="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/rota-virtual-de-validacao/)"
-          printf '%s' "$fallback" | grep -F 'data-obs-spa-fallback'
+          fallback_file="$(mktemp)"
+          status="$(curl -sS --retry 3 --max-time 20 -o "$fallback_file" -w '%{http_code}' https://pabloguilherme01.github.io/observatorio/rota-virtual-de-validacao/)"
+          test "$status" = "404"
+          fallback="$(cat "$fallback_file")"
+          printf '%s' "$fallback" | grep -F 'obsSpaFallback'
           printf '%s' "$fallback" | grep -F 'encodeURIComponent'
 
       - name: Verify critical published app markers

@@ -66,7 +66,7 @@ jobs:
       - name: Production build
         run: npm run build
 
-      - name: Open PR with validated TSE candidate snapshot
+      - name: Validate generated snapshot branch with CI
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -80,4 +80,19 @@ jobs:
           git switch -c "$branch"
           git commit -m "data: sync TSE 2026 candidates"
           git push --set-upstream origin "$branch"
-          gh pr create             --base main             --head "$branch"             --title "data: sync TSE 2026 candidates"             --body "Snapshot TSE validado automaticamente. Este PR mantém a captura separada da publicação e passa pelo fluxo normal de revisão da main."
+
+          gh workflow run ci.yml --ref "$branch"
+          run_id=""
+          for attempt in {1..30}; do
+            run_id="$(gh run list --workflow ci.yml --branch "$branch" --limit 1 --json databaseId --jq '.[0].databaseId')"
+            if [ -n "$run_id" ]; then break; fi
+            sleep 2
+          done
+          test -n "$run_id"
+          gh run watch "$run_id" --exit-status
+
+          gh pr create \
+            --base main \
+            --head "$branch" \
+            --title "data: sync TSE 2026 candidates" \
+            --body "Snapshot TSE validado automaticamente. A branch foi validada pelo CI completo antes da abertura da PR."
