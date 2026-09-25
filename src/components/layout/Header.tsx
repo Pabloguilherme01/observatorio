@@ -124,12 +124,22 @@ export function Header() {
     setToolsOpen(false);
     window.requestAnimationFrame(() => toolsButtonRef.current?.focus());
   };
+  const navigateHeader = (id: string) => {
+    setMoreOpen(false);
+    if (window.location.hash === '#' + id) {
+      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+      return;
+    }
+    window.history.replaceState(null, '', '#' + id);
+    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+  };
+
 
   return (
     <>
       <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95" data-theme={theme}>
         <div className="site-header-inner mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:px-6">
-          <a href="#dashboard" className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
+          <a href="#dashboard" onClick={(event) => { event.preventDefault(); navigateHeader('dashboard'); }} className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
             <span className="block truncate text-[9px] font-black uppercase tracking-[0.22em] text-slate-500">Águas Lindas · 2026</span>
             <span className="my-1 block h-px w-8 bg-slate-600/70" aria-hidden="true" />
             <span className="block truncate text-[15px] font-black tracking-tight text-white light:text-slate-900">Observatório</span>
@@ -140,6 +150,7 @@ export function Header() {
               <a
                 key={item.id}
                 href={'#' + item.id}
+                onClick={(event) => { event.preventDefault(); navigateHeader(item.id); }}
                 className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
                 aria-current={activeSection === item.id ? 'page' : undefined}
               >
@@ -178,6 +189,7 @@ export function Header() {
                     <a
                       key={item.id}
                       href={'#' + item.id}
+                      onClick={(event) => { event.preventDefault(); navigateHeader(item.id); }}
                       role="menuitem"
                       onClick={() => setMoreOpen(false)}
                       className={'rounded-xl px-3 py-2.5 text-left text-xs transition focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white')}
