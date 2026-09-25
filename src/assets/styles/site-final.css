@@ -916,3 +916,9 @@ main p a{
   .language-toggle-v3 .language-toggle-options>button>span strong{font-size:9px!important}
   .language-toggle-v3 .language-toggle-options>button>span small{font-size:7.5px!important}
 }
+
+.light .summary-mode-pill{
+  color:#075985!important;
+  background:#eff6ff!important;
+  border-color:#bae6fd!important;
+}
