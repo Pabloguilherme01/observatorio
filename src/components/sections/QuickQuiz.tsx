@@ -323,7 +323,7 @@ export function QuickQuiz() {
         <p className="quiz-subtitle">{QUIZ_TOTAL} perguntas · {QUIZ_LEVELS.length} fases · 40 por fase. Cada resposta mostra sua fonte.</p>
       </header>
 
-      <div className="quiz-phase-grid" role="list" aria-label="Fases do quiz">
+      <div className="quiz-phase-grid" aria-label="Fases do quiz">
         {PHASES.map((phase, index) => {
           const locked = index > unlockedPhase;
           const isActive = index === activePhase && !showResult;
@@ -332,7 +332,6 @@ export function QuickQuiz() {
             <button
               key={phase.level}
               type="button"
-              role="listitem"
               disabled={locked}
               aria-disabled={locked}
               aria-label={locked ? 'Fase ' + (index + 1) + ', ' + phase.level + ', bloqueada. Libere com 60% na fase anterior.' : 'Fase ' + (index + 1) + ', ' + phase.level + ', disponível.'}
