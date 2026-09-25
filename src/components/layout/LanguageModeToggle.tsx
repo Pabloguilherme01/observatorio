@@ -2,9 +2,9 @@ import { Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'decidir', description: 'Poucos números essenciais, estado atual e ações rápidas', icon: List },
-  { id: 'simple' as const, label: 'Simples', sub: 'entender', description: 'Indicadores, comparações e contexto sem jargão', icon: FileText },
-  { id: 'technical' as const, label: 'Técnico', sub: 'conferir', description: 'Fontes, metodologia, recortes, cálculos e rastreabilidade', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'decidir', description: 'Para se situar: poucos números, estado atual e próximos caminhos', icon: List },
+  { id: 'simple' as const, label: 'Simples', sub: 'entender', description: 'Para entender: indicadores, comparações e contexto em linguagem direta', icon: FileText },
+  { id: 'technical' as const, label: 'Técnico', sub: 'conferir', description: 'Para conferir: fontes, metodologia, recortes, cálculos e rastreabilidade', icon: Code2 },
 ] as const;
 
 export function LanguageModeToggle() {
@@ -14,7 +14,7 @@ export function LanguageModeToggle() {
     <div className="language-toggle language-toggle-v3" role="group" aria-label="Escolha como você quer ler os dados">
       <div className={`language-toggle-label mode-${mode}`} data-mode-label={mode}>
         <Info aria-hidden="true" />
-        <span><strong>Modo de leitura</strong><small>{mode === 'summary' ? 'Decidir · essencial e rápido' : mode === 'simple' ? 'Entender · contexto e comparação' : 'Conferir · método e evidências'}</small></span>
+        <span><strong>Como você quer ler</strong><small>{mode === 'summary' ? 'Resumo · se situar rapidamente' : mode === 'simple' ? 'Simples · entender o que os números mostram' : 'Técnico · conferir como os dados foram construídos'}</small></span>
       </div>
       <div className="language-toggle-options">
         {items.map(({ id, label, sub, description, icon: Icon }) => (
@@ -23,7 +23,7 @@ export function LanguageModeToggle() {
             type="button"
             onClick={() => setMode(id)}
             aria-pressed={mode === id}
-            aria-label={label + ' · ' + sub}
+            aria-label={label + ' · ' + description}
             title={description}
             className={mode === id ? 'is-active' : ''}
           >
