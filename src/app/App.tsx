@@ -128,6 +128,7 @@ function NavigationModeBridge() {
 function DeferredBlock({
   loader,
   anchorIds,
+  errorLabel,
 }: {
   readonly loader: () => Promise<{ default: ComponentType }>;
   readonly anchorIds: readonly string[];
@@ -187,7 +188,7 @@ function DeferredBlock({
 
   return (
     <div ref={ref} className="deferred-section">
-      <SectionErrorBoundary label="Seção carregada">
+      <SectionErrorBoundary label={errorLabel}>
         <Deferred><Component /></Deferred>
       </SectionErrorBoundary>
     </div>
