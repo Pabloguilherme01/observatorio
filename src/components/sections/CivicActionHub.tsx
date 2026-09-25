@@ -1,6 +1,17 @@
-import { ClipboardCheck, ExternalLink, FileQuestion, Landmark, MessageCircle, Scale, Smartphone, SearchCheck } from 'lucide-react';
+import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+
+const priorityPublicServices = [
+  { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
+  { icon: CheckCircle2, title: 'Estoque de medicamentos', description: 'Consulte os estoques informados pelas farmácias públicas.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/estoque_medicamentos_farmacias' },
+  { icon: Stethoscope, title: 'Regulação municipal', description: 'Consulte a lista de espera da regulação municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/lista_espera_regulacoes' },
+  { icon: WalletCards, title: 'Despesas públicas', description: 'Consulte despesas e movimentações do Executivo municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgdespesas' },
+  { icon: ReceiptText, title: 'Licitações', description: 'Consulte licitações, dispensas e processos de contratação.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/sglicitacoes' },
+  { icon: BriefcaseBusiness, title: 'Contratos', description: 'Consulte contratos e fiscais de contratos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/sgcontratos' },
+  { icon: Building2, title: 'Acompanhamento de obras', description: 'Consulte obras e obras paralisadas no portal oficial.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/obras' },
+  { icon: GraduationCap, title: 'Lista de espera em creches', description: 'Consulte a lista oficial publicada pela Prefeitura.', href: 'https://aguaslindasdegoias.go.gov.br/lista-de-espera-em-creches/' },
+] as const;
 
 const actions = [
   {
@@ -140,6 +151,33 @@ export function CivicActionHub() {
         description="O observatório informa e aponta caminhos oficiais. Ele não recebe denúncias, apura fatos nem substitui os órgãos públicos."
       />
 
+      <Card className="mb-4 p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-emerald-300/10 bg-emerald-300/[0.06] text-emerald-200">
+            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <div>
+            <h3 className="text-base font-black text-white light:text-slate-900">Atalhos de utilidade pública</h3>
+            <p className="mt-1 text-sm leading-6 text-slate-400 light:text-slate-600">
+              Acesse diretamente serviços municipais que normalmente exigem vários passos no portal oficial.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {priorityPublicServices.map(({ icon: Icon, title, description, href }) => (
+            <a key={title} href={href} target="_blank" rel="noopener noreferrer"
+              className="group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+              aria-label={`${title}: ${description}`}>
+              <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
+                <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
+                <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
+              </span>
+              <span className="mt-1 block text-[11px] leading-5 text-slate-500">{description}</span>
+            </a>
+          ))}
+        </div>
+      </Card>
+
       <div className="grid gap-4 lg:grid-cols-[1fr_.72fr]">
         <div className="grid gap-3 sm:grid-cols-2">
           {actions.map(({ icon: Icon, title, description, href, cta }) => (
@@ -161,10 +199,10 @@ export function CivicActionHub() {
         </div>
 
         <Card className="p-6">
-          <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Compartilhe sem editar</div>
+          <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Fonte + caminho oficial</div>
           <h3 className="mt-2 text-2xl font-black text-white light:text-slate-900">Leve a fonte junto com o link</h3>
           <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">
-            O compartilhamento carrega o endereço do observatório para que a pessoa possa abrir a evidência, consultar a origem e continuar a leitura por conta própria.
+            O compartilhamento carrega o endereço do observatório. Os atalhos acima levam diretamente aos portais oficiais e continuam sendo a referência para executar o serviço.
           </p>
           <button type="button" onClick={shareWhatsApp} className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-sky-300 px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-sky-200">
             <MessageCircle className="h-4 w-4" aria-hidden="true" /> Compartilhar no WhatsApp
