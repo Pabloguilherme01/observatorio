@@ -15,7 +15,9 @@ for (const route of routes) {
     await page.goto('./');
     if (route.hash) {
       await page.evaluate(hash => {
-        window.location.hash = hash.slice(1);
+        const id = hash.slice(1);
+        window.history.replaceState(null, '', '#' + id);
+        window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
       }, route.hash);
     }
     await expect(page.locator(route.marker)).toBeVisible();
