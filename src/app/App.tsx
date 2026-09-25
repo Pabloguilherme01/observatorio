@@ -6,7 +6,7 @@ import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
-import { LanguageModeProvider } from '../context/LanguageModeContext';
+import { LanguageModeProvider, useLanguageMode } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
@@ -85,6 +85,39 @@ function scrollToHashWhenReady(hash: string) {
   }
 
   scheduleCheck();
+}
+
+const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes']);
+
+function NavigationModeBridge() {
+  const { mode, setMode } = useLanguageMode();
+
+  useEffect(() => {
+    const prepareMode = (target: string) => {
+      if (!target || target === 'descubra' || target === 'dashboard') return;
+      if (TECHNICAL_ONLY_DESTINATIONS.has(target)) {
+        if (mode !== 'technical') setMode('technical');
+        return;
+      }
+      if (mode === 'summary') setMode('simple');
+    };
+
+    const onNavigate = (event: Event) => {
+      prepareMode((event as CustomEvent<string>).detail ?? '');
+    };
+    const onHashChange = () => prepareMode(window.location.hash.slice(1));
+
+    window.addEventListener('observatorio:navigate', onNavigate);
+    window.addEventListener('hashchange', onHashChange);
+    onHashChange();
+
+    return () => {
+      window.removeEventListener('observatorio:navigate', onNavigate);
+      window.removeEventListener('hashchange', onHashChange);
+    };
+  }, [mode, setMode]);
+
+  return null;
 }
 
 function DeferredBlock({
@@ -175,6 +208,7 @@ export function App() {
   return (
     <>
       <LanguageModeProvider>
+      <NavigationModeBridge />
       <ThemeProvider>
         <ContrastProvider>
         <ExperienceShell>
