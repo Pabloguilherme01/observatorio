@@ -196,12 +196,26 @@ export function App() {
       const hash = (event as CustomEvent<string>).detail;
       if (hash) scrollToHashWhenReady(hash);
     };
+    const onSameHashAnchor = (event: MouseEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const anchor = event.target.closest<HTMLAnchorElement>('a[href^="#"]');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') ?? '';
+      const target = href.slice(1);
+      if (!target || window.location.hash !== '#' + target) return;
+      event.preventDefault();
+      navigateToHash(target);
+      scrollToHashWhenReady(target);
+    };
+
     navigateFromLocation();
     window.addEventListener('hashchange', navigateFromLocation);
     window.addEventListener('observatorio:navigate', onNavigate);
+    document.addEventListener('click', onSameHashAnchor);
     return () => {
       window.removeEventListener('hashchange', navigateFromLocation);
       window.removeEventListener('observatorio:navigate', onNavigate);
+      document.removeEventListener('click', onSameHashAnchor);
     };
   }, []);
 
