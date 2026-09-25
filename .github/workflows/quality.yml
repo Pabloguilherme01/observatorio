@@ -29,6 +29,8 @@ jobs:
       - name: Audit practical usability and links
         run: npm run audit:usability
       - name: Audit direct public service shortcuts
+        env:
+          AUDIT_PUBLIC_SERVICES_LIVE: 'true'
         run: npm run audit:public-services
       - name: Validate data contracts
         run: npm run validate:observatorio
