@@ -18,6 +18,12 @@ const required = [
   ['CREAS', 'centro-de-referencia-especializado-de-assistencia-social-creas'],
   ['Defesa Civil', 'prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes'],
   ['Regulação de água e esgoto', 'legislacao.aguaslindasdegoias.go.gov.br/leis/1475'],
+  ['Conselho Tutelar', 'portalsei.aguaslindasdegoias.go.gov.br/unidades'],
+  ['CAPS', 'portalsei.aguaslindasdegoias.go.gov.br/unidades'],
+  ['SAMU', 'portalsei.aguaslindasdegoias.go.gov.br/unidades'],
+  ['Atendimento à pessoa com deficiência', 'portalsei.aguaslindasdegoias.go.gov.br/unidades'],
+  ['Proteção e bem-estar animal', 'portalsei.aguaslindasdegoias.go.gov.br/unidades'],
+  ['Trânsito e mobilidade urbana', 'estrutura/secretaria-de-transito-e-mobilidade-urbana'],
   ['Serviços de saúde (escalas)', 'escalasmedicas'],
   ['Medicamentos de alto custo', 'medicamentos_altocusto'],
   ['Obras paralisadas', 'obras_paralisadas'],
@@ -73,7 +79,7 @@ if (insecureLinks.length) {
   pass('links públicos externos preservam noopener em target=_blank');
 }
 const allPublicActionLinks = urls.length;
-if (allPublicActionLinks < 68) {
+if (allPublicActionLinks < 74) {
   fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
 } else {
   pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
