@@ -9,6 +9,7 @@ const primaryItems = [
 ] as const;
 
 const sectionToTab = (id: string) => {
+  if (!id) return 'dashboard';
   if (id === 'resumo' || id === 'dashboard' || id === 'analise') return 'dashboard';
   if (id === 'descubra') return 'descubra';
   if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica' || id === 'eleitorado') return 'eleitoral360';
