@@ -383,9 +383,9 @@ body { overflow-x: clip; }
   box-shadow: 0 8px 26px rgba(15, 23, 42, .045);
 }
 
-
-/* Final visual QA patch · mobile + polish · 2026-09-25
- * These rules intentionally override older mobile layers where they conflict.
+/* Consolidated final visual/mobile layer · 2026-09-25
+ * Single source of truth for the final overrides. This replaces the former
+ * stacked QA/hardening blocks while preserving their effective values.
  */
 
 html {
@@ -397,14 +397,18 @@ html {
   position: relative;
 }
 
-:where(.dashboard-kpi-card,.technical-mini-kpi,.summary-public-fact,
-.summary-simple-card,.candidate-card,.quiz-card,.quiz-phase-card,
-.civic-service-card,.obs-card) {
+:where(
+  .dashboard-kpi-card,.technical-mini-kpi,.summary-public-fact,
+  .summary-simple-card,.candidate-card,.quiz-card,.quiz-phase-card,
+  .civic-service-card,.obs-card
+) {
   text-wrap: pretty;
 }
 
-:where(.dashboard-kpi-card strong,.technical-mini-kpi strong,
-.summary-public-fact strong,.summary-simple-card strong) {
+:where(
+  .dashboard-kpi-card strong,.technical-mini-kpi strong,
+  .summary-public-fact strong,.summary-simple-card strong
+) {
   font-variant-numeric: tabular-nums;
 }
 
@@ -438,8 +442,10 @@ html {
   line-height: 1.52;
 }
 
-:where(.quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
-.civic-share-button,.summary-public-action,.mobile-tool-action) {
+:where(
+  .quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
+  .civic-share-button,.summary-public-action,.mobile-tool-action
+) {
   transition:
     transform .14s ease,
     background-color .14s ease,
@@ -447,125 +453,13 @@ html {
     box-shadow .14s ease;
 }
 
-:where(.quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
-.civic-share-button,.summary-public-action,.mobile-tool-action):active {
+:where(
+  .quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
+  .civic-share-button,.summary-public-action,.mobile-tool-action
+):active {
   transform: translateY(1px);
 }
 
-@media (max-width: 767px) {
-  /* mobile-final.css already reserves the fixed bottom navigation area;
-     do not cancel that reservation here. */
-  body {
-    padding-bottom: calc(
-      var(--mobile-nav-height, 64px) +
-      env(safe-area-inset-bottom, 0px)
-    );
-  }
-
-  #main-content {
-    padding-bottom: 20px;
-  }
-
-  .hero-shell {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .hero-shell::after {
-    z-index: 0;
-  }
-
-  .section-header p,
-  .section-heading p {
-    font-size: 13px !important;
-    line-height: 1.5 !important;
-  }
-
-  :where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card) {
-    box-shadow: 0 6px 20px rgba(0,0,0,.12);
-  }
-
-  .language-toggle-v3 .language-toggle-options > button {
-    min-height: 54px;
-  }
-
-  .language-toggle-v3 .language-toggle-options > button[aria-pressed="true"] {
-    transform: none;
-  }
-
-  .mobile-bottom-nav {
-    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
-  }
-
-  .mobile-bottom-nav button {
-    min-height: 48px !important;
-  }
-
-  .mobile-bottom-nav button:focus-visible {
-    outline-offset: -2px;
-  }
-
-  .today-card,
-  .topic-card {
-    scroll-snap-stop: normal;
-  }
-
-  .summary-public-fact,
-  .summary-simple-card,
-  .candidate-card,
-  .quiz-card {
-    content-visibility: auto;
-    contain-intrinsic-size: 160px;
-  }
-
-  .candidate-card h3,
-  .quiz-prompt,
-  .summary-public-fact strong,
-  .summary-simple-card strong {
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: auto;
-  }
-}
-
-@media (max-width: 390px) {
-  .language-toggle-v3 {
-    margin-inline: 10px;
-    max-width: calc(100% - 20px);
-  }
-
-  .language-toggle-v3 .language-toggle-options {
-    gap: 5px !important;
-  }
-
-  .language-toggle-v3 .language-toggle-options > button {
-    min-height: 52px;
-    padding-inline: 4px !important;
-  }
-
-  .mobile-bottom-nav button {
-    font-size: 8px !important;
-  }
-
-  .mobile-bottom-nav button svg {
-    width: 17px !important;
-    height: 17px !important;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .language-toggle-v3 .language-toggle-options > button,
-  :where(.quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
-  .civic-share-button,.summary-public-action,.mobile-tool-action) {
-    transition: none;
-  }
-}
-
-
-/* Final mobile hardening · 2026-09-25
- * Last-in-file rules intentionally settle conflicts between the legacy
- * premium/mobile layers without changing application behavior or data.
- */
 @media (max-width: 767px) {
   html {
     overflow-x: clip;
@@ -586,6 +480,27 @@ html {
     padding-bottom: 24px !important;
   }
 
+  .hero-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero-shell::after {
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .section-header p,
+  .section-heading p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  :where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card) {
+    box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  }
+
   .language-toggle-v3 {
     width: 100%;
     max-width: 100% !important;
@@ -597,6 +512,10 @@ html {
     min-width: 0 !important;
     min-height: 54px !important;
     white-space: normal;
+  }
+
+  .language-toggle-v3 .language-toggle-options > button[aria-pressed="true"] {
+    transform: none;
   }
 
   .language-toggle-v3 .language-toggle-options > button strong,
@@ -629,13 +548,13 @@ html {
     white-space: nowrap;
   }
 
-  .hero-shell {
-    overflow: hidden;
+  .mobile-bottom-nav button:focus-visible {
+    outline-offset: -2px;
   }
 
-  .hero-shell::after {
-    z-index: 0;
-    pointer-events: none;
+  .today-card,
+  .topic-card {
+    scroll-snap-stop: normal;
   }
 
   :where(
@@ -646,6 +565,15 @@ html {
   ) {
     content-visibility: visible;
     contain-intrinsic-size: auto;
+  }
+
+  .candidate-card h3,
+  .quiz-prompt,
+  .summary-public-fact strong,
+  .summary-simple-card strong {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: auto;
   }
 
   .today-rail,
@@ -719,6 +647,18 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+
   .language-toggle-v3 .language-toggle-options > button,
   .mobile-bottom-nav button,
   .hero-shell a,
