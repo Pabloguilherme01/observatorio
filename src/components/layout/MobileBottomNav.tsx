@@ -1,7 +1,6 @@
-import { CircleHelp, Compass, FileSearch, LayoutDashboard, MoreHorizontal, Users } from 'lucide-react';
+import { CircleHelp, Compass, LayoutDashboard, MoreHorizontal, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
-import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const primaryItems = [
   { id: 'descubra', label: 'Descobrir', icon: Compass },
@@ -13,7 +12,8 @@ const sectionToTab = (id: string) => {
   if (id === 'resumo' || id === 'dashboard' || id === 'analise') return 'dashboard';
   if (id === 'descubra') return 'descubra';
   if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica' || id === 'eleitorado') return 'eleitoral360';
-  return 'descubra';
+  if (id === 'quiz') return 'quiz';
+  return 'more';
 };
 
 function jump(id: string) {
@@ -34,7 +34,6 @@ function jump(id: string) {
 }
 
 export function MobileBottomNav() {
-  const { mode } = useLanguageMode();
   const [moreOpen, setMoreOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
@@ -63,12 +62,21 @@ export function MobileBottomNav() {
       if (visible?.target.id) update(sectionToTab(visible.target.id));
     }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
-    const nodes = navigation.map(item => item.id);
-    nodes.push('resumo', 'analise');
-    nodes.forEach(id => {
-      const node = document.getElementById(id);
-      if (node) observer?.observe(node);
-    });
+    const observeNavigationNodes = () => {
+      navigation.forEach(item => {
+        const node = document.getElementById(item.id);
+        if (node) observer?.observe(node);
+      });
+      ['resumo', 'analise'].forEach(id => {
+        const node = document.getElementById(id);
+        if (node) observer?.observe(node);
+      });
+    };
+    observeNavigationNodes();
+
+    const root = document.getElementById('main-content') ?? document.body;
+    const mutationObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(observeNavigationNodes);
+    mutationObserver?.observe(root, { childList: true, subtree: true });
 
     window.addEventListener('hashchange', onHash);
     window.addEventListener('observatorio:navigate', onNavigate);
@@ -77,6 +85,7 @@ export function MobileBottomNav() {
 
     return () => {
       observer?.disconnect();
+      mutationObserver?.disconnect();
       window.removeEventListener('hashchange', onHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('click', onOutside);
@@ -104,8 +113,8 @@ export function MobileBottomNav() {
         <button
           type="button"
           onClick={() => { setMoreOpen(false); jump(quizItem.id); }}
-          className={activeSection === quizItem.id ? 'is-active' : ''}
-          aria-current={activeSection === quizItem.id ? 'page' : undefined}
+          className={activeSection === 'quiz' ? 'is-active' : ''}
+          aria-current={activeSection === 'quiz' ? 'page' : undefined}
         >
           <CircleHelp className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           <span>Quiz</span>
@@ -116,9 +125,10 @@ export function MobileBottomNav() {
           id="mobile-bottom-more-trigger"
           type="button"
           onClick={() => setMoreOpen(value => !value)}
-          className={'w-full ' + (moreOpen ? 'is-active' : '')}
+          className={'w-full ' + (moreOpen || activeSection === 'more' ? 'is-active' : '')}
           aria-expanded={moreOpen}
           aria-controls="mobile-bottom-more"
+          aria-current={activeSection === 'more' ? 'page' : undefined}
         >
           <MoreHorizontal className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           <span>Mais</span>
@@ -131,7 +141,6 @@ export function MobileBottomNav() {
                 type="button"
                 role="menuitem"
                 onClick={() => { setMoreOpen(false); jump(item.id); }}
-                aria-current={activeSection === item.id ? 'page' : undefined}
               >
                 <span>{item.shortLabel}</span>
                 <small>{item.description}</small>
