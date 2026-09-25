@@ -40,7 +40,6 @@ export function AudienceHub() {
   const jump = (id: string) => {
     window.history.replaceState(null, '', '#' + id);
     window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
-    window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
 
   return (
@@ -94,6 +93,16 @@ export function AudienceHub() {
           </button>
         ))}
       </div>}
+
+      {isSummary && (
+        <div className="audience-summary-service" aria-label="Serviço público em destaque">
+          <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('acao')}>
+            <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
+            <span><strong>Serviços públicos</strong><small>Prefeitura, saúde, legislação, transparência e canais oficiais.</small></span>
+            <ArrowRight aria-hidden="true" />
+          </button>
+        </div>
+      )}
 
       {!isSummary && <div className="audience-action-grid" aria-label="Ferramentas rápidas">
         <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
