@@ -3,8 +3,9 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
 
-type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport';
+type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
 type SearchEntry = readonly [string, string, ResultKind];
 
@@ -23,13 +24,14 @@ const entries: readonly SearchEntry[] = [
   ['Pesquisa registrada', 'politica', 'primary'],
   ['HEALGO', 'saude', 'primary'],
   ['Resumo de leitura', 'resumo', 'primary'],
+  ...publicServiceSearchEntries,
 ];
 
 const normalize = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
 const sourceLabel = (sourceId: string) => d.sources.find(source => source.id === sourceId)?.label ?? sourceId;
-const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Exportação' }[id] ?? 'Seção do observatório');
+const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Exportação', acao: 'Serviços públicos' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
@@ -181,6 +183,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     { key: 'source', label: 'Fontes oficiais' },
     { key: 'candidate', label: 'Candidaturas' },
     { key: 'transport', label: 'Transporte' },
+    { key: 'public', label: 'Serviços públicos' },
   ];
 
   const resultIcon = (id: string) => {
@@ -193,6 +196,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     if (id === 'fontes') return Database;
     if (id === 'qualidade') return ShieldCheck;
     if (id === 'exportacao') return BookOpen;
+    if (id === 'acao') return Landmark;
     return BarChart3;
   };
 
@@ -234,7 +238,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   const selectResult = (id: string) => {
     onClose();
-    const knownDestination = id === 'resumo' || id === 'saude' || id === 'candidaturas' || id === 'exportacao' || navigation.some(item => item.id === id);
+    const knownDestination = id === 'resumo' || id === 'saude' || id === 'candidaturas' || id === 'exportacao' || id === 'acao' || navigation.some(item => item.id === id);
     const resolvedTarget = id === 'resumo' ? 'dashboard' : id;
     const target = knownDestination ? resolvedTarget : (document.getElementById(id) ? id : 'dashboard');
     const currentTarget = window.location.hash.replace('#', '');
