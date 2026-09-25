@@ -7,13 +7,8 @@ const generatedData = generated as {
     downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced' | 'local_filter_pending';
     sourceRows?: number;
-    complementaryFile?: {
-      generationDate?: string;
-      sourceRows?: number;
-      uniqueCandidateIds?: number;
-    };
   };
-  coverage: 'watchlist' | 'municipality_required' | 'municipality' | 'state_watchlist';
+  coverage: 'state_watchlist';
   watchlist: string[];
   matched: Array<{
     sqCandidate: string;
@@ -44,9 +39,6 @@ const candidateStatus = ['first_capture', 'synced', 'unchanged', 'changed'].incl
   : ('pending' as const);
 
 const snapshotDate = generatedData.meta.downloadedAt ? generatedData.meta.downloadedAt.slice(0, 10) : '—';
-const sourceRows = generatedData.meta.sourceRows ?? generatedData.meta.complementaryFile?.sourceRows ?? 0;
-const uniqueCandidateIds = generatedData.meta.complementaryFile?.uniqueCandidateIds ?? sourceRows;
-const generationDate = generatedData.meta.complementaryFile?.generationDate ?? snapshotDate;
 
 export const electoral360Modules: readonly Electoral360Module[] = [
   {
@@ -110,13 +102,6 @@ export const electoral360Snapshot: Electoral360Snapshot = {
   captureMode: generatedData.meta.state === 'not_synced' || generatedData.meta.state === 'local_filter_pending' ? 'static-local' : 'github-actions',
   candidateUniverseScope: 'GO',
   localWatchlist: generatedData.watchlist,
-  complementaryStats: {
-    sourceRows,
-    uniqueCandidateIds,
-    generationDate,
-    byGender: { 'MASCULINO': 551, 'FEMININO': 339, '#NULO': 15 },
-    byJudgment: { 'DEFERIDO': 844, '#NULO': 47, 'INDEFERIDO EM PRAZO RECURSAL OU COM RECURSO': 8, 'PENDENTE DE JULGAMENTO': 5, 'DEFERIDO COM RECURSO': 1 },
-  },
   matchedCandidates: generatedData.meta.state !== 'local_filter_pending'
     ? generatedData.matched.map(candidate => ({
       sqCandidate: candidate.sqCandidate,
