@@ -1,4 +1,5 @@
-import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck, Database, CalendarClock } from 'lucide-react';
+import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck, Database, CalendarClock, Server, GitCommitHorizontal } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
 import { formatDate } from '../utils/formatters';
@@ -9,6 +10,31 @@ const correctionUrl = 'https://github.com/Pabloguilherme01/observatorio/issues/n
 export function ProjectTrustPanel() {
   const official = d.sources.filter(source => source.nature === 'official').length;
   const { mode } = useLanguageMode();
+  const [publication, setPublication] = useState({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '' });
+
+  useEffect(() => {
+    if (mode !== 'technical') {
+      setPublication({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '' });
+      return;
+    }
+    const controller = new AbortController();
+    fetch('/observatorio/api/v1/health.json', { signal: controller.signal, cache: 'no-store' })
+      .then(response => {
+        if (!response.ok) throw new Error('healthcheck HTTP ' + response.status);
+        return response.json();
+      })
+      .then(payload => setPublication({
+        status: payload?.status === 'ok' ? 'ok' : payload?.status === 'degraded' ? 'degraded' : 'error',
+        commitShort: payload?.publication?.commitShort ?? '',
+        buildGeneratedAt: payload?.buildGeneratedAt ?? '',
+        contract: payload?.publication?.contract ?? '',
+      }))
+      .catch(error => {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        setPublication({ status: 'error', commitShort: '', buildGeneratedAt: '', contract: '' });
+      });
+    return () => controller.abort();
+  }, [mode]);
   return (
     <section id="principios" className="mx-auto max-w-7xl px-4 pb-10 sm:px-6" aria-labelledby="principles-title">
       <div className="trust-shell">
@@ -39,7 +65,27 @@ export function ProjectTrustPanel() {
 
         <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Nota de neutralidade:</strong> este painel é uma iniciativa cívica independente. Não declara vínculo, patrocínio ou associação com candidaturas, partidos ou federações e não recomenda escolhas eleitorais. Os dados são apresentados com fonte, data, natureza e limitações quando disponíveis.</div>
 
-        {mode === 'technical' && <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado.</div>}
+        {mode === 'technical' && <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="trust-card">
+            <Server className="h-4 w-4 text-sky-300" />
+            <strong>Publicação pública</strong>
+            <p>{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a publicação está em estado degradado.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+          </div>
+          <div className="trust-card">
+            <GitCommitHorizontal className="h-4 w-4 text-violet-300" />
+            <strong>Paridade de publicação</strong>
+            <p>{publication.commitShort ? <>Commit publicado: <code className="font-bold text-slate-300">{publication.commitShort}</code>{publication.contract ? ' · ' + publication.contract : ''}.</> : 'O commit público será exibido aqui quando o healthcheck responder.'}</p>
+          </div>
+        </div>
+
+        <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
+          <strong className="text-slate-300">Conferência independente:</strong> o painel diferencia o estado informado pelo aplicativo do estado efetivamente respondido pela publicação pública. Isso evita confundir uma execução de CI/CD concluída com disponibilidade real para o público.
+          {publication.buildGeneratedAt && <span className="ml-1">Último build público: {new Date(publication.buildGeneratedAt).toLocaleString('pt-BR')}.</span>}
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
+          <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado.
+        </div>}
       </div>
     </section>
   );
