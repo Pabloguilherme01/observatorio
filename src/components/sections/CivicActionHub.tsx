@@ -287,7 +287,7 @@ const additionalPublicServices = [
 const MUNICIPAL_TRANSPARENCY_BASE = 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/';
 
 function PublicServiceLink({ href, label }: { readonly href: string; readonly label: string }) {
-  const isMunicipalTransparency = href.startsWith(MUNICIPAL_TRANSPARENCY_BASE) && href !== MUNICIPAL_TRANSPARENCY_BASE;
+  const isMunicipalTransparency = String(href).startsWith(MUNICIPAL_TRANSPARENCY_BASE) && String(href) !== MUNICIPAL_TRANSPARENCY_BASE;
   return (
     <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
       <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
@@ -340,7 +340,7 @@ export function CivicActionHub() {
                 </span>
                 <span className="mt-1 block text-[11px] leading-5 text-slate-500">{description}</span>
               </a>
-              {href.startsWith(MUNICIPAL_TRANSPARENCY_BASE) && href !== MUNICIPAL_TRANSPARENCY_BASE && (
+              {String(href).startsWith(MUNICIPAL_TRANSPARENCY_BASE) && String(href) !== MUNICIPAL_TRANSPARENCY_BASE && (
                 <a href={MUNICIPAL_TRANSPARENCY_BASE} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-8 items-center text-[10px] font-semibold text-slate-500 hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
                   Abrir portal-base
                 </a>
