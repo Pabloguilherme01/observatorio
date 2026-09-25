@@ -102,11 +102,11 @@
     <div id="root">
       <main id="boot-fallback" aria-live="polite" style="max-width:920px;margin:28px auto;padding:20px;font-family:system-ui,sans-serif;color:#e6edf3;background:#0b1117">
         <div style="border:1px solid rgba(125,211,252,.14);border-radius:24px;padding:22px;background:linear-gradient(135deg,rgba(125,211,252,.055),rgba(255,255,255,.018))">
-          <div style="font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc">Observatório · inicialização</div>
+          <div style="font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:#7dd3fc">Observatório Eleitoral</div>
           <strong style="display:block;margin-top:8px;font-size:24px;line-height:1.05">Águas Lindas de Goiás · 2026</strong>
-          <p style="margin:9px 0 0;color:#94a3b8;line-height:1.6">Preparando dados públicos, indicadores, fontes e ferramentas.</p>
+          <p style="margin:9px 0 0;color:#94a3b8;line-height:1.6">Carregando dados públicos, indicadores, fontes e ferramentas.</p>
           <div style="display:grid;gap:10px;margin-top:18px">
-            <div style="height:84px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.045),rgba(255,255,255,.08),rgba(255,255,255,.045));background-size:200% 100%;animation:obs-skeleton 1.45s ease-in-out infinite"></div>
+            <div style="height:84px;border-radius:18px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.075),rgba(255,255,255,.04));background-size:200% 100%;animation:obs-skeleton 1.45s ease-in-out infinite" aria-hidden="true"></div>
             <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">
               <div style="height:118px;border-radius:18px;background:rgba(255,255,255,.035)"></div>
               <div style="height:118px;border-radius:18px;background:rgba(255,255,255,.035)"></div>
@@ -115,7 +115,7 @@
             </div>
             <div style="height:170px;border-radius:18px;background:rgba(255,255,255,.025)"></div>
           </div>
-          <p style="margin:12px 0 0;color:#64748b;font-size:12px">Carregamento inicial · você verá um aviso de erro caso a interface não consiga iniciar.</p>
+          <p style="margin:12px 0 0;color:#64748b;font-size:12px">Carregando a interface interativa. Os dados abertos continuam disponíveis enquanto o painel inicia.</p>
         </div>
       </main>
     </div>
@@ -139,7 +139,7 @@
           if (!root || mounted) return;
           const fallback = document.getElementById('boot-fallback');
           if (fallback) {
-            fallback.innerHTML = '<strong style="font-size:18px">A interface não iniciou</strong><p style="margin:10px 0 0;color:#8b949e;line-height:1.6">O navegador não conseguiu executar o aplicativo em 10 segundos. Recarregue a página. Se o problema persistir, abra o console do navegador e informe o erro.</p><button type="button" onclick="location.reload()" style="margin-top:16px;padding:10px 16px;border:0;border-radius:10px;font-weight:700;cursor:pointer">Recarregar</button>';
+            fallback.innerHTML = '<strong style="font-size:18px">A interface não iniciou</strong><p style="margin:10px 0 0;color:#8b949e;line-height:1.6">A interface interativa não concluiu a inicialização. Recarregue a página para tentar novamente. Os dados públicos continuam acessíveis pelos recursos abertos abaixo.</p><button type="button" onclick="location.reload()" style="margin-top:16px;padding:10px 16px;border:0;border-radius:10px;font-weight:700;cursor:pointer">Recarregar</button>';
             fallback.setAttribute('role', 'alert');
             fallback.setAttribute('data-boot-timeout', String(Date.now() - startedAt));
           }
