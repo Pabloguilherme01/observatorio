@@ -274,17 +274,19 @@ export function QuickQuiz() {
   const next = () => {
     if (selected === null) return;
     if (isLast) {
-      const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, score) : value));
+      // Include the answer just selected: React state updates are asynchronous.
+      const finalScore = score + (selected === question.answerIndex ? 1 : 0);
+      const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
       setBest(nextScores);
-      if (score >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
+      if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
       }
       const nextLeaderboard = recordQuizHighScore({
         phase: activePhase + 1,
         level: phaseData?.level ?? 'Nível',
-        score,
+        score: finalScore,
         total: QUESTIONS_PER_LEVEL,
-        percentage: Math.round((score / QUESTIONS_PER_LEVEL) * 100),
+        percentage: Math.round((finalScore / QUESTIONS_PER_LEVEL) * 100),
         playedAt: new Date().toISOString(),
       });
       setLeaderboard(nextLeaderboard);
