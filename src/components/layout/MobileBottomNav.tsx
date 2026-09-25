@@ -22,7 +22,7 @@ const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidenc
 
 function jump(id: string, mode: 'summary' | 'simple' | 'technical', setMode: (mode: 'summary' | 'simple' | 'technical') => void) {
   const requiresTechnical = TECHNICAL_ONLY_DESTINATIONS.has(id);
-  const destinationIsHiddenInSummary = mode === 'summary' && id !== 'descubra' && id !== 'dashboard' && id !== 'eleitoral360' && id !== 'quiz';
+  const destinationIsHiddenInSummary = mode === 'summary' && id !== 'descubra' && id !== 'dashboard';
   if (requiresTechnical && mode !== 'technical') setMode('technical');
   else if (destinationIsHiddenInSummary) setMode('simple');
   window.history.replaceState(null, '', '#' + id);
