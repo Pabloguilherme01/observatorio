@@ -51,11 +51,17 @@ jobs:
       - name: Build production artifact
         run: npm run build
 
+      - name: Install browser test dependencies
+        run: npm install --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.13.0
+
       - name: Install Chromium for browser smoke tests
-        run: npx --yes playwright@1.55.0 install --with-deps chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Browser smoke test
         run: npm run test:browser
+
+      - name: Browser accessibility smoke test
+        run: npm run test:a11y:browser
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
