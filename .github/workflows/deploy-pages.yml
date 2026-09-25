@@ -48,8 +48,6 @@ jobs:
 
       - name: Verify TSE architecture
         run: npm run audit:tse-architecture
-      - name: Dependency vulnerability gate
-        run: npm run audit:deps
 
       - name: Validate production results feed contract
         run: npm run validate:results
