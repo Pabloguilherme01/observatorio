@@ -27,7 +27,10 @@
         "90002537423",
         "90002547004",
         "90002543768"
-      ]
+      ],
+      "resourceUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "verifiedAt": "2026-09-24T15:45:00.000Z",
+      "sourceUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip"
     },
     "selection": "local_evidence_watchlist",
     "candidateUniverseScope": "GO",
@@ -63,7 +66,9 @@
       "localEvidence": "Base eleitoral declarada em Águas Lindas de Goiás e trajetória política iniciada no município.",
       "evidenceSourceUrls": [
         "https://portal.al.go.leg.br/deputados/perfil-biografico/809"
-      ]
+      ],
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": true
     },
     {
       "sqCandidate": "90002543127",
@@ -84,7 +89,9 @@
       "localEvidence": "Disputou eleição para vereador em Águas Lindas de Goiás e mantém trajetória eleitoral vinculada ao município.",
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002543127.html"
-      ]
+      ],
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": true
     },
     {
       "sqCandidate": "90002537423",
@@ -105,7 +112,9 @@
       "localEvidence": "Foi candidato a vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002537423.html"
-      ]
+      ],
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": true
     },
     {
       "sqCandidate": "90002547004",
@@ -126,7 +135,9 @@
       "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002547004.html"
-      ]
+      ],
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": true
     },
     {
       "sqCandidate": "90002543768",
@@ -147,7 +158,9 @@
       "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; também foi oficializado para a disputa estadual de 2026.",
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002543768.html"
-      ]
+      ],
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": true
     },
     {
       "sqCandidate": "90002543113",
@@ -169,7 +182,9 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002543113.html"
       ],
-      "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos"
+      "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": false
     },
     {
       "sqCandidate": "90002544890",
@@ -191,7 +206,9 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002544890.html"
       ],
-      "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos"
+      "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
+      "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+      "photoAvailableInTseArchive": false
     }
   ],
   "diff": {
