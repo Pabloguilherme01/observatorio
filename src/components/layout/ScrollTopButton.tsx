@@ -32,7 +32,8 @@ export function ScrollTopButton() {
           || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
         window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
       }}
-      className="scroll-top-button fixed bottom-5 right-5 z-30 grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-[#101821]/90 text-slate-300 shadow-xl backdrop-blur-xl transition hover:border-sky-300/30 hover:text-white"
+      className="scroll-top-button fixed right-4 z-30 grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-[#101821]/90 text-slate-300 shadow-xl backdrop-blur-xl transition hover:border-sky-300/30 hover:text-white md:bottom-5"
+      style={{ bottom: 'max(5rem, calc(4.6rem + env(safe-area-inset-bottom, 0px)))' }}
       aria-label="Voltar ao topo"
       title="Voltar ao topo"
     >
