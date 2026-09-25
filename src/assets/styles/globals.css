@@ -2987,3 +2987,21 @@ d,
     transition:none!important;
   }
 }
+
+
+/* Round 2 · KPI provenance contrast */
+.kpi-source-pill{
+  color:#bae6fd;
+  background:rgba(14,116,144,.16);
+  border-color:rgba(125,211,252,.34);
+}
+.light .kpi-source-pill{
+  color:#075985;
+  background:#e0f2fe;
+  border-color:#7dd3fc;
+}
+.high-contrast .kpi-source-pill{
+  color:#fff!important;
+  background:#164e63!important;
+  border-color:#fff!important;
+}
