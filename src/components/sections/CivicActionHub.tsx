@@ -50,13 +50,6 @@ const actions = [
     cta: 'Acessar Câmara Municipal',
   },
   {
-    icon: ClipboardCheck,
-    title: 'Conferir a execução',
-    description: 'O Portal da Transparência municipal reúne despesas, contratos, licitações, obras, receitas e prestação de contas.',
-    href: 'https://aguaslindasdegoias.go.gov.br/transparencia/',
-    cta: 'Abrir Transparência',
-  },
-  {
     icon: Scale,
     title: 'Enviar manifestação',
     description: 'O TCMGO mantém Ouvidoria e SIC para solicitações, reclamações e comunicações relacionadas ao controle municipal.',
