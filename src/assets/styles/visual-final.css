@@ -472,7 +472,7 @@ html {
   }
 
   .hero-shell::after {
-    z-index: -1;
+    z-index: 0;
   }
 
   .section-header p,
