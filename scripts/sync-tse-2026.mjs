@@ -16,6 +16,7 @@ const ZIP_URLS = [
 ];
 
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
+const PHOTO_ARCHIVE_URL = 'https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip';
 
 function normalize(value) {
   return String(value ?? '')
@@ -97,6 +98,8 @@ function toTseRecord(row, header, previousRecord) {
     municipalityCodeTse: null,
     photoUrl: previousRecord?.photoUrl ?? null,
     instagramUrl: previousRecord?.instagramUrl ?? null,
+    photoAvailableInTseArchive: previousRecord?.photoAvailableInTseArchive ?? false,
+    photoArchiveUrl: previousRecord?.photoArchiveUrl ?? PHOTO_ARCHIVE_URL,
     watchlistName: previousRecord?.watchlistName ?? null,
     localEvidence: previousRecord?.localEvidence ?? null,
     evidenceSourceUrls: previousRecord?.evidenceSourceUrls ?? [],
@@ -302,6 +305,7 @@ async function main() {
         candidateUniverseScope: 'GO',
         localFilterType: 'local_evidence',
         filterNote: 'Recorte acompanhado de candidaturas estaduais do TSE com evidência documental de vínculo local. O vínculo local é mantido da base editorial validada e não é inferido do cadastro estadual.',
+        photoArchive: previous.meta?.photoArchive ?? { resourceUrl: PHOTO_ARCHIVE_URL, sourceUrl: PHOTO_ARCHIVE_URL, verifiedCandidateIds: [] },
       },
       coverage: 'state_watchlist',
       watchlist,
