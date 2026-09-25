@@ -310,176 +310,88 @@ function shareWhatsApp() {
 
 export function CivicActionHub() {
   return (
-    <section id="acao" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="action-title">
+    <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
         titleId="action-title"
-        eyebrow="Depois de ler"
-        title="Como usar o dado"
-        description="O observatório informa e aponta caminhos oficiais. Ele não recebe denúncias, apura fatos nem substitui os órgãos públicos."
+        eyebrow="Fontes e serviços oficiais"
+        title="Atalhos oficiais sem complicação"
+        description="Links diretos para consultar informações e serviços. O órgão responsável continua sendo a fonte oficial."
       />
 
-      <Card className="civic-primary-card mb-4 p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-emerald-300/10 bg-emerald-300/[0.06] text-emerald-200">
-            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
-          </span>
+      <div className="official-hub">
+        <div className="official-hub-head">
           <div>
-            <h3 className="text-base font-black text-white light:text-slate-900">Atalhos de utilidade pública</h3>
-            <p className="mt-1 text-sm leading-6 text-slate-400 light:text-slate-600">
-              Acesse diretamente serviços municipais que normalmente exigem vários passos no portal oficial.
-            </p>
+            <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
+            <h3 className="official-hub-title">Recursos oficiais</h3>
+            <p className="official-hub-subtitle">Comece por uma das ferramentas mais usadas nas Eleições 2026.</p>
           </div>
+          <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
+            Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
         </div>
-        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {priorityPublicServices.slice(0, 7).map(({ icon: Icon, title, description, href }) => (
-            <div key={title} className="civic-service-card group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05]">
-              <a href={href} target="_blank" rel="noopener noreferrer" className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300" aria-label={`${title}: ${description}`}>
-                <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
-                  <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
-                  <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
-                </span>
-                <span className="mt-1 block text-[11px] leading-5 text-slate-500">{description}</span>
-              </a>
-              {String(href).startsWith(MUNICIPAL_TRANSPARENCY_BASE) && String(href) !== MUNICIPAL_TRANSPARENCY_BASE && (
-                <a href={MUNICIPAL_TRANSPARENCY_BASE} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-8 items-center text-[10px] font-semibold text-slate-500 hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-                  Abrir portal-base
-                </a>
-              )}
-            </div>
+
+        <div className="official-resource-grid">
+          {[
+            ['fontes','Fontes oficiais','Consulte dados e documentos diretamente no TSE.','https://dadosabertos.tse.jus.br/','SearchCheck'],
+            ['resultados','Resultados 2026','Informações oficiais sobre divulgação e resultados eleitorais.','https://resultados.tse.jus.br/','Landmark'],
+            ['urna','Simulador da urna','Treine a navegação e conheça a sequência da votação.','https://www.tse.jus.br/servicos-eleitorais/urna-eletronica/simulador-de-votacao','Smartphone'],
+            ['votar','Regras para votar','Orientações oficiais para o dia da votação.','https://www.tse.jus.br/eleicoes/eleicoes-2026','ClipboardCheck'],
+            ['estatisticas','Estatísticas eleitorais','Dados e séries oficiais da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/estatisticas-eleitorais','BarChart'],
+          ].map(([id,title,description,href,icon]) => (
+            <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
+              <span className="official-resource-icon" aria-hidden="true">
+                {icon === 'SearchCheck' ? <SearchCheck className="h-5 w-5" /> :
+                 icon === 'Landmark' ? <Landmark className="h-5 w-5" /> :
+                 icon === 'Smartphone' ? <Smartphone className="h-5 w-5" /> :
+                 icon === 'ClipboardCheck' ? <ClipboardCheck className="h-5 w-5" /> :
+                 <SearchCheck className="h-5 w-5" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <strong>{title}</strong>
+                <small>{description}</small>
+              </span>
+              <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
+            </a>
           ))}
         </div>
-        {priorityPublicServices.length > 7 && (
-          <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3">
-            <summary className="cursor-pointer list-none text-xs font-black text-slate-300 light:text-slate-700">
-              Mais atalhos de utilidade pública <span className="ml-1 font-semibold text-slate-500">+{priorityPublicServices.length - 7}</span>
-            </summary>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-              {priorityPublicServices.slice(7).map(({ icon: Icon, title, description, href }) => (
-                <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="group rounded-xl border border-white/8 bg-white/[0.018] p-3">
-                  <span className="flex items-center gap-2 text-xs font-black text-white light:text-slate-900">
-                    <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
-                    <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
-                  </span>
-                  <span className="mt-1 block text-[10px] leading-4 text-slate-500">{description}</span>
-                </a>
-              ))}
-            </div>
-          </details>
-        )}
-      </Card>
+      </div>
 
-      <Card className="civic-contact-card mb-4 p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-amber-300/10 bg-amber-300/[0.06] text-amber-200">
-            <Smartphone className="h-5 w-5" aria-hidden="true" />
-          </span>
+      <div className="official-hub civic-local-hub">
+        <div className="official-hub-head">
           <div>
-            <h3 className="text-base font-black text-white light:text-slate-900">Contatos de utilidade imediata</h3>
-            <p className="mt-1 text-xs leading-5 text-slate-500">Telefones oficiais verificados em 25/09/2026. O link da fonte permite conferir o contato diretamente no órgão responsável.</p>
+            <span className="official-hub-kicker">Águas Lindas · Prefeitura</span>
+            <h3 className="official-hub-title">Serviços municipais</h3>
+            <p className="official-hub-subtitle">Acesso direto a transparência, saúde, serviços e participação.</p>
           </div>
         </div>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {immediatePublicContacts.map(contact => (
-            <div key={contact.id} className="civic-contact-item rounded-xl border border-white/8 bg-white/[0.025] p-3">
-              <a href={contact.tel} className="block min-h-11 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-                <span className="block text-sm font-black text-white light:text-slate-900">{contact.title} · {contact.phone}</span>
-                <span className="text-[11px] text-slate-500">{contact.description}</span>
-              </a>
-              <a href={contact.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-9 items-center gap-1 text-[10px] font-bold text-sky-300 hover:text-sky-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-                Fonte oficial <ExternalLink className="h-3 w-3" aria-hidden="true" />
-              </a>
-            </div>
+
+        <div className="official-resource-grid official-resource-grid-local">
+          {priorityPublicServices.slice(0, 8).map(({ icon: Icon, title, description, href }) => (
+            <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
+              <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
+              <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small></span>
+              <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
+            </a>
           ))}
         </div>
-      </Card>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_.72fr]">
-        <div className="space-y-5">
-          {(['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026'] as const).map(category => {
-            const categoryActions = actions.filter(action => action.category === category);
-            const visibleActions = categoryActions.slice(0, 2);
-            const extraActions = categoryActions.slice(2);
-            return (
-              <div key={category}>
-                <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {visibleActions.map(({ icon: Icon, title, description, href, cta }) => (
-                    <Card key={title} className="civic-category-card p-5">
-                      <div className="flex items-start gap-3">
-                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
-                          <Icon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                        <div>
-                          <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
-                          <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
-                          <PublicServiceLink href={href} label={cta} />
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-                {extraActions.length > 0 && (
-                  <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3">
-                    <summary className="cursor-pointer list-none text-xs font-black text-slate-300 light:text-slate-700">
-                      Ver mais serviços de {category.toLocaleLowerCase('pt-BR')} <span className="ml-1 font-semibold text-slate-500">+{extraActions.length}</span>
-                    </summary>
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                      {extraActions.map(({ icon: Icon, title, description, href, cta }) => (
-                        <Card key={title} className="p-4">
-                          <div className="flex items-start gap-3">
-                            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/8 bg-white/[0.03] text-sky-300">
-                              <Icon className="h-4 w-4" aria-hidden="true" />
-                            </span>
-                            <div>
-                              <h4 className="text-sm font-black text-white light:text-slate-900">{title}</h4>
-                              <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
-                              <PublicServiceLink href={href} label={cta} />
-                            </div>
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  </details>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        <details className="civic-more-services rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
-          <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
-            Mais serviços oficiais
-            <span className="ml-2 text-[11px] font-semibold text-slate-500">+{additionalPublicServices.length} caminhos</span>
-          </summary>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {additionalPublicServices.map(({ icon: Icon, title, description, href, cta }) => (
-              <Card key={title} className="p-4">
-                <div className="flex items-start gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/8 bg-white/[0.03] text-sky-300">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <h3 className="text-sm font-black text-white light:text-slate-900">{title}</h3>
-                    <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
-                    <PublicServiceLink href={href} label={cta} />
-                  </div>
-                </div>
-              </Card>
+        <details className="official-more">
+          <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
+          <div className="official-more-grid">
+            {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(({ icon: Icon, title, description, href, cta }) => (
+              <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card compact">
+                <span className="official-resource-icon small" aria-hidden="true"><Icon className="h-4 w-4" /></span>
+                <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small>{cta && <em>{cta}</em>}</span>
+                <ExternalLink className="official-resource-arrow h-3.5 w-3.5" aria-hidden="true" />
+              </a>
             ))}
           </div>
         </details>
+      </div>
 
-        <Card className="civic-share-card p-6">
-          <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Fonte + caminho oficial</div>
-          <h3 className="mt-2 text-2xl font-black text-white light:text-slate-900">Leve a fonte junto com o link</h3>
-          <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">
-            O compartilhamento carrega o endereço do observatório. Os atalhos acima levam diretamente aos portais oficiais e continuam sendo a referência para executar o serviço.
-          </p>
-          <button type="button" onClick={shareWhatsApp} className="civic-share-button mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-sky-300 px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-sky-200">
-            <MessageCircle className="h-4 w-4" aria-hidden="true" /> Compartilhar no WhatsApp
-          </button>
-          <p className="mt-3 text-[11px] leading-5 text-slate-500">O observatório é uma fonte de consulta. O conteúdo compartilhado não substitui a fonte oficial citada em cada seção.</p>
-        </Card>
+      <div className="official-source-note">
+        <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
+        <p><strong>Fonte oficial primeiro.</strong> O observatório organiza os caminhos; a execução do serviço e a informação original permanecem nos portais dos órgãos responsáveis.</p>
       </div>
     </section>
   );
