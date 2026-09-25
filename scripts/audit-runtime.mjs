@@ -28,6 +28,12 @@ for (const file of files) {
 }
 
 const app = read('src/app/App.tsx');
+if (
+  app.includes('function DeferredBlock') &&
+  app.includes('<SectionErrorBoundary label={errorLabel}>') &&
+  app.includes('readonly errorLabel: string;')
+) pass('blocos lazy possuem ErrorBoundary por domínio e rótulo de recuperação.');
+else fail('blocos lazy não possuem isolamento de erro por domínio.');
 if (app.includes('IntersectionObserver') && app.includes('rootMargin: \'320px 0px\'')) pass('carregamento diferido mantém margem de pré-carregamento otimizada.');
 else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 
