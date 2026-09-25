@@ -186,7 +186,9 @@ function DeferredBlock({
 
   return (
     <div ref={ref} className="deferred-section">
-      <Deferred><Component /></Deferred>
+      <SectionErrorBoundary label="Seção carregada">
+        <Deferred><Component /></Deferred>
+      </SectionErrorBoundary>
     </div>
   );
 }
