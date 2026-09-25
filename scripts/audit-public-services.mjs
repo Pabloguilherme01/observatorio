@@ -68,7 +68,7 @@ if (insecureLinks.length) {
   pass('links públicos externos preservam noopener em target=_blank');
 }
 const allPublicActionLinks = urls.length;
-if (allPublicActionLinks < 61) {
+if (allPublicActionLinks < 64) {
   fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
 } else {
   pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
