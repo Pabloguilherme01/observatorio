@@ -24,6 +24,7 @@ const generatedData = generated as {
     gender?: string | null;
     education?: string | null;
     occupation?: string | null;
+    evidenceSourceUrls?: string[];
   }>;
   diff: {
     state: string;
@@ -119,6 +120,7 @@ export const electoral360Snapshot: Electoral360Snapshot = {
       occupation: candidate.occupation ?? null,
       snapshotDate,
       sourceId: 'tse-candidatos-2026',
+      evidenceSourceUrls: candidate.evidenceSourceUrls ?? [],
     }))
     : [],
 };
