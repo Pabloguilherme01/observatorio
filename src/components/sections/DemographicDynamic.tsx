@@ -3,7 +3,6 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber } from '../../utils/formatters';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
-import { MethodologyFooter } from '../MethodologyFooter';
 
 export function DemographicDynamic() {
   const source = d.sources.find(s => s.id === 'ibge-estimativas-2026')!;
@@ -28,7 +27,7 @@ export function DemographicDynamic() {
             <div className="rounded-2xl border border-white/8 p-4"><Users className="h-4 w-4 text-sky-300" /><div className="mt-2 text-xs text-slate-500">Variação 2022 → 2026</div><strong className="text-xl text-white">{(((d.populationSeries.at(-1)!.value / d.populationSeries.find(p => p.year === 2022)!.value) - 1) * 100).toFixed(1).replace('.', ',')}%</strong></div>
             <div className="rounded-2xl border border-white/8 p-4"><TrendingUp className="h-4 w-4 text-violet-300" /><div className="mt-2 text-xs text-slate-500">Natureza do último ponto</div><strong className="text-xl text-white">Estimativa</strong></div>
           </div>
-          <MethodologyFooter source={source} denominator="população municipal estimada/censitária" formula="variação = (valor final ÷ valor inicial − 1) × 100" limitations="As estimativas não devem ser tratadas como contagem de pessoas observada em censo." />
+          <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500"><div className="font-bold text-slate-400">Fonte e método</div><p className="mt-1">{source.label} · referência {source.referenceDate}. Variação = (valor final ÷ valor inicial − 1) × 100. As estimativas não devem ser tratadas como contagem de pessoas observada em censo.</p><a className="mt-2 inline-flex min-h-11 items-center font-semibold text-sky-300 underline decoration-sky-300/30 underline-offset-4" href={source.url} target="_blank" rel="noopener noreferrer">Abrir fonte oficial</a></div>
         </Card>
         <Card>
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Leitura rápida</div>
