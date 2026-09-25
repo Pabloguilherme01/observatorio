@@ -319,3 +319,44 @@ section{scroll-margin-top:72px}
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+
+
+/* Quiz mobile: cinco fases em trilho compacto, sem empilhar uma lista longa. */
+@media (max-width: 767px) {
+  .quiz-phase-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 2px 2px 6px !important;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .quiz-phase-grid::-webkit-scrollbar { display: none; }
+  .quiz-phase-grid .quiz-phase-card {
+    flex: 0 0 min(156px, 42vw);
+    min-width: min(156px, 42vw) !important;
+    min-height: 112px;
+    scroll-snap-align: start;
+  }
+  .quiz-phase-grid .quiz-phase-best {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+@media (max-width: 390px) {
+  .quiz-phase-grid {
+    gap: 7px !important;
+  }
+  .quiz-phase-grid .quiz-phase-card {
+    flex-basis: 142px;
+    min-width: 142px !important;
+    min-height: 106px;
+    padding: 10px !important;
+  }
+}
