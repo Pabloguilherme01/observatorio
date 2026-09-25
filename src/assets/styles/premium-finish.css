@@ -887,6 +887,31 @@
   border-color:#dbe5ec!important;
 }
 
+.light .quiz-kicker,
+.light .quiz-phase-kicker{
+  color:#0369a1!important;
+}
+.light .quiz-subtitle,
+.light .quiz-phase-meta,
+.light .quiz-phase-best,
+.light .quiz-phase-lock,
+.light .quiz-progress-label,
+.light .quiz-high-scores .text-slate-500{
+  color:#475569!important;
+}
+.light #eleitoral360 .text-white{
+  color:#0f172a!important;
+}
+.light #eleitoral360 .text-sky-100,
+.light #eleitoral360 .text-sky-200,
+.light #eleitoral360 .text-sky-300{
+  color:#0369a1!important;
+}
+.light #eleitoral360 .text-amber-100,
+.light #eleitoral360 .text-amber-200{
+  color:#92400e!important;
+}
+
 .light .dashboard-kpi-card,
 .light .technical-mini-kpi{
   border-color:#dbe5ec!important;
