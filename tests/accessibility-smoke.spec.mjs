@@ -7,6 +7,7 @@ const routes = [
   { hash: '#eleitoral360', marker: '#eleitoral360' },
   { hash: '#acao', marker: '#acao' },
   { hash: '#transporte', marker: '#transporte' },
+  { hash: '#exportacao', marker: '#exportacao' },
 ];
 
 for (const route of routes) {
