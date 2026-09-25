@@ -128,10 +128,11 @@ if (
   search.includes("navigation.some(item => item.id === id)") &&
   search.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'")
 ) pass('busca preserva destinos lazy e aciona a navegação central');
+else fail('busca pode perder destinos lazy antes da montagem do componente');
+
 const appForLazy = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
 if (appForLazy.includes("anchorIds={['dados', 'instagram', 'exportacao']}") && search.includes("id === 'resumo' ? 'dashboard' : id")) pass('aliases da busca resolvem Resumo e Exportação para destinos montáveis');
 else fail('aliases da busca podem apontar para destinos sem montagem lazy');
-else fail('busca pode perder destinos lazy antes da montagem do componente');
 
 const css = texts.find(item => item.file === 'src/assets/styles/globals.css')?.content ?? '';
 for (const [needle, label] of [[':focus-visible','foco visível'],['prefers-reduced-motion','redução de movimento'],['safe-area-inset-bottom','safe-area mobile'],['scroll-snap-type','rails mobile'],['@media (max-width:390px)','telas muito pequenas'],['min-height:44px','alvo de toque mobile'],['--mobile-touch:44px','alvo de toque mobile']]) {
