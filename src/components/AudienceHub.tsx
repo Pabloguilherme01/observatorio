@@ -85,7 +85,7 @@ export function AudienceHub() {
               <p>Seis caminhos principais. Sem menu escondido.</p>
             </div>
             <div className="audience-topic-grid">
-              {topics.map(({ id, label, description, icon: Icon }) => (
+              {(isTechnical ? topics : topics.slice(0, 5)).map(({ id, label, description, icon: Icon }) => (
                 <button key={id} type="button" onClick={() => jump(id)} className="audience-topic">
                   <span className="audience-topic-icon"><Icon aria-hidden="true" /></span>
                   <span className="audience-topic-copy">
@@ -152,11 +152,11 @@ export function AudienceHub() {
                 <h3 id="official-title">Recursos oficiais</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Ver todas as fontes <ArrowRight aria-hidden="true" />
+                Ver fontes <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">
-              {officialResources.map(({ label, href, note, icon: Icon }) => (
+              {officialResources.slice(0, isTechnical ? officialResources.length : 3).map(({ label, href, note, icon: Icon }) => (
                 <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
                   <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                   <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
