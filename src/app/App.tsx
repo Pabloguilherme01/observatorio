@@ -90,7 +90,7 @@ function scrollToHashWhenReady(hash: string) {
   scheduleCheck();
 }
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']);
+const TECHNICAL_ONLY_DESTINATIONS = new Set(['contexto', 'eleitorado', 'politica', 'candidaturas', 'eleitoral360', 'principios', 'qualidade', 'evidencias', 'fontes', 'exportacao', 'orcamento-impacto', 'quiz']);
 const SUMMARY_DESTINATIONS = new Set(['resumo']);
 
 function NavigationModeBridge() {
