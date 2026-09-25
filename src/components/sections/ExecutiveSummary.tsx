@@ -182,22 +182,42 @@ export function ExecutiveSummary() {
         )}
 
         {languageMode === 'technical' && (
-          <div className="mt-3 grid gap-3 md:grid-cols-3">
-            <Card className="summary-evidence">
-              <span>Leitura</span>
-              <strong>Valor + data + fonte</strong>
-              <p className="mt-1">Compare indicadores somente depois de conferir escopo e referência.</p>
-            </Card>
-            <Card className="summary-evidence">
-              <span>Limites</span>
-              <strong>Cenário não é fato</strong>
-              <p className="mt-1">Simulações e estimativas ficam separadas dos valores observados.</p>
-            </Card>
-            <Card className="summary-evidence">
-              <span>Atualização</span>
-              <strong>{formatDate(d.meta.updatedAt)}</strong>
-              <p className="mt-1">Cada indicador pode ter sua própria data de referência.</p>
-            </Card>
+          <div className="summary-technical-wrap mt-3">
+            <div className="summary-technical-kpis" aria-label="Indicadores com rastreabilidade">
+              {publicFacts.map(fact => (
+                <button
+                  key={fact.id}
+                  type="button"
+                  className="summary-technical-kpi"
+                  onClick={() => goToSection(fact.target)}
+                  aria-label={`Abrir a seção de ${fact.label}`}
+                >
+                  <span className="summary-technical-kpi-label">{fact.label}</span>
+                  <strong>{fact.value}</strong>
+                  <span className="summary-technical-kpi-source">{fact.source}</span>
+                  <span className="summary-technical-kpi-note">{fact.note}</span>
+                  <span className="summary-technical-kpi-cta"><ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> Conferir contexto</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="summary-technical-audit" aria-label="Regras de leitura técnica">
+              <Card className="summary-evidence">
+                <span>Leitura</span>
+                <strong>Valor + data + fonte</strong>
+                <p>Confira escopo e referência antes de comparar indicadores.</p>
+              </Card>
+              <Card className="summary-evidence">
+                <span>Limites</span>
+                <strong>Estimativa não é medição</strong>
+                <p>Simulações e cálculos derivados ficam identificados e separados.</p>
+              </Card>
+              <Card className="summary-evidence">
+                <span>Atualização</span>
+                <strong>{formatDate(d.meta.updatedAt)}</strong>
+                <p>A data do painel não substitui a data específica de cada indicador.</p>
+              </Card>
+            </div>
           </div>
         )}
       </div>
