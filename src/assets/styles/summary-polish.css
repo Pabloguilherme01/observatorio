@@ -2048,3 +2048,40 @@
 @media(prefers-reduced-motion:reduce){
   .language-toggle-v3 .language-toggle-label{transition:none}
 }
+
+
+/* Mode contracts · conteúdo e densidade mudam junto com o seletor */
+.mode-scope{min-width:0}
+[data-language-mode="summary"] .mode-scope-context,
+[data-language-mode="summary"] .mode-scope-civic,
+[data-language-mode="summary"] .mode-scope-election,
+[data-language-mode="summary"] .mode-scope-public,
+[data-language-mode="summary"] .mode-scope-trust,
+[data-language-mode="summary"] .mode-scope-evidence{display:none!important}
+[data-language-mode="simple"] .mode-scope-trust,
+[data-language-mode="simple"] .mode-scope-evidence{display:none!important}
+[data-language-mode="summary"] .audience-home .audience-section-heading{margin-top:4px}
+[data-language-mode="summary"] .audience-home .audience-resources{margin-top:14px}
+[data-language-mode="simple"] .audience-home .audience-section-heading,
+[data-language-mode="technical"] .audience-home .audience-section-heading{margin-top:10px}
+[data-language-mode="technical"] .mode-scope-evidence .deferred-section{border-top-color:rgba(167,139,250,.14)}
+[data-language-mode="technical"] .mode-scope-evidence{background:linear-gradient(180deg,rgba(167,139,250,.018),transparent 28%)}
+[data-language-mode="technical"] .mode-scope-evidence .deferred-section:before{
+  content:"Camada de evidências · fontes, qualidade e rastreabilidade";
+  display:block;
+  max-width:1120px;
+  margin:0 auto 4px;
+  padding:0 16px;
+  color:#a78bfa;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+[data-language-mode="simple"] .mode-scope-context .technical-detail,
+[data-language-mode="simple"] .mode-scope-civic .technical-detail,
+[data-language-mode="simple"] .mode-scope-election .technical-detail,
+[data-language-mode="simple"] .mode-scope-public .technical-detail{display:none!important}
+@media(max-width:767px){
+  [data-language-mode="technical"] .mode-scope-evidence .deferred-section:before{padding-inline:var(--mobile-page-gutter);line-height:1.4}
+}
