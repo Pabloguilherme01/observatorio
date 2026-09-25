@@ -134,7 +134,7 @@ export function DataInspector() {
   return (
     <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
       <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={() => setData(null)} />
-      <article ref={modalRef} className="command-panel max-w-xl">
+      <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Inspetor de dados</div>
@@ -151,7 +151,7 @@ export function DataInspector() {
             <div className="mt-2 text-xs text-slate-500">{data.method ?? 'Valor apresentado pelo dataset do observatório.'}</div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="data-inspector-grid grid gap-3 sm:grid-cols-2">
             <Info label="Fonte" value={source?.institution ?? 'Não informada'} />
             <Info label="Natureza / estado" value={data.status ?? source?.nature ?? 'Não informado'} />
             <Info label="Ano-base / referência" value={data.referenceDate ?? source?.referenceDate ?? 'Não informado'} />
@@ -166,7 +166,7 @@ export function DataInspector() {
           )}
 
           {actionError && <p className="text-xs text-amber-300" role="status">Não foi possível concluir a ação. Tente novamente.</p>}
-          <div className="flex flex-wrap gap-2">
+          <div className="data-inspector-actions flex flex-wrap gap-2">
             {source?.url && (
               <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200">
                 <ExternalLink className="h-3.5 w-3.5" /> Ver fonte
