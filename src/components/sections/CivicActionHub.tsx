@@ -46,6 +46,20 @@ const actions = [
     cta: 'Abrir DivulgaCandContas',
   },
   {
+    icon: SearchCheck,
+    title: 'Consultar local de votação',
+    description: 'O TSE disponibiliza a consulta ao local de votação pelo e-Título e pelos canais oficiais da Justiça Eleitoral.',
+    href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral',
+    cta: 'Consultar no TSE',
+  },
+  {
+    icon: Landmark,
+    title: 'Conferir calendário e regras',
+    description: 'Consulte diretamente no TSE as datas, regras e orientações oficiais das Eleições 2026.',
+    href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
+    cta: 'Abrir Eleições 2026',
+  },
+  {
     icon: Smartphone,
     title: 'Consultar o Pardal',
     description: 'Ferramenta oficial do TSE para encaminhar e acompanhar denúncias de propaganda eleitoral irregular.',
