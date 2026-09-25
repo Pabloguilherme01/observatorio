@@ -1258,3 +1258,20 @@
 .light .text-amber-200\/80{
   color:#92400e!important;
 }
+
+
+/* Light theme: research/watchlist cards inherit the same readable foreground rules. */
+.light #politica .text-white{
+  color:#0f172a!important;
+}
+.light #politica .text-sky-100,
+.light #politica .text-sky-200,
+.light #politica .text-sky-300{
+  color:#0369a1!important;
+}
+.light #politica .text-amber-100,
+.light #politica .text-amber-200,
+.light #politica .text-amber-100\/80,
+.light #politica .text-amber-200\/80{
+  color:#92400e!important;
+}
