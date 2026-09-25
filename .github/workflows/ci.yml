@@ -71,3 +71,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Install Chromium for browser smoke tests
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+
+      - name: Browser smoke test
+        run: npm run test:browser
