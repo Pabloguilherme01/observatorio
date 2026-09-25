@@ -3749,3 +3749,123 @@ button,.audience-topic,.audience-action-card,.audience-resource,.audience-link{
   .audience-action-card,.audience-topic,.audience-resource,.audience-link,
   .obs-card{transition:none!important}
 }
+
+
+/* Final mobile polish · reading controls, cards and narrow screens */
+@media (max-width: 767px){
+  .language-toggle-v3 .language-toggle-options > button{
+    min-height:60px;
+    padding:8px 6px;
+    gap:5px;
+    border-radius:14px;
+  }
+  .language-toggle-v3 .language-toggle-options > button > svg{
+    width:18px;
+    height:18px;
+  }
+  .language-toggle-v3 .language-toggle-options > button strong{
+    font-size:11px;
+    line-height:1.1;
+  }
+  .language-toggle-v3 .language-toggle-options > button small{
+    margin-top:3px;
+    font-size:8px;
+    line-height:1.15;
+    letter-spacing:.06em;
+  }
+  .language-toggle-v3 .language-toggle-options > button em{
+    display:none!important;
+  }
+
+  .language-toggle-v3 .language-toggle-label{
+    min-width:0;
+    padding:5px 2px 8px;
+  }
+  .language-toggle-v3 .language-toggle-label strong{
+    font-size:9px;
+  }
+  .language-toggle-v3 .language-toggle-label small{
+    max-width:none;
+    font-size:9.5px;
+    line-height:1.3;
+  }
+
+  .audience-home{
+    padding-left:var(--mobile-page-gutter)!important;
+    padding-right:var(--mobile-page-gutter)!important;
+  }
+
+  .audience-section-heading,
+  .audience-links-head{
+    min-width:0;
+  }
+
+  .audience-section-heading button,
+  .audience-links-head button{
+    max-width:none!important;
+    padding:8px 10px!important;
+    font-size:10px!important;
+    line-height:1.15;
+  }
+
+  .obs-card{
+    padding:16px!important;
+  }
+  .obs-card :is(h2,h3,h4){
+    line-height:1.15;
+    letter-spacing:-.02em;
+  }
+  .obs-card h3{
+    font-size:16px;
+  }
+  .obs-card h4{
+    font-size:14px;
+  }
+  .obs-card p{
+    font-size:13px;
+    line-height:1.55;
+  }
+  .obs-card :is(button,a){
+    min-height:44px;
+  }
+}
+
+@media (max-width:390px){
+  .audience-home .audience-intro{
+    padding:14px;
+  }
+  .audience-topic-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .audience-topic{
+    min-height:76px;
+  }
+  .audience-section-heading{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:8px;
+  }
+  .audience-section-heading button,
+  .audience-links-head button{
+    min-height:42px!important;
+  }
+  .language-toggle-v3 .language-toggle-options{
+    gap:5px;
+  }
+}
+
+@media (max-width:359px){
+  .audience-section-heading,
+  .audience-links-head{
+    grid-template-columns:1fr;
+  }
+  .audience-section-heading button,
+  .audience-links-head button{
+    justify-self:start;
+  }
+  .audience-topic-grid{
+    grid-template-columns:1fr;
+  }
+}
