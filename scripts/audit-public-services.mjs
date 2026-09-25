@@ -4,6 +4,8 @@ import path from 'node:path';
 const root = process.cwd();
 const file = path.join(root, 'src/components/sections/CivicActionHub.tsx');
 const source = fs.readFileSync(file, 'utf8');
+const contactsFile = path.join(root, 'src/data/publicContacts.ts');
+const contactsSource = fs.readFileSync(contactsFile, 'utf8');
 
 const required = [
   ['Medicamentos SUS', 'medicamentos_sus'],
@@ -93,7 +95,7 @@ const contactContract = [
   ['CAPS', 'tel:+556136181559', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/'],
 ];
 for (const [label, tel, sourceUrl] of contactContract) {
-  if (!source.includes(label) || !source.includes(tel) || !source.includes(sourceUrl)) fail.push(label + ' sem contrato de contato/fonte');
+  if (!contactsSource.includes(label) || !contactsSource.includes(tel) || !contactsSource.includes(sourceUrl) || !contactsSource.includes('verifiedAt: \'2026-09-25\'')) fail.push(label + ' sem contrato de contato/fonte');
   else pass(label + ' possui telefone e fonte oficial vinculados');
 }
 
