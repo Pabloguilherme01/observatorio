@@ -107,7 +107,8 @@ must(index.includes('boot-fallback') && index.includes('10000') && index.include
 const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
-must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
+const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
+must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && contextSource.includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
 const deferredDashboard = read('src/components/sections/DeferredDashboardGroup.tsx');
 must(appSource.includes('id="analise"') && appSource.includes('loadDashboardGroup') && deferredDashboard.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
