@@ -85,8 +85,8 @@ if (electorate2024Snapshot && turnout2024Pct && abstention2024Pct) {
   }
 }
 
-const womenPct = Number(text.match(/womenPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
-const menPct = Number(text.match(/menPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+const womenPct = Number(text.match(/(?:^|[\s,])womenPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+const menPct = Number(text.match(/(?:^|[\s,])menPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
 if (womenPct || menPct) {
   const genderSum = womenPct + menPct;
   if (Math.abs(genderSum - 100) > 0.05) fail('percentuais de gênero não fecham 100%: ' + genderSum.toFixed(2));
