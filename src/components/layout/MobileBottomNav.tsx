@@ -26,6 +26,7 @@ export function MobileBottomNav() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
   const moreOpenRef = useRef(false);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const update = (next: string) => {
@@ -121,10 +122,12 @@ export function MobileBottomNav() {
       <div className="relative">
         <button
           id="mobile-bottom-more-trigger"
+          ref={moreButtonRef}
           type="button"
           onClick={() => setMoreOpen(value => { const next = !value; moreOpenRef.current = next; return next; })}
           className={'w-full ' + (moreOpen || activeSection === 'more' ? 'is-active' : '')}
           aria-expanded={moreOpen}
+          aria-haspopup="menu"
           aria-controls="mobile-bottom-more"
           aria-current={activeSection === 'more' ? 'page' : undefined}
         >
