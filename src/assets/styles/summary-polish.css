@@ -957,8 +957,7 @@
     padding-left: var(--mobile-content-gutter) !important;
     padding-right: var(--mobile-content-gutter) !important;
   }
-  .audience-mode-mobile { margin-bottom: 10px; }
-  .audience-intro { padding-top: 4px; gap: 12px; }
+    .audience-intro { padding-top: 4px; gap: 12px; }
   .audience-home .audience-kicker {
     max-width: 100%;
     min-height: 26px;
