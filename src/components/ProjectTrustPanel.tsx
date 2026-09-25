@@ -35,7 +35,7 @@ export function ProjectTrustPanel() {
           <div className="trust-card"><CalendarClock className="h-4 w-4 text-sky-300" /><strong>Data da fonte e captura</strong><p>A atualização do sistema não substitui a data original do dado.</p></div>
         </div>
 
-        <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-400"><strong className="text-slate-300">Validação oficial:</strong> para conferir dados eleitorais diretamente na fonte, consulte o <a href="https://dadosabertos.tse.jus.br/" target="_blank" rel="noopener noreferrer" className="font-bold text-sky-300 hover:text-sky-200">Portal de Dados Abertos do TSE</a>.</div>
+        <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-400"><strong className="text-slate-300">Validação oficial:</strong> para conferir dados eleitorais diretamente na fonte, consulte o <a href="https://dadosabertos.tse.jus.br/" target="_blank" rel="noopener noreferrer" className="font-bold text-sky-200 hover:text-white light:text-sky-700 light:hover:text-sky-900">Portal de Dados Abertos do TSE</a>.</div>
 
         <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Nota de neutralidade:</strong> este painel é uma iniciativa cívica independente. Não declara vínculo, patrocínio ou associação com candidaturas, partidos ou federações e não recomenda escolhas eleitorais. Os dados são apresentados com fonte, data, natureza e limitações quando disponíveis.</div>
 
