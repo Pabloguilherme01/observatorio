@@ -196,12 +196,12 @@ export function Header() {
             className={'site-header-status hidden items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[10px] font-bold lg:flex ' + (updateState === 'today'
               ? 'border-emerald-300/20 bg-emerald-300/[0.06] text-emerald-200'
               : 'border-amber-300/25 bg-amber-300/[0.06] text-amber-200')}
-            aria-label={'Dados atualizados localmente em ' + updatedAt + (ageDays > 7 ? '; captura com mais de 7 dias' : '; captura de hoje')}
-            title="Data da captura local, não da fonte"
+            aria-label={'Captura local do conjunto principal em ' + updatedAt + (ageDays > 7 ? '; captura com mais de 7 dias' : '; captura de hoje')}
+            title="Data da captura local do conjunto principal; cada indicador pode ter data-base própria"
           >
             <span className={'h-1.5 w-1.5 rounded-full ' + (updateState === 'today' ? 'bg-emerald-300' : 'bg-amber-300')} aria-hidden="true" />
             <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Atualizado {updatedAt}</span>
+            <span>Captura {updatedAt}</span>
           </div>
 
           <div className="site-header-actions ml-auto flex items-center gap-1">
