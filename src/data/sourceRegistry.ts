@@ -399,13 +399,12 @@ export const sourceRegistry: readonly SourceRef[] = [
   },
   {
     id: 'tre-go-seguranca-eleicoes-2026',
-    label: 'TRE-GO — Segurança das Eleições 2026',
+    label: 'TRE-GO — Comissão Permanente de Segurança',
     institution: 'Tribunal Regional Eleitoral de Goiás',
-    url: 'https://www.tre-go.jus.br/comunicacao/noticias/2026/Setembro/forcas-de-seguranca-e-justica-eleitoral-alinham-acoes-para-as-eleicoes',
+    url: 'https://www.tre-go.jus.br/institucional/comissoes-e-comites/comissao-permanente-de-seguranca-institucional',
     nature: 'official',
-    publishedAt: '2026-09-10',
-    referenceDate: '2026-09-10',
-    note: 'Reunião interinstitucional sobre planejamento e ações de segurança para o pleito em Goiás.',
+    referenceDate: '2026-09-25',
+    note: 'Página institucional atual da Comissão Permanente de Segurança, com atribuições e atuação nas Eleições 2026. Substitui a notícia de setembro que passou a retornar 404 no auditor do CI.',
   },
 
   {
