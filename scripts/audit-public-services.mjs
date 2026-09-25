@@ -23,7 +23,7 @@ const required = [
   ['Conselho Tutelar', 'estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar'],
   ['CAPS', 'estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial'],
   ['SAMU', 'estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia'],
-  ['Portal SEI · Pessoa com deficiência', 'portalsei.aguaslindasdegoias.go.gov.br'],
+  ['Atendimento à pessoa com deficiência', 'portalsei.aguaslindasdegoias.go.gov.br'],
   ['Proteção e bem-estar animal', 'portalsei.aguaslindasdegoias.go.gov.br'],
   ['Trânsito e mobilidade urbana', 'estrutura/secretaria-de-transito-e-mobilidade-urbana'],
   ['Serviços de saúde (escalas)', 'escalasmedicas'],
