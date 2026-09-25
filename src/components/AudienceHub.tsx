@@ -63,7 +63,7 @@ export function AudienceHub() {
           <button type="button" className="audience-search" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))}>
             <Search aria-hidden="true" />
             <span>Buscar um assunto</span>
-            <kbd>⌘K</kbd>
+            <kbd>Ctrl/⌘ K</kbd>
           </button>
           <button type="button" className="audience-primary-action" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
             {isSummary ? 'Abrir resumo' : isTechnical ? 'Conferir dados' : 'Explorar dados'}
@@ -126,7 +126,7 @@ export function AudienceHub() {
           </div>
           <div className="audience-resource-grid">
             {officialResources.map(({ label, href, note, icon: Icon }) => (
-              <a key={href} href={href} target="_blank" rel="noreferrer" className="audience-resource">
+              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
                 <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                 <span><strong>{label}</strong><small>{note}</small></span>
                 <ExternalLink aria-hidden="true" />
@@ -147,7 +147,7 @@ export function AudienceHub() {
           </div>
           <div className="audience-links-grid">
             {technicalLinks.map(({ label, href, note, icon: Icon }) => (
-              <a key={href} href={href} target="_blank" rel="noreferrer" className="audience-link">
+              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-link">
                 <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                 <span><strong>{label}</strong><small>{note}</small></span>
                 <ExternalLink aria-hidden="true" />
