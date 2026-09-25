@@ -1614,3 +1614,15 @@ html.light .audience-kicker,
 html.light .audience-block-head>div>span{
   color:#075985!important;
 }
+
+/* Final AA link normalization and narrow viewport safeguards. */
+html.light a[class*="text-sky-700"],
+html.light a[class*="text-sky-600"],
+html.light .text-sky-700,
+html.light .text-sky-600{color:#075985!important}
+@media(max-width:767px){
+  .hero-shell,.audience-home,.deferred-section,main>section{overflow-x:clip!important}
+  .hero-copy h1,.audience-intro-copy h2,.section-header h2,.section-header h3{hyphens:none;overflow-wrap:anywhere}
+  .hero-copy>p,.audience-intro-copy p,.audience-topic-copy small,.audience-action-card small,.audience-resource-copy small{overflow-wrap:anywhere}
+  .audience-page-card,.hero-election-card,.official-hub,.obs-card,.summary-shell,.trust-shell,.quiz-shell{overflow:hidden!important}
+}
