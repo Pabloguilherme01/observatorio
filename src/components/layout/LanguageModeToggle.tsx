@@ -2,9 +2,9 @@ import { Check, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'decidir', description: 'Para se situar: poucos números, estado atual e próximos caminhos', icon: List },
-  { id: 'simple' as const, label: 'Simples', sub: 'entender', description: 'Para entender: indicadores, comparações e contexto em linguagem direta', icon: FileText },
-  { id: 'technical' as const, label: 'Técnico', sub: 'conferir', description: 'Para conferir: fontes, metodologia, recortes, cálculos e rastreabilidade', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'rápido', description: 'Para se situar: números-chave, contexto mínimo e caminhos de aprofundamento', icon: List },
+  { id: 'simple' as const, label: 'Simples', sub: 'claro', description: 'Para entender: indicadores, comparações e contexto em linguagem direta', icon: FileText },
+  { id: 'technical' as const, label: 'Técnico', sub: 'rastreável', description: 'Para auditar: fonte, data, método, recortes, cálculos e limitações', icon: Code2 },
 ] as const;
 
 export function LanguageModeToggle() {
@@ -25,6 +25,7 @@ export function LanguageModeToggle() {
             aria-pressed={mode === id}
             aria-label={label + ' · ' + description}
             title={description}
+            data-mode={id}
             className={mode === id ? 'is-active' : ''}
           >
             <Icon aria-hidden="true" />
