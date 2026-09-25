@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown } from 'lucide-react';
+import { ArrowRight, Share2, Sparkles, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -12,11 +12,6 @@ function brl(value: number) {
 }
 
 export function ExecutiveSummary() {
-  const poll = d.polls[0];
-  const groupedUnknown = (poll?.nonePct ?? 0) + (poll?.notSurePct ?? 0);
-  const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
-  const hasPoll = Boolean(poll);
-  const pollScenario = poll?.method === 'spontaneous' ? 'Deputado estadual · pergunta espontânea' : poll?.method === 'stimulated' ? 'Deputado estadual · pergunta estimulada' : 'Cenário da pesquisa';
   
   const electorate = d.electoral;
   const populationPoint = d.populationSeries.find(point => point.year === 2026);
@@ -43,13 +38,6 @@ export function ExecutiveSummary() {
     { id: 'saneamento', label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · cobertura do serviço público; não representa coleta ou tratamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'dashboard' },
   ] as const;
 
-  const quickStats = [
-    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : `${electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% participaram em 2024`, target: 'eleitoral360' },
-    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
-    { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
-    { label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
-  ] as const;
-
   const topics = [
     { id: 'eleitoral', label: 'Eleição', target: 'eleitoral360', caption: 'eleitorado, participação e candidaturas' },
     { id: 'cidade', label: 'Cidade', target: 'dashboard', caption: 'população e indicadores' },
@@ -73,7 +61,6 @@ export function ExecutiveSummary() {
       `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
       `Orçamento por habitante: ${brl(budgetPerCapita)} por ano (LOA 2026 ÷ população estimada).`,
-      poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.pollster}, registro ${poll.registrationNumber}.` : '',
     ].filter(Boolean).join(' ');
 
     try {
@@ -172,7 +159,7 @@ export function ExecutiveSummary() {
             </div>
           )}
 
-          {languageMode !== 'summary' && <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
+          {false && <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
             <div className="flex items-start gap-3">
               <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               <div>
@@ -245,12 +232,12 @@ export function ExecutiveSummary() {
         {languageMode === 'simple' && (
           <>
             <div className="summary-simple-grid mt-3" aria-label="Resumo dos principais indicadores">
-              {quickStats.map(stat => (
-                <button key={stat.label} type="button" className="summary-simple-card" onClick={() => goToSection(stat.target)}>
-                  <span>{stat.label}</span>
-                  <strong>{stat.value}</strong>
-                  <small>{stat.caption}</small>
-                  <em>{stat.detail}</em>
+              {publicFacts.map(fact => (
+                <button key={fact.id} type="button" className="summary-simple-card" onClick={() => goToSection(fact.target)}>
+                  <span>{fact.label}</span>
+                  <strong>{fact.value}</strong>
+                  <small>{fact.badge}</small>
+                  <em>{fact.note}</em>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
               ))}
