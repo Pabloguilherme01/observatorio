@@ -123,6 +123,18 @@ small{color:var(--text-secondary)}
 .light .summary-simple-tip,
 .light .summary-public-status,
 .light .summary-public-pulse{background:#f8fafc;border-color:#dbe5ec;color:#475569}
+
+/* Tema claro: cards compartilhados precisam trocar a superfície antes do texto. */
+.light .obs-card{
+  border-color:#dbe5ec!important;
+  background:#fff!important;
+  color:#0f172a;
+  box-shadow:0 8px 24px rgba(15,23,42,.06);
+}
+.light .obs-card .text-white{color:#0f172a!important}
+.light .obs-card .text-sky-100,
+.light .obs-card .text-sky-200,
+.light .obs-card .text-sky-300{color:#0369a1!important}
 .light .summary-public-shareline>button,
 .light .summary-public-mini-action,
 .light .summary-public-pulse-link,
