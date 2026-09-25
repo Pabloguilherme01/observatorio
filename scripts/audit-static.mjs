@@ -104,7 +104,7 @@ must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includ
 must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
-const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
+const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
@@ -120,14 +120,14 @@ must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a �
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
 must(dashboardMetrics.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
-must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && (appSource.includes('DeferredTrustGroup') || appSource.includes('<ProjectTrustPanel />')), 'descoberta, confiança e modo de linguagem montados');
+must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
 
 const allRuntimeText = [
   appSource,
   read('src/components/sections/DeferredCivicGroup.tsx'),
   read('src/components/sections/DeferredPublicDataGroup.tsx'),
   read('src/components/sections/DeferredEvidenceGroup.tsx'),
-  read('src/components/sections/DeferredTrustGroup.tsx'),
+  read('src/components/sections/DeferredEvidenceGroup.tsx'),
 ].join('\n');
 must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
 must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<DataExportActions />'), 'ação e exportação montadas');
@@ -157,7 +157,7 @@ const runtimeFiles = [
   'src/data/sourceRegistry.ts',
   'src/config/navigation.ts',
   'src/config/version.ts',
-  'src/components/sections/DeferredTrustGroup.tsx',
+  'src/components/sections/DeferredEvidenceGroup.tsx',
   'src/data/contextualComparison.ts',
 ];
 for (const file of runtimeFiles) {
