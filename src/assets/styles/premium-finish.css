@@ -642,6 +642,9 @@
 }
 
 @media (max-width:767px){
+  .section-header h2{
+    max-width:24ch;
+  }
   .dashboard-heading-card{
     margin-bottom:14px!important;
     padding:15px!important;
@@ -1034,7 +1037,7 @@
   min-width:0;
 }
 .section-header h2{
-  max-width:22ch;
+  max-width:34ch;
   overflow-wrap:anywhere;
 }
 .section-header p{
@@ -1052,6 +1055,7 @@
   width:100%;
 }
 .language-toggle-v3 .language-toggle-options > button{
+  position:relative;
   display:grid;
   grid-template-columns:auto minmax(0,1fr);
   align-items:center;
@@ -1110,6 +1114,7 @@
   outline-offset:2px;
 }
 .language-toggle-v3 .language-toggle-options > button em{
+  position:absolute;
   right:7px;
   top:7px;
   display:inline-flex;
