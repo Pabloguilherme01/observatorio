@@ -101,7 +101,7 @@ const mountedSources = [
   texts.find(item => item.file === 'src/components/sections/DeferredCivicGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredPublicDataGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
-  texts.find(item => item.file === 'src/components/sections/DeferredTrustGroup.tsx')?.content ?? '',
+  texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredContextGroup.tsx')?.content ?? '',
 ].join('\n');
 
@@ -133,7 +133,7 @@ if (
 else fail('busca pode perder destinos lazy antes da montagem do componente');
 
 const appForLazy = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
-if (appForLazy.includes("anchorIds={['qualidade', 'evidencias', 'fontes', 'exportacao']}") && search.includes("id === 'resumo' ? 'dashboard' : id")) pass('aliases da busca resolvem Resumo e Exportação para destinos montáveis');
+if (appForLazy.includes("anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']}") && search.includes("id === 'resumo' ? 'dashboard' : id")) pass('aliases da busca resolvem Resumo e Exportação para destinos montáveis');
 else fail('aliases da busca podem apontar para destinos sem montagem lazy');
 
 const css = texts.find(item => item.file === 'src/assets/styles/globals.css')?.content ?? '';
