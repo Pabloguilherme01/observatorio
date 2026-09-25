@@ -20,6 +20,8 @@ const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
 const viteSource = vite;
+const deploySource = deployWorkflow;
+const spaFallback = read('public/404.html');
 
 const errors = [];
 const pass = message => console.log('PASS', message);
@@ -47,6 +49,10 @@ must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da 
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
+must(fs.existsSync(path.join(root, 'src/assets/styles/final-ui.css')) && appSource.includes("../assets/styles/final-ui.css"), 'camada visual final está consolidada em um único stylesheet global');
+must(!fs.existsSync(path.join(root, 'src/assets/styles/premium-finish.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/visual-final.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/site-final.css')), 'camadas visuais globais antigas não permanecem duplicadas');
+must(spaFallback.includes('data-obs-spa-fallback') && spaFallback.includes('encodeURIComponent'), 'fallback 404 da SPA preserva a rota solicitada');
+must(deploySource.includes("status=\"$(curl -sS --retry 3") && deploySource.includes('test "$status" = "404"'), 'deploy aceita explicitamente o 404 esperado do fallback SPA');
 must(!vite.includes('allowedHosts: true'), 'Vite não aceita qualquer hostname no servidor de desenvolvimento');
 const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
