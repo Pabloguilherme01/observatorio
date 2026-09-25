@@ -1,4 +1,5 @@
 import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { immediatePublicContacts } from '../../data/publicContacts';
@@ -309,6 +310,16 @@ function shareWhatsApp() {
 }
 
 export function CivicActionHub() {
+  const { mode } = useLanguageMode();
+  const technical = mode === 'technical';
+  const tesser = [
+    ['fontes','Fontes oficiais','Consulte dados e documentos diretamente no TSE.','https://dadosabertos.tse.jus.br/','search'],
+    ['resultados','Resultados 2026','Informações oficiais sobre divulgação e resultados eleitorais.','https://resultados.tse.jus.br/','results'],
+    ['urna','Simulador da urna','Treine a navegação e conheça a sequência da votação.','https://www.tse.jus.br/servicos-eleitorais/urna-eletronica/simulador-de-votacao','vote'],
+    ['votar','Regras para votar','Orientações oficiais para o dia da votação.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
+    ['estatisticas','Estatísticas eleitorais','Dados e séries oficiais da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/estatisticas-eleitorais','stats'],
+  ];
+  const visiblePriority = technical ? priorityPublicServices : priorityPublicServices.slice(0, 6);
   return (
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
@@ -331,13 +342,7 @@ export function CivicActionHub() {
         </div>
 
         <div className="official-resource-grid">
-          {[
-            ['fontes','Fontes oficiais','Consulte dados e documentos diretamente no TSE.','https://dadosabertos.tse.jus.br/','search'],
-            ['resultados','Resultados 2026','Informações oficiais sobre divulgação e resultados eleitorais.','https://resultados.tse.jus.br/','results'],
-            ['urna','Simulador da urna','Treine a navegação e conheça a sequência da votação.','https://www.tse.jus.br/servicos-eleitorais/urna-eletronica/simulador-de-votacao','vote'],
-            ['votar','Regras para votar','Orientações oficiais para o dia da votação.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
-            ['estatisticas','Estatísticas eleitorais','Dados e séries oficiais da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/estatisticas-eleitorais','stats'],
-          ].map(([id,title,description,href,icon]) => (
+          {tesser.slice(0, technical ? tesser.length : 4).map(([id,title,description,href,icon]) => (
             <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
               <span className="official-resource-icon" aria-hidden="true">
                 {icon === 'search' ? <SearchCheck className="h-5 w-5" /> :
@@ -366,7 +371,7 @@ export function CivicActionHub() {
         </div>
 
         <div className="official-resource-grid official-resource-grid-local">
-          {priorityPublicServices.slice(0, 8).map(({ icon: Icon, title, description, href }) => (
+          {visiblePriority.map(({ icon: Icon, title, description, href }) => (
             <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
               <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
               <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small></span>
@@ -375,7 +380,7 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        <details className="official-more">
+        {technical && <details className="official-more">
           <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
           <div className="official-more-grid">
             {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => {
