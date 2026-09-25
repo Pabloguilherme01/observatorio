@@ -42,6 +42,7 @@ export function MobileBottomNav() {
       event.preventDefault();
       moreOpenRef.current = false;
       setMoreOpen(false);
+      window.requestAnimationFrame(() => moreButtonRef.current?.focus());
     };
     const onOutside = (event: MouseEvent) => {
       if (!(event.target instanceof Node)) return;
