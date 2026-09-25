@@ -76,6 +76,8 @@ if (
   (header.includes("items[0]?.focus()") || header.includes("items.at(-1)") && header.includes("items[0]"))
 ) pass('menu desktop Mais possui navegação por teclado e foco previsível');
 else fail('menu desktop Mais não possui navegação de teclado completa');
+if (header.includes("const navigateHeader = (id: string)") && header.includes("window.location.hash === '#' + id") && header.includes("observatorio:navigate")) pass('header usa navegação central inclusive para o mesmo hash');
+else fail('header pode não sincronizar modo/leitura ao reabrir a mesma âncora');
 
 const civic = texts.find(item => item.file === 'src/components/sections/CivicActionHub.tsx')?.content ?? '';
 for (const [needle, label] of [
