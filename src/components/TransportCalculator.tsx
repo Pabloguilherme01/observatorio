@@ -1,5 +1,5 @@
 import { BusFront, Coins, ExternalLink, Share2, Users } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { calculateTransportCost, formatBRL, workDaysPerMonthFromWeeks } from '../lib/transport';
 import { Card } from './ui/Card';
@@ -47,6 +47,18 @@ export function TransportCalculator() {
     }
   }, [preferencesLoaded, routeId, daysPerWeek, trips, people, salary]);
   const [shareStatus, setShareStatus] = useState('');
+  const shareTimerRef = useRef<number | null>(null);
+  useEffect(() => () => {
+    if (shareTimerRef.current) window.clearTimeout(shareTimerRef.current);
+  }, []);
+  const flashShareStatus = (message: string) => {
+    setShareStatus(message);
+    if (shareTimerRef.current) window.clearTimeout(shareTimerRef.current);
+    shareTimerRef.current = window.setTimeout(() => {
+      shareTimerRef.current = null;
+      setShareStatus('');
+    }, 1800);
+  };
   const route = routes.find(r => r.id === routeId) ?? routes[0];
 
   const result = useMemo(
@@ -69,14 +81,12 @@ export function TransportCalculator() {
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Simulador de bolso · Águas Lindas', text, url: window.location.href + '#transporte' });
-        setShareStatus('Compartilhado');
-        window.setTimeout(() => setShareStatus(''), 1800);
+        flashShareStatus('Compartilhado');
         return;
       }
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
-        setShareStatus('Link copiado');
-        window.setTimeout(() => setShareStatus(''), 1800);
+        flashShareStatus('Link copiado');
       }
     } catch {
       // O compartilhamento pode ser cancelado pelo usuário.
@@ -112,7 +122,7 @@ export function TransportCalculator() {
               className="mt-6 h-3 w-full cursor-pointer accent-sky-300"
               type="range"
               min={1}
-              max={6}
+              max={20}
               step={1}
               value={people}
               onChange={event => setPeople(Number(event.target.value))}
@@ -120,7 +130,7 @@ export function TransportCalculator() {
             />
             <div className="mt-2 flex justify-between text-[11px] font-semibold text-slate-500">
               <span>1 pessoa</span>
-              <span>6 pessoas</span>
+              <span>20 pessoas</span>
             </div>
           </div>
 
