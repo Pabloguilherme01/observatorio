@@ -14,10 +14,8 @@ const files = {
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   share: read('src/components/ShareDataButton.tsx'),
   instagram: read('src/components/InstagramSyncHub.tsx'),
-  trustGroup: read('src/components/sections/DeferredTrustGroup.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
-  radar: read('src/components/sections/PoliticalRadar.tsx'),
   electoral: read('src/components/sections/Electoral360.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
@@ -33,12 +31,12 @@ must(files.app.includes('IntersectionObserver') && files.app.includes("rootMargi
 must(files.app.includes('observatorio:navigate') && files.app.includes("window.location.hash"), 'deep links e navegação por evento permanecem centralizados no App');
 must(files.app.includes('behavior: reduceMotion ? \'auto\' : \'smooth\''), 'rolagem central respeita redução de movimento');
 must(files.app.includes('<LanguageModeProvider>') && files.app.includes('<AudienceHub />'), 'descoberta e modos de leitura continuam montados');
-must(files.app.includes('DeferredTrustGroup') && files.app.includes('DeferredPublicDataGroup'), 'grupos diferidos de confiança e dados públicos permanecem presentes');
+must(files.app.includes('DeferredEvidenceGroup') && files.app.includes('DeferredPublicDataGroup') && files.app.includes('<ProjectTrustPanel />'), 'grupo técnico consolidado e dados públicos permanecem montados');
 
-must(files.experience.includes('pendingGTimerRef') && files.experience.includes('focusTimerRef'), 'ExperienceShell mantém cleanup dos timers assíncronos');
-must(files.experience.includes('readStorage') && files.experience.includes('writeStorage'), 'ExperienceShell protege acesso ao storage');
+must(files.experience.includes("window.dispatchEvent(new CustomEvent('observatorio:search'))") && files.experience.includes('reading-progress'), 'ExperienceShell mantém busca global e progresso de leitura com cleanup');
+must(files.experience.includes('prefers-reduced-motion') && files.experience.includes('addEventListener'), 'ExperienceShell respeita redução de movimento e cleanup de listeners');
 must(!files.experience.includes('className="quick-dock"'), 'dock flutuante redundante não é renderizado');
-must(files.experience.includes("mode: 'overview'") || files.experience.includes("useState<ExperienceMode>('overview')"), 'modo inicial permanece Visão geral');
+must(!files.experience.includes('ExperienceMode') && !files.experience.includes('MODE_KEY'), 'ExperienceShell não mantém modo de experiência paralelo');
 must(!files.experience.includes('market') && !files.experience.includes('hype'), 'implementação não reintroduz modo Hype/Market');
 
 must(files.header.includes('IntersectionObserver') && files.header.includes('observatorio:navigate'), 'cabeçalho acompanha seções carregadas tardiamente');
@@ -77,8 +75,8 @@ for (const [file, label] of [
   must(read(file).includes('statusTimerRef') && read(file).includes('clearTimeout'), label + ' protege timers de status');
 }
 
-must(exists('src/components/sections/DeferredTrustGroup.tsx'), 'grupo de confiança existe em arquivo próprio');
-must(files.trustGroup.includes('ProjectTrustPanel') || files.trustGroup.includes('DataCorrection'), 'grupo de confiança mantém sua camada editorial');
+must(exists('src/components/sections/DeferredEvidenceGroup.tsx'), 'grupo técnico consolidado existe em arquivo próprio');
+must(files.app.includes('<ProjectTrustPanel />') || read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'grupo técnico consolidado mantém sua camada editorial');
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
