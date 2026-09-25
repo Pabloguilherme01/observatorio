@@ -1,7 +1,7 @@
 import { CheckCircle2, Lock, Medal, RotateCcw, Share2, Trophy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import '../../assets/styles/summary-polish.css';
-import { readQuizHighScores, recordQuizHighScore, type QuizHighScore } from '../../lib/quizLeaderboard';
+import { readQuizBestScores, readQuizHighScores, readQuizUnlockedPhase, recordQuizHighScore, type QuizHighScore } from '../../lib/quizLeaderboard';
 
 type Difficulty = 'Fácil' | 'Médio' | 'Difícil' | 'Avançado' | 'Expert';
 
@@ -233,12 +233,12 @@ const PHASES = QUIZ_LEVELS.map((level, index) => ({ level, index, questions: QUE
 const PASS_THRESHOLD = Math.ceil(QUESTIONS_PER_LEVEL * 0.6);
 
 export function QuickQuiz() {
-  const [unlockedPhase, setUnlockedPhase] = useState(0);
+  const [unlockedPhase, setUnlockedPhase] = useState(() => readQuizUnlockedPhase());
   const [activePhase, setActivePhase] = useState(0);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [best, setBest] = useState<readonly number[]>([0, 0, 0, 0, 0]);
+  const [best, setBest] = useState<readonly number[]>(() => readQuizBestScores());
   const [showResult, setShowResult] = useState(false);
   const [shared, setShared] = useState('');
   const [leaderboard, setLeaderboard] = useState<readonly QuizHighScore[]>([]);
@@ -301,7 +301,7 @@ export function QuickQuiz() {
   const restart = () => startPhase(activePhase);
 
   const share = async () => {
-    const text = 'Observatório Eleitoral Águas Lindas 2026 — quiz: ' + score + ' de ' + QUESTIONS_PER_LEVEL + ' acertos na fase ' + (activePhase + 1) + ' (' + (phaseData?.level ?? '') + ').';
+    const text = 'Observatório Eleitoral Águas Lindas 2026 — quiz: ' + displayedScore + ' de ' + QUESTIONS_PER_LEVEL + ' acertos na fase ' + (activePhase + 1) + ' (' + (phaseData?.level ?? '') + ').';
     try {
       if (navigator.share) {
         await navigator.share({ text });
