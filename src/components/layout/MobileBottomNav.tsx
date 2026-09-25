@@ -1,6 +1,7 @@
 import { CircleHelp, Compass, LayoutDashboard, MoreHorizontal, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const primaryItems = [
   { id: 'descubra', label: 'Explorar', icon: Compass },
@@ -17,12 +18,19 @@ const sectionToTab = (id: string) => {
   return 'more';
 };
 
-function jump(id: string) {
+const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes']);
+
+function jump(id: string, mode: 'summary' | 'simple' | 'technical', setMode: (mode: 'summary' | 'simple' | 'technical') => void) {
+  const requiresTechnical = TECHNICAL_ONLY_DESTINATIONS.has(id);
+  const destinationIsHiddenInSummary = mode === 'summary' && id !== 'descubra' && id !== 'dashboard' && id !== 'eleitoral360';
+  if (requiresTechnical && mode !== 'technical') setMode('technical');
+  else if (destinationIsHiddenInSummary) setMode('simple');
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
 }
 
 export function MobileBottomNav() {
+  const { mode, setMode } = useLanguageMode();
   const [moreOpen, setMoreOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
@@ -131,7 +139,7 @@ export function MobileBottomNav() {
         <button
           key={id}
           type="button"
-          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(id); }}
+          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(id, mode, setMode); }}
           className={activeSection === id ? 'is-active' : ''}
           aria-current={activeSection === id ? 'page' : undefined}
         >
@@ -142,7 +150,7 @@ export function MobileBottomNav() {
       {quizItem && (
         <button
           type="button"
-          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(quizItem.id); }}
+          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(quizItem.id, mode, setMode); }}
           className={activeSection === 'quiz' ? 'is-active' : ''}
           aria-current={activeSection === 'quiz' ? 'page' : undefined}
         >
@@ -172,7 +180,7 @@ export function MobileBottomNav() {
                 key={item.id}
                 type="button"
                 role="menuitem"
-                onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(item.id); }}
+                onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(item.id, mode, setMode); }}
               >
                 <span>{item.shortLabel}</span>
                 <small>{item.description}</small>
