@@ -27,6 +27,7 @@ export interface ElectoralCandidateSnapshot {
   readonly occupation?: string | null;
   readonly snapshotDate: string;
   readonly sourceId: string;
+  readonly evidenceSourceUrls: readonly string[];
 }
 
 export interface Electoral360Snapshot {
