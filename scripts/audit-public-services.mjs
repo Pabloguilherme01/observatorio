@@ -15,7 +15,8 @@ const required = [
   ['Acompanhamento de obras', '/cidadao/informacao/obras'],
   ['Lista de espera em creches', '/lista-de-espera-em-creches/'],
 ];
-\nasync function checkLive(url) {
+
+async function checkLive(url) {
   try {
     const response = await fetch(url, {
       redirect: 'manual',
@@ -39,28 +40,38 @@ for (const [label, pathFragment] of required) {
   }
 }
 
-const priorityBlock = source.slice(source.indexOf('const priorityPublicServices'), source.indexOf('const actions'));
-const urls = [...priorityBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]);
-
-if (urls.length !== required.length) {
-  fail.push('quantidade de atalhos prioritários');
+const actionsBlock = source.slice(source.indexOf('const actions = ['), source.indexOf('function shareWhatsApp'));
+const priorityBlock = source.slice(source.indexOf('const priorityPublicServices'), source.indexOf('const actions = ['));
+const urls = [...new Set([
+  ...[...priorityBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
+  ...[...actionsBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
+])];
+const allPublicActionLinks = urls.length;
+if (allPublicActionLinks < 20) {
+  fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
 } else {
-  pass('atalhos prioritários possuem quantidade esperada');
+  pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
 }
 
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
   'aguaslindasdegoias.go.gov.br',
+  'legislacao.aguaslindasdegoias.go.gov.br',
+  'camaradeaguaslindas.go.gov.br',
+  'www.tcmgo.tc.br',
+  'www.tse.jus.br',
+  'divulgacandcontas.tse.jus.br',
+  'www.mpgo.mp.br',
 ]);
 
 for (const url of urls) {
   try {
     const parsed = new URL(url);
     if (!allowedHosts.has(parsed.hostname)) {
-      fail.push('host não oficial no atalho: ' + url);
+      fail.push('host não oficial no serviço público: ' + url);
     }
     if (!/noopener noreferrer/.test(source)) {
-      fail.push('atalhos públicos precisam de noopener/noreferrer');
+      fail.push('serviços públicos precisam de noopener/noreferrer');
       break;
     }
   } catch {
