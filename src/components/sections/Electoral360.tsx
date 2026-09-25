@@ -77,6 +77,10 @@ export function Electoral360() {
         <summary className="cursor-pointer list-none flex items-center justify-between gap-3 text-xs font-black text-sky-100"><span>Sobre o recorte local</span><span className="shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-bold text-slate-400">{electoral360Snapshot.matchedCandidates.length} nomes</span></summary>
         <p className="mt-2 text-[11px] leading-5 text-slate-500">Este painel mostra somente os nomes do recorte editorial acompanhado pelo observatório. O snapshot estadual não informa município da candidatura; por isso, a lista não deve ser interpretada isoladamente como confirmação de candidatura por município.</p>
       </details>
+      <div className="mb-4 flex items-start gap-2 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] px-3 py-2.5 text-[11px] leading-5 text-slate-400" role="note">
+        <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-200" aria-hidden="true" />
+        <p><strong className="text-amber-100">Importante:</strong> este recorte não representa uma lista completa de candidaturas de Águas Lindas. Os nomes são acompanhados porque há evidência documental local e cada registro deve ser conferido na fonte oficial.</p>
+      </div>
       {electoral360Snapshot.captureMode === 'static-local' && (
         <div className="electoral-scope-note mb-4 flex items-start gap-3 rounded-2xl border border-amber-300/10 bg-amber-300/[0.03] px-3 py-2.5">
           <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-amber-200/70" aria-hidden="true" />
