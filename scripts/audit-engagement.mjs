@@ -42,7 +42,7 @@ must(quiz.includes('QUIZ_TOTAL = 200') && quiz.includes('QUESTIONS_PER_LEVEL = 4
 must(quiz.includes('readQuizBestScores') && !quiz.includes('readQuizHighScores') && !quiz.includes('recordQuizHighScore') && leaderboard.includes('BEST_KEY'), 'quiz mantém apenas melhor marca pessoal persistida');
 must(!experienceShell.includes('framer-motion') && !experienceShell.includes('rotateY') && !experienceShell.includes('AnimatePresence'), 'navegação não depende de page-flip decorativo');
 must(dashboardChart.includes("from 'recharts'") && dashboardChart.includes('<LineChart') && dashboardChart.includes('2022') && dashboardChart.includes('2026'), 'dashboard possui série histórica Recharts de cinco anos');
-must(sentry.includes('@sentry/react') && sentry.includes('browserTracingIntegration') && sentry.includes('tracesSampleRate'), 'Sentry possui captura de erros e performance configurável');
+must(sentry.includes("import('@sentry/react')") && sentry.includes('browserTracingIntegration') && sentry.includes('tracesSampleRate') && !sentry.match(/^import \* as Sentry/m), 'Sentry é carregado condicionalmente e mantém captura configurável');
 must(quiz.includes('QUESTION_BANK.length !== QUIZ_TOTAL') && quiz.includes('QUESTION_BANK.filter(q => q.difficulty === level)'), 'quiz valida o total e a distribuição por nível em runtime');
 must(['Fácil', 'Médio', 'Difícil', 'Avançado', 'Expert'].every(level => quiz.includes(`difficulty:'${level}'`)), 'quiz possui os 5 níveis de dificuldade');
 must(quiz.includes('unlockedPhase') && quiz.includes('setUnlockedPhase') && quiz.includes('nextIndex'), 'quiz possui progressão obrigatória por fases');
