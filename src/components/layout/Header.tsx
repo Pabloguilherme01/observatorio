@@ -50,12 +50,21 @@ export function Header() {
     mutationObserver?.observe(root, { childList: true, subtree: true });
 
     window.addEventListener('observatorio:navigate', onNavigate);
+    document.addEventListener('mousedown', onDocumentPointer);
     return () => {
       observer.disconnect();
       mutationObserver?.disconnect();
       window.removeEventListener('observatorio:navigate', onNavigate);
+      document.removeEventListener('mousedown', onDocumentPointer);
     };
-  }, []);
+  }, [moreOpen]);
+
+
+    const onDocumentPointer = (event: MouseEvent) => {
+      if (!(event.target instanceof Node)) return;
+      const target = event.target as HTMLElement;
+      if (moreOpen && !target.closest('[aria-haspopup="menu"]') && !target.closest('[role="menu"]')) setMoreOpen(false);
+    };
 
   useEffect(() => {
     const openSearchFromMobile = () => setSearchOpen(true);
