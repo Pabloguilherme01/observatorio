@@ -70,9 +70,9 @@ export function HeroCountdown() {
 
             {technical && (
               <div className="hero-reference-strip" aria-label="Referências rápidas">
-                <span>População · IBGE</span>
-                <span>Eleitorado · TSE</span>
-                <span>Transporte · tarifa oficial</span>
+                <span>População · Fonte: IBGE</span>
+                <span>Eleitorado · Fonte: TSE</span>
+                <span>Transporte · tarifa semiurbana · Entorno-DF</span>
               </div>
             )}
           </div>
