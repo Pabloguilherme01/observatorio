@@ -47,6 +47,25 @@ export function readQuizHighScores(): readonly QuizHighScore[] {
   return sortScores(readRaw());
 }
 
+export function readQuizBestScores(): readonly number[] {
+  const best = [0, 0, 0, 0, 0];
+  for (const entry of readRaw()) {
+    const index = entry.phase - 1;
+    if (index >= 0 && index < best.length) best[index] = Math.max(best[index], entry.score);
+  }
+  return best;
+}
+
+export function readQuizUnlockedPhase(): number {
+  const best = readQuizBestScores();
+  let unlocked = 0;
+  for (let index = 0; index < best.length - 1; index += 1) {
+    if (best[index] >= Math.ceil(40 * 0.6)) unlocked = index + 1;
+    else break;
+  }
+  return unlocked;
+}
+
 export function recordQuizHighScore(entry: Omit<QuizHighScore, 'id'>): readonly QuizHighScore[] {
   const next = sortScores([
     ...readRaw(),
