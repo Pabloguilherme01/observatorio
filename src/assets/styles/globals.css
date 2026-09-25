@@ -3209,6 +3209,9 @@ button,.audience-topic,.audience-action-card,.audience-resource,.audience-link{
   letter-spacing:.08em;
 }
 .language-toggle-v3 .language-toggle-options > button em{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
   position:absolute;
   top:7px;
   right:7px;
