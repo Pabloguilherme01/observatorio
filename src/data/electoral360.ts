@@ -26,6 +26,12 @@ const generatedData = generated as {
     occupation?: string | null;
     evidenceSourceUrls?: string[];
   }>;
+  meta: {
+    photoArchive?: {
+      resourceUrl?: string | null;
+      verifiedCandidateIds?: string[];
+    };
+  };
   diff: {
     state: string;
     added: number;
@@ -121,6 +127,8 @@ export const electoral360Snapshot: Electoral360Snapshot = {
       snapshotDate,
       sourceId: 'tse-candidatos-2026',
       evidenceSourceUrls: candidate.evidenceSourceUrls ?? [],
+      photoAvailableInTseArchive: generatedData.meta.photoArchive?.verifiedCandidateIds?.includes(candidate.sqCandidate) ?? false,
+      photoArchiveUrl: generatedData.meta.photoArchive?.resourceUrl ?? null,
     }))
     : [],
 };
