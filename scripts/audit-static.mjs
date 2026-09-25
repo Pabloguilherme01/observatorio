@@ -224,9 +224,12 @@ if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
 
 
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
-const social = read('src/components/InstagramSyncHub.tsx');
+const sharing = [
+  read('src/components/sections/ExecutiveSummary.tsx'),
+  read('src/components/sections/PoliticalResearch.tsx'),
+].join('\n');
 must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modo Resumo/Simples/Técnico possui componente próprio');
-must(social.includes('MessageCircle') && social.includes('shareWhatsApp'), 'Instagram/WhatsApp possuem compartilhamento');
+must(sharing.includes('navigator.share') && sharing.includes('wa.me'), 'compartilhamento nativo e WhatsApp permanecem disponíveis');
 
 if (!errors.length) {
   pass(`auditoria estática concluída para ${edition}`);
