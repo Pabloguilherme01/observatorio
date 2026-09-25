@@ -1601,3 +1601,16 @@ main p a:not(.official-resource-card):not(.hero-action){
 .light .trust-shell a.text-sky-300{
   color:#075985!important;
 }
+
+/* WCAG AA: all blue text used as readable copy in light theme must clear 4.5:1. */
+html.light a[class*="text-sky-300"],
+html.light a[class*="text-sky-200"],
+html.light .text-sky-300,
+html.light .text-sky-200{
+  color:#075985!important;
+}
+html.light .hero-kicker,
+html.light .audience-kicker,
+html.light .audience-block-head>div>span{
+  color:#075985!important;
+}
