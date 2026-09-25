@@ -31,6 +31,11 @@ export function Header() {
     ? Math.max(0, Math.floor((now.getTime() - captureDate.getTime()) / 86400000))
     : 0;
   const updateState = ageDays === 0 ? 'today' : ageDays <= 7 ? 'recent' : 'stale';
+  const freshnessLabel = updateState === 'today'
+    ? 'Captura hoje'
+    : updateState === 'recent'
+      ? 'Captura recente · ' + ageDays + (ageDays === 1 ? ' dia' : ' dias')
+      : 'Captura desatualizada · ' + ageDays + ' dias';
 
   useEffect(() => {
     moreOpenRef.current = moreOpen;
@@ -234,7 +239,7 @@ export function Header() {
                   <span className="mobile-tools-label">Leitura</span>
                   <span className="mobile-tools-updated">
                     <CalendarDays className="h-3 w-3" aria-hidden="true" />
-                    Atualizado {updatedAt}
+                    {freshnessLabel} · {updatedAt}
                   </span>
                 </div>
                 <LanguageModeToggle />
