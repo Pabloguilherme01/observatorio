@@ -39,13 +39,13 @@ else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 
 const experience = read('src/components/ExperienceShell.tsx');
 if (
-  experience.includes('pendingGTimerRef')
-  && experience.includes('focusTimerRef')
-  && experience.includes('writeStorage')
-  && experience.includes('readStorage')
-  && experience.includes('clearTimeout')
-) pass('Experiência protege timers de foco/atalho e storage opcional.');
-else fail('Experiência possui timer ou acesso ao storage sem hardening suficiente.');
+  experience.includes("window.addEventListener('scroll'")
+  && experience.includes("window.removeEventListener('scroll'")
+  && experience.includes("window.removeEventListener('keydown'")
+  && experience.includes("window.removeEventListener('observatorio:command'")
+  && experience.includes("window.cancelAnimationFrame")
+) pass('Experiência possui cleanup dos listeners e do RAF de leitura.');
+else fail('Experiência perdeu cleanup de listeners ou RAF.');
 
 for (const [file, label] of [
   ['src/components/ShareDataButton.tsx', 'compartilhamento'],
@@ -96,8 +96,12 @@ if (!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts'))) p
 else fail('pipeline municipal legado ainda está presente.');
 
 const summary = read('src/components/sections/ExecutiveSummary.tsx');
-if (summary.includes('poll?.nonePct') && summary.includes('poll?.notSurePct') && summary.includes('poll?.registrationNumber')) pass('Resumo executivo protege dependências opcionais.');
-else fail('Resumo executivo ainda possui dependências opcionais sem proteção.');
+if (
+  summary.includes('populationPoint?.referenceDate')
+  && summary.includes('sanitationSource?.label')
+  && summary.includes('budgetSource?.referenceDate')
+) pass('Resumo executivo protege referências opcionais com optional chaining.');
+else fail('Resumo executivo possui referência opcional sem proteção.');
 
 if (failures.length) {
   console.error('FAIL ' + failures.length + ' regra(s)');
