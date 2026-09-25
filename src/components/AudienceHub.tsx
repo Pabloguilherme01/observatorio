@@ -48,25 +48,25 @@ export function AudienceHub() {
         <div className="min-w-0">
           <span className="audience-kicker"><CheckCircle2 aria-hidden="true" /> Observatório · Águas Lindas de Goiás</span>
           <h2 id="audience-title">
-            {isSummary ? 'Comece pelo que importa.' : isTechnical ? 'Explore dados, fontes e método.' : 'Entenda a cidade em poucos toques.'}
+            {isSummary ? 'Comece pelo que importa.' : isTechnical ? 'Explore dados, fontes e método.' : 'Veja os dados que mais importam.'}
           </h2>
           <p>
             {isSummary
-              ? 'Números essenciais primeiro. Detalhes e fontes ficam a um toque.'
+              ? 'Comece pelos números essenciais. Fontes e contexto ficam logo abaixo.'
               : isTechnical
-                ? 'Indicadores, snapshots, fontes e limitações ficam organizados por assunto.'
-                : 'Encontre um dado, confira a fonte e abra o contexto quando precisar.'}
+                ? 'Indicadores, fontes, recortes e limitações ficam organizados por assunto.'
+                : 'Encontre um dado, confira a fonte e aprofunde quando quiser.'}
           </p>
         </div>
 
         <div className="audience-hero-actions">
           <button type="button" className="audience-search" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:command'))}>
             <Search aria-hidden="true" />
-            <span>Buscar qualquer assunto</span>
+            <span>Buscar um assunto</span>
             <kbd>⌘K</kbd>
           </button>
           <button type="button" className="audience-primary-action" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-            {isSummary ? 'Abrir resumo' : 'Explorar agora'}
+            {isSummary ? 'Abrir resumo' : 'Ver dados'}
             <ArrowRight aria-hidden="true" />
           </button>
         </div>
@@ -75,10 +75,10 @@ export function AudienceHub() {
       <div className="audience-section-heading">
         <div>
           <span>Atalhos</span>
-          <h3>{isTechnical ? 'Investigue por assunto' : 'O que você quer saber?'}</h3>
+          <h3>{isTechnical ? 'Explore por assunto' : 'Escolha um assunto'}</h3>
         </div>
         <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>
-          {isTechnical ? 'Abrir evidências' : 'Abrir dados'} <ArrowRight aria-hidden="true" />
+          {isTechnical ? 'Abrir evidências' : 'Ver dados'} <ArrowRight aria-hidden="true" />
         </button>
       </div>
 
@@ -98,7 +98,7 @@ export function AudienceHub() {
       <div className="audience-action-grid" aria-label="Ferramentas rápidas">
         <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
           <span className="audience-action-icon">?</span>
-          <span><strong>Quiz completo</strong><small>200 questões · 5 níveis · 40 por fase.</small></span>
+          <span><strong>Quiz · 200 perguntas</strong><small>5 níveis · 40 perguntas por fase.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
 
@@ -110,7 +110,7 @@ export function AudienceHub() {
 
         <button type="button" className="audience-action-card" onClick={() => jump('dados')}>
           <span className="audience-action-icon"><CalendarDays aria-hidden="true" /></span>
-          <span><strong>O que mudou?</strong><small>Atualizações recentes, novos dados e fontes.</small></span>
+          <span><strong>Atualizações</strong><small>Mudanças recentes, novos dados e fontes.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
       </div>
@@ -120,9 +120,9 @@ export function AudienceHub() {
           <div className="audience-links-head">
             <div>
               <span className="audience-kicker">Recursos oficiais</span>
-              <h3>Consulte direto na fonte</h3>
+              <h3>Fontes oficiais</h3>
             </div>
-            <button type="button" onClick={() => jump('fontes')}>Conferir fontes <ArrowRight aria-hidden="true" /></button>
+            <button type="button" onClick={() => jump('fontes')}>Ver fontes <ArrowRight aria-hidden="true" /></button>
           </div>
           <div className="audience-resource-grid">
             {officialResources.map(({ label, href, note, icon: Icon }) => (
