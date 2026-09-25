@@ -1,5 +1,5 @@
 import { CheckCircle2, ExternalLink, FileText, History, Search, ShieldAlert, UserRound, ArrowRight, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { electoral360Diff, electoral360Snapshot } from '../../data/electoral360';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -19,10 +19,16 @@ const stateLabel: Record<string, string> = {
 export function Electoral360() {
   const [query, setQuery] = useState('');
   const [selectedName, setSelectedName] = useState('');
+  const [nowMs, setNowMs] = useState(() => Date.now());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNowMs(Date.now()), 5 * 60 * 1000);
+    return () => window.clearInterval(timer);
+  }, []);
   const localCandidateRecords = electoral360Snapshot.matchedCandidates;
   const hasLocalCandidateSnapshot = localCandidateRecords.length > 0;
   const snapshotAgeHours = electoral360Snapshot.capturedAt
-    ? Math.max(0, (Date.now() - Date.parse(electoral360Snapshot.capturedAt)) / 3_600_000)
+    ? Math.max(0, (nowMs - Date.parse(electoral360Snapshot.capturedAt)) / 3_600_000)
     : Infinity;
   const snapshotFreshnessWarning = Number.isFinite(snapshotAgeHours) && snapshotAgeHours > 12;
   const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state))
