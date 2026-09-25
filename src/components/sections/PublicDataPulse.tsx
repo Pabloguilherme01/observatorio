@@ -2,11 +2,13 @@ import { BookOpen, CalendarClock, Database, ExternalLink, Landmark, ShieldAlert 
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const brl = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
 export function PublicDataPulse() {
   const education = d.education;
+  const { mode } = useLanguageMode();
   const latestBudgetUpdate = [...d.budgetUpdates].sort((a, b) => b.date.localeCompare(a.date))[0];
 
   return (
@@ -73,7 +75,7 @@ export function PublicDataPulse() {
           )}
         </Card>
 
-        <Card>
+        {mode === 'technical' && <Card>
           <div className="flex items-center gap-3">
             <Database className="h-5 w-5 text-emerald-300" aria-hidden="true" />
             <div>
@@ -91,7 +93,7 @@ export function PublicDataPulse() {
               <span><strong className="block text-sm text-white">Pardal 2026</strong><span className="text-xs text-slate-500">Denúncias registradas · atualização diária · denúncia não é comprovação</span></span>
             </a>
           </div>
-        </Card>
+        </Card>}
       </div>
     </section>
   );
