@@ -30,7 +30,7 @@ export function Header() {
   const ageDays = Number.isFinite(captureDate.getTime())
     ? Math.max(0, Math.floor((now.getTime() - captureDate.getTime()) / 86400000))
     : 0;
-  const updateState = ageDays > 7 ? 'stale' : 'today';
+  const updateState = ageDays === 0 ? 'today' : ageDays <= 7 ? 'recent' : 'stale';
 
   useEffect(() => {
     moreOpenRef.current = moreOpen;
@@ -200,11 +200,13 @@ export function Header() {
           <div
             className={'site-header-status hidden items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[10px] font-bold lg:flex ' + (updateState === 'today'
               ? 'border-emerald-300/20 bg-emerald-300/[0.06] text-emerald-200'
-              : 'border-amber-300/25 bg-amber-300/[0.06] text-amber-200')}
-            aria-label={'Captura local do conjunto principal em ' + updatedAt + (ageDays > 7 ? '; captura com mais de 7 dias' : '; captura de hoje')}
+              : updateState === 'recent'
+                ? 'border-sky-300/20 bg-sky-300/[0.06] text-sky-200'
+                : 'border-amber-300/25 bg-amber-300/[0.06] text-amber-200')}
+            aria-label={'Captura local do conjunto principal em ' + updatedAt + (updateState === 'today' ? '; captura de hoje' : updateState === 'recent' ? '; captura dos últimos 7 dias' : '; captura com mais de 7 dias')}
             title="Data da captura local do conjunto principal; cada indicador pode ter data-base própria"
           >
-            <span className={'h-1.5 w-1.5 rounded-full ' + (updateState === 'today' ? 'bg-emerald-300' : 'bg-amber-300')} aria-hidden="true" />
+            <span className={'h-1.5 w-1.5 rounded-full ' + (updateState === 'today' ? 'bg-emerald-300' : updateState === 'recent' ? 'bg-sky-300' : 'bg-amber-300')} aria-hidden="true" />
             <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Captura {updatedAt}</span>
           </div>
