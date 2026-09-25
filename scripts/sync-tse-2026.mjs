@@ -16,22 +16,18 @@ const ZIP_URLS = [
 ];
 
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
-const MUNICIPALITY_CODE = '5200258';
-const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
-const MUNICIPALITY_NORMALIZED = normalize(MUNICIPALITY_NAME);
-
 
 function normalize(value) {
   return String(value ?? '')
     .normalize('NFD')
-    .replace(/[\\u0300-\\u036f]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .trim()
     .toLocaleLowerCase('pt-BR');
 }
 
 function headerMap(headerRow) {
   return Object.fromEntries(
-    headerRow.map((name, index) => [String(name).replace(/^\\uFEFF/, '').trim(), index]),
+    headerRow.map((name, index) => [String(name).replace(/^\uFEFF/, '').trim(), index]),
   );
 }
 
@@ -67,36 +63,20 @@ function parseCsv(content) {
       continue;
     }
 
-    if (char === '"') {
-      quoted = true;
-    } else if (char === ',') {
-      row.push(field);
-      field = '';
-    } else if (char === '\\n') {
-      row.push(field);
-      rows.push(row);
-      row = [];
-      field = '';
-    } else if (char !== '\\r') {
-      field += char;
-    }
+    if (char === '"') quoted = true;
+    else if (char === ',') { row.push(field); field = ''; }
+    else if (char === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+    else if (char !== '\r') field += char;
   }
 
   if (field.length || row.length) {
     row.push(field);
     if (row.some(value => value.length)) rows.push(row);
   }
-
   return rows;
 }
 
-function municipalityMatch(row, header) {
-  const code = valueOf(row, header, ['CD_MUNICIPIO', 'CD_MUNICIPIO_TSE', 'NR_MUNICIPIO']);
-  const name = valueOf(row, header, ['NM_MUNICIPIO']);
-  return code === MUNICIPALITY_CODE || normalize(name) === MUNICIPALITY_NORMALIZED;
-}
-
-function toRecord(row, header, previousRecord) {
+function toTseRecord(row, header, previousRecord) {
   const sqCandidate = valueOf(row, header, ['SQ_CANDIDATO']);
   const ballotValue = valueOf(row, header, ['NR_CANDIDATO', 'NR_CANDIDATURA']);
   const name = valueOf(row, header, ['NM_URNA_CANDIDATO', 'NM_URNA']) || valueOf(row, header, ['NM_CANDIDATO']);
@@ -113,38 +93,32 @@ function toRecord(row, header, previousRecord) {
     generationDate: valueOf(row, header, ['DT_GERACAO']) || null,
     generationTime: valueOf(row, header, ['HH_GERACAO']) || null,
     candidateIdKind: 'tse_csv_sq_candidate',
-    municipality: MUNICIPALITY_NAME,
-    municipalityCodeTse: MUNICIPALITY_CODE,
+    municipality: null,
+    municipalityCodeTse: null,
     photoUrl: previousRecord?.photoUrl ?? null,
     instagramUrl: previousRecord?.instagramUrl ?? null,
+    watchlistName: previousRecord?.watchlistName ?? null,
+    localEvidence: previousRecord?.localEvidence ?? null,
+    evidenceSourceUrls: previousRecord?.evidenceSourceUrls ?? [],
     sourceResource: selectedSourceUrl,
   };
 }
 
-function sha256(path) {
-  return createHash('sha256').update(readFileSync(path)).digest('hex');
+function sha256(filePath) {
+  return createHash('sha256').update(readFileSync(filePath)).digest('hex');
 }
 
 function download(url, destination) {
   try {
     execFileSync('curl', [
-      '--fail',
-      '--location',
-      '--http1.1',
-      '--retry', '2',
-      '--retry-delay', '2',
-      '--retry-all-errors',
-      '--connect-timeout', '20',
-      '--max-time', '120',
+      '--fail', '--location', '--http1.1', '--retry', '2', '--retry-delay', '2',
+      '--retry-all-errors', '--connect-timeout', '20', '--max-time', '120',
       '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/153 Safari/537.36',
       '--header', 'Accept: application/zip, application/octet-stream;q=0.9, */*;q=0.8',
       '--header', 'Accept-Language: pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
       '--referer', 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
-      '--header', 'Sec-Fetch-Dest: document',
-      '--header', 'Sec-Fetch-Mode: navigate',
-      '--header', 'Sec-Fetch-Site: same-site',
-      '--output', destination,
-      url,
+      '--header', 'Sec-Fetch-Dest: document', '--header', 'Sec-Fetch-Mode: navigate',
+      '--header', 'Sec-Fetch-Site: same-site', '--output', destination, url,
     ], { stdio: 'inherit' });
   } catch (error) {
     rmSync(destination, { force: true });
@@ -157,10 +131,13 @@ function loadPrevious() {
   try {
     const payload = JSON.parse(readFileSync(OUTPUT, 'utf8'));
     if (
-      payload?.schemaVersion !== 3
-      || !['municipality_required', 'state_watchlist'].includes(payload?.coverage)
-      || !Array.isArray(payload?.matched)
-      || !['first_capture', 'synced', 'unchanged', 'changed', 'local_filter_pending'].includes(payload?.meta?.state)
+      payload?.schemaVersion !== 3 ||
+      payload?.coverage !== 'state_watchlist' ||
+      !Array.isArray(payload?.watchlist) ||
+      payload.watchlist.length < 1 ||
+      !Array.isArray(payload?.matched) ||
+      payload?.meta?.candidateUniverseScope !== 'GO' ||
+      payload?.meta?.localFilterType !== 'local_evidence'
     ) return null;
     return payload;
   } catch {
@@ -176,20 +153,15 @@ function diffRecords(before, after) {
 
   for (const [id, candidate] of current) {
     const old = previous.get(id);
-    if (!old) {
-      records.push({ key: id, type: 'added', after: candidate });
-      continue;
-    }
-    const changedFields = Object.keys(candidate).filter(field => candidate[field] !== old[field]);
-    if (changedFields.length) {
-      records.push({ key: id, type: 'changed', before: old, after: candidate, changedFields });
+    if (!old) records.push({ key: id, type: 'added', after: candidate });
+    else {
+      const changedFields = Object.keys(candidate).filter(field => JSON.stringify(candidate[field]) !== JSON.stringify(old[field]));
+      if (changedFields.length) records.push({ key: id, type: 'changed', before: old, after: candidate, changedFields });
     }
   }
-
   for (const [id, candidate] of previous) {
     if (!current.has(id)) records.push({ key: id, type: 'removed', before: candidate });
   }
-
   return records;
 }
 
@@ -199,21 +171,20 @@ async function main() {
   mkdirSync(OUTPUT_DIR, { recursive: true });
   mkdirSync(HISTORY_DIR, { recursive: true });
 
-  const work = mkdtempSync(join(tmpdir(), 'tse-2026-municipal-'));
+  const previous = loadPrevious();
+  if (!previous) throw new Error('Snapshot state_watchlist/local_evidence válido é necessário para atualizar o cadastro sem alterar o modelo editorial.');
+
+  const watchlist = previous.watchlist;
+  const previousBySq = new Map(previous.matched.map(candidate => [candidate.sqCandidate, candidate]));
+  const previousByName = new Map(previous.matched.map(candidate => [normalize(candidate.name), candidate]));
+
+  const work = mkdtempSync(join(tmpdir(), 'tse-2026-watchlist-'));
   const zip = join(work, 'consulta_cand_2026.zip');
   const extracted = join(work, 'csv');
   mkdirSync(extracted, { recursive: true });
 
   try {
-    const previous = loadPrevious();
-    const previousBySq = new Map((previous?.matched ?? []).map(candidate => [candidate.sqCandidate, candidate]));
-    let sourceRows = 0;
-    let municipalityRows = 0;
-
-    // Para o recorte completo do município, usamos exclusivamente o CSV oficial do TSE.
-    // O endpoint estadual do DivulgaCandContas não contém município no registro retornado.
     let lastError = null;
-
     for (const candidateUrl of ZIP_URLS) {
       try {
         selectedSourceUrl = candidateUrl;
@@ -225,58 +196,74 @@ async function main() {
         console.warn('[TSE] fonte indisponível: ' + candidateUrl);
       }
     }
-
     if (lastError) throw lastError;
 
     execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
-
-    const csvPath = execFileSync(
-      'find',
-      [extracted, '-type', 'f', '-iname', '*GO.csv'],
-      { encoding: 'utf8' },
-    ).split(/\r?\n/).find(Boolean);
-
+    const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
     if (!csvPath) throw new Error('Arquivo estadual de candidatos de GO não encontrado no pacote oficial.');
 
     const rows = parseCsv(readFileSync(csvPath, 'utf8'));
     if (rows.length < 2) throw new Error('Arquivo CSV de candidatos de GO está vazio ou inválido.');
 
     const header = headerMap(rows[0]);
-    const requiredColumns = ['SQ_CANDIDATO', 'NM_URNA_CANDIDATO', 'NM_CANDIDATO'];
-    const missingColumns = requiredColumns.filter(key => header[key] === undefined);
-    if (missingColumns.length) {
-      throw new Error('Colunas essenciais ausentes no CSV TSE: ' + missingColumns.join(', '));
+    for (const key of ['SQ_CANDIDATO', 'NM_URNA_CANDIDATO', 'NM_CANDIDATO']) {
+      if (header[key] === undefined) throw new Error('Coluna essencial ausente no CSV TSE: ' + key);
     }
 
-    const matched = [];
-    const seen = new Set();
+    const sourceRows = rows.length - 1;
+    const currentBySq = new Map();
 
     for (const row of rows.slice(1)) {
       if (!row.length || row.every(value => !String(value).trim())) continue;
-      sourceRows += 1;
-      if (!municipalityMatch(row, header)) continue;
-      municipalityRows += 1;
+      const sqCandidate = valueOf(row, header, ['SQ_CANDIDATO']);
+      const name = valueOf(row, header, ['NM_URNA_CANDIDATO', 'NM_URNA']) || valueOf(row, header, ['NM_CANDIDATO']);
+      if (!sqCandidate || !name) continue;
 
-      const record = toRecord(row, header, previousBySq.get(valueOf(row, header, ['SQ_CANDIDATO'])));
-      if (!record.sqCandidate) throw new Error('Registro municipal sem SQ_CANDIDATO.');
-      if (seen.has(record.sqCandidate)) throw new Error('SQ_CANDIDATO duplicado no recorte municipal: ' + record.sqCandidate);
+      const previousRecord = previousBySq.get(sqCandidate) ?? previousByName.get(normalize(name));
+      if (!previousRecord) continue;
 
-      matched.push(record);
-      seen.add(record.sqCandidate);
+      const record = toTseRecord(row, header, previousRecord);
+      currentBySq.set(record.sqCandidate, record);
     }
 
-    if (municipalityRows <= 0) throw new Error('Nenhum registro municipal encontrado no CSV oficial do TSE para Águas Lindas de Goiás.');
-    if (matched.length <= 0) throw new Error('Nenhuma candidatura foi validada no recorte municipal oficial do TSE.');
+    const matched = [];
+    const missingWatchlist = [];
+    for (const expectedName of watchlist) {
+      const previousRecord = previous.matched.find(candidate =>
+        normalize(candidate.watchlistName ?? candidate.name) === normalize(expectedName),
+      );
+      const current = previousRecord
+        ? currentBySq.get(previousRecord.sqCandidate) ?? currentBySq.get(
+          [...currentBySq.values()].find(candidate => normalize(candidate.name) === normalize(previousRecord.name))?.sqCandidate,
+        )
+        : null;
 
-    const diff = diffRecords(previous?.matched ?? [], matched);
-    const state = previous ? (diff.length ? 'changed' : 'unchanged') : 'first_capture';
+      if (current) {
+        matched.push({
+          ...current,
+          watchlistName: previousRecord.watchlistName ?? expectedName,
+          localEvidence: previousRecord.localEvidence ?? null,
+          evidenceSourceUrls: previousRecord.evidenceSourceUrls ?? [],
+        });
+      } else {
+        missingWatchlist.push(expectedName);
+      }
+    }
+
+    if (missingWatchlist.length) {
+      throw new Error('A atualização TSE não encontrou todos os registros da watchlist validada: ' + missingWatchlist.join(', '));
+    }
+
+    const diff = diffRecords(previous.matched, matched);
+    const state = diff.length ? 'changed' : 'unchanged';
+
     if (state === 'unchanged') {
       console.log(JSON.stringify({
         valid: true,
         state,
         sourceRows,
-        municipalityRows,
         matched: matched.length,
+        watchlist: watchlist.length,
         retrievalMethod: 'official_tse_zip_csv',
         changed: false,
       }, null, 2));
@@ -284,7 +271,7 @@ async function main() {
     }
 
     const now = new Date();
-    const snapshotId = 'tse-candidatos-2026-local-' + now.toISOString().replace(/[:.]/g, '-');
+    const snapshotId = 'tse-candidatos-2026-local-mapeado-' + now.toISOString().slice(0, 10);
 
     const payload = {
       schemaVersion: 3,
@@ -293,13 +280,11 @@ async function main() {
         source: 'TSE — Candidatos 2026',
         sourceUrl: SOURCE_URL,
         scope: 'GO',
-        localFilter: MUNICIPALITY_NAME,
-        municipalityCodeTse: MUNICIPALITY_CODE,
+        localFilter: 'Águas Lindas de Goiás',
         downloadedAt: now.toISOString(),
         sourceFileSha256: sha256(zip),
         sourceHashKind: 'source_zip',
         sourceRows,
-        municipalityRows,
         originalMatchedRows: matched.length,
         matchedRows: matched.length,
         workflowRunId: process.env.GITHUB_RUN_ID || undefined,
@@ -307,11 +292,14 @@ async function main() {
         state,
         retrievalMethod: 'official_tse_zip_csv',
         resourceUrl: selectedSourceUrl,
-        selection: 'all_municipality',
-        filterNote: 'Recorte municipal completo pelo código TSE do município. O snapshot publica todas as candidaturas encontradas no arquivo oficial para Águas Lindas de Goiás, sem watchlist editorial.',
+        captureTransport: 'official_tse_snapshot_plus_documentary_local_evidence',
+        selection: 'local_evidence_watchlist',
+        candidateUniverseScope: 'GO',
+        localFilterType: 'local_evidence',
+        filterNote: 'Recorte acompanhado de candidaturas estaduais do TSE com evidência documental de vínculo local. O vínculo local é mantido da base editorial validada e não é inferido do cadastro estadual.',
       },
-      coverage: 'municipality_required',
-      watchlist: [],
+      coverage: 'state_watchlist',
+      watchlist,
       matched,
       diff: {
         state,
@@ -331,8 +319,8 @@ async function main() {
       state,
       snapshotId,
       sourceRows,
-      municipalityRows,
       matched: matched.length,
+      watchlist: watchlist.length,
       retrievalMethod: 'official_tse_zip_csv',
     }, null, 2));
   } finally {
@@ -346,11 +334,12 @@ main().catch(error => {
     console.warn(JSON.stringify({
       valid: true,
       state: 'upstream_unavailable',
-      message: 'A origem oficial do TSE está temporariamente indisponível para o runner. O último snapshot validado foi preservado e não será sobrescrito.',
+      message: 'A origem oficial do TSE está temporariamente indisponível. O último snapshot validado foi preservado e não será sobrescrito.',
       snapshotId: previous.meta.snapshotId,
       sourceUrl: previous.meta.sourceUrl,
       lastState: previous.meta.state,
       matched: previous.matched.length,
+      watchlist: previous.watchlist.length,
       error: error instanceof Error ? error.message : String(error),
     }, null, 2));
     process.exitCode = 0;
@@ -359,5 +348,3 @@ main().catch(error => {
   console.error(error);
   process.exitCode = 1;
 });
-
-// Trigger municipal TSE resync after validation pass.
