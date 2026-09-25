@@ -272,7 +272,7 @@ export function QuickQuiz() {
   };
 
   const next = () => {
-    if (selected === null) return;
+    if (selected === null || !question) return;
     if (isLast) {
       // Include the answer just selected: React state updates are asynchronous.
       const finalScore = score + (selected === question.answerIndex ? 1 : 0);
