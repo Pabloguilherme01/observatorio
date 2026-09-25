@@ -65,7 +65,7 @@ must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-f
 must(files.index.includes('apple-mobile-web-app-capable') && files.index.includes('apple-mobile-web-app-title'), 'metadados de instalação iOS estão presentes');
 must(files.index.includes('id="root"') && files.index.includes('boot-fallback'), 'HTML inicial possui root e fallback de recuperação');
 
-must(files.app.includes('DataExportActions') && read('src/components/DataExportActions.tsx').includes('statusTimerRef') && read('src/components/DataExportActions.tsx').includes('clearTimeout'), 'exportação protege timers de status');
+must(read('src/components/DataExportActions.tsx').includes('statusTimerRef') && read('src/components/DataExportActions.tsx').includes('clearTimeout') && read('src/components/DataExportActions.tsx').includes('flash('), 'exportação protege timers de status');
 
 must(exists('src/components/sections/DeferredEvidenceGroup.tsx'), 'grupo técnico consolidado existe em arquivo próprio');
 must(files.app.includes('<ProjectTrustPanel />') || read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'grupo técnico consolidado mantém sua camada editorial');
