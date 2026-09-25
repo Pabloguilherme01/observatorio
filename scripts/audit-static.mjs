@@ -32,6 +32,13 @@ const updatedAt = dataSource.match(/updatedAt: '([^']+)'/)?.[1];
 const dateModified = index.match(/"dateModified": "([^"]+)"/)?.[1];
 
 must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sincronizados');
+must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && packageJson.devDependencies?.['@axe-core/playwright'] === '4.13.0', 'Playwright e Axe estão fixados nas devDependencies');
+const lockJson = JSON.parse(read('package-lock.json'));
+must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
+  && lockJson.packages?.['node_modules/@axe-core/playwright']?.version === '4.13.0'
+  && lockJson.packages?.['node_modules/axe-core']?.version === '4.13.0'
+  && lockJson.packages?.['node_modules/playwright-core']?.version === '1.63.0',
+  'Playwright e Axe estão presentes e fixados no package-lock');
 must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da versão');
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
@@ -74,6 +81,7 @@ must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v
 const pkgScripts = packageJson.scripts ?? {};
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
+must(pkgScripts['audit:browser']?.includes('playwright install --with-deps chromium') && !pkgScripts['test:browser:prepare'], 'CI usa Playwright instalado pelo lockfile, sem npm install dinâmico');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
