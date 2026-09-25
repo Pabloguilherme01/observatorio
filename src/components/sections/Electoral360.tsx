@@ -66,7 +66,7 @@ export function Electoral360() {
         description="Consulte o recorte editorial acompanhado pelo observatório e confira cada registro em sua fonte oficial."
       />
 
-      <div className="mb-4 rounded-2xl border ${snapshotWarning ? 'border-amber-300/20 bg-amber-300/[0.04]' : 'border-sky-300/10 bg-sky-300/[0.025]'} px-3 py-2.5 text-[11px] leading-5 text-slate-500" role="note">
+      <div className={`mb-4 rounded-2xl border ${snapshotWarning ? 'border-amber-300/20 bg-amber-300/[0.04]' : 'border-sky-300/10 bg-sky-300/[0.025]'} px-3 py-2.5 text-[11px] leading-5 text-slate-500`} role="note">
         <strong className={snapshotWarning ? 'text-amber-100' : 'text-sky-100'}>Atualização:</strong> o projeto agenda uma verificação da fonte oficial do TSE a cada 4 horas. A data exibida abaixo corresponde à última captura persistida do snapshot, não a uma consulta em tempo real.
         {snapshotFreshnessWarning && (
           <span className="mt-1 block text-amber-200/80">
