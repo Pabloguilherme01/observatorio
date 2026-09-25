@@ -160,7 +160,7 @@ export function PoliticalResearch() {
                   {poll.results.map(result => (
                     <div key={result.label} className="grid grid-cols-[minmax(0,9rem)_1fr_3.5rem] items-center gap-2 text-xs">
                       <span className="break-words text-slate-400">{result.label}</span>
-                      <div className="h-2 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-sky-300/65" style={{ width: Math.min(100, result.percentage * 2) + '%' }} /></div>
+                      <div className="h-2 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-sky-300/65" style={{ width: Math.min(100, Math.max(0, result.percentage)) + '%' }} /></div>
                       <strong className="text-right text-white">{result.percentage.toFixed(2).replace('.', ',')}%</strong>
                     </div>
                   ))}
