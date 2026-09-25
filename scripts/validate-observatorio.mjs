@@ -57,6 +57,42 @@ if (ageVoters.length && ageShares.length && electorate) {
   else pass('percentuais etários fecham aproximadamente 100%.');
 }
 
+const electorate2024Snapshot = Number(text.match(/electorate2024:\s*([0-9]+)/)?.[1] ?? 0);
+const turnout2024Pct = Number(text.match(/turnout2024Pct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+const abstention2024Pct = Number(text.match(/abstention2024Pct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+const abstention2024Count = Number(text.match(/abstention2024Count:\s*([0-9]+)/)?.[1] ?? 0);
+const blankVotes2024Count = Number(text.match(/blankVotes2024Count:\s*([0-9]+)/)?.[1] ?? 0);
+const nullVotes2024Count = Number(text.match(/nullVotes2024Count:\s*([0-9]+)/)?.[1] ?? 0);
+const validVotes2024Count = Number(text.match(/validVotes2024Count:\s*([0-9]+)/)?.[1] ?? 0);
+
+if (electorate2024Snapshot && turnout2024Pct && abstention2024Pct) {
+  const rateSum = turnout2024Pct + abstention2024Pct;
+  if (Math.abs(rateSum - 100) > 0.05) fail('comparecimento + abstenção 2024 não fecham 100%: ' + rateSum.toFixed(2));
+  else pass('comparecimento + abstenção 2024 fecham 100%.');
+
+  const turnoutCountDerived = electorate2024Snapshot * turnout2024Pct / 100;
+  const turnoutCountActual = validVotes2024Count + blankVotes2024Count + nullVotes2024Count;
+  if (Math.abs(turnoutCountDerived - turnoutCountActual) > 3) {
+    fail('comparecimento 2024 diverge dos votos observados além da tolerância: ' + turnoutCountDerived.toFixed(2) + ' vs ' + turnoutCountActual);
+  } else {
+    pass('comparecimento 2024 é coerente com válidos + brancos + nulos.');
+  }
+
+  if (turnoutCountActual + abstention2024Count !== electorate2024Snapshot) {
+    fail('votos observados + abstenções não fecham o eleitorado 2024.');
+  } else {
+    pass('votos observados + abstenções fecham exatamente o eleitorado 2024.');
+  }
+}
+
+const womenPct = Number(text.match(/womenPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+const menPct = Number(text.match(/menPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+if (womenPct || menPct) {
+  const genderSum = womenPct + menPct;
+  if (Math.abs(genderSum - 100) > 0.05) fail('percentuais de gênero não fecham 100%: ' + genderSum.toFixed(2));
+  else pass('percentuais de gênero fecham 100%.');
+}
+
 if (text.includes("interviews: 400") && text.includes("theoreticalMarginErrorPct: 4.9")) {
   pass('Pesquisa mantém margem teórica explicitamente marcada.');
 } else {
