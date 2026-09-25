@@ -31,15 +31,18 @@ const sha = payload.meta?.sourceFileSha256;
 const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
 const downloadedAt = payload.meta?.downloadedAt;
 const parsedDownloadedAt = downloadedAt ? Date.parse(downloadedAt) : NaN;
+const freshnessCheckedAt = process.env.TSE_FRESHNESS_CHECKED_AT || downloadedAt;
+const parsedFreshnessCheckedAt = freshnessCheckedAt ? Date.parse(freshnessCheckedAt) : NaN;
 const maxAgeHours = Number(process.env.TSE_MAX_AGE_HOURS || 36);
-const ageHours = Number.isFinite(parsedDownloadedAt)
-  ? (Date.now() - parsedDownloadedAt) / 3_600_000
+const ageHours = Number.isFinite(parsedFreshnessCheckedAt)
+  ? Math.max(0, (Date.now() - parsedFreshnessCheckedAt) / 3_600_000)
   : Infinity;
 const requireFresh = process.env.REQUIRE_TSE_FRESH === 'true';
 if (!downloadedAt || !Number.isFinite(parsedDownloadedAt)) errors.push('downloadedAt ausente ou inválido.');
+if (!Number.isFinite(parsedFreshnessCheckedAt)) errors.push('marcador de verificação de frescor do TSE ausente ou inválido.');
 if (Number.isFinite(ageHours) && ageHours > maxAgeHours) {
-  if (requireFresh) errors.push(`Snapshot TSE fora da janela de frescor de ${maxAgeHours}h (idade: ${ageHours.toFixed(1)}h).`);
-  else warnings.push(`Snapshot TSE fora da janela recomendada de ${maxAgeHours}h (idade: ${ageHours.toFixed(1)}h).`);
+  if (requireFresh) errors.push(`Verificação TSE fora da janela de frescor de ${maxAgeHours}h (idade: ${ageHours.toFixed(1)}h).`);
+  else warnings.push(`Verificação TSE fora da janela recomendada de ${maxAgeHours}h (idade: ${ageHours.toFixed(1)}h).`);
 }
 
 if (state === 'not_synced' || state === 'local_filter_pending') {
