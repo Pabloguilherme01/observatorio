@@ -56,18 +56,14 @@ export function Header() {
     mutationObserver?.observe(root, { childList: true, subtree: true });
 
     window.addEventListener('observatorio:navigate', onNavigate);
-    document.addEventListener('mousedown', onDocumentPointer);
-    document.addEventListener('keydown', onKeyDown);
     return () => {
       observer.disconnect();
       mutationObserver?.disconnect();
       window.removeEventListener('observatorio:navigate', onNavigate);
-      document.removeEventListener('mousedown', onDocumentPointer);
-      document.removeEventListener('keydown', onKeyDown);
     };
-  }, [moreOpen]);
+  }, []);
 
-
+  useEffect(() => {
     const onDocumentPointer = (event: MouseEvent) => {
       if (!(event.target instanceof Node)) return;
       const target = event.target as HTMLElement;
@@ -83,6 +79,14 @@ export function Header() {
         window.requestAnimationFrame(() => moreButtonRef.current?.focus());
       }
     };
+
+    document.addEventListener('mousedown', onDocumentPointer);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onDocumentPointer);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
 
   useEffect(() => {
     const openSearchFromMobile = () => setSearchOpen(true);
