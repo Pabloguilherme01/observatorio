@@ -2412,3 +2412,229 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     scroll-behavior:auto!important;
   }
 }
+
+
+/* Context Comparison · V44.10 */
+.context-comparison-shell{
+  min-width:0;
+  overflow:visible;
+}
+.context-comparison-meta{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:12px;
+}
+.context-comparison-meta span{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  min-height:38px;
+  padding:7px 9px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:12px;
+  background:rgba(255,255,255,.02);
+  color:#94a3b8;
+  font-size:10px;
+  font-weight:800;
+}
+.context-comparison-meta svg{
+  width:14px;
+  height:14px;
+  flex:0 0 auto;
+  color:#7dd3fc;
+}
+.context-comparison-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.context-comparison-tabs button{
+  min-width:0;
+  max-width:100%;
+}
+.context-comparison-cards{
+  min-width:0;
+}
+.context-comparison-card{
+  min-width:0!important;
+  width:100%!important;
+  overflow:visible!important;
+  display:flex;
+  flex-direction:column;
+  min-height:230px;
+}
+.context-city-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:8px;
+  min-width:0;
+}
+.context-city-name{
+  min-width:0;
+  max-width:100%;
+  color:#f8fafc;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.18;
+  overflow-wrap:anywhere;
+}
+.context-city-code{
+  margin-top:3px;
+  color:#64748b;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+.context-city-badge{
+  flex:0 0 auto;
+  min-width:28px;
+  padding:4px 6px;
+  border-radius:999px;
+  border:1px solid rgba(125,211,252,.15);
+  background:rgba(56,189,248,.07);
+  color:#bae6fd;
+  font-size:8px;
+  font-weight:900;
+  text-align:center;
+}
+.context-city-value{
+  margin-top:15px;
+  color:#f8fafc;
+  font-size:clamp(1.7rem,3vw,2rem);
+  font-weight:950;
+  line-height:1;
+  letter-spacing:-.035em;
+  overflow-wrap:anywhere;
+}
+.context-city-source{
+  margin-top:5px;
+  color:#64748b;
+  font-size:9px;
+  font-weight:800;
+}
+.context-city-details{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:14px;
+}
+.context-city-details span{
+  min-width:0;
+  padding:8px 9px;
+  border:1px solid rgba(148,163,184,.09);
+  border-radius:11px;
+  background:rgba(255,255,255,.018);
+  color:#94a3b8;
+  font-size:9px;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+}
+.context-city-details strong{
+  display:block;
+  margin-bottom:2px;
+  color:#64748b;
+  font-size:8px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.context-city-link{
+  margin-top:auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:7px;
+  min-height:44px;
+  padding-top:11px;
+  border-top:1px solid rgba(148,163,184,.09);
+  color:#bae6fd!important;
+  font-size:11px;
+  font-weight:850;
+  text-decoration:underline!important;
+  text-underline-offset:3px;
+}
+.context-comparison-note{
+  min-width:0;
+}
+.light .context-comparison-meta span{
+  border-color:#dbe5ec;
+  background:#fff;
+  color:#475569;
+}
+.light .context-city-name{color:#0f172a}
+.light .context-city-code,.light .context-city-source{color:#64748b}
+.light .context-city-badge{color:#075985;background:#eff6ff;border-color:#bae6fd}
+.light .context-city-value{color:#0f172a}
+.light .context-city-details span{background:#f8fafc;border-color:#e2e8f0;color:#475569}
+.light .context-city-details strong{color:#64748b}
+.light .context-city-link{color:#0369a1!important;border-color:#e2e8f0}
+@media(max-width:767px){
+  .context-comparison-shell{
+    padding:12px!important;
+    border-radius:20px!important;
+  }
+  .context-comparison-meta{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+  }
+  .context-comparison-meta span{
+    min-height:44px;
+    padding:6px 4px;
+    font-size:8px;
+    line-height:1.15;
+    text-align:center;
+    flex-direction:column;
+  }
+  .context-comparison-meta svg{
+    width:13px;
+    height:13px;
+  }
+  .context-comparison-tabs{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .context-comparison-tabs button{
+    width:100%;
+    min-height:48px;
+    padding:8px 7px!important;
+    font-size:10px!important;
+    line-height:1.15;
+  }
+  .context-comparison-cards{
+    grid-template-columns:1fr!important;
+    gap:9px!important;
+  }
+  .context-comparison-card{
+    min-height:0!important;
+    padding:14px!important;
+  }
+  .context-city-name{
+    font-size:15px;
+  }
+  .context-city-value{
+    font-size:1.85rem;
+  }
+  .context-city-details{
+    gap:6px;
+  }
+  .context-city-details span{
+    padding:8px;
+    font-size:9px;
+  }
+  .context-city-link{
+    min-height:46px;
+    font-size:11px;
+  }
+}
+@media(max-width:390px){
+  .context-comparison-meta span{
+    font-size:7.5px;
+  }
+  .context-comparison-tabs button{
+    font-size:9.5px!important;
+  }
+}
