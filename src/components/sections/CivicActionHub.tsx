@@ -331,7 +331,7 @@ export function CivicActionHub() {
           </div>
         </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {priorityPublicServices.map(({ icon: Icon, title, description, href }) => (
+          {priorityPublicServices.slice(0, 7).map(({ icon: Icon, title, description, href }) => (
             <div key={title} className="civic-service-card group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05]">
               <a href={href} target="_blank" rel="noopener noreferrer" className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300" aria-label={`${title}: ${description}`}>
                 <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
@@ -348,6 +348,24 @@ export function CivicActionHub() {
             </div>
           ))}
         </div>
+        {priorityPublicServices.length > 7 && (
+          <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3">
+            <summary className="cursor-pointer list-none text-xs font-black text-slate-300 light:text-slate-700">
+              Mais atalhos de utilidade pública <span className="ml-1 font-semibold text-slate-500">+{priorityPublicServices.length - 7}</span>
+            </summary>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {priorityPublicServices.slice(7).map(({ icon: Icon, title, description, href }) => (
+                <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="group rounded-xl border border-white/8 bg-white/[0.018] p-3">
+                  <span className="flex items-center gap-2 text-xs font-black text-white light:text-slate-900">
+                    <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
+                    <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
+                  </span>
+                  <span className="mt-1 block text-[10px] leading-4 text-slate-500">{description}</span>
+                </a>
+              ))}
+            </div>
+          </details>
+        )}
       </Card>
 
       <Card className="civic-contact-card mb-4 p-4 sm:p-5">
