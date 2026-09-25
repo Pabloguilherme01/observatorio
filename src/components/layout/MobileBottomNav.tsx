@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
 
 const primaryItems = [
-  { id: 'descubra', label: 'Descobrir', icon: Compass },
+  { id: 'descubra', label: 'Explorar', icon: Compass },
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'eleitoral360', label: 'Eleições', icon: Users },
 ] as const;
