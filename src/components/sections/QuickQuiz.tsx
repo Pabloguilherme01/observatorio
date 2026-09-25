@@ -255,7 +255,7 @@ export function QuickQuiz() {
   const nextIndex = safeIndex + 1;
   const isLast = nextIndex >= totalQuestions;
   const unlockedNext = activePhase < QUIZ_LEVELS.length - 1 && unlockedPhase > activePhase;
-  const displayedScore = score + (selected === question?.answerIndex ? 1 : 0);
+  const displayedScore = score;
 
   const startPhase = (phaseIndex: number) => {
     setActivePhase(phaseIndex);
@@ -275,8 +275,7 @@ export function QuickQuiz() {
   const next = () => {
     if (selected === null || !question) return;
     if (isLast) {
-      // Include the answer just selected: React state updates are asynchronous.
-      const finalScore = score + (selected === question.answerIndex ? 1 : 0);
+      // score já inclui a resposta selecionada porque answer() atualiza o estado antes desta renderização.
       const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
       setBest(nextScores);
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
