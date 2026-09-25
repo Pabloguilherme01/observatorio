@@ -87,6 +87,12 @@ else pass('navegação mobile rotulada e integrada ao fluxo principal');
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
+if (
+  search.includes("const knownDestination =") &&
+  search.includes("navigation.some(item => item.id === id)") &&
+  search.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'")
+) pass('busca preserva destinos lazy e aciona a navegação central');
+else fail('busca pode perder destinos lazy antes da montagem do componente');
 
 const css = texts.find(item => item.file === 'src/assets/styles/globals.css')?.content ?? '';
 for (const [needle, label] of [[':focus-visible','foco visível'],['prefers-reduced-motion','redução de movimento'],['safe-area-inset-bottom','safe-area mobile'],['scroll-snap-type','rails mobile'],['@media (max-width:390px)','telas muito pequenas'],['min-height:44px','alvo de toque mobile'],['--mobile-touch:44px','alvo de toque mobile']]) {
