@@ -37,7 +37,7 @@ O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resu
 ## Desenvolvimento
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
