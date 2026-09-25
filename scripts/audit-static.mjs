@@ -94,12 +94,13 @@ must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includ
 must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
-const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
+const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
-must(appSource.includes('id="analise"') && appSource.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
+const deferredDashboard = read('src/components/sections/DeferredDashboardGroup.tsx');
+must(appSource.includes('id="analise"') && appSource.includes('loadDashboardGroup') && deferredDashboard.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
 const dashboardIdCount = (dashboardMetrics.match(/id=["']dashboard["']/g) ?? []).length;
 const analiseIdCount = (appSource.match(/id=["']analise["']/g) ?? []).length;
 must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#dashboard possui uma única âncora pública no DashboardMetrics');
