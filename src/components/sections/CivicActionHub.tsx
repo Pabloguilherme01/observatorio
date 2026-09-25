@@ -318,7 +318,7 @@ export function CivicActionHub() {
         description="O observatório informa e aponta caminhos oficiais. Ele não recebe denúncias, apura fatos nem substitui os órgãos públicos."
       />
 
-      <Card className="mb-4 p-4 sm:p-5">
+      <Card className="civic-primary-card mb-4 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-emerald-300/10 bg-emerald-300/[0.06] text-emerald-200">
             <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
@@ -332,7 +332,7 @@ export function CivicActionHub() {
         </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {priorityPublicServices.map(({ icon: Icon, title, description, href }) => (
-            <div key={title} className="group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05]">
+            <div key={title} className="civic-service-card group">
               <a href={href} target="_blank" rel="noopener noreferrer" className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300" aria-label={`${title}: ${description}`}>
                 <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
                   <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
@@ -350,7 +350,7 @@ export function CivicActionHub() {
         </div>
       </Card>
 
-      <Card className="mb-4 p-4 sm:p-5">
+      <Card className="civic-contact-card mb-4 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-amber-300/10 bg-amber-300/[0.06] text-amber-200">
             <Smartphone className="h-5 w-5" aria-hidden="true" />
@@ -362,7 +362,7 @@ export function CivicActionHub() {
         </div>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {immediatePublicContacts.map(contact => (
-            <div key={contact.id} className="rounded-xl border border-white/8 bg-white/[0.025] p-3">
+            <div key={contact.id} className="civic-contact-item rounded-xl border bg-white/[0.025] p-3">
               <a href={contact.tel} className="block min-h-11 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
                 <span className="block text-sm font-black text-white light:text-slate-900">{contact.title} · {contact.phone}</span>
                 <span className="text-[11px] text-slate-500">{contact.description}</span>
@@ -382,7 +382,7 @@ export function CivicActionHub() {
               <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
               <div className="grid gap-3 sm:grid-cols-2">
                 {actions.filter(action => action.category === category).map(({ icon: Icon, title, description, href, cta }) => (
-                  <Card key={title} className="p-5">
+                  <Card key={title} className="civic-category-card p-5">
                     <div className="flex items-start gap-3">
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
                         <Icon className="h-5 w-5" aria-hidden="true" />
@@ -400,7 +400,7 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        <details className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
+        <details className="civic-more-services rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
           <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
             Mais serviços oficiais
             <span className="ml-2 text-[11px] font-semibold text-slate-500">+{additionalPublicServices.length} caminhos</span>
@@ -423,13 +423,13 @@ export function CivicActionHub() {
           </div>
         </details>
 
-        <Card className="p-6">
+        <Card className="civic-share-card p-6">
           <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Fonte + caminho oficial</div>
           <h3 className="mt-2 text-2xl font-black text-white light:text-slate-900">Leve a fonte junto com o link</h3>
           <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">
             O compartilhamento carrega o endereço do observatório. Os atalhos acima levam diretamente aos portais oficiais e continuam sendo a referência para executar o serviço.
           </p>
-          <button type="button" onClick={shareWhatsApp} className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-sky-300 px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-sky-200">
+          <button type="button" onClick={shareWhatsApp} className="civic-share-button mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-sky-300 px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-sky-200">
             <MessageCircle className="h-4 w-4" aria-hidden="true" /> Compartilhar no WhatsApp
           </button>
           <p className="mt-3 text-[11px] leading-5 text-slate-500">O observatório é uma fonte de consulta. O conteúdo compartilhado não substitui a fonte oficial citada em cada seção.</p>
