@@ -60,7 +60,7 @@ export function Electoral360() {
       />
 
       <div className="mb-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5 text-[11px] leading-5 text-slate-500" role="note">
-        <strong className="text-sky-100">Atualização:</strong> a fonte oficial do TSE é verificada por rotina programada a cada 4 horas. A data exibida abaixo corresponde à última captura persistida do snapshot, não a uma consulta em tempo real.
+        <strong className="text-sky-100">Atualização:</strong> o projeto agenda uma verificação da fonte oficial do TSE a cada 4 horas. A data exibida abaixo corresponde à última captura persistida do snapshot, não a uma consulta em tempo real.
       </div>
 
       <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center" aria-label="Resumo do recorte eleitoral">
