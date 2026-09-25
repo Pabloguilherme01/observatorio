@@ -149,8 +149,8 @@ const ambiguous = actionLabels.filter(label => /^(abrir|ver|saiba mais|clique aq
 if (ambiguous.length > 8) warn(ambiguous.length + ' rótulos de botão potencialmente genéricos');
 else pass('rótulos de ações principais são suficientemente descritivos');
 
-if (combined.includes('election-mode-actions') && combined.includes('mode-election')) pass('Modo Eleição é reversível e separado da leitura padrão');
-else fail('Modo Eleição perdeu a separação da leitura padrão');
+if (!combined.includes('election-mode-actions') && !combined.includes('mode-election') && !combined.includes('electionMode')) pass('Modo Eleição cosmético removido do fluxo principal');
+else fail('Modo Eleição removido de forma incompleta');
 
 const languageToggle = texts.find(item => item.file === 'src/components/layout/LanguageModeToggle.tsx')?.content ?? '';
 const languageContext = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
