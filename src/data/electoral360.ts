@@ -46,7 +46,7 @@ export const electoral360Modules: readonly Electoral360Module[] = [
     title: 'Candidaturas',
     description: 'Recorte acompanhado de candidaturas estaduais do TSE com evidência documental de vínculo local. Este snapshot não representa o universo completo de candidaturas municipais e não infere vínculo local a partir do cadastro estadual.',
     status: candidateStatus,
-    frequency: 'conforme captura oficial',
+    frequency: 'verificação programada a cada 4 horas; data exibida = última captura persistida',
     sourceId: 'tse-candidatos-2026',
     datasetUrl: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
   },
