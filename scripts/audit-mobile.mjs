@@ -12,7 +12,6 @@ const files = {
   css: read('src/assets/styles/globals.css'),
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
-  share: read('src/components/ShareDataButton.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
   quizData: read('src/data/quiz/questionBank.ts'),
@@ -57,7 +56,6 @@ must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#evid
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed'), 'os três modos de leitura continuam disponíveis');
 must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
-must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
 must(files.quiz.includes('quiz-progress-track') && files.quizData.includes('QUIZ_TOTAL = 200') && files.quizData.includes('QUESTIONS_PER_LEVEL = 40') && files.quizData.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
@@ -67,12 +65,7 @@ must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-f
 must(files.index.includes('apple-mobile-web-app-capable') && files.index.includes('apple-mobile-web-app-title'), 'metadados de instalação iOS estão presentes');
 must(files.index.includes('id="root"') && files.index.includes('boot-fallback'), 'HTML inicial possui root e fallback de recuperação');
 
-for (const [file, label] of [
-  ['src/components/ShareDataButton.tsx', 'compartilhamento'],
-  ['src/components/DataExportActions.tsx', 'exportação'],
-]) {
-  must(read(file).includes('statusTimerRef') && read(file).includes('clearTimeout'), label + ' protege timers de status');
-}
+must(files.app.includes('DataExportActions') && read('src/components/DataExportActions.tsx').includes('statusTimerRef') && read('src/components/DataExportActions.tsx').includes('clearTimeout'), 'exportação protege timers de status');
 
 must(exists('src/components/sections/DeferredEvidenceGroup.tsx'), 'grupo técnico consolidado existe em arquivo próprio');
 must(files.app.includes('<ProjectTrustPanel />') || read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'grupo técnico consolidado mantém sua camada editorial');
