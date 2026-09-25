@@ -2,9 +2,9 @@ import { Check, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'decidir', description: 'Para se situar: poucos números, estado atual e próximos caminhos', icon: List },
-  { id: 'simple' as const, label: 'Simples', sub: 'entender', description: 'Para entender: indicadores, comparações e contexto em linguagem direta', icon: FileText },
-  { id: 'technical' as const, label: 'Técnico', sub: 'conferir', description: 'Para conferir: fontes, metodologia, recortes, cálculos e rastreabilidade', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'essencial', description: 'Poucos números, estado atual e caminhos úteis', icon: List },
+  { id: 'simple' as const, label: 'Simples', sub: 'claro', description: 'Indicadores, comparações e contexto em linguagem direta', icon: FileText },
+  { id: 'technical' as const, label: 'Técnico', sub: 'evidências', description: 'Fontes, metodologia, recortes, cálculos e rastreabilidade', icon: Code2 },
 ] as const;
 
 export function LanguageModeToggle() {
@@ -14,7 +14,7 @@ export function LanguageModeToggle() {
     <div className="language-toggle language-toggle-v3" role="group" aria-label="Escolha como você quer ler os dados">
       <div className={'language-toggle-label mode-' + mode} data-mode-label={mode}>
         <Info aria-hidden="true" />
-        <span><strong>Como você quer ler</strong><small>{mode === 'summary' ? 'Resumo · se situar rapidamente' : mode === 'simple' ? 'Simples · entender o que os números mostram' : 'Técnico · conferir como os dados foram construídos'}</small></span>
+        <span><strong>Modo de leitura</strong><small>{mode === 'summary' ? 'Resumo · essencial e rápido' : mode === 'simple' ? 'Simples · claro e direto' : 'Técnico · fontes e método'}</small></span>
       </div>
       <div className="language-toggle-options">
         {items.map(({ id, label, sub, description, icon: Icon }) => (
