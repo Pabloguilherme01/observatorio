@@ -54,6 +54,15 @@ else fail('Experiência perdeu cleanup de listeners ou RAF.');
   else fail('exportação possui timer de status sem cleanup.');
 }
 
+const bootstrap = read('src/main.tsx');
+if (
+  bootstrap.includes("import.meta.env.DEV")
+  && bootstrap.includes("const publicMessage")
+  && bootstrap.includes("sessionStorage.setItem(key, JSON.stringify(payload))")
+  && !bootstrap.includes("sessionStorage.setItem(key, JSON.stringify({ errorId, message, source, at")
+) pass('bootstrap não persiste nem exibe mensagem técnica bruta em produção.');
+else fail('bootstrap ainda pode expor ou persistir detalhes técnicos de exceções em produção.');
+
 const main = read('src/main.tsx');
 if (main.includes('observatorioMounted') && main.includes('observatorio:last-runtime-error')) pass('bootstrap possui marcador de montagem e diagnóstico runtime.');
 else fail('bootstrap perdeu marcadores de resiliência.');
