@@ -20,7 +20,12 @@ export class ErrorBoundary extends Component<Props, State> {
     const message = error instanceof Error ? error.message : 'Erro inesperado ao carregar a aplicação.';
     const errorId = 'UI-' + Date.now().toString(36).toUpperCase();
     try {
-      sessionStorage.setItem('observatorio:last-ui-error', JSON.stringify({ errorId, message, at: new Date().toISOString() }));
+      sessionStorage.setItem(
+        'observatorio:last-ui-error',
+        JSON.stringify(import.meta.env.DEV
+          ? { errorId, message, at: new Date().toISOString() }
+          : { errorId, at: new Date().toISOString() }),
+      );
     } catch {}
     return { hasError: true, message, errorId };
   }
@@ -31,11 +36,19 @@ export class ErrorBoundary extends Component<Props, State> {
     try {
       const previous = sessionStorage.getItem('observatorio:last-ui-error');
       const payload = previous ? JSON.parse(previous) : {};
-      sessionStorage.setItem('observatorio:last-ui-error', JSON.stringify({
-        ...payload,
-        message: error instanceof Error ? error.message : String(error),
-        componentStack,
-      }));
+      sessionStorage.setItem(
+        'observatorio:last-ui-error',
+        JSON.stringify(import.meta.env.DEV
+          ? {
+            ...payload,
+            message: error instanceof Error ? error.message : String(error),
+            componentStack,
+          }
+          : {
+            errorId: payload.errorId,
+            at: payload.at,
+          }),
+      );
     } catch {}
     if (import.meta.env.DEV) {
       console.error('Observatório: erro de renderização', error, info);
@@ -79,7 +92,11 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-3 text-left">
             <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600">Código do erro</div>
             <code className="mt-1 block text-xs font-bold text-slate-300">{this.state.errorId || 'UI-UNKNOWN'}</code>
-            {this.state.message && <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap text-left text-xs text-slate-500">{this.state.message}</pre>}
+            {import.meta.env.DEV && this.state.message && (
+              <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap text-left text-xs text-slate-500">
+                {this.state.message}
+              </pre>
+            )}
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
             <button type="button" onClick={this.handleReload} className="inline-flex items-center gap-2 rounded-xl bg-sky-300 px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-sky-200">

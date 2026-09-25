@@ -146,6 +146,11 @@ const publicApiPlugin = (): Plugin => ({
   },
 });
 
+const DEV_HOST = process.env.VITE_DEV_HOST ?? '127.0.0.1';
+const DEV_ALLOWED_HOSTS = process.env.VITE_DEV_ALLOWED_HOSTS
+  ? process.env.VITE_DEV_ALLOWED_HOSTS.split(',').map(value => value.trim()).filter(Boolean)
+  : ['localhost', '127.0.0.1'];
+
 export default defineConfig({
   base: BASE_PATH,
   plugins: [
@@ -225,5 +230,5 @@ export default defineConfig({
       },
     }),
   ],
-  server: { host: '0.0.0.0', port: 3000, allowedHosts: true },
+  server: { host: DEV_HOST, port: 3000, allowedHosts: DEV_ALLOWED_HOSTS },
 });

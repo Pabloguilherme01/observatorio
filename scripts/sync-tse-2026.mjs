@@ -19,6 +19,10 @@ const API_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatur
 
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
 const PHOTO_ARCHIVE_URL = 'https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip';
+const MAX_ZIP_BYTES = 150 * 1024 * 1024;
+const MAX_ARCHIVE_ENTRIES = 200;
+const MAX_ARCHIVE_FILE_BYTES = 250 * 1024 * 1024;
+const MAX_ARCHIVE_UNCOMPRESSED_BYTES = 1 * 1024 * 1024 * 1024;
 
 function normalize(value) {
   return String(value ?? '')
@@ -107,6 +111,55 @@ function toTseRecord(row, header, previousRecord) {
     evidenceSourceUrls: previousRecord?.evidenceSourceUrls ?? [],
     sourceResource: selectedSourceUrl,
   };
+}
+
+function validateZipArchive(zipPath) {
+  const compressedBytes = readFileSync(zipPath).length;
+  if (compressedBytes > MAX_ZIP_BYTES) {
+    throw new Error('Pacote TSE excede o limite de tamanho compactado permitido.');
+  }
+
+  execFileSync('unzip', ['-t', zipPath], { stdio: 'ignore' });
+
+  const names = execFileSync('unzip', ['-Z1', zipPath], { encoding: 'utf8' })
+    .split(/\r?\n/)
+    .map(name => name.trim())
+    .filter(Boolean);
+
+  if (names.length === 0 || names.length > MAX_ARCHIVE_ENTRIES) {
+    throw new Error('Pacote TSE possui quantidade de entradas fora do limite esperado.');
+  }
+
+  const invalidNames = names.filter(name => {
+    const normalized = name.replaceAll('\\', '/');
+    const segments = normalized.split('/');
+    const extensionAllowed = normalized.endsWith('/') || /\.(csv|txt)$/i.test(normalized);
+    return normalized.startsWith('/')
+      || normalized.includes('\0')
+      || segments.includes('..')
+      || !extensionAllowed;
+  });
+  if (invalidNames.length) {
+    throw new Error('Pacote TSE contém caminhos/arquivos fora da política de ingestão: ' + invalidNames.slice(0, 5).join(', '));
+  }
+
+  const listing = execFileSync('unzip', ['-l', zipPath], { encoding: 'utf8' });
+  let totalUncompressed = 0;
+  let largestFile = 0;
+  for (const line of listing.split(/\r?\n/)) {
+    const match = line.match(/^\s*(\d+)\s+\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}\s+(.+)$/);
+    if (!match) continue;
+    const size = Number(match[1]);
+    largestFile = Math.max(largestFile, size);
+    totalUncompressed += size;
+    if (largestFile > MAX_ARCHIVE_FILE_BYTES || totalUncompressed > MAX_ARCHIVE_UNCOMPRESSED_BYTES) {
+      throw new Error('Pacote TSE excede o limite de expansão permitido.');
+    }
+  }
+
+  if (!names.some(name => /[^/]+_GO\.csv$/i.test(name))) {
+    throw new Error('Pacote TSE não contém o CSV estadual de Goiás esperado.');
+  }
 }
 
 function sha256(filePath) {
@@ -419,7 +472,8 @@ async function main() {
       }
     }
 
-    execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
+    validateZipArchive(zip);
+    execFileSync('unzip', ['-qq', '-n', zip, '-d', extracted], { stdio: 'ignore' });
     const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
     if (!csvPath) throw new Error('Arquivo estadual de candidatos de GO não encontrado no pacote oficial.');
 

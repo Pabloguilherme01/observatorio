@@ -18,6 +18,7 @@ const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
 const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
+const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
 const viteSource = vite;
 
 const errors = [];
@@ -34,6 +35,9 @@ const dateModified = index.match(/"dateModified": "([^"]+)"/)?.[1];
 must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sincronizados');
 must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && packageJson.devDependencies?.['@axe-core/playwright'] === '4.13.0', 'Playwright e Axe estão fixados nas devDependencies');
 const lockJson = JSON.parse(read('package-lock.json'));
+must(lockJson.lockfileVersion === 3, 'package-lock usa lockfileVersion 3');
+must(lockJson.packages?.['']?.version === packageJson.version, 'package.json e package-lock usam a mesma versão');
+must(lockJson.packages?.['']?.dependencies && lockJson.packages?.['']?.devDependencies, 'package-lock registra as dependências diretas do projeto');
 must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
   && lockJson.packages?.['node_modules/@axe-core/playwright']?.version === '4.13.0'
   && lockJson.packages?.['node_modules/axe-core']?.version === '4.13.0'
@@ -43,6 +47,7 @@ must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da 
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
+must(!vite.includes('allowedHosts: true'), 'Vite não aceita qualquer hostname no servidor de desenvolvimento');
 const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
 must(vite.includes("src: BASE_PATH + 'pwa-192.svg'") && vite.includes("src: BASE_PATH + 'pwa-512.svg'") && vite.includes('scope: BASE_PATH'), 'ícones e escopo PWA respeitam o subcaminho publicado');
@@ -78,12 +83,28 @@ must(!appSource.includes('election-mode') && !read('src/components/ExperienceShe
 must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 
 const pkgScripts = packageJson.scripts ?? {};
+const workflowsDir = path.join(root, '.github/workflows');
+const workflowFiles = fs.existsSync(workflowsDir)
+  ? fs.readdirSync(workflowsDir).filter(file => file.endsWith('.yml') || file.endsWith('.yaml'))
+  : [];
+for (const file of workflowFiles) {
+  const workflowSource = fs.readFileSync(path.join(workflowsDir, file), 'utf8');
+  must(!/\bnpm install\b/.test(workflowSource), file + ' usa npm ci em vez de npm install');
+  for (const match of workflowSource.matchAll(/^\s+uses:\s+actions\/[^@\s]+@([^\s#]+)/gm)) {
+    must(/^[0-9a-f]{40}$/.test(match[1]), file + ' fixa Actions por SHA completo');
+  }
+}
+
+
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
+must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json registra gate de vulnerabilidades de dependências');
 must(pkgScripts['audit:browser']?.includes('playwright install --with-deps chromium') && !pkgScripts['test:browser:prepare'], 'CI usa Playwright instalado pelo lockfile, sem npm install dinâmico');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
+must(syncWorkflow.includes('pull-requests: write') && syncWorkflow.includes('gh pr create') && !/^\\s*git push\\s*$/m.test(syncWorkflow), 'workflow TSE não faz push direto para main');
+must(resultsWorkflow.includes('pull-requests: write') && resultsWorkflow.includes('gh pr create') && !/^\\s*git push\\s*$/m.test(resultsWorkflow), 'workflow de resultados não faz push direto para main');
 must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')), 'não existem dois workflows concorrentes para a mesma captura TSE');
 must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 'pipeline antigo de ingestão municipal removido após consolidação');
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
@@ -217,7 +238,7 @@ try {
   lockTracked = true;
 } catch {}
 if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
-  console.warn('WARN package-lock.json não está versionado; CI continua usando npm install.');
+  fail('package-lock.json deve existir e estar versionado');
 } else {
   pass('package-lock.json está versionado para instalações reprodutíveis');
 }

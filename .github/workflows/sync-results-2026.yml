@@ -14,23 +14,27 @@ concurrency:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
+
+      - name: Dependency vulnerability gate
+        run: npm run audit:deps
 
       - name: Resolve turn
         shell: bash
@@ -56,13 +60,19 @@ jobs:
             echo "Feed ainda não publicado: aguardando arquivos oficiais do TSE."
           fi
 
-      - name: Commit verified feed
+      - name: Open PR with verified feed
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
+          set -euo pipefail
           if ! test -f public/data/tse-results.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add public/data/tse-results.json public/data/tse-results-http-state.json
           git diff --cached --quiet && exit 0
+          branch="automation/results-2026-${GITHUB_RUN_ID}"
+          git switch -c "$branch"
           git commit -m "data: sync official TSE results snapshot"
-          git push
+          git push --set-upstream origin "$branch"
+          gh pr create             --base main             --head "$branch"             --title "data: sync official TSE results snapshot"             --body "Feed oficial TSE validado automaticamente. Este PR mantém a captura separada da publicação e passa pelo fluxo normal de revisão da main."
