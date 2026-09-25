@@ -730,3 +730,35 @@ section{scroll-margin-top:72px}
     font-size:10px;
   }
 }
+
+
+/* Performance pass · reduce off-screen paint while preserving layout */
+@media (min-width:768px){
+  .deferred-section{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 520px;
+  }
+}
+@media (max-width:767px){
+  .deferred-section{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 420px;
+  }
+  .mode-scope-context,
+  .mode-scope-civic,
+  .mode-scope-election,
+  .mode-scope-public,
+  .mode-scope-trust,
+  .mode-scope-evidence{
+    contain:layout paint;
+  }
+  .audience-home .audience-topic-grid,
+  .audience-home .audience-action-grid,
+  .audience-home .audience-resource-grid,
+  .audience-home .audience-links-grid{
+    contain:layout;
+  }
+  .mobile-bottom-nav{
+    contain:layout paint;
+  }
+}
