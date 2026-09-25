@@ -155,6 +155,7 @@ export function PoliticalResearch() {
                 <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">Nenhum</span></div>
                 <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">NS/NR</span></div>
                 <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">Não classificado</span></div>
+                <div className="rounded-xl border border-amber-300/15 bg-amber-300/[0.03] p-3 sm:col-span-3"><strong className="block text-amber-100">Margem registrada</strong><span className="text-[11px] text-slate-500">{poll.theoreticalMarginErrorPct != null ? poll.theoreticalMarginErrorPct.toFixed(1).replace('.', ',') + '%' : 'não informada'}</span></div>
               </div>
               <p className="mt-3 text-xs leading-5 text-slate-500">Este conjunto contém um único snapshot de pesquisa. Ele não é uma série temporal e não sustenta inferência de tendência. O observatório preserva as categorias publicadas sem completar a distribuição por inferência.</p>
               {poll.judicialContext && <p className="mt-2 text-xs leading-5 text-amber-100/80">Contexto documental: {poll.judicialContext.summary}</p>}
