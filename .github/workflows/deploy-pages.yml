@@ -89,13 +89,25 @@ jobs:
           printf '%s' "$page" | grep -F "Observatório Eleitoral — Águas Lindas de Goiás 2026"
           health="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/health.json)"
           printf '%s' "$health" | grep -E '"status": "(ok|degraded)"'
+          printf '%s' "$health" | grep -F '"publication"'
           printf '%s' "$health" | grep -F '"tseCandidates"'
           printf '%s' "$health" | grep -F '"maxAgeHours": 24'
+          printf '%s' "$health" | grep -F '"contract": "publication-parity-v1"'
+          public_commit="$(printf '%s' "$health" | grep -oE '"commitSha": "[^"]+"' | head -n 1 | cut -d'"' -f4)"
+          test "$public_commit" = "${GITHUB_SHA}"
           if printf '%s' "$health" | grep -Fq '"status": "degraded"'; then
             echo "TSE upstream stale/unavailable; published site is intentionally degraded, previous validated snapshot preserved."
           fi
           openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
           printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'
+
+      - name: Verify SPA deep-link fallback asset
+        shell: bash
+        run: |
+          set -euo pipefail
+          fallback="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/rota-virtual-de-validacao/)"
+          printf '%s' "$fallback" | grep -F 'data-obs-spa-fallback'
+          printf '%s' "$fallback" | grep -F 'encodeURIComponent'
 
       - name: Verify critical published app markers
         shell: bash
