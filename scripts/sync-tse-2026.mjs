@@ -255,23 +255,28 @@ async function main() {
     }
 
     const diff = diffRecords(previous.matched, matched);
-    const state = diff.length ? 'changed' : 'unchanged';
+    const sourceFileSha256 = sha256(zip);
+    const sourceChanged = previous.meta?.sourceFileSha256 !== sourceFileSha256
+      || previous.meta?.sourceRows !== sourceRows
+      || previous.meta?.resourceUrl !== selectedSourceUrl;
 
-    if (state === 'unchanged') {
+    if (!diff.length && !sourceChanged) {
       console.log(JSON.stringify({
         valid: true,
-        state,
+        state: 'unchanged',
         sourceRows,
         matched: matched.length,
         watchlist: watchlist.length,
         retrievalMethod: 'official_tse_zip_csv',
         changed: false,
+        sourceChanged: false,
       }, null, 2));
       return;
     }
 
     const now = new Date();
     const snapshotId = 'tse-candidatos-2026-local-mapeado-' + now.toISOString().slice(0, 10);
+    const state = diff.length ? 'changed' : 'unchanged';
 
     const payload = {
       schemaVersion: 3,
@@ -282,7 +287,7 @@ async function main() {
         scope: 'GO',
         localFilter: 'Águas Lindas de Goiás',
         downloadedAt: now.toISOString(),
-        sourceFileSha256: sha256(zip),
+        sourceFileSha256,
         sourceHashKind: 'source_zip',
         sourceRows,
         originalMatchedRows: matched.length,
