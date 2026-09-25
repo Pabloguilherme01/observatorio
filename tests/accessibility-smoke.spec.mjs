@@ -12,7 +12,12 @@ const routes = [
 
 for (const route of routes) {
   test('acessibilidade crítica em ' + (route.hash || 'entrada'), async ({ page }) => {
-    await page.goto('./' + route.hash);
+    await page.goto('./');
+    if (route.hash) {
+      await page.evaluate(hash => {
+        window.location.hash = hash.slice(1);
+      }, route.hash);
+    }
     await expect(page.locator(route.marker)).toBeVisible();
     const results = await new AxeBuilder({ page }).analyze();
     const blockingViolations = results.violations.filter(
