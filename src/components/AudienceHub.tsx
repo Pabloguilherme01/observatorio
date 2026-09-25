@@ -1,41 +1,40 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, CalendarDays, Droplets, ExternalLink, Landmark, Search, ShieldCheck, Users, WalletCards, Vote, FileCheck2, Database } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, Database, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
 
 type Topic = {
   id: string;
   label: string;
-  simple: string;
+  description: string;
   icon: typeof BarChart3;
 };
 
 const topics: readonly Topic[] = [
-  { id: 'dashboard', label: 'Cidade', simple: 'População, território e indicadores.', icon: BarChart3 },
-  { id: 'eleitorado', label: 'Eleitorado', simple: 'Perfil, evolução e dados de 2026.', icon: Users },
-  { id: 'orcamento', label: 'Orçamento', simple: 'Receitas, despesas e planejamento público.', icon: WalletCards },
-  { id: 'transporte', label: 'Transporte', simple: 'Tarifas e custo relativo do deslocamento.', icon: BusFront },
-  { id: 'acao', label: 'Serviços', simple: 'Água, esgoto, saúde e canais públicos.', icon: Droplets },
-  { id: 'eleitoral360', label: 'Eleitoral', simple: 'Candidaturas, pesquisas, contas e registros.', icon: Landmark },
+  { id: 'dashboard', label: 'Cidade', description: 'População e indicadores.', icon: BarChart3 },
+  { id: 'eleitorado', label: 'Eleitorado', description: 'Perfil e dados eleitorais.', icon: Users },
+  { id: 'orcamento', label: 'Orçamento', description: 'Planejamento e dinheiro público.', icon: WalletCards },
+  { id: 'transporte', label: 'Transporte', description: 'Tarifa e impacto do deslocamento.', icon: BusFront },
+  { id: 'acao', label: 'Serviços', description: 'Canais públicos e atendimento.', icon: Droplets },
+  { id: 'eleitoral360', label: 'Eleições', description: 'Candidaturas, pesquisas e registros.', icon: Landmark },
 ];
 
 const officialResources = [
-  { label: 'Resultados 2026', href: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados', note: 'Informações oficiais sobre divulgação', icon: Vote },
-  { label: 'Simulador da urna', href: 'https://www.justicaeleitoral.jus.br/simulador-votacao/', note: 'Treine a navegação da votação', icon: FileCheck2 },
-  { label: 'Regras para votar', href: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/por-dentro-das-eleicoes-confira-as-regras-para-o-dia-da-votacao', note: 'Orientações oficiais para o dia da votação', icon: ShieldCheck },
-  { label: 'Estatísticas eleitorais', href: 'https://www.tse.jus.br/eleicoes/estatisticas', note: 'Dados e séries oficiais do TSE', icon: Database },
+  { label: 'Resultados 2026', href: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados', note: 'Divulgação oficial', icon: Vote },
+  { label: 'Simulador da urna', href: 'https://www.justicaeleitoral.jus.br/simulador-votacao/', note: 'Treine a votação', icon: FileCheck2 },
+  { label: 'Regras para votar', href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026', note: 'Orientações do TSE', icon: ShieldCheck },
+  { label: 'Estatísticas eleitorais', href: 'https://www.tse.jus.br/eleicoes/estatisticas', note: 'Séries oficiais', icon: Database },
 ] as const;
 
 const technicalLinks = [
-  { label: 'TSE · Candidatos 2026', href: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026', note: 'Base pública de candidaturas', icon: ShieldCheck },
+  { label: 'TSE · Candidatos 2026', href: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026', note: 'Base pública', icon: ShieldCheck },
   { label: 'DivulgaCandContas', href: 'https://divulgacandcontas.tse.jus.br/divulga/#/', note: 'Candidaturas e contas', icon: Search },
   { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores', icon: BarChart3 },
-  { label: 'Portal municipal', href: 'https://aguaslindasdegoias.go.gov.br/', note: 'Serviços e informações', icon: BookOpen },
+  { label: 'Portal municipal', href: 'https://aguaslindasdegoias.go.gov.br/', note: 'Serviços municipais', icon: BookOpen },
 ] as const;
 
 export function AudienceHub() {
   const { mode } = useLanguageMode();
   const isTechnical = mode === 'technical';
   const isSummary = mode === 'summary';
-  const isSimple = mode === 'simple';
 
   const jump = (id: string) => {
     window.history.replaceState(null, '', '#' + id);
@@ -43,134 +42,154 @@ export function AudienceHub() {
   };
 
   return (
-    <section id="descubra" className="audience-home mx-auto max-w-7xl px-4 py-7 sm:px-6" aria-labelledby="audience-title">
-      <div className="audience-intro">
-        <div className="min-w-0">
-          <h2 id="audience-title">
-            {isSummary ? 'Veja o que importa agora.' : isTechnical ? 'Confira como os dados foram construídos.' : 'Entenda o que os números mostram.'}
-          </h2>
-          <p>
-            {isSummary
-              ? 'Poucos números, estado atual e ações rápidas. Use este modo para se situar.'
-              : isTechnical
-                ? 'Fontes, recortes, cálculos, qualidade e limitações ficam visíveis para conferência.'
-                : 'Indicadores claros, comparações e contexto para entender o que os números significam.'}
-          </p>
-        </div>
+    <section id="descubra" className="audience-home mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12" aria-labelledby="audience-title">
+      <div className="audience-page-card">
+        <header className="audience-intro">
+          <div className="audience-intro-copy">
+            <span className="audience-kicker">Navegue sem se perder</span>
+            <h2 id="audience-title">
+              {isSummary ? 'O essencial, primeiro.' : isTechnical ? 'Explore e confira.' : 'Entenda e explore.'}
+            </h2>
+            <p>
+              {isSummary
+                ? 'Poucos caminhos, sem excesso. Abra um tema, leia os números e avance quando precisar.'
+                : isTechnical
+                  ? 'Cada caminho leva a dados, fontes, métodos ou registros que podem ser conferidos.'
+                  : 'Escolha um assunto. O restante da leitura fica organizado em blocos curtos e comparáveis.'}
+            </p>
+          </div>
 
-        <div className="audience-hero-actions">
-          <button type="button" className="audience-search" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
-            <Search aria-hidden="true" />
-            <span>Buscar um assunto</span>
-            <kbd>Ctrl/⌘ K</kbd>
-          </button>
-          <button type="button" className="audience-primary-action" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-            {isSummary ? 'Abrir resumo' : isTechnical ? 'Conferir dados' : 'Explorar dados'}
-            <ArrowRight aria-hidden="true" />
-          </button>
-        </div>
-      </div>
+          <div className="audience-intro-actions">
+            <button type="button" className="audience-search-card" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
+              <Search aria-hidden="true" />
+              <span>
+                <strong>Buscar</strong>
+                <small>um dado ou assunto</small>
+              </span>
+              <kbd>⌘K</kbd>
+            </button>
+            <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
+              <span>{isSummary ? 'Abrir resumo' : isTechnical ? 'Abrir dados' : 'Começar a explorar'}</span>
+              <ArrowRight aria-hidden="true" />
+            </button>
+          </div>
+        </header>
 
-      <div className={`audience-section-heading audience-mode-section mode-${mode}`}>
-        <div>
-          <span>Atalhos</span>
-          <h3>{isSummary ? 'Agora' : isTechnical ? 'Conferir por evidência' : 'Explore por assunto'}</h3>
-        </div>
-        <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>
-          {isSummary ? 'Abrir visão geral' : isTechnical ? 'Conferir evidências' : 'Explorar indicadores'} <ArrowRight aria-hidden="true" />
-        </button>
-      </div>
-
-      {!isSummary && <div className="audience-topic-grid" aria-label="Principais áreas">
-        {topics.map(({ id, label, simple, icon: Icon }) => (
-          <button key={id} type="button" onClick={() => jump(id)} className="audience-topic">
-            <span className="audience-topic-icon"><Icon aria-hidden="true" /></span>
-            <span className="audience-topic-copy">
-              <strong>{label}</strong>
-              <small>{simple}</small>
-            </span>
-            <ArrowRight aria-hidden="true" />
-          </button>
-        ))}
-      </div>}
-
-      {isSummary && (
-        <div className="audience-summary-service" aria-label="Serviço público em destaque">
-          <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('acao')}>
-            <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
-            <span><strong>Serviços públicos</strong><small>Prefeitura, saúde, legislação, transparência e canais oficiais.</small></span>
-            <ArrowRight aria-hidden="true" />
-          </button>
-        </div>
-      )}
-
-      {!isSummary && <div className="audience-action-grid" aria-label="Ferramentas rápidas">
-        <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
-          <span className="audience-action-icon">?</span>
-          <span><strong>Quiz · 200 perguntas</strong><small>5 níveis · 40 perguntas por fase.</small></span>
-          <ArrowRight aria-hidden="true" />
-        </button>
-
-        <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
-          <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
-          <span><strong>Eleitoral 360°</strong><small>Eleitorado, candidaturas, contas e pesquisas.</small></span>
-          <ArrowRight aria-hidden="true" />
-        </button>
-
-        <button type="button" className="audience-action-card" onClick={() => jump('acao')}>
-          <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
-          <span><strong>Serviços públicos</strong><small>Acesse serviços municipais, saúde, legislação e canais oficiais.</small></span>
-          <ArrowRight aria-hidden="true" />
-        </button>
-
-        <button type="button" className="audience-action-card" onClick={() => jump('dados')}>
-          <span className="audience-action-icon"><CalendarDays aria-hidden="true" /></span>
-          <span><strong>Atualizações</strong><small>Mudanças recentes, novos dados e fontes.</small></span>
-          <ArrowRight aria-hidden="true" />
-        </button>
-      </div>}
-
-      {!isTechnical && (
-        <div className="audience-resources" aria-label="Recursos oficiais">
-          <div className="audience-links-head">
-            <div>
-              <span className="audience-kicker">Recursos oficiais</span>
-              <h3>Fontes oficiais</h3>
+        {!isSummary && (
+          <section className="audience-block" aria-labelledby="topics-title">
+            <div className="audience-block-head">
+              <div>
+                <span>01</span>
+                <h3 id="topics-title">Escolha um assunto</h3>
+              </div>
+              <p>Seis caminhos principais. Sem menu escondido.</p>
             </div>
-            <button type="button" onClick={() => jump('fontes')}>Conferir fontes <ArrowRight aria-hidden="true" /></button>
-          </div>
-          <div className="audience-resource-grid">
-            {officialResources.map(({ label, href, note, icon: Icon }) => (
-              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
-                <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
-                <span><strong>{label}</strong><small>{note}</small></span>
-                <ExternalLink aria-hidden="true" />
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {isTechnical && (
-        <div className="audience-links">
-          <div className="audience-links-head">
-            <div>
-              <span className="audience-kicker">Conferência rápida</span>
-              <h3>Fontes oficiais</h3>
+            <div className="audience-topic-grid">
+              {topics.map(({ id, label, description, icon: Icon }) => (
+                <button key={id} type="button" onClick={() => jump(id)} className="audience-topic">
+                  <span className="audience-topic-icon"><Icon aria-hidden="true" /></span>
+                  <span className="audience-topic-copy">
+                    <strong>{label}</strong>
+                    <small>{description}</small>
+                  </span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+              ))}
             </div>
-            <button type="button" onClick={() => jump('fontes')}>Conferir evidências <ArrowRight aria-hidden="true" /></button>
+          </section>
+        )}
+
+        <section className="audience-block audience-actions-block" aria-labelledby="actions-title">
+          <div className="audience-block-head">
+            <div>
+              <span>{isSummary ? '02' : '02'}</span>
+              <h3 id="actions-title">{isSummary ? 'Ações úteis' : 'Ferramentas para continuar'}</h3>
+            </div>
+            <p>{isSummary ? 'Faça algo com o que acabou de ler.' : 'Atalhos que realmente levam a uma ação.'}</p>
           </div>
-          <div className="audience-links-grid">
-            {technicalLinks.map(({ label, href, note, icon: Icon }) => (
-              <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-link">
-                <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
-                <span><strong>{label}</strong><small>{note}</small></span>
-                <ExternalLink aria-hidden="true" />
-              </a>
-            ))}
+
+          <div className="audience-action-grid">
+            {isSummary ? (
+              <>
+                <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('acao')}>
+                  <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
+                  <span><strong>Serviços públicos</strong><small>Canais oficiais, saúde e atendimento.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+                <button type="button" className="audience-action-card" onClick={() => jump('dashboard')}>
+                  <span className="audience-action-icon"><BarChart3 aria-hidden="true" /></span>
+                  <span><strong>Ver indicadores</strong><small>Abra a leitura completa dos números.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+              </>
+            ) : (
+              <>
+                <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
+                  <span className="audience-action-icon">?</span>
+                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para aprender brincando.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+                <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
+                  <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
+                  <span><strong>Eleitoral 360°</strong><small>Registros e informações eleitorais.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+                <button type="button" className="audience-action-card" onClick={() => jump('transporte')}>
+                  <span className="audience-action-icon">R$</span>
+                  <span><strong>Simulador de transporte</strong><small>Teste o impacto da tarifa.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+              </>
+            )}
           </div>
-        </div>
-      )}
+        </section>
+
+        {!isTechnical && (
+          <section className="audience-block audience-resource-block" aria-labelledby="official-title">
+            <div className="audience-block-head">
+              <div>
+                <span>03</span>
+                <h3 id="official-title">Recursos oficiais</h3>
+              </div>
+              <button type="button" onClick={() => jump('fontes')}>
+                Ver todas as fontes <ArrowRight aria-hidden="true" />
+              </button>
+            </div>
+            <div className="audience-resource-grid">
+              {officialResources.map(({ label, href, note, icon: Icon }) => (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
+                  <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
+                  <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
+                  <ExternalLink aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {isTechnical && (
+          <section className="audience-block audience-resource-block" aria-labelledby="technical-title">
+            <div className="audience-block-head">
+              <div>
+                <span>03</span>
+                <h3 id="technical-title">Conferência técnica</h3>
+              </div>
+              <button type="button" onClick={() => jump('fontes')}>
+                Abrir evidências <ArrowRight aria-hidden="true" />
+              </button>
+            </div>
+            <div className="audience-resource-grid">
+              {technicalLinks.map(({ label, href, note, icon: Icon }) => (
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
+                  <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
+                  <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
+                  <ExternalLink aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
     </section>
   );
 }
