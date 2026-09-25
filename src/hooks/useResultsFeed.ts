@@ -127,9 +127,9 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   return payload.entries.every(entry => {
     if (!entry || typeof entry !== 'object') return false;
     const row = entry as Record<string, unknown>;
-    if (!Number.isInteger(row.electionCode) || !OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes.includes(row.electionCode as number)) return false;
+    if (!Number.isInteger(row.electionCode) || !OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes.includes(row.electionCode as typeof OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes[number])) return false;
     if (typeof row.cargo !== 'string' || !row.cargo.trim()) return false;
-    if (!electionCodeMatchesCargo(row.electionCode as number, payload.uf as string, row.cargo as string)) return false;
+    if (!electionCodeMatchesCargo(row.electionCode as typeof OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes[number], payload.uf as string, row.cargo as string)) return false;
     if (typeof row.sourceFile !== 'string' || !row.sourceFile.trim()) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
     if (!Array.isArray(row.items)) return false;
