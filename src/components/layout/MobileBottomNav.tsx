@@ -1,43 +1,41 @@
-import { CircleHelp, Compass, FileSearch, FileText, Home, Users } from 'lucide-react';
+import { CircleHelp, Compass, FileSearch, LayoutDashboard, MoreHorizontal, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { navigation } from '../../config/navigation';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
-const baseItems = [
-  { id: 'dashboard', label: 'Início', icon: Home },
-  { id: 'descubra', label: 'Explorar', icon: Compass },
-  { id: 'eleitoral360', label: 'Eleitoral', icon: Users },
+const primaryItems = [
+  { id: 'descubra', label: 'Descobrir', icon: Compass },
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'eleitoral360', label: 'Eleições', icon: Users },
 ] as const;
 
-const thematicIds = new Set([
-  'contexto','demografia','transporte','politica','candidaturas','eleitoral360',
-  'linha-do-tempo','orcamento','orcamento-impacto','qualidade','evidencias','acao',
-  'instagram','saude','quiz','principios','fontes','dados','eleitorado',
-]);
-
-function sectionToTab(id: string) {
-  if (id === 'dashboard' || id === 'resumo') return 'dashboard';
+const sectionToTab = (id: string) => {
+  if (id === 'resumo' || id === 'dashboard' || id === 'analise') return 'dashboard';
   if (id === 'descubra') return 'descubra';
   if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica' || id === 'eleitorado') return 'eleitoral360';
-  if (id === 'dados') return 'dados';
-  if (id === 'fontes') return 'fontes';
-  if (id === 'quiz') return 'quiz';
-  if (thematicIds.has(id)) return 'descubra';
-  return 'dashboard';
-}
+  return 'descubra';
+};
 
 function jump(id: string) {
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
-  window.requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start' }));
+  window.requestAnimationFrame(() => {
+    const node = document.getElementById(id);
+    if (!node) return;
+    node.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
+    if (node instanceof HTMLElement) {
+      if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '-1');
+      window.setTimeout(() => node.focus({ preventScroll: true }), 180);
+    }
+  });
 }
 
 export function MobileBottomNav() {
   const { mode } = useLanguageMode();
-  const isTechnical = mode === 'technical';
-  const items = isTechnical
-    ? [...baseItems, { id: 'dados', label: 'Dados', icon: FileSearch }, { id: 'fontes', label: 'Fontes', icon: FileText }]
-    : [...baseItems, { id: 'dados', label: 'Dados', icon: FileSearch }, { id: 'quiz', label: 'Quiz', icon: CircleHelp }];
-
+  const [moreOpen, setMoreOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
 
@@ -47,36 +45,101 @@ export function MobileBottomNav() {
       activeSectionRef.current = next;
       setActiveSection(next);
     };
+
     const onHash = () => update(sectionToTab(window.location.hash.replace(/^#/, '')));
     const onNavigate = (event: Event) => update(sectionToTab((event as CustomEvent<string>).detail));
+    const onOutside = (event: MouseEvent) => {
+      if (!(event.target instanceof Node)) return;
+      const menu = document.getElementById('mobile-bottom-more');
+      const button = document.getElementById('mobile-bottom-more-trigger');
+      if (menu?.contains(event.target) || button?.contains(event.target)) return;
+      setMoreOpen(false);
+    };
 
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
-      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
       if (visible?.target.id) update(sectionToTab(visible.target.id));
-    }, { rootMargin:'-12% 0px -72% 0px', threshold:[0.12,0.3,0.6] });
+    }, { rootMargin: '-12% 0px -72% 0px', threshold: [0.12, 0.3, 0.6] });
 
-    const nodes = ['dashboard','resumo','descubra','eleitoral360','candidaturas','politica','eleitorado','dados','fontes','quiz','contexto','demografia','transporte','orcamento','saude'];
-    nodes.forEach(id => { const node=document.getElementById(id); if(node) observer?.observe(node); });
+    const nodes = navigation.map(item => item.id);
+    nodes.push('resumo', 'analise');
+    nodes.forEach(id => {
+      const node = document.getElementById(id);
+      if (node) observer?.observe(node);
+    });
 
     window.addEventListener('hashchange', onHash);
     window.addEventListener('observatorio:navigate', onNavigate);
+    document.addEventListener('click', onOutside);
     onHash();
 
     return () => {
       observer?.disconnect();
       window.removeEventListener('hashchange', onHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
+      document.removeEventListener('click', onOutside);
     };
   }, []);
 
+  const moreItems = navigation.filter(item => item.group === 'more');
+  const quizItem = navigation.find(item => item.id === 'quiz');
+
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação principal no celular">
-      {items.map(({ id, label, icon: Icon }) => (
-        <button key={id} type="button" onClick={() => jump(id)} className={activeSection === id ? 'is-active' : ''} aria-current={activeSection === id ? 'page' : undefined}>
+      {primaryItems.map(({ id, label, icon: Icon }) => (
+        <button
+          key={id}
+          type="button"
+          onClick={() => { setMoreOpen(false); jump(id); }}
+          className={activeSection === id ? 'is-active' : ''}
+          aria-current={activeSection === id ? 'page' : undefined}
+        >
           <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           <span>{label}</span>
         </button>
       ))}
+      {quizItem && (
+        <button
+          type="button"
+          onClick={() => { setMoreOpen(false); jump(quizItem.id); }}
+          className={activeSection === quizItem.id ? 'is-active' : ''}
+          aria-current={activeSection === quizItem.id ? 'page' : undefined}
+        >
+          <CircleHelp className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+          <span>Quiz</span>
+        </button>
+      )}
+      <div className="relative">
+        <button
+          id="mobile-bottom-more-trigger"
+          type="button"
+          onClick={() => setMoreOpen(value => !value)}
+          className={'w-full ' + (moreOpen ? 'is-active' : '')}
+          aria-expanded={moreOpen}
+          aria-controls="mobile-bottom-more"
+        >
+          <MoreHorizontal className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
+          <span>Mais</span>
+        </button>
+        {moreOpen && (
+          <div id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
+            {moreItems.map(item => (
+              <button
+                key={item.id}
+                type="button"
+                role="menuitem"
+                onClick={() => { setMoreOpen(false); jump(item.id); }}
+                aria-current={activeSection === item.id ? 'page' : undefined}
+              >
+                <span>{item.shortLabel}</span>
+                <small>{item.description}</small>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </nav>
   );
 }
