@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
+import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
@@ -13,8 +13,14 @@ const priorityPublicServices = [
   { icon: GraduationCap, title: 'Lista de espera em creches', description: 'Consulte a lista oficial publicada pela Prefeitura.', href: 'https://aguaslindasdegoias.go.gov.br/lista-de-espera-em-creches/' },
   { icon: ShieldCheck, title: 'CRAS e assistência social', description: 'Consulte unidades, contatos e horários da rede municipal de assistência social.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/' },
   { icon: Scale, title: 'CREAS', description: 'Consulte o serviço especializado de assistência social, contatos e horário oficial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/centro-de-referencia-especializado-de-assistencia-social-creas/' },
-  { icon: ShieldCheck, title: 'Defesa Civil', description: 'Consulte informações oficiais e o canal municipal de Defesa Civil.', href: 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/' },
+  { icon: ShieldCheck, title: 'Defesa Civil', description: 'Consulte a unidade municipal de Defesa Civil e a estrutura oficial de atendimento.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
   { icon: Droplets, title: 'Regulação de água e esgoto', description: 'Consulte a legislação oficial sobre a AMAE e a regulação, controle e fiscalização desses serviços.', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1475' },
+  { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Localize a unidade e a estrutura oficial do Conselho Tutelar municipal.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: Stethoscope, title: 'CAPS', description: 'Localize o Centro de Atenção Psicossocial na estrutura oficial da Saúde municipal.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: Stethoscope, title: 'SAMU', description: 'Localize o Serviço de Atendimento Móvel de Urgência na estrutura oficial da Saúde municipal.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: Smartphone, title: 'Atendimento à pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: ShieldCheck, title: 'Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
 ] as const;
 
 const actions = [
