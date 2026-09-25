@@ -28,7 +28,7 @@
     "audit:runtime": "node scripts/audit-runtime.mjs",
     "audit:engagement": "node scripts/audit-engagement.mjs",
     "audit:quiz": "node scripts/audit-quiz.mjs",
-    "audit:public-services": "node scripts/audit-public-services.mjs"
+    "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs"
   },
   "dependencies": {
     "@sentry/react": "10.74.0",
