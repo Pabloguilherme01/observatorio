@@ -2977,10 +2977,7 @@ d,
   }
 }
 @media (max-width:767px){
-  .obs-card,.source-card,.summary-simple-card,.today-card,.topic-card{
-    content-visibility:auto;
-    contain-intrinsic-size:120px;
-  }
+  /* Interactive cards must remain rendered for reliable swipe rails and focus. */
   .mobile-bottom-nav{
     contain:layout paint;
   }
