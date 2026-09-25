@@ -285,7 +285,7 @@ export function CivicActionHub() {
 
       <div className="grid gap-4 lg:grid-cols-[1fr_.72fr]">
         <div className="space-y-5">
-          {(['Prefeitura', 'Participação e controle', 'Eleições 2026'] as const).map(category => (
+          {(['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026'] as const).map(category => (
             <div key={category}>
               <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
               <div className="grid gap-3 sm:grid-cols-2">
