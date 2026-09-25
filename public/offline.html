@@ -33,12 +33,13 @@
   <h1>Você está sem internet.</h1>
   <p class="lead">Esta página foi salva pelo aplicativo para orientar o acesso aos dados básicos enquanto a conexão estiver indisponível.</p>
   <div class="status"><span class="dot" aria-hidden="true"></span>Modo offline</div>
-  <div class="grid" aria-label="Dados básicos do observatório">
-    <div class="card"><span class="label">Eleitorado</span><strong class="value">125.062</strong><span class="meta">base TSE · 15/07/2026</span></div>
-    <div class="card"><span class="label">População</span><strong class="value">249.978</strong><span class="meta">estimativa IBGE · 2026</span></div>
-    <div class="card"><span class="label">Orçamento 2026</span><strong class="value">R$ 771,3 mi</strong><span class="meta">LOA · valor total</span></div>
-    <div class="card"><span class="label">Água</span><strong class="value">95,8%</strong><span class="meta">acesso ao abastecimento</span></div>
-  </div>
+  <section aria-label="Estado dos dados">
+    <div class="card">
+      <span class="label">Dados disponíveis</span>
+      <strong class="value">Último conteúdo em cache</strong>
+      <span class="meta">Quando a conexão voltar, recarregue para obter a publicação mais recente.</span>
+    </div>
+  </section>v>
   <div class="actions">
     <a href="/observatorio/api/v1/observatorio.json">Abrir dados consolidados</a>
     <a class="secondary" href="/observatorio/api/v1/sources.json">Abrir fontes</a>
