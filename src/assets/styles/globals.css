@@ -132,6 +132,11 @@ small{color:var(--text-secondary)}
   box-shadow:0 8px 24px rgba(15,23,42,.06);
 }
 .light .obs-card .text-white{color:#0f172a!important}
+
+/* Tema claro: superfícies escuras explícitas continuam legíveis. */
+.light [class~="bg-[#0b1117]"] .text-slate-500,
+.light [class~="bg-[#0b1117]"] .text-slate-600,
+.light [class~="bg-[#0b1117]"] .text-slate-400{color:#cbd5e1!important}
 .light .obs-card .text-sky-100,
 .light .obs-card .text-sky-200,
 .light .obs-card .text-sky-300{color:#0369a1!important}
