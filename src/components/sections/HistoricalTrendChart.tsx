@@ -50,6 +50,83 @@ function TrendTooltip({ active, payload, label }: {
   );
 }
 
+function TrendLine({
+  dataKey,
+  name,
+  axisId,
+  tone,
+}: {
+  readonly dataKey: 'population' | 'electorate';
+  readonly name: string;
+  readonly axisId: string;
+  readonly tone: string;
+}) {
+  return (
+    <Line
+      yAxisId={axisId}
+      type="monotone"
+      dataKey={dataKey}
+      name={name}
+      stroke="currentColor"
+      className={tone}
+      strokeWidth={3}
+      connectNulls={false}
+      dot={(props: { readonly cx?: number; readonly cy?: number; readonly payload?: TrendPoint; readonly index?: number }) => {
+        const { cx, cy, payload, index } = props;
+        if (typeof cx !== 'number' || typeof cy !== 'number' || !payload) return null;
+        const value = payload[dataKey];
+        return value === null
+          ? <circle cx={cx} cy={cy} r={5} fill="none" stroke="currentColor" strokeWidth={2} strokeDasharray="2 2" aria-hidden="true" />
+          : <circle key={index} cx={cx} cy={cy} r={4} fill="currentColor" stroke="none" />;
+      }}
+      activeDot={{ r: 5 }}
+      isAnimationActive
+      animationDuration={450}
+    />
+  );
+}
+
+function CombinedChart() {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
+        <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
+        <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} tickMargin={8} />
+        <YAxis yAxisId="population" width={58} tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickFormatter={value => formatNumber(Number(value))} />
+        <YAxis yAxisId="electorate" orientation="right" width={58} tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickFormatter={value => formatNumber(Number(value))} />
+        <Tooltip axisId="population" cursor={{ strokeDasharray: '3 5' }} content={<TrendTooltip />} />
+        <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+        <TrendLine dataKey="population" name="População" axisId="population" tone="text-sky-300 light:text-sky-700" />
+        <TrendLine dataKey="electorate" name="Eleitorado" axisId="electorate" tone="text-violet-300 light:text-violet-700" />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
+function SingleSeriesChart({
+  dataKey,
+  name,
+  axisId,
+  tone,
+}: {
+  readonly dataKey: 'population' | 'electorate';
+  readonly name: string;
+  readonly axisId: string;
+  readonly tone: string;
+}) {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
+        <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
+        <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickMargin={6} />
+        <YAxis yAxisId={axisId} width={58} tickLine={false} axisLine={false} tick={{ fontSize: 9 }} tickFormatter={value => formatNumber(Number(value))} />
+        <Tooltip cursor={{ strokeDasharray: '3 5' }} content={<TrendTooltip />} />
+        <TrendLine dataKey={dataKey} name={name} axisId={axisId} tone={tone} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
 export function HistoricalTrendChart() {
   return (
     <figure className="dashboard-history-card mt-4 rounded-3xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 light:border-slate-200 light:bg-slate-50/80" aria-labelledby="dashboard-history-title">
@@ -68,52 +145,24 @@ export function HistoricalTrendChart() {
           <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-slate-500">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 px-2.5 py-1.5 light:border-slate-200 light:bg-white"><Users className="h-3 w-3" aria-hidden="true" /> População</span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 px-2.5 py-1.5 light:border-slate-200 light:bg-white"><Activity className="h-3 w-3" aria-hidden="true" /> Eleitorado</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-white/14 px-2.5 py-1.5 text-slate-500 light:border-slate-300 light:bg-white">○ Sem observação</span>
           </div>
         </div>
       </figcaption>
 
-      <div className="mt-4 h-[270px] w-full sm:h-[320px]" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
-            <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
-            <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} tickMargin={8} />
-            <YAxis yAxisId="population" width={58} tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickFormatter={value => formatNumber(Number(value))} />
-            <YAxis yAxisId="electorate" orientation="right" width={58} tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickFormatter={value => formatNumber(Number(value))} />
-            <Tooltip
-              axisId="population"
-              cursor={{ strokeDasharray: '3 5' }}
-              content={<TrendTooltip />}
-              formatter={(value, name) => [typeof value === 'number' ? formatNumber(value) : 'Sem dado', name]}
-            />
-            <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-            <Line
-              yAxisId="population"
-              type="monotone"
-              dataKey="population"
-              name="População"
-              stroke="currentColor"
-              className="text-sky-300 light:text-sky-700"
-              strokeWidth={3}
-              dot={{ r: 4 }}
-              connectNulls={false}
-              isAnimationActive={true}
-              animationDuration={650}
-            />
-            <Line
-              yAxisId="electorate"
-              type="monotone"
-              dataKey="electorate"
-              name="Eleitorado"
-              stroke="currentColor"
-              className="text-violet-300 light:text-violet-700"
-              strokeWidth={3}
-              dot={{ r: 4 }}
-              connectNulls={false}
-              isAnimationActive={true}
-              animationDuration={650}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+      <div className="mt-4 hidden h-[270px] w-full min-[420px]:block sm:h-[320px]" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
+        <CombinedChart />
+      </div>
+
+      <div className="mt-4 block min-[420px]:hidden" aria-label="Séries históricas separadas em telas estreitas">
+        <div className="rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
+          <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-sky-300/80 light:text-sky-700">População</div>
+          <div className="h-[205px] w-full"><SingleSeriesChart dataKey="population" name="População" axisId="population-mobile" tone="text-sky-300 light:text-sky-700" /></div>
+        </div>
+        <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
+          <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-violet-300/80 light:text-violet-700">Eleitorado</div>
+          <div className="h-[205px] w-full"><SingleSeriesChart dataKey="electorate" name="Eleitorado" axisId="electorate-mobile" tone="text-violet-300 light:text-violet-700" /></div>
+        </div>
       </div>
 
       <div className="mt-3 grid gap-2 text-[11px] leading-5 text-slate-500 sm:grid-cols-3">
