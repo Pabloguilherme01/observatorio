@@ -323,12 +323,9 @@ async function updateFromApiFallback(previous, watchlist, work) {
     },
   };
 
-  writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '
-', 'utf8');
-  writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '
-', 'utf8');
-  writeFileSync(join(HISTORY_DIR, snapshotId + '.json'), JSON.stringify(payload, null, 2) + '
-', 'utf8');
+  writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
+  writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '\n', 'utf8');
+  writeFileSync(join(HISTORY_DIR, snapshotId + '.json'), JSON.stringify(payload, null, 2) + '\n', 'utf8');
   markWorkflowStatus('ok');
   console.log(JSON.stringify({
     valid: true,
