@@ -88,17 +88,17 @@ export function ExecutiveSummary() {
   };
 
   return (
-    <section id="resumo" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10" aria-labelledby="executive-summary-title">
-      <div className="rounded-[28px] border border-sky-300/15 bg-sky-300/[0.035] p-4 shadow-[0_18px_70px_rgba(0,0,0,.16)] sm:p-7">
+    <section id="resumo" className={'executive-summary executive-summary--' + languageMode + ' mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10'} aria-labelledby="executive-summary-title">
+      <div className="summary-shell rounded-[28px] border border-sky-300/15 bg-sky-300/[0.035] p-4 shadow-[0_18px_70px_rgba(0,0,0,.16)] sm:p-7">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
             eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
             title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
             description={languageMode === 'technical'
-              ? 'Valor, data, fonte, método e contexto para conferir o dado.'
+              ? 'Valor, data, fonte e limite no mesmo lugar para conferência.'
               : languageMode === 'summary'
-                ? 'Quatro números para situar o cenário. Cada cartão preserva referência e fonte.'
+                ? 'Quatro números para se situar. Abra só o que quiser aprofundar.'
                 : 'Número principal, data de referência e fonte em uma leitura direta.'}
           />
           <div className="flex flex-wrap items-center gap-2">
