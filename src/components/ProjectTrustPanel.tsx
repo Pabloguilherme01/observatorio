@@ -65,27 +65,30 @@ export function ProjectTrustPanel() {
 
         <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Nota de neutralidade:</strong> este painel é uma iniciativa cívica independente. Não declara vínculo, patrocínio ou associação com candidaturas, partidos ou federações e não recomenda escolhas eleitorais. Os dados são apresentados com fonte, data, natureza e limitações quando disponíveis.</div>
 
-        {mode === 'technical' && <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="trust-card">
-            <Server className="h-4 w-4 text-sky-300" />
-            <strong>Publicação pública</strong>
-            <p>{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a publicação está em estado degradado.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+        {mode === 'technical' && <>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="trust-card">
+              <Server className="h-4 w-4 text-sky-300" />
+              <strong>Publicação pública</strong>
+              <p>{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a publicação está em estado degradado.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+            </div>
+            <div className="trust-card">
+              <GitCommitHorizontal className="h-4 w-4 text-violet-300" />
+              <strong>Paridade de publicação</strong>
+              <p>{publication.commitShort ? <>Commit publicado: <code className="font-bold text-slate-300">{publication.commitShort}</code>{publication.contract ? ' · ' + publication.contract : ''}.</> : 'O commit público será exibido aqui quando o healthcheck responder.'}</p>
+            </div>
           </div>
-          <div className="trust-card">
-            <GitCommitHorizontal className="h-4 w-4 text-violet-300" />
-            <strong>Paridade de publicação</strong>
-            <p>{publication.commitShort ? <>Commit publicado: <code className="font-bold text-slate-300">{publication.commitShort}</code>{publication.contract ? ' · ' + publication.contract : ''}.</> : 'O commit público será exibido aqui quando o healthcheck responder.'}</p>
+
+          <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
+            <strong className="text-slate-300">Conferência independente:</strong> o painel diferencia o estado informado pelo aplicativo do estado efetivamente respondido pela publicação pública. Isso evita confundir uma execução de CI/CD concluída com disponibilidade real para o público.
+            {publication.buildGeneratedAt && <span className="ml-1">Último build público: {new Date(publication.buildGeneratedAt).toLocaleString('pt-BR')}.</span>}
           </div>
-        </div>
 
-        <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
-          <strong className="text-slate-300">Conferência independente:</strong> o painel diferencia o estado informado pelo aplicativo do estado efetivamente respondido pela publicação pública. Isso evita confundir uma execução de CI/CD concluída com disponibilidade real para o público.
-          {publication.buildGeneratedAt && <span className="ml-1">Último build público: {new Date(publication.buildGeneratedAt).toLocaleString('pt-BR')}.</span>}
-        </div>
+          <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
+            <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado.
+          </div>
+        </>}
 
-        <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
-          <strong className="text-slate-300">Compromisso editorial:</strong> o observatório não produz ranking automático, recomendação eleitoral ou previsão de resultado.
-        </div>}
       </div>
     </section>
   );
