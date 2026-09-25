@@ -9,13 +9,15 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 
 function Timer({ value, completedLabel = 'Encerrado' }: { value: ReturnType<typeof useCountdown>; completedLabel?: string }) {
   if (value.completed) return <div className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-4 text-center text-sm font-semibold text-slate-300" role="status">{completedLabel}</div>;
-  return <div className="grid grid-cols-4 gap-2 text-center" role="timer" aria-live="off" aria-label="Contagem regressiva, atualizada visualmente">
+  const milestoneLabel = value.days > 0 ? `Faltam ${value.days} dias.` : 'Falta menos de um dia.';
+  return <div className="grid grid-cols-4 gap-2 text-center" role="timer" aria-label="Contagem regressiva, atualizada visualmente">
     {[['Dias', value.days], ['Horas', value.hours], ['Min', value.minutes], ['Seg', value.seconds]].map(([label, amount]) => (
       <div key={label} className="rounded-xl border border-white/10 bg-white/[0.04] px-2 py-3">
         <div className="text-xl font-bold tabular-nums text-white">{String(amount).padStart(2, '0')}</div>
         <div className="text-[10px] uppercase tracking-wider text-slate-400">{label}</div>
       </div>
     ))}
+    <span className="sr-only" aria-live="polite" aria-atomic="true">{milestoneLabel}</span>
   </div>;
 }
 
