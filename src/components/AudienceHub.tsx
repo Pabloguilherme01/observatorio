@@ -35,6 +35,7 @@ export function AudienceHub() {
   const { mode } = useLanguageMode();
   const isTechnical = mode === 'technical';
   const isSummary = mode === 'summary';
+  const isSimple = mode === 'simple';
 
   const jump = (id: string) => {
     window.history.replaceState(null, '', '#' + id);
@@ -46,16 +47,16 @@ export function AudienceHub() {
     <section id="descubra" className="audience-home mx-auto max-w-7xl px-4 py-7 sm:px-6" aria-labelledby="audience-title">
       <div className="audience-intro">
         <div className="min-w-0">
-          <span className="audience-kicker"><CheckCircle2 aria-hidden="true" /> Observatório · Águas Lindas de Goiás</span>
+          <span className={`audience-kicker audience-mode-kicker mode-${mode}`}><CheckCircle2 aria-hidden="true" /> {isSummary ? 'Resumo · essencial' : isSimple ? 'Simples · claro' : 'Técnico · evidências'}</span>
           <h2 id="audience-title">
-            {isSummary ? 'Comece pelo que importa.' : isTechnical ? 'Explore dados, fontes e método.' : 'Veja os dados que mais importam.'}
+            {isSummary ? 'O essencial em poucos dados.' : isTechnical ? 'Explore dados, fontes e método.' : 'Entenda os dados sem jargão.'}
           </h2>
           <p>
             {isSummary
-              ? 'Comece pelos números essenciais. Fontes e contexto ficam logo abaixo.'
+              ? 'Poucos números, leitura rápida e ações essenciais. Detalhes ficam fora deste modo.'
               : isTechnical
-                ? 'Indicadores, fontes, recortes e limitações ficam organizados por assunto.'
-                : 'Encontre um dado, confira a fonte e aprofunde quando quiser.'}
+                ? 'Indicadores, fontes, recortes, cálculos e limitações ficam organizados para conferência.'
+                : 'Indicadores claros, comparações e contexto para entender o que os números significam.'}
           </p>
         </div>
 
@@ -66,23 +67,23 @@ export function AudienceHub() {
             <kbd>⌘K</kbd>
           </button>
           <button type="button" className="audience-primary-action" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-            {isSummary ? 'Abrir resumo' : 'Ver dados'}
+            {isSummary ? 'Abrir resumo' : isTechnical ? 'Abrir dados' : 'Explorar dados'}
             <ArrowRight aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <div className="audience-section-heading">
+      <div className={`audience-section-heading audience-mode-section mode-${mode}`}>
         <div>
           <span>Atalhos</span>
-          <h3>{isTechnical ? 'Explore por assunto' : 'Escolha um assunto'}</h3>
+          <h3>{isSummary ? 'Acesso rápido' : isTechnical ? 'Explore por evidência' : 'Escolha um assunto'}</h3>
         </div>
         <button type="button" onClick={() => jump(isTechnical ? 'fontes' : 'dados')}>
-          {isTechnical ? 'Abrir evidências' : 'Ver dados'} <ArrowRight aria-hidden="true" />
+          {isSummary ? 'Ver resumo' : isTechnical ? 'Abrir evidências' : 'Ver dados'} <ArrowRight aria-hidden="true" />
         </button>
       </div>
 
-      <div className="audience-topic-grid" aria-label="Principais áreas">
+      {!isSummary && <div className="audience-topic-grid" aria-label="Principais áreas">
         {topics.map(({ id, label, simple, icon: Icon }) => (
           <button key={id} type="button" onClick={() => jump(id)} className="audience-topic">
             <span className="audience-topic-icon"><Icon aria-hidden="true" /></span>
@@ -93,9 +94,9 @@ export function AudienceHub() {
             <ArrowRight aria-hidden="true" />
           </button>
         ))}
-      </div>
+      </div>}
 
-      <div className="audience-action-grid" aria-label="Ferramentas rápidas">
+      {!isSummary && <div className="audience-action-grid" aria-label="Ferramentas rápidas">
         <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
           <span className="audience-action-icon">?</span>
           <span><strong>Quiz · 200 perguntas</strong><small>5 níveis · 40 perguntas por fase.</small></span>
@@ -113,7 +114,7 @@ export function AudienceHub() {
           <span><strong>Atualizações</strong><small>Mudanças recentes, novos dados e fontes.</small></span>
           <ArrowRight aria-hidden="true" />
         </button>
-      </div>
+      </div>}
 
       {!isTechnical && (
         <div className="audience-resources" aria-label="Recursos oficiais">
