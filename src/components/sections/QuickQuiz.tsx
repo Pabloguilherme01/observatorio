@@ -3,7 +3,7 @@ import { useState } from 'react';
 import '../../assets/styles/quick-quiz.css';
 import { readQuizBestScores, readQuizUnlockedPhase } from '../../lib/quizLeaderboard';
 
-import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK, type Difficulty, type QuizQuestion } from '../../data/quiz/questionBank';
+import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 
 export { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 
