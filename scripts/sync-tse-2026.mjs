@@ -135,7 +135,7 @@ function validateZipArchive(zipPath) {
     const segments = normalized.split('/');
     const extensionAllowed = normalized.endsWith('/') || /\.(csv|txt)$/i.test(normalized);
     return normalized.startsWith('/')
-      || normalized.includes('\\0')
+      || normalized.includes('\0')
       || segments.includes('..')
       || !extensionAllowed;
   });
