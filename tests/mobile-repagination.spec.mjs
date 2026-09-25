@@ -46,6 +46,13 @@ test.describe('mobile repagination', () => {
 
       await assertNoHorizontalOverflow(page);
 
+      const quizLayout = await page.evaluate(() => {
+        const grid = document.querySelector('.quiz-phase-grid');
+        if (!grid) return null;
+        const style = getComputedStyle(grid);
+        return { display: style.display, columns: style.gridTemplateColumns, width: Math.round(grid.getBoundingClientRect().width) };
+      });
+      if (quizLayout) console.log('QUIZ_LAYOUT', JSON.stringify(quizLayout));
       const nav = page.locator('.mobile-bottom-nav');
       await expect(nav).toBeVisible();
       await expect(nav.locator('button')).toHaveCount(5);
