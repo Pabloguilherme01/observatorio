@@ -9,9 +9,11 @@ export default function DeferredCivicGroup() {
   const technical = mode === 'technical';
 
   return <>
-    <ElectionTimeline />
-    <CivicActionHub />
-    {technical && <PoliticalResearch />}
-    {technical && <Electoral360 />}
+    {!technical ? <CivicActionHub /> : <>
+      <ElectionTimeline />
+      <CivicActionHub />
+      <PoliticalResearch />
+      <Electoral360 />
+    </>}
   </>;
 }
