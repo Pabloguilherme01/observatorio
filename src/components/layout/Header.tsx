@@ -273,11 +273,9 @@ export function Header() {
           </div>
         )}
       </header>
-      {searchOpen && (
-        <Suspense fallback={null}>
-          <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      </Suspense>
     </>
   );
 }
