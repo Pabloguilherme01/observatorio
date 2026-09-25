@@ -149,7 +149,9 @@ if (process.env.AUDIT_PUBLIC_SERVICES_LIVE === 'true') {
     } else if (result.status >= 500) {
       fail.push(`endpoint público responde com ${result.status}: ${url}`);
     } else if ([401, 403, 429].includes(result.status)) {
-      console.warn('WARN', url, `retornou ${result.status}; pode haver proteção do portal/runner`);
+      const isMunicipalPortal = /acessoainformacao\\.aguaslindasdegoias\\.go\\.gov\\.br/i.test(url);
+      const suffix = isMunicipalPortal ? '; a interface oferece fallback para o portal-base oficial' : '; pode haver proteção do portal/runner';
+      console.warn('WARN', url, `retornou ${result.status}${suffix}`);
     } else if (result.status >= 300 && result.status < 400 && !result.location) {
       console.warn('WARN', url, `retornou ${result.status} sem Location`);
     } else {
