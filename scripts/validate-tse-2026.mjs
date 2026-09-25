@@ -25,6 +25,18 @@ const requireSynced = process.env.REQUIRE_TSE_SYNC === 'true';
 const allowUpstreamUnavailable = process.env.ALLOW_UPSTREAM_UNAVAILABLE === 'true';
 const sha = payload.meta?.sourceFileSha256;
 const validSha = typeof sha === 'string' && /^[a-f0-9]{64}$/i.test(sha);
+const downloadedAt = payload.meta?.downloadedAt;
+const parsedDownloadedAt = downloadedAt ? Date.parse(downloadedAt) : NaN;
+const maxAgeHours = Number(process.env.TSE_MAX_AGE_HOURS || 36);
+const ageHours = Number.isFinite(parsedDownloadedAt)
+  ? (Date.now() - parsedDownloadedAt) / 3_600_000
+  : Infinity;
+const requireFresh = process.env.REQUIRE_TSE_FRESH === 'true';
+if (!downloadedAt || !Number.isFinite(parsedDownloadedAt)) errors.push('downloadedAt ausente ou inválido.');
+if (Number.isFinite(ageHours) && ageHours > maxAgeHours) {
+  if (requireFresh) errors.push(`Snapshot TSE fora da janela de frescor de ${maxAgeHours}h (idade: ${ageHours.toFixed(1)}h).`);
+  else warnings.push(`Snapshot TSE fora da janela recomendada de ${maxAgeHours}h (idade: ${ageHours.toFixed(1)}h).`);
+}
 
 if (state === 'not_synced' || state === 'local_filter_pending') {
   if (sha !== null && !validSha) errors.push('Snapshot não sincronizado deve usar SHA nulo ou SHA-256 válido.');
