@@ -176,7 +176,7 @@ export default defineConfig({
             urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'observatorio-static-v11',
+              cacheName: 'observatorio-static-v12',
               expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -185,7 +185,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'font',
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'observatorio-fonts-v11',
+              cacheName: 'observatorio-fonts-v12',
               expiration: { maxEntries: 16, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -194,7 +194,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'document' && request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-documents-v11',
+              cacheName: 'observatorio-documents-v12',
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -203,7 +203,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith(BASE_PATH + API_ROOT.slice(1)) || url.pathname.startsWith(API_ROOT),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-api-v11',
+              cacheName: 'observatorio-api-v12',
               networkTimeoutSeconds: 3,
               expiration: { maxEntries: 32, maxAgeSeconds: 60 * 60 * 24 * 7, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
