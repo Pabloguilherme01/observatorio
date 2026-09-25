@@ -35,6 +35,15 @@ must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da 
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("base: '/observatorio/'"), 'Vite usa base compatível com GitHub Pages');
+const resultsConfig = read('src/data/resultsConfig.ts');
+const dataExport = read('src/components/DataExportActions.tsx');
+must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'base path fica centralizado no Vite');
+must(vite.includes("src: BASE_PATH + 'pwa-192.svg'") && vite.includes("src: BASE_PATH + 'pwa-512.svg'") && vite.includes('scope: BASE_PATH'), 'ícones e escopo PWA respeitam o subcaminho publicado');
+must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("BASE_PATH + API_ROOT.slice(1)"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
+must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos e API');
+must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
+must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
+must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
 must(vite.includes("start_url: '/observatorio/'") && vite.includes("scope: '/observatorio/'"), 'PWA mantém start_url e scope no subcaminho publicado');
 must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
