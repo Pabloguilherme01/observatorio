@@ -84,7 +84,7 @@ export function PoliticalResearch() {
     ...candidate,
     municipality: candidate.municipality,
     photoUrl: candidate.photoUrl,
-    instagramUrl: candidate.instagramUrl,
+    instagramUrl: candidate.instagramUrl ?? undefined,
   }));
   const hasLocalCandidates = candidates.length > 0;
 
