@@ -2,9 +2,10 @@ import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { APP_VERSION } from './src/config/version';
-import { observatorioData } from './src/data/observatorioData';
-import { sourceRegistry } from './src/data/sourceRegistry';
+import tseCandidates from './src/data/generated/tse2026-candidates.json' with { type: 'json' };
+import { APP_VERSION } from './src/config/version.js';
+import { observatorioData } from './src/data/observatorioData.js';
+import { sourceRegistry } from './src/data/sourceRegistry.js';
 
 const BASE_PATH = '/observatorio/';
 const API_ROOT = '/api/v1/';
@@ -24,15 +25,38 @@ const getObservatorioPayload = () => ({
   data: observatorioData,
 });
 
-const getHealthPayload = () => ({
-  schemaVersion: 1,
-  status: 'ok',
-  appVersion: APP_VERSION,
-  edition: observatorioData.meta.edition,
-  datasetUpdatedAt: observatorioData.meta.updatedAt,
-  buildGeneratedAt: new Date().toISOString(),
-  publicPath: BASE_PATH,
-});
+const getHealthPayload = () => {
+  const capturedAt = tseCandidates.meta.downloadedAt ?? null;
+  const capturedAtMs = capturedAt ? Date.parse(capturedAt) : NaN;
+  const ageHours = Number.isFinite(capturedAtMs)
+    ? Math.max(0, (Date.now() - capturedAtMs) / 3_600_000)
+    : null;
+  const maxAgeHours = 24;
+  const tseFreshness = ageHours !== null && ageHours <= maxAgeHours ? 'fresh' : 'stale';
+
+  return {
+    schemaVersion: 2,
+    status: tseFreshness === 'fresh' ? 'ok' : 'degraded',
+    appVersion: APP_VERSION,
+    edition: observatorioData.meta.edition,
+    datasetUpdatedAt: observatorioData.meta.updatedAt,
+    buildGeneratedAt: new Date().toISOString(),
+    publicPath: BASE_PATH,
+    freshness: {
+      maxAgeHours,
+      tseCandidates: {
+        status: tseFreshness,
+        capturedAt,
+        ageHours: ageHours === null ? null : Number(ageHours.toFixed(2)),
+        snapshotId: tseCandidates.meta.snapshotId,
+        state: tseCandidates.meta.state,
+        matchedRows: tseCandidates.meta.matchedRows,
+        coverage: tseCandidates.coverage,
+        universeScope: tseCandidates.meta.candidateUniverseScope,
+      },
+    },
+  };
+};
 
 const getSourcesPayload = () => ({
   schemaVersion: 1,
