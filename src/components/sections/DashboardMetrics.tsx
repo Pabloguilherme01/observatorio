@@ -87,9 +87,9 @@ export function DashboardMetrics() {
                     </>
                   )}
                   <div className="mt-3 flex flex-wrap gap-1.5">
-                    <span className="inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-300/80 light:border-slate-200">{nature}</span>
+                    <span className="kpi-source-pill inline-flex items-center rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide">{nature}</span>
                     <span className="inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">
-                      {languageMode === 'simple' ? 'Ver fonte' : 'Abrir detalhes'}
+                      {languageMode === 'simple' ? 'Conferir' : 'Abrir'}
                     </span>
                   </div>
                   {languageMode === 'technical' && (
