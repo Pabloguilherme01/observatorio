@@ -426,6 +426,7 @@ export function CivicActionHub() {
               </div>
             );
           })}
+        </div>
 
         <details className="civic-more-services rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
           <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
