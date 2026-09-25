@@ -805,3 +805,44 @@ main summary:focus-visible{
 .light .summary-public-source{
   color:#047857!important;
 }
+
+/* Global light-mode text normalization for legacy sections */
+.light main .text-white{
+  color:#0f172a!important;
+}
+.light main .text-slate-300{
+  color:#334155!important;
+}
+.light main .text-slate-400{
+  color:#475569!important;
+}
+.light main .text-slate-500{
+  color:#64748b!important;
+}
+.light main .text-slate-600{
+  color:#475569!important;
+}
+.light .language-toggle-v3 .language-toggle-label strong{
+  color:#0f172a!important;
+}
+.light .language-toggle-v3 .language-toggle-label small{
+  color:#475569!important;
+}
+.light .language-toggle-v3{
+  background:#ffffff!important;
+  border-color:#dbe5ec!important;
+}
+.light .language-toggle-v3 .language-toggle-options>button{
+  color:#334155!important;
+}
+.light .language-toggle-v3 .language-toggle-options>button.is-active{
+  color:#075985!important;
+  background:#eff6ff!important;
+  border-color:#bae6fd!important;
+}
+.light .language-toggle-v3 .language-toggle-options>button small{
+  color:#64748b!important;
+}
+.light .language-toggle-v3 .language-toggle-options>button em{
+  color:#0369a1!important;
+}
