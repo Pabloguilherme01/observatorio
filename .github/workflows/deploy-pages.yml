@@ -22,15 +22,17 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout exact validated commit
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ github.sha }}
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 24
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
+      - name: Dependency vulnerability gate
+        run: npm run audit:deps
       - name: Run complete quality gate
         env:
           AUDIT_PUBLIC_SERVICES_LIVE: 'true'
@@ -46,6 +48,9 @@ jobs:
 
       - name: Verify TSE architecture
         run: npm run audit:tse-architecture
+      - name: Dependency vulnerability gate
+        run: npm run audit:deps
+
       - name: Validate production results feed contract
         run: npm run validate:results
       - name: Verify JWS implementation
@@ -54,9 +59,9 @@ jobs:
         run: npm run build
 
       - name: Configure Pages
-        uses: actions/configure-pages@v6
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: ./dist
 
@@ -70,7 +75,7 @@ jobs:
     steps:
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v5.0.1
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
   verify:
     needs: deploy
