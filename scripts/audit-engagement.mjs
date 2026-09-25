@@ -17,6 +17,7 @@ const electoral360Ui = read('src/components/sections/Electoral360.tsx');
 const main = read('src/main.tsx');
 const css = read('src/assets/styles/globals.css');
 const pwaConfig = read('vite.config.ts');
+const packageJson = JSON.parse(read('package.json'));
 const sync = read('.github/workflows/sync-tse-2026.yml');
 const version = read('src/config/version.ts');
 const index = read('index.html');
@@ -41,6 +42,7 @@ const quizDifficultyCount = new Map(quizDifficultyLines.map(level => [level, qui
 must(quiz.includes('QUIZ_TOTAL = 200') && quiz.includes('QUESTIONS_PER_LEVEL = 40') && quiz.includes('QUIZ_LEVELS'), 'quiz possui contrato explícito de 200 perguntas em 5 níveis');
 must(quiz.includes('readQuizBestScores') && !quiz.includes('readQuizHighScores') && !quiz.includes('recordQuizHighScore') && leaderboard.includes('BEST_KEY'), 'quiz mantém apenas melhor marca pessoal persistida');
 must(!experienceShell.includes('framer-motion') && !experienceShell.includes('rotateY') && !experienceShell.includes('AnimatePresence'), 'navegação não depende de page-flip decorativo');
+must(!packageJson.dependencies?.['framer-motion'] && !packageJson.devDependencies?.['framer-motion'], 'framer-motion foi removido por não possuir uso ativo');
 must(dashboardChart.includes("from 'recharts'") && dashboardChart.includes('<LineChart') && dashboardChart.includes('2022') && dashboardChart.includes('2026'), 'dashboard possui série histórica Recharts de cinco anos');
 must(sentry.includes("import('@sentry/react')") && sentry.includes('browserTracingIntegration') && sentry.includes('tracesSampleRate') && !sentry.match(/^import \* as Sentry/m), 'Sentry é carregado condicionalmente e mantém captura configurável');
 must(quiz.includes('QUESTION_BANK.length !== QUIZ_TOTAL') && quiz.includes('QUESTION_BANK.filter(q => q.difficulty === level)'), 'quiz valida o total e a distribuição por nível em runtime');
