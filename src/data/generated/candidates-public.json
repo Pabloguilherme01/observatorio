@@ -11,22 +11,23 @@
   },
   "candidates": [
     {
-      "id": "90002537423",
-      "name": "BAIANO DOS COCOS",
-      "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
-      "ballotNumber": 20070,
-      "party": "PODE",
+      "id": "90002547004",
+      "name": "ABADYAS DAMASCENO",
+      "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
+      "ballotNumber": 44360,
+      "party": "UNIÃO",
       "office": "DEPUTADO ESTADUAL",
       "status": "DEFERIDO",
       "photoUrl": null,
       "socials": [
-        "https://www.instagram.com/baianodoscocosoficial_/"
+        "https://www.instagram.com/abadyas_damasceno/",
+        "https://www.tiktok.com/@abadyasdamasceno2"
       ],
-      "declaredAssetsTotal": 60000,
-      "localEvidence": "Vereador de Águas Lindas eleito em 2024 com 1.680 votos; histórico municipal identificado em fontes públicas.",
+      "declaredAssetsTotal": 57531,
+      "localEvidence": "Vereador de Águas Lindas reeleito em 2024; histórico municipal confirmado em bases públicas.",
       "sourceUrls": [
         "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
-        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/baiano-dos-cocos/"
+        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/abadyas-damasceno/"
       ]
     },
     {
@@ -50,23 +51,41 @@
       ]
     },
     {
-      "id": "90002547004",
-      "name": "ABADYAS DAMASCENO",
-      "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
-      "ballotNumber": 44360,
-      "party": "UNIÃO",
+      "id": "90002537423",
+      "name": "BAIANO DOS COCOS",
+      "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
+      "ballotNumber": 20070,
+      "party": "PODE",
       "office": "DEPUTADO ESTADUAL",
       "status": "DEFERIDO",
       "photoUrl": null,
       "socials": [
-        "https://www.instagram.com/abadyas_damasceno/",
-        "https://www.tiktok.com/@abadyasdamasceno2"
+        "https://www.instagram.com/baianodoscocosoficial_/"
       ],
-      "declaredAssetsTotal": 57531,
-      "localEvidence": "Vereador de Águas Lindas reeleito em 2024; histórico municipal confirmado em bases públicas.",
+      "declaredAssetsTotal": 60000,
+      "localEvidence": "Vereador de Águas Lindas eleito em 2024 com 1.680 votos; histórico municipal identificado em fontes públicas.",
       "sourceUrls": [
         "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
-        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/abadyas-damasceno/"
+        "https://meuvoto.app.br/eleicoes-2026/go/deputado-estadual/baiano-dos-cocos/"
+      ]
+    },
+    {
+      "id": "90002543768",
+      "name": "FELIPE GALDINO",
+      "fullName": "FELIPE DE MOURA GALDINO FERNANDES",
+      "ballotNumber": 22133,
+      "party": "PL",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "DEFERIDO",
+      "education": "SUPERIOR INCOMPLETO",
+      "occupation": "EMPRESÁRIO",
+      "photoUrl": null,
+      "socials": [],
+      "declaredAssetsTotal": 29000,
+      "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; também foi oficializado para a disputa estadual de 2026.",
+      "sourceUrls": [
+        "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
+        "https://meuvoto.org.br/candidato/90002543768.html"
       ]
     },
     {
@@ -89,6 +108,25 @@
       ]
     },
     {
+      "id": "90002544890",
+      "name": "RIBEIRO DO TÚLLIO",
+      "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
+      "ballotNumber": 45007,
+      "party": "PSDB",
+      "office": "DEPUTADO ESTADUAL",
+      "status": "DEFERIDO",
+      "photoUrl": null,
+      "socials": [
+        "https://www.instagram.com/tullioaguaslindas/"
+      ],
+      "declaredAssetsTotal": 2632041.93,
+      "localEvidence": "Candidatura de 2026 identificada em cobertura pública associada a Águas Lindas; a base local é tratada como evidência pública e não como campo oficial do TSE.",
+      "sourceUrls": [
+        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
+        "https://www.gazetadopovo.com.br/eleicoes/2026/candidatos/go/deputado-estadual/ribeiro-do-tullio-psdb-45007/"
+      ]
+    },
+    {
       "id": "90002543127",
       "name": "ZÉ DA IMPERIAL",
       "fullName": "JOSE BARBOSA DA SILVA",
@@ -107,25 +145,6 @@
         "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
         "https://www1.folha.uol.com.br/",
         "https://pt.wikipedia.org/wiki/Z%C3%A9_da_Imperial"
-      ]
-    },
-    {
-      "id": "90002544890",
-      "name": "RIBEIRO DO TÚLLIO",
-      "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
-      "ballotNumber": 45007,
-      "party": "PSDB",
-      "office": "DEPUTADO ESTADUAL",
-      "status": "DEFERIDO",
-      "photoUrl": null,
-      "socials": [
-        "https://www.instagram.com/tullioaguaslindas/"
-      ],
-      "declaredAssetsTotal": 2632041.93,
-      "localEvidence": "Candidatura de 2026 identificada em cobertura pública associada a Águas Lindas; a base local é tratada como evidência pública e não como campo oficial do TSE.",
-      "sourceUrls": [
-        "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
-        "https://www.gazetadopovo.com.br/eleicoes/2026/candidatos/go/deputado-estadual/ribeiro-do-tullio-psdb-45007/"
       ]
     }
   ]
