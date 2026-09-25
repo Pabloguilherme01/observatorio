@@ -1,3 +1,4 @@
+// Mantém este arquivo como gatilho operacional da captura oficial em recuperações de frescor.
 import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
