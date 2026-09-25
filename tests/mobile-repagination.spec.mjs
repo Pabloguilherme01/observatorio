@@ -29,6 +29,7 @@ async function assertNoHorizontalOverflow(page) {
       .slice(0, 20)
       .map(el => ({ tag: el.tagName, cls: el.className, right: Math.round(el.getBoundingClientRect().right) }));
   });
+  if (overflow.length) console.log('MOBILE_OVERFLOW', JSON.stringify({ metrics, overflow }));
   expect(overflow).toEqual([]);
 }
 
