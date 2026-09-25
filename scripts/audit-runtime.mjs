@@ -42,7 +42,8 @@ if (
   experience.includes("window.addEventListener('scroll'")
   && experience.includes("window.removeEventListener('scroll'")
   && experience.includes("window.removeEventListener('keydown'")
-  && experience.includes("window.removeEventListener('observatorio:command'")
+  && !experience.includes("window.addEventListener('observatorio:command'")
+  && !experience.includes("window.removeEventListener('observatorio:command'")
   && experience.includes("window.cancelAnimationFrame")
 ) pass('Experiência possui cleanup dos listeners e do RAF de leitura.');
 else fail('Experiência perdeu cleanup de listeners ou RAF.');
