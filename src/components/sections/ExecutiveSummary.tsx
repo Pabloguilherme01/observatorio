@@ -96,10 +96,10 @@ export function ExecutiveSummary() {
             eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
             title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
             description={languageMode === 'technical'
-              ? 'Valor, data, fonte e limite no mesmo lugar para conferência.'
+              ? 'Valor, data, fonte e limite juntos para conferência.'
               : languageMode === 'summary'
-                ? 'Quatro números para se situar. Abra só o que quiser aprofundar.'
-                : 'Número principal, data de referência e fonte em uma leitura direta.'}
+                ? 'Só o essencial primeiro. O detalhe fica a um toque.'
+                : 'Números claros, contexto direto e fonte visível.'}
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Rastreável' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
@@ -110,13 +110,13 @@ export function ExecutiveSummary() {
           </div>
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-[1.35fr_.65fr]">
+        <div className="summary-mode-content grid gap-3">
           {languageMode === 'summary' && (
             <div className="summary-public-hero">
               <div className="summary-public-copy">
-                <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
-                <h3>Águas Lindas em foco</h3>
-                <p className="summary-public-lead">O essencial em quatro números. Abra o cartão para ver contexto, referência e fonte.</p>
+                <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Visão rápida</span>
+                <h3>O quadro em quatro sinais</h3>
+                <p className="summary-public-lead">Número, referência e fonte em cada cartão. O aprofundamento fica a um toque.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -141,7 +141,7 @@ export function ExecutiveSummary() {
                 </div>
               </div>
               <div className="summary-public-discovery-head">
-                <span>4 indicadores para começar</span>
+                <span>Dados essenciais</span>
                 <small>Fonte e referência em cada cartão</small>
               </div>
 
@@ -159,19 +159,6 @@ export function ExecutiveSummary() {
             </div>
           )}
 
-          {languageMode !== 'summary' && <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <Card className="p-4">
-              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado</div>
-              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div>
-              <div className="text-xs text-slate-500">
-                {languageMode === 'technical'
-                  ? 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')
-                  : 'eleitores · snapshot TSE'}
-              </div>
-              {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
-            </Card>
-
-          </div>}
         </div>
 
         {languageMode === 'simple' && (
