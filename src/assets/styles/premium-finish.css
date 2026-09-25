@@ -711,11 +711,6 @@
     padding:15px!important;
     border-radius:17px!important;
   }
-  .radar-control{gap:12px!important;padding:12px!important}
-  .radar-highlight{min-width:0}
-  .radar-meta-grid{grid-template-columns:1fr 1fr}
-  .radar-meta-grid > div{min-height:68px}
-
   #politica .grid.min-w-0.grid-cols-\[minmax\(0\,7\.5rem\)_minmax\(0\,1fr\)_3\.75rem\]{
     grid-template-columns:minmax(0,6.25rem) minmax(0,1fr) 3.5rem;
     gap:7px;
