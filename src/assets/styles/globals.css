@@ -3591,7 +3591,7 @@ button,.audience-topic,.audience-action-card,.audience-resource,.audience-link{
   .language-toggle-v3 .language-toggle-options > button > svg{width:17px;height:17px}
   .language-toggle-v3 .language-toggle-options > button strong{font-size:10px}
   .language-toggle-v3 .language-toggle-options > button small{font-size:7px}
-  .language-toggle-v3 .language-toggle-options > button em{display:none}
+  .language-toggle-v3 .language-toggle-options > button em{display:flex}
 }
 @media (max-width:390px){
   .audience-home .audience-intro{padding:14px}
@@ -3599,4 +3599,14 @@ button,.audience-topic,.audience-action-card,.audience-resource,.audience-link{
   .audience-action-card:first-child{grid-column:auto}
   .language-toggle-v3 .language-toggle-options{gap:5px}
   .language-toggle-v3 .language-toggle-options > button{min-height:58px}
+}
+
+@media (max-width:767px){
+  .language-toggle-v3 .language-toggle-options > button em{display:inline-flex!important}
+  .language-toggle-v3 .language-toggle-options > button em svg{display:none}
+  .audience-home .audience-section-heading button,
+  .audience-home .audience-links-head button{min-height:44px;padding:9px 11px}
+}
+@media (max-width:390px){
+  .language-toggle-v3 .language-toggle-options > button em{display:none!important}
 }
