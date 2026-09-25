@@ -17,6 +17,10 @@ if (payload.meta?.candidateUniverseScope !== 'GO') errors.push('candidateUnivers
 if (payload.meta?.localFilterType !== 'local_evidence') errors.push('localFilterType deve ser local_evidence.');
 if (payload.meta?.selection !== 'local_evidence_watchlist') errors.push('selection deve ser local_evidence_watchlist.');
 if (!payload.meta?.snapshotId) errors.push('snapshotId ausente.');
+const complementaryFile = payload.meta?.complementaryFile;
+if (complementaryFile && (!complementaryFile.name || !/^[a-f0-9]{64}$/i.test(String(complementaryFile.sha256 || '')))) {
+  errors.push('complementaryFile, quando presente, deve conter SHA-256 válido.');
+}
 
 const allowedStates = new Set(['first_capture', 'synced', 'unchanged', 'changed', 'stale', 'failed', 'not_synced', 'local_filter_pending']);
 if (!allowedStates.has(state)) errors.push('state do snapshot inválido: ' + String(state));
