@@ -37,10 +37,9 @@ must(dateModified === updatedAt, 'dateModified do documento coincide com updated
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
 const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
-must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'base path fica centralizado no Vite');
 must(vite.includes("src: BASE_PATH + 'pwa-192.svg'") && vite.includes("src: BASE_PATH + 'pwa-512.svg'") && vite.includes('scope: BASE_PATH'), 'ícones e escopo PWA respeitam o subcaminho publicado');
 must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("BASE_PATH + API_ROOT.slice(1)"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
-must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos e API');
+must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.svg"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
 must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
 must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
