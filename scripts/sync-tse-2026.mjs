@@ -1,3 +1,4 @@
+// Mantém este arquivo como gatilho operacional da captura oficial em recuperações de frescor.
 import { createHash } from 'node:crypto';
 import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -14,6 +15,7 @@ const ZIP_URLS = [
   'https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip',
   'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip',
 ];
+const API_URL = 'https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos';
 
 const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026';
 const PHOTO_ARCHIVE_URL = 'https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip';
@@ -135,6 +137,207 @@ function download(url, destination) {
   }
 }
 
+function downloadText(url, destination, attempt = 1) {
+  try {
+    execFileSync('curl', [
+      '--fail', '--location', '--http1.1', '--retry', '2', '--retry-delay', '2',
+      '--retry-all-errors', '--connect-timeout', '30', '--max-time', '120',
+      '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/153 Safari/537.36',
+      '--header', 'Accept: application/json, text/plain, */*',
+      '--header', 'Referer: https://divulgacandcontas.tse.jus.br/divulga/',
+      '--output', destination, url,
+    ], { stdio: 'inherit' });
+    return readFileSync(destination, 'utf8');
+  } catch (error) {
+    rmSync(destination, { force: true });
+    if (attempt >= 2) throw new Error('Falha ao consultar API oficial do DivulgaCandContas: ' + (error instanceof Error ? error.message : String(error)));
+    return new Promise(resolve => setTimeout(resolve, 2000 * attempt)).then(() => downloadText(url, destination, attempt + 1));
+  }
+}
+
+function parseJsonPayload(raw) {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    const objectStart = raw.indexOf('{');
+    const objectEnd = raw.lastIndexOf('}');
+    if (objectStart >= 0 && objectEnd > objectStart) return JSON.parse(raw.slice(objectStart, objectEnd + 1));
+    const arrayStart = raw.indexOf('[');
+    const arrayEnd = raw.lastIndexOf(']');
+    if (arrayStart >= 0 && arrayEnd > arrayStart) return JSON.parse(raw.slice(arrayStart, arrayEnd + 1));
+    throw new Error('Resposta oficial não contém JSON reconhecível.');
+  }
+}
+
+function findCandidateArray(value, depth = 0) {
+  if (!value || depth > 5) return null;
+  if (Array.isArray(value)) {
+    if (value.some(item => item && typeof item === 'object' && (
+      'nomeUrna' in item || 'nomeCompleto' in item || 'NM_URNA_CANDIDATO' in item || 'nomeCandidato' in item
+    ))) return value;
+    for (const item of value) {
+      const nested = findCandidateArray(item, depth + 1);
+      if (nested) return nested;
+    }
+    return null;
+  }
+  if (typeof value === 'object') {
+    for (const child of Object.values(value)) {
+      const nested = findCandidateArray(child, depth + 1);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
+function firstString(value, keys, depth = 0) {
+  if (!value || depth > 5 || typeof value !== 'object') return null;
+  for (const key of keys) {
+    const candidate = value[key];
+    if (typeof candidate === 'string' && candidate.trim()) return candidate;
+  }
+  for (const child of Object.values(value)) {
+    const nested = firstString(child, keys, depth + 1);
+    if (nested) return nested;
+  }
+  return null;
+}
+
+function firstScalar(value, keys, depth = 0) {
+  if (!value || depth > 5 || typeof value !== 'object') return null;
+  for (const key of keys) {
+    const candidate = value[key];
+    if ((typeof candidate === 'string' || typeof candidate === 'number') && String(candidate).trim()) return candidate;
+  }
+  for (const child of Object.values(value)) {
+    const nested = firstScalar(child, keys, depth + 1);
+    if (nested !== null) return nested;
+  }
+  return null;
+}
+
+function tokenPhraseIncluded(candidateName, expectedName) {
+  const candidateTokens = normalize(candidateName).split(' ').filter(Boolean);
+  const expectedTokens = normalize(expectedName).split(' ').filter(Boolean);
+  return expectedTokens.length > 0 && expectedTokens.every(token => candidateTokens.includes(token));
+}
+
+function buildApiRecord(item, expectedName, previousRecord) {
+  const apiName = firstString(item, ['nomeUrna', 'nome_urna', 'NM_URNA_CANDIDATO', 'nomeCandidato', 'nomeCompleto', 'NM_CANDIDATO', 'nome']);
+  const sq = firstScalar(item, ['id', 'sqCandidato', 'sqCandidate', 'SQ_CANDIDATO', 'idCandidato', 'codigoCandidato']);
+  const ballot = firstScalar(item, ['numero', 'nrCandidato', 'NR_CANDIDATO']);
+
+  return {
+    sqCandidate: sq == null ? previousRecord?.sqCandidate ?? ('api-surrogate-' + createHash('sha256').update(JSON.stringify(item)).digest('hex').slice(0, 16)) : String(sq),
+    ballotNumber: ballot == null ? previousRecord?.ballotNumber ?? null : Number(ballot),
+    name: apiName || previousRecord?.name || expectedName,
+    fullName: firstString(item, ['nomeCompleto', 'NM_CANDIDATO']) || previousRecord?.fullName || null,
+    party: firstString(item, ['sgPartido', 'siglaPartido', 'partidoSigla', 'sigla']) || previousRecord?.party || null,
+    office: firstString(item, ['descricaoCargo', 'nomeCargo', 'cargo']) || previousRecord?.office || null,
+    status: firstString(item, ['descricaoSituacao', 'descricaoSituacaoCandidato', 'situacao', 'status']) || previousRecord?.status || null,
+    federation: firstString(item, ['nomeFederacao', 'nmFederacao', 'federacao']) || previousRecord?.federation || null,
+    generationDate: firstString(item, ['dtGeracao', 'dataGeracao']) || previousRecord?.generationDate || null,
+    generationTime: firstString(item, ['hhGeracao']) || previousRecord?.generationTime || null,
+    candidateIdKind: sq == null ? (previousRecord?.candidateIdKind ?? 'tse_api_surrogate') : 'tse_api_id',
+    municipality: previousRecord?.municipality ?? null,
+    municipalityCodeTse: previousRecord?.municipalityCodeTse ?? null,
+    photoUrl: previousRecord?.photoUrl ?? null,
+    instagramUrl: previousRecord?.instagramUrl ?? null,
+    photoAvailableInTseArchive: previousRecord?.photoAvailableInTseArchive ?? false,
+    photoArchiveUrl: previousRecord?.photoArchiveUrl ?? null,
+    watchlistName: previousRecord?.watchlistName ?? expectedName,
+    localEvidence: previousRecord?.localEvidence ?? null,
+    evidenceSourceUrls: previousRecord?.evidenceSourceUrls ?? [],
+    sourceResource: API_URL,
+  };
+}
+
+async function updateFromApiFallback(previous, watchlist, work) {
+  const apiJson = join(work, 'tse-candidatos-api.json');
+  const rawApi = downloadText(API_URL, apiJson);
+  const parsedApi = parseJsonPayload(rawApi);
+  const records = findCandidateArray(parsedApi);
+  if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
+
+  const normalizedPrevious = new Map(previous.matched.map(candidate => [normalize(candidate.name), candidate]));
+  const matched = [];
+  const missingWatchlist = [];
+
+  for (const expectedName of watchlist) {
+    const previousRecord = previous.matched.find(candidate =>
+      normalize(candidate.watchlistName ?? candidate.name) === normalize(expectedName),
+    );
+    const candidate = records.find(item => {
+      const apiName = firstString(item, ['nomeUrna', 'nome_urna', 'NM_URNA_CANDIDATO', 'nomeCandidato', 'nomeCompleto', 'NM_CANDIDATO', 'nome']);
+      return tokenPhraseIncluded(apiName ?? '', expectedName)
+        || (previousRecord && tokenPhraseIncluded(apiName ?? '', previousRecord.name));
+    });
+
+    if (!candidate) {
+      missingWatchlist.push(expectedName);
+      continue;
+    }
+
+    const record = buildApiRecord(candidate, expectedName, previousRecord);
+    if (!record.sqCandidate) {
+      missingWatchlist.push(expectedName);
+      continue;
+    }
+    matched.push(record);
+  }
+
+  if (missingWatchlist.length) {
+    throw new Error('API oficial não encontrou toda a watchlist validada: ' + missingWatchlist.join(', '));
+  }
+  if (matched.length !== watchlist.length) {
+    throw new Error('API oficial retornou recorte incompleto: esperado ' + watchlist.length + ' e recebido ' + matched.length + '.');
+  }
+
+  const diff = diffRecords(previous.matched, matched);
+  const now = new Date();
+  const snapshotId = 'tse-candidatos-2026-local-mapeado-' + now.toISOString().slice(0, 10);
+  const payload = {
+    schemaVersion: 3,
+    meta: {
+      ...previous.meta,
+      snapshotId,
+      downloadedAt: now.toISOString(),
+      sourceFileSha256: createHash('sha256').update(rawApi, 'utf8').digest('hex'),
+      sourceHashKind: 'api_response_utf8',
+      workflowRunId: process.env.GITHUB_RUN_ID || previous.meta?.workflowRunId || undefined,
+      gitCommit: process.env.GITHUB_SHA || previous.meta?.gitCommit || undefined,
+      state: diff.length ? 'changed' : 'unchanged',
+      retrievalMethod: 'official_tse_divulgacandcontas_api',
+      resourceUrl: API_URL,
+      captureTransport: 'official_tse_snapshot_plus_documentary_local_evidence',
+    },
+    coverage: 'state_watchlist',
+    watchlist,
+    matched,
+    diff: {
+      state: diff.length ? 'changed' : 'unchanged',
+      added: diff.filter(item => item.type === 'added').length,
+      removed: diff.filter(item => item.type === 'removed').length,
+      changed: diff.filter(item => item.type === 'changed').length,
+      records: diff,
+    },
+  };
+
+  writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
+  writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '\n', 'utf8');
+  writeFileSync(join(HISTORY_DIR, snapshotId + '.json'), JSON.stringify(payload, null, 2) + '\n', 'utf8');
+  markWorkflowStatus('ok');
+  console.log(JSON.stringify({
+    valid: true,
+    state: payload.meta.state,
+    snapshotId,
+    sourceRows: records.length,
+    matched: matched.length,
+    watchlist: watchlist.length,
+    retrievalMethod: 'official_tse_divulgacandcontas_api',
+  }, null, 2));
+}
+
 function loadPrevious() {
   if (!existsSync(OUTPUT)) return null;
   try {
@@ -206,7 +409,15 @@ async function main() {
         console.warn('[TSE] fonte indisponível: ' + candidateUrl);
       }
     }
-    if (lastError) throw lastError;
+    if (lastError) {
+      console.warn('[TSE] Pacotes oficiais indisponíveis; tentando API oficial do DivulgaCandContas.');
+      try {
+        await updateFromApiFallback(previous, watchlist, work);
+        return;
+      } catch (apiError) {
+        throw new AggregateError([lastError, apiError], 'Pacotes oficiais e API oficial do TSE indisponíveis.');
+      }
+    }
 
     execFileSync('unzip', ['-o', zip, '-d', extracted], { stdio: 'ignore' });
     const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
