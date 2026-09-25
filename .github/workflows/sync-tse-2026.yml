@@ -39,7 +39,7 @@ jobs:
         env:
           # Verificação agendada não deve ficar vermelha por bloqueio transitório da origem.
           # Execução manual continua estrita e falha quando a fonte oficial não pode ser capturada.
-          REQUIRE_TSE_FRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          REQUIRE_TSE_FRESH: 'true'
         run: npm run sync:tse
 
       - name: Mark successful TSE freshness check
