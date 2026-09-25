@@ -275,8 +275,7 @@ export function QuickQuiz() {
   const next = () => {
     if (selected === null || !question) return;
     if (isLast) {
-      // score já inclui a resposta selecionada porque answer() atualiza o estado antes desta renderização.
-      const finalScore = score;
+      const finalScore = score + (selected === question.answerIndex ? 1 : 0);
       const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
       setBest(nextScores);
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
@@ -291,6 +290,7 @@ export function QuickQuiz() {
         playedAt: new Date().toISOString(),
       });
       setLeaderboard(nextLeaderboard);
+      setScore(finalScore);
       setShowResult(true);
       return;
     }
