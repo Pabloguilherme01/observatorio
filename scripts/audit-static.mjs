@@ -131,10 +131,10 @@ const allRuntimeText = [
 ].join('\n');
 must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
 must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<DataExportActions />'), 'ação e exportação montadas');
-must(allRuntimeText.includes('<InstagramSyncHub />'), 'Instagram/compartilhamento montado');
+must(allRuntimeText.includes('<PublicDataPulse />') && appSource.includes('<Footer />'), 'atualizações públicas e footer institucional montados');
 must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
 
-for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
+for (const id of ['descubra', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
 
