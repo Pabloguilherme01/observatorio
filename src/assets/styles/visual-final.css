@@ -1,6 +1,6 @@
 /* Final visual system · 2026-09-25
- * Single source of truth for layout, hierarchy, accessibility and mobile UX.
- * Visual-only overrides: no data or application logic changes.
+ * Single source of truth for final visual, accessibility and mobile overrides.
+ * Preserve application/data semantics; no business logic is defined here.
  */
 
 /* Consolidated final visual/mobile layer · 2026-09-25
@@ -289,7 +289,6 @@ html {
   }
 }
 
-/* Premium visual QA · mobile-first final polish · 2026-09-25 */
 :root {
   --vf-page-gutter: clamp(14px, 3vw, 28px);
   --vf-card-border: rgba(148,163,184,.16);
