@@ -37,7 +37,9 @@ jobs:
 
       - name: Capture official TSE candidate snapshot
         env:
-          REQUIRE_TSE_FRESH: 'true'
+          # Verificação agendada não deve ficar vermelha por bloqueio transitório da origem.
+          # Execução manual continua estrita e falha quando a fonte oficial não pode ser capturada.
+          REQUIRE_TSE_FRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
         run: npm run sync:tse
 
       - name: Mark successful TSE freshness check
@@ -46,10 +48,10 @@ jobs:
 
       - name: Validate TSE candidate snapshot
         env:
-          REQUIRE_TSE_SYNC: 'true'
-          REQUIRE_TSE_FRESH: 'true'
+          REQUIRE_TSE_SYNC: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          REQUIRE_TSE_FRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
           TSE_MAX_AGE_HOURS: '12'
-          ALLOW_UPSTREAM_UNAVAILABLE: 'false'
+          ALLOW_UPSTREAM_UNAVAILABLE: ${{ github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
         run: npm run validate:tse
 
       - name: Validate observatory data contracts
