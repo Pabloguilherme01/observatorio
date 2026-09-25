@@ -11,8 +11,9 @@ const files = [
   'src/components/sections/HeroCountdown.tsx',
   'src/components/layout/MobileBottomNav.tsx',
   'src/components/ExperienceShell.tsx',
-  'src/components/ShareDataButton.tsx',
   'src/components/DataExportActions.tsx',
+  'src/components/sections/BudgetImpact.tsx',
+  'src/components/sections/DemographicDynamic.tsx',
 ];
 
 const failures = [];
@@ -47,13 +48,10 @@ if (
 ) pass('Experiência possui cleanup dos listeners e do RAF de leitura.');
 else fail('Experiência perdeu cleanup de listeners ou RAF.');
 
-for (const [file, label] of [
-  ['src/components/ShareDataButton.tsx', 'compartilhamento'],
-  ['src/components/DataExportActions.tsx', 'exportação'],
-]) {
-  const source = read(file);
-  if (source.includes('statusTimerRef') && source.includes('clearTimeout') && source.includes('flash(')) pass(label + ' possui cleanup de timer de status.');
-  else fail(label + ' possui timer de status sem cleanup.');
+{
+  const source = read('src/components/DataExportActions.tsx');
+  if (source.includes('statusTimerRef') && source.includes('clearTimeout') && source.includes('flash(')) pass('exportação possui cleanup de timer de status.');
+  else fail('exportação possui timer de status sem cleanup.');
 }
 
 const main = read('src/main.tsx');
