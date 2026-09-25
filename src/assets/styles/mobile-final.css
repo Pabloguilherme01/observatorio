@@ -762,3 +762,39 @@ section{scroll-margin-top:72px}
     contain:layout paint;
   }
 }
+
+
+/* V44.9.4 · final visual/performance guardrails */
+@media (max-width:767px){
+  /* Keep the fixed navigation crisp without paying for a heavy blur on every frame. */
+  .mobile-bottom-nav{
+    backdrop-filter:blur(10px)!important;
+    -webkit-backdrop-filter:blur(10px)!important;
+  }
+
+  /* Prevent decorative layers from becoming paint-heavy on small screens. */
+  .hero-shell:after{
+    background:linear-gradient(90deg,transparent,rgba(125,211,252,.18),transparent);
+  }
+
+  /* Reserve space for interactive rails and avoid accidental horizontal page growth. */
+  .today-rail,.topic-rail,.mobile-rail,.quiz-phase-grid{
+    max-width:100%;
+    overscroll-behavior-x:contain;
+  }
+
+  /* Keep card rendering predictable on narrow screens. */
+  .today-card,.topic-card,.summary-simple-card,.summary-public-fact,
+  .candidate-card,.quiz-card,.audience-topic,.audience-action-card,
+  .audience-resource,.audience-link{
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mobile-bottom-nav{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+}
