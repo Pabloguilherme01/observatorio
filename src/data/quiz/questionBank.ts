@@ -1,4 +1,4 @@
-type Difficulty = 'Fácil' | 'Médio' | 'Difícil' | 'Avançado' | 'Expert';
+export type Difficulty = 'Fácil' | 'Médio' | 'Difícil' | 'Avançado' | 'Expert';
 
 export type QuizQuestion = {
   readonly id: string;
