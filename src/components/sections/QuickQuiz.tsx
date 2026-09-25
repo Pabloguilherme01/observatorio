@@ -317,9 +317,9 @@ export function QuickQuiz() {
   return (
     <section id="quiz" className="quiz-shell" aria-labelledby="quiz-title">
       <header className="quiz-head">
-        <p className="quiz-kicker">Retenção e aprendizado</p>
-        <h2 id="quiz-title">Quiz Eleitoral 2026</h2>
-        <p className="quiz-subtitle">{QUIZ_TOTAL} perguntas em {QUIZ_LEVELS.length} fases de {QUESTIONS_PER_LEVEL} — do essencial ao nível expert, com fonte em cada resposta.</p>
+        <p className="quiz-kicker">Aprenda conferindo as fontes</p>
+        <h2 id="quiz-title">Quiz de dados · 2026</h2>
+        <p className="quiz-subtitle">{QUIZ_TOTAL} perguntas · {QUIZ_LEVELS.length} fases · 40 por fase. Cada resposta mostra sua fonte.</p>
       </header>
 
       <div className="quiz-phase-grid" role="list" aria-label="Fases do quiz">
@@ -351,10 +351,10 @@ export function QuickQuiz() {
       <aside className="quiz-high-scores" aria-labelledby="quiz-high-scores-title">
         <div className="quiz-high-scores-head">
           <div>
-            <div className="quiz-phase-kicker">Neste dispositivo</div>
-            <h3 id="quiz-high-scores-title"><Trophy className="h-4 w-4" aria-hidden="true" /> High Scores</h3>
+            <div className="quiz-phase-kicker">Sua marca</div>
+            <h3 id="quiz-high-scores-title"><Trophy className="h-4 w-4" aria-hidden="true" /> Melhores resultados</h3>
           </div>
-          <span>{leaderboard.length ? leaderboard.length + ' registros' : 'Seu primeiro resultado entra aqui'}</span>
+          <span>{leaderboard.length ? leaderboard.length + ' registros' : 'Seu primeiro resultado aparece aqui'}</span>
         </div>
         {leaderboard.length ? (
           <ol className="quiz-high-scores-list">
@@ -370,7 +370,7 @@ export function QuickQuiz() {
             ))}
           </ol>
         ) : (
-          <p className="quiz-high-scores-empty">Conclua uma fase para criar o ranking local. Nada é enviado para um servidor.</p>
+          <p className="quiz-high-scores-empty">Conclua uma fase para registrar sua marca neste dispositivo. Nada é enviado para um servidor.</p>
         )}
       </aside>
 
@@ -378,8 +378,8 @@ export function QuickQuiz() {
         <div className="quiz-card quiz-result" role="status">
           <CheckCircle2 className="quiz-result-icon" aria-hidden="true" />
           <h3>Fase {activePhase + 1} · {phaseData?.level} concluída</h3>
-          <p className="quiz-result-score">{score} de {QUESTIONS_PER_LEVEL} acertos</p>
-          <p className="quiz-result-hint">{score >= PASS_THRESHOLD ? 'Ótimo resultado — a fonte de cada resposta está no painel de fontes do observatório.' : 'Revise os cartões do Resumo e tente de novo para liberar a próxima fase.'}</p>
+          <p className="quiz-result-score">{score + (selected === question?.answerIndex ? 1 : 0)} de {QUESTIONS_PER_LEVEL} acertos</p>
+          <p className="quiz-result-hint">{score >= PASS_THRESHOLD ? 'Resultado registrado. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o Resumo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
           <div className="quiz-result-actions">
             <button type="button" onClick={restart} className="quiz-action"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Refazer fase</button>
             <button type="button" onClick={() => { void share(); }} className="quiz-action"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
@@ -423,14 +423,14 @@ export function QuickQuiz() {
           </div>
           {selected !== null ? (
             <div className={'quiz-feedback ' + (selected === question.answerIndex ? 'correct' : 'wrong')} role="status">
-              <strong>{selected === question.answerIndex ? 'Resposta correta' : 'Resposta registrada'}</strong>
+              <strong>{selected === question.answerIndex ? 'Resposta correta' : 'Resposta conferida'}</strong>
               <p>{question.explanation}</p>
             </div>
           ) : null}
           <div className="quiz-footer">
-            <span>{selected !== null ? 'Resposta registrada' : 'Escolha uma alternativa'}</span>
+            <span>{selected !== null ? 'Resposta registrada' : 'Escolha uma resposta'}</span>
             <button type="button" onClick={next} disabled={selected === null} className="quiz-next">
-              {isLast ? 'Concluir fase' : 'Próxima'} <span aria-hidden="true">→</span>
+              {isLast ? 'Finalizar fase' : 'Próxima'} <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>
