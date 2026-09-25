@@ -1,12 +1,12 @@
-import { CircleHelp, Compass, LayoutDashboard, MoreHorizontal, Users } from 'lucide-react';
+import { CircleHelp, Compass, Home, Landmark, MoreHorizontal } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const primaryItems = [
+  { id: 'dashboard', label: 'Início', icon: Home },
   { id: 'descubra', label: 'Explorar', icon: Compass },
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'eleitoral360', label: 'Eleições', icon: Users },
+  { id: 'eleitoral360', label: 'Eleições', icon: Landmark },
 ] as const;
 
 const sectionToTab = (id: string) => {
