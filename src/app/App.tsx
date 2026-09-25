@@ -222,7 +222,7 @@ export function App() {
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} /></div>
-            <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} anchorIds={['dados', 'instagram']} /></div>
+            <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} anchorIds={['dados', 'instagram', 'exportacao']} /></div>
             <div className="mode-scope mode-scope-trust"><DeferredBlock loader={loadTrustGroup} anchorIds={['principios']} /></div>
             <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} anchorIds={['qualidade', 'evidencias', 'fontes']} /></div>
           </main>
