@@ -104,11 +104,13 @@ export function HeroCountdown() {
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-semibold text-slate-500" aria-label="Referências rápidas dos dados">
-        <span>População · Fonte: IBGE · estimativa 2026</span>
-        <span>Eleitorado · Fonte: TSE · snapshot 2026</span>
-        <span>Transporte · tarifa semiurbana · Entorno-DF</span>
-      </div>
+      {languageMode === 'technical' && (
+        <div className="hero-reference-strip mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-semibold text-slate-500" aria-label="Referências rápidas dos dados">
+          <span>População · Fonte: IBGE · estimativa 2026</span>
+          <span>Eleitorado · Fonte: TSE · snapshot 2026</span>
+          <span>Transporte · tarifa semiurbana · Entorno-DF</span>
+        </div>
+      )}
     </div>
   </section>;
 }
