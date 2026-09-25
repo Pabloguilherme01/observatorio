@@ -19,18 +19,6 @@ const sectionToTab = (id: string) => {
 function jump(id: string) {
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
-  window.requestAnimationFrame(() => {
-    const node = document.getElementById(id);
-    if (!node) return;
-    node.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-      block: 'start',
-    });
-    if (node instanceof HTMLElement) {
-      if (!node.hasAttribute('tabindex')) node.setAttribute('tabindex', '-1');
-      window.setTimeout(() => node.focus({ preventScroll: true }), 180);
-    }
-  });
 }
 
 export function MobileBottomNav() {
@@ -47,6 +35,10 @@ export function MobileBottomNav() {
 
     const onHash = () => update(sectionToTab(window.location.hash.replace(/^#/, '')));
     const onNavigate = (event: Event) => update(sectionToTab((event as CustomEvent<string>).detail));
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || !moreOpen) return;
+      setMoreOpen(false);
+    };
     const onOutside = (event: MouseEvent) => {
       if (!(event.target instanceof Node)) return;
       const menu = document.getElementById('mobile-bottom-more');
@@ -81,6 +73,7 @@ export function MobileBottomNav() {
     window.addEventListener('hashchange', onHash);
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('click', onOutside);
+    document.addEventListener('keydown', onEscape);
     onHash();
 
     return () => {
@@ -89,6 +82,7 @@ export function MobileBottomNav() {
       window.removeEventListener('hashchange', onHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('click', onOutside);
+      document.removeEventListener('keydown', onEscape);
     };
   }, []);
 
