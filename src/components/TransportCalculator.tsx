@@ -21,10 +21,15 @@ export function TransportCalculator() {
       if (raw) {
         const saved = JSON.parse(raw) as Partial<{ routeId: string; daysPerWeek: number; trips: number; people: number; salary: number }>;
         if (typeof saved.routeId === 'string' && routes.some(item => item.id === saved.routeId)) setRouteId(saved.routeId);
-        if (Number.isFinite(saved.daysPerWeek)) setDaysPerWeek(Math.min(7, Math.max(1, Math.trunc(saved.daysPerWeek!))));
-        if (Number.isFinite(saved.trips)) setTrips(Math.min(8, Math.max(1, Math.trunc(saved.trips!))));
-        if (Number.isFinite(saved.people)) setPeople(Math.min(20, Math.max(1, Math.trunc(saved.people!))));
-        if (Number.isFinite(saved.salary)) setSalary(Math.min(1_000_000, Math.max(1, saved.salary!)));
+        const savedDaysPerWeek = typeof saved.daysPerWeek === 'number' && Number.isFinite(saved.daysPerWeek) ? saved.daysPerWeek : null;
+        const savedTrips = typeof saved.trips === 'number' && Number.isFinite(saved.trips) ? saved.trips : null;
+        const savedPeople = typeof saved.people === 'number' && Number.isFinite(saved.people) ? saved.people : null;
+        const savedSalary = typeof saved.salary === 'number' && Number.isFinite(saved.salary) ? saved.salary : null;
+
+        if (savedDaysPerWeek !== null) setDaysPerWeek(Math.min(7, Math.max(1, Math.trunc(savedDaysPerWeek))));
+        if (savedTrips !== null) setTrips(Math.min(8, Math.max(1, Math.trunc(savedTrips))));
+        if (savedPeople !== null) setPeople(Math.min(20, Math.max(1, Math.trunc(savedPeople))));
+        if (savedSalary !== null) setSalary(Math.min(1_000_000, Math.max(1, savedSalary)));
       }
     } catch {
       // Preferências locais são opcionais; um cache inválido não impede a calculadora.
