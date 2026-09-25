@@ -71,7 +71,7 @@ must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
 must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
-must(read('src/components/layout/Header.tsx').includes('Dados atualizados') && read('src/components/layout/Header.tsx').includes('updatedAt'), 'cabeçalho exibe estado de atualização do dataset');
+must(read('src/components/layout/Header.tsx').includes('Captura ') && read('src/components/layout/Header.tsx').includes('updatedAt'), 'cabeçalho exibe a data da captura local do conjunto principal');
 must(deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile'), 'deploy exige auditorias principais');
 
 const mainSource = read('src/main.tsx');
