@@ -74,8 +74,7 @@ must((appSource.includes('skip-link') && appSource.includes('Pular para o conte�
 must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
 must(vite.includes("includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html']") && vite.includes("navigateFallback: '/observatorio/offline.html'"), 'VitePWA registra offline.html como fallback de navegação');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
-must(appSource.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente');
-must(read('src/components/sections/HeroCountdown.tsx').includes('electionMode') && read('src/components/sections/HeroCountdown.tsx').includes('observatorio:election-mode'), 'Modo Eleição mantém o controle do estado no hero');
+must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/HeroCountdown.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
 must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 
 const pkgScripts = packageJson.scripts ?? {};
