@@ -28,6 +28,8 @@ export interface ElectoralCandidateSnapshot {
   readonly snapshotDate: string;
   readonly sourceId: string;
   readonly evidenceSourceUrls: readonly string[];
+  readonly photoAvailableInTseArchive?: boolean;
+  readonly photoArchiveUrl?: string | null;
 }
 
 export interface Electoral360Snapshot {
