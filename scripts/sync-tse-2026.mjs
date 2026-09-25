@@ -111,6 +111,12 @@ function sha256(filePath) {
   return createHash('sha256').update(readFileSync(filePath)).digest('hex');
 }
 
+function markWorkflowStatus(status) {
+  const envFile = process.env.GITHUB_ENV;
+  if (!envFile) return;
+  appendFileSync(envFile, `TSE_UPSTREAM_STATUS=${status}\n`, 'utf8');
+}
+
 function download(url, destination) {
   try {
     execFileSync('curl', [
@@ -171,6 +177,7 @@ function diffRecords(before, after) {
 let selectedSourceUrl = ZIP_URLS[0];
 
 async function main() {
+  markWorkflowStatus('starting');
   mkdirSync(OUTPUT_DIR, { recursive: true });
   mkdirSync(HISTORY_DIR, { recursive: true });
 
@@ -264,6 +271,7 @@ async function main() {
       || previous.meta?.resourceUrl !== selectedSourceUrl;
 
     if (!diff.length && !sourceChanged) {
+      markWorkflowStatus('ok');
       console.log(JSON.stringify({
         valid: true,
         state: 'unchanged',
@@ -323,6 +331,7 @@ async function main() {
     writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '\n', 'utf8');
     writeFileSync(join(HISTORY_DIR, snapshotId + '.json'), JSON.stringify(payload, null, 2) + '\n', 'utf8');
 
+    markWorkflowStatus('ok');
     console.log(JSON.stringify({
       valid: true,
       state,
@@ -340,6 +349,7 @@ async function main() {
 main().catch(error => {
   const previous = loadPrevious();
   if (previous?.meta?.snapshotId && Array.isArray(previous?.matched)) {
+    markWorkflowStatus('unavailable');
     const upstreamMessage = JSON.stringify({
     valid: false,
     state: 'upstream_unavailable',
@@ -362,6 +372,7 @@ main().catch(error => {
   process.exitCode = 0;
   return;
   }
+  markWorkflowStatus('failed');
   console.error(error);
   process.exitCode = 1;
 });
