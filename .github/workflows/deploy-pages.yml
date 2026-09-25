@@ -47,6 +47,13 @@ jobs:
         run: npm run test:jws
       - name: Build production artifact
         run: npm run build
+
+      - name: Install Chromium for browser smoke tests
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+
+      - name: Browser smoke test
+        run: npm run test:browser
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
