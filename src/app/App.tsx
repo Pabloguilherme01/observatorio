@@ -11,9 +11,7 @@ import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
 import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
-import '../assets/styles/premium-finish.css';
-import '../assets/styles/visual-final.css';
-import '../assets/styles/site-final.css';
+import '../assets/styles/final-ui.css';
 
 const loadDashboardGroup = () => import('../components/sections/DeferredDashboardGroup');
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
