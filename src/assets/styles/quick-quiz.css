@@ -289,3 +289,19 @@
 }
 :where(.quiz-shell) :where(h2,h3) { text-wrap: balance; }
 :where(.quiz-shell) :where(button,a) { -webkit-tap-highlight-color: transparent; }
+
+.quiz-source{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-top:6px;
+  color:#7dd3fc;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1.4;
+  text-decoration:none;
+}
+.quiz-source:hover{text-decoration:underline}
+.quiz-source:focus-visible{outline:2px solid #38bdf8;outline-offset:2px;border-radius:4px}
+.light .quiz-source{color:#0369a1}
+@media(prefers-reduced-motion:reduce){.quiz-source{transition:none}}
