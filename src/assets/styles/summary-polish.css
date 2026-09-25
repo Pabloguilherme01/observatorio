@@ -1217,48 +1217,7 @@
 }
 
 
-/* Premium motion + dashboard charts · v44.9.3 */
-.observatorio-page-flip {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  transform-style: preserve-3d;
-  transform-origin: right center;
-  perspective: 1400px;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(125,211,252,.14), transparent 34%),
-    linear-gradient(135deg, rgba(7,14,22,.98), rgba(10,18,28,.94));
-  border-left: 1px solid rgba(255,255,255,.08);
-  box-shadow: -18px 0 60px rgba(0,0,0,.28);
-  backface-visibility: hidden;
-}
-.observatorio-page-flip-inner {
-  display: grid;
-  gap: .45rem;
-  width: min(86vw, 420px);
-  padding: 1.25rem 1.35rem;
-  border: 1px solid rgba(125,211,252,.16);
-  border-radius: 1.5rem;
-  background: rgba(255,255,255,.035);
-  box-shadow: 0 24px 80px rgba(0,0,0,.25);
-  backdrop-filter: blur(18px);
-  text-align: center;
-}
-.observatorio-page-flip-inner span {
-  color: rgba(148,163,184,.72);
-  font-size: .65rem;
-  font-weight: 900;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-.observatorio-page-flip-inner strong {
-  color: #fff;
-  font-size: 1.15rem;
-  font-weight: 900;
-}
+/* Dashboard chart presentation */
 .dashboard-chart-tooltip {
   min-width: 170px;
   border: 1px solid rgba(255,255,255,.12);
@@ -1276,14 +1235,6 @@
 .light .dashboard-chart-tooltip strong { color: rgb(15 23 42); }
 
 @media (max-width: 767px) {
-  .observatorio-page-flip {
-    perspective: 900px;
-  }
-  .observatorio-page-flip-inner {
-    width: min(82vw, 340px);
-    padding: 1rem 1.1rem;
-    border-radius: 1.25rem;
-  }
   .dashboard-history-card {
     margin-top: .75rem;
     padding: .9rem;
@@ -1295,13 +1246,6 @@
     font-size: 10px !important;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .observatorio-page-flip {
-    display: none !important;
-  }
-}
-
 
 }
 
