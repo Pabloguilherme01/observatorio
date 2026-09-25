@@ -131,6 +131,7 @@ function DeferredBlock({
 }: {
   readonly loader: () => Promise<{ default: ComponentType }>;
   readonly anchorIds: readonly string[];
+  readonly errorLabel: string;
 }) {
   const [ready, setReady] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -240,12 +241,12 @@ export function App() {
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
             <SectionErrorBoundary label="Dashboard"><div><div id="analise"><DashboardMetrics /></div></div></SectionErrorBoundary>
-            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} /></div>
-            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
-            <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} anchorIds={['orcamento', 'orcamento-impacto']} /></div>
-            <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} anchorIds={['dados', 'instagram', 'exportacao']} /></div>
-            <div className="mode-scope mode-scope-trust"><DeferredBlock loader={loadTrustGroup} anchorIds={['principios']} /></div>
-            <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} anchorIds={['qualidade', 'evidencias', 'fontes']} /></div>
+            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} /></div>
+            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
+            <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
+            <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos e exportação" anchorIds={['dados', 'instagram', 'exportacao']} /></div>
+            <div className="mode-scope mode-scope-trust"><DeferredBlock loader={loadTrustGroup} errorLabel="Princípios e governança" anchorIds={['principios']} /></div>
+            <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} errorLabel="Qualidade e evidências" anchorIds={['qualidade', 'evidencias', 'fontes']} /></div>
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
