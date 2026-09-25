@@ -334,14 +334,14 @@ export function QuickQuiz() {
               role="listitem"
               disabled={locked}
               aria-disabled={locked}
-              aria-label={locked ? 'Fase ' + (index + 1) + ', ' + phase.level + ', bloqueada. Complete a fase anterior com 60% para liberar.' : 'Fase ' + (index + 1) + ', ' + phase.level + ', disponível.'}
+              aria-label={locked ? 'Fase ' + (index + 1) + ', ' + phase.level + ', bloqueada. Libere com 60% na fase anterior.' : 'Fase ' + (index + 1) + ', ' + phase.level + ', disponível.'}
               onClick={() => startPhase(index)}
               className={'quiz-phase-card' + (isActive ? ' is-active' : '') + (locked ? ' is-locked' : '')}
             >
               <span className="quiz-phase-kicker">Fase {index + 1}</span>
               <strong className="quiz-phase-name">{phase.level}</strong>
               <span className="quiz-phase-meta">{locked ? 'Bloqueada' : QUESTIONS_PER_LEVEL + ' perguntas'}</span>
-              <span className="quiz-phase-best">{locked ? 'Complete a fase anterior com 60% para liberar' : 'Melhor: ' + phaseBest + '/' + QUESTIONS_PER_LEVEL}</span>
+              <span className="quiz-phase-best">{locked ? 'Complete a fase anterior com 60% para liberar' : 'Melhor marca: ' + phaseBest + '/' + QUESTIONS_PER_LEVEL}</span>
               {locked ? <Lock className="quiz-phase-lock" aria-hidden="true" /> : null}
             </button>
           );
