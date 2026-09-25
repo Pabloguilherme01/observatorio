@@ -1907,3 +1907,106 @@
   box-shadow:0 8px 24px rgba(15,23,42,.05);
 }
 .light .hero-shell{background:linear-gradient(180deg,#fff,#f5f7fa)}
+
+
+/* Card system V44.9 · uma linguagem visual para todos os modos */
+:root{
+  --card-border:rgba(148,163,184,.14);
+  --card-bg:rgba(255,255,255,.028);
+  --card-bg-hover:rgba(125,211,252,.055);
+  --card-radius:18px;
+}
+:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.candidate-data-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card,.quiz-card,.quiz-high-scores){
+  border-color:var(--card-border);
+  background:var(--card-bg);
+}
+:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card,.quiz-card,.quiz-high-scores){
+  border-radius:var(--card-radius);
+  overflow:hidden;
+}
+:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){
+  position:relative;
+}
+:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card)::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:2px;
+  background:linear-gradient(180deg,rgba(125,211,252,.55),transparent);
+  opacity:.55;
+  pointer-events:none;
+}
+:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){
+  box-shadow:0 8px 26px rgba(0,0,0,.08);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+}
+@media (hover:hover){
+  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):hover{
+    transform:translateY(-2px);
+    border-color:rgba(125,211,252,.25);
+    background:var(--card-bg-hover);
+    box-shadow:0 16px 36px rgba(0,0,0,.13);
+  }
+}
+:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):focus-visible{
+  outline:2px solid #7dd3fc;
+  outline-offset:2px;
+}
+.summary-stat{
+  min-height:116px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.summary-stat-value{letter-spacing:-.045em}
+.summary-simple-card{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.summary-simple-card>strong{letter-spacing:-.04em}
+.summary-public-fact{
+  min-height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.summary-public-fact>strong{margin-top:7px;letter-spacing:-.035em}
+.candidate-card{
+  box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+.candidate-data-card{
+  border-radius:14px;
+  background:rgba(255,255,255,.018);
+}
+.audience-topic,.audience-action-card,.audience-resource,.audience-link{
+  min-height:78px;
+}
+.audience-topic-icon,.audience-action-icon,.audience-link-icon{
+  flex-shrink:0;
+}
+.quiz-phase-card{min-height:126px}
+.quiz-phase-card.is-active{background:linear-gradient(135deg,rgba(56,189,248,.10),rgba(255,255,255,.025))}
+.quiz-card{box-shadow:0 20px 50px rgba(0,0,0,.13)}
+@media (max-width:767px){
+  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){
+    border-radius:15px;
+    box-shadow:0 7px 22px rgba(0,0,0,.07);
+  }
+  :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):hover{
+    transform:none;
+  }
+  .summary-stat{min-height:100px}
+  .summary-public-fact{min-height:128px}
+  .audience-topic,.audience-action-card,.audience-resource,.audience-link{min-height:72px}
+  .quiz-phase-card{min-height:106px}
+}
+@media (prefers-reduced-motion:reduce){
+  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){transition:none}
+}
+.light :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.candidate-data-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card,.quiz-card,.quiz-high-scores){
+  background:#fff;
+  border-color:#dbe5ec;
+  box-shadow:0 7px 24px rgba(15,23,42,.055);
+}
+.light :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):hover{background:#f8fbfd;border-color:#bae6fd}
