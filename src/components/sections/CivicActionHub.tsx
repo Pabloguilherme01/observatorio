@@ -283,6 +283,25 @@ const additionalPublicServices = [
   { icon: FileQuestion, title: 'Processos eletrônicos SEI', description: 'Consulte o portal oficial do SEI de Águas Lindas de Goiás.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/', cta: 'Abrir Portal SEI' },
 ] as const;
 
+
+const MUNICIPAL_TRANSPARENCY_BASE = 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/';
+
+function PublicServiceLink({ href, label }: { readonly href: string; readonly label: string }) {
+  const isMunicipalTransparency = href.startsWith(MUNICIPAL_TRANSPARENCY_BASE) && href !== MUNICIPAL_TRANSPARENCY_BASE;
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+      <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+        {label} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+      </a>
+      {isMunicipalTransparency && (
+        <a href={MUNICIPAL_TRANSPARENCY_BASE} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center text-[10px] font-semibold text-slate-500 hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+          Abrir portal-base
+        </a>
+      )}
+    </div>
+  );
+}
+
 function shareWhatsApp() {
   const url = window.location.href;
   const text = `Observatório Eleitoral — Águas Lindas de Goiás 2026. Dados públicos com fontes e limitações visíveis. ${url}`;
@@ -313,15 +332,20 @@ export function CivicActionHub() {
         </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {priorityPublicServices.map(({ icon: Icon, title, description, href }) => (
-            <a key={title} href={href} target="_blank" rel="noopener noreferrer"
-              className="group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
-              aria-label={`${title}: ${description}`}>
-              <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
-                <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
-                <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
-              </span>
-              <span className="mt-1 block text-[11px] leading-5 text-slate-500">{description}</span>
-            </a>
+            <div key={title} className="group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05]">
+              <a href={href} target="_blank" rel="noopener noreferrer" className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300" aria-label={`${title}: ${description}`}>
+                <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
+                  <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
+                  <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
+                </span>
+                <span className="mt-1 block text-[11px] leading-5 text-slate-500">{description}</span>
+              </a>
+              {href.startsWith(MUNICIPAL_TRANSPARENCY_BASE) && href !== MUNICIPAL_TRANSPARENCY_BASE && (
+                <a href={MUNICIPAL_TRANSPARENCY_BASE} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-8 items-center text-[10px] font-semibold text-slate-500 hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
+                  Abrir portal-base
+                </a>
+              )}
+            </div>
           ))}
         </div>
       </Card>
@@ -366,9 +390,7 @@ export function CivicActionHub() {
                       <div>
                         <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
                         <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
-                        <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                          {cta} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                        </a>
+                        <PublicServiceLink href={href} label={cta} />
                       </div>
                     </div>
                   </Card>
@@ -393,9 +415,7 @@ export function CivicActionHub() {
                   <div>
                     <h3 className="text-sm font-black text-white light:text-slate-900">{title}</h3>
                     <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
-                    <a href={href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">
-                      {cta} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                    </a>
+                    <PublicServiceLink href={href} label={cta} />
                   </div>
                 </div>
               </Card>
