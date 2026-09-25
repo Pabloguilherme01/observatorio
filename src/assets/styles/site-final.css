@@ -1626,3 +1626,32 @@ html.light .text-sky-600{color:#075985!important}
   .hero-copy>p,.audience-intro-copy p,.audience-topic-copy small,.audience-action-card small,.audience-resource-copy small{overflow-wrap:anywhere}
   .audience-page-card,.hero-election-card,.official-hub,.obs-card,.summary-shell,.trust-shell,.quiz-shell{overflow:hidden!important}
 }
+
+/* Component-isolation hardening: lazy quiz CSS must not undo the mobile grid. */
+.quiz-phase-grid{
+  min-width:0!important;
+}
+.quiz-phase-card{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+@media(max-width:767px){
+  .quiz-phase-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    width:100%!important;
+  }
+}
+@media(max-width:390px){
+  .quiz-phase-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  .quiz-phase-card{
+    padding:11px!important;
+  }
+  .quiz-phase-card .quiz-phase-best{
+    display:none!important;
+  }
+}
