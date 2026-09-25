@@ -47,7 +47,7 @@ for (const url of urls) {
     if (!allowedHosts.has(parsed.hostname)) {
       fail.push('host não oficial no atalho: ' + url);
     }
-    if (!/noopener noreferrer/.test(priorityBlock)) {
+    if (!/noopener noreferrer/.test(source)) {
       fail.push('atalhos públicos precisam de noopener/noreferrer');
       break;
     }
