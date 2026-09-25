@@ -891,6 +891,20 @@
 .light .quiz-phase-kicker{
   color:#0369a1!important;
 }
+
+.light #quiz .text-white{
+  color:#0f172a!important;
+}
+.light #quiz .text-sky-300{
+  color:#0369a1!important;
+}
+.light #quiz .text-sky-200,
+.light #quiz .text-sky-100{
+  color:#075985!important;
+}
+.light #quiz .text-slate-300{
+  color:#334155!important;
+}
 .light .quiz-subtitle,
 .light .quiz-phase-meta,
 .light .quiz-phase-best,
