@@ -2019,3 +2019,20 @@ main{
 .high-contrast .evidence-source-card small,
 .high-contrast .evidence-mini-card>strong,
 .high-contrast .evidence-mini-card>small{color:#fff!important}
+
+/* Accessibility hardening: technical accents must remain readable in light theme. */
+.light .summary-technical-kpi-label,
+.light .summary-technical-kpi-cta,
+.light .summary-technical-audit .summary-evidence span{
+  color:#5b21b6;
+}
+.light .summary-technical-kpi-source{
+  color:#334155;
+}
+.light .summary-technical-kpi-note,
+.light .summary-technical-audit .summary-evidence p{
+  color:#475569;
+}
+.light .summary-technical-kpi-cta{
+  font-weight:900;
+}
