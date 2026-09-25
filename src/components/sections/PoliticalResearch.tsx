@@ -67,7 +67,7 @@ function CandidateSummaryCard({ candidate }: { readonly candidate: CandidateView
           <div><span>Snapshot</span><strong>{candidate.snapshotDate}</strong></div>
           <div><span>Fonte cadastral</span><strong>TSE · Candidatos 2026</strong></div>
           <div className="candidate-summary-links">
-            <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer"><ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> TSE</a>
+            <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer"><ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> Abrir DivulgaCandContas</a>
             <button type="button" onClick={() => shareCandidate(candidate, 'native')}><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar</button>
           </div>
         </div>
@@ -110,6 +110,8 @@ export function PoliticalResearch() {
             ? 'Lista de candidaturas estaduais de 2026 acompanhadas por evidência documental de vínculo local. Não representa o universo completo de candidaturas do município.'
             : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Este snapshot é uma watchlist acompanhada, não uma lista municipal completa.'}
       />
+
+      {mode !== 'summary' && <div className="mb-5 mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.04] p-4" role="note" aria-label="Limitação da lista de candidaturas"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-amber-200" aria-hidden="true" /><div><strong className="block text-sm font-black text-amber-100">Acompanhamento documental — não é lista oficial completa</strong><p className="mt-1 text-xs leading-5 text-slate-400">O cadastro vem do TSE. O vínculo com Águas Lindas é sustentado por evidência documental separada. Esta watchlist não deve ser interpretada como o universo completo de candidaturas municipais.</p></div></div></div>}
 
       {mode !== 'summary' && <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
         <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · evidência documental</div></div>
@@ -224,9 +226,9 @@ function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
       </div>
       <div className="flex flex-wrap gap-2 p-4">
         {hasInstagram ? <a href={candidate.instagramUrl!} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.06] px-3 py-2 text-xs font-bold text-pink-100" aria-label={'Abrir Instagram de ' + candidate.name}><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram</a> : <span className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-500"><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram não informado</span>}
-        <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.05] px-3 py-2 text-xs font-bold text-sky-100" aria-label={'Consultar ' + candidate.name + ' no DivulgaCandContas'}><ShieldCheck className="h-4 w-4" aria-hidden="true" /> Consultar no TSE</a>
+        <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.05] px-3 py-2 text-xs font-bold text-sky-100" aria-label={'Abrir DivulgaCandContas para conferência de ' + candidate.name}><ShieldCheck className="h-4 w-4" aria-hidden="true" /> Abrir DivulgaCandContas</a>
         <button type="button" onClick={() => shareCandidate(candidate, 'whatsapp')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-2 text-xs font-bold text-emerald-200"><MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp</button>
-        <button type="button" onClick={() => shareCandidate(candidate, 'native')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
+        <button type="button" onClick={() => shareCandidate(candidate, 'native')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200"><Share2 className="h-4 w-4" aria-hidden="true" /> {navigator.share ? 'Compartilhar' : 'Compartilhar pelo WhatsApp'}</button>
         <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-slate-400"><ExternalLink className="h-4 w-4" aria-hidden="true" /> Dados abertos</a>
       </div>
     </Card>
