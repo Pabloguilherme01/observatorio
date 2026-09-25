@@ -13,7 +13,6 @@ const files = {
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   share: read('src/components/ShareDataButton.tsx'),
-  instagram: read('src/components/InstagramSyncHub.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
   research: read('src/components/sections/PoliticalResearch.tsx'),
@@ -58,7 +57,6 @@ must(files.language.includes("id: 'summary'") && files.language.includes("id: 's
 must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
-must(files.instagram.includes('navigator.canShare') && files.instagram.includes('wa.me/?text='), 'estúdio social mantém compartilhamento de arquivo e WhatsApp');
 must(files.quiz.includes('quiz-progress-track') && files.quiz.includes('QUIZ_TOTAL = 200') && files.quiz.includes('QUESTIONS_PER_LEVEL = 40') && files.quiz.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
@@ -71,7 +69,6 @@ must(files.index.includes('id="root"') && files.index.includes('boot-fallback'),
 for (const [file, label] of [
   ['src/components/ShareDataButton.tsx', 'compartilhamento'],
   ['src/components/DataExportActions.tsx', 'exportação'],
-  ['src/components/InstagramSyncHub.tsx', 'estúdio social'],
 ]) {
   must(read(file).includes('statusTimerRef') && read(file).includes('clearTimeout'), label + ' protege timers de status');
 }
