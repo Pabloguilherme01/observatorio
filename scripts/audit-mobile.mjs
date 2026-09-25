@@ -44,6 +44,7 @@ must(!files.experience.includes('market') && !files.experience.includes('hype'),
 must(files.header.includes('IntersectionObserver') && files.header.includes('observatorio:navigate'), 'cabeçalho acompanha seções carregadas tardiamente');
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
 must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("id === 'quiz'"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
+must(files.mobileNav.includes('useLanguageMode') && files.mobileNav.includes('TECHNICAL_ONLY_DESTINATIONS') && files.mobileNav.includes('destinationIsHiddenInSummary') && files.mobileNav.includes("setMode('simple')") && files.mobileNav.includes("setMode('technical')"), 'destinos ocultos pelos modos de leitura são revelados automaticamente ao navegar pelo menu mobile');
 
 must(files.css.includes('--mobile-nav-height:64px') && files.css.includes('--mobile-nav-height:68px'), 'altura base e altura mobile da navegação inferior estão definidas explicitamente');
 must(files.css.includes('env(safe-area-inset-bottom'), 'safe-area inferior está contemplada');
