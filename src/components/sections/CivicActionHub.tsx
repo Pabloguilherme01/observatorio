@@ -4,6 +4,27 @@ import { SectionHeader } from '../ui/SectionHeader';
 
 const actions = [
   {
+    icon: Smartphone,
+    title: 'Encontrar um serviço municipal',
+    description: 'Consulte o catálogo oficial da Prefeitura, com busca e filtros por perfil e categoria, incluindo serviços ao cidadão.',
+    href: 'https://aguaslindasdegoias.go.gov.br/servicos/',
+    cta: 'Abrir Serviços da Prefeitura',
+  },
+  {
+    icon: Smartphone,
+    title: 'Consultar unidades e serviços de saúde',
+    description: 'Veja a estrutura oficial da Secretaria Municipal de Saúde e as unidades de atendimento listadas pela Prefeitura.',
+    href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/',
+    cta: 'Abrir Saúde Municipal',
+  },
+  {
+    icon: FileQuestion,
+    title: 'Consultar legislação municipal',
+    description: 'Pesquise leis e normas no portal oficial de legislação do município.',
+    href: 'https://legislacao.aguaslindasdegoias.go.gov.br/',
+    cta: 'Abrir Legislação',
+  },
+  {
     icon: FileQuestion,
     title: 'Pedir informação',
     description: 'Use o SIC da Prefeitura para solicitar documentos, contratos, despesas ou esclarecimentos sobre dados públicos.',
