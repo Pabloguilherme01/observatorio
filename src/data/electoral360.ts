@@ -7,6 +7,10 @@ const generatedData = generated as {
     downloadedAt: string | null;
     state: 'first_capture' | 'synced' | 'unchanged' | 'changed' | 'stale' | 'failed' | 'not_synced' | 'local_filter_pending';
     sourceRows?: number;
+    photoArchive?: {
+      resourceUrl?: string | null;
+      verifiedCandidateIds?: string[];
+    };
   };
   coverage: 'state_watchlist';
   watchlist: string[];
@@ -26,12 +30,6 @@ const generatedData = generated as {
     occupation?: string | null;
     evidenceSourceUrls?: string[];
   }>;
-  meta: {
-    photoArchive?: {
-      resourceUrl?: string | null;
-      verifiedCandidateIds?: string[];
-    };
-  };
   diff: {
     state: string;
     added: number;
