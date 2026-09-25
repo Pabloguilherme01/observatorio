@@ -57,11 +57,12 @@ export function MobileBottomNav() {
       closeMore(true);
     };
     const onMenuKeyDown = (event: KeyboardEvent) => {
-      if (!moreOpenRef.current || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+      if (!moreOpenRef.current || !['ArrowDown', 'ArrowUp', 'Home', 'End', 'Tab'].includes(event.key)) return;
       const menu = moreMenuRef.current;
       if (!menu) return;
       const items = Array.from(menu.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'));
       if (!items.length) return;
+      if (event.key === 'Tab') { closeMore(); return; }
       const current = items.indexOf(document.activeElement as HTMLButtonElement);
       const next = event.key === 'Home'
         ? 0
@@ -77,7 +78,7 @@ export function MobileBottomNav() {
       const menu = document.getElementById('mobile-bottom-more');
       const button = document.getElementById('mobile-bottom-more-trigger');
       if (menu?.contains(event.target) || button?.contains(event.target)) return;
-      closeMore();
+      closeMore(true);
     };
 
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
