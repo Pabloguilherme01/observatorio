@@ -301,6 +301,21 @@
   min-height:76px;
 }
 
+.radar-card{
+  min-width:0;
+  border-radius:20px!important;
+}
+.radar-control{
+  border-color:rgba(148,163,184,.12)!important;
+  background:rgba(255,255,255,.025);
+  border-radius:17px;
+}
+.radar-select-label{
+  display:block;
+}
+.radar-highlight{
+  min-width:150px;
+}
 .radar-result-row{
   border:1px solid transparent;
   border-radius:13px;
@@ -309,6 +324,17 @@
 .radar-result-row:hover{
   background:rgba(125,211,252,.045);
   border-color:rgba(125,211,252,.10);
+}
+.radar-result-row[aria-pressed="true"]{
+  background:rgba(125,211,252,.06);
+  border-color:rgba(125,211,252,.16);
+  box-shadow:inset 0 0 0 1px rgba(125,211,252,.03);
+}
+.radar-meta-grid > div{
+  min-height:76px;
+}
+.radar-checklist{
+  border-radius:20px!important;
 }
 
 .radar-highlight{
@@ -730,6 +756,10 @@
     padding:15px!important;
     border-radius:17px!important;
   }
+  .radar-control{gap:12px!important;padding:12px!important}
+  .radar-highlight{min-width:0}
+  .radar-meta-grid{grid-template-columns:1fr 1fr}
+  .radar-meta-grid > div{min-height:68px}
 
   #politica .grid.min-w-0.grid-cols-\[minmax\(0\,7\.5rem\)_minmax\(0\,1fr\)_3\.75rem\]{
     grid-template-columns:minmax(0,6.25rem) minmax(0,1fr) 3.5rem;
