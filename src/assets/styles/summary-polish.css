@@ -72,7 +72,6 @@
   .summary-public-fact:hover { transform: none; }
 }
 
-
 /* Resumo essencial · hierarquia compacta e leitura rápida */
 [data-language-mode="summary"] #resumo{
   scroll-margin-top:78px;
@@ -306,7 +305,6 @@
   [data-language-mode="summary"] #resumo .summary-public-action{transition:none}
 }
 
-
 /* Resumo essencial · mobile-first v2 */
 @media (max-width:767px){
   [data-language-mode="summary"] #resumo{
@@ -498,7 +496,6 @@
 @media (prefers-reduced-motion: reduce) {
   .skip-link:focus { box-shadow: none; }
 }
-
 
 /* ==========================================================================
    Primeira dobra · Explorar (AudienceHub) — polimento visual premium
@@ -720,7 +717,6 @@
   .audience-home .audience-section-heading button:hover { transform: none; }
 }
 
-
 /* ==========================================================================
    Mobile v44.9.3 · refinamento final
    ========================================================================== */
@@ -872,7 +868,6 @@
   .audience-home .audience-action-card { transition: none !important; }
 }
 
-
 /* ==========================================================================
    Busca · interface de exploração 2026-09
    ========================================================================== */
@@ -984,7 +979,6 @@
   .sewer-mobile-selected { display: none !important; }
 }
 
-
 /* First fold · header + hero hierarchy */
 .site-brand > span:first-child {
   line-height: 1.1;
@@ -1059,7 +1053,6 @@
     transform: none !important;
   }
 }
-
 
 /* Visual refresh · leitura mais clara, contraste suave e hierarquia consistente */
 :root{
@@ -1143,7 +1136,6 @@
   box-shadow:0 8px 24px rgba(15,23,42,.05);
 }
 .light .hero-shell{background:linear-gradient(180deg,#fff,#f5f7fa)}
-
 
 /* Card system V44.9 · uma linguagem visual para todos os modos */
 :root{
@@ -1243,7 +1235,6 @@
 }
 .light :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link):hover{background:#f8fbfd;border-color:#bae6fd}
 
-
 /* Reading modes · each mode has a clear visual contract */
 .language-toggle-v3{position:relative}
 .language-toggle-v3 .language-toggle-label{transition:border-color .18s ease,background .18s ease}
@@ -1281,17 +1272,8 @@
   .language-toggle-v3 .language-toggle-label{transition:none}
 }
 
-
 /* Mode contracts · conteúdo e densidade mudam junto com o seletor */
 .mode-scope{min-width:0}
-[data-language-mode="summary"] .mode-scope-context,
-[data-language-mode="summary"] .mode-scope-civic,
-[data-language-mode="summary"] .mode-scope-election,
-[data-language-mode="summary"] .mode-scope-public,
-[data-language-mode="summary"] .mode-scope-trust,
-[data-language-mode="summary"] .mode-scope-evidence{display:none!important}
-[data-language-mode="simple"] .mode-scope-trust,
-[data-language-mode="simple"] .mode-scope-evidence{display:none!important}
 [data-language-mode="summary"] .audience-home .audience-section-heading{margin-top:4px}
 [data-language-mode="summary"] .audience-home .audience-resources{margin-top:14px}
 [data-language-mode="simple"] .audience-home .audience-section-heading,
@@ -1318,12 +1300,10 @@
   [data-language-mode="technical"] .mode-scope-evidence .deferred-section:before{padding-inline:var(--mobile-page-gutter);line-height:1.4}
 }
 
-
 [data-language-mode="summary"] .mode-scope-evidence .mode-evidence-content,
 [data-language-mode="simple"] .mode-scope-evidence .mode-evidence-content{display:none!important}
 [data-language-mode="summary"] .mode-scope-evidence,
 [data-language-mode="simple"] .mode-scope-evidence{display:block!important}
-
 
 /* Leitura V44.9 · contratos visuais reforçados por modo */
 [data-language-mode="summary"] .language-toggle-v3{--mode-accent:#34d399}
@@ -1358,7 +1338,6 @@
 @media(prefers-reduced-motion:reduce){
   .language-toggle-v3 .language-toggle-label{box-shadow:inset 3px 0 0 var(--mode-accent,#7dd3fc)}
 }
-
 
 /* Interaction polish V44.9.4 · stronger affordances without visual noise */
 .language-toggle-v3 .language-toggle-options button{
@@ -1440,7 +1419,6 @@
   .language-toggle-v3 .language-toggle-options button svg{transition:none}
   .language-toggle-v3 .language-toggle-options button[aria-pressed="true"]{transform:none}
 }
-
 
 /* Final visual system · cleaner surfaces, stronger hierarchy, lighter rendering */
 :root{
@@ -1567,7 +1545,6 @@ main{
   background:linear-gradient(90deg,rgba(14,165,233,.18),transparent 72%);
 }
 
-
 /* Visual refinement pass · consistent depth and quieter chrome */
 :where(.audience-home,.deferred-section) :where(h2,h3){
   text-wrap:balance;
@@ -1612,7 +1589,6 @@ main{
   .audience-home .audience-primary-action:after{transition:none}
 }
 
-
 /* V44.9.5 · visual hierarchy polish: less chrome, stronger primary actions */
 :root{
   --obs-focus-ring:0 0 0 3px rgba(56,189,248,.22);
@@ -1652,7 +1628,6 @@ main{
 @media(prefers-reduced-motion:reduce){
   .audience-home .audience-primary-action:after{display:none}
 }
-
 
 /* Resumo: acesso público compacto */
 .audience-summary-service{margin-top:10px}
