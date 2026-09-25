@@ -1557,3 +1557,41 @@ main p a:not(.official-resource-card):not(.hero-action){
 .light .audience-kicker{
   color:#075985!important;
 }
+
+/* Structural spacing: keep adjacent deferred sections readable without turning
+   every paragraph/link into another heavy card. */
+.deferred-section>section{
+  border-top:1px solid rgba(148,163,184,.08);
+}
+.deferred-section>section:first-child{border-top:0}
+.deferred-section>section+section{margin-top:0}
+@media(max-width:767px){
+  .deferred-section>section{
+    scroll-margin-top:76px;
+  }
+  .deferred-section .mx-auto.max-w-7xl{
+    padding-inline:var(--mobile-page-gutter,14px)!important;
+  }
+  .deferred-section .mx-auto.max-w-6xl,
+  .deferred-section .mx-auto.max-w-5xl{
+    padding-inline:var(--mobile-page-gutter,14px)!important;
+  }
+  .deferred-section .grid{
+    min-width:0;
+  }
+  .deferred-section .flex{
+    min-width:0;
+  }
+  .deferred-section .flex>*,.deferred-section .grid>*{
+    min-width:0;
+    max-width:100%;
+  }
+  .deferred-section [class*="overflow-x-"]{
+    max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  .deferred-section button,
+  .deferred-section a{
+    max-width:100%;
+  }
+}
