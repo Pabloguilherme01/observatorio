@@ -10,6 +10,7 @@ import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
+import '../assets/styles/premium-finish.css';
 
 const loadDashboardGroup = () => import('../components/sections/DeferredDashboardGroup');
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
