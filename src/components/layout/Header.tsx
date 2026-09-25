@@ -45,9 +45,14 @@ export function Header() {
 
     observeSections();
     const onNavigate = () => window.requestAnimationFrame(observeSections);
+    const root = document.getElementById('main-content') ?? document.body;
+    const mutationObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => observeSections());
+    mutationObserver?.observe(root, { childList: true, subtree: true });
+
     window.addEventListener('observatorio:navigate', onNavigate);
     return () => {
       observer.disconnect();
+      mutationObserver?.disconnect();
       window.removeEventListener('observatorio:navigate', onNavigate);
     };
   }, []);
