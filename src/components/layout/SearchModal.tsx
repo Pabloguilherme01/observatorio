@@ -1,3 +1,4 @@
+import '../../assets/styles/search-modal.css';
 import { BarChart3, BookOpen, BusFront, Database, Droplets, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
