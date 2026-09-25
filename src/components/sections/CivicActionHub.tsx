@@ -15,6 +15,7 @@ const priorityPublicServices = [
 
 const actions = [
   {
+    category: 'Prefeitura',
     icon: Smartphone,
     title: 'Encontrar um serviço municipal',
     description: 'Consulte o catálogo oficial da Prefeitura, com busca e filtros por perfil e categoria, incluindo serviços ao cidadão.',
@@ -22,6 +23,7 @@ const actions = [
     cta: 'Abrir Serviços da Prefeitura',
   },
   {
+    category: 'Prefeitura',
     icon: Smartphone,
     title: 'Consultar unidades e serviços de saúde',
     description: 'Veja a estrutura oficial da Secretaria Municipal de Saúde e as unidades de atendimento listadas pela Prefeitura.',
@@ -29,6 +31,7 @@ const actions = [
     cta: 'Abrir Saúde Municipal',
   },
   {
+    category: 'Prefeitura',
     icon: FileQuestion,
     title: 'Consultar legislação municipal',
     description: 'Pesquise leis e normas no portal oficial de legislação do município.',
@@ -36,6 +39,7 @@ const actions = [
     cta: 'Abrir Legislação',
   },
   {
+    category: 'Prefeitura',
     icon: FileQuestion,
     title: 'Pedir informação',
     description: 'Use o SIC da Prefeitura para solicitar documentos, contratos, despesas ou esclarecimentos sobre dados públicos.',
@@ -43,6 +47,7 @@ const actions = [
     cta: 'Acessar SIC da Prefeitura',
   },
   {
+    category: 'Participação e controle',
     icon: Landmark,
     title: 'Acompanhar o Legislativo',
     description: 'Consulte sessões, pautas, atas, leis e o portal de transparência da Câmara Municipal.',
@@ -50,6 +55,7 @@ const actions = [
     cta: 'Acessar Câmara Municipal',
   },
   {
+    category: 'Participação e controle',
     icon: Scale,
     title: 'Enviar manifestação',
     description: 'O TCMGO mantém Ouvidoria e SIC para solicitações, reclamações e comunicações relacionadas ao controle municipal.',
@@ -58,6 +64,7 @@ const actions = [
   },
   {
     icon: Smartphone,
+    category: 'Eleições 2026',
     title: 'Usar o e-Título',
     description: 'Aplicativo oficial da Justiça Eleitoral para serviços como título digital, local de votação, justificativa e certidões.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo',
@@ -65,6 +72,7 @@ const actions = [
   },
   {
     icon: SearchCheck,
+    category: 'Eleições 2026',
     title: 'Consultar candidaturas e contas',
     description: 'O TSE disponibiliza o DivulgaCandContas para consultar candidaturas, situação de registro e informações de contas eleitorais.',
     href: 'https://divulgacandcontas.tse.jus.br/divulga/#/',
@@ -72,6 +80,7 @@ const actions = [
   },
   {
     icon: SearchCheck,
+    category: 'Eleições 2026',
     title: 'Consultar local de votação',
     description: 'O TSE disponibiliza a consulta ao local de votação pelo e-Título e pelos canais oficiais da Justiça Eleitoral.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral',
@@ -79,6 +88,7 @@ const actions = [
   },
   {
     icon: SearchCheck,
+    category: 'Eleições 2026',
     title: 'Consultar situação eleitoral',
     description: 'Confira no Autoatendimento Eleitoral o número, a situação do título, débitos e onde votar.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral/',
@@ -86,6 +96,7 @@ const actions = [
   },
   {
     icon: FileQuestion,
+    category: 'Eleições 2026',
     title: 'Justificar ausência',
     description: 'Consulte no TSE como justificar a ausência às urnas pelo e-Título, Autoatendimento ou atendimento eleitoral.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/justificativa-eleitoral',
@@ -93,6 +104,7 @@ const actions = [
   },
   {
     icon: ClipboardCheck,
+    category: 'Eleições 2026',
     title: 'Emitir certidões eleitorais',
     description: 'Acesse a emissão e validação de certidões de quitação, crimes eleitorais e outros documentos oficiais.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/certidoes',
@@ -100,6 +112,7 @@ const actions = [
   },
   {
     icon: Scale,
+    category: 'Eleições 2026',
     title: 'Quitar débitos eleitorais',
     description: 'Consulte e quite multas eleitorais pelos canais oficiais do TSE e confira as orientações de pagamento.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/quitacao-de-multas',
@@ -107,6 +120,7 @@ const actions = [
   },
   {
     icon: Landmark,
+    category: 'Eleições 2026',
     title: 'Conferir calendário e regras',
     description: 'Consulte diretamente no TSE as datas, regras e orientações oficiais das Eleições 2026.',
     href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
@@ -114,12 +128,14 @@ const actions = [
   },
   {
     icon: Smartphone,
+    category: 'Eleições 2026',
     title: 'Consultar o Pardal',
     description: 'Ferramenta oficial do TSE para encaminhar e acompanhar denúncias de propaganda eleitoral irregular.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/servicos/pardal',
     cta: 'Ver instruções do TSE',
   },
   {
+    category: 'Participação e controle',
     icon: MessageCircle,
     title: 'Procurar o MPGO',
     description: 'O Ministério Público de Goiás recebe manifestações e orienta sobre canais para fatos que possam demandar atuação institucional.',
@@ -172,22 +188,29 @@ export function CivicActionHub() {
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_.72fr]">
-        <div className="grid gap-3 sm:grid-cols-2">
-          {actions.map(({ icon: Icon, title, description, href, cta }) => (
-            <Card key={title} className="p-5">
-              <div className="flex items-start gap-3">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="text-base font-black text-white light:text-slate-900">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                    {cta} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                </div>
+        <div className="space-y-5">
+          {(['Prefeitura', 'Participação e controle', 'Eleições 2026'] as const).map(category => (
+            <div key={category}>
+              <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {actions.filter(action => action.category === category).map(({ icon: Icon, title, description, href, cta }) => (
+                  <Card key={title} className="p-5">
+                    <div className="flex items-start gap-3">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                      <div>
+                        <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
+                        <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
+                        <a href={href} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
+                          {cta} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                        </a>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
               </div>
-            </Card>
+            </div>
           ))}
         </div>
 
