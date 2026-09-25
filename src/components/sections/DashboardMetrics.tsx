@@ -3,7 +3,6 @@ import { HistoricalTrendChart } from './HistoricalTrendChart';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
-import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
@@ -72,7 +71,7 @@ export function DashboardMetrics() {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature, sourceLabel }) => (
           <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
-            <Card className="dashboard-kpi-card">
+            
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
@@ -98,7 +97,7 @@ export function DashboardMetrics() {
                 </div>
                 <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               </div>
-            </Card>
+            
           </button>
         ))}
       </div>
@@ -118,13 +117,13 @@ export function DashboardMetrics() {
       {languageMode === 'technical' && (
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <button type="button" className="metric-interactive technical-mini-kpi text-left" onClick={() => dispatchInspect({ label: 'Mudança da população', value: '+' + formatPercent(populationGrowthPct, 2), sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', status: 'derivado' })}>
-            <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">População</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div><div className="mt-1 text-xs text-slate-500">mudança desde 2022</div></Card>
+            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">População</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div><div className="mt-1 text-xs text-slate-500">mudança desde 2022</div>
           </button>
           <button type="button" className="metric-interactive technical-mini-kpi text-left" onClick={() => dispatchInspect({ label: 'Relação eleitorado/população', value: formatPercent(electorateShare, 2), sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, status: 'derivado' })}>
-            <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Eleitorado</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatPercent(electorateShare, 2)}</div><p className="mt-1 text-xs text-slate-500">relação estatística</p></Card>
+            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Eleitorado</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatPercent(electorateShare, 2)}</div><p className="mt-1 text-xs text-slate-500">relação estatística</p>
           </button>
           <button type="button" className="metric-interactive technical-mini-kpi text-left" onClick={() => dispatchInspect({ label: 'Área territorial', value: formatNumber(area, 3) + ' km²', sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01' })}>
-            <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Área</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatNumber(area, 3)} km²</div><p className="mt-1 text-xs text-slate-500">base do cálculo de densidade</p></Card>
+            <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Área</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatNumber(area, 3)} km²</div><p className="mt-1 text-xs text-slate-500">base do cálculo de densidade</p>
           </button>
         </div>
       )}
