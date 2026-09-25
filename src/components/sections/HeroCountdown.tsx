@@ -69,17 +69,17 @@ export function HeroCountdown() {
           <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">
             {languageMode === 'simple'
               ? 'Principais números da cidade, com a fonte de cada dado.'
-              : 'Dados eleitorais e municipais em um painel público, rastreável e contextualizado.'}
+              : 'Dados públicos de Águas Lindas, organizados para leitura rápida e conferência.'}
           </p>
 
           <details className="hero-reading-guide mt-3 max-w-3xl rounded-xl border border-white/10 bg-white/[0.025]">
             <summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-slate-300 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
-              Como ler este painel
+              Como usar este painel
             </summary>
             <div className="border-t border-white/10 px-3 py-2.5 text-xs leading-5 text-slate-500">
               {languageMode === 'simple'
                 ? 'Cada informação apresenta sua fonte e contexto para facilitar a conferência.'
-                : 'Um painel público para ler dados eleitorais e municipais com período, fonte, natureza do dado e limitações visíveis na própria interface.'}
+                : 'Veja o número, confira a fonte e consulte o contexto quando precisar.'}
             </div>
           </details>
 
@@ -89,10 +89,10 @@ export function HeroCountdown() {
               {electionMode ? 'Modo Eleição ativo' : 'Ativar Modo Eleição'}
             </button>
             <a href="#descubra" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-transparent px-4 py-2.5 text-sm font-bold text-slate-200 transition hover:border-sky-300/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
-              {languageMode === 'simple' ? 'Explorar' : 'Explorar assuntos'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              {languageMode === 'simple' ? 'Explorar' : 'Explorar dados'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a href="#evidencias" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-transparent px-4 py-2.5 text-sm font-bold text-slate-300 transition hover:border-sky-300/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
-              {languageMode === 'simple' ? 'Conferir fontes' : 'Conferir evidências'}
+              {languageMode === 'simple' ? 'Conferir fontes' : 'Ver fontes'}
             </a>
           </div>
 
@@ -111,7 +111,7 @@ export function HeroCountdown() {
             ) : (
               <>
                 <span className="inline-flex items-center gap-1.5"><Database className="h-3.5 w-3.5 text-sky-300" aria-hidden="true" /> Dados locais atualizados em {updatedAt}.</span>
-                <span>Conteúdo informativo · sem ranking automático.</span>
+                <span>Informação pública · fontes visíveis.</span>
               </>
             )}
           </div>
