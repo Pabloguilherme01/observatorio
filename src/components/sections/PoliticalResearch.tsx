@@ -60,7 +60,7 @@ export function PoliticalResearch() {
               </p>
               {poll.judicialContext && <p className="mt-2 text-xs leading-5 text-amber-100/80">Contexto documental: {poll.judicialContext.summary}</p>}
               {pollSource?.url && (
-                <a href={pollSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">
+                <a href={pollSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-1.5 rounded-lg px-1 text-xs font-bold text-sky-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300/60">
                   Conferir fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
               )}
