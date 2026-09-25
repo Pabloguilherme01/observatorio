@@ -1606,6 +1606,14 @@
 .light .quiz-high-scores-head h3,
 .light .quiz-high-score-row strong,
 .light .quiz-high-score-row b { color: rgb(15 23 42); }
+.light .quiz-subtitle,
+.light .quiz-phase-meta,
+.light .quiz-phase-best,
+.light .quiz-progress-label,
+.light .quiz-feedback p,
+.light .quiz-result-hint,
+.light .quiz-footer > span { color: #475569; }
+.light .quiz-phase-lock { color: #475569; }
 .light .quiz-high-score-row {
   border-color: rgb(226 232 240);
   background: #fff;
