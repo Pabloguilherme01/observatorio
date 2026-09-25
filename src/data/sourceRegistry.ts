@@ -12,6 +12,16 @@ export const sourceRegistry: readonly SourceRef[] = [
     note: 'Estimativas municipais com referência em 1º de julho de 2026. O IBGE publica a estimativa municipal de 2026 e informa a metodologia e a base territorial utilizada.',
   },
   {
+    id: 'inss-salario-2026',
+    label: 'INSS — Tabela de contribuição mensal 2026',
+    institution: 'Instituto Nacional do Seguro Social',
+    url: 'https://www.gov.br/inss/pt-br/direitos-e-deveres/inscricao-e-contribuicao/tabela-de-contribuicao-mensal',
+    nature: 'official',
+    referenceDate: '2026-01-01',
+    publishedAt: '2026-01-13',
+    note: 'Tabela oficial válida a partir da competência janeiro de 2026; registra R$ 1.621,00 como salário de contribuição mínimo e referência do salário mínimo nacional.',
+  },
+  {
     id: 'ibge-cidades-2026',
     label: 'IBGE — Cidades e Estados: Águas Lindas de Goiás',
     institution: 'IBGE',
