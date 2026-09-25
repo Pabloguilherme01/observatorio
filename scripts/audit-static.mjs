@@ -34,6 +34,9 @@ const dateModified = index.match(/"dateModified": "([^"]+)"/)?.[1];
 must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sincronizados');
 must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && packageJson.devDependencies?.['@axe-core/playwright'] === '4.13.0', 'Playwright e Axe estão fixados nas devDependencies');
 const lockJson = JSON.parse(read('package-lock.json'));
+must(lockJson.lockfileVersion === 3, 'package-lock usa lockfileVersion 3');
+must(lockJson.packages?.['']?.version === packageJson.version, 'package.json e package-lock usam a mesma versão');
+must(lockJson.packages?.['']?.dependencies && lockJson.packages?.['']?.devDependencies, 'package-lock registra as dependências diretas do projeto');
 must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
   && lockJson.packages?.['node_modules/@axe-core/playwright']?.version === '4.13.0'
   && lockJson.packages?.['node_modules/axe-core']?.version === '4.13.0'
@@ -217,7 +220,7 @@ try {
   lockTracked = true;
 } catch {}
 if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
-  console.warn('WARN package-lock.json não está versionado; CI continua usando npm install.');
+  fail('package-lock.json deve existir e estar versionado');
 } else {
   pass('package-lock.json está versionado para instalações reprodutíveis');
 }
