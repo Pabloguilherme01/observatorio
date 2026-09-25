@@ -116,13 +116,23 @@ export function PoliticalResearch() {
       <SectionHeader
         titleId="research-title"
         eyebrow="Recorte eleitoral local"
-        title={mode === 'summary' ? 'Candidaturas acompanhadas' : mode !== 'technical' ? 'Candidaturas ligadas a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
+        title={mode === 'summary' ? 'Pesquisas e candidaturas acompanhadas' : mode !== 'technical' ? 'Eleições: pesquisas e candidaturas acompanhadas' : 'Registros eleitorais e watchlist documental'}
         description={mode === 'summary'
-          ? `${candidates.length} candidaturas estaduais acompanhadas com evidência documental de vínculo local. Esta não é uma lista municipal completa.`
+          ? `${candidates.length} registros acompanhados com vínculo local documentado; a lista não é o universo municipal.`
           : mode !== 'technical'
-            ? 'Lista de candidaturas estaduais de 2026 acompanhadas por evidência documental de vínculo local. Não representa o universo completo de candidaturas do município.'
-            : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Este snapshot é uma watchlist acompanhada, não uma lista municipal completa.'}
+            ? 'Pesquisas registradas e uma watchlist documental de candidaturas estaduais. Consulte o cadastro oficial do TSE para o universo completo.'
+            : 'O cadastro vem do TSE; o vínculo local é sustentado por evidência documental separada. A watchlist é editorial e não representa todas as candidaturas.'}
       />
+
+      <div className="mb-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <strong className="block text-sm font-black text-white">Cadastro oficial de candidaturas</strong>
+            <p className="mt-1 text-xs leading-5 text-slate-500">A watchlist abaixo é um recorte documental. O cadastro oficial continua sendo a referência para consultar o universo de candidatos.</p>
+          </div>
+          <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/[0.06] px-3 text-xs font-bold text-sky-100">Abrir Candidatos 2026 · TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
+        </div>
+      </div>
 
       {poll && (
         <Card className="mb-5">
