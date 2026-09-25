@@ -12,15 +12,8 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     syncReducedMotion();
     media?.addEventListener?.('change', syncReducedMotion);
 
-    const onCommand = () => {
-      window.dispatchEvent(new CustomEvent('observatorio:search'));
-    };
-    window.addEventListener('observatorio:command', onCommand);
-
     return () => {
-      media?.removeEventListener?.('change', syncReducedMotion);
-      window.removeEventListener('observatorio:command', onCommand);
-    };
+      media?.removeEventListener?.('change', syncReducedMotion);    };
   }, []);
 
   useEffect(() => {
