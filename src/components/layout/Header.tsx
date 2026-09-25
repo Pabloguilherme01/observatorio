@@ -51,11 +51,13 @@ export function Header() {
 
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('mousedown', onDocumentPointer);
+    document.addEventListener('keydown', onKeyDown);
     return () => {
       observer.disconnect();
       mutationObserver?.disconnect();
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('mousedown', onDocumentPointer);
+      document.removeEventListener('keydown', onKeyDown);
     };
   }, [moreOpen]);
 
@@ -64,6 +66,9 @@ export function Header() {
       if (!(event.target instanceof Node)) return;
       const target = event.target as HTMLElement;
       if (moreOpen && !target.closest('[aria-haspopup="menu"]') && !target.closest('[role="menu"]')) setMoreOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && moreOpen) setMoreOpen(false);
     };
 
   useEffect(() => {
