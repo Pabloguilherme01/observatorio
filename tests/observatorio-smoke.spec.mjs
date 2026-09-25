@@ -30,6 +30,9 @@ test.describe('Observatório smoke flows', () => {
     await openSection(page, 'quiz');
     await expect(page.getByRole('heading', { name: /Quiz de dados · 2026/i })).toBeVisible();
     await expect(page.getByText(/200 perguntas · 5 fases · 40 por fase/i)).toBeVisible();
+    const phaseButtons = page.locator('.quiz-phase-grid button');
+    await expect(phaseButtons.first()).toHaveAttribute('type', 'button');
+    await expect(phaseButtons.first()).not.toHaveAttribute('role', 'listitem');
 
     await openSection(page, 'acao');
     await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
