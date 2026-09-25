@@ -868,7 +868,6 @@
   }
 }
 
-
 @media (max-width:620px){
   .language-toggle-v3 .language-toggle-options{
     gap:6px;
@@ -1027,7 +1026,6 @@
     transition:none!important;
   }
 }
-
 
 /* Final override pass: remove ambiguity left by legacy visual layers. */
 .section-header{
@@ -1250,7 +1248,6 @@
   }
 }
 
-
 /* Light theme: amber text variants must remain readable on white surfaces. */
 .light .text-amber-100,
 .light .text-amber-200,
@@ -1258,7 +1255,6 @@
 .light .text-amber-200\/80{
   color:#92400e!important;
 }
-
 
 /* Light theme: research/watchlist cards inherit the same readable foreground rules. */
 .light #politica .text-white{
@@ -1275,7 +1271,6 @@
 .light #politica .text-amber-200\/80{
   color:#92400e!important;
 }
-
 
 /* Premium visual system · final polish
  * Focus: clearer mode personality, tactile controls, editorial cards, and mobile rhythm.
@@ -1800,7 +1795,6 @@
   transform:none!important;
 }
 
-
 /* Premium controls + editorial typography */
 :where(.obs-card,.summary-shell,.trust-shell,.quiz-shell) :where(h3,h4){
   text-wrap:balance;
@@ -1951,7 +1945,6 @@
     transition:none!important;
   }
 }
-
 
 /* Visual refinement · summary / simple / technical composition */
 .executive-summary .summary-mode-content{
