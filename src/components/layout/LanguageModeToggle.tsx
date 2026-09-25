@@ -12,7 +12,7 @@ export function LanguageModeToggle() {
 
   return (
     <div className="language-toggle language-toggle-v3" role="group" aria-label="Escolha como você quer ler os dados">
-      <div className={`language-toggle-label mode-${mode}`} data-mode-label={mode}>
+      <div className={'language-toggle-label mode-' + mode} data-mode-label={mode}>
         <Info aria-hidden="true" />
         <span><strong>Como você quer ler</strong><small>{mode === 'summary' ? 'Resumo · se situar rapidamente' : mode === 'simple' ? 'Simples · entender o que os números mostram' : 'Técnico · conferir como os dados foram construídos'}</small></span>
       </div>
