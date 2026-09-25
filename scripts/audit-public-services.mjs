@@ -14,6 +14,18 @@ const required = [
   ['Contratos', 'sgcontratos'],
   ['Acompanhamento de obras', '/cidadao/informacao/obras'],
   ['Lista de espera em creches', '/lista-de-espera-em-creches/'],
+  ['Serviços de saúde (escalas)', 'escalasmedicas'],
+  ['Medicamentos de alto custo', 'medicamentos_altocusto'],
+  ['Obras paralisadas', 'obras_paralisadas'],
+  ['Dispensas e inexigibilidades', 'sgdispensas'],
+  ['Plano de Contratações Anual', 'plano_anual_contratacoes'],
+  ['Receitas municipais', 'sgreceitas'],
+  ['Folha de pagamento', 'sgservidores'],
+  ['Concursos públicos', 'concursos_selecoes/concursos'],
+  ['Fiscais de contratos', 'fiscais_contratos_sg'],
+  ['Ordem cronológica de pagamentos', 'ordem_cronologica_pagamentos_pdt'],
+  ['Dados abertos e API', 'acesso_automatizado'],
+  ['Registrar reclamação', 'ouvidoria/reclamacao'],
 ];
 
 async function checkLive(url) {
@@ -54,7 +66,7 @@ if (insecureLinks.length) {
   pass('links públicos externos preservam noopener em target=_blank');
 }
 const allPublicActionLinks = urls.length;
-if (allPublicActionLinks < 20) {
+if (allPublicActionLinks < 35) {
   fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
 } else {
   pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
@@ -62,11 +74,11 @@ if (allPublicActionLinks < 20) {
 
 const categories = [...actionsBlock.matchAll(/category:\s*'([^']+)'/g)].map(match => match[1]);
 const categorySet = new Set(categories);
-for (const expectedCategory of ['Prefeitura', 'Participação e controle', 'Eleições 2026']) {
+for (const expectedCategory of ['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026']) {
   if (!categorySet.has(expectedCategory)) fail.push('categoria pública ausente: ' + expectedCategory);
 }
-if (categories.length !== 16) fail.push(`ações categorizadas esperado=16 atual=${categories.length}`);
-else pass('16 serviços complementares estão categorizados');
+if (categories.length !== 28) fail.push(`ações categorizadas esperado=28 atual=${categories.length}`);
+else pass('28 serviços complementares estão categorizados');
 
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
