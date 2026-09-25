@@ -188,9 +188,6 @@ section{scroll-margin-top:72px}
     flex:0 0 auto;
     white-space:nowrap;
   }
-  .hero-shell .hero-election-quick{
-    margin-top:9px!important;
-  }
   .hero-shell>.mx-auto>.grid{
     gap:14px!important;
   }
