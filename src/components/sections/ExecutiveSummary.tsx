@@ -159,61 +159,6 @@ export function ExecutiveSummary() {
             </div>
           )}
 
-          {false && <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
-            <div className="flex items-start gap-3">
-              <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{hasPoll ? "Pesquisa registrada" : "Pesquisas"}</div>
-                {poll && <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                  <span className="font-black text-white light:text-slate-900">{poll.pollster}</span>
-                  <span className="rounded-full border border-white/10 px-2 py-1 text-slate-500 light:border-slate-200">Deputado estadual · pergunta espontânea</span>
-                  <span className="rounded-full border border-white/10 px-2 py-1 text-slate-500 light:border-slate-200">{poll.registrationNumber}</span>
-                </div>}
-                {!hasPoll && <p className="mt-3 text-sm text-slate-400">Nenhuma pesquisa está disponível neste snapshot.</p>}
-                <div className="mt-3 grid grid-cols-2 gap-2 sm:max-w-md">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Nenhum</div>
-                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}%</div>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Não sabe/NR</div>
-                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}%</div>
-                  </div>
-                </div>
-
-                {languageMode === 'technical' ? (
-                  <p className="technical-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    Soma das duas categorias: <strong className="text-white light:text-slate-900">{groupedUnknown.toFixed(2).replace('.', ',')}%</strong>. Essa combinação não é uma categoria adicional da pesquisa e não deve ser lida como classificação de “indecisos”.
-                  </p>
-                ) : (
-                  <p className="simple-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    A pesquisa separa essas respostas. Aqui, cada percentual é mostrado como foi registrado.
-                  </p>
-                )}
-
-                <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-semibold text-slate-500">
-                  {poll && <>
-                    <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
-                    <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
-                  </>}
-                  {languageMode === 'technical' && (
-                    <>
-                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.registrationNumber ?? 'Registro não disponível'}</span>
-                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.pollster ?? 'Instituto não informado'}</span>
-                      <span className="technical-detail rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-2.5 py-1 text-amber-200 light:border-amber-300/50 light:bg-amber-50 light:text-amber-800">divulgação com cautela</span>
-                    </>
-                  )}
-                </div>
-
-                {source?.url && (
-                  <a href={source.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                    {languageMode === 'technical' ? 'Conferir catálogo oficial das pesquisas' : 'Conferir fonte oficial'} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </Card>}
-
           {languageMode !== 'summary' && <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
             <Card className="p-4">
               <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado</div>
