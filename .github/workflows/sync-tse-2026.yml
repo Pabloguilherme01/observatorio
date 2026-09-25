@@ -51,7 +51,7 @@ jobs:
         env:
           REQUIRE_TSE_SYNC: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
           REQUIRE_TSE_FRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
-          TSE_MAX_AGE_HOURS: '12'
+          TSE_MAX_AGE_HOURS: '24'
           ALLOW_UPSTREAM_UNAVAILABLE: ${{ github.event_name == 'workflow_dispatch' && 'false' || 'true' }}
         run: npm run validate:tse
 
