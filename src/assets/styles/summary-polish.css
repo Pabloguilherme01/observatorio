@@ -68,15 +68,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .summary-public-fact,
-  .summary-public-fact::after,
-  .quiz-phase-card,
-  .quiz-option,
-  .quiz-progress-fill,
-  .quiz-next,
-  .quiz-action { transition: none; }
-  .summary-public-fact:hover,
-  .quiz-phase-card:hover:not(:disabled),
-  .quiz-option:hover:not(:disabled) { transform: none; }
+  .summary-public-fact::after { transition: none; }
+  .summary-public-fact:hover { transform: none; }
 }
 
 
@@ -1492,20 +1485,12 @@
   .audience-home .audience-action-card small,
   .audience-home .audience-resource small,
   .audience-home .audience-link small{line-height:1.3}
-  .quiz-head{gap:5px}
-  .quiz-head h2{font-size:1.45rem}
-  .quiz-subtitle{font-size:12px;line-height:1.45}
-  .quiz-high-scores{border-radius:15px}
-  .quiz-result-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
-  .quiz-result-actions .is-primary{grid-column:1/-1}
 }
 @media (max-width:390px){
   .audience-home .audience-topic,
   .audience-home .audience-action-card,
   .audience-home .audience-resource,
   .audience-home .audience-link{min-height:70px}
-  .quiz-result-actions{grid-template-columns:1fr}
-  .quiz-result-actions .is-primary{grid-column:auto}
 }
 @media (prefers-reduced-motion:reduce){
   .audience-home .audience-topic,
@@ -1532,18 +1517,18 @@
   --card-bg-hover:rgba(125,211,252,.055);
   --card-radius:18px;
 }
-:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.candidate-data-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card,.quiz-card,.quiz-high-scores){
+:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.candidate-data-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   border-color:var(--card-border);
   background:var(--card-bg);
 }
-:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card,.quiz-card,.quiz-high-scores){
+:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   border-radius:var(--card-radius);
   overflow:hidden;
 }
-:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){
+:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   position:relative;
 }
-:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card)::before{
+:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link)::before{
   content:"";
   position:absolute;
   inset:0 auto 0 0;
@@ -1552,19 +1537,19 @@
   opacity:.55;
   pointer-events:none;
 }
-:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){
+:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   box-shadow:0 8px 26px rgba(0,0,0,.08);
   transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
 }
 @media (hover:hover){
-  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):hover{
+  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link):hover{
     transform:translateY(-2px);
     border-color:rgba(125,211,252,.25);
     background:var(--card-bg-hover);
     box-shadow:0 16px 36px rgba(0,0,0,.13);
   }
 }
-:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):focus-visible{
+:where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link):focus-visible{
   outline:2px solid #7dd3fc;
   outline-offset:2px;
 }
@@ -1601,31 +1586,27 @@
 .audience-topic-icon,.audience-action-icon,.audience-link-icon{
   flex-shrink:0;
 }
-.quiz-phase-card{min-height:126px}
-.quiz-phase-card.is-active{background:linear-gradient(135deg,rgba(56,189,248,.10),rgba(255,255,255,.025))}
-.quiz-card{box-shadow:0 20px 50px rgba(0,0,0,.13)}
 @media (max-width:767px){
-  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){
+  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
     border-radius:15px;
     box-shadow:0 7px 22px rgba(0,0,0,.07);
   }
-  :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):hover{
+  :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link):hover{
     transform:none;
   }
   .summary-stat{min-height:100px}
   .summary-public-fact{min-height:128px}
   .audience-topic,.audience-action-card,.audience-resource,.audience-link{min-height:72px}
-  .quiz-phase-card{min-height:106px}
 }
 @media (prefers-reduced-motion:reduce){
-  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card){transition:none}
+  :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){transition:none}
 }
-.light :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.candidate-data-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card,.quiz-card,.quiz-high-scores){
+.light :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.candidate-data-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   background:#fff;
   border-color:#dbe5ec;
   box-shadow:0 7px 24px rgba(15,23,42,.055);
 }
-.light :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link,.quiz-phase-card):hover{background:#f8fbfd;border-color:#bae6fd}
+.light :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link):hover{background:#f8fbfd;border-color:#bae6fd}
 
 
 /* Reading modes · each mode has a clear visual contract */
@@ -1953,10 +1934,10 @@ main{
 
 
 /* Visual refinement pass · consistent depth and quieter chrome */
-:where(.audience-home,.quiz-shell,.deferred-section) :where(h2,h3){
+:where(.audience-home,.deferred-section) :where(h2,h3){
   text-wrap:balance;
 }
-:where(.audience-home,.quiz-shell) :where(button,a){
+:where(.audience-home) :where(button,a){
   -webkit-tap-highlight-color:transparent;
 }
 .audience-home .audience-primary-action{
