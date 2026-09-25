@@ -56,6 +56,14 @@ for (const [id, label] of [['descubra','descoberta inicial'],['mudancas-snapshot
   if (!ids.has(id)) fail('Jornada pública sem etapa: ' + label + ' (#' + id + ')');
 }
 pass('jornada pública cobre descobrir → conferir mudanças → verificar fontes → agir → revisar compreensão → exportar');
+const appNavigation = app;
+if (
+  appNavigation.includes('NavigationModeBridge') &&
+  appNavigation.includes("TECHNICAL_ONLY_DESTINATIONS") &&
+  appNavigation.includes("if (mode === 'summary') setMode('simple')") &&
+  appNavigation.includes("setMode('technical')")
+) pass('deep links e navegação central sincronizam o modo de leitura com a seção');
+else fail('navegação por hash pode abrir uma seção escondida no modo de leitura atual');
 
 const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
 const mountedSources = [
