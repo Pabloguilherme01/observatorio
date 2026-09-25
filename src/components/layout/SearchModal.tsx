@@ -12,7 +12,7 @@ const entries: readonly SearchEntry[] = [
   ['Dashboard', 'dashboard', 'primary'],
   ['Perfil eleitoral', 'eleitorado', 'primary'],
   ['Transporte', 'transporte', 'primary'],
-  ['Simulador de bolso', 'transporte', 'transport'],
+  ['Simulador de bolso · Transporte', 'transporte', 'transport'],
   ['Saneamento e saúde', 'saude', 'primary'],
   ['Pesquisas', 'politica', 'primary'],
   ['Candidaturas', 'candidaturas', 'primary'],
