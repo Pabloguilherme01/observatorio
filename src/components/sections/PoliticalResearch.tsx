@@ -30,14 +30,13 @@ function trackedUrl(anchor: string) {
 
 function shareCandidate(candidate: CandidateView, channel: 'native' | 'whatsapp') {
   const url = trackedUrl('candidaturas');
-  const text = [candidate.name, candidate.party + ' · nº ' + candidate.ballotNumber, candidate.office, candidate.municipality, 'Observatório de Águas Lindas de Goiás 2026', url].join('\n');
+  const text = [candidate.name, candidate.party + ' · nº ' + candidate.ballotNumber, candidate.office, 'Observatório de Águas Lindas de Goiás 2026', url].join('\n');
   if (channel === 'native' && navigator.share) {
     navigator.share({ title: candidate.name + ' · Observatório', text, url }).catch(() => {});
     return;
   }
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
 }
-
 
 function CandidateSummaryCard({ candidate }: { readonly candidate: CandidateView }) {
   const [open, setOpen] = useState(false);
@@ -64,9 +63,9 @@ function CandidateSummaryCard({ candidate }: { readonly candidate: CandidateView
       </div>
       {open && (
         <div className="candidate-summary-details">
-          <div><span>Recorte</span><strong>Águas Lindas de Goiás</strong></div>
+          <div><span>Vínculo local</span><strong>Evidência documental</strong></div>
           <div><span>Snapshot</span><strong>{candidate.snapshotDate}</strong></div>
-          <div><span>Fonte</span><strong>TSE · Candidatos 2026</strong></div>
+          <div><span>Fonte cadastral</span><strong>TSE · Candidatos 2026</strong></div>
           <div className="candidate-summary-links">
             <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer"><ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> TSE</a>
             <button type="button" onClick={() => shareCandidate(candidate, 'native')}><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar</button>
@@ -81,12 +80,13 @@ export function PoliticalResearch() {
   const { mode } = useLanguageMode();
   const [query, setQuery] = useState('');
   const [officeFilter, setOfficeFilter] = useState('all');
-  const hasLocalCandidates = electoral360Snapshot.matchedCandidates.length > 0;
-  const municipalCaptureCompleted = electoral360Snapshot.captureMode === 'github-actions' && Boolean(electoral360Snapshot.capturedAt);
-  const candidates: CandidateView[] = electoral360Snapshot.matchedCandidates.map(candidate => {
-    const raw = candidate as typeof candidate & { municipality?: string; photoUrl?: string | null; instagramUrl?: string | null };
-    return { ...candidate, municipality: raw.municipality, photoUrl: raw.photoUrl, instagramUrl: raw.instagramUrl };
-  });
+  const candidates: CandidateView[] = electoral360Snapshot.matchedCandidates.map(candidate => ({
+    ...candidate,
+    municipality: candidate.municipality,
+    photoUrl: candidate.photoUrl,
+    instagramUrl: candidate.instagramUrl,
+  }));
+  const hasLocalCandidates = candidates.length > 0;
 
   const filteredCandidates = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase('pt-BR');
@@ -103,43 +103,41 @@ export function PoliticalResearch() {
       <SectionHeader
         titleId="research-title"
         eyebrow="Recorte eleitoral local"
-        title={mode === 'summary' ? 'Candidatos acompanhados' : mode !== 'technical' ? 'Candidatos ligados a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
+        title={mode === 'summary' ? 'Candidaturas acompanhadas' : mode !== 'technical' ? 'Candidaturas ligadas a Águas Lindas de Goiás' : 'Candidaturas acompanhadas no recorte local'}
         description={mode === 'summary'
-          ? `${candidates.length} candidaturas estaduais acompanhadas com evidência documental de vínculo local.`
+          ? `${candidates.length} candidaturas estaduais acompanhadas com evidência documental de vínculo local. Esta não é uma lista municipal completa.`
           : mode !== 'technical'
-            ? 'Lista de candidaturas estaduais de 2026 com vínculo local documental acompanhado pelo Observatório. O vínculo local não é inferido do cadastro estadual.'
-            : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Campos ausentes permanecem identificados.'}
+            ? 'Lista de candidaturas estaduais de 2026 acompanhadas por evidência documental de vínculo local. Não representa o universo completo de candidaturas do município.'
+            : 'O TSE fornece o cadastro estadual; o vínculo com Águas Lindas é sustentado por evidência documental separada. Este snapshot é uma watchlist acompanhada, não uma lista municipal completa.'}
       />
 
       {mode !== 'summary' && <div className="candidate-overview-grid mb-5 grid gap-3 sm:grid-cols-3">
-        <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · município</div></div>
-        <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Exibidos</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">nomes no snapshot acompanhado</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Recorte</div><div className="mt-2 flex items-center gap-2 text-base font-black text-white"><MapPin className="h-4 w-4 text-sky-300" /> Águas Lindas</div><div className="mt-1 text-xs text-slate-500">Goiás · evidência documental</div></div>
+        <div className="candidate-overview-card rounded-2xl border border-white/8 bg-white/[0.02] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Acompanhados</div><div className="mt-2 text-3xl font-black text-white">{candidates.length}</div><div className="mt-1 text-xs text-slate-500">registros no snapshot estadual</div></div>
         <div className="candidate-overview-card rounded-2xl border border-amber-300/10 bg-amber-300/[0.035] p-4"><div className="text-[10px] font-black uppercase tracking-widest text-slate-500">Vínculo local</div><div className="mt-2 text-sm font-black text-amber-100">Evidência documental</div><div className="mt-1 text-xs text-slate-500">não é inferido do cadastro estadual</div></div>
       </div>}
 
-      {!hasLocalCandidates ? (
+      {!hasLocalCandidates && (
         <Card>
           <div className="flex items-start gap-3">
             <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-emerald-300" aria-hidden="true" />
             <div>
-              <h3 className="text-base font-black text-white">{municipalCaptureCompleted ? 'Nenhum registro municipal no snapshot atual' : 'Captura municipal pendente'}</h3>
+              <h3 className="text-base font-black text-white">Nenhuma candidatura acompanhada no snapshot atual</h3>
               <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
-                {municipalCaptureCompleted
-                  ? 'A captura oficial do município foi concluída, mas nenhuma candidatura foi encontrada no snapshot municipal desta execução.'
-                  : 'O último snapshot não contém correspondências municipais validadas. O observatório não transforma a watchlist estadual em candidatura local e mantém a seção vazia até existir evidência municipal no TSE.'}
+                O snapshot atual não contém registros acompanhados com evidência documental de vínculo local. O Observatório não transforma a watchlist estadual em lista municipal.
               </p>
-              <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-bold text-slate-200 hover:border-sky-300/20">Conferir dados oficiais do TSE <ExternalLink className="h-4 w-4" aria-hidden="true" /></a>
+              <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-bold text-slate-200">Conferir dados oficiais do TSE <ExternalLink className="h-4 w-4" aria-hidden="true" /></a>
             </div>
           </div>
         </Card>
-      ) : null}
+      )}
 
       {mode !== 'summary' && <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4">
         <div className="flex items-start gap-3">
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
           <div>
             <strong className="block text-sm font-black text-sky-100">Como ler esta lista</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">A lista combina o cadastro oficial de candidaturas do TSE com evidências documentais de vínculo local. Não há ranking nem seleção por preferência.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">A lista combina o cadastro oficial de candidaturas do TSE com evidências documentais de vínculo local. Não há ranking nem seleção por preferência e a lista não representa todas as candidaturas do município.</p>
           </div>
         </div>
       </div>}
@@ -149,7 +147,7 @@ export function PoliticalResearch() {
           <div className="candidate-summary-grid">
             {candidates.map(candidate => <CandidateSummaryCard key={candidate.name + '-' + candidate.ballotNumber} candidate={candidate} />)}
           </div>
-          <div className="candidate-summary-hint" aria-hidden="true">Toque em um candidato para ver detalhes</div>
+          <div className="candidate-summary-hint" aria-hidden="true">Toque em um candidato para ver detalhes · lista acompanhada, não universo municipal</div>
         </div>
       )}
 
@@ -186,7 +184,7 @@ export function PoliticalResearch() {
         <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 transition hover:border-sky-300/25">
           <span className="text-[10px] font-black uppercase tracking-widest text-sky-300">Fonte oficial</span>
           <strong className="mt-1 block text-sm font-black text-white">DivulgaCandContas</strong>
-          <span className="mt-1 block text-xs leading-5 text-slate-500">Consulte por cargo, estado ou município.</span>
+          <span className="mt-1 block text-xs leading-5 text-slate-500">Consulte diretamente o cadastro oficial do TSE.</span>
         </a>
         <a href="https://dadosabertos.tse.jus.br/dataset/candidatos-2026" target="_blank" rel="noopener noreferrer" className="group rounded-2xl border border-white/8 bg-white/[0.02] p-4 transition hover:border-white/20">
           <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Dados</span>
