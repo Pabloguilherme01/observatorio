@@ -227,7 +227,7 @@ const actions = [
     category: 'Eleições 2026',
     title: 'Consultar o Pardal',
     description: 'Ferramenta oficial do TSE para encaminhar e acompanhar denúncias de propaganda eleitoral irregular.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/servicos/pardal',
+    href: 'https://pardal-web.tse.jus.br/',
     cta: 'Ver instruções do TSE',
   },
   {
