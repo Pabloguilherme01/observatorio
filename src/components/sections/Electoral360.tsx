@@ -21,8 +21,15 @@ export function Electoral360() {
   const [selectedName, setSelectedName] = useState('');
   const localCandidateRecords = electoral360Snapshot.matchedCandidates;
   const hasLocalCandidateSnapshot = localCandidateRecords.length > 0;
-  const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state));
-  const snapshotStateLabel = stateLabel[String(electoral360Diff.state)] ?? 'Atualização em acompanhamento';
+  const snapshotAgeHours = electoral360Snapshot.capturedAt
+    ? Math.max(0, (Date.now() - Date.parse(electoral360Snapshot.capturedAt)) / 3_600_000)
+    : Infinity;
+  const snapshotFreshnessWarning = Number.isFinite(snapshotAgeHours) && snapshotAgeHours > 12;
+  const snapshotWarning = ['not_synced', 'stale', 'failed', 'local_filter_pending'].includes(String(electoral360Diff.state))
+    || snapshotFreshnessWarning;
+  const snapshotStateLabel = snapshotFreshnessWarning
+    ? 'Captura com mais de 12h'
+    : (stateLabel[String(electoral360Diff.state)] ?? 'Atualização em acompanhamento');
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
   const complementaryStats = electoral360Snapshot.complementaryStats;
   const electorate = d.electoral;
@@ -59,8 +66,13 @@ export function Electoral360() {
         description="Consulte o recorte editorial acompanhado pelo observatório e confira cada registro em sua fonte oficial."
       />
 
-      <div className="mb-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-2.5 text-[11px] leading-5 text-slate-500" role="note">
-        <strong className="text-sky-100">Atualização:</strong> o projeto agenda uma verificação da fonte oficial do TSE a cada 4 horas. A data exibida abaixo corresponde à última captura persistida do snapshot, não a uma consulta em tempo real.
+      <div className="mb-4 rounded-2xl border ${snapshotWarning ? 'border-amber-300/20 bg-amber-300/[0.04]' : 'border-sky-300/10 bg-sky-300/[0.025]'} px-3 py-2.5 text-[11px] leading-5 text-slate-500" role="note">
+        <strong className={snapshotWarning ? 'text-amber-100' : 'text-sky-100'}>Atualização:</strong> o projeto agenda uma verificação da fonte oficial do TSE a cada 4 horas. A data exibida abaixo corresponde à última captura persistida do snapshot, não a uma consulta em tempo real.
+        {snapshotFreshnessWarning && (
+          <span className="mt-1 block text-amber-200/80">
+            A captura ultrapassou 12 horas; trate os dados como potencialmente desatualizados até a próxima captura oficial válida.
+          </span>
+        )}
       </div>
 
       <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center" aria-label="Resumo do recorte eleitoral">
