@@ -4,6 +4,7 @@ import '../../assets/styles/quick-quiz.css';
 import { readQuizBestScores, readQuizUnlockedPhase } from '../../lib/quizLeaderboard';
 
 import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
+import { sourceRegistry } from '../../data/sourceRegistry';
 
 export { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 
@@ -37,6 +38,7 @@ export function QuickQuiz() {
   const isLast = nextIndex >= totalQuestions;
   const unlockedNext = activePhase < QUIZ_LEVELS.length - 1 && unlockedPhase > activePhase;
   const displayedScore = score;
+  const questionSource = question ? sourceRegistry.find(source => source.id === question.sourceId) : undefined;
 
   const startPhase = (phaseIndex: number) => {
     setActivePhase(phaseIndex);
@@ -92,7 +94,7 @@ export function QuickQuiz() {
       <header className="quiz-head">
         <p className="quiz-kicker">Aprenda conferindo as fontes</p>
         <h2 id="quiz-title">Quiz de dados · 2026</h2>
-        <p className="quiz-subtitle">{QUIZ_TOTAL} perguntas · {QUIZ_LEVELS.length} fases · 40 por fase. Cada resposta mostra sua fonte.</p>
+        <p className="quiz-subtitle">{QUIZ_TOTAL} perguntas · {QUIZ_LEVELS.length} fases · 40 por fase. Cada resposta informa a fonte usada.</p>
       </header>
 
       <div className="quiz-phase-grid" aria-label="Fases do quiz">
@@ -125,7 +127,7 @@ export function QuickQuiz() {
           <CheckCircle2 className="quiz-result-icon" aria-hidden="true" />
           <h3>Fase {activePhase + 1} · {phaseData?.level} concluída</h3>
           <p className="quiz-result-score">{displayedScore} de {QUESTIONS_PER_LEVEL} acertos</p>
-          <p className="quiz-result-hint">{displayedScore >= PASS_THRESHOLD ? 'Sua melhor marca fica salva neste dispositivo. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o Resumo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
+          <p className="quiz-result-hint">{displayedScore >= PASS_THRESHOLD ? 'Sua melhor marca fica salva neste dispositivo. A fonte de cada resposta está disponível no painel de fontes.' : 'Revise o conteúdo e tente novamente. A próxima fase exige 60% de acertos.'}</p>
           <div className="quiz-result-actions">
             <button type="button" onClick={restart} className="quiz-action"><RotateCcw className="h-4 w-4" aria-hidden="true" /> Refazer fase</button>
             <button type="button" onClick={() => { void share(); }} className="quiz-action"><Share2 className="h-4 w-4" aria-hidden="true" /> Compartilhar</button>
@@ -171,6 +173,11 @@ export function QuickQuiz() {
             <div className={'quiz-feedback ' + (selected === question.answerIndex ? 'correct' : 'wrong')} role="status">
               <strong>{selected === question.answerIndex ? 'Resposta correta' : 'Resposta conferida'}</strong>
               <p>{question.explanation}</p>
+              {questionSource ? (
+                <a className="quiz-source" href={questionSource.url} target="_blank" rel="noopener noreferrer">
+                  Fonte: {questionSource.label} <span aria-hidden="true">↗</span>
+                </a>
+              ) : null}
             </div>
           ) : null}
           <div className="quiz-footer">
