@@ -685,3 +685,17 @@ main summary:focus-visible{
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.001ms!important;animation-duration:.001ms!important}
 }
+
+/* WCAG link affordance */
+.trust-shell a.font-bold.text-sky-200,
+.trust-shell a.font-bold.text-sky-300{
+  color:#bae6fd!important;
+  text-decoration:underline!important;
+  text-underline-offset:2px;
+}
+.light .trust-shell a.font-bold.text-sky-200,
+.light .trust-shell a.font-bold.text-sky-300{
+  color:#0369a1!important;
+  text-decoration:underline!important;
+  text-underline-offset:2px;
+}
