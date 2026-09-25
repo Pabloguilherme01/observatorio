@@ -50,11 +50,13 @@ const transientServerWarnings = results.filter(item => item.status !== null && i
 const errors = results.filter(item => item.status !== null && item.status >= 500 && !/legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(item.url));
 const networkWarnings = results.filter(item => item.status === null);
 const clientWarnings = results.filter(item => item.status >= 400 && item.status < 500);
+const missingSources = results.filter(item => item.status === 404 || item.status === 410);
 
 for (const item of results.sort((a, b) => a.url.localeCompare(b.url))) {
   if (item.status === null) console.log('WARN', item.url, 'unreachable:', item.error);
   else if (item.status >= 500 && /legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(item.url)) console.log('WARN', item.status, item.url, '(portal municipal instável no runner; fonte oficial permanece registrada)');
   else if (item.status >= 500) console.log('FAIL', item.status, item.url);
+  else if (item.status === 404 || item.status === 410) console.log('FAIL', item.status, item.url);
   else if (item.status >= 400) console.log('WARN', item.status, item.url);
   else console.log('PASS', item.status, item.url);
 }
@@ -63,9 +65,10 @@ console.log(JSON.stringify({
   checked: results.length,
   reachable: results.filter(item => item.status !== null && item.status < 400).length,
   clientWarnings: clientWarnings.length,
+  missingSources: missingSources.length,
   networkWarnings: networkWarnings.length,
   transientServerWarnings: transientServerWarnings.length,
   errors: errors.length,
 }, null, 2));
 
-if (errors.length) process.exit(1);
+if (errors.length || missingSources.length) process.exit(1);
