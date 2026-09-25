@@ -313,8 +313,8 @@ export function CivicActionHub() {
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
         titleId="action-title"
-        eyebrow="Fontes e serviços oficiais"
-        title="Atalhos oficiais sem complicação"
+        eyebrow="Depois de ler"
+        title="Como usar o dado"
         description="Links diretos para consultar informações e serviços. O órgão responsável continua sendo a fonte oficial."
       />
 
