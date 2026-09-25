@@ -71,6 +71,30 @@
   transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
 }
 
+.dashboard-kpi-card{
+  display:block;
+  width:100%;
+  border:1px solid var(--pf-border);
+  background:linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.018));
+  color:inherit;
+}
+.technical-mini-kpi{
+  min-height:118px;
+  width:100%;
+  padding:16px;
+  border:1px solid var(--pf-border);
+  border-radius:17px;
+  background:rgba(255,255,255,.025);
+  color:inherit;
+  box-shadow:var(--pf-shadow-soft);
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+}
+.technical-mini-kpi:hover{
+  transform:translateY(-2px);
+  border-color:rgba(167,139,250,.26);
+  box-shadow:0 16px 36px rgba(0,0,0,.16);
+}
+
 .metric-interactive:hover .dashboard-kpi-card{
   transform:translateY(-2px);
   border-color:rgba(125,211,252,.25)!important;
@@ -622,6 +646,12 @@
     border-radius:16px!important;
   }
 
+  .technical-mini-kpi{
+    min-height:102px;
+    padding:14px;
+    border-radius:15px;
+  }
+
   #dashboard .dashboard-kpi-card .text-3xl{
     font-size:clamp(1.55rem,7vw,2rem);
   }
@@ -825,6 +855,14 @@
 .light .quiz-card,
 .light #acao .civic-service-card{
   border-color:#dbe5ec!important;
+}
+
+.light .dashboard-kpi-card,
+.light .technical-mini-kpi{
+  border-color:#dbe5ec!important;
+  background:#fff!important;
+  color:#0f172a;
+  box-shadow:0 8px 24px rgba(15,23,42,.05);
 }
 
 .light .dashboard-heading-card,
