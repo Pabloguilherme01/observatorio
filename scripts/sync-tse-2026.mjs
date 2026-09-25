@@ -331,19 +331,27 @@ async function main() {
 main().catch(error => {
   const previous = loadPrevious();
   if (previous?.meta?.snapshotId && Array.isArray(previous?.matched)) {
-    console.warn(JSON.stringify({
-      valid: true,
-      state: 'upstream_unavailable',
-      message: 'A origem oficial do TSE está temporariamente indisponível. O último snapshot validado foi preservado e não será sobrescrito.',
-      snapshotId: previous.meta.snapshotId,
-      sourceUrl: previous.meta.sourceUrl,
-      lastState: previous.meta.state,
-      matched: previous.matched.length,
-      watchlist: previous.watchlist.length,
-      error: error instanceof Error ? error.message : String(error),
-    }, null, 2));
-    process.exitCode = 0;
+    const upstreamMessage = JSON.stringify({
+    valid: false,
+    state: 'upstream_unavailable',
+    message: 'A origem oficial do TSE está temporariamente indisponível. O último snapshot validado foi preservado e não será sobrescrito.',
+    snapshotId: previous?.meta?.snapshotId ?? null,
+    sourceUrl: previous?.meta?.sourceUrl ?? SOURCE_URL,
+    lastState: previous?.meta?.state ?? null,
+    matched: previous?.matched?.length ?? 0,
+    watchlist: previous?.watchlist?.length ?? 0,
+    error: error instanceof Error ? error.message : String(error),
+  }, null, 2);
+
+  if (process.env.REQUIRE_TSE_FRESH === 'true') {
+    console.error(upstreamMessage);
+    process.exitCode = 1;
     return;
+  }
+
+  console.warn(upstreamMessage);
+  process.exitCode = 0;
+  return;
   }
   console.error(error);
   process.exitCode = 1;
