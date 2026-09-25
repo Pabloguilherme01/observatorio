@@ -31,27 +31,19 @@ jobs:
           node-version: 24
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
-      - name: Validate static consistency
-        run: npm run audit:static
-      - name: Audit practical usability and links
-        run: npm run audit:usability
-      - name: Validate accessibility and contrast
-        run: npm run audit:a11y
-      - name: Validate mobile UX
-        run: npm run audit:mobile
-      - name: Audit engagement and public summary regressions
-        run: npm run audit:engagement
-      - name: Validate TSE architecture isolation
-        run: npm run audit:tse-architecture
-      - name: Validate data contracts
-        run: npm run validate:observatorio
-      - name: Audit runtime hardening
-        run: npm run audit:runtime
-      - name: Validate results feed
+      - name: Run complete quality gate
+        run: npm run audit:all
+      - name: Validate TSE candidate snapshot contract
+        env:
+          REQUIRE_TSE_SYNC: 'false'
+        run: npm run validate:tse
+      - name: Validate candidate source guard
+        run: node scripts/test-candidate-source-guard.mjs
+      - name: Validate production results feed contract
         run: npm run validate:results
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Build
+      - name: Verify JWS implementation
+        run: npm run test:jws
+      - name: Build production artifact
         run: npm run build
       - name: Configure Pages
         uses: actions/configure-pages@v5
