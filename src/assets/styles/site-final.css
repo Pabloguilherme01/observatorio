@@ -1550,3 +1550,10 @@ main p a:not(.official-resource-card):not(.hero-action){
 .high-contrast .hero-shell{background:#05090d!important}
 .high-contrast .hero-copy h1,.high-contrast .hero-election-heading strong,.high-contrast .hero-timer-cell strong,.high-contrast .audience-intro-copy h2,.high-contrast .audience-block-head h3,.high-contrast .audience-topic-copy strong,.high-contrast .audience-action-card strong,.high-contrast .audience-resource-copy strong{color:#fff!important}
 .high-contrast .audience-page-card,.high-contrast .hero-election-card,.high-contrast .audience-topic,.high-contrast .audience-action-card,.high-contrast .audience-resource{background:#0c141c!important;border-color:#fff!important}
+
+.light .audience-block-head>div>span{
+  color:#0369a1!important;
+}
+.light .audience-kicker{
+  color:#075985!important;
+}
