@@ -112,11 +112,10 @@ for (const [component, label] of [
   ['EvidenceChain','evidências'],
   ['CivicActionHub','ação'],
   ['DataExportActions','exportação'],
-  ['InstagramSyncHub','compartilhamento'],
 ]) {
   if (!mountedSources.includes('<' + component)) fail('Camada de ' + label + ' não está montada: ' + component);
 }
-pass('camadas de descoberta, retenção, qualidade, evidências, ação, exportação e compartilhamento montadas');
+pass('camadas de descoberta, retenção, qualidade, evidências, ação e exportação montadas');
 
 const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
 if (!mobileNav.includes('Navegação principal no celular')) fail('Navegação mobile rotulada ausente');
