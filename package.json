@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "quality:check": "npm run typecheck && npm run audit:static && npm run audit:a11y && npm run audit:mobile",
-    "audit:all": "npm run quality:check && npm run audit:public-services && npm run audit:runtime && npm run audit:usability && npm run audit:sources && npm run audit:engagement && npm run audit:quiz && npm run audit:tse-architecture",
+    "audit:all": "npm run quality:check && npm run audit:public-services && npm run audit:runtime && npm run audit:usability && npm run audit:sources && npm run audit:engagement && npm run audit:quiz && npm run audit:tse-architecture && npm run audit:browser",
     "check:deploy": "npm run build && npm run audit:all",
     "audit:ci": "npm run check:deploy",
     "audit:static": "node scripts/audit-static.mjs",
@@ -31,7 +31,8 @@
     "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs",
     "test:browser": "playwright test --config=playwright.config.mjs",
     "test:a11y:browser": "playwright test --config=playwright.config.mjs tests/accessibility-smoke.spec.mjs",
-    "test:browser:prepare": "npm install --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.13.0"
+    "test:browser:prepare": "npm install --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.13.0",
+    "audit:browser": "npm run test:browser:prepare && npx playwright install --with-deps chromium && npm run test:browser && npm run test:a11y:browser"
   },
   "dependencies": {
     "@sentry/react": "10.74.0",
