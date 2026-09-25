@@ -36,6 +36,8 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Capture official TSE candidate snapshot
+        env:
+          REQUIRE_TSE_FRESH: 'true'
         run: npm run sync:tse
 
       - name: Mark successful TSE freshness check
