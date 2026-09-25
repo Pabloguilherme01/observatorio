@@ -11,6 +11,7 @@ export type QuizHighScore = {
 };
 
 const KEY = STORAGE_NAMESPACE + '-quiz-high-scores';
+const BEST_KEY = STORAGE_NAMESPACE + '-quiz-best-scores';
 const LIMIT = 10;
 
 function readRaw(): QuizHighScore[] {
@@ -48,12 +49,18 @@ export function readQuizHighScores(): readonly QuizHighScore[] {
 }
 
 export function readQuizBestScores(): readonly number[] {
-  const best = [0, 0, 0, 0, 0];
+  const fallback = [0, 0, 0, 0, 0];
+  try {
+    const value = JSON.parse(localStorage.getItem(BEST_KEY) ?? 'null');
+    if (Array.isArray(value) && value.length === fallback.length && value.every(item => Number.isInteger(item) && item >= 0)) {
+      return value;
+    }
+  } catch {}
   for (const entry of readRaw()) {
     const index = entry.phase - 1;
-    if (index >= 0 && index < best.length) best[index] = Math.max(best[index], entry.score);
+    if (index >= 0 && index < fallback.length) fallback[index] = Math.max(fallback[index], entry.score);
   }
-  return best;
+  return fallback;
 }
 
 export function readQuizUnlockedPhase(): number {
@@ -73,6 +80,12 @@ export function recordQuizHighScore(entry: Omit<QuizHighScore, 'id'>): readonly 
   ]);
   try {
     localStorage.setItem(KEY, JSON.stringify(next));
+    const best = [...readQuizBestScores()];
+    const index = entry.phase - 1;
+    if (index >= 0 && index < best.length) {
+      best[index] = Math.max(best[index], entry.score);
+      localStorage.setItem(BEST_KEY, JSON.stringify(best));
+    }
   } catch {}
   return next;
 }
