@@ -1,3 +1,4 @@
+import '../../assets/styles/dashboard.css';
 import { Activity, CalendarDays, Users } from 'lucide-react';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { observatorioData as d } from '../../data/observatorioData';

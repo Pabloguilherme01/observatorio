@@ -74,8 +74,7 @@ must((appSource.includes('skip-link') && appSource.includes('Pular para o conte�
 must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
 must(vite.includes("includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html']") && vite.includes("navigateFallback: '/observatorio/offline.html'"), 'VitePWA registra offline.html como fallback de navegação');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
-must(appSource.includes('election-mode') || read('src/components/ExperienceShell.tsx').includes('election-mode'), 'Modo Eleição possui estado persistente');
-must(read('src/components/sections/HeroCountdown.tsx').includes('electionMode') && read('src/components/sections/HeroCountdown.tsx').includes('observatorio:election-mode'), 'Modo Eleição mantém o controle do estado no hero');
+must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/HeroCountdown.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
 must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 
 const pkgScripts = packageJson.scripts ?? {};
@@ -89,7 +88,7 @@ must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')
 must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 'pipeline antigo de ingestão municipal removido após consolidação');
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
-must(!read('src/components/sections/PoliticalRadar.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalRadar.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
+must(!read('src/components/sections/PoliticalResearch.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalResearch.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
 must(read('src/components/layout/Header.tsx').includes('Captura ') && read('src/components/layout/Header.tsx').includes('updatedAt'), 'cabeçalho exibe a data da captura local do conjunto principal');
 must(
   deployWorkflow.includes('npm run audit:all')
@@ -105,10 +104,11 @@ must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includ
 must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
-const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup', 'DeferredTrustGroup'];
+const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
-must(appSource.includes("'saude'") && appSource.includes("'healgo'"), 'deep links de saúde e simuladores preservados');
+const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
+must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && contextSource.includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
 const deferredDashboard = read('src/components/sections/DeferredDashboardGroup.tsx');
 must(appSource.includes('id="analise"') && appSource.includes('loadDashboardGroup') && deferredDashboard.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
@@ -120,21 +120,21 @@ must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a �
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
 must(dashboardMetrics.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
-must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && (appSource.includes('DeferredTrustGroup') || appSource.includes('<ProjectTrustPanel />')), 'descoberta, confiança e modo de linguagem montados');
+must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
 
 const allRuntimeText = [
   appSource,
   read('src/components/sections/DeferredCivicGroup.tsx'),
   read('src/components/sections/DeferredPublicDataGroup.tsx'),
   read('src/components/sections/DeferredEvidenceGroup.tsx'),
-  read('src/components/sections/DeferredTrustGroup.tsx'),
+  read('src/components/sections/DeferredEvidenceGroup.tsx'),
 ].join('\n');
 must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
 must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<DataExportActions />'), 'ação e exportação montadas');
-must(allRuntimeText.includes('<InstagramSyncHub />'), 'Instagram/compartilhamento montado');
+must(allRuntimeText.includes('<PublicDataPulse />') && appSource.includes('<Footer />'), 'atualizações públicas e footer institucional montados');
 must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
 
-for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
+for (const id of ['descubra', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
 
@@ -157,7 +157,7 @@ const runtimeFiles = [
   'src/data/sourceRegistry.ts',
   'src/config/navigation.ts',
   'src/config/version.ts',
-  'src/components/sections/DeferredTrustGroup.tsx',
+  'src/components/sections/DeferredEvidenceGroup.tsx',
   'src/data/contextualComparison.ts',
 ];
 for (const file of runtimeFiles) {
@@ -224,9 +224,12 @@ if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
 
 
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
-const social = read('src/components/InstagramSyncHub.tsx');
+const sharing = [
+  read('src/components/sections/ExecutiveSummary.tsx'),
+  read('src/components/sections/CivicActionHub.tsx'),
+].join('\n');
 must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modo Resumo/Simples/Técnico possui componente próprio');
-must(social.includes('MessageCircle') && social.includes('shareWhatsApp'), 'Instagram/WhatsApp possuem compartilhamento');
+must(sharing.includes('navigator.share') && sharing.includes('wa.me'), 'compartilhamento nativo e WhatsApp permanecem disponíveis');
 
 if (!errors.length) {
   pass(`auditoria estática concluída para ${edition}`);

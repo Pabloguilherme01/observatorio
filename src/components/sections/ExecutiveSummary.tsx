@@ -1,4 +1,4 @@
-import { Activity, ArrowRight, ExternalLink, Share2, Sparkles, Zap, ChevronDown } from 'lucide-react';
+import { ArrowRight, Share2, Sparkles, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
@@ -12,11 +12,6 @@ function brl(value: number) {
 }
 
 export function ExecutiveSummary() {
-  const poll = d.polls[0];
-  const groupedUnknown = (poll?.nonePct ?? 0) + (poll?.notSurePct ?? 0);
-  const source = d.sources.find(sourceItem => sourceItem.id === 'tse-pesquisas-2026');
-  const hasPoll = Boolean(poll);
-  const pollScenario = poll?.method === 'spontaneous' ? 'Deputado estadual · pergunta espontânea' : poll?.method === 'stimulated' ? 'Deputado estadual · pergunta estimulada' : 'Cenário da pesquisa';
   
   const electorate = d.electoral;
   const populationPoint = d.populationSeries.find(point => point.year === 2026);
@@ -40,20 +35,13 @@ export function ExecutiveSummary() {
     { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', badge: 'Fonte pública', target: 'dashboard' },
     { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', badge: 'Fonte pública', target: 'eleitorado' },
     { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 · razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', badge: 'Derivado', target: 'orcamento' },
-    { id: 'saneamento', label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · cobertura do serviço público; não representa coleta ou tratamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'dashboard' },
-  ] as const;
-
-  const quickStats = [
-    { label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR'), caption: 'eleitores', detail: languageMode === 'technical' ? 'snapshot TSE · ' + electorate.snapshotDate.split('-').reverse().join('/') : `${electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}% participaram em 2024`, target: 'eleitoral360' },
-    { label: 'População', value: population.toLocaleString('pt-BR'), caption: 'habitantes', detail: languageMode === 'technical' ? `estimativa · ${populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : 'data não informada'}` : 'estimativa 2026', target: 'dashboard' },
-    { label: 'Orçamento', value: brl(budget), caption: 'LOA 2026', detail: languageMode === 'technical' ? (budgetSource?.label ?? 'lei orçamentária') : 'orçamento municipal', target: 'orcamento' },
-    { label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', caption: 'serviço público', detail: languageMode === 'technical' ? (sanitationSource?.label ?? 'fonte de saneamento') : 'indicador de saneamento', target: 'dashboard' },
+    { id: 'saneamento', label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · cobertura do serviço público; não representa coleta ou tratamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'saude' },
   ] as const;
 
   const topics = [
     { id: 'eleitoral', label: 'Eleição', target: 'eleitoral360', caption: 'eleitorado, participação e candidaturas' },
     { id: 'cidade', label: 'Cidade', target: 'dashboard', caption: 'população e indicadores' },
-    { id: 'servicos', label: 'Serviços', target: 'dashboard', caption: 'saneamento e indicadores' },
+    { id: 'servicos', label: 'Serviços', target: 'acao', caption: 'saúde, saneamento e canais públicos' },
     { id: 'recursos', label: 'Recursos', target: 'orcamento', caption: 'orçamento e atualizações' },
   ] as const;
 
@@ -73,7 +61,6 @@ export function ExecutiveSummary() {
       `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
       `Orçamento por habitante: ${brl(budgetPerCapita)} por ano (LOA 2026 ÷ população estimada).`,
-      poll ? `Pesquisa registrada em ${formatDate(poll.collectionDate)}: ${poll.pollster}, registro ${poll.registrationNumber}.` : '',
     ].filter(Boolean).join(' ');
 
     try {
@@ -101,18 +88,18 @@ export function ExecutiveSummary() {
   };
 
   return (
-    <section id="resumo" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10" aria-labelledby="executive-summary-title">
-      <div className="rounded-[28px] border border-sky-300/15 bg-sky-300/[0.035] p-4 shadow-[0_18px_70px_rgba(0,0,0,.16)] sm:p-7">
+    <section id="resumo" className={'executive-summary executive-summary--' + languageMode + ' mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10'} aria-labelledby="executive-summary-title">
+      <div className="summary-shell rounded-[28px] border border-sky-300/15 bg-sky-300/[0.035] p-4 shadow-[0_18px_70px_rgba(0,0,0,.16)] sm:p-7">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
             eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
             title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
             description={languageMode === 'technical'
-              ? 'Valor, data, fonte, método e contexto para conferir o dado.'
+              ? 'Valor, data, fonte e limite juntos para conferência.'
               : languageMode === 'summary'
-                ? 'Quatro números para situar o cenário. Cada cartão preserva referência e fonte.'
-                : 'Número principal, data de referência e fonte em uma leitura direta.'}
+                ? 'Só o essencial primeiro. O detalhe fica a um toque.'
+                : 'Números claros, contexto direto e fonte visível.'}
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Rastreável' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
@@ -123,13 +110,13 @@ export function ExecutiveSummary() {
           </div>
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-[1.35fr_.65fr]">
+        <div className="summary-mode-content grid gap-3">
           {languageMode === 'summary' && (
             <div className="summary-public-hero">
               <div className="summary-public-copy">
-                <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Águas Lindas em foco</span>
-                <h3>Águas Lindas em foco</h3>
-                <p className="summary-public-lead">O essencial em quatro números. Abra o cartão para ver contexto, referência e fonte.</p>
+                <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Visão rápida</span>
+                <h3>O quadro em quatro sinais</h3>
+                <p className="summary-public-lead">Número, referência e fonte em cada cartão. O aprofundamento fica a um toque.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -154,7 +141,7 @@ export function ExecutiveSummary() {
                 </div>
               </div>
               <div className="summary-public-discovery-head">
-                <span>4 indicadores para começar</span>
+                <span>Dados essenciais</span>
                 <small>Fonte e referência em cada cartão</small>
               </div>
 
@@ -172,85 +159,17 @@ export function ExecutiveSummary() {
             </div>
           )}
 
-          {languageMode !== 'summary' && <Card className="border-sky-300/15 bg-slate-950/20 light:bg-white">
-            <div className="flex items-start gap-3">
-              <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{hasPoll ? "Pesquisa registrada" : "Pesquisas"}</div>
-                {poll && <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                  <span className="font-black text-white light:text-slate-900">{poll.pollster}</span>
-                  <span className="rounded-full border border-white/10 px-2 py-1 text-slate-500 light:border-slate-200">Deputado estadual · pergunta espontânea</span>
-                  <span className="rounded-full border border-white/10 px-2 py-1 text-slate-500 light:border-slate-200">{poll.registrationNumber}</span>
-                </div>}
-                {!hasPoll && <p className="mt-3 text-sm text-slate-400">Nenhuma pesquisa está disponível neste snapshot.</p>}
-                <div className="mt-3 grid grid-cols-2 gap-2 sm:max-w-md">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Nenhum</div>
-                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll?.nonePct?.toFixed(2).replace('.', ',') ?? '—'}%</div>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 light:border-slate-200 light:bg-slate-50">
-                    <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Não sabe/NR</div>
-                    <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{poll?.notSurePct?.toFixed(2).replace('.', ',') ?? '—'}%</div>
-                  </div>
-                </div>
-
-                {languageMode === 'technical' ? (
-                  <p className="technical-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    Soma das duas categorias: <strong className="text-white light:text-slate-900">{groupedUnknown.toFixed(2).replace('.', ',')}%</strong>. Essa combinação não é uma categoria adicional da pesquisa e não deve ser lida como classificação de “indecisos”.
-                  </p>
-                ) : (
-                  <p className="simple-detail mt-3 max-w-2xl text-sm leading-6 text-slate-300 light:text-slate-600">
-                    A pesquisa separa essas respostas. Aqui, cada percentual é mostrado como foi registrado.
-                  </p>
-                )}
-
-                <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-semibold text-slate-500">
-                  {poll && <>
-                    <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll.interviews} entrevistas</span>
-                    <span className="rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{formatDate(poll.collectionDate)}</span>
-                  </>}
-                  {languageMode === 'technical' && (
-                    <>
-                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.registrationNumber ?? 'Registro não disponível'}</span>
-                      <span className="technical-detail rounded-full border border-white/10 px-2.5 py-1 light:border-slate-200">{poll?.pollster ?? 'Instituto não informado'}</span>
-                      <span className="technical-detail rounded-full border border-amber-400/20 bg-amber-400/[0.04] px-2.5 py-1 text-amber-200 light:border-amber-300/50 light:bg-amber-50 light:text-amber-800">divulgação com cautela</span>
-                    </>
-                  )}
-                </div>
-
-                {source?.url && (
-                  <a href={source.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-300 hover:text-sky-200">
-                    {languageMode === 'technical' ? 'Conferir catálogo oficial das pesquisas' : 'Conferir fonte oficial'} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                )}
-              </div>
-            </div>
-          </Card>}
-
-          {languageMode !== 'summary' && <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            <Card className="p-4">
-              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado</div>
-              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div>
-              <div className="text-xs text-slate-500">
-                {languageMode === 'technical'
-                  ? 'snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/')
-                  : 'eleitores · snapshot TSE'}
-              </div>
-              {languageMode !== 'technical' && <button type="button" onClick={() => goToSection('eleitorado')} className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-extrabold text-sky-300">Abrir contexto <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></button>}
-            </Card>
-
-          </div>}
         </div>
 
         {languageMode === 'simple' && (
           <>
             <div className="summary-simple-grid mt-3" aria-label="Resumo dos principais indicadores">
-              {quickStats.map(stat => (
-                <button key={stat.label} type="button" className="summary-simple-card" onClick={() => goToSection(stat.target)}>
-                  <span>{stat.label}</span>
-                  <strong>{stat.value}</strong>
-                  <small>{stat.caption}</small>
-                  <em>{stat.detail}</em>
+              {publicFacts.map(fact => (
+                <button key={fact.id} type="button" className="summary-simple-card" onClick={() => goToSection(fact.target)}>
+                  <span>{fact.label}</span>
+                  <strong>{fact.value}</strong>
+                  <small>{fact.badge}</small>
+                  <em>{fact.note}</em>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
               ))}

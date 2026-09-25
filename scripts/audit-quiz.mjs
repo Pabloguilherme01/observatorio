@@ -4,13 +4,14 @@ import path from 'node:path';
 const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const quiz = read('src/components/sections/QuickQuiz.tsx');
+const quizData = read('src/data/quiz/questionBank.ts');
 const registry = read('src/data/sourceRegistry.ts');
 
 const errors = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 
-const questions = [...quiz.matchAll(
+const questions = [...quizData.matchAll(
   /\{\s*id:\s*"(q\d+)",\s*difficulty:\s*'([^']+)',\s*prompt:\s*"((?:\\.|[^"\\])*)",\s*options:\s*\[([^\]]+)\],\s*answerIndex:\s*(\d+),[\s\S]*?sourceId:\s*"([^"]+)"\s*\}/g,
 )].map(match => ({
   id: match[1],
@@ -26,11 +27,11 @@ const quickQuizSource = quiz;
 if (!quickQuizSource.includes('const displayedScore = score;')) fail('Pontuação exibida deve usar o score já contabilizado.');
 else pass('Pontuação exibida do Quiz não duplica a resposta selecionada.');
 
-if (!quickQuizSource.includes('const finalScore = score;')) fail('Pontuação final deve usar o score já contabilizado.');
-else pass('Pontuação final do Quiz não duplica a última resposta.');
+if (!quickQuizSource.includes('const finalScore = score + (selected === question.answerIndex ? 1 : 0);')) fail('Pontuação final deve contabilizar explicitamente a última resposta.');
+else pass('Pontuação final do Quiz considera a última resposta sem depender de atualização assíncrona.');
 
-if (!quickQuizSource.includes('recordQuizHighScore')) fail('Quiz perdeu o registro de resultados.');
-else if (!quiz.includes('recordQuizHighScore')) pass('Quiz mantém registro de resultados.');
+if (!quickQuizSource.includes('readQuizBestScores')) fail('Quiz perdeu a persistência da melhor marca pessoal.');
+else pass('Quiz mantém apenas a melhor marca pessoal por fase.');
 const leaderboard = read('src/lib/quizLeaderboard.ts');
 if (!leaderboard.includes('BEST_KEY') || !leaderboard.includes('localStorage.setItem(BEST_KEY')) fail('Progresso por fase não está persistido de forma independente.');
 else pass('Melhor pontuação de cada fase fica persistida independentemente do ranking global.');

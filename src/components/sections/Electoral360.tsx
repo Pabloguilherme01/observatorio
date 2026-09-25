@@ -65,6 +65,7 @@ export function Electoral360() {
 
   return (
     <section id="eleitoral360" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="electoral360-title">
+      <div id="candidaturas" className="scroll-mt-24" aria-hidden="true" />
       <SectionHeader
         titleId="electoral360-title"
         eyebrow="Eleitoral 2026"

@@ -9,7 +9,9 @@ import { LanguageModeProvider, useLanguageMode } from '../context/LanguageModeCo
 import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
+import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
+import '../assets/styles/premium-finish.css';
 
 const loadDashboardGroup = () => import('../components/sections/DeferredDashboardGroup');
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
@@ -17,7 +19,6 @@ const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup')
 const loadElectionGroup = () => import('../components/sections/DeferredElectionGroup');
 const loadPublicDataGroup = () => import('../components/sections/DeferredPublicDataGroup');
 const loadEvidenceGroup = () => import('../components/sections/DeferredEvidenceGroup');
-const loadTrustGroup = () => import('../components/sections/DeferredTrustGroup');
 
 function Deferred({ children }: { readonly children: ReactNode }) {
   return (
@@ -242,15 +243,15 @@ export function App() {
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><DeferredBlock loader={loadDashboardGroup} errorLabel="Dashboard" anchorIds={['analise', 'dashboard']} /></div>
-            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'insights', 'rotas', 'healgo', 'heal-beds', 'perfil-etario', 'quiz']} /></div>
+            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
-            <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados', 'instagram']} /></div>
-            <div className="mode-scope mode-scope-trust"><DeferredBlock loader={loadTrustGroup} errorLabel="Princípios e governança" anchorIds={['principios']} /></div>
-            <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} errorLabel="Qualidade e evidências" anchorIds={['qualidade', 'evidencias', 'fontes', 'exportacao']} /></div>
+            <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados']} /></div>
+            <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} errorLabel="Qualidade e evidências" anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']} /></div>
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
+          <Footer />
         </ExperienceShell>
         </ContrastProvider>
       </ThemeProvider>

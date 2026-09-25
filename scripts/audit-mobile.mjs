@@ -13,11 +13,10 @@ const files = {
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   share: read('src/components/ShareDataButton.tsx'),
-  instagram: read('src/components/InstagramSyncHub.tsx'),
-  trustGroup: read('src/components/sections/DeferredTrustGroup.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
-  radar: read('src/components/sections/PoliticalRadar.tsx'),
+  quizData: read('src/data/quiz/questionBank.ts'),
+  research: read('src/components/sections/PoliticalResearch.tsx'),
   electoral: read('src/components/sections/Electoral360.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
@@ -33,12 +32,12 @@ must(files.app.includes('IntersectionObserver') && files.app.includes("rootMargi
 must(files.app.includes('observatorio:navigate') && files.app.includes("window.location.hash"), 'deep links e navegação por evento permanecem centralizados no App');
 must(files.app.includes('behavior: reduceMotion ? \'auto\' : \'smooth\''), 'rolagem central respeita redução de movimento');
 must(files.app.includes('<LanguageModeProvider>') && files.app.includes('<AudienceHub />'), 'descoberta e modos de leitura continuam montados');
-must(files.app.includes('DeferredTrustGroup') && files.app.includes('DeferredPublicDataGroup'), 'grupos diferidos de confiança e dados públicos permanecem presentes');
+must(files.app.includes('DeferredEvidenceGroup') && files.app.includes('DeferredPublicDataGroup') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'grupo técnico consolidado e dados públicos permanecem montados');
 
-must(files.experience.includes('pendingGTimerRef') && files.experience.includes('focusTimerRef'), 'ExperienceShell mantém cleanup dos timers assíncronos');
-must(files.experience.includes('readStorage') && files.experience.includes('writeStorage'), 'ExperienceShell protege acesso ao storage');
+must(files.experience.includes("window.dispatchEvent(new CustomEvent('observatorio:search'))") && files.experience.includes('reading-progress'), 'ExperienceShell mantém busca global e progresso de leitura com cleanup');
+must(files.experience.includes('prefers-reduced-motion') && files.experience.includes('addEventListener'), 'ExperienceShell respeita redução de movimento e cleanup de listeners');
 must(!files.experience.includes('className="quick-dock"'), 'dock flutuante redundante não é renderizado');
-must(files.experience.includes("mode: 'overview'") || files.experience.includes("useState<ExperienceMode>('overview')"), 'modo inicial permanece Visão geral');
+must(!files.experience.includes('ExperienceMode') && !files.experience.includes('MODE_KEY'), 'ExperienceShell não mantém modo de experiência paralelo');
 must(!files.experience.includes('market') && !files.experience.includes('hype'), 'implementação não reintroduz modo Hype/Market');
 
 must(files.header.includes('IntersectionObserver') && files.header.includes('observatorio:navigate'), 'cabeçalho acompanha seções carregadas tardiamente');
@@ -54,13 +53,12 @@ must(files.css.includes('scroll-snap-type'), 'rails móveis suportam navegação
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:\s*390px\)/.test(files.css), 'há ajuste dedicado para telas muito estreitas');
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
 
-must(files.hero.includes('hero-mobile-election-toggle') && files.hero.includes('aria-pressed'), 'Modo Eleição possui controle acessível no mobile');
+must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#evidencias"'), 'hero mantém ações principais acessíveis no mobile');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed'), 'os três modos de leitura continuam disponíveis');
-must(files.radar.includes('Margem registrada') && files.radar.includes('min-h-11'), 'radar político mantém informação registrada e alvos de toque adequados');
+must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
-must(files.instagram.includes('navigator.canShare') && files.instagram.includes('wa.me/?text='), 'estúdio social mantém compartilhamento de arquivo e WhatsApp');
-must(files.quiz.includes('quiz-progress-track') && files.quiz.includes('QUIZ_TOTAL = 200') && files.quiz.includes('QUESTIONS_PER_LEVEL = 40') && files.quiz.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
+must(files.quiz.includes('quiz-progress-track') && files.quizData.includes('QUIZ_TOTAL = 200') && files.quizData.includes('QUESTIONS_PER_LEVEL = 40') && files.quizData.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
 must(files.version.match(/APP_VERSION\s*=\s*['"]44\./), 'versão atual continua na linha 44 consolidada');
@@ -72,13 +70,12 @@ must(files.index.includes('id="root"') && files.index.includes('boot-fallback'),
 for (const [file, label] of [
   ['src/components/ShareDataButton.tsx', 'compartilhamento'],
   ['src/components/DataExportActions.tsx', 'exportação'],
-  ['src/components/InstagramSyncHub.tsx', 'estúdio social'],
 ]) {
   must(read(file).includes('statusTimerRef') && read(file).includes('clearTimeout'), label + ' protege timers de status');
 }
 
-must(exists('src/components/sections/DeferredTrustGroup.tsx'), 'grupo de confiança existe em arquivo próprio');
-must(files.trustGroup.includes('ProjectTrustPanel') || files.trustGroup.includes('DataCorrection'), 'grupo de confiança mantém sua camada editorial');
+must(exists('src/components/sections/DeferredEvidenceGroup.tsx'), 'grupo técnico consolidado existe em arquivo próprio');
+must(files.app.includes('<ProjectTrustPanel />') || read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'grupo técnico consolidado mantém sua camada editorial');
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');

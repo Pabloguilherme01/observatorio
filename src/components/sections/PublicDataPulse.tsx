@@ -1,96 +1,67 @@
-import { BookOpen, CalendarClock, Database, ExternalLink, Landmark, ShieldAlert } from 'lucide-react';
+import { CalendarClock, ExternalLink, RefreshCw } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
-const brl = (value: number) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
 export function PublicDataPulse() {
-  const education = d.education;
-  const latestBudgetUpdate = [...d.budgetUpdates].sort((a, b) => b.date.localeCompare(a.date))[0];
-
+  const updates = [...d.budgetUpdates].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
   return (
-    <section id="dados" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="dados-title">
+    <section id="dados" className="mx-auto max-w-7xl px-4 py-12 sm:px-6" aria-labelledby="dados-title">
       <SectionHeader
         titleId="dados-title"
-        eyebrow="Dados públicos"
-        title="O que entrou no observatório"
-        description="Novos dados oficiais entram como registros identificados por fonte, período e natureza. O painel separa fato publicado de interpretação."
+        eyebrow="Atualizações públicas"
+        title="O que mudou"
+        description="Registros novos ou alterados no conjunto publicado. Cada item mantém sua data e fonte para conferência."
       />
-
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
         <Card>
-          <div className="flex items-center gap-3">
-            <BookOpen className="h-5 w-5 text-sky-300" aria-hidden="true" />
+          <div className="flex items-start gap-3">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.05] text-sky-300">
+              <RefreshCw className="h-5 w-5" aria-hidden="true" />
+            </span>
             <div>
-              <h3 className="text-lg font-black text-white">Educação 2025</h3>
-              <p className="text-xs text-slate-400">Base de Dados Educacionais de Goiás</p>
+              <h3 className="text-base font-black text-white light:text-slate-900">Estado da publicação</h3>
+              <p className="mt-1 text-xs leading-5 text-slate-500">
+                Última atualização do conjunto principal: <strong className="text-slate-300 light:text-slate-700">{d.meta.updatedAt.split('-').reverse().join('/')}</strong>.
+              </p>
+              <p className="mt-3 text-xs leading-5 text-slate-500">
+                Este bloco mostra mudanças recentes; indicadores, séries e metodologias permanecem nas seções temáticas.
+              </p>
             </div>
-          </div>
-          <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-            <div className="rounded-2xl bg-white/[0.03] p-3">
-              <strong className="block text-lg text-white">{education?.basicEducationEnrollments2025.toLocaleString('pt-BR')}</strong>
-              <span className="text-[10px] text-slate-500">educação básica</span>
-            </div>
-            <div className="rounded-2xl bg-white/[0.03] p-3">
-              <strong className="block text-lg text-white">{education?.municipalBasicEducationEnrollments2025.toLocaleString('pt-BR')}</strong>
-              <span className="text-[10px] text-slate-500">rede municipal</span>
-            </div>
-            <div className="rounded-2xl bg-white/[0.03] p-3">
-              <strong className="block text-lg text-white">{education?.technicalEptEnrollments2025.toLocaleString('pt-BR')}</strong>
-              <span className="text-[10px] text-slate-500">EPT técnica</span>
-            </div>
-          </div>
-          <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-3">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-200">Ideb 2025 · referência secundária</span>
-              <strong className="text-lg text-white">{education?.ideb2025Range?.map(value => value.toFixed(1).replace('.', ',')).join('–')}</strong>
-            </div>
-            <p className="mt-2 text-xs leading-5 text-slate-400">
-              Faixa registrada no levantamento de origem com referência ao QEdu. O Inep confirma a publicação dos resultados municipais de 2025, mas o ponto municipal oficial ainda não foi materializado neste snapshot; por isso esta faixa não é apresentada como nota municipal oficial.
-            </p>
           </div>
         </Card>
 
         <Card>
           <div className="flex items-center gap-3">
-            <Landmark className="h-5 w-5 text-amber-300" aria-hidden="true" />
+            <CalendarClock className="h-5 w-5 text-sky-300" aria-hidden="true" />
             <div>
-              <h3 className="text-lg font-black text-white">Alteração orçamentária</h3>
-              <p className="text-xs text-slate-400">Registro legislativo mais recente no dataset</p>
+              <h3 className="text-base font-black text-white light:text-slate-900">Registros orçamentários recentes</h3>
+              <p className="text-xs text-slate-500">Apenas novidades, sem repetir o painel de orçamento.</p>
             </div>
           </div>
-          {latestBudgetUpdate && (
-            <>
-              <div className="mt-5 text-2xl font-black text-white">{brl(latestBudgetUpdate.amountBrl)}</div>
-              <div className="mt-1 text-sm font-bold text-slate-200">{latestBudgetUpdate.title}</div>
-              <div className="mt-1 text-xs text-slate-500">{latestBudgetUpdate.law} · {latestBudgetUpdate.date.split('-').reverse().join('/')}</div>
-              <p className="mt-4 text-xs leading-5 text-slate-400">{latestBudgetUpdate.description}</p>
-              <a href={d.sources.find(s => s.id === latestBudgetUpdate.sourceId)?.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200">
-                Abrir lei oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-            </>
+          {updates.length ? (
+            <div className="mt-4 space-y-3">
+              {updates.map(update => {
+                const sourceUrl = d.sources.find(source => source.id === update.sourceId)?.url;
+                return (
+                  <article key={update.law} className="rounded-2xl border border-white/8 bg-white/[0.018] p-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <strong className="text-sm text-white light:text-slate-900">{update.title}</strong>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">{update.date.split('-').reverse().join('/')}</span>
+                    </div>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">{update.law} · {update.description}</p>
+                    {sourceUrl && (
+                      <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-9 items-center gap-1.5 text-[11px] font-bold text-sky-300">
+                        Abrir fonte <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                      </a>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="mt-4 text-sm text-slate-500">Nenhuma atualização recente registrada.</p>
           )}
-        </Card>
-
-        <Card>
-          <div className="flex items-center gap-3">
-            <Database className="h-5 w-5 text-emerald-300" aria-hidden="true" />
-            <div>
-              <h3 className="text-lg font-black text-white">Bases eleitorais disponíveis</h3>
-              <p className="text-xs text-slate-400">Catálogos oficiais para próximas capturas</p>
-            </div>
-          </div>
-          <div className="mt-5 space-y-3">
-            <a href="https://dadosabertos.tse.jus.br/dataset/pesquisas-eleitorais-2026" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 rounded-2xl border border-white/8 p-3 hover:bg-white/[0.03]">
-              <CalendarClock className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
-              <span><strong className="block text-sm text-white">PesqEle 2026</strong><span className="text-xs text-slate-500">Pesquisas, contratantes, pagantes e questionários · atualização diária</span></span>
-            </a>
-            <a href="https://dadosabertos.tse.jus.br/dataset/denuncias-eleitorais" target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 rounded-2xl border border-white/8 p-3 hover:bg-white/[0.03]">
-              <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
-              <span><strong className="block text-sm text-white">Pardal 2026</strong><span className="text-xs text-slate-500">Denúncias registradas · atualização diária · denúncia não é comprovação</span></span>
-            </a>
-          </div>
         </Card>
       </div>
     </section>

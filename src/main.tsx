@@ -99,24 +99,6 @@ function PwaInstallPrompt() {
   );
 }
 
-function PwaStatus() {
-  const [updateAvailable, setUpdateAvailable] = useState(false);
-  useEffect(() => {
-    const onUpdate = () => setUpdateAvailable(true);
-    window.addEventListener('observatorio:pwa-update-available', onUpdate);
-    return () => window.removeEventListener('observatorio:pwa-update-available', onUpdate);
-  }, []);
-  if (!updateAvailable) return null;
-  return (
-    <div className="pwa-update-banner" role="status" aria-live="polite">
-      <span>Há uma versão mais recente do Observatório.</span>
-      <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:pwa-apply-update'))} className="pwa-update-button">
-        Atualizar
-      </button>
-    </div>
-  );
-}
-
 function captureGlobalError(source: string, value: unknown): void {
   const message = normalizeError(value);
   const mounted = document.documentElement.dataset.observatorioMounted === 'true';
@@ -140,18 +122,11 @@ if (!root) {
   window.addEventListener('error', event => captureGlobalError('window.error', event.error ?? event.message));
   window.addEventListener('unhandledrejection', event => captureGlobalError('unhandledrejection', event.reason));
 
-  let updateSW: ((reloadPage?: boolean) => Promise<void>) | undefined;
-
   const registerPwa = () => {
     void import('virtual:pwa-register')
       .then(pwa => {
         try {
-          updateSW = pwa.registerSW({
-            immediate: true,
-            onNeedRefresh() {
-              window.dispatchEvent(new CustomEvent('observatorio:pwa-update-available'));
-            },
-          });
+          pwa.registerSW({ immediate: true });
         } catch (error) {
           console.warn('[Observatório][pwa] registro indisponível', error);
         }
@@ -160,9 +135,6 @@ if (!root) {
   };
 
   window.addEventListener('observatorio:app-mounted', registerPwa, { once: true });
-
-  const onApplyUpdate = () => { if (updateSW) void updateSW(true); };
-  window.addEventListener('observatorio:pwa-apply-update', onApplyUpdate);
 
   const bootTimeout = window.setTimeout(() => {
     if (document.documentElement.dataset.observatorioMounted !== 'true') {
@@ -193,7 +165,6 @@ if (!root) {
           <App />
         </ErrorBoundary>
         <MountSignal />
-        <PwaStatus />
         <PwaInstallPrompt />
       </StrictMode>,
     );

@@ -1,6 +1,5 @@
 export const navigation = [
   { id: 'descubra', label: 'Descobrir', shortLabel: 'Descobrir', description: 'Escolha por onde começar', shortcut: 'G R', group: 'primary' },
-  { id: 'instagram', label: 'Instagram', shortLabel: 'Instagram', description: 'Cards e compartilhamento social', shortcut: 'G S', group: 'more' },
   { id: 'principios', label: 'Princípios', shortLabel: 'Princípios', description: 'Método e correções', shortcut: 'G N', group: 'more' },
   { id: 'dashboard', label: 'Dashboard', shortLabel: 'Dashboard', description: 'Visão geral', shortcut: 'G D', group: 'primary' },
   { id: 'contexto', label: 'Contexto', shortLabel: 'Contexto', description: 'Comparações descritivas', shortcut: 'G C', group: 'more' },

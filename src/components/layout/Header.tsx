@@ -1,12 +1,13 @@
-import { CalendarDays, Command, Menu, Moon, Search, Sun, X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { SearchModal } from './SearchModal';
+import { CalendarDays, Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ContrastModeToggle } from './ContrastModeToggle';
 import { useTheme } from '../../context/ThemeContext';
 import { navigation } from '../../config/navigation';
 import { LanguageModeToggle } from './LanguageModeToggle';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
+
+const SearchModal = lazy(() => import('./SearchModal').then(module => ({ default: module.SearchModal })));
 
 const primaryNavigationIds = ['descubra', 'dashboard', 'eleitoral360'] as const;
 const primaryNavigation = navigation.filter(item => primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
@@ -50,7 +51,11 @@ export function Header() {
     };
 
     observeSections();
-    const onNavigate = () => window.requestAnimationFrame(observeSections);
+    const onNavigate = (event: Event) => {
+      const targetId = (event as CustomEvent<string>).detail;
+      if (targetId && navigation.some(item => item.id === targetId)) setActiveSection(targetId);
+      window.requestAnimationFrame(observeSections);
+    };
     const root = document.getElementById('main-content') ?? document.body;
     const mutationObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => observeSections());
     mutationObserver?.observe(root, { childList: true, subtree: true });
@@ -221,31 +226,6 @@ export function Header() {
 
         {toolsOpen && (
           <div ref={toolsPanelRef} id="mobile-tools" className="mobile-tools-sheet border-t border-white/10 px-4 py-3 md:hidden" role="dialog" aria-modal="false" aria-label="Menu e ferramentas">
-            <nav className="mb-3 border-b border-white/10 pb-3" aria-label="Navegação móvel">
-              <div className="grid grid-cols-2 gap-2">
-                {primaryNavigation.map(item => (
-                  <a
-                    key={item.id}
-                    href={'#' + item.id}
-                    onClick={closeTools}
-                    className={'min-h-11 rounded-xl border px-3 py-2.5 text-left text-xs font-bold transition focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 ' + (activeSection === item.id ? 'border-sky-300/30 bg-sky-300/[0.08] text-sky-200' : 'border-white/10 bg-white/[0.025] text-slate-300')}
-                    aria-current={activeSection === item.id ? 'page' : undefined}
-                  >
-                    {item.shortLabel}
-                  </a>
-                ))}
-                <details className="col-span-2 rounded-xl border border-white/10 bg-white/[0.02]">
-                  <summary className="min-h-11 cursor-pointer px-3 py-2.5 text-xs font-bold text-slate-300 focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">Mais áreas</summary>
-                  <div className="grid grid-cols-2 gap-1 border-t border-white/10 p-2">
-                    {moreNavigation.map(item => (
-                      <a key={item.id} href={'#' + item.id} onClick={closeTools} className="rounded-lg px-2.5 py-2 text-[10px] font-semibold text-slate-400 hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2">
-                        {item.shortLabel}
-                      </a>
-                    ))}
-                  </div>
-                </details>
-              </div>
-            </nav>
             <div className="mobile-tools-grid">
               <div className="mobile-tools-mode">
                 <div className="mobile-tools-meta">
@@ -263,16 +243,18 @@ export function Header() {
                   {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
                   <span>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</span>
                 </button>
-                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:command')); closeTools(); }} className="mobile-tool-action">
-                  <Command className="h-4 w-4" aria-hidden="true" />
-                  <span>Explorar áreas</span>
+                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:search')); closeTools(); }} className="mobile-tool-action">
+                  <Search className="h-4 w-4" aria-hidden="true" />
+                  <span>Buscar áreas</span>
                 </button>
               </div>
             </div>
           </div>
         )}
       </header>
-      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <Suspense fallback={null}>
+        <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+      </Suspense>
     </>
   );
 }

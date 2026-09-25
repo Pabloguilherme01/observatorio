@@ -19,8 +19,8 @@ const priorityPublicServices = [
   { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Consulte endereço, horário e contato oficial do Conselho Tutelar.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/' },
   { icon: Stethoscope, title: 'CAPS', description: 'Consulte endereço, horário e contato oficial do Centro de Atenção Psicossocial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/' },
   { icon: Stethoscope, title: 'SAMU', description: 'Acesse o serviço oficial e o número de emergência 192.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/' },
-  { icon: Smartphone, title: 'Atendimento à pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
-  { icon: ShieldCheck, title: 'Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/unidades/' },
+  { icon: Smartphone, title: 'Portal SEI · Pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
+  { icon: ShieldCheck, title: 'Portal SEI · Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
 ] as const;
 
@@ -318,7 +318,7 @@ export function CivicActionHub() {
         description="O observatório informa e aponta caminhos oficiais. Ele não recebe denúncias, apura fatos nem substitui os órgãos públicos."
       />
 
-      <Card className="mb-4 p-4 sm:p-5">
+      <Card className="civic-primary-card mb-4 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-emerald-300/10 bg-emerald-300/[0.06] text-emerald-200">
             <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
@@ -331,8 +331,8 @@ export function CivicActionHub() {
           </div>
         </div>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {priorityPublicServices.map(({ icon: Icon, title, description, href }) => (
-            <div key={title} className="group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05]">
+          {priorityPublicServices.slice(0, 7).map(({ icon: Icon, title, description, href }) => (
+            <div key={title} className="civic-service-card group min-h-24 rounded-2xl border border-white/8 bg-white/[0.025] p-3 transition hover:border-sky-300/20 hover:bg-white/[0.05]">
               <a href={href} target="_blank" rel="noopener noreferrer" className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300" aria-label={`${title}: ${description}`}>
                 <span className="flex items-center gap-2 text-sm font-black text-white light:text-slate-900">
                   <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
@@ -348,9 +348,27 @@ export function CivicActionHub() {
             </div>
           ))}
         </div>
+        {priorityPublicServices.length > 7 && (
+          <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3">
+            <summary className="cursor-pointer list-none text-xs font-black text-slate-300 light:text-slate-700">
+              Mais atalhos de utilidade pública <span className="ml-1 font-semibold text-slate-500">+{priorityPublicServices.length - 7}</span>
+            </summary>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              {priorityPublicServices.slice(7).map(({ icon: Icon, title, description, href }) => (
+                <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="group rounded-xl border border-white/8 bg-white/[0.018] p-3">
+                  <span className="flex items-center gap-2 text-xs font-black text-white light:text-slate-900">
+                    <Icon className="h-4 w-4 text-sky-300" aria-hidden="true" />{title}
+                    <ExternalLink className="ml-auto h-3.5 w-3.5 text-slate-500 group-hover:text-sky-300" aria-hidden="true" />
+                  </span>
+                  <span className="mt-1 block text-[10px] leading-4 text-slate-500">{description}</span>
+                </a>
+              ))}
+            </div>
+          </details>
+        )}
       </Card>
 
-      <Card className="mb-4 p-4 sm:p-5">
+      <Card className="civic-contact-card mb-4 p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-amber-300/10 bg-amber-300/[0.06] text-amber-200">
             <Smartphone className="h-5 w-5" aria-hidden="true" />
@@ -362,7 +380,7 @@ export function CivicActionHub() {
         </div>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {immediatePublicContacts.map(contact => (
-            <div key={contact.id} className="rounded-xl border border-white/8 bg-white/[0.025] p-3">
+            <div key={contact.id} className="civic-contact-item rounded-xl border border-white/8 bg-white/[0.025] p-3">
               <a href={contact.tel} className="block min-h-11 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
                 <span className="block text-sm font-black text-white light:text-slate-900">{contact.title} · {contact.phone}</span>
                 <span className="text-[11px] text-slate-500">{contact.description}</span>
@@ -377,30 +395,58 @@ export function CivicActionHub() {
 
       <div className="grid gap-4 lg:grid-cols-[1fr_.72fr]">
         <div className="space-y-5">
-          {(['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026'] as const).map(category => (
-            <div key={category}>
-              <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {actions.filter(action => action.category === category).map(({ icon: Icon, title, description, href, cta }) => (
-                  <Card key={title} className="p-5">
-                    <div className="flex items-start gap-3">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
-                        <Icon className="h-5 w-5" aria-hidden="true" />
-                      </span>
-                      <div>
-                        <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
-                        <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
-                        <PublicServiceLink href={href} label={cta} />
+          {(['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026'] as const).map(category => {
+            const categoryActions = actions.filter(action => action.category === category);
+            const visibleActions = categoryActions.slice(0, 2);
+            const extraActions = categoryActions.slice(2);
+            return (
+              <div key={category}>
+                <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {visibleActions.map(({ icon: Icon, title, description, href, cta }) => (
+                    <Card key={title} className="civic-category-card p-5">
+                      <div className="flex items-start gap-3">
+                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
+                          <Icon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <div>
+                          <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
+                          <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
+                          <PublicServiceLink href={href} label={cta} />
+                        </div>
                       </div>
+                    </Card>
+                  ))}
+                </div>
+                {extraActions.length > 0 && (
+                  <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3">
+                    <summary className="cursor-pointer list-none text-xs font-black text-slate-300 light:text-slate-700">
+                      Ver mais serviços de {category.toLocaleLowerCase('pt-BR')} <span className="ml-1 font-semibold text-slate-500">+{extraActions.length}</span>
+                    </summary>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      {extraActions.map(({ icon: Icon, title, description, href, cta }) => (
+                        <Card key={title} className="p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/8 bg-white/[0.03] text-sky-300">
+                              <Icon className="h-4 w-4" aria-hidden="true" />
+                            </span>
+                            <div>
+                              <h4 className="text-sm font-black text-white light:text-slate-900">{title}</h4>
+                              <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
+                              <PublicServiceLink href={href} label={cta} />
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
                     </div>
-                  </Card>
-                ))}
+                  </details>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        <details className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
+        <details className="civic-more-services rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
           <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
             Mais serviços oficiais
             <span className="ml-2 text-[11px] font-semibold text-slate-500">+{additionalPublicServices.length} caminhos</span>
@@ -423,13 +469,13 @@ export function CivicActionHub() {
           </div>
         </details>
 
-        <Card className="p-6">
+        <Card className="civic-share-card p-6">
           <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Fonte + caminho oficial</div>
           <h3 className="mt-2 text-2xl font-black text-white light:text-slate-900">Leve a fonte junto com o link</h3>
           <p className="mt-3 text-sm leading-6 text-slate-400 light:text-slate-600">
             O compartilhamento carrega o endereço do observatório. Os atalhos acima levam diretamente aos portais oficiais e continuam sendo a referência para executar o serviço.
           </p>
-          <button type="button" onClick={shareWhatsApp} className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-sky-300 px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-sky-200">
+          <button type="button" onClick={shareWhatsApp} className="civic-share-button mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-sky-300 px-4 py-3 text-sm font-black text-slate-950 transition hover:bg-sky-200">
             <MessageCircle className="h-4 w-4" aria-hidden="true" /> Compartilhar no WhatsApp
           </button>
           <p className="mt-3 text-[11px] leading-5 text-slate-500">O observatório é uma fonte de consulta. O conteúdo compartilhado não substitui a fonte oficial citada em cada seção.</p>

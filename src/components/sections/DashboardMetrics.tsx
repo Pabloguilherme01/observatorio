@@ -1,9 +1,8 @@
-import { Activity, Gauge, Map, Users, WalletCards, ArrowUpRight, CalendarDays, Database, Info, Table2, AlertCircle } from 'lucide-react';
+import { Activity, Gauge, Map, Users, Database, Info, AlertCircle } from 'lucide-react';
 import { HistoricalTrendChart } from './HistoricalTrendChart';
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatCurrency, formatNumber, formatPercent } from '../../utils/formatters';
+import { formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
-import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
@@ -17,16 +16,16 @@ export function DashboardMetrics() {
   const population2026 = d.populationSeries.find(p => p.year === 2026)?.value ?? 0;
   const populationGrowthPct = population2022 ? ((population2026 - population2022) / population2022) * 100 : 0;
   const electorateShare = population2026 ? (d.electoral.electorate / population2026) * 100 : 0;
-  const inclusionCount = d.electoral.socialNameCount ?? 0;
+  const electorate2022 = d.electoral.electorate2022 ?? 0;
+  const electorate2026 = d.electoral.electorate;
+  const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
-  const populationDelta = population2026 - population2022;
-  const plannedBudgetPerCapita = population2026 > 0 ? d.budget.totalBrl / population2026 : 0;
   const metricDetails: readonly MetricDetail[] = [
-    { label: 'População 2026', value: formatNumber(population2026), caption: 'estimativa IBGE', simpleExplanation: 'Quantas pessoas moram na cidade, segundo a estimativa usada.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Estimativa', sourceLabel: 'IBGE · estimativa 2026' },
-    { label: 'Eleitorado 2026', value: formatNumber(d.electoral.electorate), caption: 'snapshot TSE', simpleExplanation: 'Quantidade de eleitores neste recorte.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Snapshot', sourceLabel: 'TSE · snapshot 2026' },
-    { label: 'Orçamento 2026', value: formatCurrency(d.budget.totalBrl), caption: 'LOA 2026', simpleExplanation: 'Valor total previsto na LOA para o exercício de 2026.', icon: WalletCards, sourceId: d.budget.sourceId, referenceDate: '2026-01-01', nature: 'Orçamento', sourceLabel: 'LOA municipal · 2026' },
-    { label: 'Orçamento planejado por habitante', value: formatCurrency(plannedBudgetPerCapita), caption: 'LOA ÷ população estimada', simpleExplanation: 'Valor orçamentário planejado dividido pela população estimada. É uma razão de planejamento, não gasto efetivamente realizado.', icon: Gauge, sourceId: d.budget.sourceId, referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · LOA 2026 ÷ IBGE 2026' },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'cálculo: população ÷ área', simpleExplanation: 'Média de habitantes por km².', icon: Map, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
+    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: population2022 + ' → ' + population2026, simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
+    { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: electorate2022 + ' → ' + electorate2026, simpleExplanation: 'Mudança percentual do eleitorado entre os snapshots disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
+    { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado do snapshot e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
+    { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];
 
   return (
@@ -65,14 +64,14 @@ export function DashboardMetrics() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Quatro números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
+          <p className="mt-1 text-xs text-slate-500">{languageMode === 'simple' ? 'Cinco números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature, sourceLabel }) => (
-          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive text-left">
-            <Card className="dashboard-kpi-card">
+          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
+
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
@@ -98,7 +97,6 @@ export function DashboardMetrics() {
                 </div>
                 <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               </div>
-            </Card>
           </button>
         ))}
       </div>
@@ -115,19 +113,6 @@ export function DashboardMetrics() {
 
       <HistoricalTrendChart />
 
-      {languageMode === 'technical' && (
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Mudança da população', value: '+' + formatPercent(populationGrowthPct, 2), sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', status: 'derivado' })}>
-            <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">População</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">+{formatPercent(populationGrowthPct, 2)}</div><div className="mt-1 text-xs text-slate-500">mudança desde 2022</div></Card>
-          </button>
-          <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Relação eleitorado/população', value: formatPercent(electorateShare, 2), sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, status: 'derivado' })}>
-            <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Eleitorado</div><div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatPercent(electorateShare, 2)}</div><p className="mt-1 text-xs text-slate-500">relação estatística</p></Card>
-          </button>
-          <button type="button" className="metric-interactive text-left" onClick={() => dispatchInspect({ label: 'Área territorial', value: formatNumber(area, 3) + ' km²', sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01' })}>
-            <Card><div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Área</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatNumber(area, 3)} km²</div><p className="mt-1 text-xs text-slate-500">base do cálculo de densidade</p></Card>
-          </button>
-        </div>
-      )}
       {languageMode === 'technical' && (
         <>
           <div className="technical-detail mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
