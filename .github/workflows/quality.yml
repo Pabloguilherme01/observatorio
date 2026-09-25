@@ -40,6 +40,8 @@ jobs:
         run: npm run audit:runtime
       - name: Audit engagement and mobile regressions
         run: npm run audit:engagement
+      - name: Audit quiz integrity
+        run: npm run audit:quiz
       - name: Validate versioned TSE snapshot contract
         run: npm run validate:tse
       - name: Validate candidate source guard
