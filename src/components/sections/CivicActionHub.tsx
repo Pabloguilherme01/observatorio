@@ -19,8 +19,8 @@ const priorityPublicServices = [
   { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Consulte endereço, horário e contato oficial do Conselho Tutelar.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/' },
   { icon: Stethoscope, title: 'CAPS', description: 'Consulte endereço, horário e contato oficial do Centro de Atenção Psicossocial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/' },
   { icon: Stethoscope, title: 'SAMU', description: 'Acesse o serviço oficial e o número de emergência 192.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/' },
-  { icon: Smartphone, title: 'Atendimento à pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
-  { icon: ShieldCheck, title: 'Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
+  { icon: Smartphone, title: 'Portal SEI · Pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
+  { icon: ShieldCheck, title: 'Portal SEI · Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
 ] as const;
 
@@ -377,28 +377,55 @@ export function CivicActionHub() {
 
       <div className="grid gap-4 lg:grid-cols-[1fr_.72fr]">
         <div className="space-y-5">
-          {(['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026'] as const).map(category => (
-            <div key={category}>
-              <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {actions.filter(action => action.category === category).map(({ icon: Icon, title, description, href, cta }) => (
-                  <Card key={title} className="civic-category-card p-5">
-                    <div className="flex items-start gap-3">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
-                        <Icon className="h-5 w-5" aria-hidden="true" />
-                      </span>
-                      <div>
-                        <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
-                        <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
-                        <PublicServiceLink href={href} label={cta} />
+          {(['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026'] as const).map(category => {
+            const categoryActions = actions.filter(action => action.category === category);
+            const visibleActions = categoryActions.slice(0, 2);
+            const extraActions = categoryActions.slice(2);
+            return (
+              <div key={category}>
+                <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">{category}</h3>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {visibleActions.map(({ icon: Icon, title, description, href, cta }) => (
+                    <Card key={title} className="civic-category-card p-5">
+                      <div className="flex items-start gap-3">
+                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-sky-300/10 bg-sky-300/[0.06] text-sky-200">
+                          <Icon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                        <div>
+                          <h4 className="text-base font-black text-white light:text-slate-900">{title}</h4>
+                          <p className="mt-2 text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>
+                          <PublicServiceLink href={href} label={cta} />
+                        </div>
                       </div>
+                    </Card>
+                  ))}
+                </div>
+                {extraActions.length > 0 && (
+                  <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3">
+                    <summary className="cursor-pointer list-none text-xs font-black text-slate-300 light:text-slate-700">
+                      Ver mais serviços de {category.toLocaleLowerCase('pt-BR')} <span className="ml-1 font-semibold text-slate-500">+{extraActions.length}</span>
+                    </summary>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      {extraActions.map(({ icon: Icon, title, description, href, cta }) => (
+                        <Card key={title} className="p-4">
+                          <div className="flex items-start gap-3">
+                            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/8 bg-white/[0.03] text-sky-300">
+                              <Icon className="h-4 w-4" aria-hidden="true" />
+                            </span>
+                            <div>
+                              <h4 className="text-sm font-black text-white light:text-slate-900">{title}</h4>
+                              <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
+                              <PublicServiceLink href={href} label={cta} />
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
                     </div>
-                  </Card>
-                ))}
+                  </details>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
+            );
+          })}
 
         <details className="civic-more-services rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
           <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
