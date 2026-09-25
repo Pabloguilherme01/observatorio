@@ -41,6 +41,14 @@ test.describe('Observatório smoke flows', () => {
     await page.getByRole('button', { name: /Próxima|Finalizar fase/i }).click();
     await expect(page.getByText(/200 perguntas · 5 fases · 40 por fase/i)).toBeVisible();
 
+    await openSection(page, 'transporte');
+    const peopleSlider = page.getByRole('slider', { name: /Quantidade de pessoas/i });
+    await peopleSlider.fill('20');
+    await expect(peopleSlider).toHaveValue('20');
+    await page.reload();
+    await openSection(page, 'transporte');
+    await expect(page.getByRole('slider', { name: /Quantidade de pessoas/i })).toHaveValue('20');
+
     await openSection(page, 'acao');
     await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
