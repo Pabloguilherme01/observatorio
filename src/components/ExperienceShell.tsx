@@ -1,4 +1,5 @@
 import { ArrowRight, Command, Compass, Search, Sparkles, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { navigation, type NavigationId } from '../config/navigation';
 import { MobileBottomNav } from './layout/MobileBottomNav';
@@ -203,14 +204,24 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, [normalizedNavigation, query, visibleNavigation]);
 
   return <>
-    {pageFlip && !reducedMotion ? (
-      <div key={pageFlip} className="observatorio-page-flip" aria-hidden="true">
-        <div className="observatorio-page-flip-inner">
-          <span>Observatório</span>
-          <strong>{navigation.find(item => item.id === pageFlip)?.label ?? 'Nova seção'}</strong>
-        </div>
-      </div>
-    ) : null}
+    <AnimatePresence initial={false}>
+      {pageFlip && !reducedMotion ? (
+        <motion.div
+          key={pageFlip}
+          className="observatorio-page-flip"
+          aria-hidden="true"
+          initial={{ rotateY: 0, opacity: 1 }}
+          animate={{ rotateY: -92, opacity: [1, 1, 0.92] }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="observatorio-page-flip-inner">
+            <span>Observatório</span>
+            <strong>{navigation.find(item => item.id === pageFlip)?.label ?? 'Nova seção'}</strong>
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
     <div ref={progressRef} className="reading-progress" style={{ width: '0%' }} aria-hidden="true" />
     {children}
     <MobileBottomNav />
