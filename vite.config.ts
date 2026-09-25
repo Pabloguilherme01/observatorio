@@ -6,6 +6,14 @@ import { APP_VERSION } from './src/config/version';
 import { observatorioData } from './src/data/observatorioData';
 import { sourceRegistry } from './src/data/sourceRegistry';
 
+const BASE_PATH = '/observatorio/';
+const API_ROOT = '/api/v1/';
+
+const getApiRequestPath = (value: string) => {
+  const path = value.split('?')[0];
+  return path.startsWith(BASE_PATH) ? path.slice(BASE_PATH.length - 1) : path;
+};
+
 const getObservatorioPayload = () => ({
   schemaVersion: 1,
   apiVersion: '1.0',
@@ -23,7 +31,7 @@ const getHealthPayload = () => ({
   edition: observatorioData.meta.edition,
   datasetUpdatedAt: observatorioData.meta.updatedAt,
   buildGeneratedAt: new Date().toISOString(),
-  publicPath: '/',
+  publicPath: BASE_PATH,
 });
 
 const getSourcesPayload = () => ({
@@ -41,7 +49,7 @@ const getOpenApiPayload = () => ({
     version: APP_VERSION,
     description: 'Snapshot público estático gerado a cada build a partir da mesma fonte usada pela interface.',
   },
-  servers: [{ url: '/' }],
+  servers: [{ url: BASE_PATH }],
   paths: {
     '/api/v1/observatorio.json': {
       get: { summary: 'Dataset consolidado da edição publicada', responses: { '200': { description: 'JSON do observatório' } } },
@@ -62,19 +70,20 @@ const publicApiPlugin = (): Plugin => ({
   name: 'observatorio-public-api',
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
-      if (req.url === '/api/v1/observatorio.json') {
+      const apiPath = getApiRequestPath(req.url ?? '');
+      if (apiPath === API_ROOT + 'observatorio.json') {
         res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify(getObservatorioPayload(), null, 2));
       }
-      if (req.url === '/api/v1/health.json') {
+      if (apiPath === API_ROOT + 'health.json') {
         res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify(getHealthPayload(), null, 2));
       }
-      if (req.url === '/api/v1/sources.json') {
+      if (apiPath === API_ROOT + 'sources.json') {
         res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify(getSourcesPayload(), null, 2));
       }
-      if (req.url === '/api/v1/openapi.json') {
+      if (apiPath === API_ROOT + 'openapi.json') {
         res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify(getOpenApiPayload(), null, 2));
       }
@@ -106,7 +115,7 @@ const publicApiPlugin = (): Plugin => ({
 });
 
 export default defineConfig({
-  base: '/observatorio/',
+  base: BASE_PATH,
   plugins: [
     publicApiPlugin(),
     react(),
@@ -119,25 +128,25 @@ export default defineConfig({
         description: 'Dados públicos eleitorais e municipais de Águas Lindas de Goiás, com fontes rastreáveis.',
         lang: 'pt-BR',
         dir: 'ltr',
-        id: '/observatorio/',
+        id: BASE_PATH,
         theme_color: '#0d1117',
         background_color: '#0d1117',
         display: 'standalone',
         orientation: 'portrait-primary',
-        start_url: '/observatorio/',
-        scope: '/observatorio/',
+        start_url: BASE_PATH,
+        scope: BASE_PATH,
         categories: ['public-services', 'education'],
         prefer_related_applications: false,
         icons: [
-          { src: '/pwa-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-          { src: '/pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
+          { src: BASE_PATH + 'pwa-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
+          { src: BASE_PATH + 'pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
         ],
       },
       includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         navigateFallback: '/observatorio/offline.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/observatorio\/api\//],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
@@ -167,7 +176,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/api/v1/'),
+            urlPattern: ({ url }) => url.pathname.startsWith(BASE_PATH + API_ROOT.slice(1)) || url.pathname.startsWith(API_ROOT),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'observatorio-api-v10',
