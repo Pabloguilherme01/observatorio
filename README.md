@@ -77,7 +77,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-**V44.9.3 — Observatório de Dados Cívicos e Eleitorais.**
+**V44.10.0 — Observatório de Dados Cívicos e Eleitorais.**
 
 - Três modos de leitura (Resumo, Simples, Técnico) com preferência persistida.
 - Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
