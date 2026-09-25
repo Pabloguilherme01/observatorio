@@ -135,34 +135,49 @@ export function PoliticalResearch() {
       </div>
 
       {poll && (
-        <Card className="mb-5">
-          <div className="flex items-start gap-3">
-            <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
-            <div className="min-w-0">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Pesquisas registradas</div>
-              <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">{poll.pollster}</h3>
-              <p className="mt-1 text-xs leading-5 text-slate-500">{poll.collectionDate} · {poll.interviews} entrevistas · {poll.method === 'spontaneous' ? 'pergunta espontânea' : poll.method} · registro {poll.registrationNumber}</p>
-              <div className="mt-4 space-y-2">
-                {poll.results.map(result => (
-                  <div key={result.label} className="grid grid-cols-[minmax(0,9rem)_1fr_3.5rem] items-center gap-2 text-xs">
-                    <span className="break-words text-slate-400">{result.label}</span>
-                    <div className="h-2 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-sky-300/65" style={{ width: Math.min(100, result.percentage * 2) + '%' }} /></div>
-                    <strong className="text-right text-white">{result.percentage.toFixed(2).replace('.', ',')}%</strong>
-                  </div>
-                ))}
+        mode === 'summary' ? (
+          <Card className="mb-5">
+            <div className="flex items-start gap-3">
+              <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
+              <div className="min-w-0">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Pesquisa registrada</div>
+                <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">{poll.pollster}</h3>
+                <p className="mt-1 text-xs leading-5 text-slate-500">{poll.collectionDate} · {poll.interviews} entrevistas</p>
+                <p className="mt-3 text-xs leading-5 text-slate-400 light:text-slate-600">É um snapshot único, não uma série temporal. O detalhamento metodológico e as categorias publicadas ficam disponíveis no modo Técnico.</p>
+                {pollSource?.url && <a href={pollSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">Conferir fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>}
               </div>
-              <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">Nenhum</span></div>
-                <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">NS/NR</span></div>
-                <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">Não classificado</span></div>
-                <div className="rounded-xl border border-amber-300/15 bg-amber-300/[0.03] p-3 sm:col-span-3"><strong className="block text-amber-100">Margem registrada</strong><span className="text-[11px] text-slate-500">{poll.theoreticalMarginErrorPct != null ? poll.theoreticalMarginErrorPct.toFixed(1).replace('.', ',') + '%' : 'não informada'}</span></div>
-              </div>
-              <p className="mt-3 text-xs leading-5 text-slate-500">Este conjunto contém um único snapshot de pesquisa. Ele não é uma série temporal e não sustenta inferência de tendência. O observatório preserva as categorias publicadas sem completar a distribuição por inferência.</p>
-              {poll.judicialContext && <p className="mt-2 text-xs leading-5 text-amber-100/80">Contexto documental: {poll.judicialContext.summary}</p>}
-              {pollSource?.url && <a href={pollSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">Conferir fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>}
             </div>
-          </div>
-        </Card>
+          </Card>
+        ) : (
+          <Card className="mb-5">
+            <div className="flex items-start gap-3">
+              <Activity className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
+              <div className="min-w-0">
+                <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Pesquisas registradas</div>
+                <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">{poll.pollster}</h3>
+                <p className="mt-1 text-xs leading-5 text-slate-500">{poll.collectionDate} · {poll.interviews} entrevistas · {poll.method === 'spontaneous' ? 'pergunta espontânea' : poll.method} · registro {poll.registrationNumber}</p>
+                <div className="mt-4 space-y-2">
+                  {poll.results.map(result => (
+                    <div key={result.label} className="grid grid-cols-[minmax(0,9rem)_1fr_3.5rem] items-center gap-2 text-xs">
+                      <span className="break-words text-slate-400">{result.label}</span>
+                      <div className="h-2 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-sky-300/65" style={{ width: Math.min(100, result.percentage * 2) + '%' }} /></div>
+                      <strong className="text-right text-white">{result.percentage.toFixed(2).replace('.', ',')}%</strong>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.nonePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">Nenhum</span></div>
+                  <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.notSurePct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">NS/NR</span></div>
+                  <div className="rounded-xl border border-white/8 p-3"><strong className="block text-white">{poll.unclassifiedPct?.toFixed(2).replace('.', ',')}%</strong><span className="text-[11px] text-slate-500">Não classificado</span></div>
+                  <div className="rounded-xl border border-amber-300/15 bg-amber-300/[0.03] p-3 sm:col-span-3"><strong className="block text-amber-100">Margem registrada</strong><span className="text-[11px] text-slate-500">{poll.theoreticalMarginErrorPct != null ? poll.theoreticalMarginErrorPct.toFixed(1).replace('.', ',') + '%' : 'não informada'}</span></div>
+                </div>
+                <p className="mt-3 text-xs leading-5 text-slate-500">Este conjunto contém um único snapshot de pesquisa. Ele não é uma série temporal e não sustenta inferência de tendência. O observatório preserva as categorias publicadas sem completar a distribuição por inferência.</p>
+                {poll.judicialContext && <p className="mt-2 text-xs leading-5 text-amber-100/80">Contexto documental: {poll.judicialContext.summary}</p>}
+                {pollSource?.url && <a href={pollSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">Conferir fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>}
+              </div>
+            </div>
+          </Card>
+        )
       )}
 
       {mode !== 'summary' && <div className="mb-5 mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.04] p-4" role="note" aria-label="Limitação da lista de candidaturas"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-amber-200" aria-hidden="true" /><div><strong className="block text-sm font-black text-amber-100">Acompanhamento documental — não é lista oficial completa</strong><p className="mt-1 text-xs leading-5 text-slate-400">O cadastro vem do TSE. O vínculo com Águas Lindas é sustentado por evidência documental separada. Esta watchlist não deve ser interpretada como o universo completo de candidaturas municipais.</p></div></div></div>}
