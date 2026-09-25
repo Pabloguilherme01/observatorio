@@ -66,11 +66,12 @@ for (const [label, pathFragment] of required) {
 const actionsBlock = source.slice(source.indexOf('const actions = ['), source.indexOf('const additionalPublicServices'));
 const additionalBlock = source.slice(source.indexOf('const additionalPublicServices'), source.indexOf('function shareWhatsApp'));
 const priorityBlock = source.slice(source.indexOf('const priorityPublicServices'), source.indexOf('const actions = ['));
-const urls = [...new Set([
+const serviceUrls = [
   ...[...priorityBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
   ...[...actionsBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
   ...[...additionalBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
-])];
+];
+const urls = [...new Set(serviceUrls)];
 const renderedLinks = [...source.matchAll(/<a\b[^>]*href=\"(?:https?:\/\/)[^\"]+\"[^>]*>/g)].map(match => match[0]);
 const insecureLinks = renderedLinks.filter(link => /target=\"_blank\"/.test(link) && !/rel=\"[^\"]*noopener[^\"]*\"/.test(link));
 if (insecureLinks.length) {
@@ -78,11 +79,11 @@ if (insecureLinks.length) {
 } else {
   pass('links públicos externos preservam noopener em target=_blank');
 }
-const allPublicActionLinks = urls.length;
+const allPublicActionLinks = serviceUrls.length;
 if (allPublicActionLinks < 74) {
-  fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
+  fail.push(`quantidade de atalhos públicos cadastrados abaixo do esperado: ${allPublicActionLinks}`);
 } else {
-  pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
+  pass(`${allPublicActionLinks} atalhos públicos cadastrados possuem URL auditável (${urls.length} URLs únicas)`);
 }
 
 const categories = [...actionsBlock.matchAll(/category:\s*'([^']+)'/g)].map(match => match[1]);
