@@ -1,4 +1,7 @@
+/* Mobile final layer · consolidated breakpoints · 2026-09-25 */
+
 /* Mobile final layer · 2026-09-24 */
+
 @media (max-width:767px){
 :root{--mobile-page-gutter:14px;--mobile-nav-height:64px}
 html{scroll-padding-top:72px;scroll-padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))}
@@ -56,42 +59,7 @@ section{scroll-margin-top:72px}
 .mobile-bottom-nav button svg{width:18px!important;height:18px!important}
 .mobile-bottom-nav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mobile-bottom-nav button.is-active{background:rgba(56,189,248,.12)!important;border-color:rgba(125,211,252,.26)!important}
-}
-@media (max-width:390px){
-:root{--mobile-page-gutter:12px}
-.site-brand{max-width:46vw}
-.site-icon-button,.site-tools-button{width:42px!important;min-width:42px!important}
-.hero-shell{padding-top:18px!important;padding-bottom:20px!important}
-.hero-shell h1{font-size:2rem!important}
-.hero-shell .mt-4.flex.flex-wrap,.hero-shell .mt-5.flex.flex-wrap{grid-template-columns:1fr}
-.hero-shell .mt-4.flex.flex-wrap>button:first-child,.hero-shell .mt-5.flex.flex-wrap>button:first-child{grid-column:auto}
-.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4>div{padding-inline:2px!important}
-.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-xl{font-size:.9rem}
-.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:7px}
-.today-card{flex-basis:82vw}
-.summary-simple-grid,.summary-public-topics,.summary-public-facts,.candidate-card .flex.flex-wrap.gap-2{grid-template-columns:1fr!important}
-.quiz-phase-card{padding:8px 6px}
-.quiz-phase-name{font-size:.9rem}
-.mobile-bottom-nav button{min-height:46px!important;font-size:8.5px!important}
-.mobile-bottom-nav button svg{width:17px!important;height:17px!important}
-}
-@media (max-width:350px){
-:root{--mobile-page-gutter:10px}
-.site-brand{max-width:42vw}
-.site-brand>span:last-child{font-size:14px!important}
-.hero-shell h1{font-size:1.85rem!important}
-.hero-shell .mt-4.flex.flex-wrap,.hero-shell .mt-5.flex.flex-wrap{gap:6px}
-.hero-shell .mt-4.flex.flex-wrap>*,.hero-shell .mt-5.flex.flex-wrap>*{min-height:44px}
-.mobile-bottom-nav button{padding-inline:1px!important;font-size:8px!important}
-.mobile-bottom-nav button svg{width:16px!important;height:16px!important}
-}
-@media (prefers-reduced-motion:reduce){
-.site-icon-button,.site-tools-button,.hero-shell a,.hero-shell button,.quiz-option,.quiz-phase-card,.mobile-bottom-nav button{transition:none!important}
-}
-
-/* Mobile structural polish · hierarchy, rhythm and containment */
-@media (max-width:767px){
-  main{padding-bottom:0}
+main{padding-bottom:0}
   main>section,main>div>section{margin-inline:0}
   main h2{font-size:clamp(1.25rem,5.2vw,1.55rem);line-height:1.12;letter-spacing:-.025em}
   main h3{line-height:1.2}
@@ -124,23 +92,7 @@ section{scroll-margin-top:72px}
   .quiz-phase-card{min-width:0}
   .mobile-bottom-nav{padding-top:5px!important}
   .mobile-bottom-nav button{overflow:hidden}
-}
-@media (max-width:390px){
-  main h2{font-size:1.2rem}
-  .section-header,.section-heading,.section-title-row{margin-bottom:10px!important}
-  .section-header p,.section-heading p{font-size:11px!important}
-  .quiz-phase-grid{grid-template-columns:1fr!important}
-  .today-rail,.topic-rail,.mobile-rail{padding-right:12px}
-}
-@media (max-width:350px){
-  main h2{font-size:1.12rem}
-  .section-header p,.section-heading p{font-size:10.5px!important}
-}
-
-
-/* Mobile visual system · section rhythm, surfaces and navigation clarity */
-@media (max-width:767px){
-  :root{
+:root{
     --mobile-section-space:20px;
     --mobile-card-radius:16px;
     --mobile-border:rgba(148,163,184,.13);
@@ -298,70 +250,7 @@ section{scroll-margin-top:72px}
     border-radius:99px;
     background:#7dd3fc;
   }
-}
-@media (max-width:390px){
-  .deferred-section{padding-block:16px}
-  .hero-shell>.mx-auto>.grid>div:last-child{
-    grid-template-columns:1fr;
-  }
-  .hero-shell>.mx-auto>.grid>div:last-child>div{
-    padding:10px!important;
-  }
-  .mobile-tools-grid{grid-template-columns:1fr}
-  .mobile-tools-mode,.mobile-tools-contrast,.mobile-tools-actions{grid-column:auto}
-}
-@media (max-width:350px){
-  .deferred-section{padding-block:14px}
-  .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
-
-
-/* Quiz mobile: cinco fases em trilho compacto, sem empilhar uma lista longa. */
-@media (max-width: 767px) {
-  .quiz-phase-grid {
-    display: flex !important;
-    grid-template-columns: none !important;
-    gap: 8px !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    padding: 2px 2px 6px !important;
-    scroll-snap-type: x proximity;
-    overscroll-behavior-inline: contain;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .quiz-phase-grid::-webkit-scrollbar { display: none; }
-  .quiz-phase-grid .quiz-phase-card {
-    flex: 0 0 min(156px, 42vw);
-    min-width: min(156px, 42vw) !important;
-    min-height: 112px;
-    scroll-snap-align: start;
-  }
-  .quiz-phase-grid .quiz-phase-best {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-}
-@media (max-width: 390px) {
-  .quiz-phase-grid {
-    gap: 7px !important;
-  }
-  .quiz-phase-grid .quiz-phase-card {
-    flex-basis: 142px;
-    min-width: 142px !important;
-    min-height: 106px;
-    padding: 10px !important;
-  }
-}
-
-
-/* Mobile V44.9 · refinamento final de leitura e modos */
-@media (max-width:767px){
-  :root{--mobile-page-gutter:13px;--mobile-section-space:18px}
+:root{--mobile-page-gutter:13px;--mobile-section-space:18px}
   .language-toggle-v3{margin-inline:var(--mobile-page-gutter);max-width:calc(100% - 2 * var(--mobile-page-gutter));}
   .language-toggle-v3 .language-toggle-label{min-height:48px;padding:9px 11px;gap:8px}
   .language-toggle-v3 .language-toggle-label strong{font-size:10px;letter-spacing:.08em}
@@ -409,30 +298,7 @@ section{scroll-margin-top:72px}
   .deferred-section .mx-auto.max-w-7xl{max-width:100%!important}
   .mobile-bottom-nav{min-height:calc(62px + env(safe-area-inset-bottom,0px))!important}
   body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0px))}
-}
-@media (max-width:390px){
-  :root{--mobile-page-gutter:11px}
-  .language-toggle-v3{margin-inline:11px;max-width:calc(100% - 22px)}
-  .language-toggle-v3 .language-toggle-options button{min-height:54px!important}
-  .language-toggle-v3 .language-toggle-options button svg{width:16px;height:16px}
-  .language-toggle-v3 .language-toggle-options button strong{font-size:9px}
-  .language-toggle-v3 .language-toggle-options button small{font-size:7px}
-  .audience-home .audience-topic{min-height:72px!important}
-  .audience-home .audience-topic-copy small{font-size:9px;line-height:1.25}
-  .audience-home .audience-links-head button{font-size:10px}
-}
-@media (max-width:350px){
-  :root{--mobile-page-gutter:9px}
-  .language-toggle-v3 .language-toggle-label small{font-size:10px}
-  .language-toggle-v3 .language-toggle-options button{min-height:52px!important;padding-inline:3px!important}
-  .language-toggle-v3 .language-toggle-options button em{display:none}
-  .audience-home .audience-topic-copy strong{font-size:11px}
-}
-
-
-/* Reading modes · mobile role clarity */
-@media (max-width:767px){
-  .language-toggle-v3{
+.language-toggle-v3{
     margin-inline:0!important;
     padding:0!important;
   }
@@ -593,9 +459,94 @@ section{scroll-margin-top:72px}
     margin-bottom:3px;
     font-size:8px;
   }
+.deferred-section{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 420px;
+  }
+  .mode-scope-context,
+  .mode-scope-civic,
+  .mode-scope-election,
+  .mode-scope-public,
+  .mode-scope-trust,
+  .mode-scope-evidence{
+    contain:layout paint;
+  }
+  .audience-home .audience-topic-grid,
+  .audience-home .audience-action-grid,
+  .audience-home .audience-resource-grid,
+  .audience-home .audience-links-grid{
+    contain:layout;
+  }
+  .mobile-bottom-nav{
+    contain:layout paint;
+  }
+/* Keep the fixed navigation crisp without paying for a heavy blur on every frame. */
+  .mobile-bottom-nav{
+    backdrop-filter:blur(10px)!important;
+    -webkit-backdrop-filter:blur(10px)!important;
+  }
+
+  /* Prevent decorative layers from becoming paint-heavy on small screens. */
+  .hero-shell:after{
+    background:linear-gradient(90deg,transparent,rgba(125,211,252,.18),transparent);
+  }
+
+  /* Reserve space for interactive rails and avoid accidental horizontal page growth. */
+  .today-rail,.topic-rail,.mobile-rail,.quiz-phase-grid{
+    max-width:100%;
+    overscroll-behavior-x:contain;
+  }
+
+  /* Keep card rendering predictable on narrow screens. */
+  .today-card,.topic-card,.summary-simple-card,.summary-public-fact,
+  .candidate-card,.quiz-card,.audience-topic,.audience-action-card,
+  .audience-resource,.audience-link{
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
 }
+
 @media (max-width:390px){
-  .language-toggle-v3 .language-toggle-label{
+:root{--mobile-page-gutter:12px}
+.site-brand{max-width:46vw}
+.site-icon-button,.site-tools-button{width:42px!important;min-width:42px!important}
+.hero-shell{padding-top:18px!important;padding-bottom:20px!important}
+.hero-shell h1{font-size:2rem!important}
+.hero-shell .mt-4.flex.flex-wrap,.hero-shell .mt-5.flex.flex-wrap{grid-template-columns:1fr}
+.hero-shell .mt-4.flex.flex-wrap>button:first-child,.hero-shell .mt-5.flex.flex-wrap>button:first-child{grid-column:auto}
+.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4>div{padding-inline:2px!important}
+.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-xl{font-size:.9rem}
+.hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:7px}
+.today-card{flex-basis:82vw}
+.summary-simple-grid,.summary-public-topics,.summary-public-facts,.candidate-card .flex.flex-wrap.gap-2{grid-template-columns:1fr!important}
+.quiz-phase-card{padding:8px 6px}
+.quiz-phase-name{font-size:.9rem}
+.mobile-bottom-nav button{min-height:46px!important;font-size:8.5px!important}
+.mobile-bottom-nav button svg{width:17px!important;height:17px!important}
+main h2{font-size:1.2rem}
+  .section-header,.section-heading,.section-title-row{margin-bottom:10px!important}
+  .section-header p,.section-heading p{font-size:11px!important}
+  .quiz-phase-grid{grid-template-columns:1fr!important}
+  .today-rail,.topic-rail,.mobile-rail{padding-right:12px}
+.deferred-section{padding-block:16px}
+  .hero-shell>.mx-auto>.grid>div:last-child{
+    grid-template-columns:1fr;
+  }
+  .hero-shell>.mx-auto>.grid>div:last-child>div{
+    padding:10px!important;
+  }
+  .mobile-tools-grid{grid-template-columns:1fr}
+  .mobile-tools-mode,.mobile-tools-contrast,.mobile-tools-actions{grid-column:auto}
+:root{--mobile-page-gutter:11px}
+  .language-toggle-v3{margin-inline:11px;max-width:calc(100% - 22px)}
+  .language-toggle-v3 .language-toggle-options button{min-height:54px!important}
+  .language-toggle-v3 .language-toggle-options button svg{width:16px;height:16px}
+  .language-toggle-v3 .language-toggle-options button strong{font-size:9px}
+  .language-toggle-v3 .language-toggle-options button small{font-size:7px}
+  .audience-home .audience-topic{min-height:72px!important}
+  .audience-home .audience-topic-copy small{font-size:9px;line-height:1.25}
+  .audience-home .audience-links-head button{font-size:10px}
+.language-toggle-v3 .language-toggle-label{
     min-height:54px;
     padding:9px!important;
   }
@@ -619,12 +570,98 @@ section{scroll-margin-top:72px}
   [data-language-mode="simple"] .audience-home .audience-action-card:first-child{
     grid-column:auto;
   }
+.mobile-bottom-more-menu{
+    right:-4px;
+    width:min(88vw,300px);
+    max-height:min(54dvh,360px);
+  }
 }
 
+@media (max-width:350px){
+:root{--mobile-page-gutter:10px}
+.site-brand{max-width:42vw}
+.site-brand>span:last-child{font-size:14px!important}
+.hero-shell h1{font-size:1.85rem!important}
+.hero-shell .mt-4.flex.flex-wrap,.hero-shell .mt-5.flex.flex-wrap{gap:6px}
+.hero-shell .mt-4.flex.flex-wrap>*,.hero-shell .mt-5.flex.flex-wrap>*{min-height:44px}
+.mobile-bottom-nav button{padding-inline:1px!important;font-size:8px!important}
+.mobile-bottom-nav button svg{width:16px!important;height:16px!important}
+main h2{font-size:1.12rem}
+  .section-header p,.section-heading p{font-size:10.5px!important}
+.deferred-section{padding-block:14px}
+  .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+:root{--mobile-page-gutter:9px}
+  .language-toggle-v3 .language-toggle-label small{font-size:10px}
+  .language-toggle-v3 .language-toggle-options button{min-height:52px!important;padding-inline:3px!important}
+  .language-toggle-v3 .language-toggle-options button em{display:none}
+  .audience-home .audience-topic-copy strong{font-size:11px}
+}
+
+@media (prefers-reduced-motion:reduce){
+.site-icon-button,.site-tools-button,.hero-shell a,.hero-shell button,.quiz-option,.quiz-phase-card,.mobile-bottom-nav button{transition:none!important}
+.mobile-bottom-nav{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+.mobile-bottom-more-menu{scroll-behavior:auto}
+}
+
+/* Mobile structural polish · hierarchy, rhythm and containment */
+
+/* Mobile visual system · section rhythm, surfaces and navigation clarity */
+
+/* Quiz mobile: cinco fases em trilho compacto, sem empilhar uma lista longa. */
+
+@media (max-width: 767px){
+.quiz-phase-grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 2px 2px 6px !important;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .quiz-phase-grid::-webkit-scrollbar { display: none; }
+  .quiz-phase-grid .quiz-phase-card {
+    flex: 0 0 min(156px, 42vw);
+    min-width: min(156px, 42vw) !important;
+    min-height: 112px;
+    scroll-snap-align: start;
+  }
+  .quiz-phase-grid .quiz-phase-best {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 390px){
+.quiz-phase-grid {
+    gap: 7px !important;
+  }
+  .quiz-phase-grid .quiz-phase-card {
+    flex-basis: 142px;
+    min-width: 142px !important;
+    min-height: 106px;
+    padding: 10px !important;
+  }
+}
+
+/* Mobile V44.9 · refinamento final de leitura e modos */
+
+/* Reading modes · mobile role clarity */
 
 /* Mobile interaction polish · tactile feedback and mode focus */
+
 @media(max-width:767px){
-  .language-toggle-v3 .language-toggle-options button{
+.language-toggle-v3 .language-toggle-options button{
     -webkit-tap-highlight-color:transparent;
     touch-action:manipulation;
   }
@@ -657,19 +694,7 @@ section{scroll-margin-top:72px}
   [data-language-mode="technical"] .audience-home .audience-intro p{
     max-width:46ch!important;
   }
-}
-@media(prefers-reduced-motion:reduce){
-  .language-toggle-v3 .language-toggle-options button,
-  .audience-home .audience-topic,
-  .audience-home .audience-action-card,
-  .audience-home .audience-resource,
-  .audience-home .audience-link{transition:none!important}
-}
-
-
-/* Final mobile optimization · density, hierarchy and paint budget */
-@media(max-width:767px){
-  .audience-home .audience-intro h2{
+.audience-home .audience-intro h2{
     text-wrap:balance;
   }
   .audience-home .audience-intro p,
@@ -717,8 +742,19 @@ section{scroll-margin-top:72px}
     box-shadow:0 -8px 24px rgba(0,0,0,.18);
   }
 }
+
+@media(prefers-reduced-motion:reduce){
+.language-toggle-v3 .language-toggle-options button,
+  .audience-home .audience-topic,
+  .audience-home .audience-action-card,
+  .audience-home .audience-resource,
+  .audience-home .audience-link{transition:none!important}
+}
+
+/* Final mobile optimization · density, hierarchy and paint budget */
+
 @media(max-width:390px){
-  .audience-home .audience-intro h2{
+.audience-home .audience-intro h2{
     font-size:1.36rem!important;
   }
   .audience-home .audience-section-heading button{
@@ -728,74 +764,16 @@ section{scroll-margin-top:72px}
   }
 }
 
-
 /* Performance pass · reduce off-screen paint while preserving layout */
+
 @media (min-width:768px){
-  .deferred-section{
+.deferred-section{
     content-visibility:auto;
     contain-intrinsic-size:auto 520px;
   }
 }
-@media (max-width:767px){
-  .deferred-section{
-    content-visibility:auto;
-    contain-intrinsic-size:auto 420px;
-  }
-  .mode-scope-context,
-  .mode-scope-civic,
-  .mode-scope-election,
-  .mode-scope-public,
-  .mode-scope-trust,
-  .mode-scope-evidence{
-    contain:layout paint;
-  }
-  .audience-home .audience-topic-grid,
-  .audience-home .audience-action-grid,
-  .audience-home .audience-resource-grid,
-  .audience-home .audience-links-grid{
-    contain:layout;
-  }
-  .mobile-bottom-nav{
-    contain:layout paint;
-  }
-}
-
 
 /* V44.9.4 · final visual/performance guardrails */
-@media (max-width:767px){
-  /* Keep the fixed navigation crisp without paying for a heavy blur on every frame. */
-  .mobile-bottom-nav{
-    backdrop-filter:blur(10px)!important;
-    -webkit-backdrop-filter:blur(10px)!important;
-  }
-
-  /* Prevent decorative layers from becoming paint-heavy on small screens. */
-  .hero-shell:after{
-    background:linear-gradient(90deg,transparent,rgba(125,211,252,.18),transparent);
-  }
-
-  /* Reserve space for interactive rails and avoid accidental horizontal page growth. */
-  .today-rail,.topic-rail,.mobile-rail,.quiz-phase-grid{
-    max-width:100%;
-    overscroll-behavior-x:contain;
-  }
-
-  /* Keep card rendering predictable on narrow screens. */
-  .today-card,.topic-card,.summary-simple-card,.summary-public-fact,
-  .candidate-card,.quiz-card,.audience-topic,.audience-action-card,
-  .audience-resource,.audience-link{
-    min-width:0;
-    overflow-wrap:anywhere;
-  }
-}
-
-@media (prefers-reduced-motion:reduce){
-  .mobile-bottom-nav{
-    backdrop-filter:none!important;
-    -webkit-backdrop-filter:none!important;
-  }
-}
-
 
 /* Mobile bottom "Mais": contained, keyboard-friendly surface. */
 .mobile-bottom-nav > .relative{min-width:0}
@@ -848,14 +826,4 @@ section{scroll-margin-top:72px}
   background:rgba(56,189,248,.10);
   outline:2px solid rgba(125,211,252,.42);
   outline-offset:-2px;
-}
-@media (max-width:390px){
-  .mobile-bottom-more-menu{
-    right:-4px;
-    width:min(88vw,300px);
-    max-height:min(54dvh,360px);
-  }
-}
-@media (prefers-reduced-motion:reduce){
-  .mobile-bottom-more-menu{scroll-behavior:auto}
 }
