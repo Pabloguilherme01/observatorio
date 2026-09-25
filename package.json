@@ -26,7 +26,8 @@
     "audit:usability": "node scripts/audit-usability.mjs",
     "audit:sources": "node scripts/audit-sources.mjs",
     "audit:runtime": "node scripts/audit-runtime.mjs",
-    "audit:engagement": "node scripts/audit-engagement.mjs"
+    "audit:engagement": "node scripts/audit-engagement.mjs",
+    "audit:quiz": "node scripts/audit-quiz.mjs"
   },
   "dependencies": {
     "@sentry/react": "10.74.0",
