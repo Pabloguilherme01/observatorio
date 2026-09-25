@@ -83,15 +83,15 @@ export function Electoral360() {
 
       <div className="mb-4 grid gap-2 sm:grid-cols-3 text-center" aria-label="Resumo do recorte eleitoral">
         <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-3 py-3">
-          <strong className="block text-sm text-white">{localCandidateRecords.length} nomes</strong>
+          <strong className="block text-sm text-white light:text-slate-900">{localCandidateRecords.length} nomes</strong>
           <span className="text-[10px] leading-4 text-slate-500">watchlist documental local</span>
         </div>
         <div className="rounded-2xl border border-white/7 bg-white/[0.02] px-3 py-3">
-          <strong className="block text-sm text-white">{electorate.electorate.toLocaleString('pt-BR')}</strong>
+          <strong className="block text-sm text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</strong>
           <span className="text-[10px] leading-4 text-slate-500">eleitores no snapshot</span>
         </div>
         <div className="rounded-2xl border border-white/7 bg-white/[0.02] px-3 py-3">
-          <strong className="block text-sm text-white">Fonte oficial</strong>
+          <strong className="block text-sm text-white light:text-slate-900">Fonte oficial</strong>
           <span className="text-[10px] leading-4 text-slate-500">TSE e registros públicos</span>
         </div>
       </div>
@@ -113,10 +113,10 @@ export function Electoral360() {
         </div>
       )}
       <div className="mb-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado atual</div><div className="mt-2 text-2xl font-black text-white">{electorate.electorate.toLocaleString('pt-BR')}</div><div className="text-xs text-slate-500">snapshot · {electorate.snapshotDate}</div></Card>
-        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Participação 2024</div><div className="mt-2 text-2xl font-black text-white">{electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.validVotes2024Count.toLocaleString('pt-BR')} votos válidos</div></Card>
-        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Abstenção 2024</div><div className="mt-2 text-2xl font-black text-white">{electorate.abstention2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.abstention2024Count.toLocaleString('pt-BR')} eleitores</div></Card>
-        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Cadastro por gênero</div><div className="mt-2 text-2xl font-black text-white">{genderTotalPct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">mulheres + homens · cadastro</div></Card>
+        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Eleitorado atual</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.electorate.toLocaleString('pt-BR')}</div><div className="text-xs text-slate-500">snapshot · {electorate.snapshotDate}</div></Card>
+        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Participação 2024</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.turnout2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.validVotes2024Count.toLocaleString('pt-BR')} votos válidos</div></Card>
+        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Abstenção 2024</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{electorate.abstention2024Pct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">{electorate.abstention2024Count.toLocaleString('pt-BR')} eleitores</div></Card>
+        <Card><div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Cadastro por gênero</div><div className="mt-2 text-2xl font-black text-white light:text-slate-900">{genderTotalPct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</div><div className="text-xs text-slate-500">mulheres + homens · cadastro</div></Card>
       </div>
 
       <div className="mb-4 grid gap-4 lg:grid-cols-[1fr_.9fr]">
@@ -126,7 +126,7 @@ export function Electoral360() {
             {ballotHistory.map(point => (
               <div key={point.year} className="rounded-2xl border border-white/8 bg-white/[0.02] p-3">
                 <span className="text-[10px] font-bold uppercase tracking-wide text-slate-600">{point.year}</span>
-                <strong className="mt-1 block text-lg text-white">{point.value.toLocaleString('pt-BR')}</strong>
+                <strong className="mt-1 block text-lg text-white light:text-slate-900">{point.value.toLocaleString('pt-BR')}</strong>
                 <span className="text-[9px] text-slate-500">{point.year === 2026 ? 'snapshot atual' : 'histórico'}</span>
               </div>
             ))}
@@ -139,15 +139,15 @@ export function Electoral360() {
           <div className="mt-4 space-y-3">
             {electorate.ageGroups.map(group => (
               <div key={group.id}>
-                <div className="flex justify-between gap-3 text-xs"><span className="text-slate-400">{group.label}</span><strong className="text-white">{group.sharePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong></div>
+                <div className="flex justify-between gap-3 text-xs"><span className="text-slate-400">{group.label}</span><strong className="text-white light:text-slate-900">{group.sharePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong></div>
                 <div className="mt-1 h-2 overflow-hidden rounded-full bg-white/5"><div className="h-full rounded-full bg-sky-300" style={{ width: `${Math.min(100, group.sharePct)}%` }} /></div>
                 <div className="mt-1 text-[10px] text-slate-600">{group.voters.toLocaleString('pt-BR')} eleitores</div>
               </div>
             ))}
           </div>
           <div className="mt-4 grid grid-cols-2 gap-2">
-            <div className="rounded-xl border border-white/8 p-3"><span className="text-[10px] text-slate-600">Mulheres</span><strong className="mt-1 block text-white">{(electorate.womenPct ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</strong></div>
-            <div className="rounded-xl border border-white/8 p-3"><span className="text-[10px] text-slate-600">Homens</span><strong className="mt-1 block text-white">{(electorate.menPct ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</strong></div>
+            <div className="rounded-xl border border-white/8 p-3"><span className="text-[10px] text-slate-600">Mulheres</span><strong className="mt-1 block text-white light:text-slate-900">{(electorate.womenPct ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</strong></div>
+            <div className="rounded-xl border border-white/8 p-3"><span className="text-[10px] text-slate-600">Homens</span><strong className="mt-1 block text-white light:text-slate-900">{(electorate.menPct ?? 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 })}%</strong></div>
           </div>
           <p className="mt-3 text-[10px] text-slate-600">Soma das faixas etárias capturadas: {ageTotal.toLocaleString('pt-BR')} eleitores.</p>
         </Card>
@@ -159,12 +159,12 @@ export function Electoral360() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Mais contexto eleitoral</div>
-              <div className="mt-1 text-sm font-semibold text-white">Base complementar consultada</div>
+              <div className="mt-1 text-sm font-semibold text-white light:text-slate-900">Base complementar consultada</div>
               <p className="mt-1 text-[11px] leading-5 text-slate-500">Informações complementares para conferir os dados públicos do recorte. A base estadual não informa o município da candidatura.</p>
             </div>
             <div className="grid grid-cols-2 gap-2 text-center sm:w-64">
-              <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
-              <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white">{complementaryStats.byGender.MASCULINO ?? 0}</strong><span className="text-[9px] text-slate-600">masculino</span></div>
+              <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white light:text-slate-900">{complementaryStats.byGender.FEMININO ?? 0}</strong><span className="text-[9px] text-slate-600">feminino</span></div>
+              <div className="rounded-xl border border-white/8 bg-white/[0.02] p-2"><strong className="block text-base text-white light:text-slate-900">{complementaryStats.byGender.MASCULINO ?? 0}</strong><span className="text-[9px] text-slate-600">masculino</span></div>
             </div>
             </div>
           </div>
@@ -174,17 +174,17 @@ export function Electoral360() {
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
-          <div className="mt-3 text-sm font-black text-white">Dados públicos disponíveis</div>
+          <div className="mt-3 text-sm font-black text-white light:text-slate-900">Dados públicos disponíveis</div>
           <div className="text-xs text-slate-500">recorte eleitoral acompanhado</div>
         </Card>
         <Card>
           <History className="h-5 w-5 text-violet-300" aria-hidden="true" />
-          <div className="mt-3 text-sm font-black text-white">{hasLocalCandidateSnapshot ? 'Snapshot disponível' : 'Atualização pendente'}</div>
+          <div className="mt-3 text-sm font-black text-white light:text-slate-900">{hasLocalCandidateSnapshot ? 'Snapshot disponível' : 'Atualização pendente'}</div>
           <div className="mt-1 text-xs text-slate-500">identificação pública disponível</div>
         </Card>
         <Card>
           <UserRound className="h-5 w-5 text-amber-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{electoral360Snapshot.matchedCandidates.length}</div>
+          <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{electoral360Snapshot.matchedCandidates.length}</div>
           <div className="text-xs text-slate-500">nomes acompanhados</div>
         </Card>
       </div>
@@ -193,7 +193,7 @@ export function Electoral360() {
         <Card>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-base font-black text-white">Perfil documental</h3>
+              <h3 className="text-base font-black text-white light:text-slate-900">Perfil documental</h3>
               <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
                 {hasLocalCandidateSnapshot
                   ? 'Dados públicos do TSE para os nomes acompanhados pelo observatório.'
@@ -285,7 +285,7 @@ export function Electoral360() {
             <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Sobre as fontes</summary>
             <div className="mt-3 space-y-4">
               <div>
-                <div className="flex items-center gap-2 text-sm font-bold text-white"><ShieldAlert className="h-4 w-4 text-sky-300" aria-hidden="true" /> Conferência dos dados</div>
+                <div className="flex items-center gap-2 text-sm font-bold text-white light:text-slate-900"><ShieldAlert className="h-4 w-4 text-sky-300" aria-hidden="true" /> Conferência dos dados</div>
                 <p className="mt-2 text-xs leading-5 text-slate-500">O observatório apresenta estes nomes como um recorte acompanhado em Águas Lindas. A base estadual do TSE não informa o município da candidatura.</p>
               </div>
               <div>
@@ -299,7 +299,7 @@ export function Electoral360() {
       <Card className="mt-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-base font-black text-white">{hasLocalCandidateSnapshot ? 'Registros acompanhados' : 'Registros do recorte local'}</h3>
+            <h3 className="text-base font-black text-white light:text-slate-900">{hasLocalCandidateSnapshot ? 'Registros acompanhados' : 'Registros do recorte local'}</h3>
             <p className="mt-1 text-xs leading-5 text-slate-500">
               {hasLocalCandidateSnapshot ? 'Os nomes abaixo pertencem ao recorte acompanhado. O município da candidatura é exibido apenas quando confirmado pela fonte oficial.' : 'Ainda não há registros de nomes no snapshot local.'}
             </p>
@@ -321,7 +321,7 @@ export function Electoral360() {
                 aria-label={hasLocalCandidateSnapshot ? 'Buscar nome acompanhado' : 'Filtrar recorte local'}
               />
             {query && (
-              <button type="button" onClick={() => setQuery('')} className="grid min-h-9 min-w-9 place-items-center rounded-lg text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Limpar busca">
+              <button type="button" onClick={() => setQuery('')} className="grid min-h-9 min-w-9 place-items-center rounded-lg text-slate-500 hover:bg-white/5 hover:text-white light:text-slate-900" aria-label="Limpar busca">
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             )}
@@ -340,7 +340,7 @@ export function Electoral360() {
                 <article key={candidate.sqCandidate} className="rounded-2xl border border-white/8 p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h4 className="font-black text-white break-words">{candidate.name}</h4>
+                      <h4 className="font-black text-white light:text-slate-900 break-words">{candidate.name}</h4>
                       <p className="mt-1 text-xs text-slate-500 break-words">{candidate.party} · {candidate.office} · nº {candidate.ballotNumber}</p>
                       <span className="mt-2 inline-flex max-w-full items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-semibold text-slate-500 break-words">{candidate.status || 'situação não informada'}</span>
                     </div>
@@ -384,7 +384,7 @@ function Info({ label, value }: { readonly label: string; readonly value: string
   return (
     <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3">
       <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600">{label}</div>
-      <div className="mt-1 break-words text-sm font-semibold text-white">{value}</div>
+      <div className="mt-1 break-words text-sm font-semibold text-white light:text-slate-900">{value}</div>
     </div>
   );
 }
