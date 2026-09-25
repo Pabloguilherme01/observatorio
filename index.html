@@ -38,6 +38,20 @@
     <title>Observatório Eleitoral — Águas Lindas de Goiás 2026</title>
     <script>
       (() => {
+        const query = window.location.search;
+        if (!query.startsWith('?/')) return;
+        try {
+          const target = decodeURIComponent(query.slice(2));
+          if (!target.startsWith('/')) return;
+          const base = '/observatorio/';
+          const cleanTarget = target === '/' ? base : base + target.replace(/^\/+/, '');
+          window.history.replaceState(null, '', cleanTarget);
+          document.documentElement.dataset.obsSpaRestored = 'true';
+        } catch {}
+      })();
+    </script>
+    <script>
+      (() => {
         try {
           const stored = localStorage.getItem("observatorio-theme");
           const theme = stored === "light" || stored === "dark"
