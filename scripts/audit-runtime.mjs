@@ -13,7 +13,6 @@ const files = [
   'src/components/ExperienceShell.tsx',
   'src/components/ShareDataButton.tsx',
   'src/components/DataExportActions.tsx',
-  'src/components/InstagramSyncHub.tsx',
 ];
 
 const failures = [];
@@ -51,7 +50,6 @@ else fail('Experiência perdeu cleanup de listeners ou RAF.');
 for (const [file, label] of [
   ['src/components/ShareDataButton.tsx', 'compartilhamento'],
   ['src/components/DataExportActions.tsx', 'exportação'],
-  ['src/components/InstagramSyncHub.tsx', 'estúdio social'],
 ]) {
   const source = read(file);
   if (source.includes('statusTimerRef') && source.includes('clearTimeout') && source.includes('flash(')) pass(label + ' possui cleanup de timer de status.');
