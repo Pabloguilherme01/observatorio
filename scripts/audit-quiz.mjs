@@ -4,13 +4,14 @@ import path from 'node:path';
 const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const quiz = read('src/components/sections/QuickQuiz.tsx');
+const quizData = read('src/data/quiz/questionBank.ts');
 const registry = read('src/data/sourceRegistry.ts');
 
 const errors = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 
-const questions = [...quiz.matchAll(
+const questions = [...quizData.matchAll(
   /\{\s*id:\s*"(q\d+)",\s*difficulty:\s*'([^']+)',\s*prompt:\s*"((?:\\.|[^"\\])*)",\s*options:\s*\[([^\]]+)\],\s*answerIndex:\s*(\d+),[\s\S]*?sourceId:\s*"([^"]+)"\s*\}/g,
 )].map(match => ({
   id: match[1],
