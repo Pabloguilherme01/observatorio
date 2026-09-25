@@ -114,8 +114,9 @@ for (const id of ['descubra', 'instagram', 'principios', 'dashboard', 'contexto'
   must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
 }
 
-must(candidates.schemaVersion === 3 && (candidates.coverage === 'state_watchlist' || (candidates.coverage === 'municipality_required' && candidates.meta.state === 'local_filter_pending')), 'snapshot atual usa contrato TSE versionado sem promover pendências locais');
+must(candidates.schemaVersion === 3 && candidates.coverage === 'state_watchlist', 'snapshot atual usa exclusivamente o contrato estadual watchlist');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
+must(!read('scripts/sync-tse-2026.mjs').includes("coverage: 'municipality_required'") && !read('scripts/sync-tse-2026.mjs').includes('selection: \'all_municipality\''), 'sincronizador TSE não pode promover o snapshot para lista municipal');
 must(candidates.meta.localFilter === 'Águas Lindas de Goiás' && (candidates.meta.state === 'local_filter_pending' || (['editorial_watchlist', 'local_evidence'].includes(candidates.meta.localFilterType) && candidates.meta.candidateUniverseScope === 'GO')), 'snapshot separa universo oficial de Goiás do recorte editorial local');
 must(candidates.meta.state === 'local_filter_pending' || ['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy'].includes(candidates.meta.retrievalMethod), 'snapshot TSE usa fonte oficial suportada quando sincronizado');
 
