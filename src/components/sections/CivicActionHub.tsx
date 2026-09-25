@@ -196,7 +196,7 @@ const actions = [
     icon: SearchCheck,
     category: 'Eleições 2026',
     title: 'Consultar situação eleitoral',
-    description: 'Confira no Autoatendimento Eleitoral o número, a situação do título, débitos e onde votar.',
+    description: 'Confira no Autoatendimento Eleitoral o número, a situação do título, débitos e onde votar. Em 2026, alistamento, transferência e revisão ficam suspensos de 7 de maio a 2 de novembro; outros serviços continuam disponíveis.',
     href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral/',
     cta: 'Consultar no TSE',
   },
