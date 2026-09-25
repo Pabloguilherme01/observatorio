@@ -76,7 +76,7 @@ jobs:
         run: npm run build
 
       - name: Install browser test dependencies
-        run: npm install --no-save --no-package-lock playwright@1.63.0 @axe-core/playwright@4.13.0
+        run: npm run test:browser:prepare
 
       - name: Install Chromium for browser smoke tests
         run: npx playwright install --with-deps chromium
