@@ -16,6 +16,7 @@ const files = {
   instagram: read('src/components/InstagramSyncHub.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
+  research: read('src/components/sections/PoliticalResearch.tsx'),
   electoral: read('src/components/sections/Electoral360.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
