@@ -52,9 +52,9 @@ must(files.css.includes('scroll-snap-type'), 'rails móveis suportam navegação
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:\s*390px\)/.test(files.css), 'há ajuste dedicado para telas muito estreitas');
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
 
-must(files.hero.includes('hero-mobile-election-toggle') && files.hero.includes('aria-pressed'), 'Modo Eleição possui controle acessível no mobile');
+must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#evidencias"'), 'hero mantém ações principais acessíveis no mobile');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed'), 'os três modos de leitura continuam disponíveis');
-must(files.radar.includes('Margem registrada') && files.radar.includes('min-h-11'), 'radar político mantém informação registrada e alvos de toque adequados');
+must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.share.includes('navigator.share') && files.share.includes('wa.me'), 'compartilhamento nativo e WhatsApp continuam disponíveis');
 must(files.instagram.includes('navigator.canShare') && files.instagram.includes('wa.me/?text='), 'estúdio social mantém compartilhamento de arquivo e WhatsApp');
