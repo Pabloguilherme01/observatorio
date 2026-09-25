@@ -205,7 +205,8 @@ export function PoliticalResearch() {
 }
 
 function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
-  const hasInstagram = Boolean(candidate.instagramUrl);
+  const instagramUrl = candidate.instagramUrl ?? undefined;
+  const hasInstagram = Boolean(instagramUrl);
   const { mode } = useLanguageMode();
   return (
     <Card className="candidate-card overflow-hidden border-white/10 bg-white/[0.02] p-0">
@@ -225,7 +226,7 @@ function CandidateCard({ candidate }: { readonly candidate: CandidateView }) {
         <div className="candidate-data-card rounded-none border-0 bg-[#0d1117]"><span>Fonte</span><strong>TSE · {candidate.sourceId}</strong></div>
       </div>
       <div className="flex flex-wrap gap-2 p-4">
-        {hasInstagram ? <a href={candidate.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.06] px-3 py-2 text-xs font-bold text-pink-100" aria-label={'Abrir Instagram de ' + candidate.name}><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram</a> : <span className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-500"><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram não informado</span>}
+        {hasInstagram ? <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-pink-300/15 bg-pink-300/[0.06] px-3 py-2 text-xs font-bold text-pink-100" aria-label={'Abrir Instagram de ' + candidate.name}><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram</a> : <span className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-slate-500"><span aria-hidden="true" className="text-sm font-black">◎</span> Instagram não informado</span>}
         <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.05] px-3 py-2 text-xs font-bold text-sky-100" aria-label={'Abrir DivulgaCandContas para conferência de ' + candidate.name}><ShieldCheck className="h-4 w-4" aria-hidden="true" /> Abrir DivulgaCandContas</a>
         <button type="button" onClick={() => shareCandidate(candidate, 'whatsapp')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-emerald-300/15 bg-emerald-300/[0.05] px-3 py-2 text-xs font-bold text-emerald-200"><MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp</button>
         <button type="button" onClick={() => shareCandidate(candidate, 'native')} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200"><Share2 className="h-4 w-4" aria-hidden="true" /> {typeof navigator !== 'undefined' && 'share' in navigator && typeof navigator.share === 'function' ? 'Compartilhar' : 'Compartilhar pelo WhatsApp'}</button>
