@@ -17,7 +17,13 @@ type CandidateView = {
   municipality?: string | null;
   photoUrl?: string | null;
   instagramUrl?: string | null;
+  evidenceSourceUrls: readonly string[];
 };
+
+function evidenceSourceLabel(urls: readonly string[]) {
+  const primary = urls.some(url => /(^https?:\/\/)?([^/]*\.)?(gov\.br|jus\.br|go\.gov\.br)(\/|$)/i.test(url));
+  return primary ? 'Fonte institucional' : 'Fonte secundária';
+}
 
 function trackedUrl(anchor: string) {
   const url = new URL(window.location.origin + window.location.pathname);
@@ -64,10 +70,12 @@ function CandidateSummaryCard({ candidate }: { readonly candidate: CandidateView
       {open && (
         <div className="candidate-summary-details">
           <div><span>Vínculo local</span><strong>Evidência documental</strong></div>
+          <div><span>Fonte do vínculo</span><strong>{evidenceSourceLabel(candidate.evidenceSourceUrls)}</strong></div>
           <div><span>Snapshot</span><strong>{candidate.snapshotDate}</strong></div>
           <div><span>Fonte cadastral</span><strong>TSE · Candidatos 2026</strong></div>
           <div className="candidate-summary-links">
             <a href="https://divulgacandcontas.tse.jus.br/divulga/#/" target="_blank" rel="noopener noreferrer"><ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> Abrir DivulgaCandContas</a>
+            {candidate.evidenceSourceUrls[0] && <a href={candidate.evidenceSourceUrls[0]} target="_blank" rel="noopener noreferrer"><ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> Abrir fonte do vínculo</a>}
             <button type="button" onClick={() => shareCandidate(candidate, 'native')}><Share2 className="h-3.5 w-3.5" aria-hidden="true" /> Compartilhar</button>
           </div>
         </div>
@@ -85,6 +93,7 @@ export function PoliticalResearch() {
     municipality: candidate.municipality,
     photoUrl: candidate.photoUrl,
     instagramUrl: candidate.instagramUrl ?? undefined,
+    evidenceSourceUrls: candidate.evidenceSourceUrls,
   }));
   const hasLocalCandidates = candidates.length > 0;
 
