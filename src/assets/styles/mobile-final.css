@@ -431,3 +431,195 @@ section{scroll-margin-top:72px}
   .language-toggle-v3 .language-toggle-options button em{display:none}
   .audience-home .audience-topic-copy strong{font-size:11px}
 }
+
+
+/* Reading modes · mobile role clarity */
+@media (max-width:767px){
+  .language-toggle-v3{
+    margin-inline:0!important;
+    padding:0!important;
+  }
+  .language-toggle-v3 .language-toggle-label{
+    min-height:56px;
+    padding:10px 11px!important;
+    align-items:center;
+    gap:9px!important;
+  }
+  .language-toggle-v3 .language-toggle-label svg{
+    width:18px!important;
+    height:18px!important;
+    flex:0 0 18px;
+  }
+  .language-toggle-v3 .language-toggle-label strong{
+    display:block;
+    font-size:11px;
+    line-height:1.15;
+  }
+  .language-toggle-v3 .language-toggle-label small{
+    display:block;
+    margin-top:3px;
+    font-size:10px;
+    line-height:1.25;
+    color:#94a3b8;
+    overflow-wrap:anywhere;
+  }
+  .language-toggle-v3 .language-toggle-options{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:6px!important;
+    margin-top:7px!important;
+  }
+  .language-toggle-v3 .language-toggle-options button{
+    min-width:0!important;
+    min-height:62px!important;
+    padding:8px 5px 9px!important;
+    border-radius:13px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    align-items:center!important;
+    gap:4px!important;
+    text-align:center;
+  }
+  .language-toggle-v3 .language-toggle-options button svg{
+    width:17px!important;
+    height:17px!important;
+  }
+  .language-toggle-v3 .language-toggle-options button span{
+    min-width:0;
+  }
+  .language-toggle-v3 .language-toggle-options button strong{
+    display:block;
+    font-size:11px;
+    line-height:1.1;
+  }
+  .language-toggle-v3 .language-toggle-options button small{
+    display:block;
+    margin-top:2px;
+    font-size:8px;
+    line-height:1.05;
+    color:#94a3b8;
+  }
+  .language-toggle-v3 .language-toggle-options button em{
+    display:none;
+  }
+  [data-language-mode="summary"] .language-toggle-v3 .language-toggle-options button[aria-pressed="true"]{
+    box-shadow:inset 0 0 0 1px rgba(52,211,153,.28),0 5px 16px rgba(52,211,153,.08);
+  }
+  [data-language-mode="simple"] .language-toggle-v3 .language-toggle-options button[aria-pressed="true"]{
+    box-shadow:inset 0 0 0 1px rgba(56,189,248,.28),0 5px 16px rgba(56,189,248,.08);
+  }
+  [data-language-mode="technical"] .language-toggle-v3 .language-toggle-options button[aria-pressed="true"]{
+    box-shadow:inset 0 0 0 1px rgba(167,139,250,.30),0 5px 16px rgba(167,139,250,.08);
+  }
+
+  /* Summary: shortest path, no exploratory clutter. */
+  [data-language-mode="summary"] .audience-home .audience-intro{
+    padding-bottom:13px;
+  }
+  [data-language-mode="summary"] .audience-home .audience-section-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:2px!important;
+    margin-bottom:0!important;
+  }
+  [data-language-mode="summary"] .audience-home .audience-section-heading>div span{
+    font-size:8px!important;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  [data-language-mode="summary"] .audience-home .audience-section-heading h3{
+    font-size:14px!important;
+  }
+  [data-language-mode="summary"] .audience-home .audience-section-heading button{
+    min-height:42px;
+    white-space:nowrap;
+  }
+
+  /* Simple: browse and compare, but without evidence-heavy blocks. */
+  [data-language-mode="simple"] .audience-home .audience-topic-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-topic{
+    min-height:82px!important;
+    padding:10px!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-action-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-action-card{
+    min-height:88px!important;
+    padding:10px!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-action-card:first-child{
+    grid-column:1/-1;
+  }
+  [data-language-mode="simple"] .audience-home .audience-resource-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-resource{
+    min-height:76px!important;
+    padding:9px!important;
+  }
+
+  /* Technical: evidence-first, compact navigation, explicit audit cues. */
+  [data-language-mode="technical"] .audience-home .audience-topic-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  [data-language-mode="technical"] .audience-home .audience-topic{
+    min-height:78px!important;
+    padding:9px!important;
+  }
+  [data-language-mode="technical"] .audience-home .audience-action-grid{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+  [data-language-mode="technical"] .audience-home .audience-action-card{
+    min-height:64px!important;
+    padding:9px 10px!important;
+  }
+  [data-language-mode="technical"] .audience-home .audience-links-grid{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+  }
+  [data-language-mode="technical"] .audience-home .audience-link{
+    min-height:62px!important;
+    padding:9px 10px!important;
+  }
+  [data-language-mode="technical"] .mode-scope-evidence .deferred-section:before{
+    margin-bottom:3px;
+    font-size:8px;
+  }
+}
+@media (max-width:390px){
+  .language-toggle-v3 .language-toggle-label{
+    min-height:54px;
+    padding:9px!important;
+  }
+  .language-toggle-v3 .language-toggle-options button{
+    min-height:58px!important;
+    padding-inline:3px!important;
+  }
+  .language-toggle-v3 .language-toggle-options button strong{
+    font-size:10px;
+  }
+  .language-toggle-v3 .language-toggle-options button small{
+    font-size:7.5px;
+  }
+  [data-language-mode="simple"] .audience-home .audience-topic-grid,
+  [data-language-mode="technical"] .audience-home .audience-topic-grid{
+    grid-template-columns:1fr!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-action-grid{
+    grid-template-columns:1fr!important;
+  }
+  [data-language-mode="simple"] .audience-home .audience-action-card:first-child{
+    grid-column:auto;
+  }
+}
