@@ -332,18 +332,18 @@ export function CivicActionHub() {
 
         <div className="official-resource-grid">
           {[
-            ['fontes','Fontes oficiais','Consulte dados e documentos diretamente no TSE.','https://dadosabertos.tse.jus.br/','SearchCheck'],
-            ['resultados','Resultados 2026','Informações oficiais sobre divulgação e resultados eleitorais.','https://resultados.tse.jus.br/','Landmark'],
-            ['urna','Simulador da urna','Treine a navegação e conheça a sequência da votação.','https://www.tse.jus.br/servicos-eleitorais/urna-eletronica/simulador-de-votacao','Smartphone'],
-            ['votar','Regras para votar','Orientações oficiais para o dia da votação.','https://www.tse.jus.br/eleicoes/eleicoes-2026','ClipboardCheck'],
-            ['estatisticas','Estatísticas eleitorais','Dados e séries oficiais da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/estatisticas-eleitorais','BarChart'],
+            ['fontes','Fontes oficiais','Consulte dados e documentos diretamente no TSE.','https://dadosabertos.tse.jus.br/','search'],
+            ['resultados','Resultados 2026','Informações oficiais sobre divulgação e resultados eleitorais.','https://resultados.tse.jus.br/','results'],
+            ['urna','Simulador da urna','Treine a navegação e conheça a sequência da votação.','https://www.tse.jus.br/servicos-eleitorais/urna-eletronica/simulador-de-votacao','vote'],
+            ['votar','Regras para votar','Orientações oficiais para o dia da votação.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
+            ['estatisticas','Estatísticas eleitorais','Dados e séries oficiais da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/estatisticas-eleitorais','stats'],
           ].map(([id,title,description,href,icon]) => (
             <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
               <span className="official-resource-icon" aria-hidden="true">
-                {icon === 'SearchCheck' ? <SearchCheck className="h-5 w-5" /> :
-                 icon === 'Landmark' ? <Landmark className="h-5 w-5" /> :
-                 icon === 'Smartphone' ? <Smartphone className="h-5 w-5" /> :
-                 icon === 'ClipboardCheck' ? <ClipboardCheck className="h-5 w-5" /> :
+                {icon === 'search' ? <SearchCheck className="h-5 w-5" /> :
+                 icon === 'results' ? <Landmark className="h-5 w-5" /> :
+                 icon === 'vote' ? <Smartphone className="h-5 w-5" /> :
+                 icon === 'rules' ? <ClipboardCheck className="h-5 w-5" /> :
                  <SearchCheck className="h-5 w-5" />}
               </span>
               <span className="min-w-0 flex-1">
