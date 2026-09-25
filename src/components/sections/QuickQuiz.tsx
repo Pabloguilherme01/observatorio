@@ -1,5 +1,5 @@
 import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import '../../assets/styles/quick-quiz.css';
 import { readQuizBestScores, readQuizUnlockedPhase } from '../../lib/quizLeaderboard';
 
