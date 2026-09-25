@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
+import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
@@ -240,6 +240,35 @@ const actions = [
   },
 ];
 
+
+const additionalPublicServices = [
+  { icon: WalletCards, title: 'Diárias e passagens', description: 'Consulte despesas de diárias e passagens publicadas pela Prefeitura.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgdiarias', cta: 'Consultar diárias' },
+  { icon: MessageCircle, title: 'Denúncias à Ouvidoria', description: 'Acesse o canal oficial para registrar denúncias administrativas.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/ouvidoria/denuncia', cta: 'Registrar denúncia' },
+  { icon: Landmark, title: 'Emendas federais', description: 'Consulte emendas parlamentares federais vinculadas ao município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/emendas_federais', cta: 'Consultar emendas' },
+  { icon: Landmark, title: 'Emendas estaduais', description: 'Consulte emendas parlamentares estaduais vinculadas ao município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/emendas_estaduais', cta: 'Consultar emendas' },
+  { icon: Landmark, title: 'Emendas municipais', description: 'Consulte emendas parlamentares municipais publicadas.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/emendas_municipais', cta: 'Consultar emendas' },
+  { icon: ClipboardCheck, title: 'Prestação de contas anual', description: 'Consulte o balanço anual e documentos de prestação de contas.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/atos_adm/mp/id%3D20', cta: 'Consultar contas' },
+  { icon: ClipboardCheck, title: 'Pareceres do Tribunal de Contas', description: 'Consulte pareceres relacionados às contas municipais.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/resp_fiscal/tcpareceres', cta: 'Consultar pareceres' },
+  { icon: ReceiptText, title: 'Relatório de Gestão Fiscal', description: 'Consulte os Relatórios de Gestão Fiscal do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/resp_fiscal/rgfs', cta: 'Consultar RGF' },
+  { icon: ReceiptText, title: 'Relatório orçamentário', description: 'Consulte os Relatórios Resumidos de Execução Orçamentária.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/resp_fiscal/rreos', cta: 'Consultar RREO' },
+  { icon: Landmark, title: 'Planejamento orçamentário', description: 'Consulte o planejamento orçamentário publicado pelo município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/resp_fiscal/planejamento', cta: 'Consultar planejamento' },
+  { icon: ShieldCheck, title: 'Encarregado LGPD', description: 'Consulte o canal oficial do município para proteção de dados pessoais.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/encarregado_lgpd', cta: 'Consultar LGPD' },
+  { icon: SearchCheck, title: 'Pesquisas de satisfação', description: 'Consulte pesquisas de satisfação dos serviços municipais.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/pesquisas_satisfacao', cta: 'Consultar pesquisas' },
+  { icon: Stethoscope, title: 'Plano Municipal de Saúde', description: 'Consulte o planejamento oficial da política municipal de saúde.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/plano_municipal_saude', cta: 'Consultar plano' },
+  { icon: Stethoscope, title: 'Programação anual da Saúde', description: 'Consulte a programação anual publicada pela área de saúde.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/programacao_anual_saude', cta: 'Consultar programação' },
+  { icon: Stethoscope, title: 'Relatório de Gestão da Saúde', description: 'Consulte os relatórios anuais de gestão da saúde municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/relatoriosanualdegestao', cta: 'Consultar relatório' },
+  { icon: Landmark, title: 'Conselho Municipal de Saúde', description: 'Consulte informações e documentos do Conselho de Saúde.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/conselho_saude', cta: 'Consultar conselho' },
+  { icon: WalletCards, title: 'Dívida ativa', description: 'Consulte informações públicas sobre inscritos em dívida ativa.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/divida_ativa_pdt', cta: 'Consultar dívida ativa' },
+  { icon: BriefcaseBusiness, title: 'Terceirizados', description: 'Consulte a relação de trabalhadores terceirizados publicada.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/lista_terceirizados', cta: 'Consultar terceirizados' },
+  { icon: BriefcaseBusiness, title: 'Processos seletivos', description: 'Consulte processos seletivos simplificados publicados pelo município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/concursos_selecoes/selecoes', cta: 'Consultar seleções' },
+  { icon: WalletCards, title: 'Padrão remuneratório', description: 'Consulte referências de remuneração e padrões publicados.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/padraoremuneratorio', cta: 'Consultar remuneração' },
+  { icon: BriefcaseBusiness, title: 'Lista de estagiários', description: 'Consulte a relação pública de estagiários.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/lista_estagiarios', cta: 'Consultar estagiários' },
+  { icon: FileQuestion, title: 'SIC direto', description: 'Acesse diretamente o Serviço de Informação ao Cidadão.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/sic', cta: 'Abrir SIC' },
+  { icon: Scale, title: 'Renúncias fiscais', description: 'Consulte renúncias de receita publicadas pelo município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/resp_fiscal/renunciareceita', cta: 'Consultar renúncias' },
+  { icon: GraduationCap, title: 'Plano Municipal de Educação', description: 'Consulte o relatório de resultados do planejamento educacional municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/plano_municipal_educacao', cta: 'Consultar educação' },
+  { icon: FileQuestion, title: 'Processos eletrônicos SEI', description: 'Consulte o portal oficial do SEI de Águas Lindas de Goiás.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/', cta: 'Abrir Portal SEI' },
+] as const;
+
 function shareWhatsApp() {
   const url = window.location.href;
   const text = `Observatório Eleitoral — Águas Lindas de Goiás 2026. Dados públicos com fontes e limitações visíveis. ${url}`;
@@ -309,6 +338,31 @@ export function CivicActionHub() {
             </div>
           ))}
         </div>
+
+        <details className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 sm:p-5">
+          <summary className="cursor-pointer list-none text-sm font-black text-white light:text-slate-900">
+            Mais serviços oficiais
+            <span className="ml-2 text-[11px] font-semibold text-slate-500">+{additional.length} caminhos</span>
+          </summary>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {additionalPublicServices.map(({ icon: Icon, title, description, href, cta }) => (
+              <Card key={title} className="p-4">
+                <div className="flex items-start gap-3">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/8 bg-white/[0.03] text-sky-300">
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-black text-white light:text-slate-900">{title}</h3>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">
+                      {cta} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </details>
 
         <Card className="p-6">
           <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Fonte + caminho oficial</div>
