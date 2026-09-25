@@ -1236,3 +1236,12 @@
     font-size:7px;
   }
 }
+
+
+/* Light theme: amber text variants must remain readable on white surfaces. */
+.light .text-amber-100,
+.light .text-amber-200,
+.light .text-amber-100\/80,
+.light .text-amber-200\/80{
+  color:#92400e!important;
+}
