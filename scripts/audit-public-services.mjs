@@ -46,6 +46,13 @@ const urls = [...new Set([
   ...[...priorityBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
   ...[...actionsBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
 ])];
+const renderedLinks = [...source.matchAll(/<a\b[^>]*href=\"(?:https?:\/\/)[^\"]+\"[^>]*>/g)].map(match => match[0]);
+const insecureLinks = renderedLinks.filter(link => /target=\"_blank\"/.test(link) && !/rel=\"[^\"]*noopener[^\"]*\"/.test(link));
+if (insecureLinks.length) {
+  fail.push(`links públicos com target=_blank sem noopener: ${insecureLinks.length}`);
+} else {
+  pass('links públicos externos preservam noopener em target=_blank');
+}
 const allPublicActionLinks = urls.length;
 if (allPublicActionLinks < 20) {
   fail.push(`quantidade de serviços públicos auditáveis abaixo do esperado: ${allPublicActionLinks}`);
@@ -77,10 +84,6 @@ for (const url of urls) {
     const parsed = new URL(url);
     if (!allowedHosts.has(parsed.hostname)) {
       fail.push('host não oficial no serviço público: ' + url);
-    }
-    if (!/noopener noreferrer/.test(source)) {
-      fail.push('serviços públicos precisam de noopener/noreferrer');
-      break;
     }
   } catch {
     fail.push('URL inválida: ' + url);
