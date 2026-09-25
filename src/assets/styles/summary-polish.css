@@ -2419,3 +2419,8 @@ main{
 @media(prefers-reduced-motion:reduce){
   .audience-home .audience-primary-action:after{display:none}
 }
+
+
+/* Resumo: acesso público compacto */
+.audience-summary-service{margin-top:10px}
+.audience-summary-service .audience-action-card{width:100%}
