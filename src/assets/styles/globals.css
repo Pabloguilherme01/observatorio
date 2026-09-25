@@ -3005,3 +3005,36 @@ d,
   background:#164e63!important;
   border-color:#fff!important;
 }
+
+
+/* Acessibilidade: contraste consistente nos temas. */
+.text-slate-500 { color: #94a3b8 !important; }
+.light .text-slate-200 { color: #334155 !important; }
+.light .text-slate-300,
+.light .text-slate-400,
+.light .text-slate-500 { color: #475569 !important; }
+.light .text-sky-100,
+.light .text-sky-200,
+.light .text-sky-300 { color: #0369a1 !important; }
+
+.light .summary-public-hero { color: #0f172a !important; }
+.light .summary-public-hero .summary-public-kicker { color: #0369a1 !important; }
+.light .summary-public-hero .summary-public-copy h3 { color: #0f172a !important; }
+.light .summary-public-hero .summary-public-lead { color: #475569 !important; }
+.light .summary-public-hero .summary-public-topic strong { color: #0f172a !important; }
+.light .summary-public-hero .summary-public-topic span { color: #475569 !important; }
+.light .summary-public-hero .summary-public-action {
+  color: #0369a1 !important;
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+}
+.light .summary-simple-tip strong.text-slate-200 { color: #334155 !important; }
+
+.light .contrast-toggle-options button small,
+.light .language-toggle-options button small { color: #475569 !important; }
+
+.light .electoral-action-button {
+  color: #0369a1 !important;
+  background: #eff6ff !important;
+  border-color: #bfdbfe !important;
+}
