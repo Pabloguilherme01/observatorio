@@ -76,10 +76,14 @@ try {
 const tseSync = read('scripts/sync-tse-2026.mjs');
 if (
   tseSync.includes('function parseCsv')
-  && tseSync.includes("MUNICIPALITY_CODE = '5200258'")
-  && tseSync.includes("coverage: 'municipality_required'")
+  && tseSync.includes("const ZIP_URLS = [")
+  && tseSync.includes("const SOURCE_URL = 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026'")
+  && tseSync.includes("coverage: 'state_watchlist'")
+  && tseSync.includes("selection: 'local_evidence_watchlist'")
+  && tseSync.includes("candidateUniverseScope: 'GO'")
+  && tseSync.includes("localFilterType: 'local_evidence'")
   && tseSync.includes("retrievalMethod: 'official_tse_zip_csv'")
-) pass('captura TSE é autocontida, municipal e baseada no pacote oficial.');
+) pass('captura TSE preserva a watchlist estadual, evidência local e origem oficial.');
 else fail('captura TSE perdeu filtro municipal ou contrato oficial direto.');
 
 if (!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts'))) pass('pipeline municipal legado inexistente não pode voltar a falhar em produção.');
