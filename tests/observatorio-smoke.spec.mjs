@@ -33,6 +33,12 @@ test.describe('Observatório smoke flows', () => {
     const phaseButtons = page.locator('.quiz-phase-grid button');
     await expect(phaseButtons.first()).toHaveAttribute('type', 'button');
     await expect(phaseButtons.first()).not.toHaveAttribute('role', 'listitem');
+    const quizOptions = page.locator('.quiz-options button');
+    await expect(quizOptions).toHaveCount(4);
+    await quizOptions.nth(0).click();
+    await expect(page.getByRole('status').filter({ hasText: /Resposta correta|Resposta conferida/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Próxima|Finalizar fase/i })).toBeEnabled();
+    await page.getByRole('button', { name: /Próxima|Finalizar fase/i }).click();
 
     await openSection(page, 'acao');
     await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
@@ -53,5 +59,9 @@ test.describe('Observatório smoke flows', () => {
 
     await openSection(page, 'exportacao');
     await expect(page.locator('#exportacao')).toBeVisible();
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'CSV' }).click();
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(/\.csv$/);
   });
 });
