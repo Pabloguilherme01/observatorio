@@ -115,7 +115,10 @@
             </div>
             <div style="height:170px;border-radius:18px;background:rgba(255,255,255,.025)"></div>
           </div>
-          <p style="margin:12px 0 0;color:#64748b;font-size:12px">Carregando a interface interativa. Os dados abertos continuam disponíveis enquanto o painel inicia.</p>
+          <p id="boot-status" role="status" aria-live="polite" style="margin:12px 0 0;color:#64748b;font-size:12px">Carregando a interface interativa. Os dados abertos continuam disponíveis enquanto o painel inicia.</p>
+          <div id="boot-recovery" hidden style="margin-top:12px">
+            <button type="button" onclick="location.reload()" style="display:inline-flex;min-height:44px;align-items:center;padding:10px 14px;border:1px solid rgba(125,211,252,.24);border-radius:12px;background:rgba(125,211,252,.08);color:#bae6fd;font-weight:800;cursor:pointer">Recarregar interface</button>
+          </div>
         </div>
       </main>
     </div>
@@ -137,12 +140,15 @@
           const root = document.getElementById('root');
           const mounted = document.documentElement.dataset.observatorioMounted === 'true';
           if (!root || mounted) return;
+          const status = document.getElementById('boot-status');
+          const recovery = document.getElementById('boot-recovery');
           const fallback = document.getElementById('boot-fallback');
-          if (fallback) {
-            fallback.innerHTML = '<strong style="font-size:18px">A interface não iniciou</strong><p style="margin:10px 0 0;color:#8b949e;line-height:1.6">A interface interativa não concluiu a inicialização. Recarregue a página para tentar novamente. Os dados públicos continuam acessíveis pelos recursos abertos abaixo.</p><button type="button" onclick="location.reload()" style="margin-top:16px;padding:10px 16px;border:0;border-radius:10px;font-weight:700;cursor:pointer">Recarregar</button>';
-            fallback.setAttribute('role', 'alert');
-            fallback.setAttribute('data-boot-timeout', String(Date.now() - startedAt));
+          if (status) {
+            status.textContent = 'A interface interativa não concluiu a inicialização. Os dados públicos continuam disponíveis abaixo; tente recarregar o painel.';
+            status.setAttribute('role', 'alert');
           }
+          if (recovery) recovery.hidden = false;
+          if (fallback) fallback.setAttribute('data-boot-timeout', String(Date.now() - startedAt));
         }, 10000);
       })();
     </script>
