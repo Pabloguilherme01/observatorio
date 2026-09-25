@@ -53,6 +53,14 @@ if (allPublicActionLinks < 20) {
   pass(`${allPublicActionLinks} serviços públicos possuem URL auditável`);
 }
 
+const categories = [...actionsBlock.matchAll(/category:\s*'([^']+)'/g)].map(match => match[1]);
+const categorySet = new Set(categories);
+for (const expectedCategory of ['Prefeitura', 'Participação e controle', 'Eleições 2026']) {
+  if (!categorySet.has(expectedCategory)) fail.push('categoria pública ausente: ' + expectedCategory);
+}
+if (categories.length !== 16) fail.push(`ações categorizadas esperado=16 atual=${categories.length}`);
+else pass('16 serviços complementares estão categorizados');
+
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
   'aguaslindasdegoias.go.gov.br',
