@@ -89,6 +89,8 @@ jobs:
           printf '%s' "$page" | grep -F "Observatório Eleitoral — Águas Lindas de Goiás 2026"
           health="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/health.json)"
           printf '%s' "$health" | grep -F '"status": "ok"'
+          printf '%s' "$health" | grep -F '"tseCandidates"'
+          printf '%s' "$health" | grep -F '"maxAgeHours": 24'
           openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
           printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'
 
