@@ -7,6 +7,14 @@ const SCHEMA_VERSION = 3;
 const OFFICIAL_HOST = 'resultados.tse.jus.br';
 const MUNICIPALITY_CODE = '93343';
 const MUNICIPALITY_NAME = 'Águas Lindas de Goiás';
+const ALLOWED_ELECTION_CODES = new Set([6257, 6259, 6261]);
+
+function electionCodeMatchesCargo(electionCode, uf, cargo) {
+  if (electionCode === 6257) return cargo === 'Presidente';
+  if (electionCode === 6259) return uf !== 'DF' && cargo !== 'Presidente' && cargo !== 'Deputado Distrital';
+  if (electionCode === 6261) return uf === 'DF' && cargo === 'Deputado Distrital';
+  return false;
+}
 
 function officialUrl(value) {
   if (typeof value !== 'string') return false;
@@ -55,8 +63,9 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
     fail(`entry ${index} inválida.`);
     continue;
   }
-  if (!Number.isInteger(entry.electionCode) || entry.electionCode < 1) fail(`entry ${index}: electionCode inválido.`);
+  if (!Number.isInteger(entry.electionCode) || !ALLOWED_ELECTION_CODES.has(entry.electionCode)) fail(`entry ${index}: electionCode fora do conjunto oficial de 2026.`);
   if (typeof entry.cargo !== 'string' || !entry.cargo.trim()) fail(`entry ${index}: cargo ausente.`);
+  if (Number.isInteger(entry.electionCode) && typeof entry.cargo === 'string' && !electionCodeMatchesCargo(entry.electionCode, payload.uf, entry.cargo)) fail(`entry ${index}: electionCode incompatível com o cargo.`);
   if (typeof entry.sourceFile !== 'string' || !entry.sourceFile.endsWith('.json')) fail(`entry ${index}: sourceFile inválido.`);
   if (!isDate(entry.referenceDate) || !isDate(entry.updatedAt)) fail(`entry ${index}: data inválida.`);
   if (!Array.isArray(entry.items)) fail(`entry ${index}: items deve ser array.`);
