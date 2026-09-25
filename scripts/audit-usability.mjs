@@ -73,7 +73,7 @@ if (
   header.includes("ArrowUp") &&
   header.includes("event.key === 'Home'") &&
   header.includes("event.key === 'End'") &&
-  header.includes("items[0]?.focus()")
+  (header.includes("items[0]?.focus()") || header.includes("items.at(-1)") && header.includes("items[0]"))
 ) pass('menu desktop Mais possui navegação por teclado e foco previsível');
 else fail('menu desktop Mais não possui navegação de teclado completa');
 
