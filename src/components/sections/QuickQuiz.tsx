@@ -276,6 +276,7 @@ export function QuickQuiz() {
     if (selected === null || !question) return;
     if (isLast) {
       // score já inclui a resposta selecionada porque answer() atualiza o estado antes desta renderização.
+      const finalScore = score;
       const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
       setBest(nextScores);
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
