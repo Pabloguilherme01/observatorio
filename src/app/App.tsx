@@ -1,4 +1,5 @@
 import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { HeroCountdown } from '../components/sections/HeroCountdown';
@@ -15,7 +16,6 @@ import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary'
 import '../assets/styles/final-ui.css';
 import '../assets/styles/responsive-type.css';
 
-const loadDashboardGroup = () => import('../components/sections/DeferredDashboardGroup');
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
 const loadElectionGroup = () => import('../components/sections/DeferredElectionGroup');
@@ -245,7 +245,7 @@ export function App() {
             <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
-            <div id="analise" className="min-h-24"><DeferredBlock loader={loadDashboardGroup} errorLabel="Dashboard" anchorIds={['analise', 'dashboard']} /></div>
+            <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><DashboardMetrics /></SectionErrorBoundary></div>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
