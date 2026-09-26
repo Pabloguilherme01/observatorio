@@ -27,10 +27,10 @@ const quickQuizSource = quiz;
 if (!quickQuizSource.includes("const displayedScore = showResult ? score : score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);")) fail('Pontuação exibida deve projetar a resposta pendente apenas antes do resultado final.');
 else pass('Pontuação exibida inclui a resposta atual exatamente uma vez e não duplica no resultado.');
 
-if (!quickQuizSource.includes('if (optionIndex === question.answerIndex) setScore(previous => previous + 1);')) fail('Resposta correta deve ser contabilizada no momento da seleção.');
-else pass('Resposta correta é contabilizada uma única vez no momento da seleção.');
-if (!quickQuizSource.includes('const finalScore = score;')) fail('Pontuação final deve reutilizar o score já contabilizado, sem somar a última resposta novamente.');
-else pass('Pontuação final não duplica a última resposta.');
+if (quickQuizSource.includes('if (optionIndex === question.answerIndex) setScore(previous => previous + 1);')) fail('Seleção não deve alterar o score antes da confirmação da pergunta.');
+else pass('Seleção registra a alternativa sem depender de atualização assíncrona do score.');
+if (!quickQuizSource.includes('const nextScore = score + (selected === question.answerIndex ? 1 : 0);') || !quickQuizSource.includes('saveQuizBestScore(activePhase, nextScore)')) fail('Pontuação deve ser confirmada atomicamente ao avançar ou finalizar.');
+else pass('Pontuação é confirmada atomicamente, inclusive na última resposta.');
 
 if (!quickQuizSource.includes('readQuizBestScores')) fail('Quiz perdeu a persistência da melhor marca pessoal.');
 else pass('Quiz mantém apenas a melhor marca pessoal por fase.');
