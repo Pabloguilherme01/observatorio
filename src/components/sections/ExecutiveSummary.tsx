@@ -94,7 +94,7 @@ export function ExecutiveSummary() {
           <SectionHeader
             titleId="executive-summary-title"
             eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
-            title={languageMode === 'technical' ? 'Visão essencial com evidências' : languageMode === 'summary' ? 'O que merece sua atenção agora' : 'Entenda o cenário em poucos minutos'}
+            title={languageMode === 'technical' ? 'Visão essencial com evidências' : languageMode === 'summary' ? 'O essencial para começar' : 'Entenda o cenário em poucos minutos'}
             description={languageMode === 'technical'
               ? 'Cada indicador vem acompanhado de referência, origem e limites para uma leitura verificável.'
               : languageMode === 'summary'
@@ -205,7 +205,7 @@ export function ExecutiveSummary() {
               <Card className="summary-evidence">
                 <span>Leitura</span>
                 <strong>Valor + data + fonte</strong>
-                <p>Compare com segurança: confira escopo, período e referência de cada indicador.</p>
+                <p>Antes de comparar, confira escopo, período e referência de cada indicador.</p>
               </Card>
               <Card className="summary-evidence">
                 <span>Limites</span>
