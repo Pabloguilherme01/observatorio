@@ -240,7 +240,7 @@ test('menu Mais destaca visualmente uma seção secundária ativa', async ({ pag
   await page.goto('./');
   await openSection(page, 'fontes');
   const header = page.locator('.site-header');
-  const more = header.getByRole('button', { name: 'Mais' });
+  const more = header.getByRole('button', { name: 'Mais', exact: true });
   await expect(more).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('.mobile-bottom-nav')).toBeHidden();
 });
