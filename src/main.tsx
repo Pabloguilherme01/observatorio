@@ -1,15 +1,15 @@
-import { StrictMode, useEffect, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './assets/styles/globals.css';
 import './assets/styles/mobile-final.css';
 import { App } from './app/App';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
 import { captureObservatorioException } from './lib/sentry';
+import { Download, MoreVertical, Share2, X } from 'lucide-react';
 
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
 const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';
 const BOOT_TIMEOUT_MS = 10000;
-const PWA_INSTALL_DISMISSED_KEY = 'observatorio:pwa-install-dismissed';
 
 function normalizeError(value: unknown): string {
   if (value instanceof Error) return value.message || value.name || 'Erro inesperado.';
@@ -73,20 +73,31 @@ function MountSignal() {
 
 function PwaInstallPrompt() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
+  const [open, setOpen] = useState(false);
+
+  const platform = useMemo(() => {
+    const ua = navigator.userAgent ?? '';
+    const ios = /iPhone|iPad|iPod/i.test(ua)
+      || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const android = /Android/i.test(ua);
+    return { ios, android, mobile: ios || android };
+  }, []);
+
+  const isStandalone = () =>
+    window.matchMedia?.('(display-mode: standalone)').matches
+    || ('standalone' in navigator && Boolean((navigator as Navigator & { standalone?: boolean }).standalone));
+
+  const [installed, setInstalled] = useState(isStandalone);
 
   useEffect(() => {
-    const dismissed = () => {
-      try { return sessionStorage.getItem(PWA_INSTALL_DISMISSED_KEY) === 'true'; } catch { return false; }
-    };
     const onBeforeInstall = (event: Event) => {
-      const promptEvent = event as BeforeInstallPromptEvent;
       event.preventDefault();
-      if (dismissed()) return;
-      setInstallEvent(promptEvent);
+      setInstallEvent(event as BeforeInstallPromptEvent);
     };
     const onInstalled = () => {
-      try { sessionStorage.removeItem(PWA_INSTALL_DISMISSED_KEY); } catch {}
+      setInstalled(true);
       setInstallEvent(null);
+      setOpen(false);
     };
 
     window.addEventListener('beforeinstallprompt', onBeforeInstall);
@@ -97,40 +108,82 @@ function PwaInstallPrompt() {
     };
   }, []);
 
-  if (!installEvent) return null;
-
-  const dismiss = () => {
-    try { sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY, 'true'); } catch {}
-    setInstallEvent(null);
-  };
+  if (installed || (!platform.mobile && !installEvent)) return null;
 
   const install = async () => {
-    try {
-      await installEvent.prompt();
-      const choice = await installEvent.userChoice;
-      if (choice.outcome === 'dismissed') {
-        try { sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY, 'true'); } catch {}
+    if (installEvent) {
+      try {
+        await installEvent.prompt();
+        const choice = await installEvent.userChoice;
+        if (choice.outcome === 'accepted') setInstalled(true);
+      } finally {
+        setInstallEvent(null);
+        setOpen(false);
       }
-    } finally {
-      setInstallEvent(null);
+      return;
     }
+    setOpen(true);
   };
 
   return (
-    <aside className="pwa-install-banner" role="status" aria-live="polite" aria-label="Instalar o Observatório">
-      <div className="pwa-install-copy">
-        <strong>Instalar o Observatório</strong>
-        <small>Abra mais rápido e use como aplicativo quando o navegador oferecer suporte.</small>
-      </div>
-      <div className="pwa-install-actions">
-        <button type="button" className="pwa-install-dismiss" onClick={dismiss}>
-          Agora não
-        </button>
-        <button type="button" className="pwa-install-button" onClick={install}>
-          Instalar
-        </button>
-      </div>
-    </aside>
+    <>
+      <button
+        type="button"
+        className="pwa-install-shortcut"
+        onClick={install}
+        aria-label={platform.ios ? 'Adicionar Observatório à tela inicial' : 'Instalar Observatório'}
+        title={platform.ios ? 'Adicionar à tela inicial' : 'Instalar aplicativo'}
+      >
+        <Download className="h-4 w-4" aria-hidden="true" />
+        <span>Instalar</span>
+      </button>
+
+      {open && (
+        <div className="pwa-install-guide-backdrop" role="presentation" onClick={() => setOpen(false)}>
+          <section
+            className="pwa-install-guide"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pwa-install-title"
+            onClick={event => event.stopPropagation()}
+          >
+            <div className="pwa-install-guide-head">
+              <div>
+                <span className="pwa-install-guide-kicker">Acesso rápido</span>
+                <h2 id="pwa-install-title">Instale o Observatório</h2>
+              </div>
+              <button type="button" onClick={() => setOpen(false)} aria-label="Fechar instruções">
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+
+            {platform.ios ? (
+              <div className="pwa-install-steps">
+                <div className="pwa-install-step">
+                  <span><Share2 className="h-4 w-4" aria-hidden="true" /></span>
+                  <div><strong>1. Abra Compartilhar</strong><small>No Safari, toque no ícone de compartilhar.</small></div>
+                </div>
+                <div className="pwa-install-step">
+                  <span><MoreVertical className="h-4 w-4" aria-hidden="true" /></span>
+                  <div><strong>2. Adicionar à Tela de Início</strong><small>Escolha essa opção e confirme em “Adicionar”.</small></div>
+                </div>
+              </div>
+            ) : (
+              <div className="pwa-install-steps">
+                <div className="pwa-install-step">
+                  <span><MoreVertical className="h-4 w-4" aria-hidden="true" /></span>
+                  <div><strong>Menu do navegador</strong><small>Toque em “Instalar app” ou “Adicionar à tela inicial”.</small></div>
+                </div>
+              </div>
+            )}
+
+            <p className="pwa-install-guide-note">
+              O atalho abre o Observatório em tela própria e mantém o acesso mais rápido no celular.
+            </p>
+          </section>
+        </div>
+      )}
+    </>
   );
 }
 
