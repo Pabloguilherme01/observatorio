@@ -52,6 +52,7 @@ test.describe('Observatório smoke flows', () => {
 
     await openSection(page, 'principios');
     await expect(page.getByRole('heading', { name: /Confiança começa pela origem/i })).toBeVisible();
+    await modeGroup.getByRole('button', { name: /^Técnico/ }).click();
     await expect(page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first()).toBeVisible();
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
