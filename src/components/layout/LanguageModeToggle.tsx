@@ -1,4 +1,4 @@
-import { Check, Code2, FileText, Info, List } from 'lucide-react';
+import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
@@ -14,7 +14,7 @@ const modeGuide = {
 } as const;
 
 export function LanguageModeToggle() {
-  const { mode, setMode } = useLanguageMode();
+  const { mode, setMode, cycleMode } = useLanguageMode();
   const guide = modeGuide[mode];
 
   return (
@@ -41,6 +41,16 @@ export function LanguageModeToggle() {
           </button>
         ))}
       </div>
+      <button
+        type="button"
+        className="language-toggle-deepen"
+        onClick={cycleMode}
+        aria-label={mode === 'technical' ? 'Voltar para leitura resumida' : 'Aprofundar leitura'}
+        title={mode === 'technical' ? 'Voltar ao Resumo' : 'Avançar para o próximo nível de detalhe'}
+      >
+        <span>{mode === 'technical' ? 'Voltar ao Resumo' : 'Aprofundar leitura'}</span>
+        <ChevronRight aria-hidden="true" />
+      </button>
     </div>
   );
 }
