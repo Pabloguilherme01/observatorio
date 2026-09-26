@@ -82,6 +82,27 @@ test.describe('Observatório smoke flows', () => {
 });
 
 
+
+test('renderiza os gráficos históricos com dimensões válidas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dashboard');
+  const history = page.locator('.dashboard-history-card');
+  await expect(history).toBeVisible();
+  const chart = history.locator('.recharts-wrapper').first();
+  await expect(chart).toBeVisible();
+  const box = await chart.boundingBox();
+  expect(box?.width ?? 0).toBeGreaterThan(100);
+  expect(box?.height ?? 0).toBeGreaterThan(100);
+  await expect(history.locator('.recharts-line').first()).toBeVisible();
+
+  await openSection(page, 'saude');
+  const sewerChart = page.locator('#saude svg[aria-label*="Histórico do atendimento"]').first();
+  await expect(sewerChart).toBeVisible();
+  const sewerBox = await sewerChart.boundingBox();
+  expect(sewerBox?.width ?? 0).toBeGreaterThan(100);
+  expect(sewerBox?.height ?? 0).toBeGreaterThan(80);
+});
+
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
   await page.evaluate(() => {
