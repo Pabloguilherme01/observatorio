@@ -104,3 +104,40 @@ test.describe('bancada cross-browser de interface', () => {
     expect(box?.height ?? 0).toBeGreaterThan(100);
   });
 });
+
+
+test.describe('bancada de robustez adicional', () => {
+  test('não há módulo comercial removido nem navegação órfã', async ({ page }) => {
+    await page.goto('./');
+    await expect(page.locator('#negocio')).toHaveCount(0);
+    await expect(page.getByText('Produto profissional', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('Quero contratar', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('Copiar proposta', { exact: true })).toHaveCount(0);
+  });
+
+  test('interface suporta zoom e largura compacta sem rolagem horizontal global', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.goto('./');
+    await page.evaluate(() => { document.documentElement.style.zoom = '1.25'; });
+    await page.waitForTimeout(100);
+    const overflow = await page.evaluate(() => ({
+      root: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      body: document.body.scrollWidth - document.body.clientWidth,
+    }));
+    expect(overflow.root).toBeLessThanOrEqual(1);
+    expect(overflow.body).toBeLessThanOrEqual(1);
+  });
+
+  test('foco de teclado permanece visível nos controles principais', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Validação de teclado é destinada aos perfis desktop.');
+    await page.goto('./');
+    await page.keyboard.press('Tab');
+    const focused = page.locator(':focus');
+    await expect(focused).toBeVisible();
+    const style = await focused.evaluate(node => {
+      const css = getComputedStyle(node);
+      return { outline: css.outlineStyle, width: css.outlineWidth, shadow: css.boxShadow };
+    });
+    expect(style.outline !== 'none' || style.shadow !== 'none').toBeTruthy();
+  });
+});
