@@ -137,8 +137,13 @@ if (
 else fail('busca pode perder destinos lazy antes da montagem do componente');
 
 const appForLazy = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
-if (appForLazy.includes("anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']}") && search.includes("'politica', 'qualidade'") && search.includes("knownDestination ? id")) pass('busca reconhece destinos lazy e preserva o alvo real para a política de modos');
-else fail('aliases da busca podem apontar para destinos sem montagem lazy');
+if (
+  appForLazy.includes('<DeferredEvidenceGroup />') &&
+  !appForLazy.includes('loadEvidenceGroup') &&
+  search.includes("'politica', 'qualidade'") &&
+  search.includes("knownDestination ? id")
+) pass('busca preserva destinos de fontes/exportação já montados e destinos técnicos lazy');
+else fail('aliases da busca podem apontar para destinos sem montagem compatível');
 
 const css = texts.find(item => item.file === 'src/assets/styles/globals.css')?.content ?? '';
 for (const [needle, label] of [[':focus-visible','foco visível'],['prefers-reduced-motion','redução de movimento'],['safe-area-inset-bottom','safe-area mobile'],['scroll-snap-type','rails mobile'],['@media (max-width:390px)','telas muito pequenas'],['min-height:44px','alvo de toque mobile'],['--mobile-touch:44px','alvo de toque mobile']]) {
