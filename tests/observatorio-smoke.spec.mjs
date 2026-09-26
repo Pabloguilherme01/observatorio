@@ -103,6 +103,60 @@ test('renderiza os gráficos históricos com dimensões válidas', async ({ page
   expect(sewerBox?.height ?? 0).toBeGreaterThan(80);
 });
 
+
+test.describe('mobile layout and interaction', () => {
+  test.use({ viewport: { width: 360, height: 740 }, isMobile: true, hasTouch: true });
+
+  test('não cria overflow horizontal e mantém navegação tocável', async ({ page }) => {
+    await page.goto('./');
+    const metrics = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(metrics.scroll).toBeLessThanOrEqual(metrics.viewport + 1);
+
+    const nav = page.locator('.mobile-bottom-nav');
+    await expect(nav).toBeVisible();
+    const navBox = await nav.boundingBox();
+    expect(navBox?.width ?? 0).toBeLessThanOrEqual(360);
+    for (const button of await nav.locator('button').all()) {
+      const box = await button.boundingBox();
+      if (box) expect(box.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test('busca cabe na viewport e pode ser fechada', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const panel = page.locator('.search-modal-panel');
+    await expect(panel).toBeVisible();
+    const box = await panel.boundingBox();
+    expect(box?.width ?? 0).toBeLessThanOrEqual(360);
+    expect(box?.height ?? 0).toBeLessThanOrEqual(740);
+    await page.getByRole('button', { name: /fechar busca/i }).click();
+    await expect(panel).toBeHidden();
+  });
+
+  test('gráficos estreitos renderizam sem largura ou altura zero', async ({ page }) => {
+    await page.goto('./');
+    await openSection(page, 'dashboard');
+    const mobileCharts = page.locator('.dashboard-history-card .recharts-wrapper');
+    await expect(mobileCharts.first()).toBeVisible();
+    const box = await mobileCharts.first().boundingBox();
+    expect(box?.width ?? 0).toBeGreaterThan(100);
+    expect(box?.height ?? 0).toBeGreaterThan(100);
+
+    await openSection(page, 'saude');
+    const sewerBars = page.locator('.sewer-mobile-bars');
+    await expect(sewerBars).toBeVisible();
+    const sewerMetrics = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(sewerMetrics.scroll).toBeLessThanOrEqual(sewerMetrics.viewport + 1);
+  });
+});
+
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
   await page.evaluate(() => {
