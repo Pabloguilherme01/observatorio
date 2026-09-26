@@ -19,6 +19,7 @@
     "validate:observatorio": "node scripts/validate-observatorio.mjs",
     "validate:results": "node scripts/validate-results-feed.mjs",
     "test:results": "node scripts/test-results-turns.mjs",
+    "test:tse-unavailable": "node scripts/test-tse-sync-unavailable.mjs",
     "test:pwa": "node scripts/test-service-worker.mjs",
     "verify:jws": "node scripts/verify-jws.mjs",
     "sync:results": "node scripts/sync-results-2026.mjs",

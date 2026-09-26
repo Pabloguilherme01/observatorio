@@ -45,6 +45,9 @@ jobs:
       - name: Validate TSE snapshot
         run: npm run validate:tse
 
+      - name: Test unavailable TSE source handling
+        run: npm run test:tse-unavailable
+
       - name: Validate candidate source guard
         run: node scripts/test-candidate-source-guard.mjs
 

@@ -307,7 +307,7 @@ function buildApiRecord(item, expectedName, previousRecord) {
 
 async function updateFromApiFallback(previous, watchlist, work) {
   const apiJson = join(work, 'tse-candidatos-api.json');
-  const rawApi = downloadText(API_URL, apiJson);
+  const rawApi = await downloadText(API_URL, apiJson);
   const parsedApi = parseJsonPayload(rawApi);
   const records = findCandidateArray(parsedApi);
   if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
