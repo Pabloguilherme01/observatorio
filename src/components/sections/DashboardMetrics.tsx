@@ -1,5 +1,6 @@
 import { Activity, Gauge, Map, Users, Database, Info, AlertCircle } from 'lucide-react';
-import { HistoricalTrendChart } from './HistoricalTrendChart';
+import { lazy, Suspense } from 'react';
+const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
@@ -122,7 +123,9 @@ export function DashboardMetrics() {
         </div>
       )}
 
-      <HistoricalTrendChart />
+      <Suspense fallback={<div className="mt-4 min-h-[220px] rounded-3xl border border-white/8 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/80" role="status" aria-live="polite">Carregando série histórica…</div>}>
+        <HistoricalTrendChart />
+      </Suspense>
 
       {languageMode === 'technical' && (
         <>
