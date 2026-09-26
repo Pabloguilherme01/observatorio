@@ -82,7 +82,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await page.getByRole('button', { name: /buscar/i }).first().click();
     const input = page.getByRole('combobox').first();
     await input.fill('CAPS');
-    await page.getByRole('option', { name: /CAPS/i }).click();
+    await page.getByRole('option', { name: /^CAPS Serviços públicos$/ }).click();
     await expect(page).toHaveURL(/#acao$/);
     const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
     await expect(serviceSearch).toHaveValue('CAPS');
