@@ -15,7 +15,8 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     media?.addEventListener?.('change', syncReducedMotion);
 
     return () => {
-      media?.removeEventListener?.('change', syncReducedMotion);    };
+      media?.removeEventListener?.('change', syncReducedMotion);
+    };
   }, []);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
         cycleMode();
         return;
       }
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      if (((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') || (!event.metaKey && !event.ctrlKey && !event.altKey && event.key === '/')) {
         event.preventDefault();
         window.dispatchEvent(new CustomEvent('observatorio:search'));
       }
