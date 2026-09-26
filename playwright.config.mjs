@@ -18,12 +18,24 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'firefox-desktop',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'safari-desktop',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
       name: 'chrome-android',
       use: { ...devices['Pixel 7'] },
     },
     {
       name: 'safari-iphone',
       use: { ...devices['iPhone 14'] },
+    },
+    {
+      name: 'safari-iphone-se',
+      use: { ...devices['iPhone SE'] },
     },
   ],
   webServer: {
