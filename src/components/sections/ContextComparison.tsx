@@ -1,4 +1,4 @@
-import { ExternalLink, MapPin, Users, Maximize2 } from 'lucide-react';
+import { ExternalLink, MapPin, Users, Maximize2, Search, RotateCcw, Gauge, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 import { contextualMetrics, contextualMunicipalities, type ContextMetricId } from '../../data/contextualComparison';
 import { Card } from '../ui/Card';
@@ -14,7 +14,12 @@ function formatValue(id: ContextMetricId, value: number) {
 
 export function ContextComparison() {
   const [metricId, setMetricId] = useState<ContextMetricId>('population');
+  const [cityQuery, setCityQuery] = useState('');
   const metric = contextualMetrics.find(item => item.id === metricId)!;
+  const normalizedQuery = cityQuery.trim().toLocaleLowerCase('pt-BR');
+  const visibleMunicipalities = normalizedQuery
+    ? contextualMunicipalities.filter(place => place.name.toLocaleLowerCase('pt-BR').includes(normalizedQuery))
+    : contextualMunicipalities;
 
   const formatPopulation = (value: number) => value.toLocaleString('pt-BR');
   const formatArea = (value: number) => value.toLocaleString('pt-BR', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' km²';
@@ -32,6 +37,29 @@ export function ContextComparison() {
           <span><Users aria-hidden="true" /> 8 municípios</span>
           <span><MapPin aria-hidden="true" /> Referências de Goiás</span>
           <span><Maximize2 aria-hidden="true" /> 4 indicadores</span>
+        </div>
+
+        <div className="context-city-toolbar" aria-label="Ferramentas da comparação municipal">
+          <label className="context-city-search">
+            <Search className="h-4 w-4" aria-hidden="true" />
+            <span className="sr-only">Buscar município</span>
+            <input
+              type="search"
+              value={cityQuery}
+              onChange={event => setCityQuery(event.target.value)}
+              placeholder="Buscar município"
+              autoComplete="off"
+            />
+          </label>
+          <span className="context-city-count" aria-live="polite">
+            {visibleMunicipalities.length} de {contextualMunicipalities.length} cidades
+          </span>
+          {cityQuery && (
+            <button type="button" className="context-city-reset" onClick={() => setCityQuery('')}>
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+              Limpar
+            </button>
+          )}
         </div>
 
         <div className="context-comparison-tabs" role="tablist" aria-label="Indicador para comparação contextual">
@@ -57,7 +85,14 @@ export function ContextComparison() {
         </div>
 
         <div className="context-comparison-cards mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {contextualMunicipalities.map(place => (
+          {visibleMunicipalities.map(place => {
+            const estimatedPopulation = place.values.population;
+            const growthPct = place.census2022Population
+              ? ((estimatedPopulation - place.census2022Population) / place.census2022Population) * 100
+              : 0;
+            const density2026 = place.areaKm2 ? estimatedPopulation / place.areaKm2 : 0;
+
+            return (
             <Card key={place.ibgeCode} className="context-comparison-card p-4 sm:p-5">
               <div className="context-city-head">
                 <div>
@@ -68,15 +103,30 @@ export function ContextComparison() {
               </div>
               <div className="context-city-value">{formatValue(metric.id, place.values[metric.id])}</div>
               <div className="context-city-source">IBGE · ano-base {metric.year}</div>
-              <div className="context-city-details">
-                <span><strong>Censo 2022</strong>{formatPopulation(place.census2022Population)} hab.</span>
-                <span><strong>Área 2025</strong>{formatArea(place.areaKm2)}</span>
+              <div className="context-city-details context-city-fact-grid">
+                <span className="context-city-fact-card"><strong>População 2026</strong>{formatPopulation(estimatedPopulation)} hab.</span>
+                <span className="context-city-fact-card"><strong>Censo 2022</strong>{formatPopulation(place.census2022Population)} hab.</span>
+                <span className="context-city-fact-card"><strong>Área territorial</strong>{formatArea(place.areaKm2)}</span>
+                <span className="context-city-fact-card">
+                  <strong><TrendingUp className="h-3.5 w-3.5" aria-hidden="true" /> Variação 2022→2026</strong>
+                  {growthPct >= 0 ? '+' : ''}{growthPct.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
+                </span>
+                <span className="context-city-fact-card context-city-fact-wide">
+                  <strong><Gauge className="h-3.5 w-3.5" aria-hidden="true" /> Densidade 2026 derivada</strong>
+                  {density2026.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} hab/km²
+                </span>
               </div>
               <a href={place.url} target="_blank" rel="noopener noreferrer" className="context-city-link">
                 Conferir ficha no IBGE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             </Card>
-          ))}
+            );
+          })}
+          {visibleMunicipalities.length === 0 && (
+            <div className="context-city-empty sm:col-span-2 xl:col-span-4" role="status">
+              Nenhum município encontrado para “{cityQuery}”. Limpe a busca para ver as oito referências.
+            </div>
+          )}
         </div>
 
         <PremiumInfoCard

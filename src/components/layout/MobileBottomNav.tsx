@@ -1,5 +1,5 @@
 import { CircleHelp, Compass, Home, Landmark, MoreHorizontal } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { navigation } from '../../config/navigation';
 import { navigateToSection } from '../../lib/sectionNavigation';
@@ -30,10 +30,12 @@ export function MobileBottomNav() {
   const moreOpenRef = useRef(false);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
+  const restoreMoreFocusRef = useRef(false);
 
   const closeMore = useCallback((restoreFocus = false) => {
     moreOpenRef.current = false;
     setMoreOpen(false);
+    restoreMoreFocusRef.current = restoreFocus;
     if (restoreFocus) {
       moreButtonRef.current?.focus();
       window.requestAnimationFrame(() => moreButtonRef.current?.focus());
@@ -56,6 +58,12 @@ export function MobileBottomNav() {
       moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
     });
     return () => window.cancelAnimationFrame(frame);
+  }, [moreOpen]);
+
+  useLayoutEffect(() => {
+    if (moreOpen || !restoreMoreFocusRef.current) return;
+    restoreMoreFocusRef.current = false;
+    moreButtonRef.current?.focus();
   }, [moreOpen]);
 
   useEffect(() => {

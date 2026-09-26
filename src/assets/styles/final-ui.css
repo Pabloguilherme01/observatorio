@@ -6214,3 +6214,273 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     transition:none!important;
   }
 }
+
+
+/* V44.12 · municipal cards + discreet mobile install shortcut */
+.context-city-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:14px 0 10px;
+}
+.context-city-search{
+  min-height:44px;
+  flex:1 1 240px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:0 12px;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+  color:#94a3b8;
+}
+.context-city-search:focus-within{
+  border-color:rgba(125,211,252,.34);
+  box-shadow:0 0 0 3px rgba(56,189,248,.07);
+}
+.context-city-search input{
+  width:100%;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#e2e8f0;
+  font-size:12px;
+  font-weight:700;
+}
+.context-city-search input::placeholder{color:#64748b}
+.context-city-count,.context-city-reset{
+  min-height:40px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:0 11px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:12px;
+  background:rgba(255,255,255,.02);
+  color:#94a3b8;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.04em;
+}
+.context-city-reset{cursor:pointer}
+.context-city-reset:hover,.context-city-reset:focus-visible{
+  border-color:rgba(125,211,252,.28);
+  color:#bae6fd;
+}
+.context-city-fact-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px!important;
+  margin-top:12px!important;
+}
+.context-city-fact-card{
+  min-width:0;
+  min-height:64px;
+  display:flex!important;
+  flex-direction:column;
+  justify-content:center;
+  gap:4px;
+  padding:9px 10px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:12px;
+  background:rgba(255,255,255,.018);
+  color:#cbd5e1;
+  font-size:11px;
+  line-height:1.3;
+}
+.context-city-fact-card strong{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  color:#64748b;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.context-city-fact-wide{grid-column:1/-1}
+.context-city-empty{
+  padding:24px;
+  border:1px dashed rgba(148,163,184,.18);
+  border-radius:16px;
+  text-align:center;
+  color:#94a3b8;
+  font-size:12px;
+}
+.light .context-city-search,
+.light .context-city-count,
+.light .context-city-reset,
+.light .context-city-fact-card{
+  border-color:#dbe5ec;
+  background:#fff;
+}
+.light .context-city-search input{color:#0f172a}
+.light .context-city-fact-card{color:#334155}
+
+.pwa-install-shortcut{
+  position:fixed;
+  right:max(12px,env(safe-area-inset-right,0px));
+  bottom:calc(var(--mobile-nav-height,68px) + env(safe-area-inset-bottom,0px) + 12px);
+  z-index:72;
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:0 11px;
+  border:1px solid rgba(125,211,252,.18);
+  border-radius:999px;
+  background:rgba(10,17,25,.94);
+  color:#bae6fd;
+  box-shadow:0 10px 30px rgba(0,0,0,.24);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.03em;
+  cursor:pointer;
+}
+.pwa-install-shortcut:hover,.pwa-install-shortcut:focus-visible{
+  border-color:rgba(125,211,252,.38);
+  background:rgba(14,24,34,.98);
+}
+.pwa-install-guide-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:110;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding:16px max(12px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));
+  background:rgba(2,6,12,.56);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.pwa-install-guide{
+  width:min(100%,430px);
+  padding:16px;
+  border:1px solid rgba(148,163,184,.16);
+  border-radius:22px;
+  background:rgba(13,21,31,.99);
+  box-shadow:0 28px 72px rgba(0,0,0,.42);
+}
+.pwa-install-guide-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+.pwa-install-guide-kicker{
+  display:block;
+  margin-bottom:3px;
+  color:#7dd3fc;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.pwa-install-guide h2{
+  margin:0;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+}
+.pwa-install-guide-head button{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  color:#94a3b8;
+}
+.pwa-install-steps{
+  display:grid;
+  gap:8px;
+  margin-top:14px;
+}
+.pwa-install-step{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:14px;
+  background:rgba(255,255,255,.018);
+}
+.pwa-install-step>span{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:rgba(56,189,248,.08);
+  color:#7dd3fc;
+}
+.pwa-install-step strong,.pwa-install-step small{display:block}
+.pwa-install-step strong{color:#e2e8f0;font-size:12px}
+.pwa-install-step small{margin-top:2px;color:#64748b;font-size:10px;line-height:1.35}
+.pwa-install-guide-note{
+  margin:11px 2px 0;
+  color:#64748b;
+  font-size:10px;
+  line-height:1.45;
+}
+.light .pwa-install-shortcut{
+  border-color:#cbd5e1;
+  background:rgba(255,255,255,.96);
+  color:#0369a1;
+  box-shadow:0 10px 28px rgba(15,23,42,.12);
+}
+.light .pwa-install-guide{border-color:#dbe5ec;background:#fff}
+.light .pwa-install-guide h2,.light .pwa-install-step strong{color:#0f172a}
+.light .pwa-install-step{border-color:#e2e8f0;background:#f8fafc}
+
+@media (min-width:768px){
+  .pwa-install-shortcut{bottom:18px}
+}
+@media (max-width:767px){
+  .context-city-toolbar{align-items:stretch}
+  .context-city-search{flex-basis:100%}
+  .context-city-count{flex:1}
+  .context-comparison-card{padding:14px!important}
+  .context-city-fact-grid{gap:6px!important}
+  .context-city-fact-card{min-height:60px;padding:8px}
+  .pwa-install-shortcut span{display:none}
+  .pwa-install-shortcut{
+    width:40px;
+    min-width:40px;
+    padding:0;
+    justify-content:center;
+    right:max(10px,env(safe-area-inset-right,0px));
+  }
+}
+@media (max-width:390px){
+  .context-city-fact-grid{grid-template-columns:1fr}
+  .context-city-fact-wide{grid-column:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  .pwa-install-shortcut{transition:none!important}
+  .pwa-install-guide-backdrop{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+
+.pwa-install-later{
+  width:100%;
+  min-height:40px;
+  margin-top:10px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  color:#94a3b8;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+.pwa-install-later:hover,.pwa-install-later:focus-visible{
+  background:rgba(148,163,184,.07);
+  color:#cbd5e1;
+}
