@@ -111,6 +111,7 @@ export function DataInspector() {
       copyTimerRef.current = null;
       setCopied(false);
       setCitationCopied(false);
+      setLinkCopied(false);
     }, 1800);
   };
 
