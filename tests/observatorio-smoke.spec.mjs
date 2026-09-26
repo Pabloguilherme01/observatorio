@@ -215,6 +215,25 @@ test('atalho de ajuda abre a busca com o guia de atalhos expandido', async ({ pa
   await expect(page.getByRole('button', { name: 'Buscar no observatório' })).toHaveAttribute('aria-keyshortcuts', '/ Control+K');
 });
 
+test('busca preserva Home e End para edição de texto e anuncia resultados', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Buscar no observatório' }).click();
+
+  const input = page.getByRole('combobox').first();
+  const status = page.getByRole('status');
+  await input.fill('transporte');
+
+  await input.press('Home');
+  await expect.poll(() => input.evaluate(node => node.selectionStart)).toBe(0);
+
+  await input.press('End');
+  await expect.poll(() => input.evaluate(node => node.selectionStart)).toBe('transporte'.length);
+  await expect(status).toContainText(/resultado.*transporte/i);
+
+  await input.fill('zzzzzz-sem-resultado');
+  await expect(status).toContainText(/Nenhum resultado.*zzzzzz-sem-resultado/i);
+});
+
 test('atalho de busca por barra abre a busca global', async ({ page }) => {
   await page.goto('./');
   await page.keyboard.press('/');
