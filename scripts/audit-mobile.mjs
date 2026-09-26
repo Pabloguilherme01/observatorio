@@ -42,6 +42,9 @@ must(files.app.includes('<DeferredEvidenceGroup />') && !files.app.includes('loa
 
 must(files.experience.includes("window.dispatchEvent(new CustomEvent('observatorio:search'))") && files.experience.includes('reading-progress'), 'ExperienceShell mantém busca global e progresso de leitura com cleanup');
 must(files.experience.includes('prefers-reduced-motion') && files.experience.includes('addEventListener'), 'ExperienceShell respeita redução de movimento e cleanup de listeners');
+must(files.experience.includes('<ConnectivityStatus />'), 'estado de conectividade está montado no shell global');
+must(files.css.includes('.connectivity-status{') && files.css.includes("top:calc(env(safe-area-inset-top,0px) + 64px)") && files.css.includes('@media(max-width:420px)'), 'status de conexão possui layout dedicado para mobile e telas estreitas');
+must(read('src/components/system/ConnectivityStatus.tsx').includes('navigator.onLine') && read('src/components/system/ConnectivityStatus.tsx').includes('Verificar'), 'status offline oferece verificação manual sem bloquear a navegação');
 must(!files.experience.includes('className="quick-dock"'), 'dock flutuante redundante não é renderizado');
 must(!files.experience.includes('ExperienceMode') && !files.experience.includes('MODE_KEY'), 'ExperienceShell não mantém modo de experiência paralelo');
 must(!files.experience.includes('market') && !files.experience.includes('hype'), 'implementação não reintroduz modo Hype/Market');
