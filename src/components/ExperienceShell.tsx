@@ -61,7 +61,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
 
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      const typing = !!target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+      const typing = !!target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable);
       if (typing) return;
       if (event.altKey && !event.metaKey && !event.ctrlKey && event.key.toLowerCase() === 'm') {
         event.preventDefault();
