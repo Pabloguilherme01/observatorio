@@ -77,7 +77,26 @@ test.describe('Observatório smoke flows', () => {
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
-test('mantém fluxo de busca e exportação disponível', async ({ page }) => {
+test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const input = page.getByRole('combobox').first();
+    await input.fill('população');
+    const sourceLink = page.getByRole('link', { name: /Fonte oficial/i });
+    await expect(sourceLink).toBeVisible();
+    await expect(sourceLink).toHaveAttribute('href', /ibge\.gov\.br/);
+  });
+
+  test('hub prioriza serviços eleitorais oficiais de uso direto', async ({ page }) => {
+    await page.goto('./');
+    await openSection(page, 'acao');
+    await expect(page.getByRole('link', { name: /Consultar situação eleitoral/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Candidaturas e contas/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Resultados oficiais/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Portal Eleições 2026/i })).toBeVisible();
+  });
+
+  test('mantém fluxo de busca e exportação disponível', async ({ page }) => {
     await page.goto('./');
     const searchTrigger = page.getByRole('button', { name: /buscar/i }).first();
     if (await searchTrigger.count()) {
