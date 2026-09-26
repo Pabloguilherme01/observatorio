@@ -24,6 +24,7 @@ export function Header() {
   const toolsButtonRef = useRef<HTMLButtonElement>(null);
   const toolsPanelRef = useRef<HTMLDivElement>(null);
   const updatedAt = formatDate(d.meta.updatedAt);
+  const moreActive = moreNavigation.some(item => item.id === activeSection);
 
   const captureDate = new Date(d.meta.updatedAt);
   const now = new Date();
@@ -175,8 +176,9 @@ export function Header() {
                     (event.key === 'ArrowUp' ? items.at(-1) : items[0])?.focus();
                   });
                 }}
-                className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-400 transition hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2"
+                className={'rounded-xl px-3 py-2 text-xs font-semibold transition focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 ' + (moreActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
                 aria-expanded={moreOpen}
+                aria-current={moreActive ? 'page' : undefined}
                 aria-haspopup="menu"
                 aria-controls="desktop-more-menu"
               >
