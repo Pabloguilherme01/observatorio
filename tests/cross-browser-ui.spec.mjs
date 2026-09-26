@@ -51,10 +51,13 @@ test.describe('bancada cross-browser de interface', () => {
 
     if (isMobile) {
       const shortcut = page.locator('.site-mode-shortcut');
+      const root = page.locator('html');
       await expect(shortcut).toBeVisible();
-      for (const mode of ['simple', 'technical', 'summary']) {
+      for (let step = 0; step < 3; step += 1) {
+        const current = await root.getAttribute('data-language-mode');
+        const next = current === 'summary' ? 'simple' : current === 'simple' ? 'technical' : 'summary';
         await shortcut.click();
-        await expect(page.locator('html')).toHaveAttribute('data-language-mode', mode);
+        await expect(root).toHaveAttribute('data-language-mode', next);
         await assertViewportIntegrity(page);
       }
     } else {
