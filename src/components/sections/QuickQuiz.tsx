@@ -1,7 +1,7 @@
 import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import '../../assets/styles/quick-quiz.css';
-import { readQuizBestScores, readQuizUnlockedPhase } from '../../lib/quizLeaderboard';
+import { readQuizBestScores, readQuizUnlockedPhase, recordQuizHighScore } from '../../lib/quizLeaderboard';
 
 import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 import { sourceRegistry } from '../../data/sourceRegistry';
@@ -61,6 +61,14 @@ export function QuickQuiz() {
       // O clique em "Próxima" pode ocorrer antes de o update de score ser refletido nesta closure.
       const finalScore = score + (selected === question.answerIndex ? 1 : 0);
       const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
+      recordQuizHighScore({
+        phase: activePhase + 1,
+        level: phaseData?.level ?? '',
+        score: finalScore,
+        total: QUESTIONS_PER_LEVEL,
+        percentage: Math.round((finalScore / QUESTIONS_PER_LEVEL) * 100),
+        playedAt: new Date().toISOString(),
+      });
       setBest(nextScores);
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
@@ -80,12 +88,23 @@ export function QuickQuiz() {
       if (navigator.share) {
         await navigator.share({ text });
         setShared('Compartilhado!');
-      } else {
+      } else if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
         setShared('Copiado!');
+      } else {
+        const area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        const copied = document.execCommand('copy');
+        area.remove();
+        setShared(copied ? 'Copiado!' : 'Não foi possível compartilhar');
       }
-    } catch {
-      setShared('');
+    } catch (error) {
+      if ((error as DOMException)?.name !== 'AbortError') setShared('Não foi possível compartilhar');
     }
   };
 
