@@ -451,10 +451,6 @@ main{padding-bottom:0}
     margin-bottom:3px;
     font-size:8px;
   }
-.deferred-section{
-    content-visibility:auto;
-    contain-intrinsic-size:auto 420px;
-  }
   .audience-home .audience-topic-grid,
   .audience-home .audience-action-grid,
   .audience-home .audience-resource-grid,
@@ -734,14 +730,7 @@ main h2{font-size:1.12rem}
   }
 }
 
-/* Performance pass · reduce off-screen paint while preserving layout */
-
-@media (min-width:768px){
-.deferred-section{
-    content-visibility:auto;
-    contain-intrinsic-size:auto 520px;
-  }
-}
+/* Performance note: deferred groups are already lazy-loaded; avoid content-visibility so deep links and charts always render. */
 
 /* V44.9.4 · final visual/performance guardrails */
 
