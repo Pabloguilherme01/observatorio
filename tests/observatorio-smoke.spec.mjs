@@ -622,6 +622,40 @@ for (const viewport of [
   });
 }
 
+test('comparação municipal expõe mais dados e perfil selecionável sem ranking', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.goto('./');
+
+  const modes = page.locator('.header-reading-mode').getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Técnico/ }).click();
+  await openSection(page, 'contexto');
+
+  await expect(page.getByText('7 indicadores', { exact: true })).toBeVisible();
+  await expect(page.locator('.context-city-profile-card')).toHaveCount(8);
+
+  const citySelect = page.getByLabel('Selecionar cidade');
+  await citySelect.selectOption('5221858');
+  await expect(page.getByRole('heading', { name: 'Valparaíso de Goiás' })).toBeVisible();
+  await expect(page.locator('.context-city-profile-grid')).toContainText('Variação 2022 → 2026');
+  await expect(page.locator('.context-city-profile-grid')).toContainText('Densidade estimada 2026');
+
+  const contextSection = page.locator('#contexto');
+  await contextSection.getByRole('tab', { name: 'Variação populacional' }).click();
+  await expect(contextSection.getByText('Indicador derivado')).toBeVisible();
+  await expect(contextSection.locator('.context-metric-reference')).toContainText('Censo 2022 → estimativa 2026');
+  await expect(contextSection.locator('.context-comparison-card')).toHaveCount(8);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const dimensions = await page.evaluate(() => ({
+    client: document.documentElement.clientWidth,
+    scroll: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+
+  await citySelect.selectOption('5200258');
+  await expect(page.getByRole('heading', { name: 'Águas Lindas de Goiás' })).toBeVisible();
+});
+
 test('cards premium organizam notas soltas sem overflow no mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');

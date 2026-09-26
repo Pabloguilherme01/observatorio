@@ -6214,3 +6214,204 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     transition:none!important;
   }
 }
+
+
+/* Municipal comparison expansion · selectable city profile and denser card hierarchy */
+.context-city-profile{
+  min-width:0;
+  padding:16px;
+  border:1px solid rgba(125,211,252,.14);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 0 0,rgba(56,189,248,.07),transparent 42%),
+    linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.014));
+  box-shadow:0 16px 42px rgba(0,0,0,.10);
+}
+.context-city-profile-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+}
+.context-city-profile-head>div{
+  min-width:0;
+}
+.context-city-profile-kicker{
+  display:block;
+  color:#7dd3fc;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.context-city-profile-head h3{
+  margin-top:4px;
+  color:#f8fafc;
+  font-size:clamp(1.25rem,2.4vw,1.7rem);
+  font-weight:950;
+  line-height:1.08;
+  letter-spacing:-.03em;
+}
+.context-city-profile-head p{
+  max-width:62ch;
+  margin-top:6px;
+  color:#7d8da3;
+  font-size:11px;
+  line-height:1.55;
+}
+.context-city-selector{
+  min-width:min(100%,260px);
+  display:grid;
+  gap:5px;
+}
+.context-city-selector>span{
+  color:#64748b;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.context-city-selector select{
+  width:100%;
+  min-height:44px;
+  padding:8px 34px 8px 11px;
+  border:1px solid rgba(125,211,252,.18);
+  border-radius:12px;
+  background:#111a24;
+  color:#e6edf3;
+  font-size:11px;
+  font-weight:800;
+  outline:none;
+}
+.context-city-selector select:focus-visible{
+  border-color:rgba(125,211,252,.48);
+  box-shadow:0 0 0 3px rgba(56,189,248,.10);
+}
+.context-city-profile-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin-top:14px;
+}
+.context-city-profile-card{
+  min-width:0;
+  min-height:112px;
+  padding:12px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:15px;
+  background:rgba(255,255,255,.022);
+}
+.context-city-profile-card>span{
+  display:block;
+  color:#718096;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+  line-height:1.25;
+  text-transform:uppercase;
+}
+.context-city-profile-card>strong{
+  display:block;
+  margin-top:7px;
+  color:#f8fafc;
+  font-size:clamp(1rem,2vw,1.35rem);
+  font-weight:950;
+  line-height:1.05;
+  letter-spacing:-.025em;
+  overflow-wrap:anywhere;
+}
+.context-city-profile-card>small{
+  display:block;
+  margin-top:7px;
+  color:#64748b;
+  font-size:9px;
+  line-height:1.35;
+}
+.context-city-profile-source{
+  margin-top:12px;
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#bae6fd!important;
+  font-size:10px;
+  font-weight:850;
+  text-decoration:underline!important;
+  text-underline-offset:3px;
+}
+.context-metric-reference{
+  display:block;
+  margin-top:7px;
+  color:#64748b;
+  font-size:9px;
+  font-weight:800;
+}
+.context-comparison-card.is-selected-city{
+  border-color:rgba(125,211,252,.28)!important;
+  box-shadow:0 14px 38px rgba(14,165,233,.08),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.context-city-badge{
+  cursor:pointer;
+  min-height:32px;
+}
+.context-city-badge:focus-visible{
+  outline:2px solid rgba(125,211,252,.55);
+  outline-offset:2px;
+}
+
+.light .context-city-profile{
+  border-color:#bae6fd;
+  background:
+    radial-gradient(circle at 0 0,rgba(14,165,233,.06),transparent 42%),
+    linear-gradient(180deg,#fff,#f8fafc);
+}
+.light .context-city-profile-head h3{color:#0f172a}
+.light .context-city-profile-head p{color:#64748b}
+.light .context-city-selector select{
+  border-color:#dbeafe;
+  background:#fff;
+  color:#0f172a;
+}
+.light .context-city-profile-card{
+  border-color:#e2e8f0;
+  background:#fff;
+}
+.light .context-city-profile-card>strong{color:#0f172a}
+.light .context-city-profile-source{color:#0369a1!important}
+
+@media(max-width:1023px){
+  .context-city-profile-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:767px){
+  .context-city-profile{
+    padding:13px;
+    border-radius:18px;
+  }
+  .context-city-profile-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .context-city-selector{
+    min-width:0;
+    width:100%;
+  }
+  .context-city-profile-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px;
+  }
+  .context-city-profile-card{
+    min-height:105px;
+    padding:10px;
+  }
+  .context-city-profile-source{
+    width:100%;
+    justify-content:space-between;
+  }
+}
+@media(max-width:359px){
+  .context-city-profile-grid{
+    grid-template-columns:1fr;
+  }
+}
