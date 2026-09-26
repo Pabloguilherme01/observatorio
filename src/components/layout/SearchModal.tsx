@@ -97,10 +97,11 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') { event.preventDefault(); onClose(); return; }
+      const editingQuery = event.target === inputRef.current;
       if (event.key === 'ArrowDown') { event.preventDefault(); setActiveIndex(index => Math.min(index + 1, Math.max(filteredLengthRef.current - 1, 0))); return; }
       if (event.key === 'ArrowUp') { event.preventDefault(); setActiveIndex(index => Math.max(index - 1, 0)); return; }
-      if (event.key === 'Home') { event.preventDefault(); setActiveIndex(0); return; }
-      if (event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filteredLengthRef.current - 1, 0)); return; }
+      if (!editingQuery && event.key === 'Home') { event.preventDefault(); setActiveIndex(0); return; }
+      if (!editingQuery && event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filteredLengthRef.current - 1, 0)); return; }
       if (event.key === 'Tab' && dialogRef.current) {
         const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href], summary')).filter(node => !node.hasAttribute('disabled'));
         if (!focusable.length) return;
@@ -290,6 +291,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
               role="combobox"
               aria-expanded={open}
               aria-controls="search-results"
+              aria-describedby="search-result-status"
               aria-activedescendant={filtered[activeIndex] ? 'search-result-' + activeIndex : undefined}
               aria-autocomplete="list"
               autoComplete="off"
@@ -317,6 +319,13 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
         <div className="search-meta">
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
+          <span id="search-result-status" className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {query
+              ? (filtered.length
+                  ? filtered.length + ' resultado' + (filtered.length === 1 ? '' : 's') + ' para ' + query
+                  : 'Nenhum resultado para ' + query)
+              : filtered.length + ' resultados disponíveis'}
+          </span>
           <div className="search-meta-actions">
             {query && <button type="button" className="search-clear-query" onClick={() => { setQuery(''); setActiveIndex(0); inputRef.current?.focus(); }}>Limpar busca</button>}
             <span>Setas navegar · Enter abrir · Esc fechar</span>
