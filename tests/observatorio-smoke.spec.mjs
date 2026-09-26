@@ -140,7 +140,9 @@ test.describe('mobile layout and interaction', () => {
   test('gráficos estreitos renderizam sem largura ou altura zero', async ({ page }) => {
     await page.goto('./');
     await openSection(page, 'dashboard');
-    const mobileCharts = page.locator('.dashboard-history-card .recharts-wrapper');
+    const primaryChart = page.locator('.dashboard-history-chart');
+    await expect(primaryChart).toBeVisible();
+    const mobileCharts = primaryChart.locator('.recharts-wrapper');
     await expect(mobileCharts.first()).toBeVisible();
     const box = await mobileCharts.first().boundingBox();
     expect(box?.width ?? 0).toBeGreaterThan(100);
