@@ -132,7 +132,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await page.getByRole('button', { name: /buscar/i }).first().click();
     const input = page.getByRole('combobox').first();
     await input.fill('população');
-    const sourceLink = page.getByRole('link', { name: /Fonte oficial/i });
+    const sourceLink = page.getByRole('link', { name: 'Fonte oficial', exact: true });
     await expect(sourceLink).toBeVisible();
     await expect(sourceLink).toHaveAttribute('href', /ibge\.gov\.br/);
   });

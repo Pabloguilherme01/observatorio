@@ -11,10 +11,40 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'off',
-    ...devices['Desktop Chrome'],
   },
+  projects: [
+    {
+      name: 'chrome-desktop',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox-desktop',
+      testMatch: /cross-browser-ui\.spec\.mjs/,
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'safari-desktop',
+      testMatch: /cross-browser-ui\.spec\.mjs/,
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'chrome-android',
+      testMatch: /(cross-browser-ui|mobile-repagination)\.spec\.mjs/,
+      use: { ...devices['Pixel 7'] },
+    },
+    {
+      name: 'safari-iphone',
+      testMatch: /(cross-browser-ui|mobile-repagination)\.spec\.mjs/,
+      use: { ...devices['iPhone 14'] },
+    },
+    {
+      name: 'safari-iphone-se',
+      testMatch: /cross-browser-ui\.spec\.mjs/,
+      use: { ...devices['iPhone SE'] },
+    },
+  ],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1 --port 4173',
+    command: 'vite --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173/observatorio/',
     reuseExistingServer: false,
     timeout: 30_000,
