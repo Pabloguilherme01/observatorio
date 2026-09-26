@@ -38,7 +38,7 @@ export function QuickQuiz() {
   const nextIndex = safeIndex + 1;
   const isLast = nextIndex >= totalQuestions;
   const unlockedNext = activePhase < QUIZ_LEVELS.length - 1 && unlockedPhase > activePhase;
-  const displayedScore = score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);
+  const displayedScore = showResult ? score : score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);
   const questionSource = question ? sourceRegistry.find(source => source.id === question.sourceId) : undefined;
 
   const startPhase = (phaseIndex: number) => {
