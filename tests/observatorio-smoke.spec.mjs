@@ -247,6 +247,32 @@ test('modos de leitura só avançam quando a seção realmente exige mais detalh
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 });
 
+test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+
+  await openSection(page, 'qualidade');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/#fontes$/);
+  await expect(page.locator('#fontes')).toBeVisible();
+
+  await openSection(page, 'orcamento-impacto');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/#orcamento$/);
+  await expect(page.locator('#orcamento')).toBeVisible();
+
+  await openSection(page, 'eleitoral360');
+  await modes.getByRole('button', { name: /^Resumo/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await expect(page).toHaveURL(/#resumo$/);
+  await expect(page.locator('#resumo')).toBeVisible();
+});
+
 test('ação de aprofundar percorre os três níveis de leitura', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
