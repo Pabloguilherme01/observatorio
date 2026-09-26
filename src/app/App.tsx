@@ -90,8 +90,8 @@ function scrollToHashWhenReady(hash: string) {
   scheduleCheck();
 }
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']);
-const CONTEXTUAL_DESTINATIONS = new Set(['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao', 'orcamento', 'orcamento-impacto', 'dados', 'quiz']);
+const TECHNICAL_ONLY_DESTINATIONS = new Set(['contexto', 'politica', 'linha-do-tempo', 'orcamento-impacto', 'qualidade', 'evidencias', 'mapa-evidencias', 'mudancas-snapshot']);
+const SUMMARY_HIDDEN_DESTINATIONS = new Set(['eleitorado', 'demografia', 'transporte', 'saude', 'candidaturas', 'eleitoral360', 'quiz']);
 
 function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
@@ -104,7 +104,7 @@ function NavigationModeBridge() {
         if (mode !== 'technical') setMode('technical');
         return;
       }
-      if (CONTEXTUAL_DESTINATIONS.has(target) && mode === 'summary') setMode('simple');
+      if (SUMMARY_HIDDEN_DESTINATIONS.has(target) && mode === 'summary') setMode('simple');
     };
 
     const onNavigate = (event: Event) => {
