@@ -2,15 +2,15 @@ import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'essencial', description: 'Prioriza síntese, números-chave e próximos caminhos. Ideal para uma leitura rápida.', icon: List },
-  { id: 'simple' as const, label: 'Simples', sub: 'explicado', description: 'Acrescenta contexto e comparações em linguagem direta, sem sobrecarregar a leitura.', icon: FileText },
-  { id: 'technical' as const, label: 'Técnico', sub: 'verificável', description: 'Expõe fonte, data, método, recortes, cálculos e limitações para conferência.', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'executivo', description: 'Entrega o essencial primeiro: números centrais, serviços e caminhos de aprofundamento.', icon: List },
+  { id: 'simple' as const, label: 'Simples', sub: 'guiado', description: 'Explica os números com contexto e comparações em uma leitura fluida e direta.', icon: FileText },
+  { id: 'technical' as const, label: 'Técnico', sub: 'auditável', description: 'Abre fonte, data, método, recortes, cálculos e limitações para conferência completa.', icon: Code2 },
 ] as const;
 
 const modeGuide = {
-  summary: { title: 'Leitura essencial', detail: 'Menos detalhes na tela · aprofunde quando precisar' },
-  simple: { title: 'Leitura contextual', detail: 'Explicações e comparações · complexidade na medida' },
-  technical: { title: 'Leitura verificável', detail: 'Evidências, método e limites · máxima rastreabilidade' },
+  summary: { title: 'Leitura executiva', detail: 'O essencial primeiro · avance só quando fizer sentido' },
+  simple: { title: 'Leitura guiada', detail: 'Números com contexto · clareza sem excesso' },
+  technical: { title: 'Leitura auditável', detail: 'Evidência, método e limites · rastreabilidade completa' },
 } as const;
 
 export function LanguageModeToggle() {
