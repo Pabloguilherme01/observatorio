@@ -126,6 +126,12 @@ jobs:
           printf '%s' "$page" | grep -F 'id="root"'
           manifest="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest)"
           printf '%s' "$manifest" | grep -F 'Observatório Águas Lindas 2026'
+          printf '%s' "$manifest" | grep -F 'pwa-192.png'
+          printf '%s' "$manifest" | grep -F 'pwa-512.png'
+          for icon in pwa-192.png pwa-512.png apple-touch-icon.png; do
+            bytes="$(curl -fsSL --retry 3 --max-time 20 "https://pabloguilherme01.github.io/observatorio/$icon" | wc -c)"
+            test "$bytes" -gt 1000
+          done
           curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v'
 
           asset_js="$(printf '%s' "$page" | grep -oE 'src="[^"]+\.js"' | head -n 1 | cut -d'"' -f2)"

@@ -175,11 +175,12 @@ export default defineConfig({
         categories: ['public-services', 'education'],
         prefer_related_applications: false,
         icons: [
-          { src: BASE_PATH + 'pwa-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-          { src: BASE_PATH + 'pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' },
+          { src: BASE_PATH + 'pwa-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: BASE_PATH + 'pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          { src: BASE_PATH + 'pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any' },
         ],
       },
-      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html'],
+      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         navigateFallback: '/observatorio/offline.html',
@@ -189,7 +190,7 @@ export default defineConfig({
             urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'observatorio-static-v12',
+              cacheName: 'observatorio-static-v13',
               expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -198,7 +199,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'font',
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'observatorio-fonts-v12',
+              cacheName: 'observatorio-fonts-v13',
               expiration: { maxEntries: 16, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -207,7 +208,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'document' && request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-documents-v12',
+              cacheName: 'observatorio-documents-v13',
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -216,7 +217,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith(BASE_PATH + API_ROOT.slice(1)) || url.pathname.startsWith(API_ROOT),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-api-v12',
+              cacheName: 'observatorio-api-v13',
               networkTimeoutSeconds: 3,
               expiration: { maxEntries: 32, maxAgeSeconds: 60 * 60 * 24 * 7, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },

@@ -108,3 +108,22 @@ test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo
   await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
   await expect(page.getByText(/estes números não são uma atualização ao vivo/i)).toBeVisible();
 });
+
+test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
+  for (const [name, size] of [['pwa-192.png', 192], ['pwa-512.png', 512], ['apple-touch-icon.png', 180]]) {
+    const response = await page.request.get(`http://127.0.0.1:4173/observatorio/${name}`);
+    expect(response.ok()).toBeTruthy();
+    const bytes = await response.body();
+    expect(bytes.subarray(0, 8)).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+    expect(bytes.readUInt32BE(16)).toBe(size);
+    expect(bytes.readUInt32BE(20)).toBe(size);
+  }
+});
+
+test('busca leva ao quiz de educação cívica', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Buscar no observatório' }).click();
+  await page.getByRole('combobox', { name: 'Buscar seção, fonte ou indicador' }).fill('quiz');
+  await page.getByRole('option', { name: /Quiz de dados · 200 perguntas/ }).click();
+  await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
+});
