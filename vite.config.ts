@@ -183,7 +183,7 @@ export default defineConfig({
       includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
-        navigateFallback: '/observatorio/offline.html',
+        navigateFallback: '/observatorio/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/observatorio\/api\//],
         runtimeCaching: [
           {
@@ -214,7 +214,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: ({ url }) => url.pathname.startsWith(BASE_PATH + API_ROOT.slice(1)) || url.pathname.startsWith(API_ROOT),
+            urlPattern: ({ url }) => url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'observatorio-api-v13',
