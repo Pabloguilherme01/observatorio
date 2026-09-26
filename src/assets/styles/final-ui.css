@@ -6484,3 +6484,90 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
   background:rgba(148,163,184,.07);
   color:#cbd5e1;
 }
+
+
+/* V44.13 · cross-browser interface hardening and premium consistency */
+:root{
+  --ui-focus-ring:0 0 0 3px rgba(56,189,248,.18);
+  --ui-card-border:rgba(148,163,184,.12);
+  --ui-card-surface:rgba(255,255,255,.024);
+}
+:where(button,a,input,select,textarea,summary):focus-visible{
+  outline:2px solid rgba(125,211,252,.72);
+  outline-offset:2px;
+  box-shadow:var(--ui-focus-ring);
+}
+:where(button,[role="button"],a){
+  -webkit-tap-highlight-color:transparent;
+}
+:where(input,select,textarea,button){
+  font:inherit;
+}
+:where(input,select,textarea){
+  max-width:100%;
+}
+:where(img,svg,canvas,video){
+  max-width:100%;
+}
+:where(.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card){
+  contain:layout paint;
+}
+:where(.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card){
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease,background-color .18s ease;
+}
+@media (hover:hover) and (pointer:fine){
+  :where(.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card):hover{
+    transform:translateY(-2px);
+    border-color:rgba(125,211,252,.2);
+    box-shadow:0 16px 38px rgba(2,6,23,.14);
+  }
+}
+@media (pointer:coarse){
+  :where(button,a,[role="button"],input[type="checkbox"],input[type="radio"]){
+    touch-action:manipulation;
+  }
+  :where(button,a[role="button"],[role="button"]){
+    min-height:44px;
+  }
+}
+@supports (padding:max(0px)){
+  body{
+    padding-left:env(safe-area-inset-left,0px);
+    padding-right:env(safe-area-inset-right,0px);
+  }
+}
+@supports not (overflow:clip){
+  html,body,#root{overflow-x:hidden}
+}
+@supports not (backdrop-filter:blur(1px)){
+  .site-header,
+  .mobile-bottom-nav,
+  .pwa-install-shortcut,
+  .pwa-install-guide-backdrop,
+  .mobile-bottom-more-backdrop{
+    background-color:rgba(10,17,25,.98)!important;
+  }
+  .light .site-header,
+  .light .mobile-bottom-nav,
+  .light .pwa-install-shortcut{
+    background-color:rgba(255,255,255,.98)!important;
+  }
+}
+@media (max-width:767px){
+  :where(.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card){
+    box-shadow:0 8px 24px rgba(2,6,23,.08);
+  }
+  :where(.search-modal-panel,.pwa-install-guide,.mobile-bottom-more-menu,.mobile-tools-sheet){
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+  input,select,textarea{
+    font-size:max(16px,1em);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  :where(.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card){
+    transition:none!important;
+    transform:none!important;
+  }
+}
