@@ -218,6 +218,34 @@ test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ pa
   await expect(phases.nth(1)).toContainText('Melhor marca');
 });
 
+
+test('quiz não duplica a pontuação da última resposta', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'quiz');
+  await page.evaluate(() => {
+    localStorage.removeItem('observatorio-v44-quiz-best-scores');
+  });
+  await page.reload();
+  await openSection(page, 'quiz');
+  const options = page.locator('.quiz-options button');
+  await options.first().click();
+  await page.getByRole('button', { name: /Próxima|Finalizar fase/i }).click();
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('observatorio-v44-quiz-best-scores') || '[0,0,0,0,0]'));
+  expect(saved[0]).toBeLessThanOrEqual(1);
+});
+
+test('compartilhamento do transporte mantém um único hash', async ({ page }) => {
+  await page.goto('./#transporte');
+  await openSection(page, 'transporte');
+  await page.addInitScript(() => {});
+  const share = page.getByRole('button', { name: /compartilhar/i }).filter({ has: page.locator('svg') }).first();
+  if (await share.count()) {
+    await share.click();
+    const body = await page.locator('body').innerText();
+    expect(body).not.toContain('#transporte#transporte');
+  }
+});
+
 test('mostra resultado completo após o encerramento da janela', async ({ page }) => {
   const feed = JSON.parse(readFileSync('scripts/fixtures/tse-results.valid.synthetic.json', 'utf8'));
   feed.state = 'complete';
