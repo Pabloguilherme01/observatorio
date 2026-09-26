@@ -1,4 +1,4 @@
-import type { CandidateSnapshot, ISODate, ObservatoryData } from '../types/observatorio';
+import type { CandidateSnapshot, ISODate, ObservatoryData } from '../types/observatorio.js';
 import { sourceRegistry } from './sourceRegistry.js';
 import { EDITION } from '../config/version.js';
 import generatedCandidates from './generated/tse2026-candidates.json' with { type: 'json' };

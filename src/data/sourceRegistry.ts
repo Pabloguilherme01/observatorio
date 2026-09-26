@@ -1,4 +1,4 @@
-import type { SourceRef } from '../types/observatorio';
+import type { SourceRef } from '../types/observatorio.js';
 
 export const sourceRegistry: readonly SourceRef[] = [
   {

@@ -10,11 +10,11 @@ const correctionUrl = 'https://github.com/Pabloguilherme01/observatorio/issues/n
 export function ProjectTrustPanel() {
   const official = d.sources.filter(source => source.nature === 'official').length;
   const { mode } = useLanguageMode();
-  const [publication, setPublication] = useState({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '' });
+  const [publication, setPublication] = useState({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null as number | null });
 
   useEffect(() => {
     if (mode !== 'technical') {
-      setPublication({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '' });
+      setPublication({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null });
       return;
     }
     const controller = new AbortController();
@@ -28,10 +28,12 @@ export function ProjectTrustPanel() {
         commitShort: payload?.publication?.commitShort ?? '',
         buildGeneratedAt: payload?.buildGeneratedAt ?? '',
         contract: payload?.publication?.contract ?? '',
+        capturedAt: payload?.freshness?.tseCandidates?.capturedAt ?? '',
+        ageHours: typeof payload?.freshness?.tseCandidates?.ageHours === 'number' ? payload.freshness.tseCandidates.ageHours : null,
       }))
       .catch(error => {
         if (error instanceof DOMException && error.name === 'AbortError') return;
-        setPublication({ status: 'error', commitShort: '', buildGeneratedAt: '', contract: '' });
+        setPublication({ status: 'error', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null });
       });
     return () => controller.abort();
   }, [mode]);
@@ -70,7 +72,8 @@ export function ProjectTrustPanel() {
             <div className="trust-card">
               <Server className="h-4 w-4 text-sky-300" />
               <strong>Publicação pública</strong>
-              <p>{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a publicação está em estado degradado.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+              <p>{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a captura TSE está fora da janela recomendada.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+              {publication.capturedAt && <small className="mt-1 block text-slate-500">Captura TSE: {new Date(publication.capturedAt).toLocaleString('pt-BR')}{publication.ageHours !== null ? ` · ${publication.ageHours.toFixed(1)}h atrás` : ''}.</small>}
             </div>
             <div className="trust-card">
               <GitCommitHorizontal className="h-4 w-4 text-violet-300" />

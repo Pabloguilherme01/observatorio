@@ -6,12 +6,13 @@ const sourceText = fs.readFileSync(registryPath, 'utf8');
 const urls = [...new Set([...sourceText.matchAll(/url:\s*'(https?:\/\/[^']+)'/g)].map(match => match[1]))];
 
 const results = [];
-const concurrency = 4;
-const attempts = 2;
+const concurrency = Number(process.env.SOURCE_AUDIT_CONCURRENCY || 4);
+const attempts = Number(process.env.SOURCE_AUDIT_ATTEMPTS || 2);
+const timeoutMs = Number(process.env.SOURCE_AUDIT_TIMEOUT_MS || 8000);
 
 async function checkOnce(url) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   const started = Date.now();
   try {
     const response = await fetch(url, {
