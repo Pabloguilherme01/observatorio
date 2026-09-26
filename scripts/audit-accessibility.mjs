@@ -13,6 +13,7 @@ const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const comparison = read('src/components/sections/ContextComparison.tsx');
 const context = read('src/context/LanguageModeContext.tsx');
 const language = read('src/components/layout/LanguageModeToggle.tsx');
+const search = read('src/components/layout/SearchModal.tsx');
 const theme = read('src/context/ThemeContext.tsx');
 
 const errors = [];
@@ -45,6 +46,8 @@ must(comparison.includes('role=\"tablist\"') && comparison.includes('aria-select
 must((dashboard.includes('role=\"img\"') && dashboard.includes('aria-label')) || (dashboardChart.includes('role=\"img\"') && dashboardChart.includes('aria-label')), 'gráficos principais possuem alternativa textual');
 must(app.includes('<LanguageModeProvider>'), 'modo de linguagem está integrado na aplicação');
 must(context.includes('localStorage'), 'preferência de linguagem é persistida sem depender de servidor');
+must(search.includes('role="status"') && search.includes('aria-live="polite"') && search.includes('aria-atomic="true"'), 'busca possui região viva para anunciar resultados');
+must(search.includes('aria-describedby="search-result-status"'), 'campo de busca referencia o status acessível de resultados');
 
 const darkPairs = [
   ['#e6edf3', '#0b1117', 4.5],
