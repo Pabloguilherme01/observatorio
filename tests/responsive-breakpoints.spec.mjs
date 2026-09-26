@@ -30,6 +30,19 @@ test.describe('responsividade entre breakpoints', () => {
       expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.clipped).toBe(0);
+
+      for (const mode of ['summary', 'simple', 'technical']) {
+        await page.evaluate(nextMode => {
+          document.documentElement.dataset.languageMode = nextMode;
+        }, mode);
+        const modeLayout = await page.evaluate(() => ({
+          viewport: document.documentElement.clientWidth,
+          documentWidth: document.documentElement.scrollWidth,
+          mainWidth: document.getElementById('main-content')?.scrollWidth ?? 0,
+        }));
+        expect(modeLayout.documentWidth).toBeLessThanOrEqual(modeLayout.viewport + 1);
+        expect(modeLayout.mainWidth).toBeLessThanOrEqual(modeLayout.viewport + 1);
+      }
     });
   }
 });
