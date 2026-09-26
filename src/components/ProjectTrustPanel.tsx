@@ -1,4 +1,4 @@
-import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck, Database, CalendarClock, Server, GitCommitHorizontal } from 'lucide-react';
+import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck, Database, CalendarClock, Server, GitCommitHorizontal, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
@@ -11,6 +11,7 @@ export function ProjectTrustPanel() {
   const official = d.sources.filter(source => source.nature === 'official').length;
   const { mode } = useLanguageMode();
   const [publication, setPublication] = useState({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null as number | null });
+  const [healthRevision, setHealthRevision] = useState(0);
 
   useEffect(() => {
     if (mode !== 'technical') {
@@ -18,7 +19,8 @@ export function ProjectTrustPanel() {
       return;
     }
     const controller = new AbortController();
-    fetch('/observatorio/api/v1/health.json', { signal: controller.signal, cache: 'no-store' })
+    setPublication({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null });
+    fetch(import.meta.env.BASE_URL + 'api/v1/health.json', { signal: controller.signal, cache: 'no-store' })
       .then(response => {
         if (!response.ok) throw new Error('healthcheck HTTP ' + response.status);
         return response.json();
@@ -36,7 +38,7 @@ export function ProjectTrustPanel() {
         setPublication({ status: 'error', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null });
       });
     return () => controller.abort();
-  }, [mode]);
+  }, [mode, healthRevision]);
   return (
     <section id="principios" className="mx-auto max-w-7xl px-4 pb-10 sm:px-6" aria-labelledby="principles-title">
       <div id="fontes" className="trust-shell scroll-mt-24">
@@ -72,8 +74,17 @@ export function ProjectTrustPanel() {
             <div className="trust-card">
               <Server className="h-4 w-4 text-sky-300" />
               <strong>Publicação pública</strong>
-              <p>{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a captura TSE está fora da janela recomendada.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+              <p role="status" aria-live="polite">{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a captura TSE está fora da janela recomendada.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
               {publication.capturedAt && <small className="mt-1 block text-slate-500">Captura TSE: {new Date(publication.capturedAt).toLocaleString('pt-BR')}{publication.ageHours !== null ? ` · ${publication.ageHours.toFixed(1)}h atrás` : ''}.</small>}
+              <button
+                type="button"
+                onClick={() => setHealthRevision(value => value + 1)}
+                disabled={publication.status === 'loading'}
+                className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 disabled:cursor-wait disabled:opacity-60"
+              >
+                <RefreshCw className={'h-3.5 w-3.5 ' + (publication.status === 'loading' ? 'animate-spin' : '')} aria-hidden="true" />
+                {publication.status === 'loading' ? 'Verificando…' : 'Atualizar status'}
+              </button>
             </div>
             <div className="trust-card">
               <GitCommitHorizontal className="h-4 w-4 text-violet-300" />

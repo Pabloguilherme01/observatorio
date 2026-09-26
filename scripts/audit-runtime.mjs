@@ -47,6 +47,10 @@ const inspector = read('src/components/DataInspector.tsx');
 if (inspector.includes("markCopied = (kind: 'details' | 'citation' | 'link')") && inspector.includes('setLinkCopied(false)') && inspector.includes('copyTimerRef')) pass('inspetor reutiliza timer único para feedback de cópia inclusive do link.');
 else fail('inspetor pode deixar feedback de link fora do ciclo de cleanup.');
 
+const trustPanel = read('src/components/ProjectTrustPanel.tsx');
+if (trustPanel.includes('new AbortController()') && trustPanel.includes('return () => controller.abort()') && trustPanel.includes('[mode, healthRevision]')) pass('retry do healthcheck cancela requisições anteriores e no unmount.');
+else fail('retry do healthcheck pode deixar requisição concorrente ou sem cleanup.');
+
 const experience = read('src/components/ExperienceShell.tsx');
 if (
   experience.includes("window.addEventListener('scroll'")
