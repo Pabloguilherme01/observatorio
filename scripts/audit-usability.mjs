@@ -64,6 +64,13 @@ else fail('convite de instalação PWA não possui dispensa persistente por sess
 if (mainEntry.includes("window.addEventListener('beforeinstallprompt'") && mainEntry.includes("window.removeEventListener('beforeinstallprompt'") && mainEntry.includes("window.addEventListener('appinstalled'") && mainEntry.includes("window.removeEventListener('appinstalled'")) pass('listeners do ciclo PWA possuem cleanup simétrico');
 else fail('listeners do prompt PWA podem permanecer ativos após unmount');
 
+const connectivity = texts.find(item => item.file === 'src/components/system/ConnectivityStatus.tsx')?.content ?? '';
+const experienceSource = texts.find(item => item.file === 'src/components/ExperienceShell.tsx')?.content ?? '';
+if (experienceSource.includes('<ConnectivityStatus />') && connectivity.includes('aria-label="Status de conexão"') && connectivity.includes('aria-live="polite"')) pass('estado de conexão é montado globalmente e anunciado de forma acessível');
+else fail('estado de conexão não está integrado globalmente com anúncio acessível');
+if (connectivity.includes('Sem conexão') && connectivity.includes('Conexão restabelecida') && connectivity.includes('Verificar')) pass('estado de rede diferencia offline, reconexão e verificação manual');
+else fail('estado de rede não oferece feedback completo de conectividade');
+
 const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
 const sectionNavigation = texts.find(item => item.file === 'src/lib/sectionNavigation.ts')?.content ?? '';
 const readingModes = texts.find(item => item.file === 'src/config/readingModes.ts')?.content ?? '';
