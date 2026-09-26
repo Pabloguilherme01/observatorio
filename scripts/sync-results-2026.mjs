@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { request } from 'node:https';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { verifyCompactJws } from './verify-jws.mjs';
 
 const BASE = 'https://resultados.tse.jus.br/oficial';
@@ -255,7 +256,7 @@ async function main() {
     console.log(JSON.stringify({ valid: true, pending: true, reason: 'Nenhum cargo deste turno disponível.' }, null, 2));
     return;
   }
-  if (!changed && previousFeed && previousFeed.turn === TURN && pendingCargos === 0) {
+  if (!changed && previousFeed && previousFeed.turn === TURN) {
     console.log(JSON.stringify({ valid: true, unchanged: true, state: previousFeed.state, capturedAt: previousFeed.capturedAt, entries: previousFeed.entries.length }, null, 2));
     return;
   }
@@ -287,7 +288,7 @@ async function main() {
   console.log(JSON.stringify({ valid: true, state: payload.state, capturedAt: payload.capturedAt, entries: entries.length, verifiedFiles: proofs.length, output: OUTPUT }, null, 2));
 }
 
-if (process.argv[1] && new URL(import.meta.url).pathname === resolve(process.argv[1])) main().catch(error => {
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) main().catch(error => {
   console.error(JSON.stringify({ valid: false, error: String(error) }, null, 2));
   process.exit(1);
 });
