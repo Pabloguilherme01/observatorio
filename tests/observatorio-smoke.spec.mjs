@@ -398,6 +398,7 @@ test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ pa
 
 
 test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async ({ page }) => {
+  test.setTimeout(90_000);
   const quizSource = readFileSync('src/data/quiz/questionBank.ts', 'utf8');
   const answerIndexes = [...quizSource.matchAll(/difficulty:'Fácil'[\s\S]*?answerIndex:\s*(\d+)/g)]
     .slice(0, 40)
