@@ -642,7 +642,7 @@ test('comparação municipal expõe mais dados e perfil selecionável sem rankin
   const contextSection = page.locator('#contexto');
   await contextSection.getByRole('tab', { name: 'Variação populacional' }).click();
   await expect(contextSection.getByText('Indicador derivado')).toBeVisible();
-  await expect(contextSection.getByText(/Censo 2022 → estimativa 2026/)).toBeVisible();
+  await expect(contextSection.locator('.context-metric-reference')).toContainText('Censo 2022 → estimativa 2026');
   await expect(contextSection.locator('.context-comparison-card')).toHaveCount(8);
 
   await page.setViewportSize({ width: 390, height: 844 });
