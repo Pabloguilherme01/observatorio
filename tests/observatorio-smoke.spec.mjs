@@ -581,7 +581,9 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
 
     if (viewport.mobile) await page.getByRole('button', { name: 'Abrir menu' }).click();
 
-    const group = page.getByRole('group', { name: 'Escolha como você quer ler os dados' }).filter({ visible: true });
+    const group = viewport.mobile
+      ? page.locator('.mobile-tools-sheet').getByRole('group', { name: 'Escolha como você quer ler os dados' })
+      : page.locator('.header-reading-mode').getByRole('group', { name: 'Escolha como você quer ler os dados' });
     const root = page.locator('html');
     const main = page.locator('#main-content');
 
