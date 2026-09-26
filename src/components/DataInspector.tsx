@@ -135,7 +135,9 @@ export function DataInspector() {
         await navigator.share(shareData);
         setActionError(false);
       } else {
-        await copy();
+        const copiedShare = await copyText(text + '\n' + shareData.url);
+        if (!copiedShare) throw new Error('share-copy-failed');
+        markCopied('details');
       }
     } catch (error) {
       if ((error as DOMException)?.name !== 'AbortError') setActionError(true);
