@@ -1,7 +1,6 @@
 import { CircleHelp, Compass, Home, Landmark, MoreHorizontal } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
-import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const primaryItems = [
   { id: 'dashboard', label: 'Início', icon: Home },
@@ -18,15 +17,12 @@ const sectionToTab = (id: string) => {
   return 'more';
 };
 
-function jump(id: string, mode: 'summary' | 'simple' | 'technical', setMode: (mode: 'summary' | 'simple' | 'technical') => void) {
-  const destinationIsHiddenInSummary = mode === 'summary' && id !== 'descubra' && id !== 'dashboard';
-  if (destinationIsHiddenInSummary) setMode('simple');
+function jump(id: string) {
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
 }
 
 export function MobileBottomNav() {
-  const { mode, setMode } = useLanguageMode();
   const [moreOpen, setMoreOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
@@ -135,7 +131,7 @@ export function MobileBottomNav() {
         <button
           key={id}
           type="button"
-          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(id, mode, setMode); }}
+          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(id); }}
           className={activeSection === id ? 'is-active' : ''}
           aria-current={activeSection === id ? 'page' : undefined}
         >
@@ -146,7 +142,7 @@ export function MobileBottomNav() {
       {quizItem && (
         <button
           type="button"
-          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(quizItem.id, mode, setMode); }}
+          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(quizItem.id); }}
           className={activeSection === 'quiz' ? 'is-active' : ''}
           aria-current={activeSection === 'quiz' ? 'page' : undefined}
         >
@@ -176,7 +172,7 @@ export function MobileBottomNav() {
                 key={item.id}
                 type="button"
                 role="menuitem"
-                onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(item.id, mode, setMode); }}
+                onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(item.id); }}
               >
                 <span>{item.shortLabel}</span>
                 <small>{item.description}</small>
