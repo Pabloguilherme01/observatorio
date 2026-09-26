@@ -66,6 +66,14 @@ else pass('links públicos externos preservam noopener em target=_blank');
 if (serviceUrls.length < 53) fail.push(`catálogo útil abaixo do esperado: ${serviceUrls.length} atalhos`);
 else pass(`${serviceUrls.length} atalhos públicos úteis cadastrados (${urls.length} URLs únicas)`);
 
+const serviceTitles = [
+  ...[...priorityBlock.matchAll(/title:\s*'([^']+)'/g)].map(match => match[1]),
+  ...[...additionalBlock.matchAll(/title:\s*'([^']+)'/g)].map(match => match[1]),
+];
+const duplicateTitles = serviceTitles.filter((title, index) => serviceTitles.indexOf(title) !== index);
+if (duplicateTitles.length) fail.push('serviços municipais duplicados: ' + [...new Set(duplicateTitles)].join(', '));
+else pass('catálogo municipal não repete o mesmo serviço por título');
+
 const additionalUrls = objectUrls(additionalBlock);
 if (additionalUrls.length !== 28) fail.push(`catálogo técnico adicional esperado=28 atual=${additionalUrls.length}`);
 else pass('28 serviços oficiais adicionais permanecem disponíveis no aprofundamento técnico');
