@@ -43,6 +43,10 @@ const header = read('src/components/layout/Header.tsx');
 if (header.includes('copiedTimerRef') && header.includes('window.clearTimeout(copiedTimerRef.current)')) pass('feedback de cópia do cabeçalho limpa timer pendente.');
 else fail('feedback de cópia do cabeçalho pode deixar timer pendente.');
 
+const inspector = read('src/components/DataInspector.tsx');
+if (inspector.includes("markCopied = (kind: 'details' | 'citation' | 'link')") && inspector.includes('setLinkCopied(false)') && inspector.includes('copyTimerRef')) pass('inspetor reutiliza timer único para feedback de cópia inclusive do link.');
+else fail('inspetor pode deixar feedback de link fora do ciclo de cleanup.');
+
 const experience = read('src/components/ExperienceShell.tsx');
 if (
   experience.includes("window.addEventListener('scroll'")
