@@ -41,11 +41,16 @@ export function MobileBottomNav() {
     const next = !moreOpenRef.current;
     moreOpenRef.current = next;
     setMoreOpen(next);
-    window.requestAnimationFrame(() => {
-      if (next) moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
-      else moreButtonRef.current?.focus();
-    });
+    if (!next) window.requestAnimationFrame(() => moreButtonRef.current?.focus());
   }, []);
+
+  useEffect(() => {
+    if (!moreOpen) return;
+    const focusFrame = window.requestAnimationFrame(() => {
+      moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
+    });
+    return () => window.cancelAnimationFrame(focusFrame);
+  }, [moreOpen]);
 
   useEffect(() => {
     const update = (next: string) => {
