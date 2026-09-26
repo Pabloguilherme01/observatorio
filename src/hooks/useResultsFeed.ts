@@ -185,7 +185,7 @@ export function useResultsFeed(intervalMs = 300000) {
       if (Date.now() >= RESULTS_WINDOW_START) void fetchFeed();
     };
 
-    if (isResultsWindowOpen()) void fetchFeed();
+    if (Date.now() >= RESULTS_WINDOW_START) void fetchFeed();
     const timer = window.setInterval(refresh, intervalMs);
     document.addEventListener('visibilitychange', refresh);
 
