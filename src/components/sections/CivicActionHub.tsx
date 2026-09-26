@@ -1,6 +1,5 @@
 import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
-import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
 const priorityPublicServices = [
