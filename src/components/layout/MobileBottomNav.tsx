@@ -34,7 +34,10 @@ export function MobileBottomNav() {
   const closeMore = useCallback((restoreFocus = false) => {
     moreOpenRef.current = false;
     setMoreOpen(false);
-    if (restoreFocus) window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+    if (restoreFocus) {
+      moreButtonRef.current?.focus();
+      window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+    }
   }, []);
 
   const toggleMore = useCallback(() => {
