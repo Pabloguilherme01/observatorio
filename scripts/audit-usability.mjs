@@ -137,6 +137,10 @@ else fail('atalhos declarados não estão conectados à navegação central com 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
+if (search.includes('const editingQuery = event.target === inputRef.current') && search.includes("!editingQuery && event.key === 'Home'") && search.includes("!editingQuery && event.key === 'End'")) pass('busca preserva Home/End para edição nativa no campo de texto');
+else fail('busca intercepta Home/End e pode quebrar edição de texto');
+if (search.includes('id="search-result-status"') && search.includes('role="status"') && search.includes('aria-live="polite"') && search.includes('aria-describedby="search-result-status"')) pass('busca anuncia mudanças na quantidade de resultados');
+else fail('busca não anuncia mudanças de resultados para tecnologia assistiva');
 if (search.includes('closeButtonRef') && search.includes("desktop ? inputRef.current : closeButtonRef.current") && header.includes('closeTools(false)')) pass('busca mobile move foco para dentro do diálogo sem reabrir teclado virtual');
 else fail('busca mobile pode deixar foco atrás do diálogo');
 if (search.includes('canRestoreOpener') && search.includes('opener !== document.body') && search.includes('opener.tabIndex >= 0') && search.includes('[data-search-trigger="primary"]') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco apenas em acionador válido e usa fallback estável');
