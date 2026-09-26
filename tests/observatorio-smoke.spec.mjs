@@ -60,7 +60,24 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
   });
 
-  test('mantém fluxo de busca e exportação disponível', async ({ page }) => {
+  test('busca abre destinos que exigem elevação de leitura', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('qualidade');
+  await page.getByRole('option', { name: /Qualidade dos dados/i }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await expect(page.locator('#qualidade')).toBeVisible();
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  await page.getByRole('combobox').first().fill('resumo executivo');
+  await page.getByRole('option', { name: /Resumo executivo/i }).click();
+  await expect(page.locator('#resumo')).toBeVisible();
+});
+
+test('mantém fluxo de busca e exportação disponível', async ({ page }) => {
     await page.goto('./');
     const searchTrigger = page.getByRole('button', { name: /buscar/i }).first();
     if (await searchTrigger.count()) {
