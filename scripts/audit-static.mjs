@@ -175,8 +175,11 @@ must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<
 must(allRuntimeText.includes('<PublicDataPulse />') && appSource.includes('<Footer />'), 'atualizações públicas e footer institucional montados');
 must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
 
-for (const id of ['descubra', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
-  must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
+for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'fontes']) {
+  must(navigation.includes(`id: '${id}'`), `navegação pública contém #${id}`);
+}
+for (const id of ['principios', 'contexto', 'dados', 'qualidade', 'evidencias']) {
+  must(allRuntimeText.includes(`id=\"${id}\"`) || allRuntimeText.includes(`id='${id}'`), `conteúdo #${id} continua montado e acessível sem poluir a navegação pública`);
 }
 
 must(candidates.schemaVersion === 3 && candidates.coverage === 'state_watchlist', 'snapshot atual usa exclusivamente o contrato estadual watchlist');
