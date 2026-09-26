@@ -2,6 +2,7 @@ import { BusFront, Coins, ExternalLink, Share2, Users } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { calculateTransportCost, formatBRL, workDaysPerMonthFromWeeks } from '../lib/transport';
+import { copyText } from '../lib/clipboard';
 import { Card } from './ui/Card';
 import { SectionHeader } from './ui/SectionHeader';
 
@@ -85,20 +86,7 @@ export function TransportCalculator() {
         flashShareStatus('Compartilhado');
         return;
       }
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-        flashShareStatus('Cenário copiado');
-        return;
-      }
-      const area = document.createElement('textarea');
-      area.value = text;
-      area.setAttribute('readonly', '');
-      area.style.position = 'fixed';
-      area.style.opacity = '0';
-      document.body.appendChild(area);
-      area.select();
-      const copied = document.execCommand('copy');
-      area.remove();
+      const copied = await copyText(text);
       flashShareStatus(copied ? 'Cenário copiado' : 'Não foi possível compartilhar');
     } catch (error) {
       if ((error as DOMException)?.name !== 'AbortError') flashShareStatus('Não foi possível compartilhar');
