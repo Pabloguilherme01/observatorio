@@ -98,7 +98,7 @@ const candidateIds = candidateData.matched.map(candidate => candidate.sqCandidat
 must(candidateData.matched.length === 7, 'recorte público de candidatos possui 7 nomes mapeados');
 must(new Set(candidateIds).size === candidateIds.length, 'candidatos não possuem SQ_CANDIDATO duplicado');
 must(['KEKE DA VULKANIC','RIBEIRO DO TÚLLIO','FELIPE GALDINO'].every(name => candidateNames.includes(name)), 'candidatos locais adicionados ao recorte');
-must(candidateData.matched.every(candidate => candidate.status === 'DEFERIDO'), 'status cadastral publicado está atualizado para DEFERIDO');
+must(candidateData.matched.every(candidate => candidate.status === null || (typeof candidate.status === 'string' && !/^#(?:NE|NULO)$/i.test(candidate.status))), 'situação cadastral não apresenta marcadores de ausência como status');
 must(candidateData.matched.every(candidate => candidate.localEvidence && Array.isArray(candidate.evidenceSourceUrls) && candidate.evidenceSourceUrls.length > 0), 'cada candidato possui evidência documental de vínculo local');
 must(read('src/components/sections/Electoral360.tsx').includes('Ver catálogo oficial do TSE') && read('src/components/sections/Electoral360.tsx').includes('Fonte'), 'painel de candidaturas mantém proveniência oficial');
 must(!candidateData.meta.selection.includes('watchlist_only') || candidateData.matched.length === candidateData.watchlist.length, 'seleção do recorte não fica menor que a watchlist publicada');

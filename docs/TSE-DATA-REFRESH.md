@@ -13,6 +13,8 @@ A atualização de candidatos é uma operação de dados separada:
 5. revisar o diff gerado em `src/data/generated/tse2026-diff.json`;
 6. versionar o snapshot e a pasta `src/data/generated/history`.
 
+Quando os endpoints oficiais recusarem o acesso do executor (HTTP 403), baixe o recurso **Candidatos** diretamente do [catálogo oficial](https://dadosabertos.tse.jus.br/dataset/candidatos-2026) em um ambiente com acesso. Confira a integridade do ZIP e execute `TSE_SOURCE_ZIP=/caminho/consulta_cand_2026.zip npm run sync:tse`; em seguida, faça as mesmas validações e revisão do diff acima. O sincronizador lê o CSV de GO em Latin-1, separado por ponto e vírgula, e registra o SHA-256 do ZIP oficial no snapshot. Não publique o arquivo ZIP completo no repositório.
+
 ## Garantias
 
 - Nenhuma URL de proxy de terceiros é necessária pelo sincronizador.

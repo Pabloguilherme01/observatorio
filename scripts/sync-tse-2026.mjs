@@ -1,6 +1,6 @@
 // Mantém este arquivo como gatilho operacional da captura oficial em recuperações de frescor.
 import { createHash } from 'node:crypto';
-import { appendFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -43,12 +43,12 @@ function valueOf(row, header, keys) {
     const index = header[key];
     if (index === undefined) continue;
     const value = String(row[index] ?? '').trim();
-    if (value) return value;
+    if (value && !/^#(?:NE|NULO)$/i.test(value)) return value;
   }
   return '';
 }
 
-function parseCsv(content) {
+function parseCsv(content, delimiter = ';') {
   const rows = [];
   let row = [];
   let field = '';
@@ -71,7 +71,7 @@ function parseCsv(content) {
     }
 
     if (char === '"') quoted = true;
-    else if (char === ',') { row.push(field); field = ''; }
+    else if (char === delimiter) { row.push(field); field = ''; }
     else if (char === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
     else if (char !== '\r') field += char;
   }
@@ -93,6 +93,10 @@ function toTseRecord(row, header, previousRecord) {
     ballotNumber: ballotValue ? Number(ballotValue) : null,
     name,
     fullName: valueOf(row, header, ['NM_CANDIDATO']) || null,
+    gender: valueOf(row, header, ['DS_GENERO']) || null,
+    education: valueOf(row, header, ['DS_GRAU_INSTRUCAO']) || null,
+    occupation: valueOf(row, header, ['DS_OCUPACAO']) || null,
+    declaredAssetsTotal: previousRecord?.declaredAssetsTotal ?? null,
     party: valueOf(row, header, ['SG_PARTIDO']) || null,
     office: valueOf(row, header, ['DS_CARGO', 'NM_CARGO']) || null,
     status: valueOf(row, header, ['DS_SITUACAO_CANDIDATURA', 'DS_SITUACAO']) || null,
@@ -133,7 +137,7 @@ function validateZipArchive(zipPath) {
   const invalidNames = names.filter(name => {
     const normalized = name.replaceAll('\\', '/');
     const segments = normalized.split('/');
-    const extensionAllowed = normalized.endsWith('/') || /\.(csv|txt)$/i.test(normalized);
+    const extensionAllowed = normalized.endsWith('/') || /\.(csv|txt)$/i.test(normalized) || normalized.toLowerCase() === 'leiame.pdf';
     return normalized.startsWith('/')
       || normalized.includes('\0')
       || segments.includes('..')
@@ -372,6 +376,8 @@ async function updateFromApiFallback(previous, watchlist, work) {
       added: diff.filter(item => item.type === 'added').length,
       removed: diff.filter(item => item.type === 'removed').length,
       changed: diff.filter(item => item.type === 'changed').length,
+      unresolved: 0,
+      comparison: 'matched_watchlist_by_sq_candidate',
       records: diff,
     },
   };
@@ -451,15 +457,20 @@ async function main() {
 
   try {
     let lastError = null;
-    for (const candidateUrl of ZIP_URLS) {
-      try {
-        selectedSourceUrl = candidateUrl;
-        download(candidateUrl, zip);
-        lastError = null;
-        break;
-      } catch (error) {
-        lastError = error;
-        console.warn('[TSE] fonte indisponível: ' + candidateUrl);
+    if (process.env.TSE_SOURCE_ZIP) {
+      selectedSourceUrl = ZIP_URLS[1];
+      copyFileSync(process.env.TSE_SOURCE_ZIP, zip);
+    } else {
+      for (const candidateUrl of ZIP_URLS) {
+        try {
+          selectedSourceUrl = candidateUrl;
+          download(candidateUrl, zip);
+          lastError = null;
+          break;
+        } catch (error) {
+          lastError = error;
+          console.warn('[TSE] fonte indisponível: ' + candidateUrl);
+        }
       }
     }
     if (lastError) {
@@ -477,7 +488,7 @@ async function main() {
     const csvPath = execFileSync('find', [extracted, '-type', 'f', '-iname', '*GO.csv'], { encoding: 'utf8' }).split(/\r?\n/).find(Boolean);
     if (!csvPath) throw new Error('Arquivo estadual de candidatos de GO não encontrado no pacote oficial.');
 
-    const rows = parseCsv(readFileSync(csvPath, 'utf8'));
+    const rows = parseCsv(readFileSync(csvPath, 'latin1'));
     if (rows.length < 2) throw new Error('Arquivo CSV de candidatos de GO está vazio ou inválido.');
 
     const header = headerMap(rows[0]);
@@ -568,8 +579,8 @@ async function main() {
         sourceRows,
         originalMatchedRows: matched.length,
         matchedRows: matched.length,
-        workflowRunId: process.env.GITHUB_RUN_ID || undefined,
-        gitCommit: process.env.GITHUB_SHA || undefined,
+        workflowRunId: process.env.GITHUB_RUN_ID || previous.meta?.workflowRunId || null,
+        gitCommit: process.env.GITHUB_SHA || previous.meta?.gitCommit || null,
         state,
         retrievalMethod: 'official_tse_zip_csv',
         resourceUrl: selectedSourceUrl,
@@ -588,6 +599,8 @@ async function main() {
         added: diff.filter(item => item.type === 'added').length,
         removed: diff.filter(item => item.type === 'removed').length,
         changed: diff.filter(item => item.type === 'changed').length,
+        unresolved: 0,
+        comparison: 'matched_watchlist_by_sq_candidate',
         records: diff,
       },
     };
