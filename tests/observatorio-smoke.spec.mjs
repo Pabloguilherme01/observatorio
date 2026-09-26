@@ -93,4 +93,18 @@ test('mostra resultado completo após o encerramento da janela', async ({ page }
   await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
   await page.goto('./');
   await expect(page.getByText('FEED COMPLETO · TSE')).toBeVisible();
+  await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
+  await expect(page.getByText('10 de 10 seções · 100%')).toBeVisible();
+});
+
+test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo', async ({ page }) => {
+  const feed = JSON.parse(readFileSync('scripts/fixtures/tse-results.valid.synthetic.json', 'utf8'));
+  feed.state = 'live';
+  feed.capturedAt = '2026-10-26T22:00:00-03:00';
+  await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
+  await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
+  await page.goto('./');
+  await expect(page.getByText('RESULTADO PARCIAL ARQUIVADO · TSE')).toBeVisible();
+  await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
+  await expect(page.getByText(/estes números não são uma atualização ao vivo/i)).toBeVisible();
 });
