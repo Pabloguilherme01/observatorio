@@ -6647,3 +6647,180 @@ body{
     outline:2px solid Highlight!important;
   }
 }
+
+
+/* V44.15 · visual system: clearer sections, richer cards and distinct reading modes */
+#main-content > :where(section,.mode-scope,#analise){
+  position:relative;
+}
+#main-content .mode-scope{
+  margin-block:clamp(.35rem,1.5vw,1rem);
+}
+#main-content .mode-scope > .deferred-section{
+  position:relative;
+}
+#main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card){
+  position:relative;
+  isolation:isolate;
+  border-color:rgba(148,163,184,.13);
+  background-clip:padding-box;
+}
+#main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card)::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:2px;
+  border-radius:inherit;
+  background:linear-gradient(180deg,rgba(var(--reading-accent-rgb),.68),rgba(var(--reading-accent-rgb),.08) 55%,transparent);
+  opacity:.48;
+  pointer-events:none;
+}
+#main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card) :where(h2,h3,h4,strong){
+  text-wrap:balance;
+}
+#main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card) :where(p,li,dd){
+  text-wrap:pretty;
+}
+#main-content :where(.section-header,.section-heading){
+  position:relative;
+  padding-left:clamp(.85rem,1.8vw,1.15rem);
+}
+#main-content :where(.section-header,.section-heading)::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.16em;
+  bottom:.16em;
+  width:3px;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgb(var(--reading-accent-rgb)),rgba(var(--reading-accent-rgb),.16));
+  box-shadow:0 0 18px rgba(var(--reading-accent-rgb),.13);
+}
+#main-content :where(.section-header,.section-heading) :where(h2,h3){
+  max-width:24ch;
+}
+#main-content :where(.premium-info-grid,.city-facts-grid,.summary-simple-grid){
+  align-items:stretch;
+}
+#main-content :where(.premium-info-grid,.city-facts-grid,.summary-simple-grid) > *{
+  min-height:100%;
+}
+
+/* Summary: executive, spacious and focused. */
+:root[data-language-mode="summary"] #main-content .mode-scope{
+  margin-block:clamp(.25rem,1vw,.75rem);
+}
+:root[data-language-mode="summary"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-public-fact,.audience-topic,.audience-action-card){
+  background:
+    radial-gradient(140% 100% at 0 0,rgba(56,189,248,.07),transparent 48%),
+    linear-gradient(180deg,rgba(255,255,255,.034),rgba(255,255,255,.016));
+}
+:root[data-language-mode="summary"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card)::before{
+  width:3px;
+  opacity:.55;
+}
+:root[data-language-mode="summary"] #main-content .section-header p{
+  max-width:64ch;
+}
+
+/* Simple: guided, softer and easier to scan. */
+:root[data-language-mode="simple"] #main-content .mode-scope{
+  margin-block:clamp(.75rem,2.2vw,1.5rem);
+}
+:root[data-language-mode="simple"] #main-content .mode-scope::after{
+  content:"";
+  display:block;
+  width:min(92%,68rem);
+  height:1px;
+  margin:var(--reading-section-gap) auto 0;
+  background:linear-gradient(90deg,transparent,rgba(45,212,191,.15),transparent);
+}
+:root[data-language-mode="simple"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-simple-card,.audience-topic,.audience-action-card){
+  background:
+    radial-gradient(130% 90% at 0 0,rgba(45,212,191,.075),transparent 50%),
+    linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.018));
+}
+:root[data-language-mode="simple"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card){
+  padding-top:clamp(1rem,2vw,1.3rem);
+  padding-bottom:clamp(1rem,2vw,1.3rem);
+}
+
+/* Technical: denser evidence workspace, sharper geometry and explicit grouping. */
+:root[data-language-mode="technical"] #main-content .mode-scope{
+  margin-block:.25rem;
+  border-left:1px solid rgba(167,139,250,.10);
+}
+:root[data-language-mode="technical"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-technical-kpi,.technical-mini-kpi,.candidate-card){
+  background:
+    linear-gradient(180deg,rgba(167,139,250,.038),rgba(255,255,255,.012));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),var(--reading-card-shadow);
+}
+:root[data-language-mode="technical"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card)::before{
+  opacity:.72;
+  width:2px;
+}
+:root[data-language-mode="technical"] #main-content :where(.section-header,.section-heading)::before{
+  width:2px;
+}
+:root[data-language-mode="technical"] #main-content :where(.section-header,.section-heading) :where(h2,h3){
+  max-width:30ch;
+}
+
+/* Light theme surfaces keep the same hierarchy. */
+:root.light #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card){
+  border-color:rgba(71,85,105,.14);
+}
+:root.light[data-language-mode="summary"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-public-fact,.audience-topic,.audience-action-card){
+  background:linear-gradient(180deg,rgba(240,249,255,.96),rgba(255,255,255,.96));
+}
+:root.light[data-language-mode="simple"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-simple-card,.audience-topic,.audience-action-card){
+  background:linear-gradient(180deg,rgba(240,253,250,.96),rgba(255,255,255,.97));
+}
+:root.light[data-language-mode="technical"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-technical-kpi,.technical-mini-kpi,.candidate-card){
+  background:linear-gradient(180deg,rgba(245,243,255,.92),rgba(255,255,255,.97));
+}
+
+@media (hover:hover) and (pointer:fine){
+  #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card){
+    transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background-color .18s ease;
+  }
+  #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card):hover{
+    border-color:rgba(var(--reading-accent-rgb),.22);
+    transform:translateY(-1px);
+  }
+}
+@media (max-width:767px){
+  #main-content .mode-scope{
+    margin-block:.35rem;
+  }
+  #main-content :where(.section-header,.section-heading){
+    padding-left:.72rem;
+  }
+  #main-content :where(.section-header,.section-heading)::before{
+    width:2px;
+  }
+  #main-content :where(.section-header,.section-heading) :where(h2,h3){
+    max-width:none;
+  }
+  #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card)::before{
+    width:2px;
+  }
+  :root[data-language-mode="simple"] #main-content .mode-scope{
+    margin-block:.65rem;
+  }
+  :root[data-language-mode="technical"] #main-content .mode-scope{
+    border-left:0;
+  }
+}
+@media (max-width:359px){
+  #main-content :where(.section-header,.section-heading){padding-left:.6rem}
+  #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card){
+    border-radius:max(10px,calc(var(--reading-radius) - 2px))!important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.context-comparison-card,.official-resource-card,.audience-page-card,.candidate-card,.quiz-card){
+    transition:none!important;
+    transform:none!important;
+  }
+}
