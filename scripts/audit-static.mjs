@@ -145,8 +145,9 @@ must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includ
 must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
-const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
+const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
+must(appSource.includes("import DeferredEvidenceGroup") && appSource.includes("<DeferredEvidenceGroup />") && !appSource.includes("loadEvidenceGroup"), 'fontes, exportação e evidências base montam sem depender de lazy loading');
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
 must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && contextSource.includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
