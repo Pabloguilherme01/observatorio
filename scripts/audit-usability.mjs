@@ -127,6 +127,8 @@ else pass('navegação mobile rotulada e integrada ao fluxo principal');
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
+if (search.includes('observatorio:public-service-search') && civic.includes('Buscar serviço municipal') && civic.includes('visibleMunicipalServices')) pass('busca global entrega o serviço municipal já filtrado');
+else fail('resultado de serviço público pode abrir uma lista genérica sem destacar o item procurado');
 if (
   search.includes("const knownDestination =") &&
   search.includes("navigation.some(item => item.id === id)") &&
