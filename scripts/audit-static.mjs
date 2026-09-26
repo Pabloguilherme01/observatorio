@@ -119,7 +119,17 @@ for (const file of workflowFiles) {
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
 must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json registra gate de vulnerabilidades de dependências');
-must(!pkgScripts['audit:browser']?.includes('playwright install') && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit') && !ciWorkflow.includes('npm install playwright') && !ciWorkflow.includes('npx playwright'), 'CI usa Playwright fixado pelo lockfile e prepara motores sem instalação dinâmica do pacote');
+must(
+  !pkgScripts['audit:browser']?.includes('playwright install')
+    && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
+    && deployWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
+    && !ciWorkflow.includes('npm install playwright')
+    && !ciWorkflow.includes('npx playwright')
+    && !deployWorkflow.includes('npm install playwright')
+    && !deployWorkflow.includes('npx playwright'),
+  'CI e deploy usam Playwright fixado pelo lockfile e preparam motores antes da auditoria cross-browser',
+);
+must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
