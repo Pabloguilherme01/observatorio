@@ -62,6 +62,8 @@ must(files.css.includes('scroll-snap-type'), 'rails móveis suportam navegação
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:\s*390px\)/.test(files.css), 'há ajuste dedicado para telas muito estreitas');
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
 must(files.finalUi.includes('.deferred-section{') && files.finalUi.includes('content-visibility:visible!important') && !files.mobileFinal.includes('content-visibility:auto'), 'seções lazy montadas permanecem renderizáveis para gráficos e deep links');
+must(files.finalUi.includes('.premium-info-card{') && files.finalUi.includes('.premium-info-grid{') && files.finalUi.includes('@media (max-width:767px)') && files.finalUi.includes('.premium-info-grid{grid-template-columns:1fr}'), 'cards premium possuem composição responsiva e colapsam para uma coluna no mobile');
+must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero-reference-card{'), 'referências técnicas do hero usam mini-cards em vez de texto solto');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aprofundar leitura'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
