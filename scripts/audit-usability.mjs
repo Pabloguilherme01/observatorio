@@ -60,13 +60,13 @@ pass('jornada pública cobre descobrir → conferir mudanças → verificar font
 
 const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
 const readingModes = texts.find(item => item.file === 'src/config/readingModes.ts')?.content ?? '';
-const languageContext = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
+const languageContextSource = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
 if (
   app.includes('NavigationModeBridge') &&
   app.includes('modeForDestination') &&
   readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') &&
   readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') &&
-  languageContext.includes('fallbackDestinationForMode')
+  languageContextSource.includes('fallbackDestinationForMode')
 ) pass('deep links, navegação e redução de modo compartilham a mesma política de visibilidade');
 else fail('navegação por hash pode abrir uma seção escondida no modo de leitura atual');
 const header = texts.find(item => item.file === 'src/components/layout/Header.tsx')?.content ?? '';
