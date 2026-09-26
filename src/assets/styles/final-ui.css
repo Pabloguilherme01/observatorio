@@ -6824,3 +6824,42 @@ body{
     transform:none!important;
   }
 }
+
+
+/* V44.16 · Origem, método e confiança */
+.trust-pillar-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.trust-pillar-card{
+  position:relative;overflow:hidden;min-width:0;padding:20px;border:1px solid rgba(148,163,184,.12);
+  border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 14px 38px rgba(2,6,23,.10)
+}
+.trust-pillar-card::after{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:2px;background:linear-gradient(90deg,rgba(var(--reading-accent-rgb),.72),transparent 74%);opacity:.72}
+.trust-pillar-icon{display:grid;place-items:center;width:38px;height:38px;border:1px solid rgba(var(--reading-accent-rgb),.18);border-radius:13px;background:rgba(var(--reading-accent-rgb),.075);color:var(--reading-accent-strong)}
+.trust-pillar-kicker{margin-top:16px;font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--reading-accent-strong);opacity:.82}
+.trust-pillar-card h3{margin-top:6px;font-size:17px;font-weight:900;letter-spacing:-.025em;color:#f8fafc;text-wrap:balance}
+.trust-pillar-card>p{margin-top:8px;font-size:12px;line-height:1.7;color:#94a3b8;text-wrap:pretty}
+.trust-pillar-detail{display:flex;gap:9px;align-items:flex-start;margin-top:15px;padding-top:13px;border-top:1px solid rgba(148,163,184,.09);font-size:11px;line-height:1.55;color:#64748b}
+.trust-pillar-detail svg{flex:0 0 auto;margin-top:1px;color:var(--reading-accent-strong)}
+.trust-pillar-detail strong{color:#cbd5e1}
+.trust-pillar-action{display:inline-flex;min-height:40px;align-items:center;gap:6px;margin-top:14px;font-size:11px;font-weight:800;color:var(--reading-accent-strong)}
+.trust-check-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.trust-note-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.trust-note-card{display:flex;gap:11px;align-items:flex-start;padding:15px 16px;border:1px solid rgba(148,163,184,.10);border-radius:17px;background:rgba(255,255,255,.018)}
+.trust-note-card>svg{flex:0 0 auto;margin-top:2px;color:#94a3b8}
+.trust-note-card strong{display:block;font-size:11px;color:#cbd5e1}
+.trust-note-card p{margin-top:3px;font-size:11px;line-height:1.55;color:#64748b}
+.trust-note-official{border-color:rgba(var(--reading-accent-rgb),.13);background:rgba(var(--reading-accent-rgb),.025)}
+.trust-note-official>svg{color:var(--reading-accent-strong)}
+:root[data-language-mode="summary"] .trust-pillar-detail{display:none}
+:root[data-language-mode="summary"] .trust-pillar-card{padding:18px}
+:root[data-language-mode="simple"] .trust-pillar-card>p{font-size:13px;line-height:1.72}
+:root[data-language-mode="technical"] .trust-pillar-card{border-radius:14px;padding:17px}
+:root[data-language-mode="technical"] .trust-pillar-icon{border-radius:9px}
+:root[data-language-mode="technical"] .trust-pillar-kicker{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.light .trust-pillar-card{border-color:rgba(71,85,105,.12);background:linear-gradient(180deg,#fff,rgba(248,250,252,.96));box-shadow:0 12px 32px rgba(15,23,42,.055)}
+.light .trust-pillar-card h3{color:#0f172a}.light .trust-pillar-card>p{color:#64748b}.light .trust-pillar-detail{border-color:rgba(71,85,105,.10);color:#64748b}.light .trust-pillar-detail strong{color:#334155}
+.light .trust-note-card{border-color:rgba(71,85,105,.11);background:#fff}.light .trust-note-card strong{color:#334155}.light .trust-note-card p{color:#64748b}
+@media (hover:hover) and (pointer:fine){.trust-pillar-card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.trust-pillar-card:hover{transform:translateY(-2px);border-color:rgba(var(--reading-accent-rgb),.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 18px 46px rgba(2,6,23,.14)}}
+@media (max-width:1023px){.trust-pillar-grid{grid-template-columns:1fr}.trust-check-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:639px){.trust-pillar-grid,.trust-check-grid,.trust-note-grid{grid-template-columns:1fr}.trust-pillar-card{padding:16px;border-radius:18px}.trust-pillar-kicker{margin-top:13px}.trust-note-card{padding:13px 14px}}
+@media (prefers-reduced-motion:reduce){.trust-pillar-card{transition:none!important;transform:none!important}}
