@@ -59,6 +59,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const [activeIndex, setActiveIndex] = useState(0);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const filteredLengthRef = useRef(0);
@@ -69,7 +70,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     setQuery('');
     setActiveIndex(0);
     setShortcutGuideOpen(initialShortcutGuideOpen);
-    const target = window.matchMedia?.('(min-width: 768px)').matches ? inputRef.current : null;
+    const desktop = window.matchMedia?.('(min-width: 768px)').matches;
+    const target = desktop ? inputRef.current : closeButtonRef.current;
     if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
     focusTimerRef.current = window.setTimeout(() => {
       focusTimerRef.current = null;
@@ -291,7 +293,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
               enterKeyHint="go"
             />
           </div>
-          <button type="button" onClick={onClose} className="search-modal-close" aria-label="Fechar busca"><X className="h-5 w-5" aria-hidden="true" /></button>
+          <button ref={closeButtonRef} type="button" onClick={onClose} className="search-modal-close" aria-label="Fechar busca"><X className="h-5 w-5" aria-hidden="true" /></button>
         </div>
 
         {quickAnswer && <div className="search-quick-answer">
@@ -311,7 +313,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
         <div className="search-meta">
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
-          <span>Setas navegar · Enter abrir · Esc fechar</span>
+          <div className="search-meta-actions">
+            {query && <button type="button" className="search-clear-query" onClick={() => { setQuery(''); setActiveIndex(0); inputRef.current?.focus(); }}>Limpar busca</button>}
+            <span>Setas navegar · Enter abrir · Esc fechar</span>
+          </div>
         </div>
 
         <details className="search-shortcut-guide" open={shortcutGuideOpen} onToggle={event => setShortcutGuideOpen(event.currentTarget.open)}>

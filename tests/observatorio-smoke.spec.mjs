@@ -265,15 +265,29 @@ test.describe('mobile layout and interaction', () => {
     }
   });
 
-  test('busca cabe na viewport e pode ser fechada', async ({ page }) => {
+  test('busca cabe na viewport, mantém foco interno e pode ser limpa', async ({ page }) => {
     await page.goto('./');
-    await page.getByRole('button', { name: /buscar/i }).first().click();
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+    await page.getByRole('button', { name: 'Buscar áreas' }).click();
+
     const panel = page.locator('.search-modal-panel');
+    const close = page.getByRole('button', { name: /fechar busca/i });
     await expect(panel).toBeVisible();
+    await expect(close).toBeFocused();
+
     const box = await panel.boundingBox();
     expect(box?.width ?? 0).toBeLessThanOrEqual(360);
     expect(box?.height ?? 0).toBeLessThanOrEqual(740);
-    await page.getByRole('button', { name: /fechar busca/i }).click();
+
+    const input = page.getByRole('combobox').first();
+    await input.fill('transporte');
+    const clear = page.getByRole('button', { name: 'Limpar busca' });
+    await expect(clear).toBeVisible();
+    await clear.click();
+    await expect(input).toHaveValue('');
+    await expect(input).toBeFocused();
+
+    await close.click();
     await expect(panel).toBeHidden();
   });
 
