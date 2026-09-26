@@ -82,10 +82,10 @@ if (
 else fail('menu desktop Mais não possui navegação de teclado completa');
 if (app.includes('onSameHashAnchor') && app.includes("window.location.hash !== '#' + target") && app.includes('navigateToHash(target)')) pass('navegação central trata também o clique repetido na mesma âncora');
 else fail('navegação pode não reprocessar a mesma âncora para sincronizar modo e rolagem');
-if (app.includes("window.addEventListener('popstate', navigateFromLocation)") && sectionNavigation.includes('sameTarget') && sectionNavigation.includes('pushState')) pass('Voltar/Avançar restaura seções após navegação programática');
+if (app.includes("window.addEventListener('hashchange', navigateFromLocation)") && sectionNavigation.includes('sameTarget') && sectionNavigation.includes('pushState')) pass('Voltar/Avançar restaura seções após navegação programática');
 else fail('histórico do navegador não está integrado à navegação programática');
-if (app.includes('locationRaf') && app.includes('window.requestAnimationFrame(syncLocation)') && app.includes('window.cancelAnimationFrame(locationRaf)')) pass('popstate e hashchange são coalescidos para evitar navegação duplicada');
-else fail('histórico pode disparar navegação interna duplicada');
+if (!app.includes("window.addEventListener('popstate', navigateFromLocation)")) pass('histórico usa um único evento de hash e evita navegação duplicada');
+else fail('popstate redundante pode duplicar navegação junto com hashchange');
 
 const civic = texts.find(item => item.file === 'src/components/sections/CivicActionHub.tsx')?.content ?? '';
 for (const [needle, label] of [
