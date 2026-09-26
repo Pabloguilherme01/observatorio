@@ -389,6 +389,57 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('prompt PWA respeita a barra mobile, pode ser dispensado e instalar', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  const dispatchInstallPrompt = async outcome => {
+    await page.evaluate(nextOutcome => {
+      const event = new Event('beforeinstallprompt', { cancelable: true });
+      Object.defineProperty(event, 'prompt', {
+        value: async () => { window.__pwaPromptCalls = (window.__pwaPromptCalls || 0) + 1; },
+      });
+      Object.defineProperty(event, 'userChoice', {
+        value: Promise.resolve({ outcome: nextOutcome }),
+      });
+      window.dispatchEvent(event);
+    }, outcome);
+  };
+
+  await dispatchInstallPrompt('accepted');
+
+  const banner = page.getByRole('status', { name: 'Instalar o Observatório' });
+  const nav = page.locator('.mobile-bottom-nav');
+  await expect(banner).toBeVisible();
+
+  const geometry = await page.evaluate(() => {
+    const bannerNode = document.querySelector('.pwa-install-banner');
+    const navNode = document.querySelector('.mobile-bottom-nav');
+    if (!bannerNode || !navNode) return null;
+    const bannerRect = bannerNode.getBoundingClientRect();
+    const navRect = navNode.getBoundingClientRect();
+    return { bannerBottom: bannerRect.bottom, navTop: navRect.top, bannerLeft: bannerRect.left, bannerRight: bannerRect.right };
+  });
+  expect(geometry).not.toBeNull();
+  expect(geometry.bannerBottom).toBeLessThanOrEqual(geometry.navTop - 1);
+  expect(geometry.bannerLeft).toBeGreaterThanOrEqual(0);
+  expect(geometry.bannerRight).toBeLessThanOrEqual(390);
+
+  await banner.getByRole('button', { name: 'Agora não' }).click();
+  await expect(banner).toBeHidden();
+  await expect.poll(() => page.evaluate(() => sessionStorage.getItem('observatorio:pwa-install-dismissed'))).toBe('true');
+
+  await dispatchInstallPrompt('accepted');
+  await expect(banner).toBeHidden();
+
+  await page.evaluate(() => sessionStorage.removeItem('observatorio:pwa-install-dismissed'));
+  await dispatchInstallPrompt('accepted');
+  await expect(banner).toBeVisible();
+  await banner.getByRole('button', { name: 'Instalar' }).click();
+  await expect.poll(() => page.evaluate(() => window.__pwaPromptCalls || 0)).toBe(1);
+  await expect(banner).toBeHidden();
+});
+
 test('botão Mais da navegação inferior funciona no mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
