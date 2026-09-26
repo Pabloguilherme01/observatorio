@@ -222,7 +222,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
                 type="button"
                 data-search-index={index}
                 onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectResult(item.id)}
+                onClick={() => selectResult(item.id, item.label, item.kind)}
                 className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
                 role="option"
                 aria-selected={activeIndex === index}
@@ -241,11 +241,20 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     );
   });
 
-  const selectResult = (id: string) => {
+  const selectResult = (id: string, label?: string, kind?: ResultKind) => {
     onClose();
     const knownDestination = ['resumo', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
+    const publicServiceQuery = kind === 'public' && label ? label : null;
     const currentTarget = window.location.hash.replace('#', '');
+
+    if (publicServiceQuery) {
+      window.history.replaceState({ ...(window.history.state ?? {}), publicServiceQuery }, '', '#acao');
+      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'acao' }));
+      window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: publicServiceQuery }));
+      return;
+    }
+
     if (currentTarget === target) {
       window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
       return;
@@ -271,7 +280,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               onKeyDown={event => {
                 if (event.key === 'Enter' && filtered[activeIndex]) {
                   event.preventDefault();
-                  selectResult(filtered[activeIndex].id);
+                  selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind);
                 }
               }}
               placeholder="Ex.: orçamento, transporte, eleitorado, HEAL…"
