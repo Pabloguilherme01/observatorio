@@ -63,6 +63,16 @@ export function readQuizBestScores(): readonly number[] {
   return fallback;
 }
 
+export function saveQuizBestScore(phaseIndex: number, score: number): readonly number[] {
+  const best = [...readQuizBestScores()];
+  if (!Number.isInteger(phaseIndex) || phaseIndex < 0 || phaseIndex >= best.length || !Number.isInteger(score) || score < 0) return best;
+  best[phaseIndex] = Math.max(best[phaseIndex], score);
+  try {
+    localStorage.setItem(BEST_KEY, JSON.stringify(best));
+  } catch {}
+  return best;
+}
+
 export function readQuizUnlockedPhase(): number {
   const best = readQuizBestScores();
   let unlocked = 0;
