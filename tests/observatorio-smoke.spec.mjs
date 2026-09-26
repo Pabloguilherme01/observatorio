@@ -160,6 +160,40 @@ test.describe('mobile layout and interaction', () => {
 });
 
 
+
+for (const viewport of [
+  { name: 'phone-320', width: 320, height: 568 },
+  { name: 'phone-390', width: 390, height: 844 },
+  { name: 'tablet-portrait', width: 768, height: 1024 },
+  { name: 'tablet-landscape', width: 1024, height: 768 },
+  { name: 'notebook', width: 1366, height: 768 },
+  { name: 'desktop-wide', width: 1920, height: 1080 },
+]) {
+  test('layout responsivo sem overflow em ' + viewport.name, async ({ page }) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto('./');
+    const dimensions = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+
+    await openSection(page, 'dashboard');
+    const chart = page.locator('.dashboard-history-chart .recharts-wrapper').first();
+    await expect(chart).toBeVisible();
+    const chartBox = await chart.boundingBox();
+    expect(chartBox?.width ?? 0).toBeGreaterThan(100);
+    expect(chartBox?.width ?? Infinity).toBeLessThanOrEqual(viewport.width);
+    expect(chartBox?.height ?? 0).toBeGreaterThan(100);
+
+    const afterChart = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(afterChart.scroll).toBeLessThanOrEqual(afterChart.client + 1);
+  });
+}
+
 test('modos de leitura persistem e podem avançar por atalho', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
