@@ -47,6 +47,8 @@ must(!files.experience.includes('market') && !files.experience.includes('hype'),
 must(files.header.includes('IntersectionObserver') && files.header.includes('observatorio:navigate'), 'cabeçalho acompanha seções carregadas tardiamente');
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
 must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("id === 'quiz'"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
+must(files.mobileNav.includes("item.group === 'more' && item.id !== 'quiz'"), 'Quiz possui um único ponto de entrada na navegação inferior mobile');
+must(files.experience.includes("event.key === '/'"), 'atalho / abre a busca global fora de campos de digitação');
 must(read('src/config/navigation.ts').includes("id: 'saude'") && read('src/config/navigation.ts').includes("id: 'exportacao'"), 'menu Mais expõe saúde/saneamento e exportação sem criar novos destinos');
 must(!files.mobileNav.includes('useLanguageMode') && !files.mobileNav.includes('setMode(') && files.app.includes('modeForDestination') && files.readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') && files.readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') && files.languageContext.includes('fallbackDestinationForMode'), 'menu mobile e troca manual usam a mesma política central de visibilidade');
 
