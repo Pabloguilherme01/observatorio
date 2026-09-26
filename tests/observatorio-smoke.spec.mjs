@@ -129,3 +129,11 @@ test('publica ícones PNG instaláveis no subcaminho do aplicativo', async ({ pa
   expect(apple.ok()).toBeTruthy();
   expect((await apple.body()).readUInt32BE(16)).toBe(180);
 });
+
+test('busca leva ao quiz de educação cívica', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Buscar no observatório' }).click();
+  await page.getByRole('combobox', { name: 'Buscar seção, fonte ou indicador' }).fill('quiz');
+  await page.getByRole('option', { name: /Quiz de dados · 200 perguntas/ }).click();
+  await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
+});
