@@ -178,6 +178,29 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('marca mantém hierarquia visual correta no mobile e desktop', async ({ page }) => {
+  for (const viewport of [{ width: 390, height: 844 }, { width: 1366, height: 768 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./');
+    const sizes = await page.locator('.site-brand').evaluate(node => {
+      const spans = node.querySelectorAll('span');
+      return {
+        eyebrow: Number.parseFloat(getComputedStyle(spans[0]).fontSize),
+        title: Number.parseFloat(getComputedStyle(spans[spans.length - 1]).fontSize),
+      };
+    });
+    expect(sizes.title).toBeGreaterThan(sizes.eyebrow);
+  }
+});
+
+test('menu Mais destaca visualmente uma seção secundária ativa', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.goto('./');
+  await openSection(page, 'fontes');
+  const more = page.getByRole('button', { name: 'Mais' });
+  await expect(more).toHaveAttribute('aria-current', 'page');
+});
+
 for (const viewport of [
   { name: 'tablet-header', width: 768, height: 1024 },
   { name: 'small-desktop-header', width: 1024, height: 768 },
