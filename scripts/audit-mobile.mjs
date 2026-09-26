@@ -36,7 +36,7 @@ must(files.app.includes('<DashboardMetrics />') && !files.app.includes('loadDash
 must(files.app.includes('observatorio:navigate') && files.app.includes("window.location.hash"), 'deep links e navegação por evento permanecem centralizados no App');
 must(files.app.includes('behavior: reduceMotion ? \'auto\' : \'smooth\''), 'rolagem central respeita redução de movimento');
 must(files.app.includes('<LanguageModeProvider>') && files.app.includes('<AudienceHub />'), 'descoberta e modos de leitura continuam montados');
-must(files.app.includes('DeferredEvidenceGroup') && files.app.includes('DeferredPublicDataGroup') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'grupo técnico consolidado e dados públicos permanecem montados');
+must(files.app.includes('<DeferredEvidenceGroup />') && !files.app.includes('loadEvidenceGroup') && files.app.includes('DeferredPublicDataGroup') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('ProjectTrustPanel'), 'fontes/exportação montam diretamente e dados públicos secundários permanecem lazy');
 
 must(files.experience.includes("window.dispatchEvent(new CustomEvent('observatorio:search'))") && files.experience.includes('reading-progress'), 'ExperienceShell mantém busca global e progresso de leitura com cleanup');
 must(files.experience.includes('prefers-reduced-motion') && files.experience.includes('addEventListener'), 'ExperienceShell respeita redução de movimento e cleanup de listeners');
