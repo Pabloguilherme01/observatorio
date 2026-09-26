@@ -5586,3 +5586,55 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     transition:none!important;
   }
 }
+
+
+/* Header reading controls: compact in the fixed chrome, full detail remains in mobile tools. */
+.header-reading-mode .language-toggle-v3{
+  min-width:0;
+  margin:0;
+}
+.header-reading-mode .language-toggle-label,
+.header-reading-mode .language-toggle-deepen{
+  display:none;
+}
+.header-reading-mode .language-toggle-options{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:4px;
+  margin:0;
+}
+.header-reading-mode .language-toggle-options>button{
+  min-height:40px;
+  min-width:44px;
+  padding:6px 8px;
+  gap:4px;
+}
+.header-reading-mode .language-toggle-options>button span{
+  display:block;
+}
+.header-reading-mode .language-toggle-options>button strong{
+  font-size:10px;
+  line-height:1;
+}
+.header-reading-mode .language-toggle-options>button small,
+.header-reading-mode .language-toggle-options>button em{
+  display:none;
+}
+.header-reading-mode .language-toggle-options>button svg{
+  width:14px;
+  height:14px;
+}
+@media(min-width:768px) and (max-width:1199px){
+  .site-header-inner{gap:6px!important}
+  .header-reading-mode .language-toggle-options>button{
+    min-width:40px;
+    padding-inline:6px;
+  }
+  .header-reading-mode .language-toggle-options>button strong{
+    font-size:9px;
+  }
+}
+@media(min-width:1200px) and (max-width:1439px){
+  .site-header-inner{gap:8px!important}
+  .site-header-status{display:none!important}
+}
