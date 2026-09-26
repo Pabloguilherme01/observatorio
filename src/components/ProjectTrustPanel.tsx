@@ -1,4 +1,4 @@
-import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck, Database, CalendarClock, Server, GitCommitHorizontal, RefreshCw } from 'lucide-react';
+import { CheckCircle2, ExternalLink, GitPullRequest, ShieldCheck, Database, CalendarClock, Server, GitCommitHorizontal, RefreshCw, Route, BookOpenCheck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
 import { EDITION } from '../config/version';
@@ -53,21 +53,41 @@ export function ProjectTrustPanel() {
           {mode === 'technical' && <div className="freshness-pill"><span className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 light:text-slate-700">Edição / atualização</span><strong className="mt-1 block text-sm text-slate-900 light:text-slate-900">{EDITION} · {formatDate(d.meta.updatedAt)}</strong></div>}
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Comece pelo valor</strong><p>Identifique se o número vem diretamente da fonte ou de um cálculo derivado.</p></div>
-          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Vá até a origem</strong><p>Abra a referência para conferir instituição, data e contexto do dado.</p></div>
-          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Leia os limites</strong><p>Datas, recortes e períodos diferentes permanecem identificados para evitar comparações indevidas.</p></div>
+        <div className="trust-pillar-grid mt-6">
+          <article className="trust-pillar-card trust-pillar-origin">
+            <div className="trust-pillar-icon"><Database className="h-5 w-5" aria-hidden="true" /></div>
+            <div className="trust-pillar-kicker">01 · Origem</div>
+            <h3>De onde o dado vem</h3>
+            <p>Fonte, natureza e referência ficam visíveis antes da interpretação. Dado oficial, histórico, captura e cálculo derivado não são misturados.</p>
+            <div className="trust-pillar-detail"><CalendarClock className="h-4 w-4" aria-hidden="true" /><span><strong>Tempo importa.</strong> Data da fonte e data de captura são informações diferentes.</span></div>
+          </article>
+          <article className="trust-pillar-card trust-pillar-method">
+            <div className="trust-pillar-icon"><Route className="h-5 w-5" aria-hidden="true" /></div>
+            <div className="trust-pillar-kicker">02 · Método</div>
+            <h3>Como a leitura é construída</h3>
+            <p>O caminho entre valor, contexto e conclusão permanece explícito para reduzir comparações indevidas entre períodos, recortes ou métricas diferentes.</p>
+            <div className="trust-pillar-detail"><BookOpenCheck className="h-4 w-4" aria-hidden="true" /><span><strong>Leia os limites.</strong> Recorte, período e transformação acompanham a informação quando disponíveis.</span></div>
+          </article>
+          <article className="trust-pillar-card trust-pillar-confidence">
+            <div className="trust-pillar-icon"><ShieldCheck className="h-5 w-5" aria-hidden="true" /></div>
+            <div className="trust-pillar-kicker">03 · Confiança</div>
+            <h3>Como conferir por conta própria</h3>
+            <p>Referências externas permitem voltar à instituição responsável e verificar o dado no contexto original, sem depender apenas da apresentação do observatório.</p>
+            <a href="https://dadosabertos.tse.jus.br/" target="_blank" rel="noopener noreferrer" className="trust-pillar-action">Consultar fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>
+          </article>
+        </div>
+
+        <div className="trust-check-grid mt-4">
+          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Comece pelo valor</strong><p>Veja se o número é direto da fonte ou resultado de cálculo.</p></div>
+          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Abra a referência</strong><p>Confira instituição, data e contexto no material de origem.</p></div>
+          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Cheque o recorte</strong><p>Compare período, abrangência e unidade antes de relacionar números.</p></div>
           <div className="trust-card"><GitPullRequest className="h-4 w-4 text-sky-300" /><strong>Encontrou um erro?</strong><p>Informe o dado e a fonte para que a correção possa ser verificada.</p><a href={correctionUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">Propor correção <ExternalLink className="h-3.5 w-3.5" /></a></div>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <div className="trust-card"><Database className="h-4 w-4 text-sky-300" /><strong>Origem antes da interpretação</strong><p>Dados atuais, históricos, capturas e cálculos derivados permanecem separados e identificados.</p></div>
-          <div className="trust-card"><CalendarClock className="h-4 w-4 text-sky-300" /><strong>Data da fonte e captura</strong><p>A data de atualização do sistema é diferente da data de referência da fonte.</p></div>
+        <div className="trust-note-grid mt-4">
+          <div className="trust-note-card trust-note-official"><ShieldCheck className="h-4 w-4" aria-hidden="true" /><div><strong>Validação oficial</strong><p>Os dados eleitorais podem ser conferidos diretamente no Portal de Dados Abertos do TSE.</p></div></div>
+          <div className="trust-note-card"><CheckCircle2 className="h-4 w-4" aria-hidden="true" /><div><strong>Nota de neutralidade</strong><p>Iniciativa cívica independente, sem vínculo, patrocínio ou associação com candidaturas, partidos ou federações e sem recomendação de escolha eleitoral.</p></div></div>
         </div>
-
-        <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-400"><strong className="text-slate-300">Validação oficial:</strong> para conferir dados eleitorais diretamente na fonte, consulte o <a href="https://dadosabertos.tse.jus.br/" target="_blank" rel="noopener noreferrer" className="font-bold text-sky-200 hover:text-white light:text-sky-700 light:hover:text-sky-900">Portal de Dados Abertos do TSE</a>.</div>
-
-        <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500"><strong className="text-slate-300">Nota de neutralidade:</strong> este painel é uma iniciativa cívica independente. Não declara vínculo, patrocínio ou associação com candidaturas, partidos ou federações e não recomenda escolhas eleitorais. Os dados são apresentados com fonte, data, natureza e limitações quando disponíveis.</div>
 
         {mode === 'technical' && <>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
