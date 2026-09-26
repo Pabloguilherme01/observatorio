@@ -56,9 +56,9 @@ must(deploySource.includes("status=\"$(curl -sS --retry 3") && deploySource.incl
 must(!vite.includes('allowedHosts: true'), 'Vite não aceita qualquer hostname no servidor de desenvolvimento');
 const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
-must(vite.includes("src: BASE_PATH + 'pwa-192.svg'") && vite.includes("src: BASE_PATH + 'pwa-512.svg'") && vite.includes('scope: BASE_PATH'), 'ícones e escopo PWA respeitam o subcaminho publicado');
+must(vite.includes("src: BASE_PATH + 'pwa-192.png'") && vite.includes("src: BASE_PATH + 'pwa-512.png'") && vite.includes('scope: BASE_PATH'), 'ícones PNG e escopo PWA respeitam o subcaminho publicado');
 must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("BASE_PATH + API_ROOT.slice(1)"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
-must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.svg"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
+must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.svg"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
 must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
 must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
@@ -83,7 +83,7 @@ must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 
 const headerSource = read('src/components/layout/Header.tsx');
 must((appSource.includes('skip-link') && appSource.includes('Pular para o conteúdo principal')) || (headerSource.includes('skip-link') && headerSource.includes('Pular para o conteúdo principal')), 'navegação por teclado possui atalho de salto para o conteúdo');
 must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
-must(vite.includes("includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'offline.html']") && vite.includes("navigateFallback: '/observatorio/offline.html'"), 'VitePWA registra offline.html como fallback de navegação');
+must(vite.includes("'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png'") && vite.includes("navigateFallback: '/observatorio/offline.html'"), 'VitePWA inclui ícones móveis e fallback de navegação');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
 must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/HeroCountdown.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
 must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
