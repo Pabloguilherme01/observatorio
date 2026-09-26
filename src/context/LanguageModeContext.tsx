@@ -1,7 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { STORAGE_NAMESPACE } from '../config/version';
+import { fallbackDestinationForMode, type ReadingMode } from '../config/readingModes';
 
-export type LanguageMode = 'summary' | 'simple' | 'technical';
+export type LanguageMode = ReadingMode;
 
 interface LanguageModeContextValue {
   readonly mode: LanguageMode;
@@ -27,11 +28,26 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
     try { localStorage.setItem(STORAGE_KEY, mode); } catch {}
   }, [mode]);
 
-  const cycleMode = useCallback(() => {
-    setModeState(current => current === 'summary' ? 'simple' : current === 'simple' ? 'technical' : 'summary');
+  const setMode = useCallback((nextMode: LanguageMode) => {
+    setModeState(nextMode);
+    if (typeof window === 'undefined') return;
+
+    const target = window.location.hash.slice(1);
+    const fallback = fallbackDestinationForMode(target, nextMode);
+    if (!fallback || fallback === target) return;
+
+    window.history.replaceState(null, '', '#' + fallback);
+    window.requestAnimationFrame(() => {
+      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: fallback }));
+    });
   }, []);
 
-  const value = useMemo(() => ({ mode, setMode: setModeState, cycleMode }), [mode, cycleMode]);
+  const cycleMode = useCallback(() => {
+    const nextMode = mode === 'summary' ? 'simple' : mode === 'simple' ? 'technical' : 'summary';
+    setMode(nextMode);
+  }, [mode, setMode]);
+
+  const value = useMemo(() => ({ mode, setMode, cycleMode }), [mode, setMode, cycleMode]);
   return <LanguageModeContext.Provider value={value}>{children}</LanguageModeContext.Provider>;
 }
 
