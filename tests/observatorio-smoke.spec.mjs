@@ -639,10 +639,11 @@ test('comparação municipal expõe mais dados e perfil selecionável sem rankin
   await expect(page.locator('.context-city-profile-grid')).toContainText('Variação 2022 → 2026');
   await expect(page.locator('.context-city-profile-grid')).toContainText('Densidade estimada 2026');
 
-  await page.getByRole('tab', { name: 'Variação populacional' }).click();
-  await expect(page.getByText('Indicador derivado')).toBeVisible();
-  await expect(page.getByText(/Censo 2022 → estimativa 2026/)).toBeVisible();
-  await expect(page.locator('.context-comparison-card')).toHaveCount(8);
+  const contextSection = page.locator('#contexto');
+  await contextSection.getByRole('tab', { name: 'Variação populacional' }).click();
+  await expect(contextSection.getByText('Indicador derivado')).toBeVisible();
+  await expect(contextSection.getByText(/Censo 2022 → estimativa 2026/)).toBeVisible();
+  await expect(contextSection.locator('.context-comparison-card')).toHaveCount(8);
 
   await page.setViewportSize({ width: 390, height: 844 });
   const dimensions = await page.evaluate(() => ({
