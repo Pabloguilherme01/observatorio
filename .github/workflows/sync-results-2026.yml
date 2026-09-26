@@ -91,3 +91,6 @@ jobs:
             --head "$branch" \
             --title "data: sync official TSE results snapshot" \
             --body "Feed oficial TSE validado automaticamente. A branch foi validada pelo CI completo antes da abertura da PR."
+
+          # Publica apenas snapshots que passaram pelo CI; proteções de branch seguem aplicáveis.
+          gh pr merge "$branch" --squash --delete-branch
