@@ -24,8 +24,8 @@ const questions = [...quizData.matchAll(
 
 const registryIds = new Set([...registry.matchAll(/id:\s*'([^']+)'/g)].map(match => match[1]));
 const quickQuizSource = quiz;
-if (!quickQuizSource.includes("const displayedScore = score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);")) fail('Pontuação exibida deve refletir a resposta selecionada sem depender de setState assíncrono.');
-else pass('Pontuação exibida inclui a resposta atual exatamente uma vez.');
+if (!quickQuizSource.includes("const displayedScore = showResult ? score : score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);")) fail('Pontuação exibida deve projetar a resposta pendente apenas antes do resultado final.');
+else pass('Pontuação exibida inclui a resposta atual exatamente uma vez e não duplica no resultado.');
 
 if (!quickQuizSource.includes('if (optionIndex === question.answerIndex) setScore(previous => previous + 1);')) fail('Resposta correta deve ser contabilizada no momento da seleção.');
 else pass('Resposta correta é contabilizada uma única vez no momento da seleção.');
