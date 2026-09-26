@@ -1,5 +1,5 @@
 import '../../assets/styles/search-modal.css';
-import { BarChart3, BookOpen, BusFront, Database, Droplets, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
+import { BarChart3, BookOpen, BusFront, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
@@ -32,7 +32,8 @@ const entries: readonly SearchEntry[] = [
 const normalize = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
-const sourceLabel = (sourceId: string) => d.sources.find(source => source.id === sourceId)?.label ?? sourceId;
+const sourceForId = (sourceId: string) => d.sources.find(source => source.id === sourceId);
+const sourceLabel = (sourceId: string) => sourceForId(sourceId)?.label ?? sourceId;
 const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Exportação', acao: 'Serviços públicos' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
@@ -137,6 +138,8 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     }
     return null;
   }, [query]);
+
+  const quickSource = quickAnswer ? sourceForId(quickAnswer.sourceId) : null;
 
   const filtered = useMemo(() => {
     const queryNormalized = normalize(query);
@@ -291,7 +294,14 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <div className="search-kicker">Resposta rápida</div>
           <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
           <div className="mt-1 text-2xl font-black text-sky-300">{quickAnswer.value}</div>
-          <button type="button" onClick={() => selectResult(quickAnswer.id)} className="mt-3 search-quick-action">Abrir seção e contexto</button>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" onClick={() => selectResult(quickAnswer.id)} className="search-quick-action">Abrir seção e contexto</button>
+            {quickSource?.url && (
+              <a href={quickSource.url} target="_blank" rel="noopener noreferrer" className="search-quick-action">
+                Fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            )}
+          </div>
           <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
 
