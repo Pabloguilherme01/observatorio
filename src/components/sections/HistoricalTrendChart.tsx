@@ -89,7 +89,7 @@ function TrendLine({
 
 function CombinedChart() {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height={320} minWidth={0}>
       <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
         <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} tickMargin={8} />
@@ -116,7 +116,7 @@ function SingleSeriesChart({
   readonly tone: string;
 }) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height={205} minWidth={0}>
       <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
         <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickMargin={6} />
@@ -151,18 +151,18 @@ export function HistoricalTrendChart() {
         </div>
       </figcaption>
 
-      <div className="mt-4 hidden h-[270px] w-full min-[420px]:block sm:h-[320px]" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
+      <div className="dashboard-history-chart mt-4 hidden w-full min-[420px]:block" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
         <CombinedChart />
       </div>
 
       <div className="mt-4 block min-[420px]:hidden" aria-label="Séries históricas separadas em telas estreitas">
         <div className="rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
           <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-sky-300/80 light:text-sky-700">População</div>
-          <div className="h-[205px] w-full"><SingleSeriesChart dataKey="population" name="População" axisId="population-mobile" tone="text-sky-300 light:text-sky-700" /></div>
+          <div className="w-full"><SingleSeriesChart dataKey="population" name="População" axisId="population-mobile" tone="text-sky-300 light:text-sky-700" /></div>
         </div>
         <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
           <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-violet-300/80 light:text-violet-700">Eleitorado</div>
-          <div className="h-[205px] w-full"><SingleSeriesChart dataKey="electorate" name="Eleitorado" axisId="electorate-mobile" tone="text-violet-300 light:text-violet-700" /></div>
+          <div className="w-full"><SingleSeriesChart dataKey="electorate" name="Eleitorado" axisId="electorate-mobile" tone="text-violet-300 light:text-violet-700" /></div>
         </div>
       </div>
 
