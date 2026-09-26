@@ -1072,9 +1072,19 @@ main h2{font-size:1.12rem}
 
 @supports (-webkit-touch-callout:none){
   @media (max-width:767px){
+    :root{
+      --ios-header-safe-top:max(env(safe-area-inset-top,0px),20px);
+    }
     .site-header{
+      padding-top:var(--ios-header-safe-top)!important;
       -webkit-backdrop-filter:saturate(150%) blur(14px);
       backdrop-filter:saturate(150%) blur(14px);
+    }
+    .site-header-inner{
+      min-height:58px!important;
+    }
+    .mobile-tools-sheet{
+      max-height:calc(100dvh - 58px - var(--ios-header-safe-top))!important;
     }
     .mobile-tools-sheet{
       position:relative;
