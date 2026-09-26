@@ -5415,9 +5415,9 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
 }
 
 .light .audience-page-card,
-.light :root[data-language-mode="summary"] .summary-shell,
-.light :root[data-language-mode="simple"] .summary-shell,
-.light :root[data-language-mode="technical"] .summary-shell{
+:root.light[data-language-mode="summary"] .summary-shell,
+:root.light[data-language-mode="simple"] .summary-shell,
+:root.light[data-language-mode="technical"] .summary-shell{
   background:#fff;
 }
 
