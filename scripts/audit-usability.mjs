@@ -124,6 +124,20 @@ for (const [component, label] of [
 }
 pass('camadas de descoberta, retenção, qualidade, evidências, ação e exportação montadas');
 
+const premiumCard = texts.find(item => item.file === 'src/components/ui/PremiumInfoCard.tsx')?.content ?? '';
+const premiumSections = [
+  'src/components/sections/DemographicDynamic.tsx',
+  'src/components/sections/BudgetSection.tsx',
+  'src/components/sections/ContextComparison.tsx',
+  'src/components/sections/SnapshotChanges.tsx',
+].map(file => texts.find(item => item.file === file)?.content ?? '').join('\n');
+if (premiumCard.includes('premium-info-card') && premiumCard.includes('premium-info-eyebrow') && premiumCard.includes('premium-info-title')) pass('sistema visual premium possui componente reutilizável com hierarquia semântica');
+else fail('cards premium foram implementados sem componente reutilizável');
+if ((premiumSections.match(/<PremiumInfoCard/g) ?? []).length >= 6) pass('notas soltas principais foram convertidas em cards contextuais reutilizáveis');
+else fail('poucos blocos de contexto usam o novo padrão premium');
+if (premiumSections.includes('Comparação oferece contexto — não ranking')) pass('card de comparação preserva enquadramento neutro e não classificatório');
+else fail('comparação contextual perdeu a orientação explícita contra ranking');
+
 const trustPanel = texts.find(item => item.file === 'src/components/ProjectTrustPanel.tsx')?.content ?? '';
 if (trustPanel.includes("import.meta.env.BASE_URL + 'api/v1/health.json'")) pass('healthcheck técnico respeita BASE_URL do deploy');
 else fail('healthcheck técnico está preso a caminho absoluto de deploy');
