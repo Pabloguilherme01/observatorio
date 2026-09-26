@@ -6,6 +6,7 @@ const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const exists = relative => fs.existsSync(path.join(root, relative));
 
 const files = {
+  main: read('src/main.tsx'),
   app: read('src/app/App.tsx'),
   experience: read('src/components/ExperienceShell.tsx'),
   hero: read('src/components/sections/HeroCountdown.tsx'),
@@ -84,8 +85,8 @@ must(files.version.match(/APP_VERSION\s*=\s*['"]44\./), 'versão atual continua 
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
 must(files.index.includes('apple-mobile-web-app-capable') && files.index.includes('apple-mobile-web-app-title'), 'metadados de instalação iOS estão presentes');
 must(files.main.includes('PWA_INSTALL_DISMISSED_KEY') && files.main.includes('Agora não') && files.main.includes("window.addEventListener('appinstalled'"), 'prompt PWA possui dispensa por sessão e cleanup após instalação');
-must(files.globals.includes('.pwa-install-banner{') && files.globals.includes("bottom:calc(var(--mobile-nav-height)") && files.globals.includes('.pwa-install-actions{'), 'prompt PWA possui superfície responsiva acima da navegação inferior');
-must(files.globals.includes('@media(max-width:420px)') && files.globals.includes('grid-template-columns:1fr 1fr'), 'ações do prompt PWA permanecem utilizáveis em telas estreitas');
+must(files.css.includes('.pwa-install-banner{') && files.css.includes("bottom:calc(var(--mobile-nav-height)") && files.css.includes('.pwa-install-actions{'), 'prompt PWA possui superfície responsiva acima da navegação inferior');
+must(files.css.includes('@media(max-width:420px)') && files.css.includes('grid-template-columns:1fr 1fr'), 'ações do prompt PWA permanecem utilizáveis em telas estreitas');
 must(files.index.includes('id="root"') && files.index.includes('boot-fallback'), 'HTML inicial possui root e fallback de recuperação');
 
 must(read('src/components/DataExportActions.tsx').includes('statusTimerRef') && read('src/components/DataExportActions.tsx').includes('clearTimeout') && read('src/components/DataExportActions.tsx').includes('flash('), 'exportação protege timers de status');
