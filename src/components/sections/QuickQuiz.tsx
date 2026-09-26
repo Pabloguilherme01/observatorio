@@ -2,6 +2,7 @@ import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import '../../assets/styles/quick-quiz.css';
 import { readQuizBestScores, readQuizUnlockedPhase, saveQuizBestScore } from '../../lib/quizLeaderboard';
+import { copyText } from '../../lib/clipboard';
 
 import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 import { sourceRegistry } from '../../data/sourceRegistry';
@@ -37,7 +38,7 @@ export function QuickQuiz() {
   const nextIndex = safeIndex + 1;
   const isLast = nextIndex >= totalQuestions;
   const unlockedNext = activePhase < QUIZ_LEVELS.length - 1 && unlockedPhase > activePhase;
-  const displayedScore = score;
+  const displayedScore = score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);
   const questionSource = question ? sourceRegistry.find(source => source.id === question.sourceId) : undefined;
 
   const startPhase = (phaseIndex: number) => {
@@ -52,22 +53,22 @@ export function QuickQuiz() {
   const answer = (optionIndex: number) => {
     if (selected !== null || !question) return;
     setSelected(optionIndex);
-    if (optionIndex === question.answerIndex) setScore(previous => previous + 1);
   };
 
   const next = () => {
     if (selected === null || !question) return;
+    const nextScore = score + (selected === question.answerIndex ? 1 : 0);
     if (isLast) {
-      // O clique em "Próxima" pode ocorrer antes de o update de score ser refletido nesta closure.
-      const finalScore = score;
-      const persistedBest = saveQuizBestScore(activePhase, finalScore);
+      const persistedBest = saveQuizBestScore(activePhase, nextScore);
+      setScore(nextScore);
       setBest(persistedBest);
-      if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
+      if (nextScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
       }
       setShowResult(true);
       return;
     }
+    setScore(nextScore);
     setIndex(nextIndex);
     setSelected(null);
   };
@@ -80,19 +81,8 @@ export function QuickQuiz() {
       if (navigator.share) {
         await navigator.share({ text });
         setShared('Compartilhado!');
-      } else if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-        setShared('Copiado!');
       } else {
-        const area = document.createElement('textarea');
-        area.value = text;
-        area.setAttribute('readonly', '');
-        area.style.position = 'fixed';
-        area.style.opacity = '0';
-        document.body.appendChild(area);
-        area.select();
-        const copied = document.execCommand('copy');
-        area.remove();
+        const copied = await copyText(text);
         setShared(copied ? 'Copiado!' : 'Não foi possível compartilhar');
       }
     } catch (error) {
