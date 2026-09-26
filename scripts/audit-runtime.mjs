@@ -55,6 +55,12 @@ if (
 else fail('Experiência perdeu cleanup de listeners ou RAF.');
 
 {
+  const source = read('src/components/layout/ScrollTopButton.tsx');
+  if (source.includes('fallbackTimerRef') && source.includes("window.scrollY > 50") && source.includes("behavior: 'auto'") && source.includes('window.clearTimeout(fallbackTimerRef.current)')) pass('voltar ao topo possui fallback determinístico e cleanup de timer.');
+  else fail('voltar ao topo depende apenas de animação suave sem fallback confiável.');
+}
+
+{
   const source = read('src/components/DataExportActions.tsx');
   if (source.includes('statusTimerRef') && source.includes('clearTimeout') && source.includes('flash(')) pass('exportação possui cleanup de timer de status.');
   else fail('exportação possui timer de status sem cleanup.');
