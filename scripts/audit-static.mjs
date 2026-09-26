@@ -179,8 +179,10 @@ for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação pública contém #${id}`);
 }
 for (const id of ['principios', 'contexto', 'dados', 'qualidade', 'evidencias']) {
-  must(allRuntimeText.includes(`id=\"${id}\"`) || allRuntimeText.includes(`id='${id}'`), `conteúdo #${id} continua montado e acessível sem poluir a navegação pública`);
+  must(!navigation.includes(`id: '${id}'`), `subcamada #${id} não polui a navegação pública`);
 }
+must(allRuntimeText.includes('<ProjectTrustPanel />') && allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'método, qualidade e evidências continuam disponíveis no conteúdo técnico');
+must(allRuntimeText.includes('<ContextComparison />') && allRuntimeText.includes('<PublicDataPulse />'), 'contexto e atualizações públicas continuam disponíveis fora do menu principal');
 
 must(candidates.schemaVersion === 3 && candidates.coverage === 'state_watchlist', 'snapshot atual usa exclusivamente o contrato estadual watchlist');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
