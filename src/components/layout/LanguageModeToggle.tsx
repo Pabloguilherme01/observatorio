@@ -45,10 +45,10 @@ export function LanguageModeToggle() {
         type="button"
         className="language-toggle-deepen"
         onClick={cycleMode}
-        aria-label={mode === 'technical' ? 'Voltar para leitura resumida' : 'Aprofundar leitura'}
-        title={mode === 'technical' ? 'Voltar ao Resumo' : 'Avançar para o próximo nível de detalhe'}
+        aria-label={mode === 'technical' ? 'Voltar para visão executiva' : 'Aprofundar leitura'}
+        title={mode === 'technical' ? 'Voltar à visão executiva' : 'Avançar para o próximo nível de detalhe'}
       >
-        <span>{mode === 'technical' ? 'Voltar ao Resumo' : 'Aprofundar leitura'}</span>
+        <span>{mode === 'technical' ? 'Voltar à visão executiva' : mode === 'summary' ? 'Ver com contexto' : 'Abrir camada técnica'}</span>
         <ChevronRight aria-hidden="true" />
       </button>
     </div>
