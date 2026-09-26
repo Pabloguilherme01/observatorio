@@ -31,7 +31,7 @@ const sentry = read('src/lib/sentry.ts');
 const leaderboard = read('src/lib/quizLeaderboard.ts');
 
 must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '3 modos neutros de leitura disponíveis');
-must(app.includes("const SUMMARY_DESTINATIONS = new Set(['resumo'])") && app.includes("if (SUMMARY_DESTINATIONS.has(target))") && app.includes("setMode('summary')"), 'navegação para #resumo preserva o modo Resumo');
+must(app.includes("if (target === 'resumo') return") && !app.includes("SUMMARY_DESTINATIONS"), 'navegação para #resumo respeita o modo escolhido sem forçar troca automática');
 must(search.includes("Resumo de leitura") && search.includes("'resumo'"), 'busca expõe o destino oficial do modo Resumo');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
 const quizPromptCount = (quizData.match(/prompt:/g) || []).length;
