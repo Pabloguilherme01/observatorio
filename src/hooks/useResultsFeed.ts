@@ -127,10 +127,10 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
   return payload.entries.every(entry => {
     if (!entry || typeof entry !== 'object') return false;
     const row = entry as Record<string, unknown>;
-    if (!Number.isInteger(row.electionCode) || !OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes.includes(row.electionCode as typeof OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes[number])) return false;
+    if (!Number.isSafeInteger(row.electionCode) || (row.electionCode as number) <= 0) return false;
     if (typeof row.cargo !== 'string' || !row.cargo.trim()) return false;
-    if (!electionCodeMatchesCargo(row.electionCode as typeof OFFICIAL_RESULTS_CONTEXT.allowedElectionCodes[number], payload.uf as string, row.cargo as string)) return false;
-    if (typeof row.sourceFile !== 'string' || !row.sourceFile.trim()) return false;
+    if (!electionCodeMatchesCargo(row.electionCode as number, payload.uf as string, row.cargo as string, payload.turn as 1 | 2)) return false;
+    if (typeof row.sourceFile !== 'string' || !row.sourceFile.endsWith(`-e${String(row.electionCode).padStart(6, '0')}-u.json`)) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
     if (!Array.isArray(row.items)) return false;
     return row.items.every(item => {
@@ -153,7 +153,7 @@ export function useResultsFeed(intervalMs = 300000) {
     let active = true;
 
     const fetchFeed = async () => {
-      if (!isResultsWindowOpen()) {
+      if (!isResultsWindowOpen() && Date.now() < RESULTS_WINDOW_START) {
         setChecking(false);
         return;
       }
@@ -182,7 +182,7 @@ export function useResultsFeed(intervalMs = 300000) {
 
     const refresh = () => {
       if (document.visibilityState === 'hidden') return;
-      if (isResultsWindowOpen()) void fetchFeed();
+      if (Date.now() >= RESULTS_WINDOW_START) void fetchFeed();
     };
 
     if (isResultsWindowOpen()) void fetchFeed();
