@@ -213,10 +213,12 @@ export function App() {
 
     navigateFromLocation();
     window.addEventListener('hashchange', navigateFromLocation);
+    window.addEventListener('popstate', navigateFromLocation);
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('click', onSameHashAnchor);
     return () => {
       window.removeEventListener('hashchange', navigateFromLocation);
+      window.removeEventListener('popstate', navigateFromLocation);
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('click', onSameHashAnchor);
     };
