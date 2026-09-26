@@ -137,6 +137,10 @@ else fail('atalhos declarados não estão conectados à navegação central com 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
+if (search.includes('closeButtonRef') && search.includes("desktop ? inputRef.current : closeButtonRef.current") && header.includes('closeTools(false)')) pass('busca mobile move foco para dentro do diálogo sem reabrir teclado virtual');
+else fail('busca mobile pode deixar foco atrás do diálogo');
+if (search.includes('search-clear-query') && search.includes("setQuery('')") && search.includes('setActiveIndex(0)')) pass('busca oferece limpeza explícita sem fechar o diálogo');
+else fail('busca não oferece ação explícita para limpar a consulta');
 if (search.includes('search-shortcut-guide') && search.includes('navigation.map(item =>') && search.includes("a[href], summary")) pass('busca expõe guia de atalhos e mantém o summary no ciclo de foco');
 else fail('guia de atalhos da busca está ausente ou fora do ciclo de foco');
 if (experience.includes("event.key === '?'") && header.includes('observatorio:shortcut-help') && search.includes('initialShortcutGuideOpen')) pass('atalho ? abre diretamente a ajuda de atalhos');
