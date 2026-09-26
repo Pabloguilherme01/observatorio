@@ -571,6 +571,53 @@ test('cards premium organizam notas soltas sem overflow no mobile', async ({ pag
   expect(cardWidths.every(overflow => overflow <= 1)).toBeTruthy();
 });
 
+test('modos de leitura possuem identidades visuais distintas em mobile e desktop', async ({ page }) => {
+  for (const viewport of [
+    { width: 390, height: 844, mobile: true },
+    { width: 1366, height: 768, mobile: false },
+  ]) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto('./');
+
+    if (viewport.mobile) await page.getByRole('button', { name: 'Abrir menu' }).click();
+
+    const group = page.getByRole('group', { name: 'Escolha como você quer ler os dados' }).filter({ visible: true });
+    const root = page.locator('html');
+    const main = page.locator('#main-content');
+
+    const signatures = {};
+    for (const mode of [
+      { name: /^Resumo/, id: 'summary' },
+      { name: /^Simples/, id: 'simple' },
+      { name: /^Técnico/, id: 'technical' },
+    ]) {
+      await group.getByRole('button', { name: mode.name }).click();
+      await expect(root).toHaveAttribute('data-language-mode', mode.id);
+      signatures[mode.id] = await main.evaluate(node => {
+        const rootStyle = getComputedStyle(document.documentElement);
+        const style = getComputedStyle(node);
+        return {
+          accent: rootStyle.getPropertyValue('--reading-accent-rgb').trim(),
+          radius: rootStyle.getPropertyValue('--reading-radius').trim(),
+          gap: rootStyle.getPropertyValue('--reading-section-gap').trim(),
+          backgroundImage: style.backgroundImage,
+        };
+      });
+    }
+
+    expect(new Set(Object.values(signatures).map(value => value.accent)).size).toBe(3);
+    expect(signatures.summary.radius).not.toBe(signatures.technical.radius);
+    expect(signatures.summary.gap).not.toBe(signatures.simple.gap);
+    expect(signatures.technical.backgroundImage).toContain('linear-gradient');
+
+    const dimensions = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+  }
+});
+
 test('modos de leitura só avançam quando a seção realmente exige mais detalhe', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
