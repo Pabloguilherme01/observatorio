@@ -151,11 +151,11 @@ export function HistoricalTrendChart() {
         </div>
       </figcaption>
 
-      <div className="dashboard-history-chart mt-4 hidden w-full min-[420px]:block" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
+      <div className="dashboard-history-chart mt-4 w-full" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
         <CombinedChart />
       </div>
 
-      <div className="mt-4 block min-[420px]:hidden" aria-label="Séries históricas separadas em telas estreitas">
+      <div className="dashboard-history-mobile-detail mt-4 hidden" aria-label="Séries históricas separadas">
         <div className="rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
           <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-sky-300/80 light:text-sky-700">População</div>
           <div className="w-full"><SingleSeriesChart dataKey="population" name="População" axisId="population-mobile" tone="text-sky-300 light:text-sky-700" /></div>
