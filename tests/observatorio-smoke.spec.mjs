@@ -441,7 +441,8 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
   await more.click();
   await expect(menu).toBeVisible();
   await page.setViewportSize({ width: 800, height: 844 });
-  await expect(more).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('[data-mobile-more-layer]')).toHaveCount(0);
+  await expect(page.locator('#mobile-bottom-more-trigger')).toHaveAttribute('aria-expanded', 'false');
 });
 
 test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
