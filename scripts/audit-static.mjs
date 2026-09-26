@@ -18,6 +18,7 @@ const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
 const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
+const ciWorkflow = read('.github/workflows/ci.yml');
 const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
 const viteSource = vite;
 const deploySource = deployWorkflow;
@@ -58,7 +59,7 @@ const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
 must(vite.includes("src: BASE_PATH + 'pwa-192.png'") && vite.includes("src: BASE_PATH + 'pwa-512.png'") && vite.includes('scope: BASE_PATH'), 'ícones PNG e escopo PWA respeitam o subcaminho publicado');
 must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("url.pathname.startsWith('/observatorio/api/v1/')"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
-must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.svg"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
+must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.png"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
 const pngSize = file => {
   const bytes = fs.readFileSync(path.join(root, 'public', file));
@@ -70,10 +71,6 @@ must(JSON.stringify(pngSize('pwa-192.png')) === '[192,192]'
   && JSON.stringify(pngSize('pwa-512.png')) === '[512,512]'
   && JSON.stringify(pngSize('apple-touch-icon.png')) === '[180,180]',
   'ícones PNG têm dimensões corretas para Android e iOS');
-must(read('public/pwa-192.svg').includes('viewBox="0 0 512 512"')
-  && read('public/pwa-512.svg').includes('viewBox="0 0 512 512"'),
-  'vetores móveis usam a mesma composição escalável');
-
 must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
 must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
 must(vite.includes('start_url: BASE_PATH') && vite.includes('scope: BASE_PATH'), 'PWA mantém start_url e scope no subcaminho publicado');
@@ -122,7 +119,7 @@ for (const file of workflowFiles) {
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
 must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json registra gate de vulnerabilidades de dependências');
-must(pkgScripts['audit:browser']?.includes('playwright install --with-deps chromium') && !pkgScripts['test:browser:prepare'], 'CI usa Playwright instalado pelo lockfile, sem npm install dinâmico');
+must(!pkgScripts['audit:browser']?.includes('playwright install') && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit') && !ciWorkflow.includes('npm install playwright') && !ciWorkflow.includes('npx playwright'), 'CI usa Playwright fixado pelo lockfile e prepara motores sem instalação dinâmica do pacote');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
