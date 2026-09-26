@@ -162,6 +162,33 @@ test.describe('mobile layout and interaction', () => {
 
 
 for (const viewport of [
+  { name: 'tablet-header', width: 768, height: 1024 },
+  { name: 'small-desktop-header', width: 1024, height: 768 },
+  { name: 'notebook-header', width: 1366, height: 768 },
+]) {
+  test('header compacto sem overflow em ' + viewport.name, async ({ page }) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto('./');
+    const header = page.locator('.site-header');
+    await expect(header).toBeVisible();
+    const headerBox = await header.boundingBox();
+    expect(headerBox?.width ?? Infinity).toBeLessThanOrEqual(viewport.width);
+
+    const reading = page.locator('.header-reading-mode');
+    await expect(reading).toBeVisible();
+    await expect(reading.locator('.language-toggle-options > button')).toHaveCount(3);
+    await expect(reading.locator('.language-toggle-label')).toBeHidden();
+    await expect(reading.locator('.language-toggle-deepen')).toBeHidden();
+
+    const dimensions = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+  });
+}
+
+for (const viewport of [
   { name: 'phone-320', width: 320, height: 568 },
   { name: 'phone-390', width: 390, height: 844 },
   { name: 'tablet-portrait', width: 768, height: 1024 },
