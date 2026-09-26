@@ -11,6 +11,25 @@ function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+async function copyText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {}
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand('copy');
+  textarea.remove();
+  return copied;
+}
+
 export function ExecutiveSummary() {
   
   const electorate = d.electoral;
@@ -70,14 +89,9 @@ export function ExecutiveSummary() {
         window.setTimeout(() => setShareStatus(''), 1800);
         return;
       }
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text + ' ' + window.location.href);
-        setShareStatus('Link copiado');
-        window.setTimeout(() => setShareStatus(''), 1800);
-        return;
-      }
-      setShareStatus('Compartilhamento indisponível neste navegador');
-      window.setTimeout(() => setShareStatus(''), 2400);
+      const copied = await copyText(text + ' ' + window.location.href);
+      setShareStatus(copied ? 'Link copiado' : 'Não foi possível copiar automaticamente');
+      window.setTimeout(() => setShareStatus(''), copied ? 1800 : 2400);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') return;
       setShareStatus('Não foi possível compartilhar');
