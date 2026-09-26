@@ -99,8 +99,12 @@
   text-transform: uppercase;
 }
 .search-quick-action {
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 1px solid rgba(56,189,248,.24);
   border-radius: 11px;
   background: rgba(56,189,248,.08);
