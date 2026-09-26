@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RESULTS_FEED_SCHEMA_VERSION, RESULTS_FEED_URL, RESULTS_LIVE_MAX_AGE_MS, RESULTS_WINDOW, OFFICIAL_RESULTS_CONTEXT, electionCodeMatchesCargo } from '../data/resultsConfig';
 
-export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'stale' | 'complete' | 'ended_unavailable';
+export type ResultsFeedPhase = 'pre_open' | 'open_waiting' | 'live' | 'stale' | 'complete' | 'archived_partial' | 'ended_unavailable';
 
 export interface ResultsFeedItem {
   readonly candidateId: string;
@@ -71,7 +71,7 @@ export function isResultsWindowOpen(now = Date.now()) {
 function getResultsFeedPhase(data: ResultsFeed | null, now = Date.now()): ResultsFeedPhase {
   if (data?.state === 'complete') return 'complete';
   if (now < RESULTS_WINDOW_START) return 'pre_open';
-  if (now > RESULTS_WINDOW_END) return 'ended_unavailable';
+  if (now > RESULTS_WINDOW_END) return data?.state === 'live' ? 'archived_partial' : 'ended_unavailable';
   if (data?.state === 'live') {
     const capturedAt = Date.parse(data.capturedAt);
     return Number.isFinite(capturedAt) && now - capturedAt <= RESULTS_LIVE_MAX_AGE_MS ? 'live' : 'stale';

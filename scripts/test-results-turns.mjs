@@ -2,6 +2,8 @@ import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { strict as assert } from 'node:assert';
+import { cargoSpecsForTurn, findElection } from './sync-results-2026.mjs';
 
 const fixture = JSON.parse(readFileSync(resolve('scripts/fixtures/tse-results.valid.synthetic.json'), 'utf8'));
 const dir = mkdtempSync(join(tmpdir(), 'observatorio-results-'));
@@ -19,6 +21,12 @@ function validate(feed, expectedSuccess) {
 }
 
 try {
+  assert.deepEqual(cargoSpecsForTurn(2).map(spec => spec.cargo), ['Presidente', 'Governador']);
+  assert.equal(cargoSpecsForTurn(1).length, 5);
+  const config = { pl: [{ cd: 3220, e: [{ cd: 6257, t: 1, cdt2: 7001 }, { cd: 7001, t: 2 }, { cd: 6259, t: 1 }] }] };
+  assert.equal(findElection(config, 6257, 2).electionCode, 7001);
+  assert.equal(findElection(config, 6259, 2), null);
+  assert.equal(findElection(config, 6259, 1).electionCode, 6259);
   validate(fixture, true);
   const second = structuredClone(fixture);
   second.turn = 2;

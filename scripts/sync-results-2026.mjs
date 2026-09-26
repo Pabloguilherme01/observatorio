@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { request } from 'node:https';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { verifyCompactJws } from './verify-jws.mjs';
 
 const BASE = 'https://resultados.tse.jus.br/oficial';
@@ -14,13 +15,19 @@ const MUNICIPALITY_CODE = '93343';
 const TURN = Number(process.env.RESULTS_TURN ?? '1');
 const ALLOW_PENDING = process.env.REQUIRE_RESULTS_SYNC !== 'true';
 
-const CARGO_SPECS = [
+export const CARGO_SPECS = [
   { cargo: 'Presidente', electionCode: 6257, cargoCode: '1' },
   { cargo: 'Governador', electionCode: 6259, cargoCode: '3' },
   { cargo: 'Senador', electionCode: 6259, cargoCode: '5' },
   { cargo: 'Deputado Federal', electionCode: 6259, cargoCode: '6' },
   { cargo: 'Deputado Estadual', electionCode: 6259, cargoCode: '7' },
 ];
+
+export function cargoSpecsForTurn(turn) {
+  if (turn === 1) return CARGO_SPECS;
+  if (turn === 2) return CARGO_SPECS.filter(spec => ['Presidente', 'Governador'].includes(spec.cargo));
+  throw new Error('Turno inválido.');
+}
 
 function httpGet(url, headers = {}) {
   return new Promise((resolvePromise, reject) => {
@@ -59,14 +66,14 @@ function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
 
-function findElection(config, firstTurnCode) {
+export function findElection(config, firstTurnCode, turn = TURN) {
   const pleito = (config.pl ?? []).find(item => String(item.cd) === String(PLEITO));
   if (!pleito) throw new Error(`Pleito ${PLEITO} não encontrado no ele-c.json.`);
   const first = (pleito.e ?? []).find(election => String(election.cd) === String(firstTurnCode) && Number(election.t ?? 1) === 1);
   if (!first) throw new Error(`Eleição base ${firstTurnCode} não encontrada no ele-c.json.`);
-  if (TURN === 1) return { election: first, electionCode: Number(first.cd) };
+  if (turn === 1) return { election: first, electionCode: Number(first.cd) };
   const secondCode = String(first.cdt2 ?? '').trim();
-  if (!secondCode) throw new Error(`Eleição ${firstTurnCode} não informa código de segundo turno no ele-c.json.`);
+  if (!secondCode) return null;
   const second = (pleito.e ?? []).find(election => String(election.cd) === secondCode && Number(election.t ?? 0) === 2);
   if (!second) throw new Error(`Eleição de segundo turno ${secondCode} não encontrada no ele-c.json.`);
   return { election: second, electionCode: Number(second.cd) };
@@ -192,7 +199,8 @@ async function main() {
   const cycle = String(pleitoConfig.c ?? '').trim();
   if (!cycle) throw new Error('Ciclo eleitoral ausente no ele-c.json.');
 
-  const stateElectionRef = findElection(electionConfig, 6259);
+  // A configuração municipal do primeiro turno existe mesmo quando GO não tem segundo turno.
+  const stateElectionRef = findElection(electionConfig, 6259, 1);
   const municipalityConfigUrl = `${BASE}/${cycle}/${stateElectionRef.electionCode}/config/mun-e${pad(stateElectionRef.electionCode)}-cm.json`;
   const municipalityResponse = await httpGet(municipalityConfigUrl, { Accept: 'application/json' });
   const municipalityConfig = parseJson('configuração de municípios', municipalityResponse);
@@ -205,9 +213,11 @@ async function main() {
   const entries = [];
   const proofs = [];
   let changed = false;
+  let pendingCargos = 0;
 
-  for (const spec of CARGO_SPECS) {
+  for (const spec of cargoSpecsForTurn(TURN)) {
     const electionRef = findElection(electionConfig, spec.electionCode);
+    if (!electionRef) continue;
     const election = electionRef.election;
     const configuredCargo = (election.abr ?? []).flatMap(item => item.cp ?? []).find(item => String(item.cd) === String(spec.cargoCode));
     if (!configuredCargo || normalize(configuredCargo.ds) !== normalize(spec.cargo)) {
@@ -235,19 +245,24 @@ async function main() {
     } catch (error) {
       if (error?.code === 'NOT_READY' && ALLOW_PENDING) {
         console.log(JSON.stringify({ valid: true, pending: true, cargo: spec.cargo, reason: error.message }, null, 2));
-        return;
+        pendingCargos += 1;
+        continue;
       }
       throw error;
     }
   }
 
-  if (!changed && previousFeed) {
+  if (!entries.length) {
+    console.log(JSON.stringify({ valid: true, pending: true, reason: 'Nenhum cargo deste turno disponível.' }, null, 2));
+    return;
+  }
+  if (!changed && previousFeed && previousFeed.turn === TURN) {
     console.log(JSON.stringify({ valid: true, unchanged: true, state: previousFeed.state, capturedAt: previousFeed.capturedAt, entries: previousFeed.entries.length }, null, 2));
     return;
   }
   writeFileSync(HTTP_STATE, JSON.stringify({ ...httpState, schemaVersion: 1 }, null, 2) + '\n', 'utf8');
   const now = new Date();
-  const complete = entries.every(entry => entry.sectionsTotal > 0 && entry.sectionsCounted >= entry.sectionsTotal);
+  const complete = pendingCargos === 0 && entries.every(entry => entry.sectionsTotal > 0 && entry.sectionsCounted >= entry.sectionsTotal);
   const payload = {
     schemaVersion: 3,
     environment: 'official',
@@ -273,7 +288,7 @@ async function main() {
   console.log(JSON.stringify({ valid: true, state: payload.state, capturedAt: payload.capturedAt, entries: entries.length, verifiedFiles: proofs.length, output: OUTPUT }, null, 2));
 }
 
-main().catch(error => {
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) main().catch(error => {
   console.error(JSON.stringify({ valid: false, error: String(error) }, null, 2));
   process.exit(1);
 });
