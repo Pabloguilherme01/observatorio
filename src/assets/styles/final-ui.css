@@ -5639,3 +5639,10 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
   .site-header-inner{gap:8px!important}
   .site-header-status{display:none!important}
 }
+
+
+/* Reliability over speculative paint skipping: deferred groups are already lazy-loaded. */
+.deferred-section{
+  content-visibility:visible!important;
+  contain-intrinsic-size:auto!important;
+}
