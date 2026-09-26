@@ -397,19 +397,58 @@ test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ pa
 });
 
 
-test('quiz não duplica a pontuação da última resposta', async ({ page }) => {
+test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async ({ page }) => {
+  const quizSource = readFileSync('src/data/quiz/questionBank.ts', 'utf8');
+  const answerIndexes = [...quizSource.matchAll(/difficulty:'Fácil'[\s\S]*?answerIndex:\s*(\d+)/g)]
+    .slice(0, 40)
+    .map(match => Number(match[1]));
+  expect(answerIndexes).toHaveLength(40);
+
   await page.goto('./');
-  await openSection(page, 'quiz');
   await page.evaluate(() => {
     localStorage.removeItem('observatorio-v44-quiz-best-scores');
   });
   await page.reload();
   await openSection(page, 'quiz');
-  const options = page.locator('.quiz-options button');
-  await options.first().click();
-  await page.getByRole('button', { name: /Próxima|Finalizar fase/i }).click();
+
+  for (let index = 0; index < answerIndexes.length; index += 1) {
+    await page.locator('.quiz-options button').nth(answerIndexes[index]).click();
+    await page.getByRole('button', { name: index === answerIndexes.length - 1 ? /Finalizar fase/i : /^Próxima/ }).click();
+  }
+
+  await expect(page.locator('.quiz-result-score')).toContainText('40 de 40 acertos');
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('observatorio-v44-quiz-best-scores') || '[0,0,0,0,0]'));
-  expect(saved[0]).toBeLessThanOrEqual(1);
+  expect(saved[0]).toBe(40);
+});
+
+test('inspetor copia referência e compartilha o link da seção atual', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async text => { window.__lastCopiedText = text; } },
+    });
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: async payload => { window.__lastInspectorShare = payload; },
+    });
+  });
+
+  await page.goto('./');
+  await openSection(page, 'dashboard');
+  await page.locator('.dashboard-kpi-card').first().click();
+
+  const dialog = page.getByRole('dialog', { name: /Variação da população/i });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: /Copiar referência/i }).click();
+
+  const copied = await page.evaluate(() => window.__lastCopiedText);
+  expect(copied).toContain('Variação da população');
+  expect(copied).toContain('Fonte:');
+  expect(copied).toContain('URL:');
+
+  await dialog.getByRole('button', { name: /Compartilhar/i }).click();
+  const payload = await page.evaluate(() => window.__lastInspectorShare);
+  expect(payload?.url).toMatch(/#dashboard$/);
 });
 
 test('compartilhamento do transporte usa URL canônica com um único hash', async ({ page }) => {
