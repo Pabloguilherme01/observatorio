@@ -135,6 +135,9 @@ test.describe('bancada cross-browser de interface', () => {
     await expect(menu).toHaveCount(0);
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(targetText).toBeTruthy();
+    const hash = await page.evaluate(() => window.location.hash);
+    expect(hash).not.toBe('');
+    await expect(page.locator(hash)).toBeVisible();
     await assertViewportIntegrity(page);
   });
 
