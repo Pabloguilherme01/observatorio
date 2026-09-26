@@ -9,6 +9,7 @@ import { captureObservatorioException } from './lib/sentry';
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
 const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';
 const BOOT_TIMEOUT_MS = 10000;
+const PWA_INSTALL_DISMISSED_KEY = 'observatorio:pwa-install-dismissed';
 
 function normalizeError(value: unknown): string {
   if (value instanceof Error) return value.message || value.name || 'Erro inesperado.';
@@ -74,36 +75,62 @@ function PwaInstallPrompt() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
+    const dismissed = () => {
+      try { return sessionStorage.getItem(PWA_INSTALL_DISMISSED_KEY) === 'true'; } catch { return false; }
+    };
     const onBeforeInstall = (event: Event) => {
       const promptEvent = event as BeforeInstallPromptEvent;
       event.preventDefault();
+      if (dismissed()) return;
       setInstallEvent(promptEvent);
     };
+    const onInstalled = () => {
+      try { sessionStorage.removeItem(PWA_INSTALL_DISMISSED_KEY); } catch {}
+      setInstallEvent(null);
+    };
+
     window.addEventListener('beforeinstallprompt', onBeforeInstall);
-    return () => window.removeEventListener('beforeinstallprompt', onBeforeInstall);
+    window.addEventListener('appinstalled', onInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstall);
+      window.removeEventListener('appinstalled', onInstalled);
+    };
   }, []);
 
   if (!installEvent) return null;
 
+  const dismiss = () => {
+    try { sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY, 'true'); } catch {}
+    setInstallEvent(null);
+  };
+
   const install = async () => {
     try {
       await installEvent.prompt();
-      await installEvent.userChoice;
+      const choice = await installEvent.userChoice;
+      if (choice.outcome === 'dismissed') {
+        try { sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY, 'true'); } catch {}
+      }
     } finally {
       setInstallEvent(null);
     }
   };
 
   return (
-    <div className="pwa-install-banner" role="status" aria-live="polite">
-      <div>
+    <aside className="pwa-install-banner" role="status" aria-live="polite" aria-label="Instalar o Observatório">
+      <div className="pwa-install-copy">
         <strong>Instalar o Observatório</strong>
-        <small>Atalho para abrir o painel como aplicativo, quando o navegador oferecer suporte.</small>
+        <small>Abra mais rápido e use como aplicativo quando o navegador oferecer suporte.</small>
       </div>
-      <button type="button" className="pwa-install-button" onClick={install}>
-        Instalar
-      </button>
-    </div>
+      <div className="pwa-install-actions">
+        <button type="button" className="pwa-install-dismiss" onClick={dismiss}>
+          Agora não
+        </button>
+        <button type="button" className="pwa-install-button" onClick={install}>
+          Instalar
+        </button>
+      </div>
+    </aside>
   );
 }
 
