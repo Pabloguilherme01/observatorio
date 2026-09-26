@@ -82,7 +82,7 @@ export function AudienceHub() {
                 <span>01</span>
                 <h3 id="topics-title">Escolha um assunto</h3>
               </div>
-              <p>Seis caminhos principais. Sem menu escondido.</p>
+              <p>Caminhos principais para acessar os temas do observatório.</p>
             </div>
             <div className="audience-topic-grid">
               {(isTechnical ? topics : topics.slice(0, 5)).map(({ id, label, description, icon: Icon }) => (
@@ -105,7 +105,7 @@ export function AudienceHub() {
               <span>{isSummary ? '02' : '02'}</span>
               <h3 id="actions-title">{isSummary ? 'Ações úteis' : 'Ferramentas para continuar'}</h3>
             </div>
-            <p>{isSummary ? 'Faça algo com o que acabou de ler.' : 'Atalhos que realmente levam a uma ação.'}</p>
+            <p>{isSummary ? 'Faça algo com o que acabou de ler.' : 'Atalhos para consultar, comparar ou acessar serviços.'}</p>
           </div>
 
           <div className="audience-action-grid">
@@ -126,7 +126,7 @@ export function AudienceHub() {
               <>
                 <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
                   <span className="audience-action-icon">?</span>
-                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para aprender brincando.</small></span>
+                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para conferir dados e fontes.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
                 <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
