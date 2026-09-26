@@ -25,7 +25,7 @@ const entries: readonly SearchEntry[] = [
   ['Exportação', 'exportacao', 'primary'],
   ['Pesquisa registrada', 'politica', 'primary'],
   ['HEALGO', 'saude', 'primary'],
-  ['Resumo de leitura', 'resumo', 'primary'],
+  ['Resumo executivo', 'resumo', 'primary'],
   ...publicServiceSearchEntries,
 ];
 
@@ -240,9 +240,8 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
 
   const selectResult = (id: string) => {
     onClose();
-    const knownDestination = id === 'resumo' || id === 'saude' || id === 'candidaturas' || id === 'exportacao' || id === 'acao' || navigation.some(item => item.id === id);
-    const resolvedTarget = id === 'resumo' ? 'dashboard' : id;
-    const target = knownDestination ? resolvedTarget : (document.getElementById(id) ? id : 'dashboard');
+    const knownDestination = ['resumo', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
+    const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
     const currentTarget = window.location.hash.replace('#', '');
     if (currentTarget === target) {
       window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
