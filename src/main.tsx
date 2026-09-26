@@ -10,6 +10,7 @@ import { Download, MoreVertical, Share2, X } from 'lucide-react';
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
 const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';
 const BOOT_TIMEOUT_MS = 10000;
+const PWA_INSTALL_DISMISSED_KEY = 'observatorio:pwa-install-dismissed';
 
 function normalizeError(value: unknown): string {
   if (value instanceof Error) return value.message || value.name || 'Erro inesperado.';
@@ -74,6 +75,9 @@ function MountSignal() {
 function PwaInstallPrompt() {
   const [installEvent, setInstallEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [open, setOpen] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    try { return sessionStorage.getItem(PWA_INSTALL_DISMISSED_KEY) === 'true'; } catch { return false; }
+  });
 
   const platform = useMemo(() => {
     const ua = navigator.userAgent ?? '';
@@ -108,7 +112,13 @@ function PwaInstallPrompt() {
     };
   }, []);
 
-  if (installed || (!platform.mobile && !installEvent)) return null;
+  if (installed || dismissed || (!platform.mobile && !installEvent)) return null;
+
+  const dismiss = () => {
+    try { sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY, 'true'); } catch {}
+    setDismissed(true);
+    setOpen(false);
+  };
 
   const install = async () => {
     if (installEvent) {
@@ -180,6 +190,9 @@ function PwaInstallPrompt() {
             <p className="pwa-install-guide-note">
               O atalho abre o Observatório em tela própria e mantém o acesso mais rápido no celular.
             </p>
+            <button type="button" className="pwa-install-later" onClick={dismiss}>
+              Agora não
+            </button>
           </section>
         </div>
       )}
