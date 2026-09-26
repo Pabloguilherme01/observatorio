@@ -1,4 +1,4 @@
-import { CalendarDays, Link2, Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { CalendarDays, FileText, Link2, List, Menu, Moon, Search, Sun, X, Code2 } from 'lucide-react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ContrastModeToggle } from './ContrastModeToggle';
 import { useTheme } from '../../context/ThemeContext';
@@ -7,6 +7,7 @@ import { LanguageModeToggle } from './LanguageModeToggle';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
 import { copyText } from '../../lib/clipboard';
+import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const SearchModal = lazy(() => import('./SearchModal').then(module => ({ default: module.SearchModal })));
 
@@ -16,6 +17,7 @@ const moreNavigation = navigation.filter(item => !primaryNavigationIds.includes(
 
 export function Header() {
   const { theme, toggle } = useTheme();
+  const { mode: languageMode, cycleMode } = useLanguageMode();
   const [activeSection, setActiveSection] = useState('dashboard');
   const [searchOpen, setSearchOpen] = useState(false);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
@@ -252,6 +254,16 @@ export function Header() {
           </div>
 
           <div className="site-header-actions ml-auto flex items-center gap-1">
+            <button
+              type="button"
+              onClick={cycleMode}
+              className={'site-mode-shortcut md:hidden mode-' + languageMode}
+              aria-label={'Modo de leitura atual: ' + (languageMode === 'summary' ? 'Resumo. Toque para mudar para Simples.' : languageMode === 'simple' ? 'Simples. Toque para mudar para Técnico.' : 'Técnico. Toque para mudar para Resumo.')}
+              title="Mudar modo de leitura"
+            >
+              {languageMode === 'summary' ? <List aria-hidden="true" /> : languageMode === 'simple' ? <FileText aria-hidden="true" /> : <Code2 aria-hidden="true" />}
+              <span>{languageMode === 'summary' ? 'Resumo' : languageMode === 'simple' ? 'Simples' : 'Técnico'}</span>
+            </button>
             <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K" data-search-trigger="primary">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
