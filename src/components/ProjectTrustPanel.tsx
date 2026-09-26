@@ -38,7 +38,8 @@ export function ProjectTrustPanel() {
     return () => controller.abort();
   }, [mode]);
   return (
-    <section id="principios" className="mx-auto max-w-7xl px-4 pb-10 sm:px-6" aria-labelledby="principles-title">\n      <div id="fontes" className="trust-shell scroll-mt-24">
+    <section id="principios" className="mx-auto max-w-7xl px-4 pb-10 sm:px-6" aria-labelledby="principles-title">
+      <div id="fontes" className="trust-shell scroll-mt-24">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
