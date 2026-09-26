@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Clipboard, ExternalLink, Link2, Share2, X } from 'lucide-react';
+import { Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
+import { copyText } from '../lib/clipboard';
 
 type InspectorDetail = {
   label: string;
@@ -27,6 +28,7 @@ export { dispatchInspect };
 export function DataInspector() {
   const [data, setData] = useState<InspectorDetail | null>(null);
   const [copied, setCopied] = useState(false);
+  const [citationCopied, setCitationCopied] = useState(false);
   const [actionError, setActionError] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLElement>(null);
@@ -38,6 +40,7 @@ export function DataInspector() {
       openerRef.current = document.activeElement as HTMLElement | null;
       setData(event.detail);
       setCopied(false);
+      setCitationCopied(false);
       setActionError(false);
     };
     window.addEventListener('observatorio:inspect-data', onInspect);
@@ -88,37 +91,45 @@ export function DataInspector() {
     data.note ?? source?.note ?? '',
   ].filter(Boolean).join('\n');
 
-  const copy = async () => {
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const area = document.createElement('textarea');
-        area.value = text;
-        area.setAttribute('readonly', '');
-        area.style.position = 'fixed';
-        area.style.opacity = '0';
-        document.body.appendChild(area);
-        area.select();
-        const ok = document.execCommand('copy');
-        area.remove();
-        if (!ok) throw new Error('copy-failed');
-      }
-      setCopied(true);
-      setActionError(false);
-      if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
-      copyTimerRef.current = window.setTimeout(() => {
-        copyTimerRef.current = null;
-        setCopied(false);
-      }, 1800);
-    } catch {
+  const citation = [
+    `${data.label}: ${data.value}.`,
+    source ? `Fonte: ${source.institution} — ${source.label}.` : '',
+    data.referenceDate || source?.referenceDate ? `Referência: ${data.referenceDate ?? source?.referenceDate}.` : '',
+    source?.url ? `URL: ${source.url}` : '',
+  ].filter(Boolean).join(' ');
+
+  const markCopied = (kind: 'details' | 'citation') => {
+    setCopied(kind === 'details');
+    setCitationCopied(kind === 'citation');
+    setActionError(false);
+    if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = window.setTimeout(() => {
+      copyTimerRef.current = null;
       setCopied(false);
-      setActionError(true);
+      setCitationCopied(false);
+    }, 1800);
+  };
+
+  const copy = async () => {
+    if (await copyText(text)) {
+      markCopied('details');
+      return;
     }
+    setCopied(false);
+    setActionError(true);
+  };
+
+  const copyCitation = async () => {
+    if (await copyText(citation)) {
+      markCopied('citation');
+      return;
+    }
+    setCitationCopied(false);
+    setActionError(true);
   };
 
   const share = async () => {
-    const shareData = { title: data.label, text, url: window.location.href.split('#')[0] };
+    const shareData = { title: data.label, text, url: window.location.href };
     try {
       if (navigator.share) {
         await navigator.share(shareData);
@@ -168,15 +179,19 @@ export function DataInspector() {
           {actionError && <p className="text-xs text-amber-300" role="status">Não foi possível concluir a ação. Tente novamente.</p>}
           <div className="data-inspector-actions flex flex-wrap gap-2">
             {source?.url && (
-              <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200">
+              <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200">
                 <ExternalLink className="h-3.5 w-3.5" /> Ver fonte
               </a>
             )}
-            <button type="button" onClick={copy} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+            <button type="button" onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
               {copied ? <Check className="h-3.5 w-3.5" /> : <Clipboard className="h-3.5 w-3.5" />}
               {copied ? 'Copiado' : 'Copiar'}
             </button>
-            <button type="button" onClick={share} className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+            <button type="button" onClick={copyCitation} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+              {citationCopied ? <Check className="h-3.5 w-3.5" /> : <Quote className="h-3.5 w-3.5" />}
+              {citationCopied ? 'Referência copiada' : 'Copiar referência'}
+            </button>
+            <button type="button" onClick={share} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
               {typeof navigator.share === 'function' ? <Share2 className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
               Compartilhar
             </button>
