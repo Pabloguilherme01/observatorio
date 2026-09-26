@@ -420,55 +420,69 @@ test('status de conexão informa offline e confirma reconexão', async ({ page }
   await expect(status).toHaveCount(0, { timeout: 5000 });
 });
 
-test('prompt PWA respeita a barra mobile, pode ser dispensado e instalar', async ({ page }) => {
+test('atalho PWA respeita a barra mobile e usa prompt nativo quando disponível', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
 
-  const dispatchInstallPrompt = async outcome => {
-    await page.evaluate(nextOutcome => {
-      const event = new Event('beforeinstallprompt', { cancelable: true });
-      Object.defineProperty(event, 'prompt', {
-        value: async () => { window.__pwaPromptCalls = (window.__pwaPromptCalls || 0) + 1; },
-      });
-      Object.defineProperty(event, 'userChoice', {
-        value: Promise.resolve({ outcome: nextOutcome }),
-      });
-      window.dispatchEvent(event);
-    }, outcome);
-  };
+  await page.evaluate(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true });
+    Object.defineProperty(event, 'prompt', {
+      value: async () => { window.__pwaPromptCalls = (window.__pwaPromptCalls || 0) + 1; },
+    });
+    Object.defineProperty(event, 'userChoice', {
+      value: Promise.resolve({ outcome: 'accepted' }),
+    });
+    window.dispatchEvent(event);
+  });
 
-  await dispatchInstallPrompt('accepted');
-
-  const banner = page.getByRole('status', { name: 'Instalar o Observatório' });
+  const shortcut = page.getByRole('button', { name: 'Instalar Observatório' });
   const nav = page.locator('.mobile-bottom-nav');
-  await expect(banner).toBeVisible();
+  await expect(shortcut).toBeVisible();
 
   const geometry = await page.evaluate(() => {
-    const bannerNode = document.querySelector('.pwa-install-banner');
+    const shortcutNode = document.querySelector('.pwa-install-shortcut');
     const navNode = document.querySelector('.mobile-bottom-nav');
-    if (!bannerNode || !navNode) return null;
-    const bannerRect = bannerNode.getBoundingClientRect();
+    if (!shortcutNode || !navNode) return null;
+    const shortcutRect = shortcutNode.getBoundingClientRect();
     const navRect = navNode.getBoundingClientRect();
-    return { bannerBottom: bannerRect.bottom, navTop: navRect.top, bannerLeft: bannerRect.left, bannerRight: bannerRect.right };
+    return {
+      shortcutBottom: shortcutRect.bottom,
+      navTop: navRect.top,
+      shortcutLeft: shortcutRect.left,
+      shortcutRight: shortcutRect.right,
+    };
   });
   expect(geometry).not.toBeNull();
-  expect(geometry.bannerBottom).toBeLessThanOrEqual(geometry.navTop - 1);
-  expect(geometry.bannerLeft).toBeGreaterThanOrEqual(0);
-  expect(geometry.bannerRight).toBeLessThanOrEqual(390);
+  expect(geometry.shortcutBottom).toBeLessThanOrEqual(geometry.navTop - 1);
+  expect(geometry.shortcutLeft).toBeGreaterThanOrEqual(0);
+  expect(geometry.shortcutRight).toBeLessThanOrEqual(390);
 
-  await banner.getByRole('button', { name: 'Agora não' }).click();
-  await expect(banner).toBeHidden();
-  await expect.poll(() => page.evaluate(() => sessionStorage.getItem('observatorio:pwa-install-dismissed'))).toBe('true');
-
-  await dispatchInstallPrompt('accepted');
-  await expect(banner).toBeHidden();
-
-  await page.evaluate(() => sessionStorage.removeItem('observatorio:pwa-install-dismissed'));
-  await dispatchInstallPrompt('accepted');
-  await expect(banner).toBeVisible();
-  await banner.getByRole('button', { name: 'Instalar' }).click();
+  await shortcut.click();
   await expect.poll(() => page.evaluate(() => window.__pwaPromptCalls || 0)).toBe(1);
-  await expect(banner).toBeHidden();
+  await expect(shortcut).toBeHidden();
+});
+
+test('guia PWA no iPhone pode ser dispensado durante a sessão', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'userAgent', { configurable: true, get: () => 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1' });
+    Object.defineProperty(navigator, 'platform', { configurable: true, get: () => 'iPhone' });
+    sessionStorage.removeItem('observatorio:pwa-install-dismissed');
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  const shortcut = page.getByRole('button', { name: 'Adicionar Observatório à tela inicial' });
+  await expect(shortcut).toBeVisible();
+  await shortcut.click();
+
+  const guide = page.getByRole('dialog', { name: 'Instale o Observatório' });
+  await expect(guide).toBeVisible();
+  await expect(guide).toContainText('Adicionar à Tela de Início');
+
+  await guide.getByRole('button', { name: 'Agora não' }).click();
+  await expect(guide).toBeHidden();
+  await expect(shortcut).toBeHidden();
+  await expect.poll(() => page.evaluate(() => sessionStorage.getItem('observatorio:pwa-install-dismissed'))).toBe('true');
 });
 
 test('botão Mais da navegação inferior funciona no mobile', async ({ page }) => {
