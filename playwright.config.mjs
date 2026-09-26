@@ -19,22 +19,27 @@ export default defineConfig({
     },
     {
       name: 'firefox-desktop',
+      testMatch: /cross-browser-ui\.spec\.mjs/,
       use: { ...devices['Desktop Firefox'] },
     },
     {
       name: 'safari-desktop',
+      testMatch: /cross-browser-ui\.spec\.mjs/,
       use: { ...devices['Desktop Safari'] },
     },
     {
       name: 'chrome-android',
+      testMatch: /(cross-browser-ui|mobile-repagination)\.spec\.mjs/,
       use: { ...devices['Pixel 7'] },
     },
     {
       name: 'safari-iphone',
+      testMatch: /(cross-browser-ui|mobile-repagination)\.spec\.mjs/,
       use: { ...devices['iPhone 14'] },
     },
     {
       name: 'safari-iphone-se',
+      testMatch: /cross-browser-ui\.spec\.mjs/,
       use: { ...devices['iPhone SE'] },
     },
   ],
