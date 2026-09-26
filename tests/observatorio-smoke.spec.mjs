@@ -166,6 +166,36 @@ test('busca apresenta guia descobrível dos atalhos configurados', async ({ page
   await expect(guide.getByText('Transporte', { exact: true })).toBeVisible();
 });
 
+test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile', async ({ page }) => {
+  await page.goto('./#dashboard');
+
+  await page.keyboard.press('g');
+  await page.keyboard.press('t');
+  await expect(page).toHaveURL(/#transporte$/);
+
+  await page.goBack();
+  await expect(page).toHaveURL(/#dashboard$/);
+  await expect(page.locator('#dashboard')).toBeVisible();
+
+  await page.goForward();
+  await expect(page).toHaveURL(/#transporte$/);
+  await expect(page.locator('#transporte')).toBeVisible();
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  await page.getByRole('combobox').first().fill('fontes');
+  await page.getByRole('option', { name: /Fontes e metodologia/i }).click();
+  await expect(page).toHaveURL(/#fontes$/);
+
+  await page.goBack();
+  await expect(page).toHaveURL(/#transporte$/);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('.mobile-bottom-nav').getByRole('button', { name: /Explorar/i }).click();
+  await expect(page).toHaveURL(/#descubra$/);
+  await page.goBack();
+  await expect(page).toHaveURL(/#transporte$/);
+});
+
 test('atalho de busca por barra abre a busca global', async ({ page }) => {
   await page.goto('./');
   await page.keyboard.press('/');
