@@ -57,6 +57,17 @@ body {
     --type-small: 0.75rem;
     --type-label: 0.6875rem;
   }
+
+  :where(.card, .panel, .surface-card, .obs-card, .candidate-card,
+    .quiz-card, .metric-interactive, .context-comparison-card) {
+    padding: 0.75rem;
+    border-radius: 0.875rem;
+  }
+
+  :where(.mobile-bottom-nav button, .mobile-tool-action) {
+    min-width: 0;
+    white-space: normal;
+  }
 }
 
 /* Cards and resources: every grid child may shrink before the layout overflows. */
@@ -108,19 +119,6 @@ body {
 
   :where(.dashboard-history-card .recharts-responsive-container) {
     min-height: 15rem;
-  }
-}
-
-@media (max-width: 390px) {
-  :where(.card, .panel, .surface-card, .obs-card, .candidate-card,
-    .quiz-card, .metric-interactive, .context-comparison-card) {
-    padding: 0.75rem;
-    border-radius: 0.875rem;
-  }
-
-  :where(.mobile-bottom-nav button, .mobile-tool-action) {
-    min-width: 0;
-    white-space: normal;
   }
 }
 
