@@ -17,6 +17,7 @@ export function Header() {
   const { theme, toggle } = useTheme();
   const [activeSection, setActiveSection] = useState('dashboard');
   const [searchOpen, setSearchOpen] = useState(false);
+  const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreOpenRef = useRef(false);
@@ -113,9 +114,20 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    const openSearchFromMobile = () => setSearchOpen(true);
-    window.addEventListener('observatorio:search', openSearchFromMobile);
-    return () => window.removeEventListener('observatorio:search', openSearchFromMobile);
+    const openSearch = () => {
+      setShortcutGuideOpen(false);
+      setSearchOpen(true);
+    };
+    const openShortcutHelp = () => {
+      setShortcutGuideOpen(true);
+      setSearchOpen(true);
+    };
+    window.addEventListener('observatorio:search', openSearch);
+    window.addEventListener('observatorio:shortcut-help', openShortcutHelp);
+    return () => {
+      window.removeEventListener('observatorio:search', openSearch);
+      window.removeEventListener('observatorio:shortcut-help', openShortcutHelp);
+    };
   }, []);
 
   useEffect(() => {
@@ -219,7 +231,7 @@ export function Header() {
           </div>
 
           <div className="site-header-actions ml-auto flex items-center gap-1">
-            <button type="button" onClick={() => setSearchOpen(true)} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório">
+            <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="header-reading-mode hidden md:block"><LanguageModeToggle /></div>
@@ -262,7 +274,7 @@ export function Header() {
         )}
       </header>
       <Suspense fallback={null}>
-        <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
+        <SearchModal open={searchOpen} initialShortcutGuideOpen={shortcutGuideOpen} onClose={() => { setSearchOpen(false); setShortcutGuideOpen(false); }} />
       </Suspense>
     </>
   );
