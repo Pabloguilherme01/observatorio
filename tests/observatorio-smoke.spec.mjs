@@ -157,6 +157,19 @@ test.describe('mobile layout and interaction', () => {
   });
 });
 
+
+test('modos de leitura persistem e podem avançar por atalho', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await page.keyboard.press('Alt+m');
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await page.keyboard.press('Alt+m');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await page.reload();
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+});
+
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
   await page.evaluate(() => {
