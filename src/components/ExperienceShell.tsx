@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { MobileBottomNav } from './layout/MobileBottomNav';
 import { useLanguageMode } from '../context/LanguageModeContext';
+import { navigation } from '../config/navigation';
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
   const { cycleMode } = useLanguageMode();
@@ -40,9 +41,27 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, []);
 
   useEffect(() => {
+    const shortcutMap = new Map(navigation.map(item => [item.shortcut.replace(/\s+/g, '').toLowerCase(), item.id]));
+    let navigationSequence = '';
+    let navigationSequenceTimer = 0;
+
+    const clearNavigationSequence = () => {
+      navigationSequence = '';
+      if (navigationSequenceTimer) {
+        window.clearTimeout(navigationSequenceTimer);
+        navigationSequenceTimer = 0;
+      }
+    };
+
+    const keepNavigationSequence = (sequence: string) => {
+      navigationSequence = sequence;
+      if (navigationSequenceTimer) window.clearTimeout(navigationSequenceTimer);
+      navigationSequenceTimer = window.setTimeout(clearNavigationSequence, 1200);
+    };
+
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      const typing = !!target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+      const typing = !!target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable);
       if (typing) return;
       if (event.altKey && !event.metaKey && !event.ctrlKey && event.key.toLowerCase() === 'm') {
         event.preventDefault();
@@ -51,12 +70,43 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       }
       if (((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') || (!event.metaKey && !event.ctrlKey && !event.altKey && event.key === '/')) {
         event.preventDefault();
+        clearNavigationSequence();
         window.dispatchEvent(new CustomEvent('observatorio:search'));
+        return;
+      }
+
+      if (!event.metaKey && !event.ctrlKey && !event.altKey && event.key.length === 1) {
+        const nextSequence = navigationSequence + event.key.toLowerCase();
+        const destination = shortcutMap.get(nextSequence);
+        const hasPrefix = [...shortcutMap.keys()].some(shortcut => shortcut.startsWith(nextSequence));
+
+        if (destination) {
+          event.preventDefault();
+          clearNavigationSequence();
+          window.history.replaceState(null, '', '#' + destination);
+          window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: destination }));
+          return;
+        }
+
+        if (hasPrefix) {
+          event.preventDefault();
+          keepNavigationSequence(nextSequence);
+          return;
+        }
+
+        clearNavigationSequence();
+        if (event.key.toLowerCase() === 'g' && [...shortcutMap.keys()].some(shortcut => shortcut.startsWith('g'))) {
+          event.preventDefault();
+          keepNavigationSequence('g');
+        }
       }
     };
 
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      clearNavigationSequence();
+    };
   }, [cycleMode]);
 
   return (

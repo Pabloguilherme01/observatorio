@@ -132,6 +132,36 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
 
 
 
+test('atalhos configurados navegam e respeitam campos de digitação', async ({ page }) => {
+  await page.goto('./');
+
+  await page.keyboard.press('g');
+  await page.keyboard.press('d');
+  await expect(page).toHaveURL(/#dashboard$/);
+  await expect(page.locator('#dashboard')).toBeVisible();
+
+  await page.keyboard.press('g');
+  await page.keyboard.press('t');
+  await expect(page).toHaveURL(/#transporte$/);
+  await expect(page.locator('#transporte')).toBeVisible();
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('g');
+  await page.keyboard.press('d');
+  await expect(input).toHaveValue('gd');
+  await expect(page).toHaveURL(/#transporte$/);
+  await page.keyboard.press('Escape');
+});
+
+test('atalho de busca por barra abre a busca global', async ({ page }) => {
+  await page.goto('./');
+  await page.keyboard.press('/');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByRole('combobox').first()).toBeVisible();
+});
+
+
 test('renderiza os gráficos históricos com dimensões válidas', async ({ page }) => {
   await page.goto('./');
   await openSection(page, 'dashboard');
