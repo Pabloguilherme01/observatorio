@@ -617,7 +617,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   expect(fallbackShare).toContain('#dashboard');
   expect(fallbackShare).not.toContain('utm_source');
 
-  await dialog.getByRole('button', { name: 'Fechar' }).click();
+  await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
   await page.keyboard.press('g');
   await page.keyboard.press('t');
   await expect(page).toHaveURL(/#transporte$/);
