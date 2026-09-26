@@ -186,7 +186,7 @@ export function Header() {
               <a
                 key={item.id}
                 href={'#' + item.id}
-                className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
+                className={'rounded-xl px-3 py-2 text-xs font-semibold transition ' + (activeSection === item.id ? 'bg-white/10 text-white light:bg-slate-900/8 light:text-slate-900' : 'text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900')}
                 aria-current={activeSection === item.id ? 'page' : undefined}
               >
                 {item.shortLabel}
@@ -211,7 +211,7 @@ export function Header() {
                     (event.key === 'ArrowUp' ? items.at(-1) : items[0])?.focus();
                   });
                 }}
-                className={'rounded-xl px-3 py-2 text-xs font-semibold transition focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 ' + (moreActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
+                className={'rounded-xl px-3 py-2 text-xs font-semibold transition focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 ' + (moreActive ? 'bg-white/10 text-white light:bg-slate-900/8 light:text-slate-900' : 'text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900')}
                 aria-expanded={moreOpen}
                 aria-current={moreActive ? 'page' : undefined}
                 aria-haspopup="menu"
@@ -264,12 +264,12 @@ export function Header() {
               {languageMode === 'summary' ? <List aria-hidden="true" /> : languageMode === 'simple' ? <FileText aria-hidden="true" /> : <Code2 aria-hidden="true" />}
               <span>{languageMode === 'summary' ? 'Resumo' : languageMode === 'simple' ? 'Simples' : 'Técnico'}</span>
             </button>
-            <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K" data-search-trigger="primary">
+            <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K" data-search-trigger="primary">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="header-reading-mode hidden md:block"><LanguageModeToggle /></div>
             <div className="hidden xl:block"><ContrastModeToggle /></div>
-            <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
+            <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
             <button ref={toolsButtonRef} type="button" onClick={() => setToolsOpen(value => !value)} className="site-tools-button min-h-11 min-w-11 rounded-xl border border-white/10 bg-white/[0.025] p-2 text-slate-300 hover:bg-white/5 md:hidden" aria-expanded={toolsOpen} aria-controls="mobile-tools" aria-label={toolsOpen ? 'Fechar menu' : 'Abrir menu'}>
