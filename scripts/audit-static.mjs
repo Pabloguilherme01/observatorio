@@ -118,7 +118,7 @@ for (const file of workflowFiles) {
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
 must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json registra gate de vulnerabilidades de dependências');
-must(pkgScripts['audit:browser']?.includes('playwright install --with-deps chromium') && !pkgScripts['test:browser:prepare'], 'CI usa Playwright instalado pelo lockfile, sem npm install dinâmico');
+must(!pkgScripts['audit:browser']?.includes('playwright install') && ci.includes('npm exec -- playwright install --with-deps chromium firefox webkit') && !ci.includes('npm install playwright') && !ci.includes('npx playwright'), 'CI usa Playwright fixado pelo lockfile e prepara motores sem instalação dinâmica do pacote');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
