@@ -164,9 +164,9 @@ must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<Audien
 
 const allRuntimeText = [
   appSource,
+  read('src/components/sections/DeferredContextGroup.tsx'),
   read('src/components/sections/DeferredCivicGroup.tsx'),
   read('src/components/sections/DeferredPublicDataGroup.tsx'),
-  read('src/components/sections/DeferredEvidenceGroup.tsx'),
   read('src/components/sections/DeferredEvidenceGroup.tsx'),
 ].join('\n');
 must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
