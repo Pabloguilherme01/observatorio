@@ -434,7 +434,7 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
 
   await more.click();
   await expect(menu).toBeVisible();
-  await page.getByRole('button', { name: 'Fechar menu Mais' }).click();
+  await page.mouse.click(12, 12);
   await expect(menu).toBeHidden();
   await expect(more).toBeFocused();
 
