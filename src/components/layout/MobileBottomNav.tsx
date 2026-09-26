@@ -18,13 +18,9 @@ const sectionToTab = (id: string) => {
   return 'more';
 };
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['contexto', 'eleitorado', 'politica', 'candidaturas', 'eleitoral360', 'principios', 'qualidade', 'evidencias', 'fontes', 'exportacao', 'orcamento-impacto', 'quiz']);
-
 function jump(id: string, mode: 'summary' | 'simple' | 'technical', setMode: (mode: 'summary' | 'simple' | 'technical') => void) {
-  const requiresTechnical = TECHNICAL_ONLY_DESTINATIONS.has(id);
   const destinationIsHiddenInSummary = mode === 'summary' && id !== 'descubra' && id !== 'dashboard';
-  if (requiresTechnical && mode !== 'technical') setMode('technical');
-  else if (destinationIsHiddenInSummary) setMode('simple');
+  if (destinationIsHiddenInSummary) setMode('simple');
   window.history.replaceState(null, '', '#' + id);
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
 }
