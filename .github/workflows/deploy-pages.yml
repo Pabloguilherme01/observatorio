@@ -51,6 +51,8 @@ jobs:
 
       - name: Validate production results feed contract
         run: npm run validate:results
+      - name: Test first and second turn results contracts
+        run: npm run test:results
       - name: Verify JWS implementation
         run: npm run test:jws
       - name: Build production artifact

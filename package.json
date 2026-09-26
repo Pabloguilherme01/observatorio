@@ -18,6 +18,7 @@
     "validate:tse": "node scripts/validate-tse-2026.mjs",
     "validate:observatorio": "node scripts/validate-observatorio.mjs",
     "validate:results": "node scripts/validate-results-feed.mjs",
+    "test:results": "node scripts/test-results-turns.mjs",
     "verify:jws": "node scripts/verify-jws.mjs",
     "sync:results": "node scripts/sync-results-2026.mjs",
     "test:jws": "node scripts/test-jws-verifier.mjs",
