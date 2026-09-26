@@ -389,6 +389,55 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('botão Mais da navegação inferior funciona no mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  const nav = page.locator('.mobile-bottom-nav');
+  const more = nav.getByRole('button', { name: 'Mais', exact: true });
+  await expect(nav).toBeVisible();
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+
+  await more.click();
+  await expect(more).toHaveAttribute('aria-expanded', 'true');
+
+  const layer = page.locator('[data-mobile-more-layer]');
+  const menu = page.getByRole('menu', { name: 'Mais áreas do observatório' });
+  await expect(layer).toBeVisible();
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole('menuitem')).toHaveCount(7);
+  await expect(menu.getByRole('menuitem').first()).toBeFocused();
+
+  const menuBox = await menu.boundingBox();
+  const navBox = await nav.boundingBox();
+  expect(menuBox?.left ?? -1).toBeGreaterThanOrEqual(0);
+  expect(menuBox?.right ?? Infinity).toBeLessThanOrEqual(390);
+  expect(menuBox?.bottom ?? Infinity).toBeLessThanOrEqual((navBox?.top ?? 844) + 1);
+
+  await menu.getByRole('menuitem', { name: /Saúde/i }).click();
+  await expect(page).toHaveURL(/#saude$/);
+  await expect(page.locator('#saude')).toBeVisible();
+  await expect(layer).toBeHidden();
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+
+  await more.click();
+  await expect(menu).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+  await expect(more).toBeFocused();
+
+  await more.click();
+  await expect(menu).toBeVisible();
+  await page.getByRole('button', { name: 'Fechar menu Mais' }).click();
+  await expect(menu).toBeHidden();
+  await expect(more).toBeFocused();
+
+  await more.click();
+  await expect(menu).toBeVisible();
+  await page.setViewportSize({ width: 800, height: 844 });
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+});
+
 test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
