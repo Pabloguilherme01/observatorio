@@ -39,6 +39,10 @@ else fail('carregamento diferido perdeu proteção de pré-carregamento.');
 if (app.includes("window.addEventListener('hashchange', navigateFromLocation)") && !app.includes("window.addEventListener('popstate', navigateFromLocation)")) pass('sincronização de histórico evita listeners redundantes para a mesma mudança de hash.');
 else fail('sincronização de histórico possui listeners redundantes ou perdeu hashchange.');
 
+const header = read('src/components/layout/Header.tsx');
+if (header.includes('copiedTimerRef') && header.includes('window.clearTimeout(copiedTimerRef.current)')) pass('feedback de cópia do cabeçalho limpa timer pendente.');
+else fail('feedback de cópia do cabeçalho pode deixar timer pendente.');
+
 const experience = read('src/components/ExperienceShell.tsx');
 if (
   experience.includes("window.addEventListener('scroll'")
