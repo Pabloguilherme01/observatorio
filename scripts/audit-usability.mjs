@@ -104,7 +104,6 @@ const mountedSources = [
   texts.find(item => item.file === 'src/components/sections/DeferredCivicGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredPublicDataGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
-  texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredContextGroup.tsx')?.content ?? '',
 ].join('\n');
 
@@ -123,6 +122,8 @@ pass('camadas de descoberta, retenção, qualidade, evidências, ação e export
 const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
 if (!mobileNav.includes('Navegação principal no celular')) fail('Navegação mobile rotulada ausente');
 else pass('navegação mobile rotulada e integrada ao fluxo principal');
+if (!mobileNav.includes("item.group === 'more' && item.id !== 'quiz'")) fail('Quiz duplicado no menu Mais da navegação mobile');
+else pass('Quiz aparece uma única vez na navegação inferior mobile');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
