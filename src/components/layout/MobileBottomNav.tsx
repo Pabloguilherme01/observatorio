@@ -175,11 +175,9 @@ export function MobileBottomNav() {
       </div>
       {moreOpen && typeof document !== 'undefined' && createPortal(
         <div className="mobile-bottom-more-layer" data-mobile-more-layer>
-          <button
-            type="button"
+          <div
             className="mobile-bottom-more-backdrop"
-            aria-label="Fechar menu Mais"
-            tabIndex={-1}
+            aria-hidden="true"
             onClick={() => closeMore(true)}
           />
           <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
