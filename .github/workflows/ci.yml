@@ -36,6 +36,9 @@ jobs:
           REQUIRE_RESULTS_FEED: 'true'
         run: npm run validate:results
 
+      - name: Test first and second turn results contracts
+        run: npm run test:results
+
       - name: Complete audit gate
         run: npm run audit:all
 
