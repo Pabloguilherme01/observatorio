@@ -85,8 +85,7 @@ test.describe('Observatório smoke flows', () => {
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
   await page.evaluate(() => {
-    const prefix = Object.keys(localStorage).find(key => key.endsWith('-quiz-best-scores'))?.replace('-quiz-best-scores', '') ?? 'observatorio-v44';
-    localStorage.setItem(prefix + '-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
+    localStorage.setItem('observatorio-v44-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
   });
   await page.reload();
   await openSection(page, 'quiz');
