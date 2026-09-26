@@ -77,10 +77,11 @@ export function TransportCalculator() {
   const salaryShare = result.monthlyPctOfSalaryPerPerson ?? 0;
   const salaryBarWidth = Math.min(100, Math.max(0, salaryShare));
   const share = async () => {
-    const text = `Simulador de bolso · ${route.label}. ${formatBRL(result.monthlyPerPersonBrl)} por pessoa/mês no cenário de ${days} dias e ${trips} trechos/dia. Veja e ajuste as premissas: ${window.location.href}#transporte`;
+    const shareUrl = window.location.href.split('#')[0] + '#transporte';
+    const text = `Simulador de bolso · ${route.label}. ${formatBRL(result.monthlyPerPersonBrl)} por pessoa/mês no cenário de ${days} dias e ${trips} trechos/dia. Veja e ajuste as premissas: ${shareUrl}`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Simulador de bolso · Águas Lindas', text, url: window.location.href + '#transporte' });
+        await navigator.share({ title: 'Simulador de bolso · Águas Lindas', text, url: shareUrl });
         flashShareStatus('Compartilhado');
         return;
       }
