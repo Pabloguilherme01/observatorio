@@ -122,7 +122,7 @@ export function MobileBottomNav() {
     };
   }, []);
 
-  const moreItems = navigation.filter(item => item.group === 'more');
+  const moreItems = navigation.filter(item => item.group === 'more' && item.id !== 'quiz');
   const quizItem = navigation.find(item => item.id === 'quiz');
 
   return (
