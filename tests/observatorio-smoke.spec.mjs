@@ -408,11 +408,17 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
   await expect(menu.getByRole('menuitem')).toHaveCount(7);
   await expect(menu.getByRole('menuitem').first()).toBeFocused();
 
-  const menuBox = await menu.boundingBox();
-  const navBox = await nav.boundingBox();
-  expect(menuBox?.left ?? -1).toBeGreaterThanOrEqual(0);
-  expect(menuBox?.right ?? Infinity).toBeLessThanOrEqual(390);
-  expect(menuBox?.bottom ?? Infinity).toBeLessThanOrEqual((navBox?.top ?? 844) + 1);
+  const menuBox = await menu.evaluate(node => {
+    const rect = node.getBoundingClientRect();
+    return { left: rect.left, right: rect.right, bottom: rect.bottom };
+  });
+  const navBox = await nav.evaluate(node => {
+    const rect = node.getBoundingClientRect();
+    return { top: rect.top };
+  });
+  expect(menuBox.left).toBeGreaterThanOrEqual(0);
+  expect(menuBox.right).toBeLessThanOrEqual(390);
+  expect(menuBox.bottom).toBeLessThanOrEqual(navBox.top + 1);
 
   await menu.getByRole('menuitem', { name: /Saúde/i }).click();
   await expect(page).toHaveURL(/#saude$/);
