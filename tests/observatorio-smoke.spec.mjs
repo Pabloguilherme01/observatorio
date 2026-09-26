@@ -221,20 +221,30 @@ for (const viewport of [
   });
 }
 
-test('modos de leitura respeitam a escolha durante a navegação comum', async ({ page }) => {
+test('modos de leitura só avançam quando a seção realmente exige mais detalhe', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
 
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await openSection(page, 'fontes');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+
+  await openSection(page, 'exportacao');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+
   await openSection(page, 'eleitoral360');
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 
-  await openSection(page, 'quiz');
+  await openSection(page, 'eleitorado');
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 
-  await openSection(page, 'fontes');
+  await openSection(page, 'qualidade');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
+
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await openSection(page, 'fontes');
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
 });
 
 test('ação de aprofundar percorre os três níveis de leitura', async ({ page }) => {
