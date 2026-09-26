@@ -93,7 +93,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
       if (event.key === 'Home') { event.preventDefault(); setActiveIndex(0); return; }
       if (event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filteredLengthRef.current - 1, 0)); return; }
       if (event.key === 'Tab' && dialogRef.current) {
-        const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href]')).filter(node => !node.hasAttribute('disabled'));
+        const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href], summary')).filter(node => !node.hasAttribute('disabled'));
         if (!focusable.length) return;
         const first = focusable[0], last = focusable[focusable.length - 1];
         if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
@@ -318,6 +318,17 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
           <span>Setas navegar · Enter abrir · Esc fechar</span>
         </div>
+
+        <details className="search-shortcut-guide">
+          <summary>Atalhos de teclado</summary>
+          <div className="search-shortcut-grid">
+            <span><kbd>/</kbd><small>Abrir busca</small></span>
+            <span><kbd>Alt M</kbd><small>Alternar leitura</small></span>
+            {navigation.map(item => (
+              <span key={item.id}><kbd>{item.shortcut}</kbd><small>{item.shortLabel}</small></span>
+            ))}
+          </div>
+        </details>
 
         <div id="search-results" className="search-results" role="listbox" aria-label="Resultados da busca">
           {renderResults(filtered)}

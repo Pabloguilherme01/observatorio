@@ -154,6 +154,18 @@ test('atalhos configurados navegam e respeitam campos de digitação', async ({ 
   await page.keyboard.press('Escape');
 });
 
+test('busca apresenta guia descobrível dos atalhos configurados', async ({ page }) => {
+  await page.goto('./');
+  await page.keyboard.press('/');
+  const guide = page.locator('.search-shortcut-guide');
+  await expect(guide).toBeVisible();
+  await guide.locator('summary').click();
+  await expect(guide.locator('kbd').filter({ hasText: 'G D' })).toBeVisible();
+  await expect(guide.locator('kbd').filter({ hasText: 'G T' })).toBeVisible();
+  await expect(guide.getByText('Dashboard', { exact: true })).toBeVisible();
+  await expect(guide.getByText('Transporte', { exact: true })).toBeVisible();
+});
+
 test('atalho de busca por barra abre a busca global', async ({ page }) => {
   await page.goto('./');
   await page.keyboard.press('/');
