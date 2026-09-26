@@ -412,18 +412,53 @@ test('quiz não duplica a pontuação da última resposta', async ({ page }) => 
   expect(saved[0]).toBeLessThanOrEqual(1);
 });
 
-test('compartilhamento do transporte mantém um único hash', async ({ page }) => {
+test('compartilhamento do transporte usa URL canônica com um único hash', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: async payload => { window.__lastSharePayload = payload; },
+    });
+  });
   await page.goto('./#transporte');
   await openSection(page, 'transporte');
-  await page.addInitScript(() => {});
-  const share = page.getByRole('button', { name: /compartilhar/i }).filter({ has: page.locator('svg') }).first();
-  if (await share.count()) {
-    await share.click();
-    const body = await page.locator('body').innerText();
-    expect(body).not.toContain('#transporte#transporte');
-  }
+  await page.getByRole('button', { name: /compartilhar cenário/i }).click();
+
+  const payload = await page.evaluate(() => window.__lastSharePayload);
+  expect(payload?.url).toMatch(/#transporte$/);
+  expect((payload?.url.match(/#transporte/g) || []).length).toBe(1);
+  expect(payload?.text).toContain(payload?.url);
 });
 
+
+test('tema e contraste persistem após recarregar', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
+  await page.getByRole('button', { name: /Tema claro|Tema escuro/ }).click();
+  const storedTheme = await page.evaluate(() => localStorage.getItem('observatorio-theme'));
+  expect(['light', 'dark']).toContain(storedTheme);
+
+  const contrast = page.getByRole('group', { name: 'Contraste da interface' });
+  await contrast.getByRole('button', { name: /Alto contraste/ }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-contrast', 'high');
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('observatorio-contrast'))).toBe('high');
+
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-contrast', 'high');
+  expect(await page.evaluate(() => localStorage.getItem('observatorio-theme'))).toBe(storedTheme);
+});
+
+test('busca fecha com Escape e devolve foco ao acionador', async ({ page }) => {
+  await page.goto('./');
+  const trigger = page.getByRole('button', { name: /Buscar no observatório/i });
+  await trigger.focus();
+  await trigger.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
 
 test('controles principais executam suas ações', async ({ page }) => {
   await page.goto('./');
