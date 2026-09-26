@@ -73,9 +73,9 @@ export function CivicActionHub() {
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
         titleId="action-title"
-        eyebrow="Depois de ler"
-        title="Como usar o dado"
-        description="Links diretos para consultar informações e serviços. O órgão responsável continua sendo a fonte oficial."
+        eyebrow="Próximos passos"
+        title="Serviços e verificação"
+        description="Acesse serviços oficiais, consulte registros e confira dados diretamente na fonte responsável."
       />
 
       <div className="official-hub">
@@ -83,7 +83,7 @@ export function CivicActionHub() {
           <div>
             <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
             <h3 className="official-hub-title">Recursos oficiais</h3>
-            <p className="official-hub-subtitle">Comece por uma das ferramentas mais usadas nas Eleições 2026.</p>
+            <p className="official-hub-subtitle">Atalhos diretos para serviços e consultas oficiais das Eleições 2026.</p>
           </div>
           <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
             Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
