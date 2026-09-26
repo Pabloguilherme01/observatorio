@@ -442,9 +442,7 @@
 
 @media (max-width: 520px) {
   .search-shortcut-grid { grid-template-columns: 1fr; }
-}
 
-@media (max-width: 520px) {
   .search-meta {
     align-items: flex-start;
   }
