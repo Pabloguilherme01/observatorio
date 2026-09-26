@@ -143,9 +143,9 @@ export function Header() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [toolsOpen]);
 
-  const closeTools = () => {
+  const closeTools = (restoreFocus = true) => {
     setToolsOpen(false);
-    window.requestAnimationFrame(() => toolsButtonRef.current?.focus());
+    if (restoreFocus) window.requestAnimationFrame(() => toolsButtonRef.current?.focus());
   };
 
   return (
@@ -264,7 +264,7 @@ export function Header() {
                   {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
                   <span>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</span>
                 </button>
-                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:search')); closeTools(); }} className="mobile-tool-action">
+                <button type="button" onClick={() => { window.dispatchEvent(new CustomEvent('observatorio:search')); closeTools(false); }} className="mobile-tool-action">
                   <Search className="h-4 w-4" aria-hidden="true" />
                   <span>Buscar áreas</span>
                 </button>
