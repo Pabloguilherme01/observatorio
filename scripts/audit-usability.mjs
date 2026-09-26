@@ -81,6 +81,8 @@ if (
 else fail('menu desktop Mais não possui navegação de teclado completa');
 if (app.includes('onSameHashAnchor') && app.includes("window.location.hash !== '#' + target") && app.includes('navigateToHash(target)')) pass('navegação central trata também o clique repetido na mesma âncora');
 else fail('navegação pode não reprocessar a mesma âncora para sincronizar modo e rolagem');
+if (app.includes("window.addEventListener('popstate', navigateFromLocation)") && sectionNavigation.includes('sameTarget') && sectionNavigation.includes('pushState')) pass('Voltar/Avançar restaura seções após navegação programática');
+else fail('histórico do navegador não está integrado à navegação programática');
 
 const civic = texts.find(item => item.file === 'src/components/sections/CivicActionHub.tsx')?.content ?? '';
 for (const [needle, label] of [
@@ -126,8 +128,9 @@ if (!mobileNav.includes("item.group === 'more' && item.id !== 'quiz'")) fail('Qu
 else pass('Quiz aparece uma única vez na navegação inferior mobile');
 
 const experience = texts.find(item => item.file === 'src/components/ExperienceShell.tsx')?.content ?? '';
-if (experience.includes('shortcutMap') && experience.includes('navigationSequence') && experience.includes("window.history.replaceState(null, '', '#' + destination)")) pass('atalhos configurados de navegação estão conectados ao roteamento central');
-else fail('atalhos declarados na navegação não estão ativos no ExperienceShell');
+const sectionNavigation = texts.find(item => item.file === 'src/lib/sectionNavigation.ts')?.content ?? '';
+if (experience.includes('shortcutMap') && experience.includes('navigationSequence') && experience.includes('navigateToSection(destination)') && sectionNavigation.includes('window.history.pushState')) pass('atalhos configurados usam navegação central com histórico restaurável');
+else fail('atalhos declarados não estão conectados à navegação central com histórico');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
