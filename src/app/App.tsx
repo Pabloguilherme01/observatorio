@@ -15,6 +15,7 @@ import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
 import '../assets/styles/final-ui.css';
 import '../assets/styles/responsive-type.css';
+import { modeForDestination } from '../config/readingModes';
 
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
@@ -90,21 +91,14 @@ function scrollToHashWhenReady(hash: string) {
   scheduleCheck();
 }
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['contexto', 'politica', 'linha-do-tempo', 'orcamento-impacto', 'qualidade', 'evidencias', 'mapa-evidencias', 'mudancas-snapshot']);
-const SUMMARY_HIDDEN_DESTINATIONS = new Set(['eleitorado', 'demografia', 'transporte', 'saude', 'candidaturas', 'eleitoral360', 'quiz']);
-
 function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
 
   useEffect(() => {
     const prepareMode = (target: string) => {
-      if (!target || target === 'descubra' || target === 'dashboard') return;
-      if (target === 'resumo') return;
-      if (TECHNICAL_ONLY_DESTINATIONS.has(target)) {
-        if (mode !== 'technical') setMode('technical');
-        return;
-      }
-      if (SUMMARY_HIDDEN_DESTINATIONS.has(target) && mode === 'summary') setMode('simple');
+      if (!target) return;
+      const nextMode = modeForDestination(target, mode);
+      if (nextMode !== mode) setMode(nextMode);
     };
 
     const onNavigate = (event: Event) => {
