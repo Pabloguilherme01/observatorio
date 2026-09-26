@@ -13,6 +13,7 @@ import { DataInspector } from '../components/DataInspector';
 import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
 import '../assets/styles/final-ui.css';
+import '../assets/styles/responsive-type.css';
 
 const loadDashboardGroup = () => import('../components/sections/DeferredDashboardGroup');
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
