@@ -124,6 +124,14 @@ for (const [component, label] of [
 }
 pass('camadas de descoberta, retenção, qualidade, evidências, ação e exportação montadas');
 
+const trustPanel = texts.find(item => item.file === 'src/components/ProjectTrustPanel.tsx')?.content ?? '';
+if (trustPanel.includes("import.meta.env.BASE_URL + 'api/v1/health.json'")) pass('healthcheck técnico respeita BASE_URL do deploy');
+else fail('healthcheck técnico está preso a caminho absoluto de deploy');
+if (trustPanel.includes('healthRevision') && trustPanel.includes('Atualizar status') && trustPanel.includes('setHealthRevision(value => value + 1)')) pass('healthcheck técnico permite retry explícito');
+else fail('healthcheck técnico não oferece retry explícito');
+if (trustPanel.includes('role="status"') && trustPanel.includes('aria-live="polite"')) pass('estado do healthcheck é anunciado de forma acessível');
+else fail('estado do healthcheck não possui anúncio acessível');
+
 const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
 if (!mobileNav.includes('Navegação principal no celular')) fail('Navegação mobile rotulada ausente');
 else pass('navegação mobile rotulada e integrada ao fluxo principal');
