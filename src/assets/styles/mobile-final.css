@@ -861,3 +861,22 @@ main h2{font-size:1.12rem}
     -webkit-tap-highlight-color:transparent;
   }
 }
+
+
+/* Mobile chart visibility: the primary historical chart must remain visible at every phone width. */
+@media (max-width:767px){
+  .dashboard-history-chart{
+    display:block!important;
+    visibility:visible!important;
+    min-height:320px;
+  }
+  .dashboard-history-chart .recharts-responsive-container,
+  .dashboard-history-chart .recharts-wrapper,
+  .dashboard-history-chart svg{
+    display:block!important;
+    visibility:visible!important;
+  }
+  .dashboard-history-mobile-detail{
+    display:none!important;
+  }
+}
