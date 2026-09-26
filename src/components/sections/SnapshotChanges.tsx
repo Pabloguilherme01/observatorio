@@ -1,5 +1,6 @@
 import { Activity, ArrowDownRight, ArrowUpRight, Database, ExternalLink, Minus } from 'lucide-react';
 import generated from '../../data/generated/tse2026-candidates.json';
+import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 
 export function SnapshotChanges() {
   const diff = generated.diff;
@@ -45,20 +46,25 @@ export function SnapshotChanges() {
             </a>
           </div>
         </div>
-        <div className="mt-4 rounded-2xl border border-white/8 bg-black/10 p-4">
-          {generated.meta.state === 'first_capture' ? (
-            <div className="text-sm text-slate-300">Esta é a primeira captura validada da watchlist. Os registros adicionados formam a linha de base local; não representam uma comparação temporal entre duas capturas.</div>
-          ) : hasChanges ? (
-            <div className="text-sm text-slate-300">Existem diferenças no snapshot atual. Abra o Eleitoral 360° para consultar os registros afetados.</div>
-          ) : (
-            <div className="flex items-start gap-3 text-xs leading-5 text-slate-500">
-              <Minus className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-              <span>{generated.meta.state === 'not_synced' ? 'Nenhuma comparação é declarada antes da primeira captura TSE validada.' : 'Nenhuma alteração registrada entre os snapshots comparados.'}</span>
-            </div>
-          )}
-        </div>
-        <div className="mt-4 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
-          <Database className="h-3.5 w-3.5" aria-hidden="true" /> {generated.meta.source} · {generated.meta.scope} · {generated.meta.snapshotId}
+        <div className="premium-info-grid mt-4">
+          <PremiumInfoCard
+            compact
+            tone={hasChanges ? 'amber' : 'slate'}
+            icon={hasChanges ? Activity : Minus}
+            eyebrow="Leitura do snapshot"
+            title={generated.meta.state === 'first_capture' ? 'Linha de base local registrada' : hasChanges ? 'Há diferenças no snapshot atual' : 'Sem diferença declarada'}
+          >
+            {generated.meta.state === 'first_capture'
+              ? 'Esta é a primeira captura validada da watchlist. Os registros adicionados formam a linha de base local; não representam uma comparação temporal entre duas capturas.'
+              : hasChanges
+                ? 'Existem diferenças no snapshot atual. Abra o Eleitoral 360° para consultar os registros afetados.'
+                : generated.meta.state === 'not_synced'
+                  ? 'Nenhuma comparação é declarada antes da primeira captura TSE validada.'
+                  : 'Nenhuma alteração registrada entre os snapshots comparados.'}
+          </PremiumInfoCard>
+          <PremiumInfoCard compact tone="violet" icon={Database} eyebrow="Proveniência" title="Snapshot identificado e rastreável">
+            {generated.meta.source} · {generated.meta.scope} · {generated.meta.snapshotId}
+          </PremiumInfoCard>
         </div>
       </div>
     </section>
