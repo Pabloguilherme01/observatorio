@@ -1,5 +1,6 @@
 import { CircleHelp, Compass, Home, Landmark, MoreHorizontal } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { navigation } from '../../config/navigation';
 import { navigateToSection } from '../../lib/sectionNavigation';
 
@@ -30,6 +31,22 @@ export function MobileBottomNav() {
   const moreButtonRef = useRef<HTMLButtonElement>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
 
+  const closeMore = useCallback((restoreFocus = false) => {
+    moreOpenRef.current = false;
+    setMoreOpen(false);
+    if (restoreFocus) window.requestAnimationFrame(() => moreButtonRef.current?.focus());
+  }, []);
+
+  const toggleMore = useCallback(() => {
+    const next = !moreOpenRef.current;
+    moreOpenRef.current = next;
+    setMoreOpen(next);
+    window.requestAnimationFrame(() => {
+      if (next) moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
+      else moreButtonRef.current?.focus();
+    });
+  }, []);
+
   useEffect(() => {
     const update = (next: string) => {
       if (activeSectionRef.current === next) return;
@@ -37,12 +54,6 @@ export function MobileBottomNav() {
       setActiveSection(next);
     };
 
-    const closeMore = (restoreFocus = false) => {
-      if (!moreOpenRef.current) return;
-      moreOpenRef.current = false;
-      setMoreOpen(false);
-      if (restoreFocus) window.requestAnimationFrame(() => moreButtonRef.current?.focus());
-    };
     const onHash = () => {
       closeMore();
       update(sectionToTab(window.location.hash.replace(/^#/, '')));
@@ -73,12 +84,8 @@ export function MobileBottomNav() {
       items[next]?.focus();
     };
 
-    const onOutside = (event: MouseEvent) => {
-      if (!(event.target instanceof Node)) return;
-      const menu = document.getElementById('mobile-bottom-more');
-      const button = document.getElementById('mobile-bottom-more-trigger');
-      if (menu?.contains(event.target) || button?.contains(event.target)) return;
-      closeMore(true);
+    const onResize = () => {
+      if (window.innerWidth >= 768) closeMore();
     };
 
     const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
@@ -106,7 +113,7 @@ export function MobileBottomNav() {
 
     window.addEventListener('hashchange', onHash);
     window.addEventListener('observatorio:navigate', onNavigate);
-    document.addEventListener('click', onOutside);
+    window.addEventListener('resize', onResize);
     document.addEventListener('keydown', onEscape);
     document.addEventListener('keydown', onMenuKeyDown);
     onHash();
@@ -116,11 +123,11 @@ export function MobileBottomNav() {
       mutationObserver?.disconnect();
       window.removeEventListener('hashchange', onHash);
       window.removeEventListener('observatorio:navigate', onNavigate);
-      document.removeEventListener('click', onOutside);
+      window.removeEventListener('resize', onResize);
       document.removeEventListener('keydown', onEscape);
       document.removeEventListener('keydown', onMenuKeyDown);
     };
-  }, []);
+  }, [closeMore]);
 
   const moreItems = navigation.filter(item => item.group === 'more' && item.id !== 'quiz');
   const quizItem = navigation.find(item => item.id === 'quiz');
@@ -155,7 +162,7 @@ export function MobileBottomNav() {
           id="mobile-bottom-more-trigger"
           ref={moreButtonRef}
           type="button"
-          onClick={() => setMoreOpen(value => { const next = !value; moreOpenRef.current = next; if (next) window.requestAnimationFrame(() => moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus()); else window.requestAnimationFrame(() => moreButtonRef.current?.focus()); return next; })}
+          onClick={toggleMore}
           className={'w-full ' + (moreOpen || activeSection === 'more' ? 'is-active' : '')}
           aria-expanded={moreOpen}
           aria-haspopup="menu"
@@ -165,22 +172,32 @@ export function MobileBottomNav() {
           <MoreHorizontal className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
           <span>Mais</span>
         </button>
-        {moreOpen && (
+      </div>
+      {moreOpen && typeof document !== 'undefined' && createPortal(
+        <div className="mobile-bottom-more-layer" data-mobile-more-layer>
+          <button
+            type="button"
+            className="mobile-bottom-more-backdrop"
+            aria-label="Fechar menu Mais"
+            tabIndex={-1}
+            onClick={() => closeMore(true)}
+          />
           <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
             {moreItems.map(item => (
               <button
                 key={item.id}
                 type="button"
                 role="menuitem"
-                onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(item.id); }}
+                onClick={() => { closeMore(); jump(item.id); }}
               >
                 <span>{item.shortLabel}</span>
                 <small>{item.description}</small>
               </button>
             ))}
           </div>
-        )}
-      </div>
+        </div>,
+        document.body,
+      )}
     </nav>
   );
 }
