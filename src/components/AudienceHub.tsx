@@ -48,14 +48,14 @@ export function AudienceHub() {
           <div className="audience-intro-copy">
             <span className="audience-kicker">Seu ponto de partida</span>
             <h2 id="audience-title">
-              {isSummary ? 'Veja a cidade em poucos instantes.' : isTechnical ? 'Dados para quem quer ir além.' : 'Uma leitura clara da cidade.'}
+              {isSummary ? 'O essencial da cidade, sem ruído.' : isTechnical ? 'Investigue cada número até a fonte.' : 'Entenda a cidade com contexto.'}
             </h2>
             <p>
               {isSummary
-                ? 'Comece pelos sinais que mais importam. Cada cartão abre o contexto quando você quiser aprofundar.'
+                ? 'Uma entrada rápida para os principais números, serviços e fontes. Você decide quando aprofundar.'
                 : isTechnical
-                  ? 'Vá da visão geral à evidência: dados, fontes, métodos e registros organizados para conferência.'
-                  : 'Escolha um tema e avance no seu ritmo. Indicadores e contexto aparecem em uma sequência clara e comparável.'}
+                  ? 'Percorra o caminho completo do dado: valor, origem, referência, método e limitações em uma mesma jornada.'
+                  : 'Escolha um tema e transforme números isolados em uma leitura conectada, clara e comparável.'}
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export function AudienceHub() {
               <kbd>⌘K</kbd>
             </button>
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-              <span>{isSummary ? 'Ver o essencial' : isTechnical ? 'Investigar os dados' : 'Explorar a cidade'}</span>
+              <span>{isSummary ? 'Ver visão executiva' : isTechnical ? 'Abrir auditoria dos dados' : 'Explorar com contexto'}</span>
               <ArrowRight aria-hidden="true" />
             </button>
           </div>
@@ -103,9 +103,9 @@ export function AudienceHub() {
           <div className="audience-block-head">
             <div>
               <span>{isSummary ? '02' : '02'}</span>
-              <h3 id="actions-title">{isSummary ? 'Ações úteis' : 'Ferramentas para continuar'}</h3>
+              <h3 id="actions-title">{isSummary ? 'Próximos passos' : isTechnical ? 'Ferramentas de verificação' : 'Continue a leitura'}</h3>
             </div>
-            <p>{isSummary ? 'Faça algo com o que acabou de ler.' : 'Atalhos para consultar, comparar ou acessar serviços.'}</p>
+            <p>{isSummary ? 'Do resumo à consulta em poucos toques.' : isTechnical ? 'Atalhos para conferir, cruzar e rastrear informações.' : 'Consulte, compare e avance sem perder o contexto.'}</p>
           </div>
 
           <div className="audience-action-grid">
@@ -149,10 +149,10 @@ export function AudienceHub() {
             <div className="audience-block-head">
               <div>
                 <span>03</span>
-                <h3 id="official-title">Recursos oficiais</h3>
+                <h3 id="official-title">Fontes e serviços oficiais</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Ver fontes <ArrowRight aria-hidden="true" />
+                Conferir origem <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">
@@ -172,10 +172,10 @@ export function AudienceHub() {
             <div className="audience-block-head">
               <div>
                 <span>03</span>
-                <h3 id="technical-title">Conferência técnica</h3>
+                <h3 id="technical-title">Camada de verificação</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Abrir evidências <ArrowRight aria-hidden="true" />
+                Abrir trilha de evidências <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">
