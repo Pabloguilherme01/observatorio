@@ -50,10 +50,10 @@ export function HeroCountdown() {
             <h1 id="hero-title">Águas Lindas de Goiás <em>2026</em></h1>
             <p>
               {summary
-                ? 'O essencial para se situar: números-chave e caminhos rápidos.'
+                ? 'Uma visão executiva da cidade: números centrais, serviços e fontes a poucos toques.'
                 : technical
-                  ? 'Dados públicos organizados para leitura, conferência e rastreabilidade.'
-                  : 'Principais números da cidade, com fonte e contexto visíveis.'}
+                  ? 'Uma camada de auditoria dos dados: origem, método, recortes e limitações visíveis.'
+                  : 'Números explicados com contexto suficiente para entender antes de aprofundar.'}
             </p>
 
             <div className="hero-actions">
