@@ -89,7 +89,7 @@ function TrendLine({
 
 function CombinedChart() {
   return (
-    <ResponsiveContainer width="100%" height={320} minWidth={0}>
+    <ResponsiveContainer width="100%" height={320} minWidth={240} debounce={60}>
       <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
         <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} tickMargin={8} />
@@ -151,7 +151,7 @@ export function HistoricalTrendChart() {
         </div>
       </figcaption>
 
-      <div className="dashboard-history-chart mt-4 w-full" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
+      <div className="dashboard-history-chart mt-4 w-full min-w-0" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
         <CombinedChart />
       </div>
 
