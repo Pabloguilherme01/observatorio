@@ -389,6 +389,62 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('botão Mais da navegação inferior funciona no mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  const nav = page.locator('.mobile-bottom-nav');
+  const more = nav.getByRole('button', { name: 'Mais', exact: true });
+  await expect(nav).toBeVisible();
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+
+  await more.click();
+  await expect(more).toHaveAttribute('aria-expanded', 'true');
+
+  const layer = page.locator('[data-mobile-more-layer]');
+  const menu = page.getByRole('menu', { name: 'Mais áreas do observatório' });
+  await expect(layer).toBeVisible();
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole('menuitem')).toHaveCount(7);
+  await expect(menu.getByRole('menuitem').first()).toBeFocused();
+
+  const menuBox = await menu.evaluate(node => {
+    const rect = node.getBoundingClientRect();
+    return { left: rect.left, right: rect.right, bottom: rect.bottom };
+  });
+  const navBox = await nav.evaluate(node => {
+    const rect = node.getBoundingClientRect();
+    return { top: rect.top };
+  });
+  expect(menuBox.left).toBeGreaterThanOrEqual(0);
+  expect(menuBox.right).toBeLessThanOrEqual(390);
+  expect(menuBox.bottom).toBeLessThanOrEqual(navBox.top + 1);
+
+  await menu.getByRole('menuitem', { name: /Saúde/i }).click();
+  await expect(page).toHaveURL(/#saude$/);
+  await expect(page.locator('#saude')).toBeVisible();
+  await expect(layer).toBeHidden();
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+
+  await more.click();
+  await expect(menu).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeHidden();
+  await expect(more).toBeFocused();
+
+  await more.click();
+  await expect(menu).toBeVisible();
+  await page.mouse.click(12, 12);
+  await expect(menu).toBeHidden();
+  await expect(more).toBeFocused();
+
+  await more.click();
+  await expect(menu).toBeVisible();
+  await page.setViewportSize({ width: 800, height: 844 });
+  await expect(page.locator('[data-mobile-more-layer]')).toHaveCount(0);
+  await expect(page.locator('#mobile-bottom-more-trigger')).toHaveAttribute('aria-expanded', 'false');
+});
+
 test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');

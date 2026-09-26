@@ -48,6 +48,10 @@ must(files.header.includes('IntersectionObserver') && files.header.includes('obs
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
 must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("id === 'quiz'"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
 must(files.mobileNav.includes("item.group === 'more' && item.id !== 'quiz'"), 'Quiz possui um único ponto de entrada na navegação inferior mobile');
+must(files.mobileNav.includes("createPortal") && files.mobileNav.includes("data-mobile-more-layer") && files.mobileNav.includes("closeMore") && files.mobileNav.includes("toggleMore"), 'menu Mais usa camada portal estável com estado centralizado');
+must(files.mobileNav.includes("window.addEventListener('resize', onResize)") && files.mobileNav.includes("window.innerWidth >= 768"), 'menu Mais fecha ao sair do breakpoint mobile');
+must(files.mobileFinal.includes('.mobile-bottom-more-layer{') && files.mobileFinal.includes('position:fixed') && files.mobileFinal.includes('.mobile-bottom-more-backdrop{'), 'menu Mais possui layer fixa e backdrop tocável fora da barra');
+must(files.mobileFinal.includes("bottom:calc(var(--mobile-nav-height)") && files.mobileFinal.includes('max-height:calc(100dvh'), 'menu Mais respeita barra inferior, safe-area e altura útil da viewport');
 must(files.experience.includes("event.key === '/'"), 'atalho / abre a busca global fora de campos de digitação');
 must(files.experience.includes('shortcutMap') && files.experience.includes('navigateToSection(destination)') && files.experience.includes('navigationSequence'), 'atalhos G + tecla da configuração de navegação estão ativos globalmente');
 must(files.experience.includes('target.isContentEditable'), 'atalhos não interceptam elementos editáveis');

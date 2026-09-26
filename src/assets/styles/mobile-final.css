@@ -869,3 +869,74 @@ main h2{font-size:1.12rem}
     display:none!important;
   }
 }
+
+
+/* Mobile bottom "Mais" · portal layer avoids clipping/stacking bugs on Android. */
+.mobile-bottom-more-layer{
+  position:fixed;
+  inset:0;
+  z-index:95;
+  pointer-events:none;
+}
+.mobile-bottom-more-backdrop{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  min-width:0!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:rgba(2,6,12,.46);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  pointer-events:auto;
+  touch-action:manipulation;
+}
+.mobile-bottom-more-layer .mobile-bottom-more-menu{
+  position:absolute!important;
+  left:max(8px,env(safe-area-inset-left,0px))!important;
+  right:max(8px,env(safe-area-inset-right,0px))!important;
+  bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px) + 10px)!important;
+  width:auto!important;
+  max-width:none!important;
+  max-height:calc(100dvh - var(--mobile-nav-height) - env(safe-area-inset-bottom,0px) - 34px)!important;
+  z-index:1;
+  pointer-events:auto;
+  background:
+    radial-gradient(circle at 100% 100%,rgba(56,189,248,.07),transparent 36%),
+    rgba(15,24,34,.985);
+}
+.mobile-bottom-more-layer .mobile-bottom-more-menu button{
+  width:100%;
+  min-height:54px!important;
+  max-height:none!important;
+  pointer-events:auto;
+}
+.light .mobile-bottom-more-backdrop{
+  background:rgba(15,23,42,.22);
+}
+.light .mobile-bottom-more-layer .mobile-bottom-more-menu{
+  border-color:#dbe5ec;
+  background:
+    radial-gradient(circle at 100% 100%,rgba(14,165,233,.08),transparent 38%),
+    rgba(255,255,255,.99);
+  box-shadow:0 24px 60px rgba(15,23,42,.18);
+}
+.light .mobile-bottom-more-layer .mobile-bottom-more-menu button{
+  color:#334155;
+}
+.light .mobile-bottom-more-layer .mobile-bottom-more-menu button small{
+  color:#64748b;
+}
+@media (min-width:768px){
+  .mobile-bottom-more-layer{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .mobile-bottom-more-backdrop{
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+}
