@@ -133,6 +133,14 @@ else pass('Quiz aparece uma única vez na navegação inferior mobile');
 const experience = texts.find(item => item.file === 'src/components/ExperienceShell.tsx')?.content ?? '';
 if (experience.includes('shortcutMap') && experience.includes('navigationSequence') && experience.includes('navigateToSection(destination)') && sectionNavigation.includes('window.history.pushState')) pass('atalhos configurados usam navegação central com histórico restaurável');
 else fail('atalhos declarados não estão conectados à navegação central com histórico');
+if (experience.includes("document.querySelector('[role=\"dialog\"][aria-modal=\"true\"]')") && experience.includes('clearNavigationSequence();')) pass('atalhos globais são suspensos enquanto um modal está aberto');
+else fail('atalhos globais podem navegar por trás de um modal');
+
+const inspector = texts.find(item => item.file === 'src/components/DataInspector.tsx')?.content ?? '';
+if (inspector.includes('canonicalUrl') && inspector.includes("window.location.origin + window.location.pathname") && inspector.includes("'#dashboard'") && inspector.includes('Copiar link')) pass('inspetor possui link canônico explícito');
+else fail('inspetor ainda compartilha URL não canônica ou não oferece copiar link');
+if (inspector.includes("url: canonicalUrl") && inspector.includes("copyText(canonicalUrl)")) pass('compartilhar e copiar link do inspetor usam a mesma URL canônica');
+else fail('ações de link do inspetor divergem entre si');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
