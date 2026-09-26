@@ -21,7 +21,7 @@ const required = [
   ['Conselho Tutelar', 'conselho-tutelar'],
   ['CAPS', 'caps-centro-de-atencao-psicossocial'],
   ['SAMU', 'samu-servico-de-atendimento-movel-de-urgencia'],
-  ['Autoatendimento eleitoral', 'titulo-eleitoral/autoatendimento-eleitoral'],
+  ['Consultar situação eleitoral', 'titulo-eleitoral/autoatendimento-eleitoral'],
   ['Candidaturas e contas', 'divulgacandcontas.tse.jus.br'],
   ['Resultados oficiais', 'resultados.tse.jus.br'],
   ['Portal Eleições 2026', 'tse.jus.br/eleicoes/eleicoes-2026'],
@@ -63,7 +63,7 @@ const insecureLinks = renderedLinks.filter(link => /target="_blank"/.test(link) 
 if (insecureLinks.length) fail.push(`links públicos com target=_blank sem noopener: ${insecureLinks.length}`);
 else pass('links públicos externos preservam noopener em target=_blank');
 
-if (serviceUrls.length < 50) fail.push(`catálogo útil abaixo do esperado: ${serviceUrls.length} atalhos`);
+if (serviceUrls.length < 53) fail.push(`catálogo útil abaixo do esperado: ${serviceUrls.length} atalhos`);
 else pass(`${serviceUrls.length} atalhos públicos úteis cadastrados (${urls.length} URLs únicas)`);
 
 const additionalUrls = objectUrls(additionalBlock);
