@@ -139,7 +139,7 @@ if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail(
 else pass('busca possui resposta rápida e navegação por teclado');
 if (search.includes('closeButtonRef') && search.includes("desktop ? inputRef.current : closeButtonRef.current") && header.includes('closeTools(false)')) pass('busca mobile move foco para dentro do diálogo sem reabrir teclado virtual');
 else fail('busca mobile pode deixar foco atrás do diálogo');
-if (search.includes('opener?.isConnected') && search.includes('[data-search-trigger="primary"]') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco com fallback quando o acionador original é desmontado');
+if (search.includes('canRestoreOpener') && search.includes('opener !== document.body') && search.includes('opener.tabIndex >= 0') && search.includes('[data-search-trigger="primary"]') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco apenas em acionador válido e usa fallback estável');
 else fail('fechar busca pode perder o foco quando o acionador original não existe mais');
 if (header.includes('copyCurrentSectionLink') && header.includes("window.location.origin + window.location.pathname + hash") && header.includes('Copiar link da seção')) pass('menu mobile copia link canônico da seção atual');
 else fail('menu mobile não oferece cópia canônica da seção atual');
