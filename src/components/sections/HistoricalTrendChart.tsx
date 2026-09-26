@@ -121,7 +121,7 @@ function SingleSeriesChart({
         <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickMargin={6} />
         <YAxis yAxisId={axisId} width={58} tickLine={false} axisLine={false} tick={{ fontSize: 9 }} tickFormatter={value => formatNumber(Number(value))} />
-        <Tooltip cursor={{ strokeDasharray: '3 5' }} content={<TrendTooltip />} />
+        <Tooltip yAxisId={axisId} cursor={{ strokeDasharray: '3 5' }} content={<TrendTooltip />} />
         <TrendLine dataKey={dataKey} name={name} axisId={axisId} tone={tone} />
       </LineChart>
     </ResponsiveContainer>
