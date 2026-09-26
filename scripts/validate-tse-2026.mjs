@@ -64,6 +64,7 @@ for (const candidate of payload.matched ?? []) {
   if (ids.has(candidate.sqCandidate)) errors.push('SQ_CANDIDATO duplicado: ' + candidate.sqCandidate);
   ids.add(candidate.sqCandidate);
   if (!candidate.name) errors.push('Candidato sem nome: ' + candidate.sqCandidate);
+  if (candidate.status && /^#(?:NE|NULO)$/i.test(candidate.status)) errors.push('Situação não informada não pode ser exibida como código TSE: ' + candidate.sqCandidate);
   if (!candidate.watchlistName) errors.push('Registro TSE sem watchlistName: ' + candidate.sqCandidate);
   if (!candidate.localEvidence) errors.push('Registro TSE sem evidência local: ' + candidate.sqCandidate);
   if (!Array.isArray(candidate.evidenceSourceUrls) || candidate.evidenceSourceUrls.length === 0) {
