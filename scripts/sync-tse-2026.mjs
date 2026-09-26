@@ -627,13 +627,15 @@ main().catch(error => {
     error: error instanceof Error ? error.message : String(error),
   }, null, 2);
 
-  if (process.env.REQUIRE_TSE_FRESH === 'true') {
+  const requireFresh = process.env.REQUIRE_TSE_FRESH === 'true' || process.env.GITHUB_EVENT_NAME === 'workflow_dispatch';
+  if (requireFresh) {
     console.error(upstreamMessage);
     process.exitCode = 1;
     return;
   }
 
   console.warn(upstreamMessage);
+  console.warn('[TSE] Execução não interativa: snapshot anterior preservado e workflow segue sem criar alteração de dados.');
   process.exitCode = 0;
   return;
   }
