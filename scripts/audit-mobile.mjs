@@ -6,6 +6,7 @@ const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const exists = relative => fs.existsSync(path.join(root, relative));
 
 const files = {
+  main: read('src/main.tsx'),
   app: read('src/app/App.tsx'),
   experience: read('src/components/ExperienceShell.tsx'),
   hero: read('src/components/sections/HeroCountdown.tsx'),
