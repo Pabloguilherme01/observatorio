@@ -1,6 +1,7 @@
 import { CircleHelp, Compass, Home, Landmark, MoreHorizontal } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
+import { navigateToSection } from '../../lib/sectionNavigation';
 
 const primaryItems = [
   { id: 'dashboard', label: 'Início', icon: Home },
@@ -18,8 +19,7 @@ const sectionToTab = (id: string) => {
 };
 
 function jump(id: string) {
-  window.history.replaceState(null, '', '#' + id);
-  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+  navigateToSection(id);
 }
 
 export function MobileBottomNav() {

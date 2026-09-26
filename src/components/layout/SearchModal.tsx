@@ -5,6 +5,7 @@ import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
+import { navigateToSection } from '../../lib/sectionNavigation';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
@@ -246,21 +247,13 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     const knownDestination = ['resumo', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
     const publicServiceQuery = kind === 'public' && label ? label : null;
-    const currentTarget = window.location.hash.replace('#', '');
-
     if (publicServiceQuery) {
-      window.history.replaceState({ ...(window.history.state ?? {}), publicServiceQuery }, '', '#acao');
-      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'acao' }));
+      navigateToSection('acao', { state: { ...(window.history.state ?? {}), publicServiceQuery } });
       window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: publicServiceQuery }));
       return;
     }
 
-    if (currentTarget === target) {
-      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
-      return;
-    }
-    window.history.replaceState(null, '', '#' + target);
-    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
+    navigateToSection(target);
   };
 
   return (

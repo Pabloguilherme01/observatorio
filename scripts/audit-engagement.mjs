@@ -78,7 +78,7 @@ must(index.includes('manifest.webmanifest') && index.includes('apple-mobile-web-
 must(css.includes('--obs-font-sans') && css.includes('font-synthesis:none'), 'tipografia usa stack estável e síntese desativada');
 must(css.includes('.obs-card') && css.includes('.source-card') && css.includes('.search-empty-action'), 'cards, fontes e estado vazio da busca possuem tratamento visual dedicado');
 must(css.includes('summary-public-facts') && css.includes('summary-public-fact'), 'Resumo público possui cartões de contexto rápido');
-must(search.includes('destinationLabel') && search.includes('history.replaceState(null, \'\', \'#\' + target)'), 'busca navega por hash sem scroll duplicado');
+must(search.includes('destinationLabel') && search.includes('navigateToSection(target)') && search.includes("from '../../lib/sectionNavigation'"), 'busca navega por hash sem scroll duplicado');
 must(search.includes('search-empty-action') && !search.includes('document.getElementById(id)?.scrollIntoView'), 'seleção de busca não dispara scroll direto e infinito');
 must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
 const versionMatch = version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);

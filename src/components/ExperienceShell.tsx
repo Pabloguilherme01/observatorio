@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { MobileBottomNav } from './layout/MobileBottomNav';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { navigation } from '../config/navigation';
+import { navigateToSection } from '../lib/sectionNavigation';
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
   const { cycleMode } = useLanguageMode();
@@ -83,8 +84,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
         if (destination) {
           event.preventDefault();
           clearNavigationSequence();
-          window.history.replaceState(null, '', '#' + destination);
-          window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: destination }));
+          navigateToSection(destination);
           return;
         }
 
