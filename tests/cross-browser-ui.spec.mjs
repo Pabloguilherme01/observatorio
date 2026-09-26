@@ -111,8 +111,11 @@ test.describe('bancada de robustez adicional', () => {
     await page.goto('./');
     await expect(page.locator('#negocio')).toHaveCount(0);
     await expect(page.getByText('Produto profissional', { exact: true })).toHaveCount(0);
+    await expect(page.getByText('Soluções profissionais', { exact: true })).toHaveCount(0);
     await expect(page.getByText('Quero contratar', { exact: true })).toHaveCount(0);
     await expect(page.getByText('Copiar proposta', { exact: true })).toHaveCount(0);
+    await expect(page.getByText(/R\\$\\s*49[,.]90|R\\$\\s*199[,.]90|R\\$\\s*799/)).toHaveCount(0);
+    await expect(page.getByText(/plano profissional|plano institucional|checkout/i)).toHaveCount(0);
   });
 
   test('interface suporta zoom e largura compacta sem rolagem horizontal global', async ({ page }) => {
