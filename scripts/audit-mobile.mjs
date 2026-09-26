@@ -44,7 +44,7 @@ must(files.header.includes('IntersectionObserver') && files.header.includes('obs
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
 must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("id === 'quiz'"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
 must(read('src/config/navigation.ts').includes("id: 'saude'") && read('src/config/navigation.ts').includes("id: 'exportacao'"), 'menu Mais expõe saúde/saneamento e exportação sem criar novos destinos');
-must(files.mobileNav.includes('useLanguageMode') && files.mobileNav.includes('destinationIsHiddenInSummary') && files.mobileNav.includes("setMode('simple')") && !files.mobileNav.includes('TECHNICAL_ONLY_DESTINATIONS') && files.app.includes('TECHNICAL_ONLY_DESTINATIONS') && files.app.includes("setMode('technical')"), 'menu mobile delega destinos técnicos à navegação central e apenas sai do Resumo quando necessário');
+must(files.mobileNav.includes('useLanguageMode') && files.mobileNav.includes('destinationIsHiddenInSummary') && files.mobileNav.includes("setMode('simple')") && !files.mobileNav.includes('TECHNICAL_ONLY_DESTINATIONS') && files.app.includes('TECHNICAL_ONLY_DESTINATIONS') && files.app.includes('CONTEXTUAL_DESTINATIONS') && files.app.includes("setMode('technical')"), 'navegação preserva modos comuns e eleva apenas destinos realmente técnicos');
 
 must(files.css.includes('--mobile-nav-height:64px') && files.css.includes('--mobile-nav-height:68px'), 'altura base e altura mobile da navegação inferior estão definidas explicitamente');
 must(files.css.includes('env(safe-area-inset-bottom'), 'safe-area inferior está contemplada');
@@ -55,7 +55,7 @@ must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#evidencias"'), 'hero mantém ações principais acessíveis no mobile');
-must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed'), 'os três modos de leitura continuam disponíveis');
+must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aprofundar leitura'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
 must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.quiz.includes('quiz-progress-track') && files.quizData.includes('QUIZ_TOTAL = 200') && files.quizData.includes('QUESTIONS_PER_LEVEL = 40') && files.quizData.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
