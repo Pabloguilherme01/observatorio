@@ -389,6 +389,37 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('status de conexão informa offline e confirma reconexão', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  const status = page.getByRole('status', { name: 'Status de conexão' });
+  await expect(status).toHaveCount(0);
+
+  await page.context().setOffline(true);
+  await expect(status).toBeVisible();
+  await expect(status).toContainText('Sem conexão');
+  await expect(status.getByRole('button', { name: 'Verificar' })).toBeVisible();
+
+  const offlineGeometry = await status.evaluate(node => {
+    const rect = node.getBoundingClientRect();
+    return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+  });
+  expect(offlineGeometry.left).toBeGreaterThanOrEqual(0);
+  expect(offlineGeometry.right).toBeLessThanOrEqual(390);
+  expect(offlineGeometry.top).toBeGreaterThanOrEqual(0);
+  expect(offlineGeometry.bottom).toBeLessThanOrEqual(844);
+
+  await status.getByRole('button', { name: 'Verificar' }).click();
+  await expect(status).toContainText('Sem conexão');
+
+  await page.context().setOffline(false);
+  await expect(status).toContainText('Conexão restabelecida');
+  await expect(status).toContainText('publicação online voltou a responder');
+
+  await expect(status).toHaveCount(0, { timeout: 5000 });
+});
+
 test('prompt PWA respeita a barra mobile, pode ser dispensado e instalar', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
