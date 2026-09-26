@@ -18,7 +18,7 @@ const topics: readonly Topic[] = [
 ];
 
 const officialResources = [
-  { label: 'Autoatendimento eleitoral', href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral', note: 'Título, situação e local de votação', icon: Vote },
+  { label: 'Autoatendimento eleitoral', href: 'https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral', note: 'Título, situação e local de votação', icon: Vote },
   { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores oficiais', icon: BarChart3 },
   { label: 'LOA 2026', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654', note: 'Orçamento municipal vigente', icon: WalletCards },
   { label: 'Resultados 2026', href: 'https://resultados.tse.jus.br/', note: 'Resultados oficiais quando publicados', icon: ShieldCheck },
@@ -156,7 +156,7 @@ export function AudienceHub() {
               </button>
             </div>
             <div className="audience-resource-grid">
-              {officialResources.slice(0, isTechnical ? officialResources.length : 3).map(({ label, href, note, icon: Icon }) => (
+              {officialResources.slice(0, isSummary ? 3 : officialResources.length).map(({ label, href, note, icon: Icon }) => (
                 <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
                   <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                   <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
