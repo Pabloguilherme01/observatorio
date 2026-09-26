@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -55,9 +56,18 @@ const additionalPublicServices = [
 ] as const;
 
 
+const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
+
+const normalizeServiceQuery = (value: string) =>
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
+
 export function CivicActionHub() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
+  const initialServiceQuery = typeof window !== 'undefined' && typeof window.history.state?.publicServiceQuery === 'string'
+    ? window.history.state.publicServiceQuery
+    : '';
+  const [serviceQuery, setServiceQuery] = useState(initialServiceQuery);
   const tesser = [
     ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
     ['candidaturas','Candidaturas e contas','Consulte registros, bens, receitas e despesas no DivulgaCandContas.','https://divulgacandcontas.tse.jus.br/divulga/#/','search'],
@@ -69,6 +79,20 @@ export function CivicActionHub() {
     ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
   ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
+  const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
+  const visibleMunicipalServices = normalizedServiceQuery
+    ? allMunicipalServices.filter(service => normalizeServiceQuery(service.title + ' ' + service.description).includes(normalizedServiceQuery))
+    : visiblePriority;
+
+  useEffect(() => {
+    const onServiceSearch = (event: Event) => {
+      const detail = (event as CustomEvent<string>).detail;
+      if (typeof detail === 'string') setServiceQuery(detail);
+    };
+    window.addEventListener('observatorio:public-service-search', onServiceSearch);
+    return () => window.removeEventListener('observatorio:public-service-search', onServiceSearch);
+  }, []);
+
   return (
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
@@ -119,8 +143,30 @@ export function CivicActionHub() {
           </div>
         </div>
 
+        <div className="mt-4 flex min-w-0 items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.025] p-2 light:border-slate-200 light:bg-slate-50">
+          <SearchCheck className="h-4 w-4 shrink-0 text-sky-300 light:text-sky-700" aria-hidden="true" />
+          <input
+            type="search"
+            value={serviceQuery}
+            onChange={event => setServiceQuery(event.target.value)}
+            placeholder="Buscar serviço municipal…"
+            aria-label="Buscar serviço municipal"
+            className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
+          />
+          {serviceQuery && (
+            <button type="button" onClick={() => setServiceQuery('')} className="min-h-11 rounded-xl px-3 text-xs font-bold text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-100 light:hover:text-slate-900">
+              Limpar
+            </button>
+          )}
+        </div>
+        {serviceQuery && (
+          <p className="mt-2 text-[11px] text-slate-500" role="status">
+            {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
+          </p>
+        )}
+
         <div className="official-resource-grid official-resource-grid-local">
-          {visiblePriority.map(({ icon: Icon, title, description, href }) => (
+          {visibleMunicipalServices.map(({ icon: Icon, title, description, href }) => (
             <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
               <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
               <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small></span>
@@ -129,7 +175,7 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        {technical && <details className="official-more">
+        {technical && !serviceQuery && <details className="official-more">
           <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
           <div className="official-more-grid">
             {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => {
