@@ -125,6 +125,10 @@ else pass('navegação mobile rotulada e integrada ao fluxo principal');
 if (!mobileNav.includes("item.group === 'more' && item.id !== 'quiz'")) fail('Quiz duplicado no menu Mais da navegação mobile');
 else pass('Quiz aparece uma única vez na navegação inferior mobile');
 
+const experience = texts.find(item => item.file === 'src/components/ExperienceShell.tsx')?.content ?? '';
+if (experience.includes('shortcutMap') && experience.includes('navigationSequence') && experience.includes("window.history.replaceState(null, '', '#' + destination)")) pass('atalhos configurados de navegação estão conectados ao roteamento central');
+else fail('atalhos declarados na navegação não estão ativos no ExperienceShell');
+
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
