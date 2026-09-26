@@ -132,6 +132,8 @@ else fail('atalhos declarados na navegação não estão ativos no ExperienceShe
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
+if (search.includes('search-shortcut-guide') && search.includes('navigation.map(item =>') && search.includes("a[href], summary")) pass('busca expõe guia de atalhos e mantém o summary no ciclo de foco');
+else fail('guia de atalhos da busca está ausente ou fora do ciclo de foco');
 if (search.includes('observatorio:public-service-search') && civic.includes('Buscar serviço municipal') && civic.includes('visibleMunicipalServices')) pass('busca global entrega o serviço municipal já filtrado');
 else fail('resultado de serviço público pode abrir uma lista genérica sem destacar o item procurado');
 if (
