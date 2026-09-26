@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 import { formatDate } from '../../utils/formatters';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { copyText } from '../../lib/clipboard';
@@ -170,10 +171,16 @@ export function ExecutiveSummary() {
                 </button>
               ))}
             </div>
-            <div className="summary-simple-tip mt-3">
-              <strong className="text-slate-200">Leitura guiada</strong>
-              <span className="ml-2">Comece pelo número, entenda o contexto e abra a fonte quando quiser ir além.</span>
-            </div>
+            <PremiumInfoCard
+              compact
+              tone="emerald"
+              icon={Sparkles}
+              eyebrow="Leitura guiada"
+              title="Do número ao contexto"
+              className="summary-simple-tip mt-3"
+            >
+              Comece pelo número, entenda o contexto e abra a fonte quando quiser ir além.
+            </PremiumInfoCard>
           </>
         )}
 
