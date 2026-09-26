@@ -78,6 +78,43 @@ test.describe('Observatório smoke flows', () => {
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
+test('healthcheck técnico usa base pública e permite tentar novamente', async ({ page }) => {
+  let calls = 0;
+  const requestedPaths = [];
+  await page.route('**/api/v1/health.json', async route => {
+    calls += 1;
+    requestedPaths.push(new URL(route.request().url()).pathname);
+    if (calls === 1) {
+      await route.fulfill({ status: 503, json: { status: 'error' } });
+      return;
+    }
+    await route.fulfill({
+      json: {
+        status: 'ok',
+        publication: { commitShort: 'abc1234', contract: 'health-v1' },
+        buildGeneratedAt: '2026-09-26T17:30:00Z',
+        freshness: { tseCandidates: { capturedAt: '2026-09-26T16:30:00Z', ageHours: 1 } },
+      },
+    });
+  });
+
+  await page.goto('./');
+  await openSection(page, 'principios');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Técnico/ }).click();
+
+  const publicationCard = page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first();
+  await expect(publicationCard.getByRole('status')).toContainText(/não pôde ser concluída/i);
+
+  const retry = publicationCard.getByRole('button', { name: 'Atualizar status' });
+  await retry.click();
+  await expect(publicationCard.getByRole('status')).toContainText(/publicação está íntegra/i);
+  await expect(page.getByText(/Commit publicado:.*abc1234/)).toBeVisible();
+
+  expect(calls).toBe(2);
+  expect(requestedPaths.every(path => path.endsWith('/observatorio/api/v1/health.json'))).toBeTruthy();
+});
+
 test('busca global abre o serviço municipal já filtrado', async ({ page }) => {
     await page.goto('./');
     await page.getByRole('button', { name: /buscar/i }).first().click();
