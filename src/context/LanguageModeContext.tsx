@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { STORAGE_NAMESPACE } from '../config/version';
 
 export type LanguageMode = 'summary' | 'simple' | 'technical';
@@ -27,11 +27,11 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
     try { localStorage.setItem(STORAGE_KEY, mode); } catch {}
   }, [mode]);
 
-  const value = useMemo(() => ({
-    mode,
-    setMode: setModeState,
-    cycleMode: () => setModeState(current => current === 'summary' ? 'simple' : current === 'simple' ? 'technical' : 'summary'),
-  }), [mode]);
+  const cycleMode = useCallback(() => {
+    setModeState(current => current === 'summary' ? 'simple' : current === 'simple' ? 'technical' : 'summary');
+  }, []);
+
+  const value = useMemo(() => ({ mode, setMode: setModeState, cycleMode }), [mode, cycleMode]);
   return <LanguageModeContext.Provider value={value}>{children}</LanguageModeContext.Provider>;
 }
 
