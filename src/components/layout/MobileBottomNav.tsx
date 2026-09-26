@@ -48,6 +48,14 @@ export function MobileBottomNav() {
   }, []);
 
   useEffect(() => {
+    if (!moreOpen) return;
+    const frame = window.requestAnimationFrame(() => {
+      moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [moreOpen]);
+
+  useEffect(() => {
     const update = (next: string) => {
       if (activeSectionRef.current === next) return;
       activeSectionRef.current = next;
