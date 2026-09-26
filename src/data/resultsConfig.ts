@@ -41,10 +41,16 @@ export type ResultsCargo =
   | 'Deputado Estadual'
   | 'Deputado Distrital';
 
-export function electionCodeMatchesCargo(electionCode: number, uf: string, cargo: string): boolean {
-  if (electionCode === 6257) return cargo === 'Presidente';
-  if (electionCode === 6259) return uf !== 'DF' && cargo !== 'Presidente' && cargo !== 'Deputado Distrital';
-  if (electionCode === 6261) return uf === 'DF' && cargo === 'Deputado Distrital';
+export function electionCodeMatchesCargo(electionCode: number, uf: string, cargo: string, turn: 1 | 2 = 1): boolean {
+  if (!Number.isSafeInteger(electionCode) || electionCode <= 0) return false;
+  if (turn === 2 && [6257, 6259, 6261].includes(electionCode)) return false;
+  const presidential = cargo === 'Presidente';
+  const stateOffice = ['Governador', 'Senador', 'Deputado Federal', 'Deputado Estadual'].includes(cargo);
+  const districtOffice = cargo === 'Deputado Distrital';
+  if (turn === 2) return presidential || (uf === 'DF' ? districtOffice : stateOffice);
+  if (electionCode === 6257) return presidential;
+  if (electionCode === 6259) return uf !== 'DF' && stateOffice;
+  if (electionCode === 6261) return uf === 'DF' && districtOffice;
   return false;
 }
 
