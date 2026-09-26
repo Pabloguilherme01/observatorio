@@ -2721,18 +2721,18 @@ img,svg,video,canvas{max-width:100%}
   text-overflow:ellipsis;
 }
 .site-brand>span:first-child{
-  font-size:13px!important;
+  font-size:9px!important;
   font-weight:900!important;
   line-height:1.1!important;
-  letter-spacing:-.02em!important;
-  color:#f8fafc!important;
+  letter-spacing:.16em!important;
+  color:#64748b!important;
 }
 .site-brand>span:last-child{
   margin-top:2px!important;
-  font-size:9px!important;
-  font-weight:800!important;
-  letter-spacing:.14em!important;
-  color:#64748b!important;
+  font-size:15px!important;
+  font-weight:900!important;
+  letter-spacing:-.02em!important;
+  color:#f8fafc!important;
 }
 .site-header nav[aria-label="Navegação principal"] a{
   color:#94a3b8!important;
@@ -2743,7 +2743,7 @@ img,svg,video,canvas{max-width:100%}
   color:#f8fafc!important;
   background:rgba(255,255,255,.05)!important;
 }
-.site-header nav[aria-label="Navegação principal"] a[aria-current="location"]{
+.site-header nav[aria-label="Navegação principal"] a[aria-current="page"]{
   color:#e0f2fe!important;
   background:rgba(125,211,252,.10)!important;
 }
@@ -2969,8 +2969,8 @@ main summary:focus-visible{
   background:rgba(255,255,255,.95)!important;
   border-color:#dbe5ec!important;
 }
-.light .site-brand>span:first-child{color:#0f172a!important}
-.light .site-brand>span:last-child{color:#64748b!important}
+.light .site-brand>span:first-child{color:#64748b!important}
+.light .site-brand>span:last-child{color:#0f172a!important}
 .light .site-header nav[aria-label="Navegação principal"] a{color:#475569!important}
 .light .hero-shell{
   background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%)!important;
@@ -3043,11 +3043,12 @@ main summary:focus-visible{
     max-width:58vw!important;
   }
   .site-brand>span:first-child{
-    font-size:12px!important;
+    font-size:8px!important;
+    letter-spacing:.16em!important;
   }
   .site-brand>span:last-child{
-    font-size:8px!important;
-    letter-spacing:.13em!important;
+    font-size:14px!important;
+    letter-spacing:-.02em!important;
   }
   .site-icon-button,
   .site-tools-button{
