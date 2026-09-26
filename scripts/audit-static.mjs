@@ -269,13 +269,14 @@ if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
 
 
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+const clipboard = read('src/lib/clipboard.ts');
 const sharing = [
   read('src/components/sections/ExecutiveSummary.tsx'),
   read('src/components/sections/QuickQuiz.tsx'),
   read('src/components/TransportCalculator.tsx'),
 ].join('\n');
 must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modo Resumo/Simples/Técnico possui componente próprio');
-must(sharing.includes('navigator.share') && sharing.includes('navigator.clipboard') && sharing.includes("document.createElement('textarea')"), 'compartilhamento nativo e fallback de cópia permanecem disponíveis');
+must(sharing.includes('navigator.share') && sharing.includes('copyText') && clipboard.includes('navigator.clipboard') && clipboard.includes("document.createElement('textarea')"), 'compartilhamento nativo usa um fallback de cópia único e resiliente');
 
 if (!errors.length) {
   pass(`auditoria estática concluída para ${edition}`);
