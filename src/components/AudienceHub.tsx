@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, Database, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
 
 type Topic = {
