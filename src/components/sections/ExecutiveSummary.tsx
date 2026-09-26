@@ -94,12 +94,12 @@ export function ExecutiveSummary() {
           <SectionHeader
             titleId="executive-summary-title"
             eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
-            title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
+            title={languageMode === 'technical' ? 'Visão essencial com evidências' : languageMode === 'summary' ? 'O que merece sua atenção agora' : 'Entenda o cenário em poucos minutos'}
             description={languageMode === 'technical'
-              ? 'Valor, data, fonte e limite juntos para conferência.'
+              ? 'Cada indicador vem acompanhado de referência, origem e limites para uma leitura verificável.'
               : languageMode === 'summary'
-                ? 'Só o essencial primeiro. O detalhe fica a um toque.'
-                : 'Números claros, contexto direto e fonte visível.'}
+                ? 'Uma visão enxuta para captar o cenário. Quando algo chamar sua atenção, o contexto está a um toque.'
+                : 'Indicadores organizados para transformar números dispersos em uma leitura clara e contextualizada.'}
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Rastreável' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
@@ -115,8 +115,8 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Visão rápida</span>
-                <h3>O quadro em quatro sinais</h3>
-                <p className="summary-public-lead">Número, referência e fonte em cada cartão. O aprofundamento fica a um toque.</p>
+                <h3>Quatro sinais para começar</h3>
+                <p className="summary-public-lead">Uma leitura rápida dos principais indicadores, com referência e fonte sempre ao alcance.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -141,7 +141,7 @@ export function ExecutiveSummary() {
                 </div>
               </div>
               <div className="summary-public-discovery-head">
-                <span>Dados essenciais</span>
+                <span>Indicadores em destaque</span>
                 <small>Fonte e referência em cada cartão</small>
               </div>
 
@@ -176,7 +176,7 @@ export function ExecutiveSummary() {
             </div>
             <div className="summary-simple-tip mt-3">
               <strong className="text-slate-200">Leitura simples</strong>
-              <span className="ml-2">Número primeiro; fonte e contexto ficam a um toque.</span>
+              <span className="ml-2">Comece pelo indicador e avance para fonte e contexto quando quiser compreender melhor.</span>
             </div>
           </>
         )}
@@ -205,12 +205,12 @@ export function ExecutiveSummary() {
               <Card className="summary-evidence">
                 <span>Leitura</span>
                 <strong>Valor + data + fonte</strong>
-                <p>Confira escopo e referência antes de comparar indicadores.</p>
+                <p>Compare com segurança: confira escopo, período e referência de cada indicador.</p>
               </Card>
               <Card className="summary-evidence">
                 <span>Limites</span>
                 <strong>Estimativa não é medição</strong>
-                <p>Simulações e cálculos derivados ficam identificados e separados.</p>
+                <p>Estimativas, simulações e cálculos derivados permanecem identificados para evitar comparações indevidas.</p>
               </Card>
               <Card className="summary-evidence">
                 <span>Atualização</span>
