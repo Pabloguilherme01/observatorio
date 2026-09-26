@@ -40,7 +40,7 @@ jobs:
         run: npm run test:results
 
       - name: Install cross-browser engines
-        run: npx playwright install --with-deps chromium firefox webkit
+        run: npm exec -- playwright install --with-deps chromium firefox webkit
 
       - name: Complete audit gate
         run: npm run audit:all
