@@ -214,7 +214,7 @@ test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
-  await page.getByRole('link', { name: 'Ver fontes oficiais' }).click();
+  await page.getByRole('link', { name: 'Conferir fontes' }).click();
   await expect(page).toHaveURL(/#fontes$/);
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
   await expect(page.locator('#fontes')).toBeVisible();
@@ -239,8 +239,10 @@ test('menu Mais destaca visualmente uma seção secundária ativa', async ({ pag
   await page.setViewportSize({ width: 1366, height: 768 });
   await page.goto('./');
   await openSection(page, 'fontes');
-  const more = page.getByRole('button', { name: 'Mais' });
+  const header = page.locator('.site-header');
+  const more = header.getByRole('button', { name: 'Mais' });
   await expect(more).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('.mobile-bottom-nav')).toBeHidden();
 });
 
 for (const viewport of [
