@@ -11,6 +11,7 @@ const files = {
   hero: read('src/components/sections/HeroCountdown.tsx'),
   css: read('src/assets/styles/globals.css'),
   finalUi: read('src/assets/styles/final-ui.css'),
+  mobileFinal: read('src/assets/styles/mobile-final.css'),
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
@@ -56,7 +57,7 @@ must(files.css.includes('overflow-x:hidden') && files.css.includes('overflow-x:c
 must(files.css.includes('scroll-snap-type'), 'rails móveis suportam navegação por gesto');
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:\s*390px\)/.test(files.css), 'há ajuste dedicado para telas muito estreitas');
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
-must(files.finalUi.includes('.deferred-section{') && files.finalUi.includes('content-visibility:visible!important'), 'seções lazy montadas permanecem renderizáveis para gráficos e deep links');
+must(files.finalUi.includes('.deferred-section{') && files.finalUi.includes('content-visibility:visible!important') && !files.mobileFinal.includes('content-visibility:auto'), 'seções lazy montadas permanecem renderizáveis para gráficos e deep links');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aprofundar leitura'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
