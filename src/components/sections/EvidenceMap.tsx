@@ -17,7 +17,7 @@ export function EvidenceMap() {
   if (mode !== 'technical') return null;
 
   return (
-    <section id="fontes" className="evidence-map-tech mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="fontes-title">
+    <section id="mapa-evidencias" className="evidence-map-tech mx-auto max-w-7xl px-4 py-10 sm:px-6" aria-labelledby="fontes-title">
       <div className="evidence-tech-head">
         <div>
           <span className="quiz-eyebrow">Técnico · rastreabilidade</span>
