@@ -451,6 +451,21 @@ test('inspetor copia referência e compartilha o link da seção atual', async (
   expect(payload?.url).toMatch(/#dashboard$/);
 });
 
+test('simulador restaura o cenário padrão e persiste a redefinição', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'transporte');
+
+  const people = page.getByRole('slider', { name: /Quantidade de pessoas/i });
+  await people.fill('6');
+  await page.getByText('Ajustar premissas do cálculo').click();
+  await page.getByLabel('Dias por semana').fill('7');
+  await page.getByRole('button', { name: /Restaurar padrão/i }).click();
+
+  await expect(people).toHaveValue('1');
+  await expect(page.getByLabel('Dias por semana')).toHaveValue('5');
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('observatorio:transport-preferences:v1') || '{}').people)).toBe(1);
+});
+
 test('compartilhamento do transporte usa URL canônica com um único hash', async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'share', {
