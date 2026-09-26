@@ -108,3 +108,24 @@ test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo
   await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
   await expect(page.getByText(/estes números não são uma atualização ao vivo/i)).toBeVisible();
 });
+
+test('publica ícones PNG instaláveis no subcaminho do aplicativo', async ({ page }) => {
+  const manifestResponse = await page.request.get('./manifest.webmanifest');
+  expect(manifestResponse.ok()).toBeTruthy();
+  const manifest = await manifestResponse.json();
+  expect(manifest.start_url).toBe('/observatorio/');
+  for (const [name, size] of [['pwa-192.png', 192], ['pwa-512.png', 512]]) {
+    const icon = manifest.icons.find(entry => entry.src.endsWith(name));
+    expect(icon?.sizes).toBe(`${size}x${size}`);
+    expect(icon?.purpose).toContain('maskable');
+    const response = await page.request.get(icon.src);
+    expect(response.ok()).toBeTruthy();
+    const bytes = await response.body();
+    expect(bytes.subarray(0, 8)).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+    expect(bytes.readUInt32BE(16)).toBe(size);
+    expect(bytes.readUInt32BE(20)).toBe(size);
+  }
+  const apple = await page.request.get('./apple-touch-icon.png');
+  expect(apple.ok()).toBeTruthy();
+  expect((await apple.body()).readUInt32BE(16)).toBe(180);
+});
