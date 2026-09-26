@@ -56,7 +56,7 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
     await openSection(page, 'acao');
-    await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Serviços e verificação/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
   });
 
@@ -77,7 +77,19 @@ test.describe('Observatório smoke flows', () => {
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
-test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
+test('busca global abre o serviço municipal já filtrado', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const input = page.getByRole('combobox').first();
+    await input.fill('CAPS');
+    await page.getByRole('option', { name: /CAPS/i }).click();
+    await expect(page).toHaveURL(/#acao$/);
+    const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
+    await expect(serviceSearch).toHaveValue('CAPS');
+    await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
+  });
+
+  test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
     await page.goto('./');
     await page.getByRole('button', { name: /buscar/i }).first().click();
     const input = page.getByRole('combobox').first();
