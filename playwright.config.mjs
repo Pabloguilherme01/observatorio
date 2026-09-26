@@ -11,8 +11,21 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'off',
-    ...devices['Desktop Chrome'],
   },
+  projects: [
+    {
+      name: 'chrome-desktop',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'chrome-android',
+      use: { ...devices['Pixel 7'] },
+    },
+    {
+      name: 'safari-iphone',
+      use: { ...devices['iPhone 14'] },
+    },
+  ],
   webServer: {
     command: 'npm run dev -- --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173/observatorio/',
