@@ -1,7 +1,7 @@
 import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import '../../assets/styles/quick-quiz.css';
-import { readQuizBestScores, readQuizUnlockedPhase, recordQuizHighScore } from '../../lib/quizLeaderboard';
+import { readQuizBestScores, readQuizUnlockedPhase, saveQuizBestScore } from '../../lib/quizLeaderboard';
 
 import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 import { sourceRegistry } from '../../data/sourceRegistry';
@@ -60,16 +60,8 @@ export function QuickQuiz() {
     if (isLast) {
       // O clique em "Próxima" pode ocorrer antes de o update de score ser refletido nesta closure.
       const finalScore = score + (selected === question.answerIndex ? 1 : 0);
-      const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
-      recordQuizHighScore({
-        phase: activePhase + 1,
-        level: phaseData?.level ?? '',
-        score: finalScore,
-        total: QUESTIONS_PER_LEVEL,
-        percentage: Math.round((finalScore / QUESTIONS_PER_LEVEL) * 100),
-        playedAt: new Date().toISOString(),
-      });
-      setBest(nextScores);
+      const persistedBest = saveQuizBestScore(activePhase, finalScore);
+      setBest(persistedBest);
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
       }
