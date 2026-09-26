@@ -1,10 +1,20 @@
-export type ContextMetricId = 'population' | 'schooling' | 'infantMortality' | 'gdpPerCapita';
+export type ContextMetricId =
+  | 'population'
+  | 'populationGrowth'
+  | 'density2026'
+  | 'area'
+  | 'schooling'
+  | 'infantMortality'
+  | 'gdpPerCapita';
+
+type StoredContextMetricId = 'population' | 'schooling' | 'infantMortality' | 'gdpPerCapita';
 
 export interface ContextMetric {
   readonly id: ContextMetricId;
   readonly label: string;
   readonly unit: string;
-  readonly year: number;
+  readonly reference: string;
+  readonly nature: 'official' | 'derived';
   readonly description: string;
 }
 
@@ -13,7 +23,7 @@ export interface ContextMunicipality {
   readonly ibgeCode: string;
   readonly census2022Population: number;
   readonly areaKm2: number;
-  readonly values: Readonly<Record<ContextMetricId, number>>;
+  readonly values: Readonly<Record<StoredContextMetricId, number>>;
   readonly url: string;
 }
 
@@ -22,28 +32,56 @@ export const contextualMetrics: readonly ContextMetric[] = [
     id: 'population',
     label: 'População estimada',
     unit: 'habitantes',
-    year: 2026,
-    description: 'Estimativa populacional publicada pelo IBGE com referência em 1º de julho.',
+    reference: '2026',
+    nature: 'official',
+    description: 'Estimativa populacional publicada pelo IBGE com referência em 1º de julho de 2026.',
+  },
+  {
+    id: 'populationGrowth',
+    label: 'Variação populacional',
+    unit: '%',
+    reference: 'Censo 2022 → estimativa 2026',
+    nature: 'derived',
+    description: 'Variação percentual entre a população do Censo 2022 e a estimativa de 2026. É um cálculo do observatório, não um indicador oficial do IBGE.',
+  },
+  {
+    id: 'density2026',
+    label: 'Densidade estimada',
+    unit: 'hab/km²',
+    reference: '2026',
+    nature: 'derived',
+    description: 'Estimativa de 2026 dividida pela área territorial registrada. Serve como referência de escala e não substitui a densidade oficial do Censo.',
+  },
+  {
+    id: 'area',
+    label: 'Área territorial',
+    unit: 'km²',
+    reference: '2025',
+    nature: 'official',
+    description: 'Área territorial exibida pelo IBGE Cidades para o município.',
   },
   {
     id: 'schooling',
     label: 'Escolarização 6–14 anos',
     unit: '%',
-    year: 2022,
+    reference: '2022',
+    nature: 'official',
     description: 'Percentual de crianças e adolescentes de 6 a 14 anos matriculados no ensino regular.',
   },
   {
     id: 'infantMortality',
     label: 'Mortalidade infantil',
     unit: 'óbitos por mil nascidos vivos',
-    year: 2025,
+    reference: '2025',
+    nature: 'official',
     description: 'Óbitos de menores de 1 ano por mil nascidos vivos, conforme o indicador exibido pelo IBGE.',
   },
   {
     id: 'gdpPerCapita',
     label: 'PIB per capita',
     unit: 'R$ por habitante',
-    year: 2023,
+    reference: '2023',
+    nature: 'official',
     description: 'Produto Interno Bruto por habitante no ano-base indicado pelo IBGE.',
   },
 ];
@@ -115,4 +153,17 @@ export const contextualMunicipalities: readonly ContextMunicipality[] = [
   },
 ];
 
-export const contextualMethodology = 'Comparação apenas descritiva, sem ranking. O conjunto reúne oito municípios de Goiás usados como referências de escala para Águas Lindas; cada indicador mantém seu próprio ano-base, unidade e definição. Valores e fichas foram conferidos nas páginas do IBGE Cidades consultadas em 25/09/2026.';
+export function getContextMetricValue(place: ContextMunicipality, metricId: ContextMetricId): number {
+  if (metricId === 'populationGrowth') {
+    return ((place.values.population / place.census2022Population) - 1) * 100;
+  }
+  if (metricId === 'density2026') {
+    return place.values.population / place.areaKm2;
+  }
+  if (metricId === 'area') {
+    return place.areaKm2;
+  }
+  return place.values[metricId];
+}
+
+export const contextualMethodology = 'Comparação apenas descritiva, sem ranking. O conjunto reúne oito municípios de Goiás usados como referências de escala para Águas Lindas; cada indicador mantém seu próprio período, unidade, natureza e definição. Crescimento populacional e densidade estimada são cálculos derivados de valores oficiais já publicados pelo IBGE. Valores e fichas foram conferidos nas páginas do IBGE Cidades consultadas em 25/09/2026.';
