@@ -484,6 +484,37 @@ for (const viewport of [
   });
 }
 
+test('cards premium organizam notas soltas sem overflow no mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  await openSection(page, 'demografia');
+  await expect(page.locator('#demografia .premium-info-card')).toHaveCount(3);
+  await expect(page.getByText('Escala populacional com contexto')).toBeVisible();
+  await expect(page.getByText('Estimativa e censo permanecem separados')).toBeVisible();
+
+  await openSection(page, 'orcamento');
+  await expect(page.getByText('Camadas orçamentárias não são somadas entre si')).toBeVisible();
+
+  await openSection(page, 'contexto');
+  await expect(page.getByText('Comparação oferece contexto — não ranking')).toBeVisible();
+
+  await openSection(page, 'mudancas-snapshot');
+  await expect(page.locator('#mudancas-snapshot .premium-info-card')).toHaveCount(2);
+  await expect(page.getByText('Snapshot identificado e rastreável')).toBeVisible();
+
+  const dimensions = await page.evaluate(() => ({
+    client: document.documentElement.clientWidth,
+    scroll: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+
+  const cardWidths = await page.locator('.premium-info-card:visible').evaluateAll(nodes =>
+    nodes.map(node => node.getBoundingClientRect().right - document.documentElement.clientWidth)
+  );
+  expect(cardWidths.every(overflow => overflow <= 1)).toBeTruthy();
+});
+
 test('modos de leitura só avançam quando a seção realmente exige mais detalhe', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
