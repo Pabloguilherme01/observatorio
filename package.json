@@ -33,7 +33,6 @@
     "audit:quiz": "node scripts/audit-quiz.mjs",
     "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs",
     "test:browser": "playwright test --config=playwright.config.mjs",
-    "test:a11y:browser": "playwright test --config=playwright.config.mjs tests/accessibility-smoke.spec.mjs",
     "audit:browser": "npm run test:browser",
     "audit:deps": "npm audit --audit-level=high"
   },
