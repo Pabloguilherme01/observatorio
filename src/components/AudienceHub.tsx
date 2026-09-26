@@ -18,10 +18,10 @@ const topics: readonly Topic[] = [
 ];
 
 const officialResources = [
-  { label: 'Resultados 2026', href: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados', note: 'Divulgação oficial', icon: Vote },
-  { label: 'Simulador da urna', href: 'https://www.justicaeleitoral.jus.br/simulador-votacao/', note: 'Treine a votação', icon: FileCheck2 },
-  { label: 'Regras para votar', href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026', note: 'Orientações do TSE', icon: ShieldCheck },
-  { label: 'Estatísticas eleitorais', href: 'https://www.tse.jus.br/eleicoes/estatisticas', note: 'Séries oficiais', icon: Database },
+  { label: 'Autoatendimento eleitoral', href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral', note: 'Título, situação e local de votação', icon: Vote },
+  { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores oficiais', icon: BarChart3 },
+  { label: 'LOA 2026', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654', note: 'Orçamento municipal vigente', icon: WalletCards },
+  { label: 'Resultados 2026', href: 'https://resultados.tse.jus.br/', note: 'Resultados oficiais quando publicados', icon: ShieldCheck },
 ] as const;
 
 const technicalLinks = [
