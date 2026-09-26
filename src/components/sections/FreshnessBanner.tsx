@@ -29,11 +29,11 @@ export function FreshnessBanner() {
           <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
           <div>
             <strong className="block text-sm text-slate-100">O conjunto de dados foi atualizado desde sua última visita.</strong>
-            <span className="text-xs text-slate-500">Sua última visita registrada foi em {formatDate(previousVisit!)} · atualização local atual em {formatDate(d.meta.updatedAt)}.</span>
+            <span className="text-xs text-slate-500">Na sua visita anterior, a versão disponível era de {formatDate(previousVisit!)}. A versão atual é de {formatDate(d.meta.updatedAt)}.</span>
           </div>
         </div>
         <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">
-          <Clock3 className="h-3.5 w-3.5" aria-hidden="true" /> atualização local
+          <Clock3 className="h-3.5 w-3.5" aria-hidden="true" /> dados atualizados
         </span>
       </div>
     </section>

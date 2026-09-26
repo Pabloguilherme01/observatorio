@@ -50,17 +50,17 @@ export function HeroCountdown() {
             <h1 id="hero-title">Águas Lindas de Goiás <em>2026</em></h1>
             <p>
               {summary
-                ? 'O essencial para se situar: números-chave e caminhos rápidos.'
+                ? 'Uma visão executiva da cidade: números centrais, serviços e fontes a poucos toques.'
                 : technical
-                  ? 'Dados públicos organizados para leitura, conferência e rastreabilidade.'
-                  : 'Principais números da cidade, com fonte e contexto visíveis.'}
+                  ? 'Uma camada de auditoria dos dados: origem, método, recortes e limitações visíveis.'
+                  : 'Números explicados com contexto suficiente para entender antes de aprofundar.'}
             </p>
 
             <div className="hero-actions">
               <a href="#descubra" className="hero-action primary">
                 Explorar dados <ArrowRight aria-hidden="true" />
               </a>
-              <a href="#evidencias" className="hero-action secondary">
+              <a href="#fontes" className="hero-action secondary">
                 Conferir fontes
               </a>
               <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>

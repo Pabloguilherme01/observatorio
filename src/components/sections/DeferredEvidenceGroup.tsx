@@ -14,7 +14,7 @@ export default function DeferredEvidenceGroup() {
       <ProjectTrustPanel />
       {technical && <DataQualityPanel />}
       {technical && <EvidenceChain />}
-      {technical && <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6"><DataExportActions /></div>}
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6"><DataExportActions /></div>
       {technical && <EvidenceMap />}
     </div>
   );

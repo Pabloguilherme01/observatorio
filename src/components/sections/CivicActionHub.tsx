@@ -1,8 +1,7 @@
+import { useEffect, useState } from 'react';
 import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
-import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
-import { immediatePublicContacts } from '../../data/publicContacts';
 
 const priorityPublicServices = [
   { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
@@ -24,234 +23,6 @@ const priorityPublicServices = [
   { icon: ShieldCheck, title: 'Portal SEI · Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
 ] as const;
-
-const actions = [
-  {
-    category: 'Prefeitura',
-    icon: Smartphone,
-    title: 'Encontrar um serviço municipal',
-    description: 'Consulte o catálogo oficial da Prefeitura, com busca e filtros por perfil e categoria, incluindo serviços ao cidadão.',
-    href: 'https://aguaslindasdegoias.go.gov.br/servicos/',
-    cta: 'Abrir Serviços da Prefeitura',
-  },
-  {
-    category: 'Prefeitura',
-    icon: Smartphone,
-    title: 'Consultar unidades e serviços de saúde',
-    description: 'Veja a estrutura oficial da Secretaria Municipal de Saúde e as unidades de atendimento listadas pela Prefeitura.',
-    href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/',
-    cta: 'Abrir Saúde Municipal',
-  },
-  {
-    category: 'Prefeitura',
-    icon: FileQuestion,
-    title: 'Consultar legislação municipal',
-    description: 'Pesquise leis e normas no portal oficial de legislação do município.',
-    href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis',
-    cta: 'Abrir Legislação',
-  },
-  {
-    category: 'Prefeitura',
-    icon: FileQuestion,
-    title: 'Pedir informação',
-    description: 'Use o SIC da Prefeitura para solicitar documentos, contratos, despesas ou esclarecimentos sobre dados públicos.',
-    href: 'https://aguaslindasdegoias.go.gov.br/servico-de-informacao-ao-cidadao/',
-    cta: 'Acessar SIC da Prefeitura',
-  },
-  {
-    category: 'Participação e controle',
-    icon: Landmark,
-    title: 'Acompanhar o Legislativo',
-    description: 'Consulte sessões, pautas, atas, leis e o portal de transparência da Câmara Municipal.',
-    href: 'https://camaradeaguaslindas.go.gov.br/',
-    cta: 'Acessar Câmara Municipal',
-  },
-  {
-    category: 'Participação e controle',
-    icon: Scale,
-    title: 'Enviar manifestação',
-    description: 'O TCMGO mantém Ouvidoria e SIC para solicitações, reclamações e comunicações relacionadas ao controle municipal.',
-    href: 'https://www.tcmgo.tc.br/site/ouvidoria/',
-    cta: 'Acessar Ouvidoria TCMGO',
-  },
-  {
-    category: 'Saúde',
-    icon: Stethoscope,
-    title: 'Serviços de saúde (escalas)',
-    description: 'Consulte as escalas de serviços de saúde publicadas pela Prefeitura.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/escalasmedicas',
-    cta: 'Consultar escalas',
-  },
-  {
-    category: 'Saúde',
-    icon: Pill,
-    title: 'Medicamentos de alto custo',
-    description: 'Consulte as informações oficiais sobre medicamentos de alto custo.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_altocusto',
-    cta: 'Consultar medicamentos',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: Building2,
-    title: 'Obras paralisadas',
-    description: 'Consulte a relação oficial de obras paralisadas.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/obras_paralisadas',
-    cta: 'Consultar obras',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: ReceiptText,
-    title: 'Dispensas e inexigibilidades',
-    description: 'Consulte contratações diretas publicadas no portal oficial.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/sgdispensas',
-    cta: 'Consultar dispensas',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: ReceiptText,
-    title: 'Plano de Contratações Anual',
-    description: 'Consulte o planejamento anual das contratações municipais.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/plano_anual_contratacoes',
-    cta: 'Consultar PCA',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: WalletCards,
-    title: 'Receitas municipais',
-    description: 'Consulte as receitas públicas registradas no portal oficial.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgreceitas',
-    cta: 'Consultar receitas',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: WalletCards,
-    title: 'Folha de pagamento',
-    description: 'Consulte a folha de pagamento e informações remuneratórias.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgservidores',
-    cta: 'Consultar folha',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: BriefcaseBusiness,
-    title: 'Concursos públicos',
-    description: 'Consulte concursos públicos publicados pelo município.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/concursos_selecoes/concursos',
-    cta: 'Consultar concursos',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: BriefcaseBusiness,
-    title: 'Fiscais de contratos',
-    description: 'Consulte os fiscais designados para os contratos municipais.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/fiscais_contratos_sg',
-    cta: 'Consultar fiscais',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: ReceiptText,
-    title: 'Ordem cronológica de pagamentos',
-    description: 'Consulte a ordem cronológica de pagamentos do município.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/ordem_cronologica_pagamentos_pdt',
-    cta: 'Consultar pagamentos',
-  },
-  {
-    category: 'Transparência e controle',
-    icon: SearchCheck,
-    title: 'Dados abertos e API',
-    description: 'Acesse os dados públicos automatizados disponibilizados pela Prefeitura.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/acesso_automatizado',
-    cta: 'Abrir dados abertos',
-  },
-  {
-    category: 'Participação e controle',
-    icon: MessageCircle,
-    title: 'Registrar reclamação',
-    description: 'Registre reclamações diretamente no canal oficial de Ouvidoria.',
-    href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/ouvidoria/reclamacao',
-    cta: 'Registrar reclamação',
-  },
-  {
-    icon: Smartphone,
-    category: 'Eleições 2026',
-    title: 'Usar o e-Título',
-    description: 'Aplicativo oficial da Justiça Eleitoral para serviços como título digital, local de votação, justificativa e certidões.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/servicos/aplicativo-e-titulo',
-    cta: 'Abrir e-Título',
-  },
-  {
-    icon: SearchCheck,
-    category: 'Eleições 2026',
-    title: 'Consultar candidaturas e contas',
-    description: 'O TSE disponibiliza o DivulgaCandContas para consultar candidaturas, situação de registro e informações de contas eleitorais.',
-    href: 'https://divulgacandcontas.tse.jus.br/divulga/#/',
-    cta: 'Abrir DivulgaCandContas',
-  },
-  {
-    icon: SearchCheck,
-    category: 'Eleições 2026',
-    title: 'Consultar local de votação',
-    description: 'O TSE disponibiliza a consulta ao local de votação pelo e-Título e pelos canais oficiais da Justiça Eleitoral.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral',
-    cta: 'Consultar no TSE',
-  },
-  {
-    icon: SearchCheck,
-    category: 'Eleições 2026',
-    title: 'Consultar situação eleitoral',
-    description: 'Confira no Autoatendimento Eleitoral o número, a situação do título, débitos e onde votar. Em 2026, alistamento, transferência e revisão ficam suspensos de 7 de maio a 2 de novembro; outros serviços continuam disponíveis.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/autoatendimento-eleitoral/',
-    cta: 'Consultar no TSE',
-  },
-  {
-    icon: FileQuestion,
-    category: 'Eleições 2026',
-    title: 'Justificar ausência',
-    description: 'Consulte no TSE como justificar a ausência às urnas pelo e-Título, Autoatendimento ou atendimento eleitoral.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/justificativa-eleitoral',
-    cta: 'Ver como justificar',
-  },
-  {
-    icon: ClipboardCheck,
-    category: 'Eleições 2026',
-    title: 'Emitir certidões eleitorais',
-    description: 'Acesse a emissão e validação de certidões de quitação, crimes eleitorais e outros documentos oficiais.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/certidoes',
-    cta: 'Emitir certidão',
-  },
-  {
-    icon: Scale,
-    category: 'Eleições 2026',
-    title: 'Quitar débitos eleitorais',
-    description: 'Consulte e quite multas eleitorais pelos canais oficiais do TSE e confira as orientações de pagamento.',
-    href: 'https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/quitacao-de-multas',
-    cta: 'Consultar débitos',
-  },
-  {
-    icon: Landmark,
-    category: 'Eleições 2026',
-    title: 'Conferir calendário e regras',
-    description: 'Consulte diretamente no TSE as datas, regras e orientações oficiais das Eleições 2026.',
-    href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
-    cta: 'Abrir Eleições 2026',
-  },
-  {
-    icon: Smartphone,
-    category: 'Eleições 2026',
-    title: 'Consultar o Pardal',
-    description: 'Ferramenta oficial do TSE para encaminhar e acompanhar denúncias de propaganda eleitoral irregular.',
-    href: 'https://pardal-web.tse.jus.br/',
-    cta: 'Ver instruções do TSE',
-  },
-  {
-    category: 'Participação e controle',
-    icon: MessageCircle,
-    title: 'Procurar o MPGO',
-    description: 'O Ministério Público de Goiás recebe manifestações e orienta sobre canais para fatos que possam demandar atuação institucional.',
-    href: 'https://www.mpgo.mp.br/portal/pagina/ouvidoria',
-    cta: 'Acessar Ouvidoria MPGO',
-  },
-];
-
 
 const additionalPublicServices = [
   { icon: WalletCards, title: 'Diárias e passagens', description: 'Consulte despesas de diárias e passagens publicadas pela Prefeitura.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgdiarias', cta: 'Consultar diárias' },
@@ -285,48 +56,55 @@ const additionalPublicServices = [
 ] as const;
 
 
-const MUNICIPAL_TRANSPARENCY_BASE = 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/';
+const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
 
-function PublicServiceLink({ href, label }: { readonly href: string; readonly label: string }) {
-  const isMunicipalTransparency = String(href).startsWith(MUNICIPAL_TRANSPARENCY_BASE) && String(href) !== MUNICIPAL_TRANSPARENCY_BASE;
-  return (
-    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-      <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-        {label} <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-      </a>
-      {isMunicipalTransparency && (
-        <a href={MUNICIPAL_TRANSPARENCY_BASE} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center text-[10px] font-semibold text-slate-500 hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300">
-          Abrir portal-base
-        </a>
-      )}
-    </div>
-  );
-}
-
-function shareWhatsApp() {
-  const url = window.location.href;
-  const text = `Observatório Eleitoral — Águas Lindas de Goiás 2026. Dados públicos com fontes e limitações visíveis. ${url}`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-}
+const normalizeServiceQuery = (value: string) =>
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
 export function CivicActionHub() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
+  const summary = mode === 'summary';
+  const initialServiceQuery = typeof window !== 'undefined' && typeof window.history.state?.publicServiceQuery === 'string'
+    ? window.history.state.publicServiceQuery
+    : '';
+  const [serviceQuery, setServiceQuery] = useState(initialServiceQuery);
   const tesser = [
-    ['fontes','Fontes oficiais','Consulte dados e documentos diretamente no TSE.','https://dadosabertos.tse.jus.br/','search'],
-    ['resultados','Resultados 2026','Informações oficiais sobre divulgação e resultados eleitorais.','https://resultados.tse.jus.br/','results'],
-    ['urna','Simulador da urna','Treine a navegação e conheça a sequência da votação.','https://www.tse.jus.br/servicos-eleitorais/urna-eletronica/simulador-de-votacao','vote'],
-    ['votar','Regras para votar','Orientações oficiais para o dia da votação.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
-    ['estatisticas','Estatísticas eleitorais','Dados e séries oficiais da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/estatisticas-eleitorais','stats'],
+    ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
+    ['candidaturas','Candidaturas e contas','Consulte registros, bens, receitas e despesas no DivulgaCandContas.','https://divulgacandcontas.tse.jus.br/divulga/#/','search'],
+    ['resultados','Resultados oficiais','Acompanhe a divulgação oficial quando houver dados publicados.','https://resultados.tse.jus.br/','results'],
+    ['eleicoes2026','Portal Eleições 2026','Calendário, orientações, estatísticas e serviços da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
+    ['justificativa','Justificar ausência','Consulte as formas e os prazos oficiais para justificativa eleitoral.','https://www.tse.jus.br/servicos-eleitorais/justificativa-eleitoral','rules'],
+    ['certidoes','Emitir certidões eleitorais','Acesse certidões e validações disponibilizadas pela Justiça Eleitoral.','https://www.tse.jus.br/servicos-eleitorais/certidoes','service'],
+    ['multas','Quitar débitos eleitorais','Consulte orientações oficiais para débitos e multas eleitorais.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/quitacao-de-multas','service'],
+    ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
   ];
-  const visiblePriority = technical ? priorityPublicServices : priorityPublicServices.slice(0, 6);
+  const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
+  const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
+  const visibleMunicipalServices = normalizedServiceQuery
+    ? allMunicipalServices.filter(service => normalizeServiceQuery(service.title + ' ' + service.description).includes(normalizedServiceQuery))
+    : visiblePriority;
+
+  useEffect(() => {
+    const onServiceSearch = (event: Event) => {
+      const detail = (event as CustomEvent<string>).detail;
+      if (typeof detail === 'string') setServiceQuery(detail);
+    };
+    window.addEventListener('observatorio:public-service-search', onServiceSearch);
+    return () => window.removeEventListener('observatorio:public-service-search', onServiceSearch);
+  }, []);
+
   return (
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
         titleId="action-title"
-        eyebrow="Depois de ler"
-        title="Como usar o dado"
-        description="Links diretos para consultar informações e serviços. O órgão responsável continua sendo a fonte oficial."
+        eyebrow={technical ? 'Da evidência à fonte' : summary ? 'Do resumo à ação' : 'Da leitura à consulta'}
+        title="Serviços e verificação"
+        description={technical
+          ? 'Cruze registros, abra bases oficiais e confira a informação diretamente na instituição responsável.'
+          : summary
+            ? 'Transforme a visão rápida em uma ação útil: consulte serviços, registros e fontes oficiais.'
+            : 'Leve o contexto para a prática com atalhos de consulta, serviços e verificação oficial.'}
       />
 
       <div className="official-hub">
@@ -334,7 +112,7 @@ export function CivicActionHub() {
           <div>
             <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
             <h3 className="official-hub-title">Recursos oficiais</h3>
-            <p className="official-hub-subtitle">Comece por uma das ferramentas mais usadas nas Eleições 2026.</p>
+            <p className="official-hub-subtitle">{technical ? 'Bases e serviços oficiais para conferência detalhada.' : summary ? 'Serviços essenciais para consultar rapidamente.' : 'Serviços e consultas oficiais para continuar a leitura com segurança.'}</p>
           </div>
           <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
             Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -347,9 +125,9 @@ export function CivicActionHub() {
               <span className="official-resource-icon" aria-hidden="true">
                 {icon === 'search' ? <SearchCheck className="h-5 w-5" /> :
                  icon === 'results' ? <Landmark className="h-5 w-5" /> :
-                 icon === 'vote' ? <Smartphone className="h-5 w-5" /> :
+                 icon === 'service' ? <Smartphone className="h-5 w-5" /> :
                  icon === 'rules' ? <ClipboardCheck className="h-5 w-5" /> :
-                 <SearchCheck className="h-5 w-5" />}
+                 <ShieldCheck className="h-5 w-5" />}
               </span>
               <span className="min-w-0 flex-1">
                 <strong>{title}</strong>
@@ -366,12 +144,34 @@ export function CivicActionHub() {
           <div>
             <span className="official-hub-kicker">Águas Lindas · Prefeitura</span>
             <h3 className="official-hub-title">Serviços municipais</h3>
-            <p className="official-hub-subtitle">Acesso direto a transparência, saúde, serviços e participação.</p>
+            <p className="official-hub-subtitle">{technical ? 'Catálogo ampliado para consulta e verificação institucional.' : summary ? 'Atalhos úteis para resolver ou consultar agora.' : 'Transparência, saúde e serviços em caminhos diretos e organizados.'}</p>
           </div>
         </div>
 
+        <div className="mt-4 flex min-w-0 items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.025] p-2 light:border-slate-200 light:bg-slate-50">
+          <SearchCheck className="h-4 w-4 shrink-0 text-sky-300 light:text-sky-700" aria-hidden="true" />
+          <input
+            type="search"
+            value={serviceQuery}
+            onChange={event => setServiceQuery(event.target.value)}
+            placeholder="Buscar serviço municipal…"
+            aria-label="Buscar serviço municipal"
+            className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
+          />
+          {serviceQuery && (
+            <button type="button" onClick={() => setServiceQuery('')} className="min-h-11 rounded-xl px-3 text-xs font-bold text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-100 light:hover:text-slate-900">
+              Limpar
+            </button>
+          )}
+        </div>
+        {serviceQuery && (
+          <p className="mt-2 text-[11px] text-slate-500" role="status">
+            {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
+          </p>
+        )}
+
         <div className="official-resource-grid official-resource-grid-local">
-          {visiblePriority.map(({ icon: Icon, title, description, href }) => (
+          {visibleMunicipalServices.map(({ icon: Icon, title, description, href }) => (
             <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
               <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
               <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small></span>
@@ -380,7 +180,7 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        {technical && <details className="official-more">
+        {technical && !serviceQuery && <details className="official-more">
           <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
           <div className="official-more-grid">
             {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => {

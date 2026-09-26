@@ -16,6 +16,7 @@ function readStoredTheme(): Theme {
     // Continue with system preference when storage is unavailable.
   }
 
+  if (typeof window.matchMedia !== 'function') return 'dark';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
@@ -41,7 +42,13 @@ export function ThemeProvider({ children }: { readonly children: ReactNode }) {
   }, [theme]);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || window.localStorage.getItem(THEME_STORAGE_KEY)) return;
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+    try {
+      if (window.localStorage.getItem(THEME_STORAGE_KEY)) return;
+    } catch {
+      // Continue with the system preference when storage access is restricted.
+    }
 
     const media = window.matchMedia('(prefers-color-scheme: dark)');
     const onChange = () => setTheme(media.matches ? 'dark' : 'light');

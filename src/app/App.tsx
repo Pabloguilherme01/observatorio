@@ -1,4 +1,5 @@
 import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { HeroCountdown } from '../components/sections/HeroCountdown';
@@ -10,17 +11,17 @@ import { LanguageModeProvider, useLanguageMode } from '../context/LanguageModeCo
 import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 import { DataInspector } from '../components/DataInspector';
+import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
 import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
 import '../assets/styles/final-ui.css';
 import '../assets/styles/responsive-type.css';
+import { modeForDestination } from '../config/readingModes';
 
-const loadDashboardGroup = () => import('../components/sections/DeferredDashboardGroup');
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
 const loadElectionGroup = () => import('../components/sections/DeferredElectionGroup');
 const loadPublicDataGroup = () => import('../components/sections/DeferredPublicDataGroup');
-const loadEvidenceGroup = () => import('../components/sections/DeferredEvidenceGroup');
 
 function Deferred({ children }: { readonly children: ReactNode }) {
   return (
@@ -90,24 +91,14 @@ function scrollToHashWhenReady(hash: string) {
   scheduleCheck();
 }
 
-const TECHNICAL_ONLY_DESTINATIONS = new Set(['contexto', 'eleitorado', 'politica', 'candidaturas', 'eleitoral360', 'principios', 'qualidade', 'evidencias', 'fontes', 'exportacao', 'orcamento-impacto', 'quiz']);
-const SUMMARY_DESTINATIONS = new Set(['resumo']);
-
 function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
 
   useEffect(() => {
     const prepareMode = (target: string) => {
-      if (!target || target === 'descubra' || target === 'dashboard') return;
-      if (SUMMARY_DESTINATIONS.has(target)) {
-        if (mode !== 'summary') setMode('summary');
-        return;
-      }
-      if (TECHNICAL_ONLY_DESTINATIONS.has(target)) {
-        if (mode !== 'technical') setMode('technical');
-        return;
-      }
-      if (mode === 'summary') setMode('simple');
+      if (!target) return;
+      const nextMode = modeForDestination(target, mode);
+      if (nextMode !== mode) setMode(nextMode);
     };
 
     const onNavigate = (event: Event) => {
@@ -245,12 +236,12 @@ export function App() {
             <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
-            <div id="analise" className="min-h-24"><DeferredBlock loader={loadDashboardGroup} errorLabel="Dashboard" anchorIds={['analise', 'dashboard']} /></div>
+            <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><DashboardMetrics /></SectionErrorBoundary></div>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
             <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados']} /></div>
-            <div className="mode-scope mode-scope-evidence"><DeferredBlock loader={loadEvidenceGroup} errorLabel="Qualidade e evidências" anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']} /></div>
+            <div className="mode-scope mode-scope-evidence"><SectionErrorBoundary label="Qualidade e evidências"><DeferredEvidenceGroup /></SectionErrorBoundary></div>
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>

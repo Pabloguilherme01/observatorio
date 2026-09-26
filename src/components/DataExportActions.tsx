@@ -5,6 +5,7 @@ import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
 import { Card } from './ui/Card';
 import { EDITION } from '../config/version';
 import { useLanguageMode } from '../context/LanguageModeContext';
+import { copyText } from '../lib/clipboard';
 
 const categoryFor = (id: string) => {
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
@@ -23,25 +24,6 @@ const rows: readonly (readonly ExportCell[])[] = [
     return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.referenceDate ?? ''];
   }),
 ];
-
-async function copyText(text: string): Promise<boolean> {
-  try {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  } catch {}
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.setAttribute('readonly', '');
-  textarea.style.position = 'fixed';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-  const copied = document.execCommand('copy');
-  textarea.remove();
-  return copied;
-}
 
 export function DataExportActions() {
   const { mode } = useLanguageMode();

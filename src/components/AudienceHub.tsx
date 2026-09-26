@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, Database, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
 
 type Topic = {
@@ -18,10 +18,10 @@ const topics: readonly Topic[] = [
 ];
 
 const officialResources = [
-  { label: 'Resultados 2026', href: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados', note: 'Divulgação oficial', icon: Vote },
-  { label: 'Simulador da urna', href: 'https://www.justicaeleitoral.jus.br/simulador-votacao/', note: 'Treine a votação', icon: FileCheck2 },
-  { label: 'Regras para votar', href: 'https://www.tse.jus.br/eleicoes/eleicoes-2026', note: 'Orientações do TSE', icon: ShieldCheck },
-  { label: 'Estatísticas eleitorais', href: 'https://www.tse.jus.br/eleicoes/estatisticas', note: 'Séries oficiais', icon: Database },
+  { label: 'Autoatendimento eleitoral', href: 'https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral', note: 'Título, situação e local de votação', icon: Vote },
+  { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores oficiais', icon: BarChart3 },
+  { label: 'LOA 2026', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654', note: 'Orçamento municipal vigente', icon: WalletCards },
+  { label: 'Resultados 2026', href: 'https://resultados.tse.jus.br/', note: 'Resultados oficiais quando publicados', icon: ShieldCheck },
 ] as const;
 
 const technicalLinks = [
@@ -46,16 +46,16 @@ export function AudienceHub() {
       <div className="audience-page-card">
         <header className="audience-intro">
           <div className="audience-intro-copy">
-            <span className="audience-kicker">Navegue sem se perder</span>
+            <span className="audience-kicker">Seu ponto de partida</span>
             <h2 id="audience-title">
-              {isSummary ? 'O essencial, primeiro.' : isTechnical ? 'Explore e confira.' : 'Entenda e explore.'}
+              {isSummary ? 'O essencial da cidade, sem ruído.' : isTechnical ? 'Investigue cada número até a fonte.' : 'Entenda a cidade com contexto.'}
             </h2>
             <p>
               {isSummary
-                ? 'Poucos caminhos, sem excesso. Abra um tema, leia os números e avance quando precisar.'
+                ? 'Uma entrada rápida para os principais números, serviços e fontes. Você decide quando aprofundar.'
                 : isTechnical
-                  ? 'Cada caminho leva a dados, fontes, métodos ou registros que podem ser conferidos.'
-                  : 'Escolha um assunto. O restante da leitura fica organizado em blocos curtos e comparáveis.'}
+                  ? 'Percorra o caminho completo do dado: valor, origem, referência, método e limitações em uma mesma jornada.'
+                  : 'Escolha um tema e transforme números isolados em uma leitura conectada, clara e comparável.'}
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export function AudienceHub() {
               <kbd>⌘K</kbd>
             </button>
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-              <span>{isSummary ? 'Abrir resumo' : isTechnical ? 'Abrir dados' : 'Começar a explorar'}</span>
+              <span>{isSummary ? 'Ver visão executiva' : isTechnical ? 'Abrir auditoria dos dados' : 'Explorar com contexto'}</span>
               <ArrowRight aria-hidden="true" />
             </button>
           </div>
@@ -82,7 +82,7 @@ export function AudienceHub() {
                 <span>01</span>
                 <h3 id="topics-title">Escolha um assunto</h3>
               </div>
-              <p>Seis caminhos principais. Sem menu escondido.</p>
+              <p>Caminhos principais para acessar os temas do observatório.</p>
             </div>
             <div className="audience-topic-grid">
               {(isTechnical ? topics : topics.slice(0, 5)).map(({ id, label, description, icon: Icon }) => (
@@ -103,9 +103,9 @@ export function AudienceHub() {
           <div className="audience-block-head">
             <div>
               <span>{isSummary ? '02' : '02'}</span>
-              <h3 id="actions-title">{isSummary ? 'Ações úteis' : 'Ferramentas para continuar'}</h3>
+              <h3 id="actions-title">{isSummary ? 'Próximos passos' : isTechnical ? 'Ferramentas de verificação' : 'Continue a leitura'}</h3>
             </div>
-            <p>{isSummary ? 'Faça algo com o que acabou de ler.' : 'Atalhos que realmente levam a uma ação.'}</p>
+            <p>{isSummary ? 'Do resumo à consulta em poucos toques.' : isTechnical ? 'Atalhos para conferir, cruzar e rastrear informações.' : 'Consulte, compare e avance sem perder o contexto.'}</p>
           </div>
 
           <div className="audience-action-grid">
@@ -126,7 +126,7 @@ export function AudienceHub() {
               <>
                 <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
                   <span className="audience-action-icon">?</span>
-                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para aprender brincando.</small></span>
+                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para conferir dados e fontes.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
                 <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
@@ -149,14 +149,14 @@ export function AudienceHub() {
             <div className="audience-block-head">
               <div>
                 <span>03</span>
-                <h3 id="official-title">Recursos oficiais</h3>
+                <h3 id="official-title">Fontes e serviços oficiais</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Ver fontes <ArrowRight aria-hidden="true" />
+                Conferir origem <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">
-              {officialResources.slice(0, isTechnical ? officialResources.length : 3).map(({ label, href, note, icon: Icon }) => (
+              {officialResources.slice(0, isSummary ? 3 : officialResources.length).map(({ label, href, note, icon: Icon }) => (
                 <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
                   <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                   <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
@@ -172,10 +172,10 @@ export function AudienceHub() {
             <div className="audience-block-head">
               <div>
                 <span>03</span>
-                <h3 id="technical-title">Conferência técnica</h3>
+                <h3 id="technical-title">Camada de verificação</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Abrir evidências <ArrowRight aria-hidden="true" />
+                Abrir trilha de evidências <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">

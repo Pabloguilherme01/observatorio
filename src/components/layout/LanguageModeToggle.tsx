@@ -1,20 +1,27 @@
-import { Check, Code2, FileText, Info, List } from 'lucide-react';
+import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'rápido', description: 'Para se situar: números-chave, contexto mínimo e caminhos de aprofundamento', icon: List },
-  { id: 'simple' as const, label: 'Simples', sub: 'claro', description: 'Para entender: indicadores, comparações e contexto em linguagem direta', icon: FileText },
-  { id: 'technical' as const, label: 'Técnico', sub: 'rastreável', description: 'Para auditar: fonte, data, método, recortes, cálculos e limitações', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'executivo', description: 'Entrega o essencial primeiro: números centrais, serviços e caminhos de aprofundamento.', icon: List },
+  { id: 'simple' as const, label: 'Simples', sub: 'guiado', description: 'Explica os números com contexto e comparações em uma leitura fluida e direta.', icon: FileText },
+  { id: 'technical' as const, label: 'Técnico', sub: 'auditável', description: 'Abre fonte, data, método, recortes, cálculos e limitações para conferência completa.', icon: Code2 },
 ] as const;
 
+const modeGuide = {
+  summary: { title: 'Leitura executiva', detail: 'O essencial primeiro · avance só quando fizer sentido' },
+  simple: { title: 'Leitura guiada', detail: 'Números com contexto · clareza sem excesso' },
+  technical: { title: 'Leitura auditável', detail: 'Evidência, método e limites · rastreabilidade completa' },
+} as const;
+
 export function LanguageModeToggle() {
-  const { mode, setMode } = useLanguageMode();
+  const { mode, setMode, cycleMode } = useLanguageMode();
+  const guide = modeGuide[mode];
 
   return (
     <div className="language-toggle language-toggle-v3" role="group" aria-label="Escolha como você quer ler os dados">
       <div className={'language-toggle-label mode-' + mode} data-mode-label={mode} aria-live="polite">
         <Info aria-hidden="true" />
-        <span><strong>Modo de leitura</strong><small>{mode === 'summary' ? 'Rápido · essencial primeiro' : mode === 'simple' ? 'Claro · contexto sem excesso' : 'Rastreável · fonte, método e limites'}</small></span>
+        <span><strong>{guide.title}</strong><small>{guide.detail}</small></span>
       </div>
       <div className="language-toggle-options">
         {items.map(({ id, label, sub, description, icon: Icon }) => (
@@ -34,6 +41,16 @@ export function LanguageModeToggle() {
           </button>
         ))}
       </div>
+      <button
+        type="button"
+        className="language-toggle-deepen"
+        onClick={cycleMode}
+        aria-label={mode === 'technical' ? 'Voltar para visão executiva' : 'Aprofundar leitura'}
+        title={mode === 'technical' ? 'Voltar à visão executiva' : 'Avançar para o próximo nível de detalhe'}
+      >
+        <span>{mode === 'technical' ? 'Voltar à visão executiva' : mode === 'summary' ? 'Ver com contexto' : 'Abrir camada técnica'}</span>
+        <ChevronRight aria-hidden="true" />
+      </button>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import '../../assets/styles/search-modal.css';
-import { BarChart3, BookOpen, BusFront, Database, Droplets, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
+import { BarChart3, BookOpen, BusFront, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
@@ -25,14 +25,15 @@ const entries: readonly SearchEntry[] = [
   ['Exportação', 'exportacao', 'primary'],
   ['Pesquisa registrada', 'politica', 'primary'],
   ['HEALGO', 'saude', 'primary'],
-  ['Resumo de leitura', 'resumo', 'primary'],
+  ['Resumo executivo', 'resumo', 'primary'],
   ...publicServiceSearchEntries,
 ];
 
 const normalize = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
-const sourceLabel = (sourceId: string) => d.sources.find(source => source.id === sourceId)?.label ?? sourceId;
+const sourceForId = (sourceId: string) => d.sources.find(source => source.id === sourceId);
+const sourceLabel = (sourceId: string) => sourceForId(sourceId)?.label ?? sourceId;
 const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Exportação', acao: 'Serviços públicos' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
@@ -138,6 +139,8 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     return null;
   }, [query]);
 
+  const quickSource = quickAnswer ? sourceForId(quickAnswer.sourceId) : null;
+
   const filtered = useMemo(() => {
     const queryNormalized = normalize(query);
     const fare = Number(d.indicators.find(indicator => indicator.id === 'fare')?.value ?? 0);
@@ -219,7 +222,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
                 type="button"
                 data-search-index={index}
                 onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectResult(item.id)}
+                onClick={() => selectResult(item.id, item.label, item.kind)}
                 className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
                 role="option"
                 aria-selected={activeIndex === index}
@@ -238,12 +241,20 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     );
   });
 
-  const selectResult = (id: string) => {
+  const selectResult = (id: string, label?: string, kind?: ResultKind) => {
     onClose();
-    const knownDestination = id === 'resumo' || id === 'saude' || id === 'candidaturas' || id === 'exportacao' || id === 'acao' || navigation.some(item => item.id === id);
-    const resolvedTarget = id === 'resumo' ? 'dashboard' : id;
-    const target = knownDestination ? resolvedTarget : (document.getElementById(id) ? id : 'dashboard');
+    const knownDestination = ['resumo', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
+    const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
+    const publicServiceQuery = kind === 'public' && label ? label : null;
     const currentTarget = window.location.hash.replace('#', '');
+
+    if (publicServiceQuery) {
+      window.history.replaceState({ ...(window.history.state ?? {}), publicServiceQuery }, '', '#acao');
+      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'acao' }));
+      window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: publicServiceQuery }));
+      return;
+    }
+
     if (currentTarget === target) {
       window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
       return;
@@ -269,7 +280,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
               onKeyDown={event => {
                 if (event.key === 'Enter' && filtered[activeIndex]) {
                   event.preventDefault();
-                  selectResult(filtered[activeIndex].id);
+                  selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind);
                 }
               }}
               placeholder="Ex.: orçamento, transporte, eleitorado, HEAL…"
@@ -292,7 +303,14 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <div className="search-kicker">Resposta rápida</div>
           <div className="mt-1 text-sm font-black text-white">{quickAnswer.title}</div>
           <div className="mt-1 text-2xl font-black text-sky-300">{quickAnswer.value}</div>
-          <button type="button" onClick={() => selectResult(quickAnswer.id)} className="mt-3 search-quick-action">Abrir seção e contexto</button>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" onClick={() => selectResult(quickAnswer.id)} className="search-quick-action">Abrir seção e contexto</button>
+            {quickSource?.url && (
+              <a href={quickSource.url} target="_blank" rel="noopener noreferrer" className="search-quick-action">
+                Fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            )}
+          </div>
           <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
 

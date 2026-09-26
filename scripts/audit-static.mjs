@@ -145,14 +145,14 @@ must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includ
 must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
-const deferredGroups = ['DeferredDashboardGroup', 'DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup', 'DeferredEvidenceGroup'];
+const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup'];
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
+must(appSource.includes("import DeferredEvidenceGroup") && appSource.includes("<DeferredEvidenceGroup />") && !appSource.includes("loadEvidenceGroup"), 'fontes, exportação e evidências base montam sem depender de lazy loading');
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
 must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && contextSource.includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
-const deferredDashboard = read('src/components/sections/DeferredDashboardGroup.tsx');
-must(appSource.includes('id="analise"') && appSource.includes('loadDashboardGroup') && deferredDashboard.includes('DashboardMetrics'), 'atalho legado #analise aponta para o dashboard');
+must(appSource.includes('id="analise"') && appSource.includes('<DashboardMetrics />'), 'atalho legado #analise aponta para o dashboard montado diretamente');
 const dashboardIdCount = (dashboardMetrics.match(/id=["']dashboard["']/g) ?? []).length;
 const analiseIdCount = (appSource.match(/id=["']analise["']/g) ?? []).length;
 must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#dashboard possui uma única âncora pública no DashboardMetrics');
@@ -165,9 +165,9 @@ must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<Audien
 
 const allRuntimeText = [
   appSource,
+  read('src/components/sections/DeferredContextGroup.tsx'),
   read('src/components/sections/DeferredCivicGroup.tsx'),
   read('src/components/sections/DeferredPublicDataGroup.tsx'),
-  read('src/components/sections/DeferredEvidenceGroup.tsx'),
   read('src/components/sections/DeferredEvidenceGroup.tsx'),
 ].join('\n');
 must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
@@ -175,9 +175,14 @@ must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<
 must(allRuntimeText.includes('<PublicDataPulse />') && appSource.includes('<Footer />'), 'atualizações públicas e footer institucional montados');
 must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
 
-for (const id of ['descubra', 'principios', 'dashboard', 'contexto', 'acao', 'eleitoral360', 'dados', 'qualidade', 'evidencias', 'fontes']) {
-  must(navigation.includes(`id: '${id}'`), `navegação contém #${id}`);
+for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'fontes']) {
+  must(navigation.includes(`id: '${id}'`), `navegação pública contém #${id}`);
 }
+for (const id of ['principios', 'contexto', 'dados', 'qualidade', 'evidencias']) {
+  must(!navigation.includes(`id: '${id}'`), `subcamada #${id} não polui a navegação pública`);
+}
+must(allRuntimeText.includes('<ProjectTrustPanel />') && allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'método, qualidade e evidências continuam disponíveis no conteúdo técnico');
+must(allRuntimeText.includes('<ContextComparison />') && allRuntimeText.includes('<PublicDataPulse />'), 'contexto e atualizações públicas continuam disponíveis fora do menu principal');
 
 must(candidates.schemaVersion === 3 && candidates.coverage === 'state_watchlist', 'snapshot atual usa exclusivamente o contrato estadual watchlist');
 must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
@@ -265,12 +270,14 @@ if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
 
 
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+const clipboard = read('src/lib/clipboard.ts');
 const sharing = [
   read('src/components/sections/ExecutiveSummary.tsx'),
-  read('src/components/sections/CivicActionHub.tsx'),
+  read('src/components/sections/QuickQuiz.tsx'),
+  read('src/components/TransportCalculator.tsx'),
 ].join('\n');
 must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modo Resumo/Simples/Técnico possui componente próprio');
-must(sharing.includes('navigator.share') && sharing.includes('wa.me'), 'compartilhamento nativo e WhatsApp permanecem disponíveis');
+must(sharing.includes('navigator.share') && sharing.includes('copyText') && clipboard.includes('navigator.clipboard') && clipboard.includes("document.createElement('textarea')"), 'compartilhamento nativo usa um fallback de cópia único e resiliente');
 
 if (!errors.length) {
   pass(`auditoria estática concluída para ${edition}`);

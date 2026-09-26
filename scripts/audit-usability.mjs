@@ -59,12 +59,15 @@ pass('jornada pública cobre descobrir → conferir mudanças → verificar font
 
 
 const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
+const readingModes = texts.find(item => item.file === 'src/config/readingModes.ts')?.content ?? '';
+const languageContextSource = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
 if (
   app.includes('NavigationModeBridge') &&
-  app.includes("TECHNICAL_ONLY_DESTINATIONS") &&
-  app.includes("if (mode === 'summary') setMode('simple')") &&
-  app.includes("setMode('technical')")
-) pass('deep links e navegação central sincronizam o modo de leitura com a seção');
+  app.includes('modeForDestination') &&
+  readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') &&
+  readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') &&
+  languageContextSource.includes('fallbackDestinationForMode')
+) pass('deep links, navegação e redução de modo compartilham a mesma política de visibilidade');
 else fail('navegação por hash pode abrir uma seção escondida no modo de leitura atual');
 const header = texts.find(item => item.file === 'src/components/layout/Header.tsx')?.content ?? '';
 if (
@@ -124,6 +127,8 @@ else pass('navegação mobile rotulada e integrada ao fluxo principal');
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
+if (search.includes('observatorio:public-service-search') && civic.includes('Buscar serviço municipal') && civic.includes('visibleMunicipalServices')) pass('busca global entrega o serviço municipal já filtrado');
+else fail('resultado de serviço público pode abrir uma lista genérica sem destacar o item procurado');
 if (
   search.includes("const knownDestination =") &&
   search.includes("navigation.some(item => item.id === id)") &&
@@ -132,8 +137,13 @@ if (
 else fail('busca pode perder destinos lazy antes da montagem do componente');
 
 const appForLazy = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
-if (appForLazy.includes("anchorIds={['principios', 'qualidade', 'evidencias', 'fontes', 'exportacao']}") && search.includes("id === 'resumo' ? 'dashboard' : id")) pass('aliases da busca resolvem Resumo e Exportação para destinos montáveis');
-else fail('aliases da busca podem apontar para destinos sem montagem lazy');
+if (
+  appForLazy.includes('<DeferredEvidenceGroup />') &&
+  !appForLazy.includes('loadEvidenceGroup') &&
+  search.includes("'politica', 'qualidade'") &&
+  search.includes("knownDestination ? id")
+) pass('busca preserva destinos de fontes/exportação já montados e destinos técnicos lazy');
+else fail('aliases da busca podem apontar para destinos sem montagem compatível');
 
 const css = texts.find(item => item.file === 'src/assets/styles/globals.css')?.content ?? '';
 for (const [needle, label] of [[':focus-visible','foco visível'],['prefers-reduced-motion','redução de movimento'],['safe-area-inset-bottom','safe-area mobile'],['scroll-snap-type','rails mobile'],['@media (max-width:390px)','telas muito pequenas'],['min-height:44px','alvo de toque mobile'],['--mobile-touch:44px','alvo de toque mobile']]) {

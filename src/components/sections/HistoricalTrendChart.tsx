@@ -1,6 +1,6 @@
 import '../../assets/styles/dashboard.css';
 import { Activity, CalendarDays, Users } from 'lucide-react';
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatNumber } from '../../utils/formatters';
 
@@ -89,8 +89,12 @@ function TrendLine({
 
 function CombinedChart() {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
+    <LineChart
+      responsive
+      style={{ width: '100%', height: 320, minWidth: 0, maxWidth: '100%' }}
+      data={trendData}
+      margin={{ top: 10, right: 8, bottom: 4, left: -8 }}
+    >
         <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} tickMargin={8} />
         <YAxis yAxisId="population" width={58} tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickFormatter={value => formatNumber(Number(value))} />
@@ -100,7 +104,6 @@ function CombinedChart() {
         <TrendLine dataKey="population" name="População" axisId="population" tone="text-sky-300 light:text-sky-700" />
         <TrendLine dataKey="electorate" name="Eleitorado" axisId="electorate" tone="text-violet-300 light:text-violet-700" />
       </LineChart>
-    </ResponsiveContainer>
   );
 }
 
@@ -116,15 +119,18 @@ function SingleSeriesChart({
   readonly tone: string;
 }) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={trendData} margin={{ top: 10, right: 8, bottom: 4, left: -8 }}>
+    <LineChart
+      responsive
+      style={{ width: '100%', height: 205, minWidth: 0, maxWidth: '100%' }}
+      data={trendData}
+      margin={{ top: 10, right: 8, bottom: 4, left: -8 }}
+    >
         <CartesianGrid strokeDasharray="3 5" vertical={false} className="stroke-slate-700/30 light:stroke-slate-300/70" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fontSize: 10 }} tickMargin={6} />
         <YAxis yAxisId={axisId} width={58} tickLine={false} axisLine={false} tick={{ fontSize: 9 }} tickFormatter={value => formatNumber(Number(value))} />
-        <Tooltip cursor={{ strokeDasharray: '3 5' }} content={<TrendTooltip />} />
+        <Tooltip axisId={axisId} cursor={{ strokeDasharray: '3 5' }} content={<TrendTooltip />} />
         <TrendLine dataKey={dataKey} name={name} axisId={axisId} tone={tone} />
       </LineChart>
-    </ResponsiveContainer>
   );
 }
 
@@ -151,18 +157,18 @@ export function HistoricalTrendChart() {
         </div>
       </figcaption>
 
-      <div className="mt-4 hidden h-[270px] w-full min-[420px]:block sm:h-[320px]" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
+      <div className="dashboard-history-chart mt-4 w-full min-w-0" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
         <CombinedChart />
       </div>
 
-      <div className="mt-4 block min-[420px]:hidden" aria-label="Séries históricas separadas em telas estreitas">
+      <div className="dashboard-history-mobile-detail mt-4 hidden" aria-label="Séries históricas separadas">
         <div className="rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
           <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-sky-300/80 light:text-sky-700">População</div>
-          <div className="h-[205px] w-full"><SingleSeriesChart dataKey="population" name="População" axisId="population-mobile" tone="text-sky-300 light:text-sky-700" /></div>
+          <div className="w-full"><SingleSeriesChart dataKey="population" name="População" axisId="population-mobile" tone="text-sky-300 light:text-sky-700" /></div>
         </div>
         <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-white">
           <div className="mb-1 text-[10px] font-black uppercase tracking-[0.14em] text-violet-300/80 light:text-violet-700">Eleitorado</div>
-          <div className="h-[205px] w-full"><SingleSeriesChart dataKey="electorate" name="Eleitorado" axisId="electorate-mobile" tone="text-violet-300 light:text-violet-700" /></div>
+          <div className="w-full"><SingleSeriesChart dataKey="electorate" name="Eleitorado" axisId="electorate-mobile" tone="text-violet-300 light:text-violet-700" /></div>
         </div>
       </div>
 

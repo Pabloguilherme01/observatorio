@@ -22,9 +22,9 @@ export default function DeferredContextGroup() {
     {!summary && <TransportCalculator />}
     {!summary && <SanitationHealthSection />}
     {!summary && <QuickQuiz />}
+    {!summary && <ElectoralProfile />}
 
     {technical && <SnapshotChanges />}
     {technical && <ContextComparison />}
-    {technical && <ElectoralProfile />}
   </>;
 }

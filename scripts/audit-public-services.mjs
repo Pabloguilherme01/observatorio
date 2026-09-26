@@ -4,8 +4,6 @@ import path from 'node:path';
 const root = process.cwd();
 const file = path.join(root, 'src/components/sections/CivicActionHub.tsx');
 const source = fs.readFileSync(file, 'utf8');
-const contactsFile = path.join(root, 'src/data/publicContacts.ts');
-const contactsSource = fs.readFileSync(contactsFile, 'utf8');
 
 const required = [
   ['Medicamentos SUS', 'medicamentos_sus'],
@@ -20,25 +18,14 @@ const required = [
   ['CREAS', 'centro-de-referencia-especializado-de-assistencia-social-creas'],
   ['Defesa Civil', 'prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes'],
   ['Água e esgoto — atendimento', 'saneago.com.br/site'],
-  ['Conselho Tutelar', 'estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar'],
-  ['CAPS', 'estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial'],
-  ['SAMU', 'estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia'],
-  ['Portal SEI · Pessoa com deficiência', 'portalsei.aguaslindasdegoias.go.gov.br'],
-  ['Proteção e bem-estar animal', 'portalsei.aguaslindasdegoias.go.gov.br'],
-  ['Trânsito e mobilidade urbana', 'estrutura/secretaria-de-transito-e-mobilidade-urbana'],
-  ['Serviços de saúde (escalas)', 'escalasmedicas'],
-  ['Medicamentos de alto custo', 'medicamentos_altocusto'],
-  ['Obras paralisadas', 'obras_paralisadas'],
-  ['Dispensas e inexigibilidades', 'sgdispensas'],
-  ['Plano de Contratações Anual', 'plano_anual_contratacoes'],
-  ['Receitas municipais', 'sgreceitas'],
-  ['Folha de pagamento', 'sgservidores'],
-  ['Concursos públicos', 'concursos_selecoes/concursos'],
-  ['Fiscais de contratos', 'fiscais_contratos_sg'],
-  ['Ordem cronológica de pagamentos', 'ordem_cronologica_pagamentos_pdt'],
-  ['Dados abertos e API', 'acesso_automatizado'],
-  ['Registrar reclamação', 'ouvidoria/reclamacao'],
-  ['Consultar o Pardal', 'pardal-web.tse.jus.br'],
+  ['Conselho Tutelar', 'conselho-tutelar'],
+  ['CAPS', 'caps-centro-de-atencao-psicossocial'],
+  ['SAMU', 'samu-servico-de-atendimento-movel-de-urgencia'],
+  ['Consultar situação eleitoral', 'titulo-eleitoral/autoatendimento-eleitoral'],
+  ['Candidaturas e contas', 'divulgacandcontas.tse.jus.br'],
+  ['Resultados oficiais', 'resultados.tse.jus.br'],
+  ['Portal Eleições 2026', 'tse.jus.br/eleicoes/eleicoes-2026'],
+  ['Dados abertos do TSE', 'dadosabertos.tse.jus.br'],
 ];
 
 async function checkLive(url) {
@@ -58,68 +45,57 @@ const fail = [];
 const pass = message => console.log('PASS', message);
 
 for (const [label, pathFragment] of required) {
-  if (!source.includes(label) || !source.includes(pathFragment)) {
-    fail.push(label);
-  } else {
-    pass(label + ' possui atalho direto');
-  }
+  if (!source.includes(label) || !source.includes(pathFragment)) fail.push(label);
+  else pass(label + ' possui atalho direto');
 }
 
-const actionsBlock = source.slice(source.indexOf('const actions = ['), source.indexOf('const additionalPublicServices'));
-const additionalBlock = source.slice(source.indexOf('const additionalPublicServices'), source.indexOf('function shareWhatsApp'));
-const priorityBlock = source.slice(source.indexOf('const priorityPublicServices'), source.indexOf('const actions = ['));
-const serviceUrls = [
-  ...[...priorityBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
-  ...[...actionsBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
-  ...[...additionalBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]),
-];
+const priorityBlock = source.slice(source.indexOf('const priorityPublicServices'), source.indexOf('const additionalPublicServices'));
+const additionalBlock = source.slice(source.indexOf('const additionalPublicServices'), source.indexOf('export function CivicActionHub'));
+const tseBlock = source.slice(source.indexOf('const tesser = ['), source.indexOf('const visiblePriority'));
+
+const objectUrls = block => [...block.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]);
+const tupleUrls = [...tseBlock.matchAll(/'(https:\/\/[^']+)'/g)].map(match => match[1]);
+const serviceUrls = [...objectUrls(priorityBlock), ...objectUrls(additionalBlock), ...tupleUrls];
 const urls = [...new Set(serviceUrls)];
-const renderedLinks = [...source.matchAll(/<a\b[^>]*href=\"(?:https?:\/\/)[^\"]+\"[^>]*>/g)].map(match => match[0]);
-const insecureLinks = renderedLinks.filter(link => /target=\"_blank\"/.test(link) && !/rel=\"[^\"]*noopener[^\"]*\"/.test(link));
-if (insecureLinks.length) {
-  fail.push(`links públicos com target=_blank sem noopener: ${insecureLinks.length}`);
-} else {
-  pass('links públicos externos preservam noopener em target=_blank');
-}
-const allPublicActionLinks = serviceUrls.length;
-if (allPublicActionLinks < 74) {
-  fail.push(`quantidade de atalhos públicos cadastrados abaixo do esperado: ${allPublicActionLinks}`);
-} else {
-  pass(`${allPublicActionLinks} atalhos públicos cadastrados possuem URL auditável (${urls.length} URLs únicas)`);
-}
 
-const contactContract = [
-  ['SAMU', 'tel:192', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/'],
-  ['Defesa Civil', 'tel:+5561996699434', 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/'],
-  ['Conselho Tutelar', 'tel:+5561993038040', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/'],
-  ['CAPS', 'tel:+556136181559', 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/'],
+const renderedLinks = [...source.matchAll(/<a\b[^>]*href="(?:https?:\/\/)[^"]+"[^>]*>/g)].map(match => match[0]);
+const insecureLinks = renderedLinks.filter(link => /target="_blank"/.test(link) && !/rel="[^"]*noopener[^"]*"/.test(link));
+if (insecureLinks.length) fail.push(`links públicos com target=_blank sem noopener: ${insecureLinks.length}`);
+else pass('links públicos externos preservam noopener em target=_blank');
+
+if (serviceUrls.length < 53) fail.push(`catálogo útil abaixo do esperado: ${serviceUrls.length} atalhos`);
+else pass(`${serviceUrls.length} atalhos públicos úteis cadastrados (${urls.length} URLs únicas)`);
+
+const serviceTitles = [
+  ...[...priorityBlock.matchAll(/title:\s*'([^']+)'/g)].map(match => match[1]),
+  ...[...additionalBlock.matchAll(/title:\s*'([^']+)'/g)].map(match => match[1]),
 ];
-for (const [label, tel, sourceUrl] of contactContract) {
-  if (!contactsSource.includes(label) || !contactsSource.includes(tel) || !contactsSource.includes(sourceUrl) || !contactsSource.includes('verifiedAt: \'2026-09-25\'')) fail.push(label + ' sem contrato de contato/fonte');
-  else pass(label + ' possui telefone e fonte oficial vinculados');
+const duplicateTitles = serviceTitles.filter((title, index) => serviceTitles.indexOf(title) !== index);
+if (duplicateTitles.length) fail.push('serviços municipais duplicados: ' + [...new Set(duplicateTitles)].join(', '));
+else pass('catálogo municipal não repete o mesmo serviço por título');
+
+const additionalUrls = objectUrls(additionalBlock);
+if (additionalUrls.length !== 28) fail.push(`catálogo técnico adicional esperado=28 atual=${additionalUrls.length}`);
+else pass('28 serviços oficiais adicionais permanecem disponíveis no aprofundamento técnico');
+
+if (!source.includes("const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);")) {
+  fail.push('serviços prioritários podem voltar a duplicar no modo técnico');
+} else {
+  pass('modo técnico separa atalhos prioritários do catálogo expandido sem duplicação');
 }
 
-const categories = [...actionsBlock.matchAll(/category:\s*'([^']+)'/g)].map(match => match[1]);
-const categorySet = new Set(categories);
-for (const expectedCategory of ['Prefeitura', 'Saúde', 'Transparência e controle', 'Participação e controle', 'Eleições 2026']) {
-  if (!categorySet.has(expectedCategory)) fail.push('categoria pública ausente: ' + expectedCategory);
+for (const staleMarker of ['const actions = [', 'function PublicServiceLink', 'function shareWhatsApp', 'immediatePublicContacts']) {
+  if (source.includes(staleMarker)) fail.push('código morto reintroduzido: ' + staleMarker);
 }
-if (categories.length !== 28) fail.push(`ações categorizadas esperado=28 atual=${categories.length}`);
-else pass('28 serviços complementares estão categorizados');
-const additionalUrls = [...additionalBlock.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]);
-if (additionalUrls.length !== 28) fail.push(`catálogo adicional esperado=28 atual=${additionalUrls.length}`);
-else pass('28 serviços oficiais adicionais estão catalogados');
+if (!fail.some(item => item.startsWith('código morto reintroduzido'))) pass('hub não mantém ações órfãs sem interface');
 
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
   'aguaslindasdegoias.go.gov.br',
-  'legislacao.aguaslindasdegoias.go.gov.br',
-  'camaradeaguaslindas.go.gov.br',
-  'www.tcmgo.tc.br',
   'www.tse.jus.br',
   'divulgacandcontas.tse.jus.br',
-  'www.mpgo.mp.br',
-  'pardal-web.tse.jus.br',
+  'resultados.tse.jus.br',
+  'dadosabertos.tse.jus.br',
   'portalsei.aguaslindasdegoias.go.gov.br',
   'www.saneago.com.br',
 ]);
@@ -127,9 +103,7 @@ const allowedHosts = new Set([
 for (const url of urls) {
   try {
     const parsed = new URL(url);
-    if (!allowedHosts.has(parsed.hostname)) {
-      fail.push('host não oficial no serviço público: ' + url);
-    }
+    if (!allowedHosts.has(parsed.hostname)) fail.push('host não oficial no serviço público: ' + url);
   } catch {
     fail.push('URL inválida: ' + url);
   }
@@ -144,14 +118,10 @@ if (process.env.AUDIT_PUBLIC_SERVICES_LIVE === 'true') {
     }
     if ([404, 410].includes(result.status)) {
       fail.push(`endpoint público responde com ${result.status}: ${url}`);
-    } else if (result.status >= 500 && /legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(url)) {
-      console.warn('WARN', url, `retornou ${result.status}; portal de legislação pode bloquear o runner, mas a fonte oficial permanece registrada`);
-    } else if (result.status >= 500) {
-      fail.push(`endpoint público responde com ${result.status}: ${url}`);
     } else if ([401, 403, 429].includes(result.status)) {
-      const isMunicipalPortal = /acessoainformacao\\.aguaslindasdegoias\\.go\\.gov\\.br/i.test(url);
-      const suffix = isMunicipalPortal ? '; a interface oferece fallback para o portal-base oficial' : '; pode haver proteção do portal/runner';
-      console.warn('WARN', url, `retornou ${result.status}${suffix}`);
+      console.warn('WARN', url, `retornou ${result.status}; o portal pode restringir verificações automatizadas`);
+    } else if (result.status >= 500) {
+      console.warn('WARN', url, `retornou ${result.status}; fonte oficial permanece cadastrada, mas o endpoint está instável`);
     } else if (result.status >= 300 && result.status < 400 && !result.location) {
       console.warn('WARN', url, `retornou ${result.status} sem Location`);
     } else {

@@ -24,6 +24,7 @@ export function Header() {
   const toolsButtonRef = useRef<HTMLButtonElement>(null);
   const toolsPanelRef = useRef<HTMLDivElement>(null);
   const updatedAt = formatDate(d.meta.updatedAt);
+  const moreActive = moreNavigation.some(item => item.id === activeSection);
 
   const captureDate = new Date(d.meta.updatedAt);
   const now = new Date();
@@ -175,8 +176,9 @@ export function Header() {
                     (event.key === 'ArrowUp' ? items.at(-1) : items[0])?.focus();
                   });
                 }}
-                className="rounded-xl px-3 py-2 text-xs font-semibold text-slate-400 transition hover:bg-white/5 hover:text-white focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2"
+                className={'rounded-xl px-3 py-2 text-xs font-semibold transition focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 ' + (moreActive ? 'bg-white/10 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}
                 aria-expanded={moreOpen}
+                aria-current={moreActive ? 'page' : undefined}
                 aria-haspopup="menu"
                 aria-controls="desktop-more-menu"
               >
@@ -220,7 +222,7 @@ export function Header() {
             <button type="button" onClick={() => setSearchOpen(true)} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
-            <div className="hidden md:block"><LanguageModeToggle /></div>
+            <div className="header-reading-mode hidden md:block"><LanguageModeToggle /></div>
             <div className="hidden xl:block"><ContrastModeToggle /></div>
             <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}

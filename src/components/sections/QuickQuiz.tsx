@@ -1,7 +1,8 @@
 import { CheckCircle2, Lock, RotateCcw, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import '../../assets/styles/quick-quiz.css';
-import { readQuizBestScores, readQuizUnlockedPhase } from '../../lib/quizLeaderboard';
+import { readQuizBestScores, readQuizUnlockedPhase, saveQuizBestScore } from '../../lib/quizLeaderboard';
+import { copyText } from '../../lib/clipboard';
 
 import { QUESTIONS_PER_LEVEL, QUIZ_LEVELS, QUIZ_TOTAL, QUESTION_BANK } from '../../data/quiz/questionBank';
 import { sourceRegistry } from '../../data/sourceRegistry';
@@ -37,7 +38,7 @@ export function QuickQuiz() {
   const nextIndex = safeIndex + 1;
   const isLast = nextIndex >= totalQuestions;
   const unlockedNext = activePhase < QUIZ_LEVELS.length - 1 && unlockedPhase > activePhase;
-  const displayedScore = score;
+  const displayedScore = showResult ? score : score + (selected !== null && question && selected === question.answerIndex ? 1 : 0);
   const questionSource = question ? sourceRegistry.find(source => source.id === question.sourceId) : undefined;
 
   const startPhase = (phaseIndex: number) => {
@@ -52,22 +53,22 @@ export function QuickQuiz() {
   const answer = (optionIndex: number) => {
     if (selected !== null || !question) return;
     setSelected(optionIndex);
-    if (optionIndex === question.answerIndex) setScore(previous => previous + 1);
   };
 
   const next = () => {
     if (selected === null || !question) return;
+    const nextScore = score + (selected === question.answerIndex ? 1 : 0);
     if (isLast) {
-      // O clique em "Próxima" pode ocorrer antes de o update de score ser refletido nesta closure.
-      const finalScore = score + (selected === question.answerIndex ? 1 : 0);
-      const nextScores = best.map((value, phaseIndex) => (phaseIndex === activePhase ? Math.max(value, finalScore) : value));
-      setBest(nextScores);
-      if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
+      const persistedBest = saveQuizBestScore(activePhase, nextScore);
+      setScore(nextScore);
+      setBest(persistedBest);
+      if (nextScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
         setUnlockedPhase(previous => Math.max(previous, activePhase + 1));
       }
       setShowResult(true);
       return;
     }
+    setScore(nextScore);
     setIndex(nextIndex);
     setSelected(null);
   };
@@ -81,11 +82,11 @@ export function QuickQuiz() {
         await navigator.share({ text });
         setShared('Compartilhado!');
       } else {
-        await navigator.clipboard.writeText(text);
-        setShared('Copiado!');
+        const copied = await copyText(text);
+        setShared(copied ? 'Copiado!' : 'Não foi possível compartilhar');
       }
-    } catch {
-      setShared('');
+    } catch (error) {
+      if ((error as DOMException)?.name !== 'AbortError') setShared('Não foi possível compartilhar');
     }
   };
 

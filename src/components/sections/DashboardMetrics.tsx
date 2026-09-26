@@ -35,16 +35,16 @@ export function DashboardMetrics() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             titleId="dashboard-title"
-            eyebrow={isSummary ? 'Essencial' : languageMode === 'simple' ? 'Números da cidade' : 'Visão geral'}
-            title={isSummary ? 'Cinco números de referência' : languageMode === 'simple' ? 'Os principais números' : 'Os números de referência'}
+            eyebrow={isSummary ? 'Visão executiva' : languageMode === 'simple' ? 'Leitura guiada' : 'Painel auditável'}
+            title={isSummary ? 'Cinco números para se situar' : languageMode === 'simple' ? 'Números que ganham contexto' : 'Indicadores prontos para conferência'}
             description={isSummary
-              ? 'Dados principais, fonte e data. Toque em um cartão para conferir.'
+              ? 'Uma visão rápida dos principais indicadores, sempre com origem e referência acessíveis.'
               : languageMode === 'simple'
-                ? 'Toque em um número para ver a fonte.'
-                : 'Indicadores principais em uma camada enxuta. Clique em um número para abrir fonte, referência e metodologia.'}
+                ? 'Cada número vem acompanhado de uma explicação curta; toque para abrir a fonte e continuar a leitura.'
+                : 'Cada indicador abre origem, referência, natureza e método para uma conferência completa.'}
           />
           <div className="flex flex-wrap items-center gap-2" aria-label="Estado do painel">
-            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> Dados rastreáveis</span>}
+            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> {languageMode === 'technical' ? 'Dados auditáveis' : 'Fontes acessíveis'}</span>}
             <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Atualizado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
           </div>
         </div>
@@ -68,8 +68,8 @@ export function DashboardMetrics() {
 
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Agora' : languageMode === 'simple' ? 'Resumo' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Fonte e data já aparecem no cartão.' : languageMode === 'simple' ? 'Cinco números para começar.' : 'Cada KPI abre fonte, referência e metodologia.'}</p>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Em um olhar' : languageMode === 'simple' ? 'Leitura em contexto' : 'Indicadores principais'}</div>
+          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'O essencial para começar com segurança.' : languageMode === 'simple' ? 'Cinco números explicados para conectar o cenário.' : 'Cada KPI abre fonte, referência, natureza e método.'}</p>
         </div>
       </div>
 
@@ -110,11 +110,11 @@ export function DashboardMetrics() {
 
       {isSummary ? (
         <div className="dashboard-summary-note mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-500 light:border-sky-200 light:bg-sky-50/70 light:text-slate-600">
-          Cada número tem sua própria data de referência. Toque para abrir a fonte e o método.
+          Cada número mantém sua referência. Toque para ver origem e detalhes sem sair da leitura.
         </div>
       ) : languageMode === 'simple' ? (
         <div className="simple-detail mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] px-4 py-3 text-xs leading-5 text-slate-300 light:text-slate-600">
-          Cada número tem sua própria data. Toque para conferir a fonte.
+          Contexto primeiro, fonte sempre acessível. Toque em qualquer indicador para conferir.
         </div>
       ) : (
         <div className="technical-detail mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">

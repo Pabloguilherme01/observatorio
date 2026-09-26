@@ -40,7 +40,7 @@ must(css.includes('prefers-reduced-motion'), 'redução de movimento está conte
 must(css.includes('min-height: 44px') || css.includes('min-height:44px'), 'controles móveis usam alvo de toque confortável');
 must(/@media\s*\(max-width:\s*390px\)/.test(css), 'há ajuste dedicado para telas muito estreitas');
 must(language.includes('aria-pressed') && language.includes('summary') && language.includes('simple') && language.includes('technical'), 'modo de linguagem informa estado ao leitor de tela');
-must(hero.includes('href="#descubra"') && hero.includes('href="#evidencias"'), 'hero mantém ações principais acessíveis e descritivas');
+must(hero.includes('href="#descubra"') && hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis e descritivas sem forçar modo técnico');
 must(comparison.includes('role=\"tablist\"') && comparison.includes('aria-selected'), 'abas de contexto têm semântica acessível');
 must((dashboard.includes('role=\"img\"') && dashboard.includes('aria-label')) || (dashboardChart.includes('role=\"img\"') && dashboardChart.includes('aria-label')), 'gráficos principais possuem alternativa textual');
 must(app.includes('<LanguageModeProvider>'), 'modo de linguagem está integrado na aplicação');

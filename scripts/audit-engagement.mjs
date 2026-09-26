@@ -29,10 +29,26 @@ const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const experienceShell = read('src/components/ExperienceShell.tsx');
 const sentry = read('src/lib/sentry.ts');
 const leaderboard = read('src/lib/quizLeaderboard.ts');
+const readingModes = read('src/config/readingModes.ts');
+const hero = read('src/components/sections/HeroCountdown.tsx');
+const trust = read('src/components/ProjectTrustPanel.tsx');
+const civic = read('src/components/sections/CivicActionHub.tsx');
 
 must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '3 modos neutros de leitura disponíveis');
-must(app.includes("const SUMMARY_DESTINATIONS = new Set(['resumo'])") && app.includes("if (SUMMARY_DESTINATIONS.has(target))") && app.includes("setMode('summary')"), 'navegação para #resumo preserva o modo Resumo');
-must(search.includes("Resumo de leitura") && search.includes("'resumo'"), 'busca expõe o destino oficial do modo Resumo');
+must(
+  modeToggle.includes('Leitura executiva') &&
+  modeToggle.includes('Leitura guiada') &&
+  modeToggle.includes('Leitura auditável') &&
+  hero.includes('Uma visão executiva da cidade') &&
+  audience.includes('O essencial da cidade, sem ruído.') &&
+  executive.includes('O essencial, sem ruído') &&
+  dashboard.includes('Indicadores prontos para conferência') &&
+  trust.includes('Confiança começa pela origem') &&
+  civic.includes('Da evidência à fonte'),
+  'cada modo possui narrativa editorial própria sem alterar a neutralidade'
+);
+must(app.includes('modeForDestination') && readingModes.includes('return current;'), 'navegação preserva o modo atual quando o destino não exige elevação de leitura');
+must(search.includes("Resumo executivo") && search.includes("'resumo'"), 'busca expõe a seção de resumo sem confundir destino com modo de leitura');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
 const quizPromptCount = (quizData.match(/prompt:/g) || []).length;
 const quizPromptLines = [...quizData.matchAll(/prompt:\s*([\"'`])([\s\S]*?)\1,/g)].map(match => match[2]);

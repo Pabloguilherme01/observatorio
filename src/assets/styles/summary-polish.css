@@ -1300,8 +1300,8 @@
   [data-language-mode="technical"] .mode-scope-evidence .deferred-section:before{padding-inline:var(--mobile-page-gutter);line-height:1.4}
 }
 
-[data-language-mode="summary"] .mode-scope-evidence .mode-evidence-content,
-[data-language-mode="simple"] .mode-scope-evidence .mode-evidence-content{display:none!important}
+/* Fontes e exportação são utilidades universais: permanecem acessíveis em todos os modos.
+   Apenas os painéis estritamente técnicos são condicionados pelo componente React. */
 [data-language-mode="summary"] .mode-scope-evidence,
 [data-language-mode="simple"] .mode-scope-evidence{display:block!important}
 

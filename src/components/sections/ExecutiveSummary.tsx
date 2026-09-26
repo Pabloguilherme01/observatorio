@@ -5,6 +5,7 @@ import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import { copyText } from '../../lib/clipboard';
 import '../../assets/styles/summary-polish.css';
 
 function brl(value: number) {
@@ -70,14 +71,9 @@ export function ExecutiveSummary() {
         window.setTimeout(() => setShareStatus(''), 1800);
         return;
       }
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text + ' ' + window.location.href);
-        setShareStatus('Link copiado');
-        window.setTimeout(() => setShareStatus(''), 1800);
-        return;
-      }
-      setShareStatus('Compartilhamento indisponível neste navegador');
-      window.setTimeout(() => setShareStatus(''), 2400);
+      const copied = await copyText(text + ' ' + window.location.href);
+      setShareStatus(copied ? 'Link copiado' : 'Não foi possível copiar automaticamente');
+      window.setTimeout(() => setShareStatus(''), copied ? 1800 : 2400);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') return;
       setShareStatus('Não foi possível compartilhar');
@@ -93,16 +89,16 @@ export function ExecutiveSummary() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
-            eyebrow={languageMode === 'technical' ? 'Resumo técnico' : languageMode === 'summary' ? 'Resumo' : 'Leia primeiro'}
-            title={languageMode === 'technical' ? 'Resumo com rastreabilidade' : languageMode === 'summary' ? 'O essencial agora' : 'O essencial em 1 minuto'}
+            eyebrow={languageMode === 'technical' ? 'Síntese auditável' : languageMode === 'summary' ? 'Visão executiva' : 'Leitura guiada'}
+            title={languageMode === 'technical' ? 'Evidência pronta para conferência' : languageMode === 'summary' ? 'O essencial, sem ruído' : 'Dos números ao contexto'}
             description={languageMode === 'technical'
-              ? 'Valor, data, fonte e limite juntos para conferência.'
+              ? 'Cada indicador vem acompanhado de referência, origem e limites para uma leitura verificável.'
               : languageMode === 'summary'
-                ? 'Só o essencial primeiro. O detalhe fica a um toque.'
-                : 'Números claros, contexto direto e fonte visível.'}
+                ? 'Uma visão enxuta para captar o cenário. Quando algo chamar sua atenção, o contexto está a um toque.'
+                : 'Indicadores organizados para transformar números dispersos em uma leitura clara e contextualizada.'}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Rastreável' : languageMode === 'summary' ? 'Visão rápida' : 'Leitura simples'}</span>
+            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Auditável' : languageMode === 'summary' ? 'Executivo' : 'Guiado'}</span>
             <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório" disabled={shareBusy} aria-busy={shareBusy}>
               <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}
             </button>
@@ -115,8 +111,8 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Visão rápida</span>
-                <h3>O quadro em quatro sinais</h3>
-                <p className="summary-public-lead">Número, referência e fonte em cada cartão. O aprofundamento fica a um toque.</p>
+                <h3>Quatro sinais para começar</h3>
+                <p className="summary-public-lead">Uma leitura enxuta dos indicadores centrais, com contexto e fonte a um toque.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -141,7 +137,7 @@ export function ExecutiveSummary() {
                 </div>
               </div>
               <div className="summary-public-discovery-head">
-                <span>Dados essenciais</span>
+                <span>Indicadores em destaque</span>
                 <small>Fonte e referência em cada cartão</small>
               </div>
 
@@ -175,8 +171,8 @@ export function ExecutiveSummary() {
               ))}
             </div>
             <div className="summary-simple-tip mt-3">
-              <strong className="text-slate-200">Leitura simples</strong>
-              <span className="ml-2">Número primeiro; fonte e contexto ficam a um toque.</span>
+              <strong className="text-slate-200">Leitura guiada</strong>
+              <span className="ml-2">Comece pelo número, entenda o contexto e abra a fonte quando quiser ir além.</span>
             </div>
           </>
         )}
@@ -203,14 +199,14 @@ export function ExecutiveSummary() {
 
             <div className="summary-technical-audit" aria-label="Regras de leitura técnica">
               <Card className="summary-evidence">
-                <span>Leitura</span>
+                <span>Regra de leitura</span>
                 <strong>Valor + data + fonte</strong>
-                <p>Confira escopo e referência antes de comparar indicadores.</p>
+                <p>Antes de comparar, confira escopo, período e referência de cada indicador.</p>
               </Card>
               <Card className="summary-evidence">
                 <span>Limites</span>
                 <strong>Estimativa não é medição</strong>
-                <p>Simulações e cálculos derivados ficam identificados e separados.</p>
+                <p>Estimativas, simulações e cálculos derivados permanecem identificados para evitar comparações indevidas.</p>
               </Card>
               <Card className="summary-evidence">
                 <span>Atualização</span>

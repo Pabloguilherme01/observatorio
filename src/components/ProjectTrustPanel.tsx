@@ -39,28 +39,28 @@ export function ProjectTrustPanel() {
   }, [mode]);
   return (
     <section id="principios" className="mx-auto max-w-7xl px-4 pb-10 sm:px-6" aria-labelledby="principles-title">
-      <div className="trust-shell">
+      <div id="fontes" className="trust-shell scroll-mt-24">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
-              <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> Confiança e método
+              <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> Origem, método e confiança
             </div>
-            <h2 id="principles-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Como conferir os dados</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode !== 'technical' ? 'Cada número tem fonte e data. Veja a origem antes de tirar uma conclusão.' : 'Fonte, data, natureza do dado e limitações acompanham a leitura.'}</p>
+            <h2 id="principles-title" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">Confiança começa pela origem</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{mode !== 'technical' ? 'Cada número pode ser rastreado até sua origem. Consulte a fonte, a data e o contexto antes de formar sua leitura.' : 'A camada técnica expõe fonte, data, natureza, método e limitações para que cada etapa possa ser conferida.'}</p>
           </div>
           {mode === 'technical' && <div className="freshness-pill"><span className="block text-[10px] font-bold uppercase tracking-wider text-slate-700 light:text-slate-700">Edição / atualização</span><strong className="mt-1 block text-sm text-slate-900 light:text-slate-900">{EDITION} · {formatDate(d.meta.updatedAt)}</strong></div>}
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Veja o dado</strong><p>Número ou cálculo, sem misturar os dois.</p></div>
-          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Confira a fonte</strong><p>Abra a referência quando quiser conferir.</p></div>
-          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Entenda a limitação</strong><p>Datas de referência diferentes continuam separadas.</p></div>
-          <div className="trust-card"><GitPullRequest className="h-4 w-4 text-sky-300" /><strong>Encontrou um erro?</strong><p>Envie a fonte para análise.</p><a href={correctionUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">Propor correção <ExternalLink className="h-3.5 w-3.5" /></a></div>
+          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Comece pelo valor</strong><p>Identifique se o número vem diretamente da fonte ou de um cálculo derivado.</p></div>
+          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Vá até a origem</strong><p>Abra a referência para conferir instituição, data e contexto do dado.</p></div>
+          <div className="trust-card"><CheckCircle2 className="h-4 w-4 text-emerald-300" /><strong>Leia os limites</strong><p>Datas, recortes e períodos diferentes permanecem identificados para evitar comparações indevidas.</p></div>
+          <div className="trust-card"><GitPullRequest className="h-4 w-4 text-sky-300" /><strong>Encontrou um erro?</strong><p>Informe o dado e a fonte para que a correção possa ser verificada.</p><a href={correctionUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">Propor correção <ExternalLink className="h-3.5 w-3.5" /></a></div>
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <div className="trust-card"><Database className="h-4 w-4 text-sky-300" /><strong>Proveniência antes da interpretação</strong><p>Dados atuais, históricos, snapshots e cálculos derivados ficam identificados.</p></div>
-          <div className="trust-card"><CalendarClock className="h-4 w-4 text-sky-300" /><strong>Data da fonte e captura</strong><p>A atualização do sistema não substitui a data original do dado.</p></div>
+          <div className="trust-card"><Database className="h-4 w-4 text-sky-300" /><strong>Origem antes da interpretação</strong><p>Dados atuais, históricos, capturas e cálculos derivados permanecem separados e identificados.</p></div>
+          <div className="trust-card"><CalendarClock className="h-4 w-4 text-sky-300" /><strong>Data da fonte e captura</strong><p>A data de atualização do sistema é diferente da data de referência da fonte.</p></div>
         </div>
 
         <div className="mt-5 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-400"><strong className="text-slate-300">Validação oficial:</strong> para conferir dados eleitorais diretamente na fonte, consulte o <a href="https://dadosabertos.tse.jus.br/" target="_blank" rel="noopener noreferrer" className="font-bold text-sky-200 hover:text-white light:text-sky-700 light:hover:text-sky-900">Portal de Dados Abertos do TSE</a>.</div>

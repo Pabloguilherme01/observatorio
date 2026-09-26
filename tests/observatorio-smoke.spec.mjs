@@ -51,13 +51,62 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.getByRole('slider', { name: /Quantidade de pessoas/i })).toHaveValue('20');
 
     await openSection(page, 'principios');
-    await expect(page.getByRole('heading', { name: /Como conferir os dados/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Confiança começa pela origem/i })).toBeVisible();
+    await modeGroup.getByRole('button', { name: /^Técnico/ }).click();
     await expect(page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first()).toBeVisible();
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
     await openSection(page, 'acao');
-    await expect(page.getByRole('heading', { name: /Como usar o dado/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Serviços e verificação/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
+  });
+
+  test('busca abre destinos que exigem elevação de leitura', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('qualidade');
+  await page.getByRole('option', { name: /Qualidade dos dados/i }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await expect(page.locator('#qualidade')).toBeVisible();
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  await page.getByRole('combobox').first().fill('resumo executivo');
+  await page.getByRole('option', { name: /Resumo executivo/i }).click();
+  await expect(page.locator('#resumo')).toBeVisible();
+});
+
+test('busca global abre o serviço municipal já filtrado', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const input = page.getByRole('combobox').first();
+    await input.fill('CAPS');
+    await page.getByRole('option', { name: /^CAPS Serviços públicos$/ }).click();
+    await expect(page).toHaveURL(/#acao$/);
+    const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
+    await expect(serviceSearch).toHaveValue('CAPS');
+    await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
+  });
+
+  test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const input = page.getByRole('combobox').first();
+    await input.fill('população');
+    const sourceLink = page.getByRole('link', { name: /Fonte oficial/i });
+    await expect(sourceLink).toBeVisible();
+    await expect(sourceLink).toHaveAttribute('href', /ibge\.gov\.br/);
+  });
+
+  test('hub prioriza serviços eleitorais oficiais de uso direto', async ({ page }) => {
+    await page.goto('./');
+    await openSection(page, 'acao');
+    await expect(page.getByRole('link', { name: /Consultar situação eleitoral/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Candidaturas e contas/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Resultados oficiais/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Portal Eleições 2026/i })).toBeVisible();
   });
 
   test('mantém fluxo de busca e exportação disponível', async ({ page }) => {
@@ -79,6 +128,427 @@ test.describe('Observatório smoke flows', () => {
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toMatch(/\.csv$/);
   });
+});
+
+
+
+test('renderiza os gráficos históricos com dimensões válidas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dashboard');
+  const history = page.locator('.dashboard-history-card');
+  await expect(history).toBeVisible();
+  const chart = history.locator('.recharts-wrapper').first();
+  await expect(chart).toBeVisible();
+  const box = await chart.boundingBox();
+  expect(box?.width ?? 0).toBeGreaterThan(100);
+  expect(box?.height ?? 0).toBeGreaterThan(100);
+  await expect(history.locator('.recharts-line').first()).toBeVisible();
+
+  await openSection(page, 'saude');
+  const sewerChart = page.locator('#saude svg[aria-label*="Histórico do atendimento"]').first();
+  await expect(sewerChart).toBeVisible();
+  const sewerBox = await sewerChart.boundingBox();
+  expect(sewerBox?.width ?? 0).toBeGreaterThan(100);
+  expect(sewerBox?.height ?? 0).toBeGreaterThan(80);
+});
+
+
+test.describe('mobile layout and interaction', () => {
+  test.use({ viewport: { width: 360, height: 740 }, isMobile: true, hasTouch: true });
+
+  test('não cria overflow horizontal e mantém navegação tocável', async ({ page }) => {
+    await page.goto('./');
+    const metrics = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(metrics.scroll).toBeLessThanOrEqual(metrics.viewport + 1);
+
+    const nav = page.locator('.mobile-bottom-nav');
+    await expect(nav).toBeVisible();
+    const navBox = await nav.boundingBox();
+    expect(navBox?.width ?? 0).toBeLessThanOrEqual(360);
+    for (const button of await nav.locator('button').all()) {
+      const box = await button.boundingBox();
+      if (box) expect(box.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test('busca cabe na viewport e pode ser fechada', async ({ page }) => {
+    await page.goto('./');
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const panel = page.locator('.search-modal-panel');
+    await expect(panel).toBeVisible();
+    const box = await panel.boundingBox();
+    expect(box?.width ?? 0).toBeLessThanOrEqual(360);
+    expect(box?.height ?? 0).toBeLessThanOrEqual(740);
+    await page.getByRole('button', { name: /fechar busca/i }).click();
+    await expect(panel).toBeHidden();
+  });
+
+  test('gráficos estreitos renderizam sem largura ou altura zero', async ({ page }) => {
+    await page.goto('./');
+    await openSection(page, 'dashboard');
+    const primaryChart = page.locator('.dashboard-history-chart');
+    await expect(primaryChart).toBeVisible();
+    const mobileCharts = primaryChart.locator('.recharts-wrapper');
+    await expect(mobileCharts.first()).toBeVisible();
+    const box = await mobileCharts.first().boundingBox();
+    expect(box?.width ?? 0).toBeGreaterThan(100);
+    expect(box?.height ?? 0).toBeGreaterThan(100);
+
+    await openSection(page, 'saude');
+    const sewerBars = page.locator('.sewer-mobile-bars');
+    await expect(sewerBars).toBeVisible();
+    const sewerMetrics = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(sewerMetrics.scroll).toBeLessThanOrEqual(sewerMetrics.viewport + 1);
+  });
+});
+
+
+
+test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await page.getByRole('link', { name: 'Conferir fontes' }).click();
+  await expect(page).toHaveURL(/#fontes$/);
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await expect(page.locator('#fontes')).toBeVisible();
+});
+
+test('marca mantém hierarquia visual correta no mobile e desktop', async ({ page }) => {
+  for (const viewport of [{ width: 390, height: 844 }, { width: 1366, height: 768 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('./');
+    const sizes = await page.locator('.site-brand').evaluate(node => {
+      const spans = node.querySelectorAll('span');
+      return {
+        eyebrow: Number.parseFloat(getComputedStyle(spans[0]).fontSize),
+        title: Number.parseFloat(getComputedStyle(spans[spans.length - 1]).fontSize),
+      };
+    });
+    expect(sizes.title).toBeGreaterThan(sizes.eyebrow);
+  }
+});
+
+test('menu Mais destaca visualmente uma seção secundária ativa', async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.goto('./');
+  await openSection(page, 'fontes');
+  const header = page.locator('.site-header');
+  const more = header.getByRole('button', { name: 'Mais', exact: true });
+  await expect(more).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('.mobile-bottom-nav')).toBeHidden();
+});
+
+for (const viewport of [
+  { name: 'tablet-header', width: 768, height: 1024 },
+  { name: 'small-desktop-header', width: 1024, height: 768 },
+  { name: 'notebook-header', width: 1366, height: 768 },
+]) {
+  test('header compacto sem overflow em ' + viewport.name, async ({ page }) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto('./');
+    const header = page.locator('.site-header');
+    await expect(header).toBeVisible();
+    const headerBox = await header.boundingBox();
+    expect(headerBox?.width ?? Infinity).toBeLessThanOrEqual(viewport.width);
+
+    const reading = page.locator('.header-reading-mode');
+    await expect(reading).toBeVisible();
+    await expect(reading.locator('.language-toggle-options > button')).toHaveCount(3);
+    await expect(reading.locator('.language-toggle-label')).toBeHidden();
+    await expect(reading.locator('.language-toggle-deepen')).toBeHidden();
+
+    const dimensions = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+  });
+}
+
+for (const viewport of [
+  { name: 'phone-320', width: 320, height: 568 },
+  { name: 'phone-390', width: 390, height: 844 },
+  { name: 'tablet-portrait', width: 768, height: 1024 },
+  { name: 'tablet-landscape', width: 1024, height: 768 },
+  { name: 'notebook', width: 1366, height: 768 },
+  { name: 'desktop-wide', width: 1920, height: 1080 },
+]) {
+  test('layout responsivo sem overflow em ' + viewport.name, async ({ page }) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto('./');
+    const dimensions = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+
+    await openSection(page, 'dashboard');
+    const chart = page.locator('.dashboard-history-chart .recharts-wrapper').first();
+    await expect(chart).toBeVisible();
+    const chartBox = await chart.boundingBox();
+    expect(chartBox?.width ?? 0).toBeGreaterThan(100);
+    expect(chartBox?.width ?? Infinity).toBeLessThanOrEqual(viewport.width);
+    expect(chartBox?.height ?? 0).toBeGreaterThan(100);
+
+    const afterChart = await page.evaluate(() => ({
+      client: document.documentElement.clientWidth,
+      scroll: document.documentElement.scrollWidth,
+    }));
+    expect(afterChart.scroll).toBeLessThanOrEqual(afterChart.client + 1);
+  });
+}
+
+test('modos de leitura só avançam quando a seção realmente exige mais detalhe', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await openSection(page, 'fontes');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+
+  await openSection(page, 'exportacao');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+
+  await openSection(page, 'eleitoral360');
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+
+  await openSection(page, 'eleitorado');
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+
+  await openSection(page, 'qualidade');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await openSection(page, 'fontes');
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+});
+
+test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+
+  await openSection(page, 'qualidade');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/#fontes$/);
+  await expect(page.locator('#fontes')).toBeVisible();
+
+  await openSection(page, 'orcamento-impacto');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/#orcamento$/);
+  await expect(page.locator('#orcamento')).toBeVisible();
+
+  await openSection(page, 'eleitoral360');
+  await modes.getByRole('button', { name: /^Resumo/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await expect(page).toHaveURL(/#resumo$/);
+  await expect(page.locator('#resumo')).toBeVisible();
+});
+
+test('ação de aprofundar percorre os três níveis de leitura no painel mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+  const root = page.locator('html');
+
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
+  let deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+  await deepen.click();
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+
+  deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+  await deepen.click();
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+
+  await page.getByRole('button', { name: 'Voltar para visão executiva' }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+});
+
+test('modos de leitura persistem e podem avançar por atalho', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await page.keyboard.press('Alt+m');
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await page.keyboard.press('Alt+m');
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await page.reload();
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+});
+
+test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
+  await page.goto('./');
+  await page.evaluate(() => {
+    localStorage.setItem('observatorio-v44-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
+  });
+  await page.reload();
+  await openSection(page, 'quiz');
+  const phases = page.locator('.quiz-phase-grid button');
+  await expect(phases.nth(1)).toBeEnabled();
+  await expect(phases.nth(1)).toContainText('Melhor marca');
+});
+
+
+test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async ({ page }) => {
+  test.setTimeout(90_000);
+  const quizSource = readFileSync('src/data/quiz/questionBank.ts', 'utf8');
+  const answerIndexes = [...quizSource.matchAll(/difficulty:'Fácil'[\s\S]*?answerIndex:\s*(\d+)/g)]
+    .slice(0, 40)
+    .map(match => Number(match[1]));
+  expect(answerIndexes).toHaveLength(40);
+
+  await page.goto('./');
+  await page.evaluate(() => {
+    localStorage.removeItem('observatorio-v44-quiz-best-scores');
+  });
+  await page.reload();
+  await openSection(page, 'quiz');
+
+  for (let index = 0; index < answerIndexes.length; index += 1) {
+    await page.locator('.quiz-options button').nth(answerIndexes[index]).click();
+    await page.getByRole('button', { name: index === answerIndexes.length - 1 ? /Finalizar fase/i : /^Próxima/ }).click();
+  }
+
+  await expect(page.locator('.quiz-result-score')).toContainText('40 de 40 acertos');
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('observatorio-v44-quiz-best-scores') || '[0,0,0,0,0]'));
+  expect(saved[0]).toBe(40);
+});
+
+test('inspetor copia referência e compartilha o link da seção atual', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async text => { window.__lastCopiedText = text; } },
+    });
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: async payload => { window.__lastInspectorShare = payload; },
+    });
+  });
+
+  await page.goto('./');
+  await openSection(page, 'dashboard');
+  await page.locator('.dashboard-kpi-card').first().click();
+
+  const dialog = page.getByRole('dialog', { name: /Variação da população/i });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: /Copiar referência/i }).click();
+
+  const copied = await page.evaluate(() => window.__lastCopiedText);
+  expect(copied).toContain('Variação da população');
+  expect(copied).toContain('Fonte:');
+  expect(copied).toContain('URL:');
+
+  await dialog.getByRole('button', { name: /Compartilhar/i }).click();
+  const payload = await page.evaluate(() => window.__lastInspectorShare);
+  expect(payload?.url).toMatch(/#dashboard$/);
+
+  await page.evaluate(() => {
+    delete navigator.share;
+    window.__lastCopiedText = '';
+  });
+  await dialog.getByRole('button', { name: /Compartilhar/i }).click();
+  const fallbackShare = await page.evaluate(() => window.__lastCopiedText);
+  expect(fallbackShare).toContain('#dashboard');
+});
+
+test('simulador restaura o cenário padrão e persiste a redefinição', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'transporte');
+
+  const people = page.getByRole('slider', { name: /Quantidade de pessoas/i });
+  await people.fill('6');
+  await page.getByText('Ajustar premissas do cálculo').click();
+  await page.getByLabel('Dias por semana').fill('7');
+  await page.getByRole('button', { name: /Restaurar padrão/i }).click();
+
+  await expect(people).toHaveValue('1');
+  await expect(page.getByLabel('Dias por semana')).toHaveValue('5');
+  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('observatorio:transport-preferences:v1') || '{}').people)).toBe(1);
+});
+
+test('compartilhamento do transporte usa URL canônica com um único hash', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', {
+      configurable: true,
+      value: async payload => { window.__lastSharePayload = payload; },
+    });
+  });
+  await page.goto('./#transporte');
+  await openSection(page, 'transporte');
+  await page.getByRole('button', { name: /compartilhar cenário/i }).click();
+
+  const payload = await page.evaluate(() => window.__lastSharePayload);
+  expect(payload?.url).toMatch(/#transporte$/);
+  expect((payload?.url.match(/#transporte/g) || []).length).toBe(1);
+  expect(payload?.text).toContain(payload?.url);
+});
+
+
+test('tema e contraste persistem após recarregar', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
+  await page.getByRole('button', { name: /Tema claro|Tema escuro/ }).click();
+  const storedTheme = await page.evaluate(() => localStorage.getItem('observatorio-theme'));
+  expect(['light', 'dark']).toContain(storedTheme);
+
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
+  const contrast = page.getByRole('group', { name: 'Contraste da interface' });
+  await contrast.getByRole('button', { name: /Alto contraste/ }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-contrast', 'high');
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('observatorio-contrast'))).toBe('high');
+
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-contrast', 'high');
+  expect(await page.evaluate(() => localStorage.getItem('observatorio-theme'))).toBe(storedTheme);
+});
+
+test('busca fecha com Escape e devolve foco ao acionador', async ({ page }) => {
+  await page.goto('./');
+  const trigger = page.getByRole('button', { name: /Buscar no observatório/i });
+  await trigger.focus();
+  await trigger.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(trigger).toBeFocused();
+});
+
+test('controles principais executam suas ações', async ({ page }) => {
+  await page.goto('./');
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(modes.getByRole('button', { name: /^Simples/ })).toHaveAttribute('aria-pressed', 'true');
+
+  await openSection(page, 'exportacao');
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'JSON' }).click();
+  expect((await downloadPromise).suggestedFilename()).toMatch(/\.json$/);
+
+  await openSection(page, 'transporte');
+  const slider = page.getByRole('slider', { name: /Quantidade de pessoas/i });
+  await slider.fill('3');
+  await expect(slider).toHaveValue('3');
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  const top = page.getByRole('button', { name: 'Voltar ao topo' });
+  await expect(top).toBeVisible();
+  await top.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);
 });
 
 test('mostra resultado completo após o encerramento da janela', async ({ page }) => {

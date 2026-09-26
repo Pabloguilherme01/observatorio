@@ -1,7 +1,9 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { MobileBottomNav } from './layout/MobileBottomNav';
+import { useLanguageMode } from '../context/LanguageModeContext';
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
+  const { cycleMode } = useLanguageMode();
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,6 +43,11 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       const target = event.target as HTMLElement | null;
       const typing = !!target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
       if (typing) return;
+      if (event.altKey && !event.metaKey && !event.ctrlKey && event.key.toLowerCase() === 'm') {
+        event.preventDefault();
+        cycleMode();
+        return;
+      }
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault();
         window.dispatchEvent(new CustomEvent('observatorio:search'));
@@ -49,7 +56,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [cycleMode]);
 
   return (
     <>
