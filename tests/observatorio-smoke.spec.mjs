@@ -246,6 +246,31 @@ test('compartilhamento do transporte mantém um único hash', async ({ page }) =
   }
 });
 
+
+test('controles principais executam suas ações', async ({ page }) => {
+  await page.goto('./');
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await expect(modes.getByRole('button', { name: /^Simples/ })).toHaveAttribute('aria-pressed', 'true');
+
+  await openSection(page, 'exportacao');
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'JSON' }).click();
+  expect((await downloadPromise).suggestedFilename()).toMatch(/\.json$/);
+
+  await openSection(page, 'transporte');
+  const slider = page.getByRole('slider', { name: /Quantidade de pessoas/i });
+  await slider.fill('3');
+  await expect(slider).toHaveValue('3');
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  const top = page.getByRole('button', { name: 'Voltar ao topo' });
+  await expect(top).toBeVisible();
+  await top.click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);
+});
+
 test('mostra resultado completo após o encerramento da janela', async ({ page }) => {
   const feed = JSON.parse(readFileSync('scripts/fixtures/tse-results.valid.synthetic.json', 'utf8'));
   feed.state = 'complete';
