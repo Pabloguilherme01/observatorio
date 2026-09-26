@@ -12,7 +12,7 @@ export function formatBudgetCurrency(value: number): string {
     currency: 'BRL',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(Math.round(value));
+  }).format(value);
 }
 
 export function formatPercent(value: number, fractionDigits = 1): string {
