@@ -56,7 +56,7 @@ must(files.css.includes('scroll-snap-type'), 'rails móveis suportam navegação
 must(/@media\s*\(max-width:\s*380px\)/.test(files.css) || /@media\s*\(max-width:\s*390px\)/.test(files.css), 'há ajuste dedicado para telas muito estreitas');
 must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-modal-panel'), 'CSS possui camadas móveis dedicadas para navegação e busca');
 
-must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#evidencias"'), 'hero mantém ações principais acessíveis no mobile');
+must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aprofundar leitura'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
 must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
