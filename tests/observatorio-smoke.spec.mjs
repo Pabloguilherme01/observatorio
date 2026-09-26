@@ -51,7 +51,7 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.getByRole('slider', { name: /Quantidade de pessoas/i })).toHaveValue('20');
 
     await openSection(page, 'principios');
-    await expect(page.getByRole('heading', { name: /Como conferir os dados/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Confiança começa pela origem/i })).toBeVisible();
     await expect(page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first()).toBeVisible();
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
@@ -213,7 +213,7 @@ test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
   await page.goto('./');
   const root = page.locator('html');
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
-  await page.getByRole('link', { name: 'Conferir fontes' }).click();
+  await page.getByRole('link', { name: 'Ver fontes oficiais' }).click();
   await expect(page).toHaveURL(/#fontes$/);
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
   await expect(page.locator('#fontes')).toBeVisible();
@@ -368,7 +368,7 @@ test('ação de aprofundar percorre os três níveis de leitura no painel mobile
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
-  await page.getByRole('button', { name: 'Voltar para leitura resumida' }).click();
+  await page.getByRole('button', { name: 'Voltar para visão executiva' }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
 });
 
