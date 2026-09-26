@@ -137,6 +137,26 @@ for (const [component, label] of [
 }
 pass('camadas de descoberta, retenção, qualidade, evidências, ação e exportação montadas');
 
+const contextualData = texts.find(item => item.file === 'src/data/contextualComparison.ts')?.content ?? '';
+const contextualUi = texts.find(item => item.file === 'src/components/sections/ContextComparison.tsx')?.content ?? '';
+if (
+  contextualData.includes("'populationGrowth'") &&
+  contextualData.includes("'density2026'") &&
+  contextualData.includes("'area'") &&
+  contextualData.includes('getContextMetricValue') &&
+  contextualData.includes("nature: 'derived'")
+) pass('comparação municipal amplia métricas sem confundir cálculos derivados com dados oficiais');
+else fail('comparação municipal não preserva natureza e cálculo das novas métricas');
+if (
+  contextualUi.includes('Selecionar cidade') &&
+  contextualUi.includes('context-city-profile-grid') &&
+  contextualUi.includes('selectedCode') &&
+  contextualUi.includes('7 indicadores')
+) pass('comparação municipal possui perfil selecionável em cards');
+else fail('comparação municipal não oferece perfil selecionável em cards');
+if (contextualUi.includes('Comparação oferece contexto — não ranking')) pass('comparação municipal continua explicitamente não classificatória');
+else fail('expansão municipal perdeu aviso contra ranking');
+
 const premiumCard = texts.find(item => item.file === 'src/components/ui/PremiumInfoCard.tsx')?.content ?? '';
 const premiumSections = [
   'src/components/sections/DemographicDynamic.tsx',
