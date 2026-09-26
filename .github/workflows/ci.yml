@@ -39,6 +39,9 @@ jobs:
       - name: Test first and second turn results contracts
         run: npm run test:results
 
+      - name: Install cross-browser engines
+        run: npm exec -- playwright install --with-deps chromium firefox webkit
+
       - name: Complete audit gate
         run: npm run audit:all
 
