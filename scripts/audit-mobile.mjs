@@ -27,7 +27,8 @@ const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 const must = (condition, message) => condition ? pass(message) : fail(message);
 
-must(files.app.includes('IntersectionObserver') && files.app.includes("rootMargin: '320px 0px'"), 'blocos abaixo da dobra usam carregamento diferido por visibilidade');
+must(files.app.includes('IntersectionObserver') && files.app.includes("rootMargin: '320px 0px'"), 'blocos secundários abaixo da dobra usam carregamento diferido por visibilidade');
+must(files.app.includes('<DashboardMetrics />') && !files.app.includes('loadDashboardGroup'), 'dashboard e gráficos principais montam sem depender de IntersectionObserver');
 must(files.app.includes('observatorio:navigate') && files.app.includes("window.location.hash"), 'deep links e navegação por evento permanecem centralizados no App');
 must(files.app.includes('behavior: reduceMotion ? \'auto\' : \'smooth\''), 'rolagem central respeita redução de movimento');
 must(files.app.includes('<LanguageModeProvider>') && files.app.includes('<AudienceHub />'), 'descoberta e modos de leitura continuam montados');
