@@ -173,13 +173,22 @@ test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile',
   await page.keyboard.press('t');
   await expect(page).toHaveURL(/#transporte$/);
 
+  await page.evaluate(() => {
+    window.__historyNavigationEvents = [];
+    window.addEventListener('observatorio:navigate', event => {
+      window.__historyNavigationEvents.push(event.detail);
+    });
+  });
+
   await page.goBack();
   await expect(page).toHaveURL(/#dashboard$/);
   await expect(page.locator('#dashboard')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.__historyNavigationEvents.filter(id => id === 'dashboard').length)).toBe(1);
 
   await page.goForward();
   await expect(page).toHaveURL(/#transporte$/);
   await expect(page.locator('#transporte')).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.__historyNavigationEvents.filter(id => id === 'transporte').length)).toBe(1);
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   await page.getByRole('combobox').first().fill('fontes');
@@ -194,6 +203,16 @@ test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile',
   await expect(page).toHaveURL(/#descubra$/);
   await page.goBack();
   await expect(page).toHaveURL(/#transporte$/);
+});
+
+test('atalho de ajuda abre a busca com o guia de atalhos expandido', async ({ page }) => {
+  await page.goto('./');
+  await page.keyboard.press('?');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  const guide = page.locator('.search-shortcut-guide');
+  await expect.poll(() => guide.evaluate(node => node.open)).toBe(true);
+  await expect(guide.locator('kbd').filter({ hasText: '?' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Buscar no observatório' })).toHaveAttribute('aria-keyshortcuts', '/ Control+K');
 });
 
 test('atalho de busca por barra abre a busca global', async ({ page }) => {
