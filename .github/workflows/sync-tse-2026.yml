@@ -39,6 +39,7 @@ jobs:
           # Execuções agendadas preservam o último snapshot válido quando a origem oficial
           # está temporariamente bloqueada/indisponível. Execução manual permanece estrita.
           REQUIRE_TSE_FRESH: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
         run: npm run sync:tse
 
       - name: Mark successful TSE freshness check
