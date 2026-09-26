@@ -59,10 +59,13 @@ export function CivicActionHub() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
   const tesser = [
-    ['autoatendimento','Autoatendimento eleitoral','Situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
+    ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
     ['candidaturas','Candidaturas e contas','Consulte registros, bens, receitas e despesas no DivulgaCandContas.','https://divulgacandcontas.tse.jus.br/divulga/#/','search'],
     ['resultados','Resultados oficiais','Acompanhe a divulgação oficial quando houver dados publicados.','https://resultados.tse.jus.br/','results'],
     ['eleicoes2026','Portal Eleições 2026','Calendário, orientações, estatísticas e serviços da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
+    ['justificativa','Justificar ausência','Consulte as formas e os prazos oficiais para justificativa eleitoral.','https://www.tse.jus.br/servicos-eleitorais/justificativa-eleitoral','rules'],
+    ['certidoes','Emitir certidões eleitorais','Acesse certidões e validações disponibilizadas pela Justiça Eleitoral.','https://www.tse.jus.br/servicos-eleitorais/certidoes','service'],
+    ['multas','Quitar débitos eleitorais','Consulte orientações oficiais para débitos e multas eleitorais.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/quitacao-de-multas','service'],
     ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
   ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
