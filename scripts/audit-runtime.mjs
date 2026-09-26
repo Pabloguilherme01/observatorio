@@ -51,6 +51,24 @@ const trustPanel = read('src/components/ProjectTrustPanel.tsx');
 if (trustPanel.includes('new AbortController()') && trustPanel.includes('return () => controller.abort()') && trustPanel.includes('[mode, healthRevision]')) pass('retry do healthcheck cancela requisições anteriores e no unmount.');
 else fail('retry do healthcheck pode deixar requisição concorrente ou sem cleanup.');
 
+const connectivity = read('src/components/system/ConnectivityStatus.tsx');
+if (
+  connectivity.includes("window.addEventListener('offline'") &&
+  connectivity.includes("window.addEventListener('online'") &&
+  connectivity.includes("window.removeEventListener('offline'") &&
+  connectivity.includes("window.removeEventListener('online'")
+) pass('status de conexão registra e remove listeners online/offline simetricamente.');
+else fail('status de conexão possui listeners sem cleanup simétrico.');
+if (
+  connectivity.includes('new AbortController()') &&
+  connectivity.includes('requestRef.current?.abort()') &&
+  connectivity.includes("import.meta.env.BASE_URL + 'api/v1/health.json'") &&
+  connectivity.includes("cache: 'no-store'")
+) pass('verificação de reconexão usa healthcheck portátil, abortável e sem cache.');
+else fail('verificação de reconexão não está protegida por healthcheck abortável.');
+if (connectivity.includes('hideTimerRef') && connectivity.includes('window.clearTimeout(hideTimerRef.current)')) pass('feedback de reconexão limpa timer pendente.');
+else fail('feedback de reconexão pode deixar timer pendente.');
+
 const experience = read('src/components/ExperienceShell.tsx');
 if (
   experience.includes("window.addEventListener('scroll'")
