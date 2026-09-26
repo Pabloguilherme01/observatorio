@@ -62,8 +62,8 @@ const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
 if (
   app.includes('NavigationModeBridge') &&
   app.includes("TECHNICAL_ONLY_DESTINATIONS") &&
-  app.includes('CONTEXTUAL_DESTINATIONS') &&
-  app.includes("CONTEXTUAL_DESTINATIONS.has(target) && mode === 'summary'") &&
+  app.includes('SUMMARY_HIDDEN_DESTINATIONS') &&
+  app.includes("SUMMARY_HIDDEN_DESTINATIONS.has(target) && mode === 'summary'") &&
   app.includes("setMode('technical')")
 ) pass('deep links e navegação central sincronizam o modo de leitura com a seção');
 else fail('navegação por hash pode abrir uma seção escondida no modo de leitura atual');
