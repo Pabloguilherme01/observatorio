@@ -191,15 +191,9 @@ function DeferredBlock({
 
 export function App() {
   useEffect(() => {
-    let locationRaf = 0;
-    const syncLocation = () => {
-      locationRaf = 0;
+    const navigateFromLocation = () => {
       const hash = window.location.hash.slice(1);
       if (hash) navigateToHash(hash);
-    };
-    const navigateFromLocation = () => {
-      if (locationRaf) return;
-      locationRaf = window.requestAnimationFrame(syncLocation);
     };
     const onNavigate = (event: Event) => {
       const hash = (event as CustomEvent<string>).detail;
@@ -217,15 +211,12 @@ export function App() {
       scrollToHashWhenReady(target);
     };
 
-    syncLocation();
+    navigateFromLocation();
     window.addEventListener('hashchange', navigateFromLocation);
-    window.addEventListener('popstate', navigateFromLocation);
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('click', onSameHashAnchor);
     return () => {
       window.removeEventListener('hashchange', navigateFromLocation);
-      window.removeEventListener('popstate', navigateFromLocation);
-      if (locationRaf) window.cancelAnimationFrame(locationRaf);
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('click', onSameHashAnchor);
     };
