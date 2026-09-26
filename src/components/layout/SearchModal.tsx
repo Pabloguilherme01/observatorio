@@ -84,7 +84,11 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
   useEffect(() => {
     if (!open) {
-      openerRef.current?.focus?.();
+      const opener = openerRef.current;
+      const fallback = document.querySelector<HTMLElement>('[data-search-trigger="primary"]');
+      const canRestoreOpener = Boolean(opener?.isConnected && opener !== document.body && opener.tabIndex >= 0);
+      if (canRestoreOpener) opener?.focus();
+      else fallback?.focus();
       return;
     }
     openSearch();

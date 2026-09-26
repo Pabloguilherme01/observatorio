@@ -1,4 +1,4 @@
-import { CalendarDays, Menu, Moon, Search, Sun, X } from 'lucide-react';
+import { CalendarDays, Link2, Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ContrastModeToggle } from './ContrastModeToggle';
 import { useTheme } from '../../context/ThemeContext';
@@ -6,6 +6,7 @@ import { navigation } from '../../config/navigation';
 import { LanguageModeToggle } from './LanguageModeToggle';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
+import { copyText } from '../../lib/clipboard';
 
 const SearchModal = lazy(() => import('./SearchModal').then(module => ({ default: module.SearchModal })));
 
@@ -19,11 +20,13 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [sectionLinkCopied, setSectionLinkCopied] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const moreOpenRef = useRef(false);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
   const toolsButtonRef = useRef<HTMLButtonElement>(null);
   const toolsPanelRef = useRef<HTMLDivElement>(null);
+  const copiedTimerRef = useRef<number | null>(null);
   const updatedAt = formatDate(d.meta.updatedAt);
   const moreActive = moreNavigation.some(item => item.id === activeSection);
 
@@ -148,6 +151,24 @@ export function Header() {
     if (restoreFocus) window.requestAnimationFrame(() => toolsButtonRef.current?.focus());
   };
 
+  const copyCurrentSectionLink = async () => {
+    const hash = window.location.hash || '#dashboard';
+    const url = window.location.origin + window.location.pathname + hash;
+    const copied = await copyText(url);
+    if (!copied) return;
+
+    setSectionLinkCopied(true);
+    if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current);
+    copiedTimerRef.current = window.setTimeout(() => {
+      copiedTimerRef.current = null;
+      setSectionLinkCopied(false);
+    }, 1800);
+  };
+
+  useEffect(() => () => {
+    if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current);
+  }, []);
+
   return (
     <>
       <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95" data-theme={theme}>
@@ -231,7 +252,7 @@ export function Header() {
           </div>
 
           <div className="site-header-actions ml-auto flex items-center gap-1">
-            <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K">
+            <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K" data-search-trigger="primary">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="header-reading-mode hidden md:block"><LanguageModeToggle /></div>
@@ -268,6 +289,11 @@ export function Header() {
                   <Search className="h-4 w-4" aria-hidden="true" />
                   <span>Buscar áreas</span>
                 </button>
+                <button type="button" onClick={copyCurrentSectionLink} className="mobile-tool-action">
+                  <Link2 className="h-4 w-4" aria-hidden="true" />
+                  <span>{sectionLinkCopied ? 'Link copiado' : 'Copiar link da seção'}</span>
+                </button>
+                <span className="sr-only" aria-live="polite">{sectionLinkCopied ? 'Link da seção copiado' : ''}</span>
               </div>
             </div>
           </div>

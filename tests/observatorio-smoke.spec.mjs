@@ -265,13 +265,21 @@ test.describe('mobile layout and interaction', () => {
     }
   });
 
-  test('busca cabe na viewport, mantém foco interno e pode ser limpa', async ({ page }) => {
-    await page.goto('./');
+  test('busca mobile restaura foco e menu copia link canônico da seção', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: async text => { window.__lastCopiedSectionLink = text; } },
+      });
+    });
+
+    await page.goto('./?utm_source=teste#transporte');
     await page.getByRole('button', { name: 'Abrir menu' }).click();
     await page.getByRole('button', { name: 'Buscar áreas' }).click();
 
     const panel = page.locator('.search-modal-panel');
     const close = page.getByRole('button', { name: /fechar busca/i });
+    const primarySearch = page.getByRole('button', { name: 'Buscar no observatório' });
     await expect(panel).toBeVisible();
     await expect(close).toBeFocused();
 
@@ -289,6 +297,16 @@ test.describe('mobile layout and interaction', () => {
 
     await close.click();
     await expect(panel).toBeHidden();
+    await expect(primarySearch).toBeFocused();
+
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+    await page.getByRole('button', { name: 'Copiar link da seção' }).click();
+    await expect(page.getByRole('button', { name: 'Link copiado' })).toBeVisible();
+
+    const copied = await page.evaluate(() => window.__lastCopiedSectionLink);
+    expect(copied).toMatch(/#transporte$/);
+    expect(copied).not.toContain('utm_source');
+    expect(copied).not.toContain('?');
   });
 
   test('gráficos estreitos renderizam sem largura ou altura zero', async ({ page }) => {

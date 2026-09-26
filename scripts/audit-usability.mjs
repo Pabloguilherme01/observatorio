@@ -139,6 +139,12 @@ if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail(
 else pass('busca possui resposta rápida e navegação por teclado');
 if (search.includes('closeButtonRef') && search.includes("desktop ? inputRef.current : closeButtonRef.current") && header.includes('closeTools(false)')) pass('busca mobile move foco para dentro do diálogo sem reabrir teclado virtual');
 else fail('busca mobile pode deixar foco atrás do diálogo');
+if (search.includes('canRestoreOpener') && search.includes('opener !== document.body') && search.includes('opener.tabIndex >= 0') && search.includes('[data-search-trigger="primary"]') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco apenas em acionador válido e usa fallback estável');
+else fail('fechar busca pode perder o foco quando o acionador original não existe mais');
+if (header.includes('copyCurrentSectionLink') && header.includes("window.location.origin + window.location.pathname + hash") && header.includes('Copiar link da seção')) pass('menu mobile copia link canônico da seção atual');
+else fail('menu mobile não oferece cópia canônica da seção atual');
+if (header.includes('aria-live="polite"') && header.includes('Link da seção copiado')) pass('cópia de link possui feedback acessível');
+else fail('cópia de link não anuncia sucesso para tecnologia assistiva');
 if (search.includes('search-clear-query') && search.includes("setQuery('')") && search.includes('setActiveIndex(0)')) pass('busca oferece limpeza explícita sem fechar o diálogo');
 else fail('busca não oferece ação explícita para limpar a consulta');
 if (search.includes('search-shortcut-guide') && search.includes('navigation.map(item =>') && search.includes("a[href], summary")) pass('busca expõe guia de atalhos e mantém o summary no ciclo de foco');
