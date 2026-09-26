@@ -58,7 +58,7 @@ const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
 must(vite.includes("src: BASE_PATH + 'pwa-192.png'") && vite.includes("src: BASE_PATH + 'pwa-512.png'") && vite.includes('scope: BASE_PATH'), 'ícones PNG e escopo PWA respeitam o subcaminho publicado');
 must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("url.pathname.startsWith('/observatorio/api/v1/')"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
-must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.svg"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
+must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.png"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
 const pngSize = file => {
   const bytes = fs.readFileSync(path.join(root, 'public', file));
@@ -70,10 +70,6 @@ must(JSON.stringify(pngSize('pwa-192.png')) === '[192,192]'
   && JSON.stringify(pngSize('pwa-512.png')) === '[512,512]'
   && JSON.stringify(pngSize('apple-touch-icon.png')) === '[180,180]',
   'ícones PNG têm dimensões corretas para Android e iOS');
-must(read('public/pwa-192.svg').includes('viewBox="0 0 512 512"')
-  && read('public/pwa-512.svg').includes('viewBox="0 0 512 512"'),
-  'vetores móveis usam a mesma composição escalável');
-
 must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
 must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
 must(vite.includes('start_url: BASE_PATH') && vite.includes('scope: BASE_PATH'), 'PWA mantém start_url e scope no subcaminho publicado');
