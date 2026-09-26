@@ -7,13 +7,12 @@ import { CivicActionHub } from './CivicActionHub';
 export default function DeferredCivicGroup() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
+  const summary = mode === 'summary';
 
   return <>
-    {!technical ? <CivicActionHub /> : <>
-      <ElectionTimeline />
-      <CivicActionHub />
-      <PoliticalResearch />
-      <Electoral360 />
-    </>}
+    {technical && <ElectionTimeline />}
+    <CivicActionHub />
+    {technical && <PoliticalResearch />}
+    {!summary && <Electoral360 />}
   </>;
 }
