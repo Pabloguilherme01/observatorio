@@ -27,8 +27,10 @@ const quickQuizSource = quiz;
 if (!quickQuizSource.includes('const displayedScore = score;')) fail('Pontuação exibida deve usar o score já contabilizado.');
 else pass('Pontuação exibida do Quiz não duplica a resposta selecionada.');
 
-if (!quickQuizSource.includes('const finalScore = score + (selected === question.answerIndex ? 1 : 0);')) fail('Pontuação final deve contabilizar explicitamente a última resposta.');
-else pass('Pontuação final do Quiz considera a última resposta sem depender de atualização assíncrona.');
+if (!quickQuizSource.includes('if (optionIndex === question.answerIndex) setScore(previous => previous + 1);')) fail('Resposta correta deve ser contabilizada no momento da seleção.');
+else pass('Resposta correta é contabilizada uma única vez no momento da seleção.');
+if (!quickQuizSource.includes('const finalScore = score;')) fail('Pontuação final deve reutilizar o score já contabilizado, sem somar a última resposta novamente.');
+else pass('Pontuação final não duplica a última resposta.');
 
 if (!quickQuizSource.includes('readQuizBestScores')) fail('Quiz perdeu a persistência da melhor marca pessoal.');
 else pass('Quiz mantém apenas a melhor marca pessoal por fase.');
