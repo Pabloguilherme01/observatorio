@@ -567,7 +567,7 @@ test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async
   expect(saved[0]).toBe(40);
 });
 
-test('inspetor copia referência e compartilha o link da seção atual', async ({ page }) => {
+test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
@@ -579,22 +579,34 @@ test('inspetor copia referência e compartilha o link da seção atual', async (
     });
   });
 
-  await page.goto('./');
+  await page.goto('./?utm_source=teste');
   await openSection(page, 'dashboard');
   await page.locator('.dashboard-kpi-card').first().click();
 
   const dialog = page.getByRole('dialog', { name: /Variação da população/i });
   await expect(dialog).toBeVisible();
-  await dialog.getByRole('button', { name: /Copiar referência/i }).click();
 
+  await page.keyboard.press('g');
+  await page.keyboard.press('t');
+  await expect(page).toHaveURL(/#dashboard$/);
+
+  await dialog.getByRole('button', { name: /Copiar referência/i }).click();
   const copied = await page.evaluate(() => window.__lastCopiedText);
   expect(copied).toContain('Variação da população');
   expect(copied).toContain('Fonte:');
   expect(copied).toContain('URL:');
 
+  await dialog.getByRole('button', { name: 'Copiar link' }).click();
+  await expect(dialog.getByRole('button', { name: 'Link copiado' })).toBeVisible();
+  const copiedLink = await page.evaluate(() => window.__lastCopiedText);
+  expect(copiedLink).toMatch(/#dashboard$/);
+  expect(copiedLink).not.toContain('?');
+  expect(copiedLink).not.toContain('utm_source');
+
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();
   const payload = await page.evaluate(() => window.__lastInspectorShare);
   expect(payload?.url).toMatch(/#dashboard$/);
+  expect(payload?.url).not.toContain('?');
 
   await page.evaluate(() => {
     delete navigator.share;
@@ -603,6 +615,12 @@ test('inspetor copia referência e compartilha o link da seção atual', async (
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();
   const fallbackShare = await page.evaluate(() => window.__lastCopiedText);
   expect(fallbackShare).toContain('#dashboard');
+  expect(fallbackShare).not.toContain('utm_source');
+
+  await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
+  await page.keyboard.press('g');
+  await page.keyboard.press('t');
+  await expect(page).toHaveURL(/#transporte$/);
 });
 
 test('simulador restaura o cenário padrão e persiste a redefinição', async ({ page }) => {

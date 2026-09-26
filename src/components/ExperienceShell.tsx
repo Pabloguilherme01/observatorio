@@ -64,6 +64,12 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
       const target = event.target as HTMLElement | null;
       const typing = !!target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable);
       if (typing) return;
+
+      const modalOpen = document.querySelector('[role="dialog"][aria-modal="true"]');
+      if (modalOpen) {
+        clearNavigationSequence();
+        return;
+      }
       if (event.altKey && !event.metaKey && !event.ctrlKey && event.key.toLowerCase() === 'm') {
         event.preventDefault();
         cycleMode();

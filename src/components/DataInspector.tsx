@@ -29,6 +29,7 @@ export function DataInspector() {
   const [data, setData] = useState<InspectorDetail | null>(null);
   const [copied, setCopied] = useState(false);
   const [citationCopied, setCitationCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
   const [actionError, setActionError] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLElement>(null);
@@ -41,6 +42,8 @@ export function DataInspector() {
       setData(event.detail);
       setCopied(false);
       setCitationCopied(false);
+      setLinkCopied(false);
+      setLinkCopied(false);
       setActionError(false);
     };
     window.addEventListener('observatorio:inspect-data', onInspect);
@@ -98,15 +101,17 @@ export function DataInspector() {
     source?.url ? `URL: ${source.url}` : '',
   ].filter(Boolean).join(' ');
 
-  const markCopied = (kind: 'details' | 'citation') => {
+  const markCopied = (kind: 'details' | 'citation' | 'link') => {
     setCopied(kind === 'details');
     setCitationCopied(kind === 'citation');
+    setLinkCopied(kind === 'link');
     setActionError(false);
     if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
     copyTimerRef.current = window.setTimeout(() => {
       copyTimerRef.current = null;
       setCopied(false);
       setCitationCopied(false);
+      setLinkCopied(false);
     }, 1800);
   };
 
@@ -128,8 +133,19 @@ export function DataInspector() {
     setActionError(true);
   };
 
+  const canonicalUrl = window.location.origin + window.location.pathname + (window.location.hash || '#dashboard');
+
+  const copyLink = async () => {
+    if (await copyText(canonicalUrl)) {
+      markCopied('link');
+      return;
+    }
+    setLinkCopied(false);
+    setActionError(true);
+  };
+
   const share = async () => {
-    const shareData = { title: data.label, text, url: window.location.href };
+    const shareData = { title: data.label, text, url: canonicalUrl };
     try {
       if (navigator.share) {
         await navigator.share(shareData);
@@ -192,6 +208,10 @@ export function DataInspector() {
             <button type="button" onClick={copyCitation} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
               {citationCopied ? <Check className="h-3.5 w-3.5" /> : <Quote className="h-3.5 w-3.5" />}
               {citationCopied ? 'Referência copiada' : 'Copiar referência'}
+            </button>
+            <button type="button" onClick={copyLink} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+              {linkCopied ? <Check className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
+              {linkCopied ? 'Link copiado' : 'Copiar link'}
             </button>
             <button type="button" onClick={share} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
               {typeof navigator.share === 'function' ? <Share2 className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
