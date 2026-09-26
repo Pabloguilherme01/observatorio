@@ -39,7 +39,7 @@ async function assertViewportIntegrity(page) {
 }
 
 test.describe('bancada cross-browser de interface', () => {
-  test('núcleo visual permanece íntegro entre seções e modos', async ({ page }) => {
+  test('núcleo visual permanece íntegro entre seções e modos', async ({ page, isMobile }) => {
     await page.goto('./');
     await expect(page.locator('#main-content')).toBeVisible();
     await assertViewportIntegrity(page);
@@ -49,14 +49,24 @@ test.describe('bancada cross-browser de interface', () => {
       await assertViewportIntegrity(page);
     }
 
-    const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-    for (const label of ['Simples', 'Técnico', 'Resumo']) {
-      await modes.getByRole('button', { name: new RegExp('^' + label) }).click();
-      await expect(page.locator('html')).toHaveAttribute(
-        'data-language-mode',
-        label === 'Simples' ? 'simple' : label === 'Técnico' ? 'technical' : 'summary',
-      );
-      await assertViewportIntegrity(page);
+    if (isMobile) {
+      const shortcut = page.locator('.site-mode-shortcut');
+      await expect(shortcut).toBeVisible();
+      for (const mode of ['simple', 'technical', 'summary']) {
+        await shortcut.click();
+        await expect(page.locator('html')).toHaveAttribute('data-language-mode', mode);
+        await assertViewportIntegrity(page);
+      }
+    } else {
+      const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+      for (const label of ['Simples', 'Técnico', 'Resumo']) {
+        await modes.getByRole('button', { name: new RegExp('^' + label) }).click();
+        await expect(page.locator('html')).toHaveAttribute(
+          'data-language-mode',
+          label === 'Simples' ? 'simple' : label === 'Técnico' ? 'technical' : 'summary',
+        );
+        await assertViewportIntegrity(page);
+      }
     }
   });
 
@@ -134,13 +144,28 @@ test.describe('bancada de robustez adicional', () => {
   test('foco de teclado permanece visível nos controles principais', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Validação de teclado é destinada aos perfis desktop.');
     await page.goto('./');
-    await page.keyboard.press('Tab');
-    const focused = page.locator(':focus');
+    let focused = page.locator(':focus');
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      await page.keyboard.press('Tab');
+      focused = page.locator(':focus');
+      const interactive = await focused.evaluate(node =>
+        node.matches('button,a,input,select,textarea,summary,[role="button"]'),
+      ).catch(() => false);
+      if (interactive) break;
+    }
     await expect(focused).toBeVisible();
     const style = await focused.evaluate(node => {
       const css = getComputedStyle(node);
-      return { outline: css.outlineStyle, width: css.outlineWidth, shadow: css.boxShadow };
+      return {
+        interactive: node.matches('button,a,input,select,textarea,summary,[role="button"]'),
+        outline: css.outlineStyle,
+        width: css.outlineWidth,
+        shadow: css.boxShadow,
+      };
     });
-    expect(style.outline !== 'none' || style.shadow !== 'none').toBeTruthy();
+    expect(style.interactive).toBeTruthy();
+    expect(
+      (style.outline !== 'none' && style.width !== '0px') || style.shadow !== 'none',
+    ).toBeTruthy();
   });
 });
