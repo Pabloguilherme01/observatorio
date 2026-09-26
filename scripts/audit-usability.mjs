@@ -59,6 +59,7 @@ pass('jornada pública cobre descobrir → conferir mudanças → verificar font
 
 
 const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
+const sectionNavigation = texts.find(item => item.file === 'src/lib/sectionNavigation.ts')?.content ?? '';
 const readingModes = texts.find(item => item.file === 'src/config/readingModes.ts')?.content ?? '';
 const languageContextSource = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
 if (
@@ -128,7 +129,6 @@ if (!mobileNav.includes("item.group === 'more' && item.id !== 'quiz'")) fail('Qu
 else pass('Quiz aparece uma única vez na navegação inferior mobile');
 
 const experience = texts.find(item => item.file === 'src/components/ExperienceShell.tsx')?.content ?? '';
-const sectionNavigation = texts.find(item => item.file === 'src/lib/sectionNavigation.ts')?.content ?? '';
 if (experience.includes('shortcutMap') && experience.includes('navigationSequence') && experience.includes('navigateToSection(destination)') && sectionNavigation.includes('window.history.pushState')) pass('atalhos configurados usam navegação central com histórico restaurável');
 else fail('atalhos declarados não estão conectados à navegação central com histórico');
 
@@ -142,7 +142,7 @@ else fail('resultado de serviço público pode abrir uma lista genérica sem des
 if (
   search.includes("const knownDestination =") &&
   search.includes("navigation.some(item => item.id === id)") &&
-  search.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'")
+  search.includes("navigateToSection(target)")
 ) pass('busca preserva destinos lazy e aciona a navegação central');
 else fail('busca pode perder destinos lazy antes da montagem do componente');
 
