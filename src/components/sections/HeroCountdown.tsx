@@ -60,7 +60,7 @@ export function HeroCountdown() {
               <a href="#descubra" className="hero-action primary">
                 Explorar dados <ArrowRight aria-hidden="true" />
               </a>
-              <a href="#evidencias" className="hero-action secondary">
+              <a href="#fontes" className="hero-action secondary">
                 Conferir fontes
               </a>
               <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
