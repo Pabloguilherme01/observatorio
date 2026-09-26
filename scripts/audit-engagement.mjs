@@ -94,10 +94,10 @@ must(electoral360Ui.includes('Captura com mais de 24h') && electoral360Ui.includ
 must(electoral360Ui.includes('className={`mb-4 rounded-2xl border ${snapshotWarning ?') && !electoral360Ui.includes('className=\"mb-4 rounded-2xl border ${snapshotWarning'), 'alerta de frescor do Eleitoral 360 usa interpolação JSX real');
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
 must(!(read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && !(read('src/components/sections/HeroCountdown.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
-must((read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: IBGE') && (read('src/components/sections/HeroCountdown.tsx')).includes('Fonte: TSE'), 'cards hero exibem fonte diretamente');
+must((read('src/components/sections/HeroCountdown.tsx')).includes('hero-reference-card') && (read('src/components/sections/HeroCountdown.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/HeroCountdown.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
 must(executive.includes('Orçamento planejado por habitante') && executive.includes('budgetPerCapita') && executive.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
 must(executive.includes('LOA 2026 ÷ IBGE 2026') && executive.includes('razão de planejamento'), 'indicador per capita explicita fórmula e natureza');
-must(read('src/components/sections/HeroCountdown.tsx').includes('tarifa semiurbana') && read('src/components/sections/HeroCountdown.tsx').includes('Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
+must(read('src/components/sections/HeroCountdown.tsx').includes('<small>Transporte</small>') && read('src/components/sections/HeroCountdown.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
 must((dashboard.includes('HistoricalTrendChart') && dashboardChart.includes('População e eleitorado')) || (dashboard.includes('Crescimento populacional · 2022–2026') && dashboard.includes('Eleitorado · 2018–2026')), 'dashboard mantém tendências históricas');
 const transport = read('src/components/TransportCalculator.tsx');
 const transportLib = read('src/lib/transport.ts');

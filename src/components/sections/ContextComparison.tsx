@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { contextualMetrics, contextualMunicipalities, type ContextMetricId } from '../../data/contextualComparison';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 
 function formatValue(id: ContextMetricId, value: number) {
   if (id === 'population') return value.toLocaleString('pt-BR');
@@ -78,9 +79,16 @@ export function ContextComparison() {
           ))}
         </div>
 
-        <div className="context-comparison-note mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 text-xs leading-5 text-slate-500">
-          <strong className="text-slate-300 light:text-slate-700">Como ler:</strong> os valores estão lado a lado para fornecer contexto. Um valor maior ou menor não recebe automaticamente o significado de “melhor” ou “pior”, porque cada indicador mede uma dimensão diferente e pode ter limites e denominadores próprios.
-        </div>
+        <PremiumInfoCard
+          compact
+          tone="sky"
+          icon={Maximize2}
+          eyebrow="Como ler"
+          title="Comparação oferece contexto — não ranking"
+          className="context-comparison-note mt-4"
+        >
+          Os valores estão lado a lado para fornecer escala e referência. Um valor maior ou menor não recebe automaticamente o significado de “melhor” ou “pior”, porque cada indicador mede uma dimensão diferente e pode ter limites e denominadores próprios.
+        </PremiumInfoCard>
       </div>
     </section>
   );
