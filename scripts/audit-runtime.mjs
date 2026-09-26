@@ -36,8 +36,8 @@ if (
 else fail('blocos lazy não possuem isolamento de erro por domínio.');
 if (app.includes('IntersectionObserver') && app.includes('rootMargin: \'320px 0px\'')) pass('carregamento diferido mantém margem de pré-carregamento otimizada.');
 else fail('carregamento diferido perdeu proteção de pré-carregamento.');
-if (app.includes('locationRaf') && app.includes('window.requestAnimationFrame(syncLocation)') && app.includes('window.cancelAnimationFrame(locationRaf)')) pass('sincronização de histórico deduplica eventos e limpa RAF pendente.');
-else fail('sincronização de histórico pode duplicar eventos ou deixar RAF pendente.');
+if (app.includes("window.addEventListener('hashchange', navigateFromLocation)") && !app.includes("window.addEventListener('popstate', navigateFromLocation)")) pass('sincronização de histórico evita listeners redundantes para a mesma mudança de hash.');
+else fail('sincronização de histórico possui listeners redundantes ou perdeu hashchange.');
 
 const experience = read('src/components/ExperienceShell.tsx');
 if (
