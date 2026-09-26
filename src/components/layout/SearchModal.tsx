@@ -15,6 +15,7 @@ const entries: readonly SearchEntry[] = [
   ['Perfil eleitoral', 'eleitorado', 'primary'],
   ['Transporte', 'transporte', 'primary'],
   ['Simulador de bolso · Transporte', 'transporte', 'transport'],
+  ['Quiz de dados · 200 perguntas', 'quiz', 'primary'],
   ['Saneamento e saúde', 'saude', 'primary'],
   ['Pesquisas', 'politica', 'primary'],
   ['Candidaturas', 'candidaturas', 'primary'],
