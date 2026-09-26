@@ -65,16 +65,18 @@ test.describe('header mobile e modos de leitura', () => {
       const headerFit = await page.evaluate(() => {
         const header = document.querySelector('.site-header-inner');
         const controls = [...document.querySelectorAll('.site-header-actions button')]
-          .filter(element => getComputedStyle(element).display !== 'none')
           .map(element => {
             const rect = element.getBoundingClientRect();
+            const style = getComputedStyle(element);
             return {
               left: Math.round(rect.left),
               right: Math.round(rect.right),
               width: Math.round(rect.width),
               height: Math.round(rect.height),
+              visible: style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0,
             };
-          });
+          })
+          .filter(control => control.visible);
         const rect = header?.getBoundingClientRect();
         return {
           headerLeft: rect ? Math.round(rect.left) : -1,
