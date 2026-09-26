@@ -50,6 +50,7 @@ must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includ
 must(files.mobileNav.includes("item.group === 'more' && item.id !== 'quiz'"), 'Quiz possui um único ponto de entrada na navegação inferior mobile');
 must(files.experience.includes("event.key === '/'"), 'atalho / abre a busca global fora de campos de digitação');
 must(files.experience.includes('shortcutMap') && files.experience.includes('observatorio:navigate') && files.experience.includes('navigationSequence'), 'atalhos G + tecla da configuração de navegação estão ativos globalmente');
+must(files.experience.includes('target.isContentEditable'), 'atalhos não interceptam elementos editáveis');
 must(read('src/config/navigation.ts').includes("id: 'saude'") && read('src/config/navigation.ts').includes("id: 'exportacao'"), 'menu Mais expõe saúde/saneamento e exportação sem criar novos destinos');
 must(!files.mobileNav.includes('useLanguageMode') && !files.mobileNav.includes('setMode(') && files.app.includes('modeForDestination') && files.readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') && files.readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') && files.languageContext.includes('fallbackDestinationForMode'), 'menu mobile e troca manual usam a mesma política central de visibilidade');
 
