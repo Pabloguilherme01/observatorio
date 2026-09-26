@@ -13,6 +13,8 @@ const files = {
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
+  readingModes: read('src/config/readingModes.ts'),
+  languageContext: read('src/context/LanguageModeContext.tsx'),
   quiz: read('src/components/sections/QuickQuiz.tsx'),
   quizData: read('src/data/quiz/questionBank.ts'),
   research: read('src/components/sections/PoliticalResearch.tsx'),
@@ -44,7 +46,7 @@ must(files.header.includes('IntersectionObserver') && files.header.includes('obs
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
 must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("id === 'quiz'"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
 must(read('src/config/navigation.ts').includes("id: 'saude'") && read('src/config/navigation.ts').includes("id: 'exportacao'"), 'menu Mais expõe saúde/saneamento e exportação sem criar novos destinos');
-must(!files.mobileNav.includes('useLanguageMode') && !files.mobileNav.includes('setMode(') && files.app.includes('TECHNICAL_ONLY_DESTINATIONS') && files.app.includes('SUMMARY_HIDDEN_DESTINATIONS') && files.app.includes("setMode('technical')") && files.app.includes("setMode('simple')"), 'menu mobile delega integralmente a regra de modo à navegação central');
+must(!files.mobileNav.includes('useLanguageMode') && !files.mobileNav.includes('setMode(') && files.app.includes('modeForDestination') && files.readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') && files.readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') && files.languageContext.includes('fallbackDestinationForMode'), 'menu mobile e troca manual usam a mesma política central de visibilidade');
 
 must(files.css.includes('--mobile-nav-height:64px') && files.css.includes('--mobile-nav-height:68px'), 'altura base e altura mobile da navegação inferior estão definidas explicitamente');
 must(files.css.includes('env(safe-area-inset-bottom'), 'safe-area inferior está contemplada');
