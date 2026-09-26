@@ -178,6 +178,16 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
+  await page.goto('./');
+  const root = page.locator('html');
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await page.getByRole('link', { name: 'Conferir fontes' }).click();
+  await expect(page).toHaveURL(/#fontes$/);
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await expect(page.locator('#fontes')).toBeVisible();
+});
+
 test('marca mantém hierarquia visual correta no mobile e desktop', async ({ page }) => {
   for (const viewport of [{ width: 390, height: 844 }, { width: 1366, height: 768 }]) {
     await page.setViewportSize(viewport);
