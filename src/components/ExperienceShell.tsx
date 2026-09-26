@@ -75,6 +75,12 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
         window.dispatchEvent(new CustomEvent('observatorio:search'));
         return;
       }
+      if (!event.metaKey && !event.ctrlKey && !event.altKey && event.key === '?') {
+        event.preventDefault();
+        clearNavigationSequence();
+        window.dispatchEvent(new CustomEvent('observatorio:shortcut-help'));
+        return;
+      }
 
       if (!event.metaKey && !event.ctrlKey && !event.altKey && event.key.length === 1) {
         const nextSequence = navigationSequence + event.key.toLowerCase();

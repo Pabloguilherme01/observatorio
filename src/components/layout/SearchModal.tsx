@@ -54,9 +54,10 @@ function fuzzyScore(query: string, text: string): number {
   return qi === query.length ? score : -Infinity;
 }
 
-export function SearchModal({ open, onClose }: { readonly open: boolean; readonly onClose: () => void }) {
+export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }: { readonly open: boolean; readonly onClose: () => void; readonly initialShortcutGuideOpen?: boolean }) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -67,6 +68,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
     openerRef.current = document.activeElement as HTMLElement | null;
     setQuery('');
     setActiveIndex(0);
+    setShortcutGuideOpen(initialShortcutGuideOpen);
     const target = window.matchMedia?.('(min-width: 768px)').matches ? inputRef.current : null;
     if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
     focusTimerRef.current = window.setTimeout(() => {
@@ -111,7 +113,7 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
         focusTimerRef.current = null;
       }
     };
-  }, [open, onClose]);
+  }, [open, onClose, initialShortcutGuideOpen]);
 
   const quickAnswer = useMemo(() => {
     const q = normalize(query);
@@ -312,10 +314,11 @@ export function SearchModal({ open, onClose }: { readonly open: boolean; readonl
           <span>Setas navegar · Enter abrir · Esc fechar</span>
         </div>
 
-        <details className="search-shortcut-guide">
+        <details className="search-shortcut-guide" open={shortcutGuideOpen} onToggle={event => setShortcutGuideOpen(event.currentTarget.open)}>
           <summary>Atalhos de teclado</summary>
           <div className="search-shortcut-grid">
             <span><kbd>/</kbd><small>Abrir busca</small></span>
+            <span><kbd>?</kbd><small>Abrir ajuda</small></span>
             <span><kbd>Alt M</kbd><small>Alternar leitura</small></span>
             {navigation.map(item => (
               <span key={item.id}><kbd>{item.shortcut}</kbd><small>{item.shortLabel}</small></span>
