@@ -157,9 +157,6 @@ body{
 }
 @media (max-width:359px){
   :root{--mobile-page-gutter:10px}
-  .language-toggle-v3 .language-toggle-options{
-    grid-template-columns:1fr!important;
-  }
   .language-toggle-v3 .language-toggle-options>button{
     min-height:48px!important;
   }
