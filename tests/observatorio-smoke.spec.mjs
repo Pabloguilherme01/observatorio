@@ -502,6 +502,7 @@ test('tema e contraste persistem após recarregar', async ({ page }) => {
   const storedTheme = await page.evaluate(() => localStorage.getItem('observatorio-theme'));
   expect(['light', 'dark']).toContain(storedTheme);
 
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
   const contrast = page.getByRole('group', { name: 'Contraste da interface' });
   await contrast.getByRole('button', { name: /Alto contraste/ }).click();
   await expect(page.locator('html')).toHaveAttribute('data-contrast', 'high');
