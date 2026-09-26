@@ -3,6 +3,7 @@ import { MobileBottomNav } from './layout/MobileBottomNav';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { navigation } from '../config/navigation';
 import { navigateToSection } from '../lib/sectionNavigation';
+import { ConnectivityStatus } from './system/ConnectivityStatus';
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
   const { cycleMode } = useLanguageMode();
@@ -124,6 +125,7 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   return (
     <>
       <div ref={progressRef} className="reading-progress" style={{ width: '0%' }} aria-hidden="true" />
+      <ConnectivityStatus />
       {children}
       <MobileBottomNav />
     </>
