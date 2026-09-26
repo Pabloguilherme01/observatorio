@@ -313,14 +313,20 @@ test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
-test('ação de aprofundar percorre os três níveis de leitura', async ({ page }) => {
+test('ação de aprofundar percorre os três níveis de leitura no painel mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
   const root = page.locator('html');
-  const deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
+  let deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
+
+  deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
+
   await page.getByRole('button', { name: 'Voltar para leitura resumida' }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
 });
