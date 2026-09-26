@@ -449,6 +449,14 @@ test('inspetor copia referência e compartilha o link da seção atual', async (
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();
   const payload = await page.evaluate(() => window.__lastInspectorShare);
   expect(payload?.url).toMatch(/#dashboard$/);
+
+  await page.evaluate(() => {
+    delete navigator.share;
+    window.__lastCopiedText = '';
+  });
+  await dialog.getByRole('button', { name: /Compartilhar/i }).click();
+  const fallbackShare = await page.evaluate(() => window.__lastCopiedText);
+  expect(fallbackShare).toContain('#dashboard');
 });
 
 test('simulador restaura o cenário padrão e persiste a redefinição', async ({ page }) => {
