@@ -86,7 +86,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (!open) {
       const opener = openerRef.current;
       const fallback = document.querySelector<HTMLElement>('[data-search-trigger="primary"]');
-      if (opener?.isConnected) opener.focus();
+      const canRestoreOpener = Boolean(opener?.isConnected && opener !== document.body && opener.tabIndex >= 0);
+      if (canRestoreOpener) opener?.focus();
       else fallback?.focus();
       return;
     }
