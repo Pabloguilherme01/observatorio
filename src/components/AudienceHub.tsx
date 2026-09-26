@@ -46,16 +46,16 @@ export function AudienceHub() {
       <div className="audience-page-card">
         <header className="audience-intro">
           <div className="audience-intro-copy">
-            <span className="audience-kicker">Navegue sem se perder</span>
+            <span className="audience-kicker">Seu ponto de partida</span>
             <h2 id="audience-title">
-              {isSummary ? 'O essencial, primeiro.' : isTechnical ? 'Explore e confira.' : 'Entenda e explore.'}
+              {isSummary ? 'Veja a cidade em poucos instantes.' : isTechnical ? 'Dados para quem quer ir além.' : 'Uma leitura clara da cidade.'}
             </h2>
             <p>
               {isSummary
-                ? 'Poucos caminhos, sem excesso. Abra um tema, leia os números e avance quando precisar.'
+                ? 'Comece pelos sinais que mais importam. Cada cartão abre o contexto quando você quiser aprofundar.'
                 : isTechnical
-                  ? 'Cada caminho leva a dados, fontes, métodos ou registros que podem ser conferidos.'
-                  : 'Escolha um assunto. O restante da leitura fica organizado em blocos curtos e comparáveis.'}
+                  ? 'Vá da visão geral à evidência: dados, fontes, métodos e registros organizados para conferência.'
+                  : 'Escolha um tema e avance no seu ritmo. Indicadores e contexto aparecem em uma sequência clara e comparável.'}
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export function AudienceHub() {
               <kbd>⌘K</kbd>
             </button>
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-              <span>{isSummary ? 'Abrir resumo' : isTechnical ? 'Abrir dados' : 'Começar a explorar'}</span>
+              <span>{isSummary ? 'Ver o essencial' : isTechnical ? 'Investigar os dados' : 'Explorar a cidade'}</span>
               <ArrowRight aria-hidden="true" />
             </button>
           </div>
