@@ -29,9 +29,10 @@ const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const experienceShell = read('src/components/ExperienceShell.tsx');
 const sentry = read('src/lib/sentry.ts');
 const leaderboard = read('src/lib/quizLeaderboard.ts');
+const readingModes = read('src/config/readingModes.ts');
 
 must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '3 modos neutros de leitura disponíveis');
-must(app.includes("if (target === 'resumo') return") && !app.includes("SUMMARY_DESTINATIONS"), 'navegação para #resumo respeita o modo escolhido sem forçar troca automática');
+must(app.includes('modeForDestination') && readingModes.includes('return current;'), 'navegação preserva o modo atual quando o destino não exige elevação de leitura');
 must(search.includes("Resumo executivo") && search.includes("'resumo'"), 'busca expõe a seção de resumo sem confundir destino com modo de leitura');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
 const quizPromptCount = (quizData.match(/prompt:/g) || []).length;
