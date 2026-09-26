@@ -2,6 +2,7 @@ import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo,
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { HeroCountdown } from '../components/sections/HeroCountdown';
+import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
@@ -240,6 +241,7 @@ export function App() {
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><HeroCountdown /></SectionErrorBoundary>
           <main id="main-content">
+            <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo executivo"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><DeferredBlock loader={loadDashboardGroup} errorLabel="Dashboard" anchorIds={['analise', 'dashboard']} /></div>
