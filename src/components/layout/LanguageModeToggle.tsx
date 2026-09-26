@@ -8,9 +8,9 @@ const items = [
 ] as const;
 
 const modeGuide = {
-  summary: { title: 'Leitura executiva', detail: 'O essencial primeiro · avance só quando fizer sentido' },
-  simple: { title: 'Leitura guiada', detail: 'Números com contexto · clareza sem excesso' },
-  technical: { title: 'Leitura auditável', detail: 'Evidência, método e limites · rastreabilidade completa' },
+  summary: { title: 'Leitura executiva', detail: 'O essencial primeiro · avance só quando fizer sentido', signal: 'Essencial' },
+  simple: { title: 'Leitura guiada', detail: 'Números com contexto · clareza sem excesso', signal: 'Contexto' },
+  technical: { title: 'Leitura auditável', detail: 'Evidência, método e limites · rastreabilidade completa', signal: 'Evidência' },
 } as const;
 
 export function LanguageModeToggle() {
@@ -18,10 +18,11 @@ export function LanguageModeToggle() {
   const guide = modeGuide[mode];
 
   return (
-    <div className="language-toggle language-toggle-v3" role="group" aria-label="Escolha como você quer ler os dados">
+    <div className="language-toggle language-toggle-v3" data-active-mode={mode} role="group" aria-label="Escolha como você quer ler os dados">
       <div className={'language-toggle-label mode-' + mode} data-mode-label={mode} aria-live="polite">
         <Info aria-hidden="true" />
         <span><strong>{guide.title}</strong><small>{guide.detail}</small></span>
+        <em className="language-toggle-signal" aria-hidden="true">{guide.signal}</em>
       </div>
       <div className="language-toggle-options">
         {items.map(({ id, label, sub, description, icon: Icon }) => (

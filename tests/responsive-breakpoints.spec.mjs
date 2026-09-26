@@ -7,7 +7,10 @@ test.describe('responsividade entre breakpoints', () => {
     { width: 390, height: 844 },
     { width: 412, height: 915 },
     { width: 768, height: 1024 },
+    { width: 1024, height: 768 },
+    { width: 1366, height: 768 },
     { width: 1440, height: 900 },
+    { width: 1920, height: 1080 },
   ]) {
     test(`não cria overflow em ${viewport.width}px`, async ({ page }) => {
       await page.setViewportSize(viewport);
@@ -30,6 +33,19 @@ test.describe('responsividade entre breakpoints', () => {
       expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.clipped).toBe(0);
+
+      for (const mode of ['summary', 'simple', 'technical']) {
+        await page.evaluate(nextMode => {
+          document.documentElement.dataset.languageMode = nextMode;
+        }, mode);
+        const modeLayout = await page.evaluate(() => ({
+          viewport: document.documentElement.clientWidth,
+          documentWidth: document.documentElement.scrollWidth,
+          mainWidth: document.getElementById('main-content')?.scrollWidth ?? 0,
+        }));
+        expect(modeLayout.documentWidth).toBeLessThanOrEqual(modeLayout.viewport + 1);
+        expect(modeLayout.mainWidth).toBeLessThanOrEqual(modeLayout.viewport + 1);
+      }
     });
   }
 });

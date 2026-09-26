@@ -221,10 +221,27 @@ else pass('rótulos de ações principais são suficientemente descritivos');
 if (!combined.includes('election-mode-actions') && !combined.includes('mode-election') && !combined.includes('electionMode')) pass('Modo Eleição cosmético removido do fluxo principal');
 else fail('Modo Eleição removido de forma incompleta');
 
+const finalUi = texts.find(item => item.file === 'src/assets/styles/final-ui.css')?.content ?? '';
+if (
+  finalUi.includes(':root[data-language-mode="summary"]') &&
+  finalUi.includes(':root[data-language-mode="simple"]') &&
+  finalUi.includes(':root[data-language-mode="technical"]') &&
+  finalUi.includes('--reading-accent-rgb:56,189,248') &&
+  finalUi.includes('--reading-accent-rgb:45,212,191') &&
+  finalUi.includes('--reading-accent-rgb:167,139,250')
+) pass('Resumo, Simples e Técnico possuem identidades visuais próprias');
+else fail('modos de leitura não possuem diferenciação visual suficiente');
+if (finalUi.includes('background-size:32px 32px') && finalUi.includes('Technical: tighter geometry')) pass('modo Técnico possui textura e geometria próprias sem alterar conteúdo');
+else fail('modo Técnico não possui linguagem visual própria');
+if (finalUi.includes('@media (min-width:768px) and (max-width:1199px)') && finalUi.includes('@media (min-width:1200px)') && finalUi.includes('@media (max-width:767px)')) pass('identidade dos modos cobre mobile, tablet/notebook e desktop');
+else fail('identidade visual dos modos não cobre os principais breakpoints');
+
 const languageToggle = texts.find(item => item.file === 'src/components/layout/LanguageModeToggle.tsx')?.content ?? '';
 const languageContext = texts.find(item => item.file === 'src/context/LanguageModeContext.tsx')?.content ?? '';
 if (
   languageToggle.includes('language-toggle-v3') &&
+  languageToggle.includes('data-active-mode={mode}') &&
+  languageToggle.includes('language-toggle-signal') &&
   languageToggle.includes('aria-pressed') &&
   languageToggle.includes("summary") &&
   languageToggle.includes("simple") &&

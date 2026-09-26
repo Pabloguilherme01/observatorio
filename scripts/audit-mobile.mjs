@@ -71,6 +71,9 @@ must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aprofundar leitura'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
+must(files.language.includes('data-active-mode={mode}') && files.language.includes('language-toggle-signal'), 'seletor de leitura expõe assinatura visual do modo ativo');
+must(files.finalUi.includes('--reading-radius:18px') && files.finalUi.includes('--reading-radius:17px') && files.finalUi.includes('--reading-radius:11px') && files.finalUi.includes('@media (max-width:359px)'), 'modos mantêm diferenças de densidade também em telas pequenas');
+must(files.finalUi.includes('@media (min-width:768px) and (max-width:1199px)') && files.finalUi.includes('@media (min-width:1200px)'), 'ritmo responsivo dos modos cobre tablet, notebook e desktop');
 must(files.research.includes('Margem registrada') && files.research.includes('min-h-11'), 'pesquisas registradas mantêm informação documental e alvos de toque adequados');
 must(files.electoral.includes('min-h-11') && files.electoral.includes('type="search"'), 'filtro eleitoral mantém interação mobile confortável');
 must(files.quiz.includes('quiz-progress-track') && files.quizData.includes('QUIZ_TOTAL = 200') && files.quizData.includes('QUESTIONS_PER_LEVEL = 40') && files.quizData.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
