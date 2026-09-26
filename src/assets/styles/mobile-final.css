@@ -1,9 +1,7 @@
-/* Mobile final layer · consolidated breakpoints · 2026-09-25 */
-
-/* Mobile final layer · 2026-09-24 */
+/* Mobile final layer · consolidated breakpoints */
 
 @media (max-width:767px){
-:root{--mobile-page-gutter:14px;--mobile-nav-height:64px}
+:root{--mobile-nav-height:64px}
 html{scroll-padding-top:72px;scroll-padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))}
 body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px));overflow-x:clip;-webkit-text-size-adjust:100%}
 #root,main,section{min-width:0;max-width:100%}
@@ -463,11 +461,9 @@ main{padding-bottom:0}
   .audience-home .audience-links-grid{
     contain:layout;
   }
+  /* Keep the fixed navigation contained and crisp without a heavy blur on every frame. */
   .mobile-bottom-nav{
     contain:layout paint;
-  }
-/* Keep the fixed navigation crisp without paying for a heavy blur on every frame. */
-  .mobile-bottom-nav{
     backdrop-filter:blur(10px)!important;
     -webkit-backdrop-filter:blur(10px)!important;
   }
@@ -493,7 +489,6 @@ main{padding-bottom:0}
 }
 
 @media (max-width:390px){
-:root{--mobile-page-gutter:12px}
 .site-brand{max-width:46vw}
 .site-icon-button,.site-tools-button{width:42px!important;min-width:42px!important}
 .hero-shell{padding-top:18px!important;padding-bottom:20px!important}
@@ -564,7 +559,6 @@ main h2{font-size:1.2rem}
 }
 
 @media (max-width:350px){
-:root{--mobile-page-gutter:10px}
 .site-brand{max-width:42vw}
 .site-brand>span:last-child{font-size:14px!important}
 .hero-shell h1{font-size:1.85rem!important}
@@ -593,10 +587,6 @@ main h2{font-size:1.12rem}
   }
 .mobile-bottom-more-menu{scroll-behavior:auto}
 }
-
-/* Mobile structural polish · hierarchy, rhythm and containment */
-
-/* Mobile visual system · section rhythm, surfaces and navigation clarity */
 
 /* Quiz mobile: cinco fases em grade, sem cartões cortados. */
 
@@ -637,10 +627,6 @@ main h2{font-size:1.12rem}
     padding:10px !important;
   }
 }
-
-/* Mobile V44.9 · refinamento final de leitura e modos */
-
-/* Reading modes · mobile role clarity */
 
 /* Mobile interaction polish · tactile feedback and mode focus */
 
