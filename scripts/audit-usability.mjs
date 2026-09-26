@@ -58,6 +58,12 @@ for (const [id, label] of [['descubra','descoberta inicial'],['mudancas-snapshot
 pass('jornada pública cobre descobrir → conferir mudanças → verificar fontes → agir → revisar compreensão → exportar');
 
 
+const mainEntry = texts.find(item => item.file === 'src/main.tsx')?.content ?? '';
+if (mainEntry.includes('PWA_INSTALL_DISMISSED_KEY') && mainEntry.includes('Agora não') && mainEntry.includes('sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY')) pass('convite de instalação PWA pode ser dispensado sem insistir na mesma sessão');
+else fail('convite de instalação PWA não possui dispensa persistente por sessão');
+if (mainEntry.includes("window.addEventListener('beforeinstallprompt'") && mainEntry.includes("window.removeEventListener('beforeinstallprompt'") && mainEntry.includes("window.addEventListener('appinstalled'") && mainEntry.includes("window.removeEventListener('appinstalled'")) pass('listeners do ciclo PWA possuem cleanup simétrico');
+else fail('listeners do prompt PWA podem permanecer ativos após unmount');
+
 const app = texts.find(item => item.file === 'src/app/App.tsx')?.content ?? '';
 const sectionNavigation = texts.find(item => item.file === 'src/lib/sectionNavigation.ts')?.content ?? '';
 const readingModes = texts.find(item => item.file === 'src/config/readingModes.ts')?.content ?? '';
