@@ -59,7 +59,7 @@ export function QuickQuiz() {
     if (selected === null || !question) return;
     if (isLast) {
       // O clique em "Próxima" pode ocorrer antes de o update de score ser refletido nesta closure.
-      const finalScore = score + (selected === question.answerIndex ? 1 : 0);
+      const finalScore = score;
       const persistedBest = saveQuizBestScore(activePhase, finalScore);
       setBest(persistedBest);
       if (finalScore >= PASS_THRESHOLD && activePhase < QUIZ_LEVELS.length - 1) {
