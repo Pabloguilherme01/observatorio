@@ -360,9 +360,10 @@ test.describe('mobile layout and interaction', () => {
     await expect(page.getByRole('button', { name: 'Link copiado' })).toBeVisible();
 
     const copied = await page.evaluate(() => window.__lastCopiedSectionLink);
-    expect(copied).toMatch(/#transporte$/);
-    expect(copied).not.toContain('utm_source');
-    expect(copied).not.toContain('?');
+    const copiedUrl = new URL(copied);
+    expect(copiedUrl.hash).toBe('#transporte');
+    expect(copiedUrl.searchParams.get('leitura')).toBe('simple');
+    expect(copiedUrl.searchParams.has('utm_source')).toBeFalsy();
   });
 
   test('gráficos estreitos renderizam sem largura ou altura zero', async ({ page }) => {
@@ -766,6 +767,38 @@ test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
   await expect(page).toHaveURL(/#resumo$/);
   await expect(page.locator('#resumo')).toBeVisible();
+});
+
+test('link da seção preserva modo de leitura e ignora rastreamento', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async text => { window.__lastCopiedSectionLink = text; } },
+    });
+  });
+  await page.goto('./?utm_source=campanha#dashboard');
+
+  await page.getByRole('button', { name: /Modo de leitura atual: Resumo/i }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
+
+  await openSection(page, 'acao');
+  await expect(page.locator('#acao')).toBeVisible();
+
+  await page.evaluate(() => window.history.replaceState(null, '', '#dashboard'));
+  await page.getByRole('button', { name: 'Abrir menu' }).click();
+  const copyButton = page.getByRole('button', { name: 'Copiar link da seção' });
+  await copyButton.click();
+  await expect.poll(() => page.evaluate(() => window.__lastCopiedSectionLink || '')).toContain('?leitura=simple#acao');
+
+  const copied = await page.evaluate(() => window.__lastCopiedSectionLink);
+  expect(copied).toContain('?leitura=simple#acao');
+  expect(copied).not.toContain('utm_source');
+
+  await page.goto(copied);
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/\?leitura=simple#acao$/);
+  await expect(page.locator('#acao')).toBeVisible();
 });
 
 test('ação de aprofundar percorre os três níveis de leitura no painel mobile', async ({ page }) => {
