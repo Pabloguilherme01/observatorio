@@ -1459,3 +1459,15 @@ test('busca responde lacunas de água, coleta e tratamento com contexto', async 
   await input.fill('esgoto sem tratamento');
   await expect(page.locator('.search-quick-answer')).toContainText(/Esgoto gerado sem tratamento/i);
 });
+
+
+test('metadados internos da busca não são atribuídos indevidamente a uma fonte externa', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('quantos indicadores');
+
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Fonte: Conjunto publicado pelo Observatório/i);
+  await expect(answer.getByRole('link', { name: /Fonte oficial/i })).toHaveCount(0);
+});
