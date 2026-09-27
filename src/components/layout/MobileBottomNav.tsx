@@ -36,6 +36,9 @@ export function MobileBottomNav() {
     moreOpenRef.current = false;
     restoreMoreFocusRef.current = restoreFocus;
     setMoreOpen(false);
+    if (restoreFocus) {
+      moreButtonRef.current?.focus();
+    }
   }, []);
 
   const toggleMore = useCallback(() => {
