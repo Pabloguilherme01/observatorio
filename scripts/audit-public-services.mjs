@@ -83,16 +83,21 @@ for (const everydayTerm of ['remédio', 'farmácia', 'creche', 'cras', 'ouvidori
 }
 if (!fail.some(item => item.startsWith('busca cidadã sem sinônimo cotidiano'))) pass('busca cidadã cobre sinônimos cotidianos essenciais');
 
-if (!source.includes("const remainingMunicipalServices = [...priorityPublicServices.slice(visiblePriorityLimit), ...additionalPublicServices];")) {
-  fail.push('catálogo público completo não está disponível nos modos de leitura');
+if (!source.includes("const remainingMunicipalServices = allMunicipalServices.filter(service => !visiblePriorityTitles.has(service.title));")) {
+  fail.push('catálogo público completo não está disponível sem duplicar prioridades');
 } else {
-  pass('catálogo público completo permanece acessível sem exigir modo técnico');
+  pass('catálogo público completo permanece acessível sem duplicar prioridades');
 }
 
-if (!source.includes("const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);")) {
-  fail.push('serviços prioritários podem voltar a duplicar no modo técnico');
+for (const essential of ['SAMU', 'Defesa Civil', 'Medicamentos SUS', 'Estoque de medicamentos', 'Regulação municipal', 'Água e esgoto — atendimento']) {
+  if (!source.includes(`'${essential}'`)) fail.push('prioridade cidadã ausente: ' + essential);
+}
+if (!fail.some(item => item.startsWith('prioridade cidadã ausente'))) pass('primeira camada prioriza serviços essenciais ao cidadão');
+
+if (!source.includes("const visiblePriority = technical ? citizenPriorityServices : citizenPriorityServices.slice(0, 6);")) {
+  fail.push('serviços essenciais não estão protegidos por modo de leitura');
 } else {
-  pass('modo técnico separa atalhos prioritários do catálogo expandido sem duplicação');
+  pass('modos de leitura preservam a prioridade dos serviços essenciais');
 }
 
 for (const staleMarker of ['const actions = [', 'function PublicServiceLink', 'function shareWhatsApp', 'immediatePublicContacts']) {
