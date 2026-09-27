@@ -59,6 +59,7 @@ const additionalPublicServices = [
 const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
 
 const publicServiceIntents = [
+  { label: 'Emergência', query: 'emergência', aliases: ['emergencia', 'samu', 'defesa civil'] },
   { label: 'Medicamentos', query: 'medicamentos', aliases: ['remédio', 'remedios', 'farmácia', 'farmacia'] },
   { label: 'Saúde', query: 'saúde', aliases: ['saude', 'médico', 'medico', 'consulta', 'caps', 'samu'] },
   { label: 'Creche', query: 'creches', aliases: ['creche', 'vaga', 'educação infantil', 'educacao infantil'] },
@@ -66,7 +67,8 @@ const publicServiceIntents = [
   { label: 'Obras', query: 'obras', aliases: ['obra', 'infraestrutura'] },
   { label: 'Licitações', query: 'licitações', aliases: ['licitacao', 'licitação', 'compras públicas', 'compras publicas'] },
   { label: 'Denúncia', query: 'denúncias', aliases: ['denuncia', 'reclamação', 'reclamacao', 'ouvidoria'] },
-  { label: 'Emprego e seleção', query: 'processos seletivos', aliases: ['emprego', 'vaga', 'seleção', 'selecao', 'estágio', 'estagio'] },
+  { label: 'Emprego e seleção', query: 'processos seletivos', aliases: ['emprego', 'seleção', 'selecao', 'estágio', 'estagio'] },
+  { label: 'Água e esgoto', query: 'água e esgoto', aliases: ['agua', 'esgoto', 'saneago', 'abastecimento'] },
 ] as const;
 
 const publicServiceAliasQuery = (value: string) => {
@@ -100,6 +102,8 @@ export function CivicActionHub() {
     ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
   ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
+  const visiblePriorityLimit = technical ? 8 : 6;
+  const remainingMunicipalServices = [...priorityPublicServices.slice(visiblePriorityLimit), ...additionalPublicServices];
   const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
   const expandedServiceQueries = publicServiceAliasQuery(serviceQuery);
   const visibleMunicipalServices = normalizedServiceQuery
@@ -231,10 +235,10 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        {technical && !serviceQuery && <details className="official-more">
-          <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
+        {!serviceQuery && <details className="official-more">
+          <summary>{technical ? 'Mais serviços oficiais' : 'Ver catálogo completo'} <span>+{remainingMunicipalServices.length} caminhos</span></summary>
           <div className="official-more-grid">
-            {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => {
+            {remainingMunicipalServices.map(service => {
               const Icon = service.icon;
               const cta = 'cta' in service && typeof service.cta === 'string' ? service.cta : null;
               return (
