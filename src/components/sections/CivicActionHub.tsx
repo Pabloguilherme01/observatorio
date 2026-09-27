@@ -81,8 +81,12 @@ export function CivicActionHub() {
   ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
   const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
+  const serviceTerms = normalizedServiceQuery.split(/\s+/).filter(Boolean);
   const visibleMunicipalServices = normalizedServiceQuery
-    ? allMunicipalServices.filter(service => normalizeServiceQuery(service.title + ' ' + service.description).includes(normalizedServiceQuery))
+    ? allMunicipalServices.filter(service => {
+        const searchable = normalizeServiceQuery(service.title + ' ' + service.description + ' ' + ('cta' in service ? service.cta ?? '' : ''));
+        return serviceTerms.every(term => searchable.includes(term));
+      })
     : visiblePriority;
 
   useEffect(() => {
@@ -168,6 +172,14 @@ export function CivicActionHub() {
           <p className="mt-2 text-[11px] text-slate-500" role="status">
             {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
           </p>
+        )}
+
+        {serviceQuery && visibleMunicipalServices.length === 0 && (
+          <div className="mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-4" role="note">
+            <strong className="block text-sm text-amber-100 light:text-amber-900">Nenhum serviço corresponde a todos os termos.</strong>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Tente palavras mais gerais, como “saúde”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
+            <button type="button" onClick={() => setServiceQuery('')} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
+          </div>
         )}
 
         <div className="official-resource-grid official-resource-grid-local">
