@@ -892,6 +892,8 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await page.goto(copiedLink);
   await expect(page.getByRole('dialog', { name: /Variação da população/i })).toBeVisible();
   await page.getByRole('dialog', { name: /Variação da população/i }).getByRole('button', { name: 'Fechar', exact: true }).click();
+  await expect(page).not.toHaveURL(/dado=/);
+  await expect(page).not.toHaveURL(/leitura=/);
   await page.keyboard.press('g');
   await page.keyboard.press('t');
   await expect(page).toHaveURL(/#transporte$/);
