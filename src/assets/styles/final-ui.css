@@ -6987,3 +6987,41 @@ body{
 @media(max-width:639px){
   .official-resource-card em{margin-top:6px;font-size:10px}
 }
+
+
+/* V44.20 · Header collision fix + intentional mobile scrollers */
+@media (min-width:1280px) and (max-width:1535px){
+  .site-header-status{display:none!important}
+  .header-reading-mode{display:none!important}
+  .site-header .header-mode-shortcut{
+    display:inline-flex!important;
+    min-width:auto!important;
+    min-height:42px!important;
+    max-width:112px;
+    padding:8px 10px;
+    gap:7px;
+    flex:0 0 auto
+  }
+  .site-header .header-mode-shortcut svg{width:16px;height:16px;flex:0 0 auto}
+  .site-header .header-mode-shortcut span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .site-header nav[aria-label="Navegação principal"]{
+    overflow:hidden;
+    flex:1 1 auto;
+  }
+  .site-header nav[aria-label="Navegação principal"]>a,
+  .site-header nav[aria-label="Navegação principal"]>div{
+    flex:0 0 auto;
+  }
+  .site-header-actions{flex:0 0 auto}
+}
+@media (min-width:1536px){
+  .site-header .header-mode-shortcut{display:none!important}
+}
+@media(max-width:639px){
+  .public-service-intents-list{
+    width:100%;
+    max-width:100%;
+    overscroll-behavior-inline:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+}
