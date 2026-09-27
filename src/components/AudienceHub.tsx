@@ -48,14 +48,14 @@ export function AudienceHub() {
           <div className="audience-intro-copy">
             <span className="audience-kicker">Seu ponto de partida</span>
             <h2 id="audience-title">
-              {isSummary ? 'O essencial da cidade, sem ruído.' : isTechnical ? 'Investigue cada número até a fonte.' : 'Entenda a cidade com contexto.'}
+              {isSummary ? 'O essencial da cidade, em poucos passos.' : isTechnical ? 'Confira dados, fontes e serviços em detalhe.' : 'Entenda a cidade e encontre caminhos úteis.'}
             </h2>
             <p>
               {isSummary
-                ? 'Uma entrada rápida para os principais números, serviços e fontes. Você decide quando aprofundar.'
+                ? 'Acesse rapidamente os principais números, serviços e fontes oficiais.'
                 : isTechnical
-                  ? 'Percorra o caminho completo do dado: valor, origem, referência, método e limitações em uma mesma jornada.'
-                  : 'Escolha um tema e transforme números isolados em uma leitura conectada, clara e comparável.'}
+                  ? 'Confira valor, origem, referência, método, limitações e os canais oficiais relacionados.'
+                  : 'Escolha o que precisa entender ou resolver e siga até o dado, serviço ou fonte correspondente.'}
             </p>
           </div>
 
@@ -64,12 +64,12 @@ export function AudienceHub() {
               <Search aria-hidden="true" />
               <span>
                 <strong>Buscar</strong>
-                <small>um dado ou assunto</small>
+                <small>serviço, dado ou assunto</small>
               </span>
               <kbd>⌘K</kbd>
             </button>
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-              <span>{isSummary ? 'Ver visão executiva' : isTechnical ? 'Abrir auditoria dos dados' : 'Explorar com contexto'}</span>
+              <span>{isSummary ? 'Ver resumo da cidade' : isTechnical ? 'Conferir dados e fontes' : 'Explorar a cidade'}</span>
               <ArrowRight aria-hidden="true" />
             </button>
           </div>
@@ -82,7 +82,7 @@ export function AudienceHub() {
                 <span>01</span>
                 <h3 id="topics-title">Escolha um assunto</h3>
               </div>
-              <p>Caminhos principais para acessar os temas do observatório.</p>
+              <p>Escolha o que você quer consultar, entender ou resolver.</p>
             </div>
             <div className="audience-topic-grid">
               {(isTechnical ? topics : topics.slice(0, 5)).map(({ id, label, description, icon: Icon }) => (
@@ -103,9 +103,9 @@ export function AudienceHub() {
           <div className="audience-block-head">
             <div>
               <span>{isSummary ? '02' : '02'}</span>
-              <h3 id="actions-title">{isSummary ? 'Próximos passos' : isTechnical ? 'Ferramentas de verificação' : 'Continue a leitura'}</h3>
+              <h3 id="actions-title">{isSummary ? 'O que você quer fazer agora?' : isTechnical ? 'Conferir e acessar' : 'O que você quer fazer agora?'}</h3>
             </div>
-            <p>{isSummary ? 'Do resumo à consulta em poucos toques.' : isTechnical ? 'Atalhos para conferir, cruzar e rastrear informações.' : 'Consulte, compare e avance sem perder o contexto.'}</p>
+            <p>{isSummary ? 'Vá direto ao serviço, indicador ou fonte oficial.' : isTechnical ? 'Acesse dados, serviços e fontes para conferir a informação.' : 'Vá direto ao serviço, indicador ou tema que precisa.'}</p>
           </div>
 
           <div className="audience-action-grid">
@@ -124,21 +124,28 @@ export function AudienceHub() {
               </>
             ) : (
               <>
-                <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
-                  <span className="audience-action-icon">?</span>
-                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para conferir dados e fontes.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-                <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
-                  <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
-                  <span><strong>Eleitoral 360°</strong><small>Registros e informações eleitorais.</small></span>
+                <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('acao')}>
+                  <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
+                  <span><strong>Encontrar um serviço público</strong><small>Saúde, emergência, creche, assistência, água, ouvidoria e mais.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
                 <button type="button" className="audience-action-card" onClick={() => jump('transporte')}>
                   <span className="audience-action-icon">R$</span>
-                  <span><strong>Simulador de transporte</strong><small>Teste o impacto da tarifa.</small></span>
+                  <span><strong>Calcular gasto com transporte</strong><small>Simule o impacto da tarifa no orçamento.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
+                <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
+                  <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
+                  <span><strong>Consultar informações eleitorais</strong><small>Candidaturas, registros, pesquisas e fontes oficiais.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+                {!isTechnical && (
+                  <button type="button" className="audience-action-card" onClick={() => jump('quiz')}>
+                    <span className="audience-action-icon">?</span>
+                    <span><strong>Testar seus conhecimentos</strong><small>Quiz educativo com dados e fontes do observatório.</small></span>
+                    <ArrowRight aria-hidden="true" />
+                  </button>
+                )}
               </>
             )}
           </div>
@@ -172,10 +179,10 @@ export function AudienceHub() {
             <div className="audience-block-head">
               <div>
                 <span>03</span>
-                <h3 id="technical-title">Camada de verificação</h3>
+                <h3 id="technical-title">Fontes para conferência</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Abrir trilha de evidências <ArrowRight aria-hidden="true" />
+                Ver origem e método <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">
