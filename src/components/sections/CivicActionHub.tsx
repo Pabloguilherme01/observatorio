@@ -58,6 +58,21 @@ const additionalPublicServices = [
 
 const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
 
+const citizenPriorityTitles = [
+  'SAMU',
+  'Defesa Civil',
+  'Medicamentos SUS',
+  'Estoque de medicamentos',
+  'Regulação municipal',
+  'Água e esgoto — atendimento',
+  'CRAS e assistência social',
+  'Lista de espera em creches',
+] as const;
+
+const citizenPriorityServices = citizenPriorityTitles
+  .map(title => priorityPublicServices.find(service => service.title === title))
+  .filter((service): service is (typeof priorityPublicServices)[number] => Boolean(service));
+
 const publicServiceIntents = [
   { label: 'Emergência', query: 'emergência', aliases: ['emergencia', 'samu', 'defesa civil'] },
   { label: 'Medicamentos', query: 'medicamentos', aliases: ['remédio', 'remedios', 'farmácia', 'farmacia'] },
@@ -73,10 +88,10 @@ const publicServiceIntents = [
 
 const publicServiceAliasQuery = (value: string) => {
   const normalized = normalizeServiceQuery(value);
-  const intent = publicServiceIntents.find(item =>
-    normalizeServiceQuery(item.query) === normalized ||
-    item.aliases.some(alias => normalizeServiceQuery(alias) === normalized)
-  );
+  const intent = publicServiceIntents.find(item => {
+    const terms = [item.query, ...item.aliases].map(normalizeServiceQuery);
+    return terms.some(term => normalized === term || normalized.includes(term));
+  });
   return intent ? [intent.query, ...intent.aliases].map(normalizeServiceQuery) : [normalized];
 };
 
@@ -101,9 +116,9 @@ export function CivicActionHub() {
     ['multas','Quitar débitos eleitorais','Consulte orientações oficiais para débitos e multas eleitorais.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/quitacao-de-multas','service'],
     ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
   ];
-  const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
-  const visiblePriorityLimit = technical ? 8 : 6;
-  const remainingMunicipalServices = [...priorityPublicServices.slice(visiblePriorityLimit), ...additionalPublicServices];
+  const visiblePriority = technical ? citizenPriorityServices : citizenPriorityServices.slice(0, 6);
+  const visiblePriorityTitles = new Set(visiblePriority.map(service => service.title));
+  const remainingMunicipalServices = allMunicipalServices.filter(service => !visiblePriorityTitles.has(service.title));
   const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
   const expandedServiceQueries = publicServiceAliasQuery(serviceQuery);
   const visibleMunicipalServices = normalizedServiceQuery
