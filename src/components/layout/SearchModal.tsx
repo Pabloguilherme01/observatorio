@@ -191,6 +191,14 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'infant-mortality');
       return indicator ? { title: 'Mortalidade infantil', value: indicator.value.toLocaleString('pt-BR') + ' óbitos por mil', id: 'saude', sourceId: indicator.sourceId } : null;
     }
+    if (q.includes('escolarizacao') || q.includes('escolarização')) {
+      const indicator = d.indicators.find(item => item.id === 'schooling-6-14');
+      return indicator ? { title: 'Escolarização de 6 a 14 anos', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('arborizacao') || q.includes('arborização')) {
+      const indicator = d.indicators.find(item => item.id === 'street-arborization');
+      return indicator ? { title: 'Arborização de vias públicas', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('perda') && q.includes('agua')) {
       const indicator = d.indicators.find(item => item.id === 'water-distribution-loss-2024');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
