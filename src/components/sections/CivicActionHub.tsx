@@ -81,8 +81,12 @@ export function CivicActionHub() {
   ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
   const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
+  const serviceTerms = normalizedServiceQuery.split(/\s+/).filter(Boolean);
   const visibleMunicipalServices = normalizedServiceQuery
-    ? allMunicipalServices.filter(service => normalizeServiceQuery(service.title + ' ' + service.description).includes(normalizedServiceQuery))
+    ? allMunicipalServices.filter(service => {
+        const searchable = normalizeServiceQuery(service.title + ' ' + service.description + ' ' + ('cta' in service ? service.cta ?? '' : ''));
+        return serviceTerms.every(term => searchable.includes(term));
+      })
     : visiblePriority;
 
   useEffect(() => {
@@ -99,12 +103,12 @@ export function CivicActionHub() {
       <SectionHeader
         titleId="action-title"
         eyebrow={technical ? 'Da evidência à fonte' : summary ? 'Do resumo à ação' : 'Da leitura à consulta'}
-        title="Serviços e verificação"
+        title="Encontre um serviço ou confira uma informação"
         description={technical
-          ? 'Cruze registros, abra bases oficiais e confira a informação diretamente na instituição responsável.'
+          ? 'Abra registros, bases e documentos diretamente nas instituições responsáveis.'
           : summary
-            ? 'Transforme a visão rápida em uma ação útil: consulte serviços, registros e fontes oficiais.'
-            : 'Leve o contexto para a prática com atalhos de consulta, serviços e verificação oficial.'}
+            ? 'Procure por uma necessidade e siga para o canal oficial responsável pelo atendimento.'
+            : 'Consulte serviços, registros e fontes oficiais sem perder o contexto da informação.'}
       />
 
       <div className="official-hub">
@@ -154,8 +158,8 @@ export function CivicActionHub() {
             type="search"
             value={serviceQuery}
             onChange={event => setServiceQuery(event.target.value)}
-            placeholder="Buscar serviço municipal…"
-            aria-label="Buscar serviço municipal"
+            placeholder="O que você precisa? Ex.: medicamentos, creche, contratos…"
+            aria-label="Buscar serviço municipal por necessidade"
             className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
           />
           {serviceQuery && (
@@ -168,6 +172,14 @@ export function CivicActionHub() {
           <p className="mt-2 text-[11px] text-slate-500" role="status">
             {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
           </p>
+        )}
+
+        {serviceQuery && visibleMunicipalServices.length === 0 && (
+          <div className="mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-4" role="note">
+            <strong className="block text-sm text-amber-100 light:text-amber-900">Nenhum serviço corresponde a todos os termos.</strong>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Tente palavras mais gerais, como “saúde”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
+            <button type="button" onClick={() => setServiceQuery('')} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
+          </div>
         )}
 
         <div className="official-resource-grid official-resource-grid-local">
@@ -200,7 +212,7 @@ export function CivicActionHub() {
 
       <div className="official-source-note">
         <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
-        <p><strong>Fonte oficial primeiro.</strong> O observatório organiza os caminhos; a execução do serviço e a informação original permanecem nos portais dos órgãos responsáveis.</p>
+        <p><strong>Você será direcionado ao canal oficial.</strong> O Observatório facilita a busca, mas não executa serviços públicos nem substitui a informação publicada pelo órgão responsável.</p>
       </div>
     </section>
   );

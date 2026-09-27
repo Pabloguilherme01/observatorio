@@ -74,6 +74,21 @@ export function TransportCalculator() {
     [route.fareBrl, trips, days, people, salary],
   );
 
+  const routeComparisons = useMemo(
+    () => routes.map(compareRoute => ({
+      route: compareRoute,
+      result: calculateTransportCost({
+        fareBrl: compareRoute.fareBrl,
+        tripsPerDay: trips,
+        workDaysPerMonth: days,
+        people: 1,
+        monthsPerYear: 12,
+        salaryReferenceBrl: salary,
+      }),
+    })),
+    [routes, trips, days, salary],
+  );
+
   const resetScenario = () => {
     setRouteId('brasilia');
     setDaysPerWeek(5);
@@ -176,6 +191,44 @@ export function TransportCalculator() {
                 <span className="text-[11px] text-slate-500">do valor de referência</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80 light:text-sky-700">Comparação de rotas</div>
+              <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Mesmo cenário, destinos diferentes</h3>
+              <p className="mt-1 text-xs leading-5 text-slate-500">Os três cartões usam os mesmos trechos por dia, dias por semana e renda de referência. A comparação é descritiva e não inclui integrações, gratuidades ou vale-transporte.</p>
+            </div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{trips} trechos/dia · {daysPerWeek} dias/semana</span>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3" aria-label="Comparação de custo mensal entre rotas">
+            {routeComparisons.map(({ route: comparedRoute, result: comparedResult }) => {
+              const isActive = comparedRoute.id === route.id;
+              return (
+                <button
+                  key={comparedRoute.id}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setRouteId(comparedRoute.id)}
+                  className={"metric-interactive rounded-2xl border p-4 text-left " + (isActive ? "border-sky-300/30 bg-sky-300/[0.055]" : "border-white/8 bg-black/10 hover:border-sky-300/20 light:bg-white")}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-bold text-slate-300 light:text-slate-700">{comparedRoute.label}</div>
+                      <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatBRL(comparedResult.monthlyPerPersonBrl)}</div>
+                      <div className="mt-1 text-[11px] text-slate-500">por pessoa/mês · tarifa {formatBRL(comparedRoute.fareBrl)}</div>
+                    </div>
+                    {isActive && <span className="rounded-full border border-sky-300/20 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-sky-300">Em uso</span>}
+                  </div>
+                  <div className="mt-3 text-[11px] text-slate-500">
+                    {(comparedResult.monthlyPctOfSalaryPerPerson ?? 0).toFixed(1).replace('.', ',')}% da renda de referência
+                  </div>
+                  <span className="mt-3 inline-flex text-[10px] font-bold uppercase tracking-wide text-sky-300/80">{isActive ? 'Rota selecionada' : 'Usar esta rota'}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 

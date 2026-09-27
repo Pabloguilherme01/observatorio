@@ -47,16 +47,16 @@ export function DataQualityPanel() {
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
     'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
     'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
-    'Candidaturas: o snapshot estadual foi capturado, mas o recorte local atual é documental e não equivale ao universo municipal completo.',
+    'Candidaturas: a captura estadual foi registrada, mas o recorte local atual é documental e não equivale ao universo municipal completo.',
   ].filter(Boolean) as string[];
 
   return (
     <section id="qualidade" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="quality-title">
       <SectionHeader
         titleId="quality-title"
-        eyebrow="Qualidade"
-        title="Proveniência antes de interpretação"
-        description="O observatório separa dado atual, snapshot, histórico e cálculo derivado. A captura do TSE é mostrada com seu estado, volume, método e limitações, sem transformar um recorte estadual em dado municipal."
+        eyebrow="Como sabemos"
+        title="Veja de onde vêm os dados e quais são os limites"
+        description="O Observatório diferencia dado atual, registro de uma data específica, histórico e cálculo feito a partir das fontes. Aqui você pode conferir atualização, método e limitações."
       />
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
@@ -79,7 +79,7 @@ export function DataQualityPanel() {
       <div className="mt-4 rounded-3xl border border-amber-400/15 bg-amber-400/[0.04] p-5 light:border-amber-300/50 light:bg-amber-50">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-amber-200 light:text-amber-700">
           <TriangleAlert className="h-4 w-4" aria-hidden="true" />
-          Alertas de integridade
+          Antes de comparar
         </div>
         <div className="mt-3 space-y-2">
           {warnings.map(warning => <p key={warning} className="text-xs leading-5 text-slate-400 light:text-slate-600">{warning}</p>)}
@@ -87,10 +87,10 @@ export function DataQualityPanel() {
       </div>
 
       <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Snapshot oficial TSE</div>
+        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Registro oficial do TSE</div>
         <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h3 className="text-lg font-black text-white light:text-slate-900">Estado material da captura</h3>
+            <h3 className="text-lg font-black text-white light:text-slate-900">Situação da captura</h3>
             <p className="mt-1 text-xs leading-5 text-slate-500">O arquivo atual é estadual. O recorte de Águas Lindas é documental e separado do campo municipal do TSE; ele não representa, por si só, o universo completo de candidaturas do município.</p>
           </div>
           <div className={'text-sm font-black ' + tseStatus.tone}>{tseStatus.label}</div>
@@ -111,8 +111,8 @@ export function DataQualityPanel() {
       </div>
 
       <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Referência e atualização das fontes</div>
-        <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Data da fonte, captura local e estado da camada</h3>
+        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Datas e atualização das fontes</div>
+        <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Quando o dado foi publicado e quando foi capturado</h3>
         <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">A data da fonte é diferente da última captura local. Quando a captura não é registrada por esta camada, isso aparece explicitamente em vez de sugerir atualização em tempo real.</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
@@ -150,7 +150,7 @@ export function DataQualityPanel() {
           <p className="mt-1 text-xs text-slate-500">Verifique a ficha de cada fonte para o respectivo ano-base.</p>
         </Card>
         <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Snapshot TSE</div>
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Captura do TSE</div>
           <div className={'mt-2 text-base font-black ' + tseStatus.tone}>{tseStatus.label}</div>
           <p className="mt-1 text-xs text-slate-500">Estado local: {tseState}. Não confundir registros estaduais com candidaturas municipais validadas.</p>
           <div className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
@@ -158,7 +158,7 @@ export function DataQualityPanel() {
           </div>
         </Card>
         <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Pipeline de resultados</div>
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Validação dos resultados</div>
           <div className="mt-2 text-base font-black text-white">Integridade dos resultados</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão verifica o arquivo oficial antes de publicá-lo. JSON/JWS, contexto municipal e assinatura são tratados separadamente; a prova criptográfica só aparece como verificada quando todos os arquivos passam.</p>
           {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}

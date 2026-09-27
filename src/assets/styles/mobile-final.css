@@ -1099,3 +1099,19 @@ main h2{font-size:1.12rem}
     }
   }
 }
+
+
+/* Civic mobile polish · 2026-09-27 */
+@media(max-width:767px){
+  #dashboard{padding-top:28px!important;padding-bottom:36px!important}
+  #dashboard .dashboard-heading-card{margin-bottom:12px!important;padding:14px!important;border-radius:18px!important}
+  #dashboard .grid.gap-3.sm\\:grid-cols-2.xl\\:grid-cols-5{gap:8px!important}
+  #dashboard .dashboard-kpi-card .text-3xl{font-size:clamp(1.5rem,7vw,1.9rem)!important}
+  #dashboard .dashboard-status-chip{min-height:28px;padding:6px 8px;font-size:9px}
+  #qualidade,#evidencias{padding-top:36px!important;padding-bottom:36px!important}
+  #qualidade .grid,#evidencias .grid{gap:9px!important}
+  #qualidade .obs-card,#evidencias .obs-card{border-radius:16px!important}
+  #evidencias .evidence-source-card{min-height:48px;border-radius:13px!important}
+  .section-header h2{font-size:clamp(1.4rem,6.4vw,1.85rem)!important;line-height:1.08!important;letter-spacing:-.035em!important}
+  .section-header p{max-width:58ch}
+}

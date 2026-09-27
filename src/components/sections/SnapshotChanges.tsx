@@ -11,11 +11,11 @@ export function SnapshotChanges() {
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-sky-300/80">
-              <Activity className="h-3.5 w-3.5" aria-hidden="true" /> Histórico de snapshots
+              <Activity className="h-3.5 w-3.5" aria-hidden="true" /> Histórico de atualizações
             </div>
             <h2 id="changes-title" className="mt-2 text-2xl font-black tracking-tight text-white">O que mudou?</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-              Este painel mostra apenas diferenças que o snapshot local consegue sustentar. Sem uma primeira captura TSE validada, a interface deixa isso explícito em vez de preencher a lacuna com inferências.
+              Este painel mostra apenas diferenças comprovadas entre capturas locais. Quando ainda não existe comparação válida, o Observatório informa isso claramente.
             </p>
           </div>
           <span className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">{generated.meta.state}</span>
@@ -34,12 +34,12 @@ export function SnapshotChanges() {
                 : 'Não registrada'}
             </strong>
             <p className="mt-1 text-xs leading-5 text-slate-500">
-              {generated.meta.matchedRows} registros da watchlist encontrados em {generated.meta.sourceRows} registros processados.
+              {generated.meta.matchedRows} registros do recorte encontrados em {generated.meta.sourceRows} registros processados.
             </p>
           </div>
           <div className="rounded-2xl border border-white/8 bg-black/10 p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-600">Cobertura</div>
-            <strong className="mt-2 block text-sm text-white">Recorte editorial · watchlist</strong>
+            <strong className="mt-2 block text-sm text-white">Recorte acompanhado</strong>
             <p className="mt-1 text-xs leading-5 text-slate-500">Não representa o universo completo de candidaturas. A base oficial permanece disponível no TSE.</p>
             <a href={generated.meta.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex min-h-10 items-center gap-1.5 text-xs font-bold text-sky-300">
               Abrir fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -51,18 +51,18 @@ export function SnapshotChanges() {
             compact
             tone={hasChanges ? 'amber' : 'slate'}
             icon={hasChanges ? Activity : Minus}
-            eyebrow="Leitura do snapshot"
-            title={generated.meta.state === 'first_capture' ? 'Linha de base local registrada' : hasChanges ? 'Há diferenças no snapshot atual' : 'Sem diferença declarada'}
+            eyebrow="Situação da atualização"
+            title={generated.meta.state === 'first_capture' ? 'Linha de base local registrada' : hasChanges ? 'Há diferenças na captura atual' : 'Sem diferença declarada'}
           >
             {generated.meta.state === 'first_capture'
-              ? 'Esta é a primeira captura validada da watchlist. Os registros adicionados formam a linha de base local; não representam uma comparação temporal entre duas capturas.'
+              ? 'Esta é a primeira captura validada do recorte acompanhado. Os registros adicionados formam a linha de base local; ainda não representam uma comparação entre duas datas.'
               : hasChanges
-                ? 'Existem diferenças no snapshot atual. Abra o Eleitoral 360° para consultar os registros afetados.'
+                ? 'Existem diferenças na captura atual. Abra Dados eleitorais para consultar os registros afetados.'
                 : generated.meta.state === 'not_synced'
                   ? 'Nenhuma comparação é declarada antes da primeira captura TSE validada.'
-                  : 'Nenhuma alteração registrada entre os snapshots comparados.'}
+                  : 'Nenhuma alteração registrada entre as capturas comparadas.'}
           </PremiumInfoCard>
-          <PremiumInfoCard compact tone="violet" icon={Database} eyebrow="Proveniência" title="Snapshot identificado e rastreável">
+          <PremiumInfoCard compact tone="violet" icon={Database} eyebrow="Origem do registro" title="Captura identificada e rastreável">
             {generated.meta.source} · {generated.meta.scope} · {generated.meta.snapshotId}
           </PremiumInfoCard>
         </div>

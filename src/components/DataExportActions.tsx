@@ -8,20 +8,29 @@ import { useLanguageMode } from '../context/LanguageModeContext';
 import { copyText } from '../lib/clipboard';
 
 const categoryFor = (id: string) => {
+  if (id === 'budget' || id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
   if (id.includes('fare') || id.includes('transport')) return 'Mobilidade';
-  if (id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
-  if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste')) return 'Saneamento';
-  if (id.includes('budget') || id.includes('revenue') || id.includes('expense') || id.includes('gdp') || id.includes('companies') || id.includes('caged')) return 'Economia';
+  if (id.startsWith('heal-') || id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
+  if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer')) return 'Saneamento';
+  if (id.includes('gdp') || id.includes('companies') || id.includes('caged') || id.includes('formal')) return 'Economia';
   if (id.includes('ideb') || id.includes('education') || id.includes('enroll')) return 'Educacao';
   return 'Geral';
 };
 
+const statusLabel = (status: string) => ({
+  current: 'Atual',
+  historical: 'Historico',
+  derived: 'Derivado',
+  snapshot: 'Registro datado',
+  planned: 'Planejado',
+}[status] ?? status);
+
 const rows: readonly (readonly ExportCell[])[] = [
-  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte', 'data_referencia'],
+  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza', 'status_rotulo'],
   ...d.indicators.map(item => {
     const source = d.sources.find(source => source.id === item.sourceId);
-    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.referenceDate ?? ''];
+    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', statusLabel(item.status)];
   }),
 ];
 
@@ -52,6 +61,15 @@ export function DataExportActions() {
     flash(`CSV ${EDITION} exportado`);
   };
 
+  const exportSourcesCsv = () => {
+    const sourceRows: readonly (readonly ExportCell[])[] = [
+      ['fonte_id', 'nome', 'instituicao', 'natureza', 'data_referencia', 'data_publicacao', 'url', 'frequencia_atualizacao', 'ultima_verificacao', 'licenca'],
+      ...d.sources.map(source => [source.id, source.label, source.institution, source.nature, source.referenceDate ?? '', source.publishedAt ?? '', source.url, source.updateFrequency ?? '', source.lastCheckedAt ?? '', source.license ?? '']),
+    ];
+    downloadBlob(`observatorio-aguas-lindas-fontes-${EDITION.toLowerCase()}.csv`, toCsv(sourceRows), 'text/csv;charset=utf-8');
+    flash(`Fontes CSV ${EDITION} exportadas`);
+  };
+
   const copyMetadata = async () => {
     const metadata = JSON.stringify({
       edition: d.meta.edition,
@@ -72,13 +90,14 @@ export function DataExportActions() {
     <Card id="exportacao" className={mode === 'summary' ? 'summary-export-card' : undefined}>
       <div className={`flex flex-col gap-4 md:flex-row md:items-center md:justify-between ${mode === 'summary' ? 'summary-export-head' : ''}`}>
         <div>
-          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados e exportação</div>
-          <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Levar dados' : 'Leve os dados para fora da aplicação'}</h3>
-          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com categoria, unidade, status, fonte e data de referência; JSON do dataset normalizado; metadados e API pública.</p>}
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados para download</div>
+          <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Baixar dados' : 'Baixe dados, fontes e metadados'}</h3>
+          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com identificador, categoria, unidade, status, fonte e referência; catálogo de fontes; JSON normalizado; metadados e API pública.</p>}
         </div>
         <div className={`flex flex-wrap gap-2 ${mode === 'summary' ? 'summary-export-actions' : ''}`}>
           <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
           <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
+          <button type="button" onClick={exportSourcesCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />Fontes CSV</button>
           <button type="button" onClick={copyMetadata} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
           <a href={import.meta.env.BASE_URL + "api/v1/observatorio.json"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 hover:bg-sky-300/10"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
         </div>

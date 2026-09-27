@@ -16,8 +16,8 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.getByRole('group', { name: 'Escolha como você quer ler os dados' })).toBeVisible();
 
     const modeGroup = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-    await modeGroup.getByRole('button', { name: /^Técnico/ }).click();
-    await expect(modeGroup.getByRole('button', { name: /^Técnico/ })).toHaveAttribute('aria-pressed', 'true');
+    await modeGroup.getByRole('button', { name: /^Detalhado/ }).click();
+    await expect(modeGroup.getByRole('button', { name: /^Detalhado/ })).toHaveAttribute('aria-pressed', 'true');
     await modeGroup.getByRole('button', { name: /^Resumo/ }).click();
     await expect(modeGroup.getByRole('button', { name: /^Resumo/ })).toHaveAttribute('aria-pressed', 'true');
 
@@ -52,12 +52,12 @@ test.describe('Observatório smoke flows', () => {
 
     await openSection(page, 'principios');
     await expect(page.getByRole('heading', { name: /Confiança começa pela origem/i })).toBeVisible();
-    await modeGroup.getByRole('button', { name: /^Técnico/ }).click();
+    await modeGroup.getByRole('button', { name: /^Detalhado/ }).click();
     await expect(page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first()).toBeVisible();
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
     await openSection(page, 'acao');
-    await expect(page.getByRole('heading', { name: /Serviços e verificação/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Encontre um serviço ou confira uma informação/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
   });
 
@@ -74,7 +74,7 @@ test.describe('Observatório smoke flows', () => {
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   await page.getByRole('combobox').first().fill('resumo executivo');
-  await page.getByRole('option', { name: /Resumo executivo/i }).click();
+  await page.getByRole('option', { name: /Resumo principal/i }).click();
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
@@ -101,7 +101,7 @@ test('healthcheck técnico usa base pública e permite tentar novamente', async 
   await page.goto('./');
   await openSection(page, 'principios');
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-  await modes.getByRole('button', { name: /^Técnico/ }).click();
+  await modes.getByRole('button', { name: /^Detalhado/ }).click();
 
   const publicationCard = page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first();
   await expect(publicationCard.getByRole('status')).toContainText(/não pôde ser concluída/i);
@@ -122,7 +122,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await input.fill('CAPS');
     await page.getByRole('option', { name: /^CAPS Serviços públicos$/ }).click();
     await expect(page).toHaveURL(/#acao$/);
-    const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
+    const serviceSearch = page.getByRole('searchbox', { name: /Buscar serviço municipal/ });
     await expect(serviceSearch).toHaveValue('CAPS');
     await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
   });
@@ -161,7 +161,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await openSection(page, 'exportacao');
     await expect(page.locator('#exportacao')).toBeVisible();
     const downloadPromise = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'CSV' }).click();
+    await page.getByRole('button', { name: 'CSV', exact: true }).click();
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toMatch(/\.csv$/);
   });
@@ -199,7 +199,7 @@ test('busca apresenta guia descobrível dos atalhos configurados', async ({ page
   await guide.locator('summary').click();
   await expect(guide.locator('kbd').filter({ hasText: 'G D' })).toBeVisible();
   await expect(guide.locator('kbd').filter({ hasText: 'G T' })).toBeVisible();
-  await expect(guide.getByText('Dashboard', { exact: true })).toBeVisible();
+  await expect(guide.getByText('Indicadores', { exact: true })).toBeVisible();
   await expect(guide.getByText('Transporte', { exact: true })).toBeVisible();
 });
 
@@ -229,7 +229,7 @@ test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile',
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   await page.getByRole('combobox').first().fill('fontes');
-  await page.getByRole('option', { name: /Fontes e metodologia/i }).click();
+  await page.getByRole('option', { name: /Como sabemos/i }).click();
   await expect(page).toHaveURL(/#fontes$/);
 
   await page.goBack();
@@ -653,7 +653,7 @@ test('cards premium organizam notas soltas sem overflow no mobile', async ({ pag
 
   await openSection(page, 'mudancas-snapshot');
   await expect(page.locator('#mudancas-snapshot .premium-info-card')).toHaveCount(2);
-  await expect(page.getByText('Snapshot identificado e rastreável')).toBeVisible();
+  await expect(page.getByText('Captura identificada e rastreável')).toBeVisible();
 
   const dimensions = await page.evaluate(() => ({
     client: document.documentElement.clientWidth,
@@ -686,8 +686,8 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
     const signatures = {};
     for (const mode of [
       { name: /^Resumo/, id: 'summary' },
-      { name: /^Simples/, id: 'simple' },
-      { name: /^Técnico/, id: 'technical' },
+      { name: /^Explicado/, id: 'simple' },
+      { name: /^Detalhado/, id: 'technical' },
     ]) {
       await group.getByRole('button', { name: mode.name }).click();
       await expect(root).toHaveAttribute('data-language-mode', mode.id);
@@ -737,7 +737,7 @@ test('modos de leitura só avançam quando a seção realmente exige mais detalh
   await openSection(page, 'qualidade');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
   await openSection(page, 'fontes');
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 });
@@ -749,14 +749,14 @@ test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({
 
   await openSection(page, 'qualidade');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
   await expect(page).toHaveURL(/#fontes$/);
   await expect(page.locator('#fontes')).toBeVisible();
 
   await openSection(page, 'orcamento-impacto');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
   await expect(page).toHaveURL(/#orcamento$/);
   await expect(page.locator('#orcamento')).toBeVisible();
@@ -774,15 +774,15 @@ test('ação de aprofundar percorre os três níveis de leitura no painel mobile
   const root = page.locator('html');
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
-  let deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+  let deepen = page.getByRole('button', { name: 'Aumentar nível de detalhe' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 
-  deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+  deepen = page.getByRole('button', { name: 'Aumentar nível de detalhe' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
-  await page.getByRole('button', { name: 'Voltar para visão executiva' }).click();
+  await page.getByRole('button', { name: 'Voltar para leitura rápida' }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
 });
 
@@ -960,8 +960,8 @@ test('controles principais executam suas ações', async ({ page }) => {
   await page.goto('./');
 
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-  await modes.getByRole('button', { name: /^Simples/ }).click();
-  await expect(modes.getByRole('button', { name: /^Simples/ })).toHaveAttribute('aria-pressed', 'true');
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+  await expect(modes.getByRole('button', { name: /^Explicado/ })).toHaveAttribute('aria-pressed', 'true');
 
   await openSection(page, 'exportacao');
   const downloadPromise = page.waitForEvent('download');
@@ -1022,7 +1022,257 @@ test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
 test('busca leva ao quiz de educação cívica', async ({ page }) => {
   await page.goto('./');
   await page.getByRole('button', { name: 'Buscar no observatório' }).click();
-  await page.getByRole('combobox', { name: 'Buscar seção, fonte ou indicador' }).fill('quiz');
-  await page.getByRole('option', { name: /Quiz de dados · 200 perguntas/ }).click();
+  await page.getByRole('combobox', { name: 'Buscar dado, serviço, fonte ou seção' }).fill('quiz');
+  await page.getByRole('option', { name: /Teste seus conhecimentos/ }).click();
   await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
+});
+
+
+test('comparação municipal expõe seis indicadores sem ranking', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+  await expect(page.getByRole('heading', { name: /Compare sem transformar em ranking/i })).toBeVisible();
+  const tabs = page.getByRole('tablist', { name: 'Indicador para comparação contextual' }).getByRole('tab');
+  await expect(tabs).toHaveCount(6);
+  await expect(page.getByRole('tab', { name: /Variação populacional 2022–2026/i })).toBeVisible();
+  await expect(page.getByRole('tab', { name: /Densidade estimada 2026/i })).toBeVisible();
+  await page.getByRole('tab', { name: /Densidade estimada 2026/i }).click();
+  await expect(page.getByText(/cálculo derivado|calculada com a população de 2026/i).first()).toBeVisible();
+});
+
+
+test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dashboard');
+  await expect(page.getByRole('heading', { name: /Proporções com a mesma base de referência/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Educação na LOA 2026/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Saúde na LOA 2026/i })).toBeVisible();
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+  await expect(page.getByRole('button', { name: /Saneamento na LOA 2026/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Matrículas municipais na educação básica/i })).toBeVisible();
+});
+
+
+test('saneamento exibe coleta de resíduos a partir do dataset rastreável', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'saude');
+  await expect(page.getByText(/domicílios com coleta de resíduos · SINISA 2024/i)).toBeVisible();
+  await expect(page.getByText(/36\.579 pessoas sem coleta/i)).toHaveCount(0);
+});
+
+test('recorte orçamentário mostra participação na LOA e valor por habitante', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'orcamento-impacto');
+  await expect(page.getByRole('heading', { name: /Recorte do orçamento por função/i })).toBeVisible();
+  await expect(page.getByText(/da LOA/i).first()).toBeVisible();
+  await expect(page.getByText(/por habitante/i).first()).toBeVisible();
+});
+
+
+test('busca responde participação orçamentária com nota metodológica', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('orçamento saúde');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText('Saúde na LOA 2026');
+  await expect(answer).toContainText(/Participação orçamentária não mede execução/i);
+});
+
+test('diferença entre receita e despesa não é apresentada como superávit', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('diferença receita despesa');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Receitas realizadas − despesas empenhadas 2025/i);
+  await expect(answer).toContainText(/não deve ser interpretada automaticamente como superávit fiscal/i);
+});
+
+test('painel de atualizações informa cobertura temporal das fontes', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dados');
+  await expect(page.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
+  await expect(page.locator('#dados').getByText(/%/).first()).toBeVisible();
+});
+
+
+test('busca abre comparação municipal e atualizações públicas', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('comparar municípios');
+  await page.getByRole('option', { name: /Comparar municípios/i }).click();
+  await expect(page).toHaveURL(/#contexto$/);
+  await expect(page.locator('#contexto')).toBeVisible();
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('atualizações públicas');
+  await page.getByRole('option', { name: /Atualizações públicas/i }).click();
+  await expect(page).toHaveURL(/#dados$/);
+  await expect(page.locator('#dados')).toBeVisible();
+});
+
+test('busca responde LOA por habitante e saneamento por pessoa com contexto', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('orçamento por habitante');
+  let answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/LOA 2026 por habitante/i);
+  await expect(answer).toContainText(/não representa gasto executado por pessoa/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('saneamento por pessoa');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Investimento em saneamento por pessoa/i);
+});
+
+test('painel de dados explica a natureza temporal dos indicadores', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dados');
+  await expect(page.getByLabel('Tipos de indicador publicados')).toBeVisible();
+  await expect(page.getByText(/Atual:/).first()).toBeVisible();
+  await expect(page.getByText(/Histórico:/).first()).toBeVisible();
+  await expect(page.getByText(/Derivado:/).first()).toBeVisible();
+  await expect(page.getByText(/Registro datado:/).first()).toBeVisible();
+});
+
+
+test('busca direciona indicadores para a seção temática correta', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('Perdas na distribuição de água');
+  await page.getByRole('option', { name: /Perdas na distribuição de água/i }).click();
+  await expect(page).toHaveURL(/#saude$/);
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('Receitas brutas realizadas 2025');
+  await page.getByRole('option', { name: /Receitas brutas realizadas 2025/i }).click();
+  await expect(page).toHaveURL(/#orcamento$/);
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('Tarifa Brasília');
+  await page.getByRole('option', { name: /Tarifa Brasília/i }).click();
+  await expect(page).toHaveURL(/#transporte$/);
+});
+
+test('busca prioriza orçamento por habitante quando a consulta é específica', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('orçamento saúde por habitante');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Saúde na LOA 2026 por habitante/i);
+  await expect(answer).toContainText(/razão de planejamento|não execução por pessoa/i);
+});
+
+test('cards de orçamento abrem fonte e método no inspetor', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'orcamento-impacto');
+  const card = page.locator('#orcamento-impacto').getByRole('button').filter({ hasText: /^Saúde/ }).first();
+  await card.click();
+  const inspector = page.getByRole('dialog', { name: /Saúde na LOA 2026/i });
+  await expect(inspector).toBeVisible();
+  await expect(inspector).toContainText(/Alocação não equivale a execução financeira/i);
+  await expect(inspector.getByRole('link', { name: 'Ver fonte' })).toBeVisible();
+});
+
+test('CSV mantém colunas antigas e acrescenta identificadores e metadados', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'exportacao');
+
+  const indicatorDownloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'CSV', exact: true }).click();
+  const indicatorDownload = await indicatorDownloadPromise;
+  const indicatorPath = await indicatorDownload.path();
+  expect(indicatorPath).toBeTruthy();
+  const indicatorCsv = readFileSync(indicatorPath, 'utf8');
+  expect(indicatorCsv).toContain('"categoria";"indicador";"valor";"unidade";"status";"fonte_id";"fonte_instituicao";"data_referencia";"observacao";"indicador_id";"fonte_natureza";"status_rotulo"');
+  expect(indicatorCsv).toContain('water-access-2024');
+  expect(indicatorCsv).toContain('budget-health-per-capita-2026');
+
+  const sourceDownloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Fontes CSV' }).click();
+  const sourceDownload = await sourceDownloadPromise;
+  const sourcePath = await sourceDownload.path();
+  expect(sourcePath).toBeTruthy();
+  const sourceCsv = readFileSync(sourcePath, 'utf8');
+  expect(sourceCsv).toContain('"frequencia_atualizacao";"ultima_verificacao";"licenca"');
+});
+
+
+test('busca diferencia referências do HEAL sem misturar capacidade atual e planejamento', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('HEAL leitos');
+  let answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/leitos explicitados no portal atual/i);
+  await expect(answer).toContainText(/85 leitos/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('HEAL planejamento');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/leitos no planejamento registrado/i);
+  await expect(answer).toContainText(/não representa capacidade já instalada/i);
+});
+
+test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de status', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'exportacao');
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'CSV', exact: true }).click();
+  const download = await downloadPromise;
+  const path = await download.path();
+  expect(path).toBeTruthy();
+  const csv = readFileSync(path, 'utf8');
+
+  expect(csv).toContain('status_rotulo');
+  expect(csv).toMatch(/"Orcamento";[^\n]*"budget-health-per-capita-2026"/);
+  expect(csv).toMatch(/"Saude";[^\n]*"heal-current-stated-beds"/);
+  expect(csv).toContain('Registro datado');
+});
+
+
+test('transporte compara rotas usando o mesmo cenário sem ranking', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'transporte');
+
+  await expect(page.getByRole('heading', { name: /Mesmo cenário, destinos diferentes/i })).toBeVisible();
+  const comparison = page.getByLabel('Comparação de custo mensal entre rotas');
+  await expect(comparison.getByRole('button')).toHaveCount(3);
+  await expect(comparison.getByText(/Brasília|Plano Piloto/i).first()).toBeVisible();
+  await expect(comparison.getByText(/Taguatinga/i)).toBeVisible();
+  await expect(comparison.getByText(/Ceilândia/i)).toBeVisible();
+
+  const taguatinga = comparison.getByRole('button').filter({ hasText: /Taguatinga/i });
+  await taguatinga.click();
+  await expect(taguatinga).toHaveAttribute('aria-pressed', 'true');
+  await expect(taguatinga).toContainText(/Em uso|Rota selecionada/i);
+});
+
+test('busca responde custo mensal de transporte por destino com premissas explícitas', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('custo mensal Taguatinga');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Transporte mensal por pessoa · Taguatinga/i);
+  await expect(answer).toContainText(/2 trechos por dia × 22 dias por mês/i);
 });

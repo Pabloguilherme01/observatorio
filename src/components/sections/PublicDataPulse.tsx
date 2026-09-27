@@ -1,10 +1,25 @@
-import { CalendarClock, ExternalLink, RefreshCw } from 'lucide-react';
+import { CalendarClock, Database, ExternalLink, RefreshCw } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
 export function PublicDataPulse() {
   const updates = [...d.budgetUpdates].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
+  const sourceCount = d.sources.length;
+  const indicatorCount = d.indicators.length;
+  const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+  const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
+  const indicatorStatus = d.indicators.reduce<Record<string, number>>((acc, item) => {
+    acc[item.status] = (acc[item.status] ?? 0) + 1;
+    return acc;
+  }, {});
+  const statusSummary = [
+    ['Atual', indicatorStatus.current ?? 0],
+    ['Histórico', indicatorStatus.historical ?? 0],
+    ['Derivado', indicatorStatus.derived ?? 0],
+    ['Registro datado', indicatorStatus.snapshot ?? 0],
+    ['Planejado', indicatorStatus.planned ?? 0],
+  ].filter(([, count]) => Number(count) > 0) as Array<[string, number]>;
   return (
     <section id="dados" className="mx-auto max-w-7xl px-4 py-12 sm:px-6" aria-labelledby="dados-title">
       <SectionHeader
@@ -13,6 +28,12 @@ export function PublicDataPulse() {
         title="O que mudou"
         description="Registros novos ou alterados no conjunto publicado. Cada item mantém sua data e fonte para conferência."
       />
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do conjunto de dados">
+        <DataStat label="Indicadores publicados" value={indicatorCount} />
+        <DataStat label="Fontes registradas" value={sourceCount} />
+        <DataStat label="Fontes com data registrada" value={datedSources} />
+        <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} />
+      </div>
       <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
         <Card>
           <div className="flex items-start gap-3">
@@ -25,8 +46,15 @@ export function PublicDataPulse() {
                 Última atualização do conjunto principal: <strong className="text-slate-300 light:text-slate-700">{d.meta.updatedAt.split('-').reverse().join('/')}</strong>.
               </p>
               <p className="mt-3 text-xs leading-5 text-slate-500">
-                Este bloco mostra mudanças recentes; indicadores, séries e metodologias permanecem nas seções temáticas.
+                Este bloco mostra mudanças recentes; indicadores, séries e metodologias permanecem nas seções temáticas. O catálogo de fontes pode ser baixado na área de dados.
               </p>
+              <div className="mt-4 flex flex-wrap gap-2" aria-label="Tipos de indicador publicados">
+                {statusSummary.map(([label, count]) => (
+                  <span key={label} className="rounded-full border border-white/8 px-2.5 py-1 text-[10px] font-bold text-slate-500 light:border-slate-200">
+                    {label}: {count}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </Card>
@@ -65,5 +93,15 @@ export function PublicDataPulse() {
         </Card>
       </div>
     </section>
+  );
+}
+
+function DataStat({ label, value }: { readonly label: string; readonly value: number | string }) {
+  return (
+    <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+      <Database className="h-4 w-4 text-sky-300" aria-hidden="true" />
+      <strong className="mt-2 block text-2xl font-black text-white light:text-slate-900">{typeof value === 'number' ? value.toLocaleString('pt-BR') : value}</strong>
+      <span className="text-xs text-slate-500">{label}</span>
+    </div>
   );
 }

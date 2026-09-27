@@ -139,7 +139,7 @@ export function SanitationHealthSection() {
         <Card>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Saneamento 360°</div>
+              <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Saneamento</div>
               <h3 id="sanitation-title" className="mt-2 text-xl font-black text-white light:text-slate-900">Acesso, serviço, coleta e tratamento</h3>
             </div>
             <Droplets className="h-5 w-5 text-sky-300" aria-hidden="true" />
@@ -174,8 +174,8 @@ export function SanitationHealthSection() {
               <span className="text-xs text-slate-500">consumo por pessoa/dia</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatNumber(36_579)}</strong>
-              <span className="text-xs text-slate-500">pessoas sem coleta, conforme snapshot</span>
+              <strong className="block text-white light:text-slate-900">{formatPercent(d.sanitation.householdWasteCollectionPct, 1)}</strong>
+              <span className="text-xs text-slate-500">domicílios com coleta de resíduos · SINISA 2024</span>
             </div>
           </div>
 
@@ -201,7 +201,7 @@ export function SanitationHealthSection() {
               <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">85</strong><span className="mt-1 block text-xs text-slate-500">32 enfermaria + 53 UTI, explicitados no portal atual</span></div>
               <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">298</strong><span className="mt-1 block text-xs text-slate-500">planejamento registrado no dataset, não capacidade instalada</span></div>
             </div>
-            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O snapshot não documenta, por si só, a causa da diferença entre 164 e 85; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
+            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre 164 e 85; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">

@@ -2,15 +2,15 @@ import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'executivo', description: 'Entrega o essencial primeiro: números centrais, serviços e caminhos de aprofundamento.', icon: List },
-  { id: 'simple' as const, label: 'Simples', sub: 'guiado', description: 'Explica os números com contexto e comparações em uma leitura fluida e direta.', icon: FileText },
-  { id: 'technical' as const, label: 'Técnico', sub: 'auditável', description: 'Abre fonte, data, método, recortes, cálculos e limitações para conferência completa.', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'leitura rápida', description: 'Mostra os pontos principais e mantém as fontes acessíveis.', icon: List },
+  { id: 'simple' as const, label: 'Explicado', sub: 'com contexto', description: 'Explica o que os números significam em linguagem direta.', icon: FileText },
+  { id: 'technical' as const, label: 'Detalhado', sub: 'fonte e método', description: 'Mostra fonte, data, método, cálculos, recortes e limitações.', icon: Code2 },
 ] as const;
 
 const modeGuide = {
-  summary: { title: 'Leitura executiva', detail: 'O essencial primeiro · avance só quando fizer sentido', signal: 'Essencial' },
-  simple: { title: 'Leitura guiada', detail: 'Números com contexto · clareza sem excesso', signal: 'Contexto' },
-  technical: { title: 'Leitura auditável', detail: 'Evidência, método e limites · rastreabilidade completa', signal: 'Evidência' },
+  summary: { title: 'Leitura rápida', detail: 'Pontos principais · fontes continuam acessíveis', signal: 'Essencial' },
+  simple: { title: 'Leitura explicada', detail: 'Números com contexto · linguagem direta', signal: 'Contexto' },
+  technical: { title: 'Leitura detalhada', detail: 'Fonte, método e limites · conferência completa', signal: 'Evidência' },
 } as const;
 
 export function LanguageModeToggle() {
@@ -46,10 +46,10 @@ export function LanguageModeToggle() {
         type="button"
         className="language-toggle-deepen"
         onClick={cycleMode}
-        aria-label={mode === 'technical' ? 'Voltar para visão executiva' : 'Aprofundar leitura'}
-        title={mode === 'technical' ? 'Voltar à visão executiva' : 'Avançar para o próximo nível de detalhe'}
+        aria-label={mode === 'technical' ? 'Voltar para leitura rápida' : 'Aumentar nível de detalhe'}
+        title={mode === 'technical' ? 'Voltar à leitura rápida' : 'Avançar para o próximo nível de detalhe'}
       >
-        <span>{mode === 'technical' ? 'Voltar à visão executiva' : mode === 'summary' ? 'Ver com contexto' : 'Abrir camada técnica'}</span>
+        <span>{mode === 'technical' ? 'Voltar ao resumo' : mode === 'summary' ? 'Explicar com contexto' : 'Ver fonte e método'}</span>
         <ChevronRight aria-hidden="true" />
       </button>
     </div>
