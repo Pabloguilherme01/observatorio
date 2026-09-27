@@ -1044,6 +1044,34 @@ test('comparação municipal expõe seis indicadores sem ranking', async ({ page
   await expect(page.getByText(/cálculo derivado|calculada com a população de 2026/i).first()).toBeVisible();
 });
 
+test('comparação municipal oferece navegação completa das abas por teclado', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+
+  const tablist = page.getByRole('tablist', { name: 'Indicador para comparação contextual' });
+  const population = tablist.getByRole('tab', { name: /População estimada/i });
+  const growth = tablist.getByRole('tab', { name: /Variação populacional 2022–2026/i });
+  const gdp = tablist.getByRole('tab', { name: /PIB per capita/i });
+  const panel = page.getByRole('tabpanel');
+
+  await population.focus();
+  await expect(population).toHaveAttribute('tabindex', '0');
+  await page.keyboard.press('ArrowRight');
+  await expect(growth).toBeFocused();
+  await expect(growth).toHaveAttribute('aria-selected', 'true');
+  await expect(population).toHaveAttribute('tabindex', '-1');
+  await expect(panel).toHaveAttribute('aria-labelledby', 'context-metric-tab-populationGrowth');
+
+  await page.keyboard.press('End');
+  await expect(gdp).toBeFocused();
+  await expect(gdp).toHaveAttribute('aria-selected', 'true');
+
+  await page.keyboard.press('Home');
+  await expect(population).toBeFocused();
+  await expect(population).toHaveAttribute('aria-selected', 'true');
+  await expect(population).toHaveAttribute('aria-controls', 'context-metric-panel');
+});
+
 test('comparação municipal aceita busca sem acento e não duplica sinais nas diferenças', async ({ page }) => {
   await page.goto('./');
   await openSection(page, 'contexto');

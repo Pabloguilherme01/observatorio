@@ -1,5 +1,5 @@
 import { ExternalLink, MapPin, Users, Maximize2, Search, RotateCcw, Gauge, TrendingUp } from 'lucide-react';
-import { useState } from 'react';
+import { useState, type KeyboardEvent } from 'react';
 import { contextualMetrics, contextualMunicipalities, type ContextMetricId } from '../../data/contextualComparison';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -43,6 +43,25 @@ export function ContextComparison() {
   const formatPopulation = (value: number) => value.toLocaleString('pt-BR');
   const formatArea = (value: number) => value.toLocaleString('pt-BR', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' km²';
 
+  const handleMetricKeyDown = (event: KeyboardEvent<HTMLButtonElement>, currentId: ContextMetricId) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+
+    const currentIndex = contextualMetrics.findIndex(item => item.id === currentId);
+    if (currentIndex < 0) return;
+
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % contextualMetrics.length;
+    if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + contextualMetrics.length) % contextualMetrics.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = contextualMetrics.length - 1;
+
+    const nextMetric = contextualMetrics[nextIndex];
+    if (!nextMetric) return;
+    setMetricId(nextMetric.id);
+    document.getElementById(`context-metric-tab-${nextMetric.id}`)?.focus();
+  };
+
   return (
     <section id="contexto" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14" aria-labelledby="context-title">
       <SectionHeader
@@ -85,10 +104,14 @@ export function ContextComparison() {
           {contextualMetrics.map(item => (
             <button
               key={item.id}
+              id={`context-metric-tab-${item.id}`}
               type="button"
               role="tab"
               aria-selected={metricId === item.id}
+              aria-controls="context-metric-panel"
+              tabIndex={metricId === item.id ? 0 : -1}
               onClick={() => setMetricId(item.id)}
+              onKeyDown={event => handleMetricKeyDown(event, item.id)}
               className={`min-h-11 rounded-xl border px-3 py-2 text-xs font-bold transition ${metricId === item.id
                 ? 'border-sky-300/30 bg-sky-300/10 text-sky-200 light:border-slate-300 light:bg-white light:text-slate-800'
                 : 'border-white/10 bg-white/[0.02] text-slate-400 hover:text-slate-200 light:border-slate-200 light:bg-white light:text-slate-600'}`}
@@ -97,7 +120,13 @@ export function ContextComparison() {
             </button>
           ))}
         </div>
-        <div className="mt-4 rounded-2xl border border-white/8 bg-black/10 p-4 light:border-slate-200 light:bg-white">
+        <div
+          id="context-metric-panel"
+          role="tabpanel"
+          aria-labelledby={`context-metric-tab-${metric.id}`}
+          tabIndex={0}
+          className="mt-4 rounded-2xl border border-white/8 bg-black/10 p-4 light:border-slate-200 light:bg-white"
+        >
           <div className="text-sm font-bold text-white light:text-slate-900">{metric.label}</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">{metric.description}</p>
           <div className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">Ano-base: {metric.year} · unidade: {metric.unit}</div>
