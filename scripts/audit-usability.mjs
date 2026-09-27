@@ -172,7 +172,21 @@ if (experience.includes("document.querySelector('[role=\"dialog\"][aria-modal=\"
 else fail('atalhos globais podem navegar por trás de um modal');
 
 const inspector = texts.find(item => item.file === 'src/components/DataInspector.tsx')?.content ?? '';
-if (inspector.includes('canonicalUrl') && inspector.includes("window.location.origin + window.location.pathname") && inspector.includes("'#dashboard'") && inspector.includes('Copiar link')) pass('inspetor possui link canônico explícito');
+const urlState = texts.find(item => item.file === 'src/lib/urlState.ts')?.content ?? '';
+const inspectorUsesCanonicalHelper =
+  inspector.includes('canonicalUrl') &&
+  inspector.includes('buildCanonicalUrl') &&
+  inspector.includes("'dashboard'") &&
+  inspector.includes('Copiar link') &&
+  urlState.includes('export function buildCanonicalUrl') &&
+  urlState.includes('window.location.origin + window.location.pathname') &&
+  urlState.includes('normalizeHash');
+const inspectorBuildsCanonicalInline =
+  inspector.includes('canonicalUrl') &&
+  inspector.includes("window.location.origin + window.location.pathname") &&
+  inspector.includes("'#dashboard'") &&
+  inspector.includes('Copiar link');
+if (inspectorUsesCanonicalHelper || inspectorBuildsCanonicalInline) pass('inspetor possui link canônico explícito');
 else fail('inspetor ainda compartilha URL não canônica ou não oferece copiar link');
 if (inspector.includes("url: canonicalUrl") && inspector.includes("copyText(canonicalUrl)")) pass('compartilhar e copiar link do inspetor usam a mesma URL canônica');
 else fail('ações de link do inspetor divergem entre si');
