@@ -36,8 +36,8 @@ export function DashboardMetrics() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             titleId="dashboard-title"
-            eyebrow={isSummary ? 'Visão executiva' : languageMode === 'simple' ? 'Leitura guiada' : 'Painel auditável'}
-            title={isSummary ? 'Cinco números para se situar' : languageMode === 'simple' ? 'Números que ganham contexto' : 'Indicadores prontos para conferência'}
+            eyebrow={isSummary ? 'Leitura rápida' : languageMode === 'simple' ? 'Leitura explicada' : 'Fonte e método'}
+            title={isSummary ? 'Cinco números para entender o cenário' : languageMode === 'simple' ? 'Cinco números explicados' : 'Indicadores com fonte e método'}
             description={isSummary
               ? 'Uma visão rápida dos principais indicadores, sempre com origem e referência acessíveis.'
               : languageMode === 'simple'
@@ -45,7 +45,7 @@ export function DashboardMetrics() {
                 : 'Cada indicador abre origem, referência, natureza e método para uma conferência completa.'}
           />
           <div className="flex flex-wrap items-center gap-2" aria-label="Estado do painel">
-            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> {languageMode === 'technical' ? 'Dados auditáveis' : 'Fontes acessíveis'}</span>}
+            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> {languageMode === 'technical' ? 'Fonte e método disponíveis' : 'Fontes disponíveis'}</span>}
             <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Atualizado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
           </div>
         </div>
@@ -70,7 +70,7 @@ export function DashboardMetrics() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Em um olhar' : languageMode === 'simple' ? 'Leitura em contexto' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'O essencial para começar com segurança.' : languageMode === 'simple' ? 'Cinco números explicados para conectar o cenário.' : 'Cada KPI abre fonte, referência, natureza e método.'}</p>
+          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Os principais números para começar.' : languageMode === 'simple' ? 'Cinco números explicados para conectar o cenário.' : 'Cada indicador abre fonte, referência, natureza e método.'}</p>
         </div>
       </div>
 
