@@ -21,6 +21,8 @@ interface QuickAnswer {
 
 const entries: readonly SearchEntry[] = [
   ['Indicadores', 'dashboard', 'primary'],
+  ['Comparar municípios', 'contexto', 'primary'],
+  ['Atualizações públicas', 'dados', 'primary'],
   ['Perfil eleitoral', 'eleitorado', 'primary'],
   ['Transporte', 'transporte', 'primary'],
   ['Simulador de bolso · Transporte', 'transporte', 'transport'],
@@ -43,7 +45,7 @@ const normalize = (value: string) =>
 
 const sourceForId = (sourceId: string) => d.sources.find(source => source.id === sourceId);
 const sourceLabel = (sourceId: string) => sourceForId(sourceId)?.label ?? sourceId;
-const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Exportação', acao: 'Serviços públicos' }[id] ?? 'Seção do observatório');
+const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Baixar dados', acao: 'Serviços públicos', contexto: 'Comparação municipal', dados: 'Atualizações públicas' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
@@ -191,6 +193,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'municipal-enrollment-share-2025');
       return indicator ? { title: 'Matrículas municipais na educação básica', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
+    if ((q.includes('orcamento') || q.includes('loa')) && (q.includes('habitante') || q.includes('per capita'))) {
+      const indicator = d.indicators.find(item => item.id === 'budget-per-capita-2026');
+      return indicator ? { title: 'LOA 2026 por habitante', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
     if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
@@ -208,6 +214,14 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (q.includes('matricula') || q.includes('matriculas') || q.includes('educacao basica')) {
       const indicator = d.indicators.find(item => item.id === 'basic-enrollments-2025');
       return indicator ? { title: 'Matrículas na educação básica 2025', value: Number(indicator.value).toLocaleString('pt-BR') + ' matrículas', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if ((q.includes('saneamento') && (q.includes('per capita') || q.includes('por pessoa'))) || (q.includes('investimento') && q.includes('saneamento') && q.includes('habitante'))) {
+      const indicator = d.indicators.find(item => item.id === 'sanitation-investment-per-capita');
+      return indicator ? { title: 'Investimento em saneamento por pessoa', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por pessoa', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('internacao') && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
+      return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (q.includes('investimento') && q.includes('saneamento')) {
       const indicator = d.indicators.find(item => item.id === 'sanitation-investment');
