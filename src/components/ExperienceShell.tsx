@@ -4,6 +4,7 @@ import { useLanguageMode } from '../context/LanguageModeContext';
 import { navigation } from '../config/navigation';
 import { navigateToSection } from '../lib/sectionNavigation';
 import { ConnectivityStatus } from './system/ConnectivityStatus';
+import { recordRecentSection } from '../lib/recentSections';
 
 export function ExperienceShell({ children }: { readonly children: ReactNode }) {
   const { cycleMode } = useLanguageMode();
@@ -20,6 +21,15 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
     return () => {
       media?.removeEventListener?.('change', syncReducedMotion);
     };
+  }, []);
+
+  useEffect(() => {
+    const onNavigate = (event: Event) => {
+      const target = (event as CustomEvent<string>).detail;
+      if (target) recordRecentSection(target);
+    };
+    window.addEventListener('observatorio:navigate', onNavigate);
+    return () => window.removeEventListener('observatorio:navigate', onNavigate);
   }, []);
 
   useEffect(() => {

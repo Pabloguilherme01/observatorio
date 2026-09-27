@@ -6,6 +6,7 @@ import { formatBudgetCurrency } from '../../utils/formatters';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
 import { navigateToSection } from '../../lib/sectionNavigation';
+import { clearRecentSections, getRecentSections } from '../../lib/recentSections';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
@@ -86,6 +87,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
+  const [recentSections, setRecentSections] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -99,6 +101,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     setQuery('');
     setActiveIndex(0);
     setShortcutGuideOpen(initialShortcutGuideOpen);
+    setRecentSections(getRecentSections());
     const desktop = window.matchMedia?.('(min-width: 768px)').matches;
     const target = desktop ? inputRef.current : closeButtonRef.current;
     if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
@@ -581,6 +584,50 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
           {quickAnswer.note && <p className="mt-2 text-[11px] leading-5 text-slate-500">{quickAnswer.note}</p>}
           <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
+
+        {!query && recentSections.length > 0 && (
+          <section className="search-result-group" aria-labelledby="search-recent-title">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h3 id="search-recent-title" className="search-result-group-title">Áreas recentes</h3>
+                <p className="mt-1 text-[10px] text-slate-600">Salvo somente neste dispositivo.</p>
+              </div>
+              <button
+                type="button"
+                className="search-clear-query"
+                onClick={() => {
+                  clearRecentSections();
+                  setRecentSections([]);
+                  inputRef.current?.focus();
+                }}
+              >
+                Limpar recentes
+              </button>
+            </div>
+            <div className="search-result-group-list">
+              {recentSections.map(id => {
+                const item = navigation.find(entry => entry.id === id);
+                if (!item) return null;
+                const Icon = resultIcon(item.id);
+                return (
+                  <button
+                    key={'recent-' + item.id}
+                    type="button"
+                    className="search-result-row"
+                    onClick={() => selectResult(item.id)}
+                  >
+                    <span className="search-result-icon"><Icon aria-hidden="true" /></span>
+                    <span className="min-w-0 flex-1 text-left">
+                      <strong>{item.label}</strong>
+                      <small>{item.description}</small>
+                    </span>
+                    <span className="search-result-enter" aria-hidden="true">›</span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         <div className="search-meta">
           <span>{filtered.length} resultado{filtered.length === 1 ? '' : 's'}</span>
