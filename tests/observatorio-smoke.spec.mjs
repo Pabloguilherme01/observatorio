@@ -1044,6 +1044,26 @@ test('comparação municipal expõe seis indicadores sem ranking', async ({ page
   await expect(page.getByText(/cálculo derivado|calculada com a população de 2026/i).first()).toBeVisible();
 });
 
+test('comparação municipal aceita busca sem acento e não duplica sinais nas diferenças', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+
+  const citySearch = page.getByRole('searchbox', { name: 'Buscar município' });
+  await citySearch.fill('Aguas');
+  await expect(page.getByText('Águas Lindas de Goiás', { exact: true })).toBeVisible();
+  await expect(page.getByText('1 de 8 cidades', { exact: true })).toBeVisible();
+
+  await citySearch.fill('Luziania');
+  await expect(page.getByText('Luziânia', { exact: true })).toBeVisible();
+
+  await citySearch.fill('');
+  await page.getByRole('tab', { name: /Variação populacional 2022–2026/i }).click();
+  await expect(page.locator('.context-comparison-cards')).not.toContainText(/\+\+|−\+/);
+
+  const luzianiaCard = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
+  await expect(luzianiaCard.locator('[aria-label^="Diferença descritiva"]')).toHaveAttribute('aria-label', /−[0-9]/);
+});
+
 
 test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ page }) => {
   await page.goto('./');
