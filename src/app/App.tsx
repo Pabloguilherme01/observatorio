@@ -53,7 +53,11 @@ function performHashScroll(hash: string) {
   });
   if (target instanceof HTMLElement) {
     if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
-    window.setTimeout(() => target.focus({ preventScroll: true }), reduceMotion ? 0 : 180);
+    window.setTimeout(() => {
+      const active = document.activeElement;
+      const focusIsUnclaimed = !active || active === document.body || active === document.documentElement || active === target;
+      if (focusIsUnclaimed) target.focus({ preventScroll: true });
+    }, reduceMotion ? 0 : 180);
   }
   return true;
 }
