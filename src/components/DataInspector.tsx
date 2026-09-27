@@ -75,6 +75,18 @@ export function DataInspector() {
     };
   }, []);
 
+  const closeInspector = () => {
+    if (data?.inspectId) {
+      const current = new URL(window.location.href);
+      if (current.searchParams.get('dado') === data.inspectId) {
+        current.searchParams.delete('dado');
+        current.searchParams.delete('leitura');
+        window.history.replaceState(null, '', current.pathname + current.search + current.hash);
+      }
+    }
+    setData(null);
+  };
+
   useEffect(() => {
     if (!data) {
       openerRef.current?.focus?.();
@@ -82,7 +94,7 @@ export function DataInspector() {
     }
     const focusables = () => Array.from(modalRef.current?.querySelectorAll<HTMLElement>('button,input,[href],[tabindex]:not([tabindex="-1"])') ?? []).filter(node => !node.hasAttribute('disabled'));
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { event.preventDefault(); setData(null); return; }
+      if (event.key === 'Escape') { event.preventDefault(); closeInspector(); return; }
       if (event.key !== 'Tab') return;
       const nodes = focusables();
       if (!nodes.length) return;
@@ -187,14 +199,14 @@ export function DataInspector() {
 
   return (
     <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
-      <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={() => setData(null)} />
+      <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={closeInspector} />
       <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Inspetor de dados</div>
             <h2 id="data-inspector-title" className="mt-1 text-xl font-black text-white">{data.label}</h2>
           </div>
-          <button ref={closeRef} type="button" onClick={() => setData(null)} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar">
+          <button ref={closeRef} type="button" onClick={closeInspector} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar">
             <X className="h-4 w-4" />
           </button>
         </div>
