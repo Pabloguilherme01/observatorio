@@ -1333,3 +1333,49 @@ test('CSV exporta novos comparativos demográficos e fiscais', async ({ page }) 
   expect(csv).toContain('expenses-per-capita-2025');
   expect(csv).toContain('revenue-expense-difference-per-capita-2025');
 });
+
+
+test('utilidade pública oferece atalhos adicionais sem duplicar navegação', async ({ page }) => {
+  await page.goto('./');
+  const guide = page.locator('#utilidade-publica');
+  await expect(guide.getByLabel('Atalhos por necessidade')).toBeVisible();
+  await expect(guide.getByRole('button', { name: 'Trânsito e mobilidade' })).toBeVisible();
+  await expect(guide.getByRole('button', { name: 'Assistência social' })).toBeVisible();
+  await guide.getByRole('button', { name: 'Assistência social' }).click();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toBeVisible();
+});
+
+test('modo explicado expõe indicadores temáticos com fonte acessível', async ({ page }) => {
+  await page.goto('./');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+  await openSection(page, 'dashboard');
+  const thematic = page.getByLabel('Indicadores por tema');
+  await expect(thematic).toBeVisible();
+  await expect(thematic.getByRole('button')).toHaveCount(8);
+  await expect(thematic.getByRole('button', { name: /Empresas ativas/i })).toBeVisible();
+  await expect(thematic.getByRole('button', { name: /Investimento em saneamento/i })).toBeVisible();
+});
+
+test('comparação municipal marca Águas Lindas como referência e mantém leitura neutra', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+  await expect(page.getByText(/município de referência/i).first()).toBeVisible();
+  await expect(page.getByText(/Diferença positiva ou negativa não significa “melhor” ou “pior”/i)).toBeVisible();
+  const luziania = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
+  await expect(luziania).toContainText(/Em relação a Águas Lindas:/i);
+});
+
+test('busca rápida cobre escolarização e arborização', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('escolarização');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Escolarização de 6 a 14 anos/i);
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('arborização');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Arborização de vias públicas/i);
+});
