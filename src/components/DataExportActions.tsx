@@ -1,6 +1,7 @@
 import { Braces, Copy, Download, ExternalLink } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
+import { contextualMetrics, contextualMunicipalities } from '../data/contextualComparison';
 import { downloadBlob, toCsv, type ExportCell } from '../lib/export';
 import { Card } from './ui/Card';
 import { EDITION } from '../config/version';
@@ -14,7 +15,7 @@ const categoryFor = (id: string) => {
   if (id.startsWith('heal-') || id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
   if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer')) return 'Saneamento';
   if (id.includes('gdp') || id.includes('companies') || id.includes('caged') || id.includes('formal')) return 'Economia';
-  if (id.includes('ideb') || id.includes('education') || id.includes('enroll')) return 'Educacao';
+  if (id.includes('ideb') || id.includes('education') || id.includes('enroll') || id.includes('schooling') || id.startsWith('ept-')) return 'Educacao';
   return 'Geral';
 };
 
@@ -32,6 +33,25 @@ const rows: readonly (readonly ExportCell[])[] = [
     const source = d.sources.find(source => source.id === item.sourceId);
     return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', statusLabel(item.status)];
   }),
+];
+
+const contextComparisonRows: readonly (readonly ExportCell[])[] = [
+  ['municipio', 'codigo_ibge', 'referencia_local', 'indicador_id', 'indicador', 'valor', 'unidade', 'ano_base', 'natureza', 'fonte', 'url_ibge'],
+  ...contextualMunicipalities.flatMap(place =>
+    contextualMetrics.map(metric => [
+      place.name,
+      place.ibgeCode,
+      place.name === 'Águas Lindas de Goiás' ? 'sim' : 'nao',
+      metric.id,
+      metric.label,
+      place.values[metric.id],
+      metric.unit,
+      metric.year,
+      metric.id === 'populationGrowth' || metric.id === 'density' ? 'Derivado' : 'Publicado',
+      'IBGE',
+      place.url,
+    ] as const),
+  ),
 ];
 
 export function DataExportActions() {
@@ -70,6 +90,15 @@ export function DataExportActions() {
     flash(`Fontes CSV ${EDITION} exportadas`);
   };
 
+  const exportContextComparisonCsv = () => {
+    downloadBlob(
+      `observatorio-aguas-lindas-comparativo-municipal-${EDITION.toLowerCase()}.csv`,
+      toCsv(contextComparisonRows),
+      'text/csv;charset=utf-8',
+    );
+    flash(`Comparativo municipal CSV ${EDITION} exportado`);
+  };
+
   const copyMetadata = async () => {
     const metadata = JSON.stringify({
       edition: d.meta.edition,
@@ -92,12 +121,13 @@ export function DataExportActions() {
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados para download</div>
           <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Baixar dados' : 'Baixe dados, fontes e metadados'}</h3>
-          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com identificador, categoria, unidade, status, fonte e referência; catálogo de fontes; JSON normalizado; metadados e API pública.</p>}
+          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com indicadores e metadados; comparativo municipal descritivo; catálogo de fontes; JSON normalizado; metadados e API pública.</p>}
         </div>
         <div className={`flex flex-wrap gap-2 ${mode === 'summary' ? 'summary-export-actions' : ''}`}>
           <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
           <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
           <button type="button" onClick={exportSourcesCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />Fontes CSV</button>
+          <button type="button" onClick={exportContextComparisonCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />Comparativo CSV</button>
           <button type="button" onClick={copyMetadata} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
           <a href={import.meta.env.BASE_URL + "api/v1/observatorio.json"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 hover:bg-sky-300/10"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
         </div>
