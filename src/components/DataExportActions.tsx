@@ -11,7 +11,7 @@ const categoryFor = (id: string) => {
   if (id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
   if (id.includes('fare') || id.includes('transport')) return 'Mobilidade';
-  if (id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
+  if (id.startsWith('heal-') || id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
   if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer')) return 'Saneamento';
   if (id.includes('gdp') || id.includes('companies') || id.includes('caged') || id.includes('formal')) return 'Economia';
   if (id.includes('ideb') || id.includes('education') || id.includes('enroll')) return 'Educacao';
