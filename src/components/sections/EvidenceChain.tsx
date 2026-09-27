@@ -59,11 +59,11 @@ export function EvidenceChain() {
             <div><strong className="text-slate-200 light:text-slate-800">Estado:</strong> {candidateState}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Registros lidos:</strong> {generated.meta.sourceRows.toLocaleString('pt-BR')} · encontrados no recorte estadual: {(generated.meta.originalMatchedRows ?? 0).toLocaleString('pt-BR')}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Mapeados por evidência local:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')} · pendentes: {unresolved.toLocaleString('pt-BR')}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Cobertura:</strong> watchlist de {generated.watchlist.length} nomes, não universo completo.</div>
+            <div><strong className="text-slate-200 light:text-slate-800">Cobertura:</strong> recorte acompanhado de {generated.watchlist.length} nomes, não universo completo.</div>
           </div>
           <a href={editorialSource?.url ?? candidateSource?.url} target="_blank" rel="noopener noreferrer" className="evidence-source-card mt-4" aria-label="Abrir a fonte de referência dos dados de candidatos">
             <span className="evidence-source-card-icon"><Link2 className="h-4 w-4" aria-hidden="true" /></span>
-            <span><strong>Abrir fonte de referência</strong><small>Ver registro original e conferir a proveniência.</small></span>
+            <span><strong>Abrir fonte de referência</strong><small>Ver o registro original e conferir a origem.</small></span>
             <span className="evidence-source-card-arrow" aria-hidden="true">↗</span>
           </a>
         </Card>
@@ -102,7 +102,7 @@ export function EvidenceChain() {
       </div>
 
       <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
-        <strong className="text-amber-200 light:text-amber-800">Importante:</strong> uma fonte oficial não transforma automaticamente um recorte local em snapshot municipal. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige município comprovado no registro e evidência material da captura.
+        <strong className="text-amber-200 light:text-amber-800">Importante:</strong> uma fonte oficial não transforma automaticamente um recorte local em registro municipal. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige município comprovado no registro e evidência verificável da captura.
       </div>
     </section>
   );
