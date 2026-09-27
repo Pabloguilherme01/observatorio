@@ -4,6 +4,7 @@ import path from 'node:path';
 const root = process.cwd();
 const file = path.join(root, 'src/components/sections/CivicActionHub.tsx');
 const source = fs.readFileSync(file, 'utf8');
+const searchIndex = fs.readFileSync(path.join(root, 'src/data/publicServiceSearch.ts'), 'utf8');
 
 const required = [
   ['Medicamentos SUS', 'medicamentos_sus'],
@@ -104,6 +105,16 @@ for (const staleMarker of ['const actions = [', 'function PublicServiceLink', 'f
   if (source.includes(staleMarker)) fail.push('código morto reintroduzido: ' + staleMarker);
 }
 if (!fail.some(item => item.startsWith('código morto reintroduzido'))) pass('hub não mantém ações órfãs sem interface');
+
+for (const staleSearchEntry of ['Escalas de saúde', 'Medicamentos de alto custo', 'Folha de pagamento', 'Concursos públicos']) {
+  if (searchIndex.includes(staleSearchEntry)) fail.push('atalho global sem serviço correspondente: ' + staleSearchEntry);
+}
+for (const requiredSearchEntry of ['SAMU', 'Defesa Civil', 'Lista de espera em creches', 'Processos seletivos', 'SIC direto']) {
+  if (!searchIndex.includes(requiredSearchEntry)) fail.push('busca global sem serviço essencial: ' + requiredSearchEntry);
+}
+if (!fail.some(item => item.startsWith('atalho global sem serviço correspondente') || item.startsWith('busca global sem serviço essencial'))) {
+  pass('busca global permanece alinhada ao catálogo real de serviços');
+}
 
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
