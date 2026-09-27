@@ -92,6 +92,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const openerRef = useRef<HTMLElement | null>(null);
   const filteredLengthRef = useRef(0);
   const focusTimerRef = useRef<number | null>(null);
+  const hasOpenedRef = useRef(false);
 
   const openSearch = () => {
     openerRef.current = document.activeElement as HTMLElement | null;
@@ -112,6 +113,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
   useEffect(() => {
     if (!open) {
+      if (!hasOpenedRef.current) return;
+      hasOpenedRef.current = false;
       const opener = openerRef.current;
       const fallback = document.querySelector<HTMLElement>('[data-search-trigger="primary"]');
       const canRestoreOpener = Boolean(opener?.isConnected && opener !== document.body && opener.tabIndex >= 0);
@@ -119,6 +122,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       else fallback?.focus();
       return;
     }
+    hasOpenedRef.current = true;
     openSearch();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
