@@ -6936,3 +6936,39 @@ body{
   .trust-pillar-card{padding:16px}
   .trust-check-grid,.trust-note-grid{gap:10px}
 }
+
+
+/* V44.18 · Public utility by citizen need */
+.public-service-intents{display:flex;align-items:flex-start;gap:12px;margin-top:18px;min-width:0}
+.public-service-intents-label{flex:0 0 auto;padding-top:9px;font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#64748b}
+.public-service-intents-list{display:flex;flex-wrap:wrap;gap:7px;min-width:0}
+.public-service-intents-list button{
+  min-height:38px;padding:7px 11px;border:1px solid rgba(148,163,184,.12);border-radius:999px;
+  background:rgba(255,255,255,.02);font-size:11px;font-weight:800;color:#94a3b8;
+  transition:border-color .16s ease,background .16s ease,color .16s ease
+}
+.public-service-intents-list button:hover,.public-service-intents-list button:focus-visible{
+  border-color:rgba(var(--reading-accent-rgb),.3);background:rgba(var(--reading-accent-rgb),.07);color:#e2e8f0
+}
+.public-service-intents-list button.is-active{
+  border-color:rgba(var(--reading-accent-rgb),.38);background:rgba(var(--reading-accent-rgb),.12);color:var(--reading-accent-strong)
+}
+.public-service-empty{
+  display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:16px 18px;border:1px dashed rgba(148,163,184,.16);
+  border-radius:16px;background:rgba(255,255,255,.014);color:#94a3b8
+}
+.public-service-empty>svg{flex:0 0 auto;margin-top:1px;color:var(--reading-accent-strong)}
+.public-service-empty strong{display:block;font-size:13px;color:#e2e8f0}
+.public-service-empty p{margin-top:3px;font-size:11px;line-height:1.55;color:#64748b}
+.light .public-service-intents-list button{border-color:rgba(71,85,105,.14);background:#fff;color:#64748b}
+.light .public-service-intents-list button.is-active{background:rgba(var(--reading-accent-rgb),.09);color:#0f172a}
+.light .public-service-empty{border-color:rgba(71,85,105,.16);background:#f8fafc}
+.light .public-service-empty strong{color:#0f172a}
+@media(max-width:639px){
+  .public-service-intents{display:block}
+  .public-service-intents-label{display:block;padding:0 0 8px}
+  .public-service-intents-list{flex-wrap:nowrap;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+  .public-service-intents-list::-webkit-scrollbar{display:none}
+  .public-service-intents-list button{flex:0 0 auto;min-height:42px}
+}
+@media(prefers-reduced-motion:reduce){.public-service-intents-list button{transition:none}}
