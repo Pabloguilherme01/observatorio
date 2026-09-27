@@ -9,7 +9,7 @@ import { navigateToSection } from '../../lib/sectionNavigation';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
-type SearchEntry = readonly [string, string, ResultKind];
+type SearchEntry = readonly [string, string, ResultKind, string?];
 
 interface QuickAnswer {
   readonly title: string;
@@ -416,7 +416,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
         seen.add(label);
         return true;
       })
-      .map(([label, id, kind]) => ({ label, id, kind, score: fuzzyScore(queryNormalized, normalize(label)) }))
+      .map(([label, id, kind, serviceQuery]) => ({ label, id, kind, serviceQuery, score: fuzzyScore(queryNormalized, normalize(label)) }))
       .filter(item => Number.isFinite(item.score))
       .sort((a, b) => b.score - a.score)
       .slice(0, 30);
@@ -474,7 +474,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                 type="button"
                 data-search-index={index}
                 onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectResult(item.id, item.label, item.kind)}
+                onClick={() => selectResult(item.id, item.label, item.kind, item.serviceQuery)}
                 className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
                 role="option"
                 aria-selected={activeIndex === index}
@@ -493,11 +493,11 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     );
   });
 
-  const selectResult = (id: string, label?: string, kind?: ResultKind) => {
+  const selectResult = (id: string, label?: string, kind?: ResultKind, serviceQuery?: string) => {
     onClose();
     const knownDestination = ['resumo', 'contexto', 'dados', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
-    const publicServiceQuery = kind === 'public' && label ? label : null;
+    const publicServiceQuery = kind === 'public' && label ? (serviceQuery ?? label) : null;
     if (publicServiceQuery) {
       navigateToSection('acao', { state: { ...(window.history.state ?? {}), publicServiceQuery } });
       window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: publicServiceQuery }));
@@ -524,7 +524,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
               onKeyDown={event => {
                 if (event.key === 'Enter' && filtered[activeIndex]) {
                   event.preventDefault();
-                  selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind);
+                  selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind, filtered[activeIndex].serviceQuery);
                 }
               }}
               placeholder="Ex.: medicamentos, orçamento, transporte, eleitorado…"
