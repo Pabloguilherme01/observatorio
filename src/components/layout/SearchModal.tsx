@@ -137,7 +137,23 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     }
     if (q.includes('emprego') || q.includes('caged') || q.includes('postos')) {
       const indicator = d.indicators.find(item => item.id === 'cagedBalance');
-      return indicator ? { title: 'Saldo celetista até jul/2026', value: indicator.value.toLocaleString('pt-BR') + ' postos', id: 'dashboard', sourceId: indicator.sourceId } : null;
+      return indicator ? { title: 'Saldo celetista até jul/2026', value: Number(indicator.value).toLocaleString('pt-BR') + ' postos', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('receita') || q.includes('receitas')) {
+      const indicator = d.indicators.find(item => item.id === 'revenue-2025');
+      return indicator ? { title: 'Receitas brutas realizadas 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'orcamento', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('despesa') || q.includes('despesas')) {
+      const indicator = d.indicators.find(item => item.id === 'expenses-2025');
+      return indicator ? { title: 'Despesas brutas empenhadas 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'orcamento', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('pessoal ocupado') || q.includes('trabalhadores formais')) {
+      const indicator = d.indicators.find(item => item.id === 'formal-workers');
+      return indicator ? { title: 'Pessoal ocupado', value: Number(indicator.value).toLocaleString('pt-BR') + ' pessoas', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('salario formal') || q.includes('salário formal')) {
+      const indicator = d.indicators.find(item => item.id === 'formal-salary');
+      return indicator ? { title: 'Salário médio mensal formal', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' salários mínimos', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
     if (q.includes('mortalidade infantil')) {
       const indicator = d.indicators.find(item => item.id === 'infant-mortality');
