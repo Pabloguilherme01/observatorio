@@ -18,10 +18,10 @@ const categoryFor = (id: string) => {
 };
 
 const rows: readonly (readonly ExportCell[])[] = [
-  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte', 'data_referencia'],
+  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao'],
   ...d.indicators.map(item => {
     const source = d.sources.find(source => source.id === item.sourceId);
-    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.referenceDate ?? ''];
+    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? ''];
   }),
 ];
 
