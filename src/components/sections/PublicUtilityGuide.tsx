@@ -1,4 +1,4 @@
-import { BookOpenCheck, ExternalLink, SearchCheck, ShieldCheck, Stethoscope, GraduationCap, WalletCards, MessageCircle } from 'lucide-react';
+import { BookOpenCheck, ExternalLink, SearchCheck, ShieldCheck, Stethoscope, GraduationCap, WalletCards, MessageCircle, BusFront, HeartHandshake } from 'lucide-react';
 import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 
 const quickNeeds = [
@@ -6,6 +6,8 @@ const quickNeeds = [
   { icon: GraduationCap, label: 'Creches e educação', query: 'creches' },
   { icon: WalletCards, label: 'Gastos e contratos', query: 'despesas' },
   { icon: MessageCircle, label: 'Ouvidoria e denúncia', query: 'denúncias' },
+  { icon: BusFront, label: 'Trânsito e mobilidade', query: 'trânsito' },
+  { icon: HeartHandshake, label: 'Assistência social', query: 'CRAS' },
 ] as const;
 
 const steps = [
@@ -54,7 +56,7 @@ export function PublicUtilityGuide() {
             Abrir serviços e canais oficiais <ExternalLink className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
-        <div className="mt-5 grid grid-cols-2 gap-2 lg:grid-cols-4">
+        <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6" aria-label="Atalhos por necessidade">
           {quickNeeds.map(({ icon: Icon, label, query }) => (
             <button key={label} type="button" onClick={() => goToServices(query)} className="flex min-h-12 items-center gap-2 rounded-xl border border-white/8 bg-black/10 px-3 text-left text-xs font-bold text-slate-200 transition hover:border-sky-300/25 hover:bg-sky-300/[0.06] light:border-slate-200 light:bg-white light:text-slate-800">
               <Icon className="h-4 w-4 shrink-0 text-sky-300 light:text-sky-700" aria-hidden="true" />
