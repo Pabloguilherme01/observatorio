@@ -43,8 +43,8 @@ export function EvidenceChain() {
       <SectionHeader
         titleId="evidence-title"
         eyebrow="Evidências"
-        title="Cadeia de proveniência"
-        description="Esta camada responde quatro perguntas: qual é a fonte, houve captura local, existe prova de integridade e qual é a limitação do recorte?"
+        title="Como conferir a origem de um dado"
+        description="Confira quatro pontos: fonte original, data da captura, verificação de integridade e limites do recorte apresentado."
       />
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -52,7 +52,7 @@ export function EvidenceChain() {
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
             <Database className="h-4 w-4 text-sky-300" aria-hidden="true" /> Candidatos
           </div>
-          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Fonte oficial separada do recorte</h3>
+          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Fonte oficial e recorte local são coisas diferentes</h3>
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
             <div><strong className="text-slate-200 light:text-slate-800">Fonte:</strong> {candidateSource?.label ?? 'TSE — Candidatos 2026'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Captura local:</strong> {candidateCaptured ? captureLabel(generated.meta.downloadedAt) : 'ainda não realizada'}</div>
@@ -72,7 +72,7 @@ export function EvidenceChain() {
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
             <Fingerprint className="h-4 w-4 text-sky-300" aria-hidden="true" /> Integridade
           </div>
-          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Prova material da captura</h3>
+          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Como verificamos o arquivo capturado</h3>
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
             <div><strong className="text-slate-200 light:text-slate-800">SHA-256 da fonte:</strong> {candidateHash ? <code className="break-all">{candidateHash}</code> : 'não registrado nesta captura'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Método:</strong> {generated.meta.retrievalMethod.replaceAll('_', ' ')}</div>
@@ -86,7 +86,7 @@ export function EvidenceChain() {
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
             <ShieldCheck className="h-4 w-4 text-sky-300" aria-hidden="true" /> Resultados
           </div>
-          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Publicação condicionada à validação</h3>
+          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Resultados só aparecem depois da validação</h3>
           <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
             <div><strong className="text-slate-200 light:text-slate-800">Fonte:</strong> {resultSource?.institution ?? 'Tribunal Superior Eleitoral'}</div>
             <div><strong className="text-slate-200 light:text-slate-800">Município:</strong> Águas Lindas de Goiás · código 93343</div>
@@ -102,7 +102,7 @@ export function EvidenceChain() {
       </div>
 
       <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
-        <strong className="text-amber-200 light:text-amber-800">Regra de interpretação:</strong> uma fonte oficial não transforma automaticamente um recorte local em snapshot municipal. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige município comprovado no registro e evidência material da captura.
+        <strong className="text-amber-200 light:text-amber-800">Importante:</strong> uma fonte oficial não transforma automaticamente um recorte local em snapshot municipal. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige município comprovado no registro e evidência material da captura.
       </div>
     </section>
   );
