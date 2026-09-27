@@ -1069,3 +1069,31 @@ test('recorte orçamentário mostra participação na LOA e valor por habitante'
   await expect(page.getByText(/da LOA/i).first()).toBeVisible();
   await expect(page.getByText(/por habitante/i).first()).toBeVisible();
 });
+
+
+test('busca responde participação orçamentária com nota metodológica', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('orçamento saúde');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText('Saúde na LOA 2026');
+  await expect(answer).toContainText(/Participação orçamentária não mede execução/i);
+});
+
+test('diferença entre receita e despesa não é apresentada como superávit', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('diferença receita despesa');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Receitas realizadas − despesas empenhadas 2025/i);
+  await expect(answer).toContainText(/não deve ser interpretada automaticamente como superávit fiscal/i);
+});
+
+test('painel de atualizações informa cobertura temporal das fontes', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dados');
+  await expect(page.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
+  await expect(page.locator('#dados').getByText(/%/).first()).toBeVisible();
+});
