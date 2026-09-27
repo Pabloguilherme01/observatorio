@@ -1053,3 +1053,19 @@ test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ pa
   await expect(page.getByRole('button', { name: /Saneamento na LOA 2026/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Matrículas municipais na educação básica/i })).toBeVisible();
 });
+
+
+test('saneamento exibe coleta de resíduos a partir do dataset rastreável', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'saude');
+  await expect(page.getByText(/domicílios com coleta de resíduos · SINISA 2024/i)).toBeVisible();
+  await expect(page.getByText(/36\.579 pessoas sem coleta/i)).toHaveCount(0);
+});
+
+test('recorte orçamentário mostra participação na LOA e valor por habitante', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'orcamento-impacto');
+  await expect(page.getByRole('heading', { name: /Recorte do orçamento por função/i })).toBeVisible();
+  await expect(page.getByText(/da LOA/i).first()).toBeVisible();
+  await expect(page.getByText(/por habitante/i).first()).toBeVisible();
+});
