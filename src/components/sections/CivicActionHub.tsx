@@ -59,15 +59,24 @@ const additionalPublicServices = [
 const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
 
 const publicServiceIntents = [
-  { label: 'Medicamentos', query: 'medicamentos' },
-  { label: 'Saúde', query: 'saúde' },
-  { label: 'Creche', query: 'creches' },
-  { label: 'Assistência social', query: 'assistência social' },
-  { label: 'Obras', query: 'obras' },
-  { label: 'Licitações', query: 'licitações' },
-  { label: 'Denúncia', query: 'denúncias' },
-  { label: 'Emprego e seleção', query: 'processos seletivos' },
+  { label: 'Medicamentos', query: 'medicamentos', aliases: ['remédio', 'remedios', 'farmácia', 'farmacia'] },
+  { label: 'Saúde', query: 'saúde', aliases: ['saude', 'médico', 'medico', 'consulta', 'caps', 'samu'] },
+  { label: 'Creche', query: 'creches', aliases: ['creche', 'vaga', 'educação infantil', 'educacao infantil'] },
+  { label: 'Assistência social', query: 'assistência social', aliases: ['assistencia', 'cras', 'creas', 'conselho tutelar'] },
+  { label: 'Obras', query: 'obras', aliases: ['obra', 'infraestrutura'] },
+  { label: 'Licitações', query: 'licitações', aliases: ['licitacao', 'licitação', 'compras públicas', 'compras publicas'] },
+  { label: 'Denúncia', query: 'denúncias', aliases: ['denuncia', 'reclamação', 'reclamacao', 'ouvidoria'] },
+  { label: 'Emprego e seleção', query: 'processos seletivos', aliases: ['emprego', 'vaga', 'seleção', 'selecao', 'estágio', 'estagio'] },
 ] as const;
+
+const publicServiceAliasQuery = (value: string) => {
+  const normalized = normalizeServiceQuery(value);
+  const intent = publicServiceIntents.find(item =>
+    normalizeServiceQuery(item.query) === normalized ||
+    item.aliases.some(alias => normalizeServiceQuery(alias) === normalized)
+  );
+  return intent ? [intent.query, ...intent.aliases].map(normalizeServiceQuery) : [normalized];
+};
 
 const normalizeServiceQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
@@ -92,8 +101,12 @@ export function CivicActionHub() {
   ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
   const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
+  const expandedServiceQueries = publicServiceAliasQuery(serviceQuery);
   const visibleMunicipalServices = normalizedServiceQuery
-    ? allMunicipalServices.filter(service => normalizeServiceQuery(service.title + ' ' + service.description).includes(normalizedServiceQuery))
+    ? allMunicipalServices.filter(service => {
+        const haystack = normalizeServiceQuery(service.title + ' ' + service.description);
+        return expandedServiceQueries.some(query => query && haystack.includes(query));
+      })
     : visiblePriority;
 
   useEffect(() => {
