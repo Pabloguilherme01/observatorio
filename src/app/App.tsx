@@ -138,6 +138,12 @@ function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
 
   useEffect(() => {
+    const requestedMode = new URLSearchParams(window.location.search).get('leitura');
+    if ((requestedMode === 'summary' || requestedMode === 'simple' || requestedMode === 'technical') && requestedMode !== mode) {
+      setMode(requestedMode);
+      return;
+    }
+
     const prepareMode = (target: string) => {
       if (!target) return;
       const nextMode = modeForDestination(target, mode);
