@@ -945,9 +945,13 @@ test('tema e contraste persistem após recarregar', async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem('observatorio-theme'))).toBe(storedTheme);
 });
 
-test('busca fecha com Escape e devolve foco ao acionador', async ({ page }) => {
+test('busca não rouba foco na carga inicial e devolve foco após uso', async ({ page }) => {
   await page.goto('./');
   const trigger = page.getByRole('button', { name: /Buscar no observatório/i });
+
+  await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).not.toBe('BUTTON');
+  await expect(trigger).not.toBeFocused();
+
   await trigger.focus();
   await trigger.click();
   await expect(page.getByRole('dialog')).toBeVisible();
