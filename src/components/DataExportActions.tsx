@@ -18,10 +18,10 @@ const categoryFor = (id: string) => {
 };
 
 const rows: readonly (readonly ExportCell[])[] = [
-  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao'],
+  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza'],
   ...d.indicators.map(item => {
     const source = d.sources.find(source => source.id === item.sourceId);
-    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? ''];
+    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? ''];
   }),
 ];
 
@@ -54,8 +54,8 @@ export function DataExportActions() {
 
   const exportSourcesCsv = () => {
     const sourceRows: readonly (readonly ExportCell[])[] = [
-      ['fonte_id', 'nome', 'instituicao', 'natureza', 'data_referencia', 'data_publicacao', 'url'],
-      ...d.sources.map(source => [source.id, source.label, source.institution, source.nature, source.referenceDate ?? '', source.publishedAt ?? '', source.url]),
+      ['fonte_id', 'nome', 'instituicao', 'natureza', 'data_referencia', 'data_publicacao', 'url', 'frequencia_atualizacao', 'ultima_verificacao', 'licenca'],
+      ...d.sources.map(source => [source.id, source.label, source.institution, source.nature, source.referenceDate ?? '', source.publishedAt ?? '', source.url, source.updateFrequency ?? '', source.lastCheckedAt ?? '', source.license ?? '']),
     ];
     downloadBlob(`observatorio-aguas-lindas-fontes-${EDITION.toLowerCase()}.csv`, toCsv(sourceRows), 'text/csv;charset=utf-8');
     flash(`Fontes CSV ${EDITION} exportadas`);
@@ -81,9 +81,9 @@ export function DataExportActions() {
     <Card id="exportacao" className={mode === 'summary' ? 'summary-export-card' : undefined}>
       <div className={`flex flex-col gap-4 md:flex-row md:items-center md:justify-between ${mode === 'summary' ? 'summary-export-head' : ''}`}>
         <div>
-          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados e exportação</div>
-          <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Levar dados' : 'Leve os dados para fora da aplicação'}</h3>
-          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com categoria, unidade, status, fonte e data de referência; JSON do dataset normalizado; metadados e API pública.</p>}
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados para download</div>
+          <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Baixar dados' : 'Baixe dados, fontes e metadados'}</h3>
+          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com identificador, categoria, unidade, status, fonte e referência; catálogo de fontes; JSON normalizado; metadados e API pública.</p>}
         </div>
         <div className={`flex flex-wrap gap-2 ${mode === 'summary' ? 'summary-export-actions' : ''}`}>
           <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
