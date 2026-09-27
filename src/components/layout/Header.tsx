@@ -8,6 +8,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { formatDate } from '../../utils/formatters';
 import { copyText } from '../../lib/clipboard';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import { buildCanonicalUrl, urlParamKeys } from '../../lib/urlState';
 
 const SearchModal = lazy(() => import('./SearchModal').then(module => ({ default: module.SearchModal })));
 
@@ -187,8 +188,10 @@ export function Header() {
   };
 
   const copyCurrentSectionLink = async () => {
-    const hash = '#' + activeSectionRef.current;
-    const url = window.location.origin + window.location.pathname + hash;
+    const url = buildCanonicalUrl(
+      { [urlParamKeys.readingMode]: languageMode },
+      activeSectionRef.current,
+    );
     const copied = await copyText(url);
     if (!copied) return;
 
