@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
+import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, Link2, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
+import { copyText } from '../../lib/clipboard';
 
 const priorityPublicServices = [
   { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
@@ -61,14 +62,22 @@ const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServ
 const normalizeServiceQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
+const publicServiceQueryFromLocation = () => {
+  if (typeof window === 'undefined') return '';
+  const fromUrl = new URLSearchParams(window.location.search).get('servico');
+  if (fromUrl) return fromUrl;
+  const fromState = typeof window.history.state?.publicServiceQuery === 'string'
+    ? window.history.state.publicServiceQuery
+    : '';
+  return fromState;
+};
+
 export function CivicActionHub() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
   const summary = mode === 'summary';
-  const initialServiceQuery = typeof window !== 'undefined' && typeof window.history.state?.publicServiceQuery === 'string'
-    ? window.history.state.publicServiceQuery
-    : '';
-  const [serviceQuery, setServiceQuery] = useState(initialServiceQuery);
+  const [serviceQuery, setServiceQuery] = useState(publicServiceQueryFromLocation);
+  const [queryLinkCopied, setQueryLinkCopied] = useState(false);
   const tesser = [
     ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
     ['candidaturas','Candidaturas e contas','Consulte registros, bens, receitas e despesas no DivulgaCandContas.','https://divulgacandcontas.tse.jus.br/divulga/#/','search'],
@@ -94,9 +103,43 @@ export function CivicActionHub() {
       const detail = (event as CustomEvent<string>).detail;
       if (typeof detail === 'string') setServiceQuery(detail);
     };
+    const syncFromLocation = () => setServiceQuery(publicServiceQueryFromLocation());
     window.addEventListener('observatorio:public-service-search', onServiceSearch);
-    return () => window.removeEventListener('observatorio:public-service-search', onServiceSearch);
+    window.addEventListener('popstate', syncFromLocation);
+    window.addEventListener('hashchange', syncFromLocation);
+    return () => {
+      window.removeEventListener('observatorio:public-service-search', onServiceSearch);
+      window.removeEventListener('popstate', syncFromLocation);
+      window.removeEventListener('hashchange', syncFromLocation);
+    };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.location.hash !== '#acao') return;
+    const url = new URL(window.location.href);
+    const trimmed = serviceQuery.trim();
+    if (trimmed) url.searchParams.set('servico', trimmed);
+    else url.searchParams.delete('servico');
+
+    const currentState = typeof window.history.state === 'object' && window.history.state !== null
+      ? window.history.state
+      : {};
+    window.history.replaceState(
+      { ...currentState, publicServiceQuery: trimmed },
+      '',
+      url.pathname + url.search + url.hash,
+    );
+    setQueryLinkCopied(false);
+  }, [serviceQuery]);
+
+  const copyServiceSearchLink = async () => {
+    const trimmed = serviceQuery.trim();
+    if (!trimmed) return;
+    const url = new URL(window.location.origin + window.location.pathname);
+    url.searchParams.set('servico', trimmed);
+    url.hash = 'acao';
+    if (await copyText(url.toString())) setQueryLinkCopied(true);
+  };
 
   return (
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
@@ -169,9 +212,23 @@ export function CivicActionHub() {
           )}
         </div>
         {serviceQuery && (
-          <p className="mt-2 text-[11px] text-slate-500" role="status">
-            {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
-          </p>
+          <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+            <p className="text-[11px] text-slate-500" role="status" aria-live="polite" aria-atomic="true">
+              {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
+            </p>
+            <button
+              type="button"
+              onClick={copyServiceSearchLink}
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-white/10 px-3 text-[11px] font-bold text-sky-300 transition hover:bg-white/5 light:border-slate-200 light:text-sky-700 light:hover:bg-slate-100"
+              aria-label="Copiar link desta busca de serviços"
+            >
+              <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
+              {queryLinkCopied ? 'Link copiado' : 'Copiar link desta busca'}
+            </button>
+            <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+              {queryLinkCopied ? 'Link da busca de serviços copiado.' : ''}
+            </span>
+          </div>
         )}
 
         {serviceQuery && visibleMunicipalServices.length === 0 && (
