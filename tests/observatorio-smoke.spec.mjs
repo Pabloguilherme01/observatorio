@@ -1379,3 +1379,36 @@ test('busca rápida cobre escolarização e arborização', async ({ page }) => 
   await input.fill('arborização');
   await expect(page.locator('.search-quick-answer')).toContainText(/Arborização de vias públicas/i);
 });
+
+
+test('painel de dados mostra cobertura dos indicadores e notas metodológicas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dados');
+  const summary = page.getByLabel('Resumo do conjunto de dados');
+  await expect(summary.getByText('Indicadores com data de referência', { exact: true })).toBeVisible();
+  await expect(summary.getByText('Indicadores com nota metodológica', { exact: true })).toBeVisible();
+  await expect(summary.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
+});
+
+test('busca responde contagem de indicadores, fontes e cobertura temporal', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('quantos indicadores');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Indicadores publicados/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('quantas fontes');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Fontes registradas/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('cobertura fontes');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Cobertura temporal das fontes/i);
+  await expect(answer).toContainText(/%/);
+});
