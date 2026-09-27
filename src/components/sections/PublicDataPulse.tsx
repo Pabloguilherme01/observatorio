@@ -9,6 +9,17 @@ export function PublicDataPulse() {
   const indicatorCount = d.indicators.length;
   const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
   const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
+  const indicatorStatus = d.indicators.reduce<Record<string, number>>((acc, item) => {
+    acc[item.status] = (acc[item.status] ?? 0) + 1;
+    return acc;
+  }, {});
+  const statusSummary = [
+    ['Atual', indicatorStatus.current ?? 0],
+    ['Histórico', indicatorStatus.historical ?? 0],
+    ['Derivado', indicatorStatus.derived ?? 0],
+    ['Registro datado', indicatorStatus.snapshot ?? 0],
+    ['Planejado', indicatorStatus.planned ?? 0],
+  ].filter(([, count]) => Number(count) > 0) as Array<[string, number]>;
   return (
     <section id="dados" className="mx-auto max-w-7xl px-4 py-12 sm:px-6" aria-labelledby="dados-title">
       <SectionHeader
@@ -37,6 +48,13 @@ export function PublicDataPulse() {
               <p className="mt-3 text-xs leading-5 text-slate-500">
                 Este bloco mostra mudanças recentes; indicadores, séries e metodologias permanecem nas seções temáticas. O catálogo de fontes pode ser baixado na área de dados.
               </p>
+              <div className="mt-4 flex flex-wrap gap-2" aria-label="Tipos de indicador publicados">
+                {statusSummary.map(([label, count]) => (
+                  <span key={label} className="rounded-full border border-white/8 px-2.5 py-1 text-[10px] font-bold text-slate-500 light:border-slate-200">
+                    {label}: {count}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </Card>
