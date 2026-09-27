@@ -16,8 +16,8 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.getByRole('group', { name: 'Escolha como você quer ler os dados' })).toBeVisible();
 
     const modeGroup = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-    await modeGroup.getByRole('button', { name: /^Técnico/ }).click();
-    await expect(modeGroup.getByRole('button', { name: /^Técnico/ })).toHaveAttribute('aria-pressed', 'true');
+    await modeGroup.getByRole('button', { name: /^Detalhado/ }).click();
+    await expect(modeGroup.getByRole('button', { name: /^Detalhado/ })).toHaveAttribute('aria-pressed', 'true');
     await modeGroup.getByRole('button', { name: /^Resumo/ }).click();
     await expect(modeGroup.getByRole('button', { name: /^Resumo/ })).toHaveAttribute('aria-pressed', 'true');
 
@@ -52,7 +52,7 @@ test.describe('Observatório smoke flows', () => {
 
     await openSection(page, 'principios');
     await expect(page.getByRole('heading', { name: /Confiança começa pela origem/i })).toBeVisible();
-    await modeGroup.getByRole('button', { name: /^Técnico/ }).click();
+    await modeGroup.getByRole('button', { name: /^Detalhado/ }).click();
     await expect(page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first()).toBeVisible();
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
@@ -101,7 +101,7 @@ test('healthcheck técnico usa base pública e permite tentar novamente', async 
   await page.goto('./');
   await openSection(page, 'principios');
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-  await modes.getByRole('button', { name: /^Técnico/ }).click();
+  await modes.getByRole('button', { name: /^Detalhado/ }).click();
 
   const publicationCard = page.locator('.trust-card').filter({ hasText: 'Publicação pública' }).first();
   await expect(publicationCard.getByRole('status')).toContainText(/não pôde ser concluída/i);
@@ -686,8 +686,8 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
     const signatures = {};
     for (const mode of [
       { name: /^Resumo/, id: 'summary' },
-      { name: /^Simples/, id: 'simple' },
-      { name: /^Técnico/, id: 'technical' },
+      { name: /^Explicado/, id: 'simple' },
+      { name: /^Detalhado/, id: 'technical' },
     ]) {
       await group.getByRole('button', { name: mode.name }).click();
       await expect(root).toHaveAttribute('data-language-mode', mode.id);
@@ -737,7 +737,7 @@ test('modos de leitura só avançam quando a seção realmente exige mais detalh
   await openSection(page, 'qualidade');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
   await openSection(page, 'fontes');
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 });
@@ -749,14 +749,14 @@ test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({
 
   await openSection(page, 'qualidade');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
   await expect(page).toHaveURL(/#fontes$/);
   await expect(page.locator('#fontes')).toBeVisible();
 
   await openSection(page, 'orcamento-impacto');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
-  await modes.getByRole('button', { name: /^Simples/ }).click();
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
   await expect(page).toHaveURL(/#orcamento$/);
   await expect(page.locator('#orcamento')).toBeVisible();
@@ -782,7 +782,7 @@ test('ação de aprofundar percorre os três níveis de leitura no painel mobile
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
-  await page.getByRole('button', { name: 'Voltar para visão executiva' }).click();
+  await page.getByRole('button', { name: 'Voltar para leitura essencial' }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
 });
 
@@ -960,8 +960,8 @@ test('controles principais executam suas ações', async ({ page }) => {
   await page.goto('./');
 
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-  await modes.getByRole('button', { name: /^Simples/ }).click();
-  await expect(modes.getByRole('button', { name: /^Simples/ })).toHaveAttribute('aria-pressed', 'true');
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+  await expect(modes.getByRole('button', { name: /^Explicado/ })).toHaveAttribute('aria-pressed', 'true');
 
   await openSection(page, 'exportacao');
   const downloadPromise = page.waitForEvent('download');
