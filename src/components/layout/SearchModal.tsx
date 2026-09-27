@@ -251,6 +251,22 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'public-sewer-service-2024');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
+    if ((q.includes('custo') || q.includes('mensal')) && q.includes('brasilia')) {
+      const indicator = d.indicators.find(item => item.id === 'transport-monthly-brasilia-default');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por pessoa/mês', id: 'transporte', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('custo') || q.includes('mensal')) && q.includes('taguatinga')) {
+      const indicator = d.indicators.find(item => item.id === 'transport-monthly-taguatinga-default');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por pessoa/mês', id: 'transporte', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('custo') || q.includes('mensal')) && q.includes('ceilandia')) {
+      const indicator = d.indicators.find(item => item.id === 'transport-monthly-ceilandia-default');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por pessoa/mês', id: 'transporte', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('transporte') || q.includes('brasilia')) && q.includes('salario')) {
+      const indicator = d.indicators.find(item => item.id === 'transport-brasilia-min-wage-share-default');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'transporte', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
       return route ? { title: 'Tarifa de referência para Brasília', value: route.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por trecho', id: 'transporte', sourceId: route.sourceId } : null;
