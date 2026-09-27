@@ -161,7 +161,9 @@ function NavigationModeBridge() {
       const target = window.location.hash.slice(1);
       prepareMode(target);
       if (!target) return;
-      navigateToHash(target);
+      // hashchange already dispatches observatorio:navigate for history entries.
+      // Keep popstate responsible only for mode restoration and scrolling so
+      // Back/Forward emits a single navigation event.
       scrollToHashWhenReady(target);
     };
 
