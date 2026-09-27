@@ -35,7 +35,7 @@ export function ElectoralProfile() {
         titleId="eleitorado-title"
         eyebrow="Eleitorado"
         title="Perfil eleitoral sem confundir universos"
-        description="O observatório separa o snapshot da 28ª Zona, o consolidado do TSE e os indicadores derivados."
+        description="O observatório separa o registro datado da 28ª Zona, o total consolidado do TSE e os cálculos derivados."
       />
 
       <div className="grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
@@ -93,13 +93,13 @@ export function ElectoralProfile() {
         </Card>
 
         <Card>
-          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Conferência cadastral</div>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Por que os totais diferem?</div>
           <div className="mt-3 text-3xl font-black text-white">{formatNumber(d.electoral.zoneVsTseDifference ?? 0)}</div>
-          <p className="mt-1 text-sm text-slate-400">diferença entre 125.062 na 28ª Zona e 125.501 no consolidado mantido como reconciliação editorial.</p>
+          <p className="mt-1 text-sm text-slate-400">diferença entre 125.062 na 28ª Zona e 125.501 no total consolidado usado para comparação entre registros.</p>
           <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-amber-100">
-            <strong>Nota:</strong> a diferença é mantida como dado de auditoria. Diferenças entre recortes eleitorais podem ocorrer por data de referência, universo e sincronização das bases. O valor consolidado está marcado como reconciliação editorial e não como nova captura oficial independente.
+            <strong>Nota:</strong> a diferença é mantida como dado de auditoria. Diferenças entre recortes eleitorais podem ocorrer por data de referência, universo e sincronização das bases. O valor consolidado é apresentado para comparação entre registros e não como uma nova captura oficial independente.
           </div>
-          <div className="mt-4 text-xs text-slate-500">Fonte do consolidado: reconciliação editorial local. Indígenas: 941 pessoas no Censo · 33 registros eleitorais informados no material de origem.</div>
+          <div className="mt-4 text-xs text-slate-500">Origem do consolidado: registro de reconciliação do projeto. Indígenas: 941 pessoas no Censo · 33 registros eleitorais informados no material de origem.</div>
         </Card>
       </div>
 
