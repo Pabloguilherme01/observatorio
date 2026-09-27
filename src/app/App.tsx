@@ -62,6 +62,44 @@ function performHashScroll(hash: string) {
   return true;
 }
 
+function openDeepLinkedInspectorWhenReady() {
+  const inspectId = new URLSearchParams(window.location.search).get('dado');
+  if (!inspectId) return;
+
+  const root = document.getElementById('main-content') ?? document.body;
+  let observer: MutationObserver | null = null;
+  let timeoutId = 0;
+  let checkRaf = 0;
+  let opened = false;
+
+  const cleanup = () => {
+    observer?.disconnect();
+    if (timeoutId) window.clearTimeout(timeoutId);
+    if (checkRaf) window.cancelAnimationFrame(checkRaf);
+  };
+
+  const check = () => {
+    checkRaf = 0;
+    if (opened) return;
+    const target = Array.from(document.querySelectorAll<HTMLElement>('[data-inspect-id]'))
+      .find(node => node.dataset.inspectId === inspectId);
+    if (!target) return;
+    opened = true;
+    target.click();
+    cleanup();
+  };
+
+  const scheduleCheck = () => {
+    if (checkRaf || opened) return;
+    checkRaf = window.requestAnimationFrame(check);
+  };
+
+  observer = typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleCheck);
+  observer?.observe(root, { childList: true, subtree: true });
+  timeoutId = window.setTimeout(cleanup, 6000);
+  scheduleCheck();
+}
+
 function scrollToHashWhenReady(hash: string) {
   if (!hash) return;
   if (performHashScroll(hash)) return;
@@ -217,6 +255,7 @@ export function App() {
     };
 
     navigateFromLocation();
+    openDeepLinkedInspectorWhenReady();
     window.addEventListener('hashchange', navigateFromLocation);
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('click', onSameHashAnchor);
