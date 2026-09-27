@@ -136,12 +136,16 @@ function scrollToHashWhenReady(hash: string) {
 
 function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
+  const initialSharedModeHandled = useRef(false);
 
   useEffect(() => {
-    const requestedMode = new URLSearchParams(window.location.search).get('leitura');
-    if ((requestedMode === 'summary' || requestedMode === 'simple' || requestedMode === 'technical') && requestedMode !== mode) {
-      setMode(requestedMode);
-      return;
+    if (!initialSharedModeHandled.current) {
+      initialSharedModeHandled.current = true;
+      const requestedMode = new URLSearchParams(window.location.search).get('leitura');
+      if ((requestedMode === 'summary' || requestedMode === 'simple' || requestedMode === 'technical') && requestedMode !== mode) {
+        setMode(requestedMode);
+        return;
+      }
     }
 
     const prepareMode = (target: string) => {
