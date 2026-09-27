@@ -26,7 +26,7 @@ const entries: readonly SearchEntry[] = [
   ['Exportação', 'exportacao', 'primary'],
   ['Pesquisa registrada', 'politica', 'primary'],
   ['HEALGO', 'saude', 'primary'],
-  ['Resumo executivo', 'resumo', 'primary'],
+  ['Resumo principal', 'resumo', 'primary'],
   ...publicServiceSearchEntries,
 ];
 
@@ -127,6 +127,23 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (!q || q.length < 4) return null;
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
+    if (q.includes('densidade')) {
+      const indicator = d.indicators.find(item => item.id === 'density');
+      return indicator ? { title: 'Densidade estimada 2026', value: Math.round(indicator.value).toLocaleString('pt-BR') + ' hab/km²', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('empresas') || q.includes('empresa')) {
+      const indicator = d.indicators.find(item => item.id === 'companies');
+      return indicator ? { title: 'Empresas ativas', value: indicator.value.toLocaleString('pt-BR') + ' empresas', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('emprego') || q.includes('caged') || q.includes('postos')) {
+      const indicator = d.indicators.find(item => item.id === 'cagedBalance');
+      return indicator ? { title: 'Saldo celetista até jul/2026', value: indicator.value.toLocaleString('pt-BR') + ' postos', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('mortalidade infantil')) {
+      const indicator = d.indicators.find(item => item.id === 'infant-mortality');
+      return indicator ? { title: 'Mortalidade infantil', value: indicator.value.toLocaleString('pt-BR') + ' óbitos por mil', id: 'saude', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('agua') || q.includes('abastecimento')) return { title: 'Acesso à água', value: d.sanitation.waterAccessPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitoral360', sourceId: 'tse-eleitorado-2026' };
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
     if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
