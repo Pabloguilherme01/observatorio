@@ -160,6 +160,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     const sourceCount = d.sources.length;
     const indicatorCount = d.indicators.length;
     const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+    if ((hasTerm(q, 'obito') || hasTerm(q, 'obitos') || hasTerm(q, 'morte') || hasTerm(q, 'mortes')) && hasTerm(q, 'agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-related-deaths');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' óbitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if ((q.includes('quantos') || q.includes('total')) && q.includes('indicadores')) {
       return { title: 'Indicadores publicados', value: indicatorCount.toLocaleString('pt-BR') + ' indicadores', id: 'dados', note: 'Contagem do conjunto normalizado exibido pelo Observatório; não representa o total de indicadores existentes nas fontes originais.' };
     }
@@ -279,10 +283,6 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (q.includes('internacao') && q.includes('agua')) {
       const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
       return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
-    }
-    if ((q.includes('obito') || q.includes('morte')) && q.includes('agua')) {
-      const indicator = d.indicators.find(item => item.id === 'water-related-deaths');
-      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' óbitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (hasTerm(q, 'agua') || q.includes('abastecimento')) {
       const indicator = d.indicators.find(item => item.id === 'water-access-2024');
