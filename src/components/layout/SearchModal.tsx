@@ -159,6 +159,18 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const range = d.education?.ideb2025Range;
       return range ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education?.sourceId ?? 'qedu-ideb-2025' } : null;
     }
+    if (q.includes('matricula') || q.includes('matriculas') || q.includes('educacao basica')) {
+      const indicator = d.indicators.find(item => item.id === 'basic-enrollments-2025');
+      return indicator ? { title: 'Matrículas na educação básica 2025', value: Number(indicator.value).toLocaleString('pt-BR') + ' matrículas', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('investimento') && q.includes('saneamento')) {
+      const indicator = d.indicators.find(item => item.id === 'sanitation-investment');
+      return indicator ? { title: 'Investimento em saneamento', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'saude', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('escolarizacao') || q.includes('escolarização')) {
+      const indicator = d.indicators.find(item => item.id === 'schooling-6-14');
+      return indicator ? { title: 'Escolarização de 6 a 14 anos', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId } : null;
+    }
     if (q.includes('heal') || q.includes('hospital')) {
       const total = (d.health?.currentStatedWardBeds ?? 0) + (d.health?.currentStatedIcuBeds ?? 0);
       return { title: 'HEAL · leitos declarados', value: total.toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: 'healgo' };
