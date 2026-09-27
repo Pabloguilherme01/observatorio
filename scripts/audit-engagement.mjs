@@ -40,7 +40,7 @@ must(
   modeToggle.includes('Leitura explicada') &&
   modeToggle.includes('Leitura detalhada') &&
   hero.includes('Uma visão executiva da cidade') &&
-  audience.includes('O essencial da cidade, sem ruído.') &&
+  audience.includes('Comece pelo que você precisa saber.') &&
   executive.includes('O essencial, sem ruído') &&
   dashboard.includes('Indicadores prontos para conferência') &&
   trust.includes('Confiança começa pela origem') &&
