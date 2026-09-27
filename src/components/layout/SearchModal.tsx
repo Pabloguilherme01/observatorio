@@ -285,9 +285,9 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                   selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind);
                 }
               }}
-              placeholder="Ex.: orçamento, transporte, eleitorado, HEAL…"
+              placeholder="Ex.: remédio, creche, orçamento, transporte…"
               className="search-modal-input"
-              aria-label="Buscar seção, fonte ou indicador"
+              aria-label="Buscar serviço, seção, fonte ou indicador"
               role="combobox"
               aria-expanded={open}
               aria-controls="search-results"
@@ -346,7 +346,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
         <div id="search-results" className="search-results" role="listbox" aria-label="Resultados da busca">
           {renderResults(filtered)}
-          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente orçamento, eleitorado, transporte, saneamento ou HEAL.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
+          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente remédio, creche, orçamento, transporte, saneamento ou HEAL.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
         </div>
       </div>
     </div>
