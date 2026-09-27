@@ -159,6 +159,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'infant-mortality');
       return indicator ? { title: 'Mortalidade infantil', value: indicator.value.toLocaleString('pt-BR') + ' óbitos por mil', id: 'saude', sourceId: indicator.sourceId } : null;
     }
+    if (q.includes('perda') && q.includes('agua')) return { title: 'Perdas na distribuição de água', value: d.sanitation.waterDistributionLossPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
+    if (q.includes('lixo') || q.includes('residuo') || q.includes('residuos')) return { title: 'Coleta domiciliar de resíduos', value: d.sanitation.householdWasteCollectionPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
     if (q.includes('agua') || q.includes('abastecimento')) return { title: 'Acesso à água', value: d.sanitation.waterAccessPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitoral360', sourceId: 'tse-eleitorado-2026' };
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
