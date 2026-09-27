@@ -52,6 +52,15 @@ export function DataExportActions() {
     flash(`CSV ${EDITION} exportado`);
   };
 
+  const exportSourcesCsv = () => {
+    const sourceRows: readonly (readonly ExportCell[])[] = [
+      ['fonte_id', 'nome', 'instituicao', 'natureza', 'data_referencia', 'data_publicacao', 'url'],
+      ...d.sources.map(source => [source.id, source.label, source.institution, source.nature, source.referenceDate ?? '', source.publishedAt ?? '', source.url]),
+    ];
+    downloadBlob(`observatorio-aguas-lindas-fontes-${EDITION.toLowerCase()}.csv`, toCsv(sourceRows), 'text/csv;charset=utf-8');
+    flash(`Fontes CSV ${EDITION} exportadas`);
+  };
+
   const copyMetadata = async () => {
     const metadata = JSON.stringify({
       edition: d.meta.edition,
@@ -79,6 +88,7 @@ export function DataExportActions() {
         <div className={`flex flex-wrap gap-2 ${mode === 'summary' ? 'summary-export-actions' : ''}`}>
           <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
           <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
+          <button type="button" onClick={exportSourcesCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />Fontes CSV</button>
           <button type="button" onClick={copyMetadata} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
           <a href={import.meta.env.BASE_URL + "api/v1/observatorio.json"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 hover:bg-sky-300/10"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
         </div>
