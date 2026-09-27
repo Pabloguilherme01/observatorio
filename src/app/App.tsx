@@ -157,15 +157,21 @@ function NavigationModeBridge() {
     const onNavigate = (event: Event) => {
       prepareMode((event as CustomEvent<string>).detail ?? '');
     };
-    const onHashChange = () => prepareMode(window.location.hash.slice(1));
+    const restoreHistoryDestination = () => {
+      const target = window.location.hash.slice(1);
+      prepareMode(target);
+      if (!target) return;
+      navigateToHash(target);
+      scrollToHashWhenReady(target);
+    };
 
     window.addEventListener('observatorio:navigate', onNavigate);
-    window.addEventListener('hashchange', onHashChange);
-    onHashChange();
+    window.addEventListener('popstate', restoreHistoryDestination);
+    restoreHistoryDestination();
 
     return () => {
       window.removeEventListener('observatorio:navigate', onNavigate);
-      window.removeEventListener('hashchange', onHashChange);
+      window.removeEventListener('popstate', restoreHistoryDestination);
     };
   }, [mode, setMode]);
 
