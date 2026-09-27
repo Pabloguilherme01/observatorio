@@ -211,7 +211,7 @@ test.describe('bancada cross-browser de interface', () => {
     await search.fill('ouvidoria');
     await expect(page.getByRole('link', { name: /Denúncias à Ouvidoria/i })).toBeVisible();
 
-    await search.fill('emprego');
+    await search.fill('vaga de emprego');
     await expect(page.getByRole('link', { name: /Processos seletivos/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Lista de espera em creches/i })).toHaveCount(0);
 
