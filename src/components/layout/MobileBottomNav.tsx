@@ -34,36 +34,41 @@ export function MobileBottomNav() {
 
   const closeMore = useCallback((restoreFocus = false) => {
     moreOpenRef.current = false;
-    setMoreOpen(false);
     restoreMoreFocusRef.current = restoreFocus;
-    if (restoreFocus) {
-      moreButtonRef.current?.focus();
-      window.requestAnimationFrame(() => moreButtonRef.current?.focus());
-    }
+    setMoreOpen(false);
   }, []);
 
   const toggleMore = useCallback(() => {
     const next = !moreOpenRef.current;
     moreOpenRef.current = next;
+    restoreMoreFocusRef.current = !next;
     setMoreOpen(next);
-    window.requestAnimationFrame(() => {
-      if (next) moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
-      else moreButtonRef.current?.focus();
-    });
   }, []);
 
-  useEffect(() => {
-    if (!moreOpen) return;
-    const frame = window.requestAnimationFrame(() => {
-      moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [moreOpen]);
-
   useLayoutEffect(() => {
-    if (moreOpen || !restoreMoreFocusRef.current) return;
-    restoreMoreFocusRef.current = false;
-    moreButtonRef.current?.focus();
+    const focusTarget = () => {
+      if (moreOpen) {
+        moreMenuRef.current
+          ?.querySelector<HTMLButtonElement>('[role="menuitem"]')
+          ?.focus({ preventScroll: true });
+        return;
+      }
+      if (!restoreMoreFocusRef.current) return;
+      moreButtonRef.current?.focus({ preventScroll: true });
+    };
+
+    if (!moreOpen && !restoreMoreFocusRef.current) return;
+
+    focusTarget();
+    const frame = window.requestAnimationFrame(focusTarget);
+    const timer = window.setTimeout(focusTarget, 0);
+
+    if (!moreOpen) restoreMoreFocusRef.current = false;
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
   }, [moreOpen]);
 
   useEffect(() => {
