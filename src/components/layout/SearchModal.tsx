@@ -283,9 +283,29 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'schooling-6-14');
       return indicator ? { title: 'Escolarização de 6 a 14 anos', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
+    if ((q.includes('heal') || q.includes('hospital')) && (q.includes('planej') || q.includes('298'))) {
+      const indicator = d.indicators.find(item => item.id === 'heal-planned-beds');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('heal') || q.includes('hospital')) && (q.includes('inaugur') || q.includes('164'))) {
+      const indicator = d.indicators.find(item => item.id === 'heal-opening-beds');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('heal') || q.includes('hospital')) && q.includes('investimento')) {
+      const indicator = d.indicators.find(item => item.id === 'heal-opening-investment');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('heal') || q.includes('hospital')) && q.includes('atendimento')) {
+      const indicator = d.indicators.find(item => item.id === 'heal-first-year-attendances');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + '+ atendimentos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('heal') || q.includes('hospital')) && (q.includes('por leito') || q.includes('leito de referencia'))) {
+      const indicator = d.indicators.find(item => item.id === 'heal-attendances-per-opening-bed');
+      return indicator ? { title: indicator.label, value: Math.floor(Number(indicator.value)).toLocaleString('pt-BR') + '+ atendimentos/leito', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('heal') || q.includes('hospital')) {
-      const total = (d.health?.currentStatedWardBeds ?? 0) + (d.health?.currentStatedIcuBeds ?? 0);
-      return { title: 'HEAL · leitos declarados', value: total.toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: 'healgo' };
+      const indicator = d.indicators.find(item => item.id === 'heal-current-stated-beds');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     return null;
   }, [query]);
