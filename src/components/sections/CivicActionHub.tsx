@@ -3,6 +3,7 @@ import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, E
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
 import { copyText } from '../../lib/clipboard';
+import { buildCanonicalUrl, getPublicServiceQuery, replaceCurrentUrl, urlParamKeys } from '../../lib/urlState';
 
 const priorityPublicServices = [
   { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
@@ -62,21 +63,11 @@ const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServ
 const normalizeServiceQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
-const publicServiceQueryFromLocation = () => {
-  if (typeof window === 'undefined') return '';
-  const fromUrl = new URLSearchParams(window.location.search).get('servico');
-  if (fromUrl) return fromUrl;
-  const fromState = typeof window.history.state?.publicServiceQuery === 'string'
-    ? window.history.state.publicServiceQuery
-    : '';
-  return fromState;
-};
-
 export function CivicActionHub() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
   const summary = mode === 'summary';
-  const [serviceQuery, setServiceQuery] = useState(publicServiceQueryFromLocation);
+  const [serviceQuery, setServiceQuery] = useState(getPublicServiceQuery);
   const [queryLinkCopied, setQueryLinkCopied] = useState(false);
   const tesser = [
     ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
@@ -103,7 +94,7 @@ export function CivicActionHub() {
       const detail = (event as CustomEvent<string>).detail;
       if (typeof detail === 'string') setServiceQuery(detail);
     };
-    const syncFromLocation = () => setServiceQuery(publicServiceQueryFromLocation());
+    const syncFromLocation = () => setServiceQuery(getPublicServiceQuery());
     window.addEventListener('observatorio:public-service-search', onServiceSearch);
     window.addEventListener('popstate', syncFromLocation);
     window.addEventListener('hashchange', syncFromLocation);
@@ -116,18 +107,13 @@ export function CivicActionHub() {
 
   useEffect(() => {
     if (typeof window === 'undefined' || window.location.hash !== '#acao') return;
-    const url = new URL(window.location.href);
     const trimmed = serviceQuery.trim();
-    if (trimmed) url.searchParams.set('servico', trimmed);
-    else url.searchParams.delete('servico');
-
     const currentState = typeof window.history.state === 'object' && window.history.state !== null
       ? window.history.state
       : {};
-    window.history.replaceState(
-      { ...currentState, publicServiceQuery: trimmed },
-      '',
-      url.pathname + url.search + url.hash,
+    replaceCurrentUrl(
+      { [urlParamKeys.publicService]: trimmed || null },
+      { state: { ...currentState, publicServiceQuery: trimmed } },
     );
     setQueryLinkCopied(false);
   }, [serviceQuery]);
@@ -135,10 +121,8 @@ export function CivicActionHub() {
   const copyServiceSearchLink = async () => {
     const trimmed = serviceQuery.trim();
     if (!trimmed) return;
-    const url = new URL(window.location.origin + window.location.pathname);
-    url.searchParams.set('servico', trimmed);
-    url.hash = 'acao';
-    if (await copyText(url.toString())) setQueryLinkCopied(true);
+    const url = buildCanonicalUrl({ [urlParamKeys.publicService]: trimmed }, 'acao');
+    if (await copyText(url)) setQueryLinkCopied(true);
   };
 
   return (
