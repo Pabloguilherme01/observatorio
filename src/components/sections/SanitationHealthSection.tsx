@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';
 import { formatNumber, formatPercent } from '../../utils/formatters';
+import { dispatchInspect } from '../DataInspector';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
@@ -168,10 +169,23 @@ export function SanitationHealthSection() {
               ].map(([label, id]) => {
                 const indicator = d.indicators.find(item => item.id === id);
                 return (
-                  <div key={id} className="rounded-2xl border border-white/8 bg-black/10 p-3 light:bg-white">
+                  <button
+                    key={id}
+                    type="button"
+                    className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-3 text-left hover:border-amber-300/20 light:bg-white"
+                    onClick={() => indicator && dispatchInspect({
+                      label: indicator.label,
+                      value: formatPercent(Number(indicator.value), 1),
+                      sourceId: indicator.sourceId,
+                      referenceDate: indicator.referenceDate,
+                      note: indicator.note,
+                      method: 'Complemento calculado como 100% menos o indicador correspondente, preservando o mesmo denominador.',
+                    })}
+                  >
                     <strong className="block text-xl font-black text-white light:text-slate-900">{formatPercent(Number(indicator?.value ?? 0), 1)}</strong>
                     <span className="mt-1 block text-xs text-slate-500">{label}</span>
-                  </div>
+                    <span className="mt-2 inline-flex text-[10px] font-bold uppercase tracking-wide text-amber-200/80 light:text-amber-700">Ver fonte e fórmula</span>
+                  </button>
                 );
               })}
             </div>
