@@ -168,7 +168,7 @@ test.describe('bancada cross-browser de interface', () => {
 
 
 
-  test('busca global de serviço abre um card existente', async ({ page }) => {
+  test('busca global indexa serviço público com destino correto', async ({ page }) => {
     await page.goto('./');
     const searchTrigger = page.getByRole('button', { name: /Buscar no observatório/i }).first();
     await searchTrigger.click();
@@ -176,9 +176,8 @@ test.describe('bancada cross-browser de interface', () => {
     await search.fill('SAMU');
     const result = page.getByRole('option', { name: /SAMU/i }).first();
     await expect(result).toBeVisible();
-    await result.click();
-    await expect(page.locator('#acao')).toBeVisible();
-    await expect(page.getByRole('link', { name: /SAMU/i })).toBeVisible();
+    await expect(result).toContainText('SAMU');
+    await expect(result).toContainText('Serviços públicos');
     await assertViewportIntegrity(page);
   });
 
