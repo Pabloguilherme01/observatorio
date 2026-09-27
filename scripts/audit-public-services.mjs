@@ -79,10 +79,12 @@ const additionalUrls = objectUrls(additionalBlock);
 if (additionalUrls.length !== 28) fail.push(`catálogo técnico adicional esperado=28 atual=${additionalUrls.length}`);
 else pass('28 serviços oficiais adicionais permanecem disponíveis no aprofundamento técnico');
 
-for (const everydayTerm of ['remédio', 'farmácia', 'creche', 'cras', 'ouvidoria', 'emprego', 'emergência', 'samu', 'defesa civil', 'água e esgoto']) {
+for (const everydayTerm of ['remédio', 'farmácia', 'creche', 'cras', 'ouvidoria', 'emprego', 'vaga de emprego', 'emergência', 'samu', 'defesa civil', 'água e esgoto']) {
   if (!source.includes(everydayTerm)) fail.push('busca cidadã sem sinônimo cotidiano: ' + everydayTerm);
 }
 if (!fail.some(item => item.startsWith('busca cidadã sem sinônimo cotidiano'))) pass('busca cidadã cobre sinônimos cotidianos essenciais');
+if (!source.includes("b.term.length - a.term.length")) fail.push('busca cidadã não prioriza o termo mais específico');
+else pass('busca cidadã resolve ambiguidades pelo termo mais específico');
 
 if (!source.includes("const remainingMunicipalServices = allMunicipalServices.filter(service => !visiblePriorityTitles.has(service.title));")) {
   fail.push('catálogo público completo não está disponível sem duplicar prioridades');
