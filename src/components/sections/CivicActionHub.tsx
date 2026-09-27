@@ -82,7 +82,7 @@ const publicServiceIntents = [
   { label: 'Obras', query: 'obras', aliases: ['obra', 'infraestrutura'] },
   { label: 'Licitações', query: 'licitações', aliases: ['licitacao', 'licitação', 'compras públicas', 'compras publicas'] },
   { label: 'Denúncia', query: 'denúncias', aliases: ['denuncia', 'reclamação', 'reclamacao', 'ouvidoria'] },
-  { label: 'Emprego e seleção', query: 'processos seletivos', aliases: ['emprego', 'seleção', 'selecao', 'estágio', 'estagio'] },
+  { label: 'Emprego e seleção', query: 'processos seletivos', aliases: ['emprego', 'vaga de emprego', 'oportunidade de emprego', 'seleção', 'selecao', 'estágio', 'estagio'] },
   { label: 'Água e esgoto', query: 'água e esgoto', aliases: ['agua', 'esgoto', 'saneago', 'abastecimento'] },
 ] as const;
 
@@ -95,10 +95,13 @@ const getServiceCta = (title: string) => {
 
 const publicServiceAliasQuery = (value: string) => {
   const normalized = normalizeServiceQuery(value);
-  const intent = publicServiceIntents.find(item => {
-    const terms = [item.query, ...item.aliases].map(normalizeServiceQuery);
-    return terms.some(term => normalized === term || normalized.includes(term));
-  });
+  const matches = publicServiceIntents
+    .flatMap(item => [item.query, ...item.aliases]
+      .map(normalizeServiceQuery)
+      .filter(term => normalized === term || normalized.includes(term))
+      .map(term => ({ item, term, exact: normalized === term })))
+    .sort((a, b) => Number(b.exact) - Number(a.exact) || b.term.length - a.term.length);
+  const intent = matches[0]?.item;
   return intent ? [intent.query, ...intent.aliases].map(normalizeServiceQuery) : [normalized];
 };
 
