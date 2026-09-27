@@ -178,6 +178,12 @@ test.describe('bancada cross-browser de interface', () => {
     await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
 
     const search = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
+    await search.fill('remédio');
+    await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
+
+    await search.fill('ouvidoria');
+    await expect(page.getByRole('link', { name: /Denúncias à Ouvidoria/i })).toBeVisible();
+
     await search.fill('termo sem correspondência 987');
     await expect(page.getByText('Nenhum atalho com esse termo.')).toBeVisible();
 
