@@ -1,6 +1,6 @@
 export const navigation = [
   { id: 'descubra', label: 'Começar', shortLabel: 'Começar', description: 'Escolha o que você quer consultar', shortcut: 'G R', group: 'primary' },
-  { id: 'dashboard', label: 'Indicadores', shortLabel: 'Indicadores', description: 'Visão geral dos dados', shortcut: 'G D', group: 'primary' },
+  { id: 'dashboard', label: 'Dashboard', shortLabel: 'Dashboard', description: 'Visão geral dos indicadores', shortcut: 'G D', group: 'primary' },
   { id: 'eleitorado', label: 'Eleitorado', shortLabel: 'Eleitorado', description: 'Perfil eleitoral', shortcut: 'G E', group: 'more' },
   { id: 'transporte', label: 'Transporte', shortLabel: 'Transporte', description: 'Mobilidade e tarifas', shortcut: 'G T', group: 'more' },
   { id: 'saude', label: 'Saúde e saneamento', shortLabel: 'Saúde', description: 'Cobertura, saneamento e capacidade', shortcut: 'G S', group: 'more' },
