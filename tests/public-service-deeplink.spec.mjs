@@ -45,7 +45,9 @@ test.describe('links diretos de serviços públicos', () => {
 
     const input = page.getByRole('searchbox', { name: 'Buscar serviço municipal por necessidade' });
     await expect(input).toHaveValue('medicamentos');
-    await page.getByRole('button', { name: 'Copiar link desta busca de serviços' }).click();
+    const copyButton = page.getByRole('button', { name: 'Copiar link desta busca de serviços' });
+    await copyButton.click();
+    await expect(copyButton).toContainText('Link copiado');
 
     const copied = await page.evaluate(() => window.__lastCopiedServiceLink);
     expect(copied).toContain('?servico=medicamentos#acao');
