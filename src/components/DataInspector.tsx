@@ -11,6 +11,8 @@ type InspectorDetail = {
   referenceDate?: string;
   note?: string;
   method?: string;
+  inspectId?: string;
+  sectionId?: string;
 };
 
 declare global {
@@ -19,8 +21,21 @@ declare global {
   }
 }
 
+export function inspectDataId(detail: Pick<InspectorDetail, 'label' | 'sourceId'>) {
+  const slug = detail.label
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('pt-BR')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return (detail.sourceId ?? 'observatorio') + '--' + (slug || 'dado');
+}
+
 function dispatchInspect(detail: InspectorDetail) {
-  window.dispatchEvent(new CustomEvent('observatorio:inspect-data', { detail }));
+  window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
+    detail: { ...detail, inspectId: detail.inspectId ?? inspectDataId(detail) },
+  }));
 }
 
 export { dispatchInspect };
@@ -39,10 +54,12 @@ export function DataInspector() {
   useEffect(() => {
     const onInspect = (event: WindowEventMap['observatorio:inspect-data']) => {
       openerRef.current = document.activeElement as HTMLElement | null;
-      setData(event.detail);
+      const sectionId = event.detail.sectionId
+        ?? openerRef.current?.closest<HTMLElement>('section[id]')?.id
+        ?? undefined;
+      setData({ ...event.detail, sectionId });
       setCopied(false);
       setCitationCopied(false);
-      setLinkCopied(false);
       setLinkCopied(false);
       setActionError(false);
     };
@@ -133,7 +150,10 @@ export function DataInspector() {
     setActionError(true);
   };
 
-  const canonicalUrl = window.location.origin + window.location.pathname + (window.location.hash || '#dashboard');
+  const canonical = new URL(window.location.origin + window.location.pathname);
+  if (data.inspectId) canonical.searchParams.set('dado', data.inspectId);
+  canonical.hash = data.sectionId ? '#' + data.sectionId : (window.location.hash || '#dashboard');
+  const canonicalUrl = canonical.toString();
 
   const copyLink = async () => {
     if (await copyText(canonicalUrl)) {
