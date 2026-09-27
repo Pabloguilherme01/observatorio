@@ -57,7 +57,7 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
     await openSection(page, 'acao');
-    await expect(page.getByRole('heading', { name: /Serviços e verificação/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Encontre um serviço ou confira uma informação/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
   });
 
@@ -74,7 +74,7 @@ test.describe('Observatório smoke flows', () => {
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   await page.getByRole('combobox').first().fill('resumo executivo');
-  await page.getByRole('option', { name: /Resumo executivo/i }).click();
+  await page.getByRole('option', { name: /Resumo principal/i }).click();
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
@@ -122,7 +122,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await input.fill('CAPS');
     await page.getByRole('option', { name: /^CAPS Serviços públicos$/ }).click();
     await expect(page).toHaveURL(/#acao$/);
-    const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
+    const serviceSearch = page.getByRole('searchbox', { name: /Buscar serviço municipal/ });
     await expect(serviceSearch).toHaveValue('CAPS');
     await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
   });
@@ -199,7 +199,7 @@ test('busca apresenta guia descobrível dos atalhos configurados', async ({ page
   await guide.locator('summary').click();
   await expect(guide.locator('kbd').filter({ hasText: 'G D' })).toBeVisible();
   await expect(guide.locator('kbd').filter({ hasText: 'G T' })).toBeVisible();
-  await expect(guide.getByText('Dashboard', { exact: true })).toBeVisible();
+  await expect(guide.getByText('Indicadores', { exact: true })).toBeVisible();
   await expect(guide.getByText('Transporte', { exact: true })).toBeVisible();
 });
 
@@ -229,7 +229,7 @@ test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile',
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   await page.getByRole('combobox').first().fill('fontes');
-  await page.getByRole('option', { name: /Fontes e metodologia/i }).click();
+  await page.getByRole('option', { name: /Como sabemos/i }).click();
   await expect(page).toHaveURL(/#fontes$/);
 
   await page.goBack();
