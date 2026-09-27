@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';
 import { formatNumber, formatPercent } from '../../utils/formatters';
-import { dispatchInspect } from '../DataInspector';
+import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
@@ -173,6 +173,7 @@ export function SanitationHealthSection() {
                     key={id}
                     type="button"
                     className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-3 text-left hover:border-amber-300/20 light:bg-white"
+                    data-inspect-id={indicator ? inspectDataId({ label: indicator.label, sourceId: indicator.sourceId }) : undefined}
                     onClick={() => indicator && dispatchInspect({
                       label: indicator.label,
                       value: formatPercent(Number(indicator.value), 1),
