@@ -186,7 +186,7 @@ test.describe('bancada cross-browser de interface', () => {
     await page.goto('./');
     await navigate(page, 'descubra');
 
-    const serviceAction = page.getByRole('button', { name: /Encontrar um serviço público/i });
+    const serviceAction = page.getByRole('button', { name: /Serviços públicos|Encontrar um serviço público/i }).first();
     await expect(serviceAction).toBeVisible();
     await serviceAction.click();
     await expect(page.locator('#acao')).toBeVisible();
