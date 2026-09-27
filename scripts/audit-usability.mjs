@@ -202,7 +202,18 @@ if (search.includes('closeButtonRef') && search.includes("desktop ? inputRef.cur
 else fail('busca mobile pode deixar foco atrás do diálogo');
 if (search.includes('canRestoreOpener') && search.includes('opener !== document.body') && search.includes('opener.tabIndex >= 0') && search.includes('[data-search-trigger="primary"]') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco apenas em acionador válido e usa fallback estável');
 else fail('fechar busca pode perder o foco quando o acionador original não existe mais');
-if (header.includes('copyCurrentSectionLink') && header.includes("window.location.origin + window.location.pathname + hash") && header.includes('Copiar link da seção')) pass('menu mobile copia link canônico da seção atual');
+const headerUsesCanonicalShareHelper =
+  header.includes('copyCurrentSectionLink') &&
+  header.includes('buildCanonicalUrl') &&
+  header.includes('urlParamKeys.readingMode') &&
+  header.includes('languageMode') &&
+  header.includes('Copiar link da seção') &&
+  urlState.includes('export function buildCanonicalUrl');
+const headerBuildsCanonicalInline =
+  header.includes('copyCurrentSectionLink') &&
+  header.includes("window.location.origin + window.location.pathname + hash") &&
+  header.includes('Copiar link da seção');
+if (headerUsesCanonicalShareHelper || headerBuildsCanonicalInline) pass('menu mobile copia link canônico da seção atual');
 else fail('menu mobile não oferece cópia canônica da seção atual');
 if (header.includes('aria-live="polite"') && header.includes('Link da seção copiado')) pass('cópia de link possui feedback acessível');
 else fail('cópia de link não anuncia sucesso para tecnologia assistiva');
