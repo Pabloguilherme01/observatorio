@@ -154,6 +154,14 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     const q = normalizeSearchQuery(query);
     if (!q || q.length < 4) return null;
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
+    if ((q.includes('crescimento') || q.includes('variacao') || q.includes('aumento')) && q.includes('populacao')) {
+      const indicator = d.indicators.find(item => item.id === 'population-growth-2022-2026');
+      return indicator ? { title: 'Variação da população 2022–2026', value: '+' + Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('diferenca') || q.includes('variacao')) && q.includes('habitantes')) {
+      const indicator = d.indicators.find(item => item.id === 'population-change-2022-2026');
+      return indicator ? { title: 'Diferença populacional 2022–2026', value: '+' + Number(indicator.value).toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
     if (q.includes('densidade')) {
       const indicator = d.indicators.find(item => item.id === 'density');
@@ -167,9 +175,21 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'cagedBalance');
       return indicator ? { title: 'Saldo celetista até jul/2026', value: Number(indicator.value).toLocaleString('pt-BR') + ' postos', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
+    if ((q.includes('diferenca') || q.includes('saldo')) && q.includes('receita') && q.includes('despesa') && (q.includes('habitante') || q.includes('per capita'))) {
+      const indicator = d.indicators.find(item => item.id === 'revenue-expense-difference-per-capita-2025');
+      return indicator ? { title: 'Diferença receita–despesa por habitante 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if ((q.includes('diferenca') || q.includes('saldo')) && q.includes('receita') && q.includes('despesa')) {
       const indicator = d.indicators.find(item => item.id === 'revenue-expense-difference-2025');
       return indicator ? { title: 'Receitas realizadas − despesas empenhadas 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('receita') || q.includes('receitas')) && (q.includes('habitante') || q.includes('per capita'))) {
+      const indicator = d.indicators.find(item => item.id === 'revenue-per-capita-2025');
+      return indicator ? { title: 'Receitas realizadas por habitante 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('despesa') || q.includes('despesas')) && (q.includes('habitante') || q.includes('per capita'))) {
+      const indicator = d.indicators.find(item => item.id === 'expenses-per-capita-2025');
+      return indicator ? { title: 'Despesas empenhadas por habitante 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (q.includes('receita') || q.includes('receitas')) {
       const indicator = d.indicators.find(item => item.id === 'revenue-2025');
