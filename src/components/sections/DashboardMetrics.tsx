@@ -2,7 +2,7 @@ import { Activity, Gauge, Map, Users, Database, Info, AlertCircle } from 'lucide
 import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatNumber, formatPercent } from '../../utils/formatters';
+import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -22,10 +22,49 @@ export function DashboardMetrics() {
   const electorate2026 = d.electoral.electorate;
   const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
+  const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
+  const budgetTotal = d.budget.totalBrl;
+  const basicEnrollments = Number(municipalIndicator('basic-enrollments-2025'));
+  const municipalEnrollments = Number(municipalIndicator('municipal-enrollments-2025'));
+  const comparisonDetails = [
+    {
+      label: 'Educação na LOA 2026',
+      value: formatPercent(budgetTotal ? (budgetFunctionAmount('educacao-f') / budgetTotal) * 100 : 0, 1),
+      caption: `${formatBudgetCurrency(budgetFunctionAmount('educacao-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
+      sourceId: 'loa-2026',
+      referenceDate: '2026-01-01',
+      method: 'Função Educação ÷ total da LOA 2026.',
+    },
+    {
+      label: 'Saúde na LOA 2026',
+      value: formatPercent(budgetTotal ? (budgetFunctionAmount('saude-f') / budgetTotal) * 100 : 0, 1),
+      caption: `${formatBudgetCurrency(budgetFunctionAmount('saude-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
+      sourceId: 'loa-2026',
+      referenceDate: '2026-01-01',
+      method: 'Função Saúde ÷ total da LOA 2026.',
+    },
+    {
+      label: 'Saneamento na LOA 2026',
+      value: formatPercent(budgetTotal ? (budgetFunctionAmount('saneamento-f') / budgetTotal) * 100 : 0, 1),
+      caption: `${formatBudgetCurrency(budgetFunctionAmount('saneamento-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
+      sourceId: 'loa-2026',
+      referenceDate: '2026-01-01',
+      method: 'Função Saneamento ÷ total da LOA 2026.',
+    },
+    {
+      label: 'Matrículas municipais na educação básica',
+      value: formatPercent(basicEnrollments ? (municipalEnrollments / basicEnrollments) * 100 : 0, 1),
+      caption: `${formatNumber(municipalEnrollments)} de ${formatNumber(basicEnrollments)} matrículas em 2025`,
+      sourceId: 'pee-go-educacao-2025',
+      referenceDate: '2025-12-31',
+      method: 'Matrículas municipais ÷ matrículas totais da educação básica no mesmo ano-base.',
+    },
+  ] as const;
+  const visibleComparisons = isSummary ? comparisonDetails.slice(0, 2) : comparisonDetails;
   const metricDetails: readonly MetricDetail[] = [
     { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: population2022 + ' → ' + population2026, simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
-    { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: electorate2022 + ' → ' + electorate2026, simpleExplanation: 'Mudança percentual do eleitorado entre os snapshots disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
-    { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado do snapshot e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
+    { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: electorate2022 + ' → ' + electorate2026, simpleExplanation: 'Mudança percentual do eleitorado entre os registros disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
+    { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado registrado e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
     { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
     { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];
@@ -59,7 +98,7 @@ export function DashboardMetrics() {
               <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/80 light:text-amber-700">O que merece atenção</div>
               <div className="mt-2 grid gap-2 text-xs leading-5 text-slate-400 sm:grid-cols-3 light:text-slate-600">
                 <p>População: 2022 é Censo; 2025 e 2026 são estimativas do IBGE.</p>
-                <p>Eleitorado: o valor de 2026 é um snapshot e tem data própria de referência.</p>
+                <p>Eleitorado: o valor de 2026 é um registro com data própria de referência.</p>
                 <p>Indicadores do painel podem usar anos-base diferentes; compare sempre a referência.</p>
               </div>
             </div>
@@ -123,6 +162,32 @@ export function DashboardMetrics() {
         </div>
       )}
 
+      <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Comparativos úteis</div>
+            <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Proporções com a mesma base de referência</h3>
+            <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">São relações descritivas. Percentuais maiores ou menores não significam, por si só, desempenho melhor ou pior.</p>
+          </div>
+          <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{visibleComparisons.length} comparativos</span>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {visibleComparisons.map(item => (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => dispatchInspect({ label: item.label, value: item.value, sourceId: item.sourceId, referenceDate: item.referenceDate, method: item.method })}
+              className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
+            >
+              <div className="text-xs font-semibold text-slate-500">{item.label}</div>
+              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{item.value}</div>
+              <div className="mt-1 text-[11px] leading-5 text-slate-500">{item.caption}</div>
+              <span className="mt-3 inline-flex rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">Derivado · ver fórmula</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <Suspense fallback={<div className="mt-4 min-h-[220px] rounded-3xl border border-white/8 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/80" role="status" aria-live="polite">Carregando série histórica…</div>}>
         <HistoricalTrendChart />
       </Suspense>
@@ -143,7 +208,7 @@ export function DashboardMetrics() {
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'snapshot 2026', 'caged-sebrae-2026'],
+                ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'registro 2026', 'caged-sebrae-2026'],
                 ['Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
                 ['IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
                 ['IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
@@ -167,7 +232,7 @@ export function DashboardMetrics() {
           <div className="technical-detail mt-4 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4">
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80">Leitura metodológica</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400">Os valores podem vir de censo, estimativa, snapshot ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400">Os valores podem vir de censo, estimativa, registro de uma data específica ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
