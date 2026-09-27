@@ -178,7 +178,7 @@ test.describe('bancada cross-browser de interface', () => {
     await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
 
     const search = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
-    await search.fill('remédio');
+    await search.fill('preciso de remédio');
     await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
 
     await search.fill('ouvidoria');
@@ -196,6 +196,8 @@ test.describe('bancada cross-browser de interface', () => {
     await expect(page.getByText('Nenhum atalho com esse termo.')).toBeVisible();
 
     await search.fill('');
+    await expect(page.getByRole('link', { name: /SAMU/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Defesa Civil/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
     const catalogue = page.locator('.official-more').filter({ hasText: /catálogo completo|Mais serviços oficiais/i }).first();
     await expect(catalogue).toBeVisible();
