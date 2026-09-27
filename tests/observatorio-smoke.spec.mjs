@@ -869,6 +869,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await expect(dialog.getByRole('button', { name: 'Link copiado' })).toBeVisible();
   const copiedLink = await page.evaluate(() => window.__lastCopiedText);
   expect(copiedLink).toContain('?dado=');
+  expect(copiedLink).toContain('leitura=summary');
   expect(copiedLink).toMatch(/#dashboard$/);
   expect(copiedLink).not.toContain('utm_source');
 
