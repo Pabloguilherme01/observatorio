@@ -1234,6 +1234,19 @@ test('CSV mantém colunas antigas e acrescenta identificadores e metadados', asy
   expect(sourcePath).toBeTruthy();
   const sourceCsv = readFileSync(sourcePath, 'utf8');
   expect(sourceCsv).toContain('"frequencia_atualizacao";"ultima_verificacao";"licenca"');
+
+  const comparisonDownloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Comparativo CSV' }).click();
+  const comparisonDownload = await comparisonDownloadPromise;
+  expect(comparisonDownload.suggestedFilename()).toMatch(/comparativo-municipal.*\.csv$/);
+  const comparisonPath = await comparisonDownload.path();
+  expect(comparisonPath).toBeTruthy();
+  const comparisonCsv = readFileSync(comparisonPath, 'utf8');
+  expect(comparisonCsv).toContain('"municipio";"codigo_ibge";"referencia_local";"indicador_id";"indicador";"valor";"unidade";"ano_base";"natureza";"fonte";"url_ibge"');
+  expect(comparisonCsv).toContain('"Águas Lindas de Goiás";"5200258";"sim"');
+  expect(comparisonCsv).toContain('"Luziânia";"5212501";"nao"');
+  expect(comparisonCsv).toContain('"populationGrowth"');
+  expect(comparisonCsv).toContain('"Derivado";"IBGE"');
 });
 
 
@@ -1270,6 +1283,8 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
   expect(csv).toContain('status_rotulo');
   expect(csv).toMatch(/"Orcamento";[^\n]*"budget-health-per-capita-2026"/);
   expect(csv).toMatch(/"Saude";[^\n]*"heal-current-stated-beds"/);
+  expect(csv).toMatch(/"Educacao";[^\n]*"schooling-6-14"/);
+  expect(csv).toMatch(/"Educacao";[^\n]*"ept-technical-2025"/);
   expect(csv).toContain('Registro datado');
 });
 
