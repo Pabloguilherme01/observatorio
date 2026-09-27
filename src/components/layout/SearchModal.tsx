@@ -12,18 +12,18 @@ type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'p
 type SearchEntry = readonly [string, string, ResultKind];
 
 const entries: readonly SearchEntry[] = [
-  ['Dashboard', 'dashboard', 'primary'],
+  ['Indicadores', 'dashboard', 'primary'],
   ['Perfil eleitoral', 'eleitorado', 'primary'],
   ['Transporte', 'transporte', 'primary'],
   ['Simulador de bolso · Transporte', 'transporte', 'transport'],
-  ['Quiz de dados · 200 perguntas', 'quiz', 'primary'],
+  ['Teste seus conhecimentos', 'quiz', 'primary'],
   ['Saneamento e saúde', 'saude', 'primary'],
   ['Pesquisas', 'politica', 'primary'],
   ['Candidaturas', 'candidaturas', 'primary'],
   ['Orçamento', 'orcamento', 'primary'],
   ['Qualidade dos dados', 'qualidade', 'primary'],
-  ['Fontes e metodologia', 'fontes', 'primary'],
-  ['Exportação', 'exportacao', 'primary'],
+  ['Como sabemos · fontes e método', 'fontes', 'primary'],
+  ['Baixar dados', 'exportacao', 'primary'],
   ['Pesquisa registrada', 'politica', 'primary'],
   ['HEALGO', 'saude', 'primary'],
   ['Resumo principal', 'resumo', 'primary'],
@@ -302,9 +302,9 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                   selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind);
                 }
               }}
-              placeholder="Ex.: orçamento, transporte, eleitorado, HEAL…"
+              placeholder="Ex.: medicamentos, orçamento, transporte, eleitorado…"
               className="search-modal-input"
-              aria-label="Buscar seção, fonte ou indicador"
+              aria-label="Buscar dado, serviço, fonte ou seção"
               role="combobox"
               aria-expanded={open}
               aria-controls="search-results"
@@ -363,7 +363,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
         <div id="search-results" className="search-results" role="listbox" aria-label="Resultados da busca">
           {renderResults(filtered)}
-          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente orçamento, eleitorado, transporte, saneamento ou HEAL.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
+          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente medicamentos, orçamento, eleitorado, transporte, saneamento ou saúde.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
         </div>
       </div>
     </div>
