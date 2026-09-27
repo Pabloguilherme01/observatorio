@@ -99,12 +99,12 @@ export function CivicActionHub() {
       <SectionHeader
         titleId="action-title"
         eyebrow={technical ? 'Da evidência à fonte' : summary ? 'Do resumo à ação' : 'Da leitura à consulta'}
-        title="Serviços e verificação"
+        title="Encontre um serviço ou confira uma informação"
         description={technical
-          ? 'Cruze registros, abra bases oficiais e confira a informação diretamente na instituição responsável.'
+          ? 'Abra registros, bases e documentos diretamente nas instituições responsáveis.'
           : summary
-            ? 'Transforme a visão rápida em uma ação útil: consulte serviços, registros e fontes oficiais.'
-            : 'Leve o contexto para a prática com atalhos de consulta, serviços e verificação oficial.'}
+            ? 'Procure por uma necessidade e siga para o canal oficial responsável pelo atendimento.'
+            : 'Consulte serviços, registros e fontes oficiais sem perder o contexto da informação.'}
       />
 
       <div className="official-hub">
@@ -154,8 +154,8 @@ export function CivicActionHub() {
             type="search"
             value={serviceQuery}
             onChange={event => setServiceQuery(event.target.value)}
-            placeholder="Buscar serviço municipal…"
-            aria-label="Buscar serviço municipal"
+            placeholder="O que você precisa? Ex.: medicamentos, creche, contratos…"
+            aria-label="Buscar serviço público por necessidade"
             className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
           />
           {serviceQuery && (
@@ -200,7 +200,7 @@ export function CivicActionHub() {
 
       <div className="official-source-note">
         <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
-        <p><strong>Fonte oficial primeiro.</strong> O observatório organiza os caminhos; a execução do serviço e a informação original permanecem nos portais dos órgãos responsáveis.</p>
+        <p><strong>Você será direcionado ao canal oficial.</strong> O Observatório facilita a busca, mas não executa serviços públicos nem substitui a informação publicada pelo órgão responsável.</p>
       </div>
     </section>
   );
