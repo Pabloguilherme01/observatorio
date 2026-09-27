@@ -62,11 +62,11 @@ test.describe('bancada cross-browser de interface', () => {
       }
     } else {
       const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-      for (const label of ['Simples', 'Técnico', 'Resumo']) {
+      for (const label of ['Explicado', 'Detalhado', 'Resumo']) {
         await modes.getByRole('button', { name: new RegExp('^' + label) }).click();
         await expect(page.locator('html')).toHaveAttribute(
           'data-language-mode',
-          label === 'Simples' ? 'simple' : label === 'Técnico' ? 'technical' : 'summary',
+          label === 'Explicado' ? 'simple' : label === 'Detalhado' ? 'technical' : 'summary',
         );
         await assertViewportIntegrity(page);
       }
