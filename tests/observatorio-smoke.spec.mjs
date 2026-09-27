@@ -1026,3 +1026,16 @@ test('busca leva ao quiz de educação cívica', async ({ page }) => {
   await page.getByRole('option', { name: /Quiz de dados · 200 perguntas/ }).click();
   await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
 });
+
+
+test('comparação municipal expõe seis indicadores sem ranking', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+  await expect(page.getByRole('heading', { name: /Compare sem transformar em ranking/i })).toBeVisible();
+  const tabs = page.getByRole('tablist', { name: 'Indicador para comparação contextual' }).getByRole('tab');
+  await expect(tabs).toHaveCount(6);
+  await expect(page.getByRole('tab', { name: /Variação populacional 2022–2026/i })).toBeVisible();
+  await expect(page.getByRole('tab', { name: /Densidade estimada 2026/i })).toBeVisible();
+  await page.getByRole('tab', { name: /Densidade estimada 2026/i }).click();
+  await expect(page.getByText(/cálculo derivado|calculada com a população de 2026/i).first()).toBeVisible();
+});
