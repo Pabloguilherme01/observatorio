@@ -24,12 +24,10 @@ export function DashboardMetrics() {
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
-  const basicEnrollments = Number(municipalIndicator('basic-enrollments-2025'));
-  const municipalEnrollments = Number(municipalIndicator('municipal-enrollments-2025'));
   const comparisonDetails = [
     {
       label: 'Educação na LOA 2026',
-      value: formatPercent(budgetTotal ? (budgetFunctionAmount('educacao-f') / budgetTotal) * 100 : 0, 1),
+      value: formatPercent(Number(municipalIndicator('budget-education-share-2026')), 1),
       caption: `${formatBudgetCurrency(budgetFunctionAmount('educacao-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
       sourceId: 'loa-2026',
       referenceDate: '2026-01-01',
@@ -37,7 +35,7 @@ export function DashboardMetrics() {
     },
     {
       label: 'Saúde na LOA 2026',
-      value: formatPercent(budgetTotal ? (budgetFunctionAmount('saude-f') / budgetTotal) * 100 : 0, 1),
+      value: formatPercent(Number(municipalIndicator('budget-health-share-2026')), 1),
       caption: `${formatBudgetCurrency(budgetFunctionAmount('saude-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
       sourceId: 'loa-2026',
       referenceDate: '2026-01-01',
@@ -45,7 +43,7 @@ export function DashboardMetrics() {
     },
     {
       label: 'Saneamento na LOA 2026',
-      value: formatPercent(budgetTotal ? (budgetFunctionAmount('saneamento-f') / budgetTotal) * 100 : 0, 1),
+      value: formatPercent(Number(municipalIndicator('budget-sanitation-share-2026')), 1),
       caption: `${formatBudgetCurrency(budgetFunctionAmount('saneamento-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
       sourceId: 'loa-2026',
       referenceDate: '2026-01-01',
@@ -53,11 +51,19 @@ export function DashboardMetrics() {
     },
     {
       label: 'Matrículas municipais na educação básica',
-      value: formatPercent(basicEnrollments ? (municipalEnrollments / basicEnrollments) * 100 : 0, 1),
-      caption: `${formatNumber(municipalEnrollments)} de ${formatNumber(basicEnrollments)} matrículas em 2025`,
+      value: formatPercent(Number(municipalIndicator('municipal-enrollment-share-2025')), 1),
+      caption: `${formatNumber(Number(municipalIndicator('municipal-enrollments-2025')))} de ${formatNumber(Number(municipalIndicator('basic-enrollments-2025')))} matrículas em 2025`,
       sourceId: 'pee-go-educacao-2025',
       referenceDate: '2025-12-31',
       method: 'Matrículas municipais ÷ matrículas totais da educação básica no mesmo ano-base.',
+    },
+    {
+      label: 'Receitas realizadas − despesas empenhadas',
+      value: formatBudgetCurrency(Number(municipalIndicator('revenue-expense-difference-2025'))),
+      caption: 'diferença entre os dois totais publicados em 2025',
+      sourceId: 'ibge-cidades-2026',
+      referenceDate: '2025-12-31',
+      method: 'Receitas brutas realizadas menos despesas brutas empenhadas. Não equivale automaticamente a superávit fiscal.',
     },
   ] as const;
   const visibleComparisons = isSummary ? comparisonDetails.slice(0, 2) : comparisonDetails;
@@ -171,7 +177,7 @@ export function DashboardMetrics() {
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{visibleComparisons.length} comparativos</span>
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           {visibleComparisons.map(item => (
             <button
               key={item.label}
