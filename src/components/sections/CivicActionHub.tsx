@@ -58,6 +58,17 @@ const additionalPublicServices = [
 
 const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
 
+const publicServiceIntents = [
+  { label: 'Medicamentos', query: 'medicamentos' },
+  { label: 'Saúde', query: 'saúde' },
+  { label: 'Creche', query: 'creches' },
+  { label: 'Assistência social', query: 'assistência social' },
+  { label: 'Obras', query: 'obras' },
+  { label: 'Licitações', query: 'licitações' },
+  { label: 'Denúncia', query: 'denúncias' },
+  { label: 'Emprego e seleção', query: 'processos seletivos' },
+] as const;
+
 const normalizeServiceQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
@@ -148,6 +159,23 @@ export function CivicActionHub() {
           </div>
         </div>
 
+        <div className="public-service-intents" aria-label="Atalhos por necessidade">
+          <span className="public-service-intents-label">Preciso de</span>
+          <div className="public-service-intents-list">
+            {publicServiceIntents.map(intent => (
+              <button
+                key={intent.label}
+                type="button"
+                onClick={() => setServiceQuery(intent.query)}
+                className={normalizeServiceQuery(serviceQuery) === normalizeServiceQuery(intent.query) ? 'is-active' : ''}
+                aria-pressed={normalizeServiceQuery(serviceQuery) === normalizeServiceQuery(intent.query)}
+              >
+                {intent.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="mt-4 flex min-w-0 items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.025] p-2 light:border-slate-200 light:bg-slate-50">
           <SearchCheck className="h-4 w-4 shrink-0 text-sky-300 light:text-sky-700" aria-hidden="true" />
           <input
@@ -168,6 +196,16 @@ export function CivicActionHub() {
           <p className="mt-2 text-[11px] text-slate-500" role="status">
             {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
           </p>
+        )}
+
+        {serviceQuery && visibleMunicipalServices.length === 0 && (
+          <div className="public-service-empty" role="status">
+            <SearchCheck className="h-5 w-5" aria-hidden="true" />
+            <div>
+              <strong>Nenhum atalho com esse termo.</strong>
+              <p>Tente uma necessidade acima ou use palavras como medicamento, saúde, creche, obras, licitação ou denúncia.</p>
+            </div>
+          </div>
         )}
 
         <div className="official-resource-grid official-resource-grid-local">
