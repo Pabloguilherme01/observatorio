@@ -3,6 +3,7 @@ import { Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-
 import { observatorioData as d } from '../data/observatorioData';
 import { copyText } from '../lib/clipboard';
 import { useLanguageMode } from '../context/LanguageModeContext';
+import { buildCanonicalUrl, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../lib/urlState';
 
 type InspectorDetail = {
   label: string;
@@ -76,13 +77,11 @@ export function DataInspector() {
   }, []);
 
   const closeInspector = () => {
-    if (data?.inspectId) {
-      const current = new URL(window.location.href);
-      if (current.searchParams.get('dado') === data.inspectId) {
-        current.searchParams.delete('dado');
-        current.searchParams.delete('leitura');
-        window.history.replaceState(null, '', current.pathname + current.search + current.hash);
-      }
+    if (data?.inspectId && getSearchParam(urlParamKeys.inspector) === data.inspectId) {
+      replaceCurrentUrl({
+        [urlParamKeys.inspector]: null,
+        [urlParamKeys.readingMode]: null,
+      });
     }
     setData(null);
   };
@@ -164,13 +163,15 @@ export function DataInspector() {
     setActionError(true);
   };
 
-  const canonical = new URL(window.location.origin + window.location.pathname);
-  if (data.inspectId) {
-    canonical.searchParams.set('dado', data.inspectId);
-    canonical.searchParams.set('leitura', languageMode);
-  }
-  canonical.hash = data.sectionId ? '#' + data.sectionId : (window.location.hash || '#dashboard');
-  const canonicalUrl = canonical.toString();
+  const canonicalUrl = buildCanonicalUrl(
+    data.inspectId
+      ? {
+          [urlParamKeys.inspector]: data.inspectId,
+          [urlParamKeys.readingMode]: languageMode,
+        }
+      : {},
+    data.sectionId ? data.sectionId : (window.location.hash || 'dashboard'),
+  );
 
   const copyLink = async () => {
     if (await copyText(canonicalUrl)) {

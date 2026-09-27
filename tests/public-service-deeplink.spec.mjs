@@ -32,4 +32,25 @@ test.describe('links diretos de serviços públicos', () => {
     await expect(page.getByRole('searchbox', { name: 'Buscar serviço municipal por necessidade' })).toHaveValue('medicamentos');
     await expect(page.getByRole('button', { name: 'Copiar link desta busca de serviços' })).toBeVisible();
   });
+
+
+  test('link compartilhado da busca é canônico e remove rastreamento', async ({ page }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: async text => { window.__lastCopiedServiceLink = text; } },
+      });
+    });
+    await page.goto('./?utm_source=campanha&servico=medicamentos#acao');
+
+    const input = page.getByRole('searchbox', { name: 'Buscar serviço municipal por necessidade' });
+    await expect(input).toHaveValue('medicamentos');
+    const copyButton = page.getByRole('button', { name: 'Copiar link desta busca de serviços' });
+    await copyButton.click();
+    await expect(copyButton).toContainText('Link copiado');
+
+    const copied = await page.evaluate(() => window.__lastCopiedServiceLink);
+    expect(copied).toContain('?servico=medicamentos#acao');
+    expect(copied).not.toContain('utm_source');
+  });
 });
