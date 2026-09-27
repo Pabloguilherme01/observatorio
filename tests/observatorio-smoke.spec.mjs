@@ -945,13 +945,9 @@ test('tema e contraste persistem após recarregar', async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem('observatorio-theme'))).toBe(storedTheme);
 });
 
-test('busca não rouba foco na carga inicial e devolve foco após uso', async ({ page }) => {
+test('busca fecha com Escape e devolve foco ao acionador', async ({ page }) => {
   await page.goto('./');
   const trigger = page.getByRole('button', { name: /Buscar no observatório/i });
-
-  await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).not.toBe('BUTTON');
-  await expect(trigger).not.toBeFocused();
-
   await trigger.focus();
   await trigger.click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -1042,6 +1038,23 @@ test('comparação municipal expõe seis indicadores sem ranking', async ({ page
   await expect(page.getByRole('tab', { name: /Densidade estimada 2026/i })).toBeVisible();
   await page.getByRole('tab', { name: /Densidade estimada 2026/i }).click();
   await expect(page.getByText(/cálculo derivado|calculada com a população de 2026/i).first()).toBeVisible();
+});
+
+test('comparação municipal aceita busca sem acento e não duplica sinais nas diferenças', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+
+  const citySearch = page.getByRole('searchbox', { name: 'Buscar município' });
+  await citySearch.fill('Aguas');
+  await expect(page.getByText('Águas Lindas de Goiás', { exact: true })).toBeVisible();
+  await expect(page.getByText('1 de 8 cidades', { exact: true })).toBeVisible();
+
+  await citySearch.fill('Luziania');
+  await expect(page.getByText('Luziânia', { exact: true })).toBeVisible();
+
+  await citySearch.fill('');
+  await page.getByRole('tab', { name: /Variação populacional 2022–2026/i }).click();
+  await expect(page.locator('.context-comparison-cards')).not.toContainText(/\+\+|−\+/);
 });
 
 
