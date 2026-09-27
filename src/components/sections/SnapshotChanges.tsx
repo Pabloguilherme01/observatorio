@@ -52,15 +52,15 @@ export function SnapshotChanges() {
             tone={hasChanges ? 'amber' : 'slate'}
             icon={hasChanges ? Activity : Minus}
             eyebrow="Situação da atualização"
-            title={generated.meta.state === 'first_capture' ? 'Linha de base local registrada' : hasChanges ? 'Há diferenças no snapshot atual' : 'Sem diferença declarada'}
+            title={generated.meta.state === 'first_capture' ? 'Linha de base local registrada' : hasChanges ? 'Há diferenças na captura atual' : 'Sem diferença declarada'}
           >
             {generated.meta.state === 'first_capture'
-              ? 'Esta é a primeira captura validada da watchlist. Os registros adicionados formam a linha de base local; não representam uma comparação temporal entre duas capturas.'
+              ? 'Esta é a primeira captura validada do recorte acompanhado. Os registros adicionados formam a linha de base local; ainda não representam uma comparação entre duas datas.'
               : hasChanges
-                ? 'Existem diferenças no snapshot atual. Abra Dados eleitorais para consultar os registros afetados.'
+                ? 'Existem diferenças na captura atual. Abra Dados eleitorais para consultar os registros afetados.'
                 : generated.meta.state === 'not_synced'
                   ? 'Nenhuma comparação é declarada antes da primeira captura TSE validada.'
-                  : 'Nenhuma alteração registrada entre os snapshots comparados.'}
+                  : 'Nenhuma alteração registrada entre as capturas comparadas.'}
           </PremiumInfoCard>
           <PremiumInfoCard compact tone="violet" icon={Database} eyebrow="Origem do registro" title="Captura identificada e rastreável">
             {generated.meta.source} · {generated.meta.scope} · {generated.meta.snapshotId}
