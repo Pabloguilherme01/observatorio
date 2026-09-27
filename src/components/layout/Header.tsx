@@ -257,7 +257,7 @@ export function Header() {
             <button
               type="button"
               onClick={cycleMode}
-              className={'site-mode-shortcut md:hidden mode-' + languageMode}
+              className={'site-mode-shortcut header-mode-shortcut md:hidden mode-' + languageMode}
               aria-label={'Modo de leitura atual: ' + (languageMode === 'summary' ? 'Resumo. Toque para mudar para Simples.' : languageMode === 'simple' ? 'Simples. Toque para mudar para Técnico.' : 'Técnico. Toque para mudar para Resumo.')}
               title="Mudar modo de leitura"
             >
@@ -268,7 +268,7 @@ export function Header() {
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="header-reading-mode hidden md:block"><LanguageModeToggle /></div>
-            <div className="hidden xl:block"><ContrastModeToggle /></div>
+            <div className="header-contrast hidden xl:block"><ContrastModeToggle /></div>
             <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
             </button>
