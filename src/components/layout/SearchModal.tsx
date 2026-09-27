@@ -49,6 +49,14 @@ const destinationLabel = (id: string) => navigation.find(item => item.id === id)
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
+const indicatorDestination = (id: string) => {
+  if (id === 'fare' || id.includes('transport')) return 'transporte';
+  if (id.includes('water') || id.includes('sewer') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer') || id.includes('infant-mortality')) return 'saude';
+  if (id.includes('budget') || id.includes('revenue') || id.includes('expense')) return 'orcamento';
+  if (id.includes('electorate')) return 'eleitorado';
+  return 'dashboard';
+};
+
 function fuzzyScore(query: string, text: string): number {
   if (!query) return 1;
   if (text.includes(query)) return 100 + (query.length / Math.max(text.length, 1)) * 10;
@@ -169,9 +177,30 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'infant-mortality');
       return indicator ? { title: 'Mortalidade infantil', value: indicator.value.toLocaleString('pt-BR') + ' óbitos por mil', id: 'saude', sourceId: indicator.sourceId } : null;
     }
-    if (q.includes('perda') && q.includes('agua')) return { title: 'Perdas na distribuição de água', value: d.sanitation.waterDistributionLossPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
-    if (q.includes('lixo') || q.includes('residuo') || q.includes('residuos')) return { title: 'Coleta domiciliar de resíduos', value: d.sanitation.householdWasteCollectionPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
-    if (q.includes('agua') || q.includes('abastecimento')) return { title: 'Acesso à água', value: d.sanitation.waterAccessPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
+    if (q.includes('perda') && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-distribution-loss-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('hidrometr')) {
+      const indicator = d.indicators.find(item => item.id === 'hydrometering-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('consumo') && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-consumption-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' L/pessoa/dia', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('tarifa') && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'average-water-tariff-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + '/m³', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('lixo') || q.includes('residuo') || q.includes('residuos')) {
+      const indicator = d.indicators.find(item => item.id === 'household-waste-collection-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('agua') || q.includes('abastecimento')) {
+      const indicator = d.indicators.find(item => item.id === 'water-access-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitoral360', sourceId: 'tse-eleitorado-2026' };
     if ((q.includes('orcamento') || q.includes('loa')) && q.includes('educacao')) {
       const indicator = d.indicators.find(item => item.id === 'budget-education-share-2026');
@@ -198,7 +227,18 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       return indicator ? { title: 'LOA 2026 por habitante', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
-    if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
+    if (q.includes('coleta') && q.includes('esgoto')) {
+      const indicator = d.indicators.find(item => item.id === 'sewer-collection-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('tratamento') && q.includes('esgoto')) {
+      const indicator = d.indicators.find(item => item.id === 'sewer-treatment-generated-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('esgoto')) {
+      const indicator = d.indicators.find(item => item.id === 'public-sewer-service-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
       const route = d.transport.routes.find(item => item.id === 'brasilia') ?? d.transport.routes[0];
       return route ? { title: 'Tarifa de referência para Brasília', value: route.fareBrl.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por trecho', id: 'transporte', sourceId: route.sourceId } : null;
@@ -254,7 +294,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       ...d.sources.map(source => [source.label, 'fontes', 'source'] as SearchEntry),
       ...d.candidates.map(candidate => [candidate.name, 'candidaturas', 'candidate'] as SearchEntry),
       ...d.transport.routes.map(route => [route.label, 'transporte', 'transport'] as SearchEntry),
-      ...d.indicators.map(indicator => [indicator.label, 'dashboard', 'data'] as SearchEntry),
+      ...d.indicators.map(indicator => [indicator.label, indicatorDestination(indicator.id), 'data'] as SearchEntry),
     ];
     const seen = new Set<string>();
     return all
