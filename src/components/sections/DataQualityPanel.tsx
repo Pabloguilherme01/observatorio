@@ -47,7 +47,7 @@ export function DataQualityPanel() {
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
     'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
     'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
-    'Candidaturas: o snapshot estadual foi capturado, mas o recorte local atual é documental e não equivale ao universo municipal completo.',
+    'Candidaturas: a captura estadual foi registrada, mas o recorte local atual é documental e não equivale ao universo municipal completo.',
   ].filter(Boolean) as string[];
 
   return (
@@ -150,7 +150,7 @@ export function DataQualityPanel() {
           <p className="mt-1 text-xs text-slate-500">Verifique a ficha de cada fonte para o respectivo ano-base.</p>
         </Card>
         <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Snapshot TSE</div>
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Captura do TSE</div>
           <div className={'mt-2 text-base font-black ' + tseStatus.tone}>{tseStatus.label}</div>
           <p className="mt-1 text-xs text-slate-500">Estado local: {tseState}. Não confundir registros estaduais com candidaturas municipais validadas.</p>
           <div className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
@@ -158,7 +158,7 @@ export function DataQualityPanel() {
           </div>
         </Card>
         <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Pipeline de resultados</div>
+          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Validação dos resultados</div>
           <div className="mt-2 text-base font-black text-white">Integridade dos resultados</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão verifica o arquivo oficial antes de publicá-lo. JSON/JWS, contexto municipal e assinatura são tratados separadamente; a prova criptográfica só aparece como verificada quando todos os arquivos passam.</p>
           {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
