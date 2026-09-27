@@ -340,7 +340,6 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
   const filtered = useMemo(() => {
     const queryNormalized = normalizeSearchQuery(query);
-    const fare = Number(d.indicators.find(indicator => indicator.id === 'fare')?.value ?? 0);
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     const electorate = d.electoral.electorate;
     const all: SearchEntry[] = [
