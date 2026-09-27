@@ -34,7 +34,7 @@ export function ExecutiveSummary() {
 
   const publicFacts = [
     { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', badge: 'Fonte pública', target: 'dashboard' },
-    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Snapshot TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · snapshot 2026', badge: 'Fonte pública', target: 'eleitorado' },
+    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Registro TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · registro 2026', badge: 'Fonte pública', target: 'eleitorado' },
     { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 · razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', badge: 'Derivado', target: 'orcamento' },
     { id: 'saneamento', label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · cobertura do serviço público; não representa coleta ou tratamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'saude' },
   ] as const;
@@ -89,7 +89,7 @@ export function ExecutiveSummary() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
-            eyebrow={languageMode === 'technical' ? 'Síntese auditável' : languageMode === 'summary' ? 'Visão executiva' : 'Leitura guiada'}
+            eyebrow={languageMode === 'technical' ? 'Fontes e detalhes' : languageMode === 'summary' ? 'Resumo principal' : 'Entenda os números'}
             title={languageMode === 'technical' ? 'Evidência pronta para conferência' : languageMode === 'summary' ? 'O essencial, sem ruído' : 'Dos números ao contexto'}
             description={languageMode === 'technical'
               ? 'Cada indicador vem acompanhado de referência, origem e limites para uma leitura verificável.'
@@ -98,7 +98,7 @@ export function ExecutiveSummary() {
                 : 'Indicadores organizados para transformar números dispersos em uma leitura clara e contextualizada.'}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Auditável' : languageMode === 'summary' ? 'Executivo' : 'Guiado'}</span>
+            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Detalhado' : languageMode === 'summary' ? 'Resumo' : 'Explicado'}</span>
             <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório" disabled={shareBusy} aria-busy={shareBusy}>
               <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}
             </button>
@@ -197,7 +197,7 @@ export function ExecutiveSummary() {
               ))}
             </div>
 
-            <div className="summary-technical-audit" aria-label="Regras de leitura técnica">
+            <div className="summary-technical-audit" aria-label="Cuidados para interpretar os dados">
               <Card className="summary-evidence">
                 <span>Regra de leitura</span>
                 <strong>Valor + data + fonte</strong>
