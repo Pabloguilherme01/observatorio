@@ -9,6 +9,9 @@ export function PublicDataPulse() {
   const indicatorCount = d.indicators.length;
   const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
   const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
+  const datedIndicators = d.indicators.filter(item => item.referenceDate || d.sources.find(source => source.id === item.sourceId)?.referenceDate).length;
+  const indicatorDateCoverage = indicatorCount ? (datedIndicators / indicatorCount) * 100 : 0;
+  const indicatorsWithNotes = d.indicators.filter(item => Boolean(item.note?.trim())).length;
   const indicatorStatus = d.indicators.reduce<Record<string, number>>((acc, item) => {
     acc[item.status] = (acc[item.status] ?? 0) + 1;
     return acc;
@@ -28,11 +31,13 @@ export function PublicDataPulse() {
         title="O que mudou"
         description="Registros novos ou alterados no conjunto publicado. Cada item mantém sua data e fonte para conferência."
       />
-      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do conjunto de dados">
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Resumo do conjunto de dados">
         <DataStat label="Indicadores publicados" value={indicatorCount} />
         <DataStat label="Fontes registradas" value={sourceCount} />
-        <DataStat label="Fontes com data registrada" value={datedSources} />
         <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} />
+        <DataStat label="Indicadores com data de referência" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} />
+        <DataStat label="Indicadores com nota metodológica" value={indicatorsWithNotes} />
+        <DataStat label="Fontes com data registrada" value={datedSources} />
       </div>
       <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
         <Card>
@@ -46,7 +51,7 @@ export function PublicDataPulse() {
                 Última atualização do conjunto principal: <strong className="text-slate-300 light:text-slate-700">{d.meta.updatedAt.split('-').reverse().join('/')}</strong>.
               </p>
               <p className="mt-3 text-xs leading-5 text-slate-500">
-                Este bloco mostra mudanças recentes; indicadores, séries e metodologias permanecem nas seções temáticas. O catálogo de fontes pode ser baixado na área de dados.
+                Este bloco mostra mudanças recentes e a qualidade de documentação do conjunto. Indicadores, séries e metodologias permanecem nas seções temáticas; o catálogo de fontes pode ser baixado nesta área.
               </p>
               <div className="mt-4 flex flex-wrap gap-2" aria-label="Tipos de indicador publicados">
                 {statusSummary.map(([label, count]) => (
