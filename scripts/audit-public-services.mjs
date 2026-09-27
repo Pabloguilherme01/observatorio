@@ -78,10 +78,16 @@ const additionalUrls = objectUrls(additionalBlock);
 if (additionalUrls.length !== 28) fail.push(`catálogo técnico adicional esperado=28 atual=${additionalUrls.length}`);
 else pass('28 serviços oficiais adicionais permanecem disponíveis no aprofundamento técnico');
 
-for (const everydayTerm of ['remédio', 'farmácia', 'creche', 'cras', 'ouvidoria', 'emprego']) {
+for (const everydayTerm of ['remédio', 'farmácia', 'creche', 'cras', 'ouvidoria', 'emprego', 'emergência', 'samu', 'defesa civil', 'água e esgoto']) {
   if (!source.includes(everydayTerm)) fail.push('busca cidadã sem sinônimo cotidiano: ' + everydayTerm);
 }
 if (!fail.some(item => item.startsWith('busca cidadã sem sinônimo cotidiano'))) pass('busca cidadã cobre sinônimos cotidianos essenciais');
+
+if (!source.includes("const remainingMunicipalServices = [...priorityPublicServices.slice(visiblePriorityLimit), ...additionalPublicServices];")) {
+  fail.push('catálogo público completo não está disponível nos modos de leitura');
+} else {
+  pass('catálogo público completo permanece acessível sem exigir modo técnico');
+}
 
 if (!source.includes("const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);")) {
   fail.push('serviços prioritários podem voltar a duplicar no modo técnico');
