@@ -1144,3 +1144,70 @@ test('painel de dados explica a natureza temporal dos indicadores', async ({ pag
   await expect(page.getByText(/Derivado:/).first()).toBeVisible();
   await expect(page.getByText(/Registro datado:/).first()).toBeVisible();
 });
+
+
+test('busca direciona indicadores para a seção temática correta', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('Perdas na distribuição de água');
+  await page.getByRole('option', { name: /Perdas na distribuição de água/i }).click();
+  await expect(page).toHaveURL(/#saude$/);
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('Receitas brutas realizadas 2025');
+  await page.getByRole('option', { name: /Receitas brutas realizadas 2025/i }).click();
+  await expect(page).toHaveURL(/#orcamento$/);
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('Tarifa Brasília');
+  await page.getByRole('option', { name: /Tarifa Brasília/i }).click();
+  await expect(page).toHaveURL(/#transporte$/);
+});
+
+test('busca prioriza orçamento por habitante quando a consulta é específica', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('orçamento saúde por habitante');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Saúde na LOA 2026 por habitante/i);
+  await expect(answer).toContainText(/razão de planejamento|não execução por pessoa/i);
+});
+
+test('cards de orçamento abrem fonte e método no inspetor', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'orcamento-impacto');
+  const card = page.locator('#orcamento-impacto').getByRole('button').filter({ hasText: /^Saúde/ }).first();
+  await card.click();
+  const inspector = page.getByRole('dialog', { name: /Saúde na LOA 2026/i });
+  await expect(inspector).toBeVisible();
+  await expect(inspector).toContainText(/Alocação não equivale a execução financeira/i);
+  await expect(inspector.getByRole('link', { name: 'Ver fonte' })).toBeVisible();
+});
+
+test('CSV mantém colunas antigas e acrescenta identificadores e metadados', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'exportacao');
+
+  const indicatorDownloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'CSV', exact: true }).click();
+  const indicatorDownload = await indicatorDownloadPromise;
+  const indicatorPath = await indicatorDownload.path();
+  expect(indicatorPath).toBeTruthy();
+  const indicatorCsv = readFileSync(indicatorPath, 'utf8');
+  expect(indicatorCsv).toContain('categoria,indicador,valor,unidade,status,fonte_id,fonte_instituicao,data_referencia,observacao,indicador_id,fonte_natureza');
+  expect(indicatorCsv).toContain('water-access-2024');
+  expect(indicatorCsv).toContain('budget-health-per-capita-2026');
+
+  const sourceDownloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Fontes CSV' }).click();
+  const sourceDownload = await sourceDownloadPromise;
+  const sourcePath = await sourceDownload.path();
+  expect(sourcePath).toBeTruthy();
+  const sourceCsv = readFileSync(sourcePath, 'utf8');
+  expect(sourceCsv).toContain('frequencia_atualizacao,ultima_verificacao,licenca');
+});
