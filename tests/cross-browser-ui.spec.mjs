@@ -167,6 +167,26 @@ test.describe('bancada cross-browser de interface', () => {
   });
 
 
+
+  test('utilidade pública permite chegar ao serviço pela necessidade', async ({ page }) => {
+    await page.goto('./');
+    await navigate(page, 'acao');
+    const needs = page.getByLabel('Atalhos por necessidade');
+    await expect(needs).toBeVisible();
+
+    await needs.getByRole('button', { name: 'Medicamentos', exact: true }).click();
+    await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
+
+    const search = page.getByRole('searchbox', { name: 'Buscar serviço municipal' });
+    await search.fill('termo sem correspondência 987');
+    await expect(page.getByText('Nenhum atalho com esse termo.')).toBeVisible();
+
+    await search.fill('');
+    await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
+    await assertViewportIntegrity(page);
+  });
+
+
   test('gráficos principais mantêm geometria válida', async ({ page }) => {
     await page.goto('./');
     await navigate(page, 'dashboard');
