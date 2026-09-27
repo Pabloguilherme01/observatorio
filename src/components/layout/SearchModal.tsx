@@ -160,6 +160,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     const sourceCount = d.sources.length;
     const indicatorCount = d.indicators.length;
     const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+    if ((hasTerm(q, 'internacao') || hasTerm(q, 'internacoes')) && hasTerm(q, 'agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
+      return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if ((hasTerm(q, 'obito') || hasTerm(q, 'obitos') || hasTerm(q, 'morte') || hasTerm(q, 'mortes')) && hasTerm(q, 'agua')) {
       const indicator = d.indicators.find(item => item.id === 'water-related-deaths');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' óbitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
@@ -279,10 +283,6 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (q.includes('lixo') || q.includes('residuo') || q.includes('residuos')) {
       const indicator = d.indicators.find(item => item.id === 'household-waste-collection-2024');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
-    }
-    if (q.includes('internacao') && q.includes('agua')) {
-      const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
-      return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (hasTerm(q, 'agua') || q.includes('abastecimento')) {
       const indicator = d.indicators.find(item => item.id === 'water-access-2024');
