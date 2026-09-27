@@ -9,13 +9,13 @@ import { navigateToSection } from '../../lib/sectionNavigation';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
-type SearchEntry = readonly [string, string, ResultKind];
+type SearchEntry = readonly [string, string, ResultKind, string?];
 
 interface QuickAnswer {
   readonly title: string;
   readonly value: string;
   readonly id: string;
-  readonly sourceId: string;
+  readonly sourceId?: string;
   readonly note?: string;
 }
 
@@ -53,8 +53,8 @@ const normalizeSearchQuery = (value: string) => {
 const hasTerm = (query: string, term: string) =>
   query.split(/\s+/).includes(term);
 
-const sourceForId = (sourceId: string) => d.sources.find(source => source.id === sourceId);
-const sourceLabel = (sourceId: string) => sourceForId(sourceId)?.label ?? sourceId;
+const sourceForId = (sourceId?: string) => sourceId ? d.sources.find(source => source.id === sourceId) : undefined;
+const sourceLabel = (sourceId?: string) => sourceId ? (sourceForId(sourceId)?.label ?? sourceId) : 'Conjunto publicado pelo Observatório';
 const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Baixar dados', acao: 'Serviços públicos', contexto: 'Comparação municipal', dados: 'Atualizações públicas' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
@@ -153,6 +153,19 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const quickAnswer = useMemo<QuickAnswer | null>(() => {
     const q = normalizeSearchQuery(query);
     if (!q || q.length < 4) return null;
+    const sourceCount = d.sources.length;
+    const indicatorCount = d.indicators.length;
+    const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+    if ((q.includes('quantos') || q.includes('total')) && q.includes('indicadores')) {
+      return { title: 'Indicadores publicados', value: indicatorCount.toLocaleString('pt-BR') + ' indicadores', id: 'dados', note: 'Contagem do conjunto normalizado exibido pelo Observatório; não representa o total de indicadores existentes nas fontes originais.' };
+    }
+    if ((q.includes('quantas') || q.includes('total')) && q.includes('fontes')) {
+      return { title: 'Fontes registradas', value: sourceCount.toLocaleString('pt-BR') + ' fontes', id: 'dados', note: 'Contagem do catálogo de fontes registrado no conjunto publicado.' };
+    }
+    if (q.includes('cobertura') && q.includes('fontes')) {
+      const coverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
+      return { title: 'Cobertura temporal das fontes', value: coverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dados', note: 'Percentual de fontes registradas com data de referência ou publicação.' };
+    }
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if ((q.includes('crescimento') || q.includes('variacao') || q.includes('aumento')) && q.includes('populacao')) {
       const indicator = d.indicators.find(item => item.id === 'population-growth-2022-2026');
@@ -210,6 +223,30 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (q.includes('mortalidade infantil')) {
       const indicator = d.indicators.find(item => item.id === 'infant-mortality');
       return indicator ? { title: 'Mortalidade infantil', value: indicator.value.toLocaleString('pt-BR') + ' óbitos por mil', id: 'saude', sourceId: indicator.sourceId } : null;
+    }
+    if (q.includes('escolarizacao') || q.includes('escolarização')) {
+      const indicator = d.indicators.find(item => item.id === 'schooling-6-14');
+      return indicator ? { title: 'Escolarização de 6 a 14 anos', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('arborizacao') || q.includes('arborização')) {
+      const indicator = d.indicators.find(item => item.id === 'street-arborization');
+      return indicator ? { title: 'Arborização de vias públicas', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('sem') || q.includes('falta')) && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-access-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('sem') || q.includes('fora')) && q.includes('esgoto') && q.includes('servico')) {
+      const indicator = d.indicators.find(item => item.id === 'public-sewer-service-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('esgoto') && q.includes('sem') && q.includes('coleta')) {
+      const indicator = d.indicators.find(item => item.id === 'sewer-collection-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('esgoto') && q.includes('sem') && q.includes('tratamento')) {
+      const indicator = d.indicators.find(item => item.id === 'sewer-treatment-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (q.includes('perda') && q.includes('agua')) {
       const indicator = d.indicators.find(item => item.id === 'water-distribution-loss-2024');
@@ -379,7 +416,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
         seen.add(label);
         return true;
       })
-      .map(([label, id, kind]) => ({ label, id, kind, score: fuzzyScore(queryNormalized, normalize(label)) }))
+      .map(([label, id, kind, serviceQuery]) => ({ label, id, kind, serviceQuery, score: fuzzyScore(queryNormalized, normalize(label)) }))
       .filter(item => Number.isFinite(item.score))
       .sort((a, b) => b.score - a.score)
       .slice(0, 30);
@@ -437,7 +474,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                 type="button"
                 data-search-index={index}
                 onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectResult(item.id, item.label, item.kind)}
+                onClick={() => selectResult(item.id, item.label, item.kind, item.serviceQuery)}
                 className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
                 role="option"
                 aria-selected={activeIndex === index}
@@ -456,11 +493,11 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     );
   });
 
-  const selectResult = (id: string, label?: string, kind?: ResultKind) => {
+  const selectResult = (id: string, label?: string, kind?: ResultKind, serviceQuery?: string) => {
     onClose();
     const knownDestination = ['resumo', 'contexto', 'dados', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
-    const publicServiceQuery = kind === 'public' && label ? label : null;
+    const publicServiceQuery = kind === 'public' && label ? (serviceQuery ?? label) : null;
     if (publicServiceQuery) {
       navigateToSection('acao', { state: { ...(window.history.state ?? {}), publicServiceQuery } });
       window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: publicServiceQuery }));
@@ -487,7 +524,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
               onKeyDown={event => {
                 if (event.key === 'Enter' && filtered[activeIndex]) {
                   event.preventDefault();
-                  selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind);
+                  selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind, filtered[activeIndex].serviceQuery);
                 }
               }}
               placeholder="Ex.: medicamentos, orçamento, transporte, eleitorado…"

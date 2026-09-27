@@ -1333,3 +1333,172 @@ test('CSV exporta novos comparativos demográficos e fiscais', async ({ page }) 
   expect(csv).toContain('expenses-per-capita-2025');
   expect(csv).toContain('revenue-expense-difference-per-capita-2025');
 });
+
+
+test('utilidade pública oferece atalhos adicionais sem duplicar navegação', async ({ page }) => {
+  await page.goto('./');
+  const guide = page.locator('#utilidade-publica');
+  await expect(guide.getByLabel('Atalhos por necessidade')).toBeVisible();
+  await expect(guide.getByRole('button', { name: 'Trânsito e mobilidade' })).toBeVisible();
+  await expect(guide.getByRole('button', { name: 'Assistência social' })).toBeVisible();
+  await guide.getByRole('button', { name: 'Assistência social' }).click();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toBeVisible();
+});
+
+test('modo explicado expõe indicadores temáticos com fonte acessível', async ({ page }) => {
+  await page.goto('./');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+  await openSection(page, 'dashboard');
+  const thematic = page.getByLabel('Indicadores por tema');
+  await expect(thematic).toBeVisible();
+  await expect(thematic.getByRole('button')).toHaveCount(8);
+  await expect(thematic.getByRole('button', { name: /Empresas ativas/i })).toBeVisible();
+  await expect(thematic.getByRole('button', { name: /Investimento em saneamento/i })).toBeVisible();
+});
+
+test('comparação municipal marca Águas Lindas como referência e mantém leitura neutra', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'contexto');
+  await expect(page.getByText(/município de referência/i).first()).toBeVisible();
+  await expect(page.getByText(/Diferença positiva ou negativa não significa “melhor” ou “pior”/i)).toBeVisible();
+  const luziania = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
+  await expect(luziania).toContainText(/Em relação a Águas Lindas:/i);
+});
+
+test('busca rápida cobre escolarização e arborização', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('escolarização');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Escolarização de 6 a 14 anos/i);
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('arborização');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Arborização de vias públicas/i);
+});
+
+
+test('painel de dados mostra cobertura dos indicadores e notas metodológicas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dados');
+  const summary = page.getByLabel('Resumo do conjunto de dados');
+  await expect(summary.getByText('Indicadores com data de referência', { exact: true })).toBeVisible();
+  await expect(summary.getByText('Indicadores com nota metodológica', { exact: true })).toBeVisible();
+  await expect(summary.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
+});
+
+test('busca responde contagem de indicadores, fontes e cobertura temporal', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('quantos indicadores');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Indicadores publicados/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('quantas fontes');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Fontes registradas/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('cobertura fontes');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Cobertura temporal das fontes/i);
+  await expect(answer).toContainText(/%/);
+});
+
+
+test('saneamento mostra lacunas complementares sem converter percentuais em pessoas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'saude');
+
+  const gaps = page.getByLabel('Lacunas complementares de saneamento');
+  await expect(gaps).toBeVisible();
+  await expect(gaps.getByRole('button')).toHaveCount(4);
+  await expect(gaps.getByRole('button', { name: /Sem acesso à água/i })).toBeVisible();
+  await expect(gaps.getByRole('button', { name: /Esgoto gerado sem coleta/i })).toBeVisible();
+  await expect(gaps).not.toContainText(/pessoas sem/i);
+});
+
+test('lacuna de saneamento abre fonte e fórmula no inspetor', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'saude');
+
+  const gaps = page.getByLabel('Lacunas complementares de saneamento');
+  await gaps.getByRole('button', { name: /Sem acesso à água/i }).click();
+
+  const inspector = page.getByRole('dialog', { name: /Parcela sem acesso à água/i });
+  await expect(inspector).toBeVisible();
+  await expect(inspector).toContainText(/100% menos o indicador correspondente/i);
+  await expect(inspector).toContainText(/Não representa contagem de pessoas/i);
+});
+
+test('busca responde lacunas de água, coleta e tratamento com contexto', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('sem água');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Parcela sem acesso à água/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('esgoto sem coleta');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Esgoto gerado sem coleta/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('esgoto sem tratamento');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Esgoto gerado sem tratamento/i);
+});
+
+
+test('metadados internos da busca não são atribuídos indevidamente a uma fonte externa', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('quantos indicadores');
+
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Fonte: Conjunto publicado pelo Observatório/i);
+  await expect(answer.getByRole('link', { name: /Fonte oficial/i })).toHaveCount(0);
+});
+
+
+test('atalhos globais de serviços usam termos canônicos e não deixam catálogo vazio', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('remédios');
+  await page.getByRole('option', { name: /Remédios e medicamentos/i }).click();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toContainText(/Medicamentos SUS/i);
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('pedido de informação');
+  await page.getByRole('option', { name: /SIC \/ pedido de informação/i }).click();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toContainText(/SIC direto/i);
+});
+
+test('busca de serviços remove atalhos sem destino real e expõe serviços existentes', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+
+  await input.fill('Escalas de saúde');
+  await expect(page.getByRole('option', { name: /Escalas de saúde/i })).toHaveCount(0);
+
+  await input.fill('Renúncias fiscais');
+  await expect(page.getByRole('option', { name: /Renúncias fiscais/i })).toBeVisible();
+});
