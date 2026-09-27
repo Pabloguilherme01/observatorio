@@ -18,6 +18,7 @@ import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary'
 import '../assets/styles/final-ui.css';
 import '../assets/styles/responsive-type.css';
 import { modeForDestination } from '../config/readingModes';
+import { getReadingModeParam, getSearchParam, urlParamKeys } from '../lib/urlState';
 
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
@@ -63,7 +64,7 @@ function performHashScroll(hash: string) {
 }
 
 function openDeepLinkedInspectorWhenReady() {
-  const inspectId = new URLSearchParams(window.location.search).get('dado');
+  const inspectId = getSearchParam(urlParamKeys.inspector);
   if (!inspectId) return;
 
   const root = document.getElementById('main-content') ?? document.body;
@@ -141,8 +142,8 @@ function NavigationModeBridge() {
   useEffect(() => {
     if (!initialSharedModeHandled.current) {
       initialSharedModeHandled.current = true;
-      const requestedMode = new URLSearchParams(window.location.search).get('leitura');
-      if ((requestedMode === 'summary' || requestedMode === 'simple' || requestedMode === 'technical') && requestedMode !== mode) {
+      const requestedMode = getReadingModeParam();
+      if (requestedMode && requestedMode !== mode) {
         setMode(requestedMode);
         return;
       }
