@@ -1471,3 +1471,34 @@ test('metadados internos da busca não são atribuídos indevidamente a uma font
   await expect(answer).toContainText(/Fonte: Conjunto publicado pelo Observatório/i);
   await expect(answer.getByRole('link', { name: /Fonte oficial/i })).toHaveCount(0);
 });
+
+
+test('atalhos globais de serviços usam termos canônicos e não deixam catálogo vazio', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('remédios');
+  await page.getByRole('option', { name: /Remédios e medicamentos/i }).click();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toContainText(/Medicamentos SUS/i);
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('pedido de informação');
+  await page.getByRole('option', { name: /SIC \/ pedido de informação/i }).click();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toContainText(/SIC direto/i);
+});
+
+test('busca de serviços remove atalhos sem destino real e expõe serviços existentes', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+
+  await input.fill('Escalas de saúde');
+  await expect(page.getByRole('option', { name: /Escalas de saúde/i })).toHaveCount(0);
+
+  await input.fill('Renúncias fiscais');
+  await expect(page.getByRole('option', { name: /Renúncias fiscais/i })).toBeVisible();
+});
