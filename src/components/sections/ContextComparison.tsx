@@ -21,6 +21,11 @@ function formatDifferenceValue(id: ContextMetricId, value: number) {
   return formatValue(id, value);
 }
 
+function formatSignedDifference(id: ContextMetricId, difference: number) {
+  const sign = difference > 0 ? '+' : difference < 0 ? '−' : '';
+  return sign + formatDifferenceValue(id, Math.abs(difference));
+}
+
 const normalizeCityQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
@@ -120,8 +125,8 @@ export function ContextComparison() {
               <div className="context-city-value">{formatValue(metric.id, place.values[metric.id])}</div>
               <div className="context-city-source">IBGE · ano-base {metric.year}</div>
               {!isReference && (
-                <div className="mt-2 text-[11px] leading-4 text-slate-500" aria-label={`Diferença descritiva em relação a Águas Lindas: ${formatValue(metric.id, Math.abs(differenceFromReference))}`}>
-                  Em relação a Águas Lindas: {differenceFromReference > 0 ? '+' : differenceFromReference < 0 ? '−' : ''}{formatDifferenceValue(metric.id, Math.abs(differenceFromReference))}
+                <div className="mt-2 text-[11px] leading-4 text-slate-500" aria-label={`Diferença descritiva em relação a Águas Lindas: ${formatSignedDifference(metric.id, differenceFromReference)}`}>
+                  Em relação a Águas Lindas: {formatSignedDifference(metric.id, differenceFromReference)}
                 </div>
               )}
               <div className="context-city-details context-city-fact-grid">
