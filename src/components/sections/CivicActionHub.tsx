@@ -4,21 +4,21 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
 
 const priorityPublicServices = [
-  { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
-  { icon: CheckCircle2, title: 'Estoque de medicamentos', description: 'Consulte os estoques informados pelas farmácias públicas.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/estoque_medicamentos_farmacias' },
-  { icon: Stethoscope, title: 'Regulação municipal', description: 'Consulte a lista de espera da regulação municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/lista_espera_regulacoes' },
+  { icon: Pill, title: 'Medicamentos SUS', description: 'Veja quais medicamentos constam na lista oficial do município.', cta: 'Consultar lista', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
+  { icon: CheckCircle2, title: 'Estoque de medicamentos', description: 'Veja os estoques informados pelas farmácias públicas.', cta: 'Consultar estoque', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/estoque_medicamentos_farmacias' },
+  { icon: Stethoscope, title: 'Regulação municipal', description: 'Consulte a lista pública de espera da regulação.', cta: 'Consultar lista de espera', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/lista_espera_regulacoes' },
   { icon: WalletCards, title: 'Despesas públicas', description: 'Consulte despesas e movimentações do Executivo municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgdespesas' },
   { icon: ReceiptText, title: 'Licitações', description: 'Consulte licitações, dispensas e processos de contratação.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/sglicitacoes' },
   { icon: BriefcaseBusiness, title: 'Contratos', description: 'Consulte contratos e fiscais de contratos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/sgcontratos' },
   { icon: Building2, title: 'Acompanhamento de obras', description: 'Consulte obras e obras paralisadas no portal oficial.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/informacao/obras' },
-  { icon: GraduationCap, title: 'Lista de espera em creches', description: 'Consulte a lista oficial publicada pela Prefeitura.', href: 'https://aguaslindasdegoias.go.gov.br/lista-de-espera-em-creches/' },
-  { icon: ShieldCheck, title: 'CRAS e assistência social', description: 'Consulte unidades, contatos e horários da rede municipal de assistência social.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/' },
+  { icon: GraduationCap, title: 'Lista de espera em creches', description: 'Consulte a lista oficial de espera publicada pela Prefeitura.', cta: 'Consultar lista', href: 'https://aguaslindasdegoias.go.gov.br/lista-de-espera-em-creches/' },
+  { icon: ShieldCheck, title: 'CRAS e assistência social', description: 'Encontre unidades, contatos e horários da assistência social municipal.', cta: 'Encontrar atendimento', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/' },
   { icon: Scale, title: 'CREAS', description: 'Consulte o serviço especializado de assistência social, contatos e horário oficial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/centro-de-referencia-especializado-de-assistencia-social-creas/' },
-  { icon: ShieldCheck, title: 'Defesa Civil', description: 'Acesse informações municipais de emergência e o contato oficial da Defesa Civil.', href: 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/' },
-  { icon: Droplets, title: 'Água e esgoto — atendimento', description: 'Acesse os canais oficiais da Saneago para atendimento, ocorrências e serviços de abastecimento e esgotamento sanitário.', href: 'https://www.saneago.com.br/site/atendimentos/atendimento_telefone_estado_goias' },
+  { icon: ShieldCheck, title: 'Defesa Civil', description: 'Veja orientações municipais de emergência e o contato oficial da Defesa Civil.', cta: 'Ver orientação oficial', href: 'https://aguaslindasdegoias.go.gov.br/prefeitura-de-aguas-lindas-decreta-situacao-de-emergencia-apos-chuvas-intensas-e-inundacoes/' },
+  { icon: Droplets, title: 'Água e esgoto — atendimento', description: 'Acesse os canais da Saneago para falta de água, ocorrências e outros atendimentos.', cta: 'Abrir atendimento', href: 'https://www.saneago.com.br/site/atendimentos/atendimento_telefone_estado_goias' },
   { icon: ShieldCheck, title: 'Conselho Tutelar', description: 'Consulte endereço, horário e contato oficial do Conselho Tutelar.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-assistencia-social-cidadania-e-juventude/conselho-tutelar/' },
-  { icon: Stethoscope, title: 'CAPS', description: 'Consulte endereço, horário e contato oficial do Centro de Atenção Psicossocial.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/' },
-  { icon: Stethoscope, title: 'SAMU', description: 'Acesse o serviço oficial e o número de emergência 192.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/' },
+  { icon: Stethoscope, title: 'CAPS', description: 'Veja endereço, horário e contato do Centro de Atenção Psicossocial.', cta: 'Ver contato e horário', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/caps-centro-de-atencao-psicossocial/' },
+  { icon: Stethoscope, title: 'SAMU', description: 'Veja o serviço oficial de atendimento móvel de urgência e o número 192.', cta: 'Ver atendimento e 192', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-saude-2/samu-servico-de-atendimento-movel-de-urgencia/' },
   { icon: Smartphone, title: 'Portal SEI · Pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: ShieldCheck, title: 'Portal SEI · Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
@@ -86,6 +86,13 @@ const publicServiceIntents = [
   { label: 'Água e esgoto', query: 'água e esgoto', aliases: ['agua', 'esgoto', 'saneago', 'abastecimento'] },
 ] as const;
 
+const getServiceCta = (title: string) => {
+  const service = allMunicipalServices.find(item => item.title === title);
+  return service && 'cta' in service && typeof service.cta === 'string'
+    ? service.cta
+    : 'Abrir serviço oficial';
+};
+
 const publicServiceAliasQuery = (value: string) => {
   const normalized = normalizeServiceQuery(value);
   const intent = publicServiceIntents.find(item => {
@@ -141,21 +148,21 @@ export function CivicActionHub() {
     <section id="acao" className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16" aria-labelledby="action-title">
       <SectionHeader
         titleId="action-title"
-        eyebrow={technical ? 'Da evidência à fonte' : summary ? 'Do resumo à ação' : 'Da leitura à consulta'}
-        title="Serviços e verificação"
+        eyebrow={technical ? 'Confira e acesse' : summary ? 'Resolva e consulte' : 'Encontre o caminho certo'}
+        title="Serviços públicos e fontes oficiais"
         description={technical
-          ? 'Cruze registros, abra bases oficiais e confira a informação diretamente na instituição responsável.'
+          ? 'Abra serviços, registros e bases oficiais para conferir cada informação na instituição responsável.'
           : summary
-            ? 'Transforme a visão rápida em uma ação útil: consulte serviços, registros e fontes oficiais.'
-            : 'Leve o contexto para a prática com atalhos de consulta, serviços e verificação oficial.'}
+            ? 'Encontre rapidamente serviços públicos, consultas e fontes oficiais.'
+            : 'Use atalhos por necessidade para chegar ao serviço, consulta ou fonte oficial que procura.'}
       />
 
       <div className="official-hub">
         <div className="official-hub-head">
           <div>
             <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
-            <h3 className="official-hub-title">Recursos oficiais</h3>
-            <p className="official-hub-subtitle">{technical ? 'Bases e serviços oficiais para conferência detalhada.' : summary ? 'Serviços essenciais para consultar rapidamente.' : 'Serviços e consultas oficiais para continuar a leitura com segurança.'}</p>
+            <h3 className="official-hub-title">Serviços eleitorais oficiais</h3>
+            <p className="official-hub-subtitle">{technical ? 'Consulte bases, registros e serviços diretamente na Justiça Eleitoral.' : summary ? 'Título, candidaturas, resultados e outros serviços oficiais.' : 'Atalhos da Justiça Eleitoral para consultas, registros e resultados oficiais.'}</p>
           </div>
           <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
             Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -186,8 +193,8 @@ export function CivicActionHub() {
         <div className="official-hub-head">
           <div>
             <span className="official-hub-kicker">Águas Lindas · Prefeitura</span>
-            <h3 className="official-hub-title">Serviços municipais</h3>
-            <p className="official-hub-subtitle">{technical ? 'Catálogo ampliado para consulta e verificação institucional.' : summary ? 'Atalhos úteis para resolver ou consultar agora.' : 'Transparência, saúde e serviços em caminhos diretos e organizados.'}</p>
+            <h3 className="official-hub-title">Encontre um serviço municipal</h3>
+            <p className="official-hub-subtitle">{technical ? 'Busque por necessidade e confira o destino oficial de cada serviço.' : summary ? 'Saúde, emergência, creche, assistência, água e outros caminhos oficiais.' : 'Busque pelo que precisa ou escolha uma necessidade para chegar ao canal oficial.'}</p>
           </div>
         </div>
 
@@ -214,7 +221,7 @@ export function CivicActionHub() {
             type="search"
             value={serviceQuery}
             onChange={event => setServiceQuery(event.target.value)}
-            placeholder="Buscar serviço municipal…"
+            placeholder="Ex.: remédio, creche, emprego, água…"
             aria-label="Buscar serviço municipal"
             className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
           />
@@ -234,8 +241,8 @@ export function CivicActionHub() {
           <div className="public-service-empty" role="status">
             <SearchCheck className="h-5 w-5" aria-hidden="true" />
             <div>
-              <strong>Nenhum atalho com esse termo.</strong>
-              <p>Tente uma necessidade acima ou use palavras como medicamento, saúde, creche, obras, licitação ou denúncia.</p>
+              <strong>Não encontramos um serviço com esse termo.</strong>
+              <p>Tente outra palavra ou escolha uma necessidade acima. Você pode buscar por termos comuns como remédio, creche, emprego, água, obras ou denúncia.</p>
             </div>
           </div>
         )}
@@ -244,7 +251,7 @@ export function CivicActionHub() {
           {visibleMunicipalServices.map(({ icon: Icon, title, description, href }) => (
             <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
               <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
-              <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small></span>
+              <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small><em>{getServiceCta(title)}</em></span>
               <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
             </a>
           ))}
