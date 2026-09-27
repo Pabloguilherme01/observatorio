@@ -7,6 +7,8 @@ import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 
 function formatValue(id: ContextMetricId, value: number) {
   if (id === 'population') return value.toLocaleString('pt-BR');
+  if (id === 'populationGrowth') return (value >= 0 ? '+' : '') + value.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+  if (id === 'density') return value.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' hab/km²';
   if (id === 'schooling') return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
   if (id === 'infantMortality') return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '‰';
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 });
@@ -30,13 +32,13 @@ export function ContextComparison() {
         titleId="context-title"
         eyebrow="Contexto"
         title="Compare sem transformar em ranking"
-        description="A comparação serve para dar escala aos números de Águas Lindas. São oito municípios de referência; cada indicador mantém seu ano-base e definição, sem nota, posição ou ranking."
+        description="A comparação serve para dar escala aos números de Águas Lindas. São oito municípios de referência; cada indicador mantém seu ano-base, unidade e definição. Crescimento e densidade de 2026 são cálculos derivados, sem nota, posição ou ranking."
       />
       <div className="context-comparison-shell rounded-3xl border border-white/10 bg-white/[0.025] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-6">
         <div className="context-comparison-meta">
           <span><Users aria-hidden="true" /> 8 municípios</span>
           <span><MapPin aria-hidden="true" /> Referências de Goiás</span>
-          <span><Maximize2 aria-hidden="true" /> 4 indicadores</span>
+          <span><Maximize2 aria-hidden="true" /> 6 indicadores</span>
         </div>
 
         <div className="context-city-toolbar" aria-label="Ferramentas da comparação municipal">
@@ -137,7 +139,7 @@ export function ContextComparison() {
           title="Comparação oferece contexto — não ranking"
           className="context-comparison-note mt-4"
         >
-          Os valores estão lado a lado para fornecer escala e referência. Um valor maior ou menor não recebe automaticamente o significado de “melhor” ou “pior”, porque cada indicador mede uma dimensão diferente e pode ter limites e denominadores próprios.
+          Os valores estão lado a lado para fornecer escala e referência. Crescimento populacional e densidade 2026 são derivados da população, do Censo 2022 e da área territorial publicados pelo IBGE. Um valor maior ou menor não recebe automaticamente o significado de “melhor” ou “pior”, porque cada indicador mede uma dimensão diferente.
         </PremiumInfoCard>
       </div>
     </section>
