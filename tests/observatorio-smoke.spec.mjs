@@ -1276,3 +1276,60 @@ test('busca responde custo mensal de transporte por destino com premissas explí
   await expect(answer).toContainText(/Transporte mensal por pessoa · Taguatinga/i);
   await expect(answer).toContainText(/2 trechos por dia × 22 dias por mês/i);
 });
+
+
+test('demografia mostra variação percentual e absoluta sem linguagem de snapshot', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'demografia');
+  await expect(page.getByText('Variação 2022 → 2026', { exact: true })).toBeVisible();
+  await expect(page.getByText('Diferença entre as referências', { exact: true })).toBeVisible();
+  await expect(page.getByText(/Dados locais, estrutura preservada/i)).toBeVisible();
+  await expect(page.locator('#demografia').getByText(/Snapshot local/i)).toHaveCount(0);
+});
+
+test('orçamento compara receitas e despesas por habitante com ressalvas metodológicas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'orcamento');
+  await expect(page.getByRole('heading', { name: /Receitas e despesas na mesma base populacional/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Receitas realizadas por habitante/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Despesas empenhadas por habitante/i })).toBeVisible();
+  const difference = page.getByRole('button', { name: /Diferença por habitante/i });
+  await expect(difference).toBeVisible();
+  await difference.click();
+  const inspector = page.getByRole('dialog', { name: /Diferença por habitante/i });
+  await expect(inspector).toContainText(/Não equivale automaticamente a superávit fiscal/i);
+});
+
+test('busca prioriza crescimento populacional e diferença fiscal por habitante', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('crescimento população');
+  let answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Variação da população 2022–2026/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('diferença receita despesa por habitante');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Diferença receita–despesa por habitante 2025/i);
+  await expect(answer).toContainText(/não deve ser interpretada automaticamente como superávit fiscal por habitante/i);
+});
+
+test('CSV exporta novos comparativos demográficos e fiscais', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'exportacao');
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'CSV', exact: true }).click();
+  const download = await downloadPromise;
+  const path = await download.path();
+  expect(path).toBeTruthy();
+  const csv = readFileSync(path, 'utf8');
+  expect(csv).toContain('population-growth-2022-2026');
+  expect(csv).toContain('population-change-2022-2026');
+  expect(csv).toContain('revenue-per-capita-2025');
+  expect(csv).toContain('expenses-per-capita-2025');
+  expect(csv).toContain('revenue-expense-difference-per-capita-2025');
+});
