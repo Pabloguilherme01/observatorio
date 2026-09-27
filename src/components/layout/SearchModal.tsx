@@ -194,11 +194,11 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
   const resultGroups: Array<{ key: ResultKind; label: string }> = [
     { key: 'primary', label: 'Resultados principais' },
+    { key: 'public', label: 'Serviços públicos' },
     { key: 'data', label: 'Estatísticas e dados' },
     { key: 'source', label: 'Fontes oficiais' },
-    { key: 'candidate', label: 'Candidaturas' },
     { key: 'transport', label: 'Transporte' },
-    { key: 'public', label: 'Serviços públicos' },
+    { key: 'candidate', label: 'Candidaturas' },
   ];
 
   const resultIcon = (id: string) => {
