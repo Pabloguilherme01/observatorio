@@ -17,7 +17,7 @@ test('busca oferece áreas recentes salvas apenas no dispositivo', async ({ page
   const recent = page.getByRole('region', { name: 'Áreas recentes' });
   await expect(recent).toBeVisible();
 
-  const recentButtons = recent.getByRole('button').filter({ hasNotText: 'Limpar recentes' });
+  const recentButtons = recent.locator('.search-result-row');
   await expect(recentButtons).toHaveCount(2);
   await expect(recentButtons.nth(0)).toContainText('Serviços públicos');
   await expect(recentButtons.nth(1)).toContainText('Transporte');
@@ -32,7 +32,9 @@ test('busca oferece áreas recentes salvas apenas no dispositivo', async ({ page
   await refreshedRecent.getByRole('button', { name: 'Limpar recentes' }).click();
   await expect(page.getByRole('region', { name: 'Áreas recentes' })).toHaveCount(0);
 
-  await page.reload();
+  await expect.poll(async () => page.evaluate(() => localStorage.getItem('observatorio-v44-recent-sections'))).toBeNull();
+
+  await page.getByRole('button', { name: 'Fechar busca' }).click();
   await page.getByRole('button', { name: /Buscar no observatório/i }).first().click();
   await expect(page.getByRole('region', { name: 'Áreas recentes' })).toHaveCount(0);
 });
