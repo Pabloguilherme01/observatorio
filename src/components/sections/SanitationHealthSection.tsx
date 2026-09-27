@@ -155,7 +155,29 @@ export function SanitationHealthSection() {
 
           <SewerCurve />
 
-                    <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 light:border-slate-200 light:bg-slate-50/70">
+          <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70" aria-label="Lacunas complementares de saneamento">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-200/80 light:text-amber-700">O que ainda fica fora da cobertura</div>
+            <h4 className="mt-1 text-base font-black text-white light:text-slate-900">Complementos dos mesmos indicadores</h4>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Cada valor é 100% menos a cobertura correspondente. As bases continuam separadas: acesso, serviço, coleta e tratamento não são o mesmo denominador.</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {[
+                ['Sem acesso à água', 'water-access-gap-2024'],
+                ['Fora do serviço público de esgoto', 'public-sewer-service-gap-2024'],
+                ['Esgoto gerado sem coleta', 'sewer-collection-gap-2024'],
+                ['Esgoto gerado sem tratamento', 'sewer-treatment-gap-2024'],
+              ].map(([label, id]) => {
+                const indicator = d.indicators.find(item => item.id === id);
+                return (
+                  <div key={id} className="rounded-2xl border border-white/8 bg-black/10 p-3 light:bg-white">
+                    <strong className="block text-xl font-black text-white light:text-slate-900">{formatPercent(Number(indicator?.value ?? 0), 1)}</strong>
+                    <span className="mt-1 block text-xs text-slate-500">{label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] p-4 light:border-slate-200 light:bg-slate-50/70">
             <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Outra definição, outro ano-base</div>
             <div className="mt-2 flex items-end gap-3">
               <strong className="text-2xl font-black text-white light:text-slate-900">{formatPercent(Number(d.indicators.find(item => item.id === 'adequate-sewerage')?.value ?? 0), 2)}</strong>
