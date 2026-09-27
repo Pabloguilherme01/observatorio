@@ -360,9 +360,10 @@ test.describe('mobile layout and interaction', () => {
     await expect(page.getByRole('button', { name: 'Link copiado' })).toBeVisible();
 
     const copied = await page.evaluate(() => window.__lastCopiedSectionLink);
-    expect(copied).toMatch(/#transporte$/);
-    expect(copied).not.toContain('utm_source');
-    expect(copied).not.toContain('?');
+    const copiedUrl = new URL(copied);
+    expect(copiedUrl.hash).toBe('#transporte');
+    expect(copiedUrl.searchParams.get('leitura')).toBe('summary');
+    expect(copiedUrl.searchParams.has('utm_source')).toBeFalsy();
   });
 
   test('gráficos estreitos renderizam sem largura ou altura zero', async ({ page }) => {
@@ -788,7 +789,7 @@ test('link da seção preserva modo de leitura e ignora rastreamento', async ({ 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   const copyButton = page.getByRole('button', { name: 'Copiar link da seção' });
   await copyButton.click();
-  await expect(copyButton).toContainText('Link copiado');
+  await expect.poll(() => page.evaluate(() => window.__lastCopiedSectionLink || '')).toContain('?leitura=simple#acao');
 
   const copied = await page.evaluate(() => window.__lastCopiedSectionLink);
   expect(copied).toContain('?leitura=simple#acao');
