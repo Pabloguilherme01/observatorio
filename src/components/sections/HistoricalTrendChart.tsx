@@ -146,7 +146,7 @@ export function HistoricalTrendChart() {
             </div>
             <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">População e eleitorado</h3>
             <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
-              Série de 2022 a 2026 com os pontos oficiais disponíveis no modelo. Anos sem observação não são interpolados.
+              Série de 2022 a 2026 com os pontos disponíveis no conjunto de dados. Anos sem observação não são interpolados e população e eleitorado mantêm universos separados.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-slate-500">
@@ -174,7 +174,7 @@ export function HistoricalTrendChart() {
 
       <div className="mt-3 grid gap-2 text-[11px] leading-5 text-slate-500 sm:grid-cols-3">
         <span><strong className="text-slate-400">População:</strong> Censo 2022 e estimativas IBGE 2025/2026.</span>
-        <span><strong className="text-slate-400">Eleitorado:</strong> snapshots TSE de 2022, 2024 e 2026.</span>
+        <span><strong className="text-slate-400">Eleitorado:</strong> registros TSE de 2022, 2024 e 2026.</span>
         <span><strong className="text-slate-400">Leitura:</strong> universos diferentes, com escalas próprias.</span>
       </div>
 
