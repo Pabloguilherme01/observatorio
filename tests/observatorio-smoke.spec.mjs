@@ -1097,3 +1097,50 @@ test('painel de atualizações informa cobertura temporal das fontes', async ({ 
   await expect(page.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
   await expect(page.locator('#dados').getByText(/%/).first()).toBeVisible();
 });
+
+
+test('busca abre comparação municipal e atualizações públicas', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('comparar municípios');
+  await page.getByRole('option', { name: /Comparar municípios/i }).click();
+  await expect(page).toHaveURL(/#contexto$/);
+  await expect(page.locator('#contexto')).toBeVisible();
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('atualizações públicas');
+  await page.getByRole('option', { name: /Atualizações públicas/i }).click();
+  await expect(page).toHaveURL(/#dados$/);
+  await expect(page.locator('#dados')).toBeVisible();
+});
+
+test('busca responde LOA por habitante e saneamento por pessoa com contexto', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('orçamento por habitante');
+  let answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/LOA 2026 por habitante/i);
+  await expect(answer).toContainText(/não representa gasto executado por pessoa/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('saneamento por pessoa');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Investimento em saneamento por pessoa/i);
+});
+
+test('painel de dados explica a natureza temporal dos indicadores', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dados');
+  await expect(page.getByLabel('Tipos de indicador publicados')).toBeVisible();
+  await expect(page.getByText(/Atual:/).first()).toBeVisible();
+  await expect(page.getByText(/Histórico:/).first()).toBeVisible();
+  await expect(page.getByText(/Derivado:/).first()).toBeVisible();
+  await expect(page.getByText(/Registro datado:/).first()).toBeVisible();
+});
