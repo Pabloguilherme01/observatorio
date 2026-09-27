@@ -20,6 +20,8 @@ export function Header() {
   const { mode: languageMode, cycleMode } = useLanguageMode();
   const [activeSection, setActiveSection] = useState('dashboard');
   const activeSectionRef = useRef('dashboard');
+  const pendingNavigationRef = useRef<string | null>(null);
+  const pendingNavigationTimerRef = useRef<number | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -52,7 +54,22 @@ export function Header() {
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') return;
     const observer = new IntersectionObserver(entries => {
-      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      const visibleEntries = entries.filter(entry => entry.isIntersecting);
+      const pendingTarget = pendingNavigationRef.current;
+      if (pendingTarget) {
+        const pendingEntry = visibleEntries.find(entry => entry.target.id === pendingTarget);
+        if (pendingEntry) {
+          pendingNavigationRef.current = null;
+          if (pendingNavigationTimerRef.current) {
+            window.clearTimeout(pendingNavigationTimerRef.current);
+            pendingNavigationTimerRef.current = null;
+          }
+        } else {
+          return;
+        }
+      }
+
+      const visible = visibleEntries.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
       if (visible?.target.id) {
         activeSectionRef.current = visible.target.id;
         setActiveSection(visible.target.id);
@@ -70,8 +87,14 @@ export function Header() {
     const onNavigate = (event: Event) => {
       const targetId = (event as CustomEvent<string>).detail;
       if (targetId && navigation.some(item => item.id === targetId)) {
+        pendingNavigationRef.current = targetId;
         activeSectionRef.current = targetId;
         setActiveSection(targetId);
+        if (pendingNavigationTimerRef.current) window.clearTimeout(pendingNavigationTimerRef.current);
+        pendingNavigationTimerRef.current = window.setTimeout(() => {
+          pendingNavigationRef.current = null;
+          pendingNavigationTimerRef.current = null;
+        }, 1400);
       }
       window.requestAnimationFrame(observeSections);
     };
@@ -83,6 +106,9 @@ export function Header() {
     return () => {
       observer.disconnect();
       mutationObserver?.disconnect();
+      if (pendingNavigationTimerRef.current) window.clearTimeout(pendingNavigationTimerRef.current);
+      pendingNavigationTimerRef.current = null;
+      pendingNavigationRef.current = null;
       window.removeEventListener('observatorio:navigate', onNavigate);
     };
   }, []);
