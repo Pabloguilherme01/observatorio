@@ -129,7 +129,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (q.includes('populacao') || q.includes('habitantes')) return { title: 'População 2026', value: population.toLocaleString('pt-BR') + ' habitantes', id: 'dashboard', sourceId: 'ibge-estimativas-2026' };
     if (q.includes('densidade')) {
       const indicator = d.indicators.find(item => item.id === 'density');
-      return indicator ? { title: 'Densidade estimada 2026', value: Math.round(indicator.value).toLocaleString('pt-BR') + ' hab/km²', id: 'dashboard', sourceId: indicator.sourceId } : null;
+      return indicator ? { title: 'Densidade estimada 2026', value: Math.round(Number(indicator.value)).toLocaleString('pt-BR') + ' hab/km²', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
     if (q.includes('empresas') || q.includes('empresa')) {
       const indicator = d.indicators.find(item => item.id === 'companies');
