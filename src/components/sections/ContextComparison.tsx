@@ -14,13 +14,23 @@ function formatValue(id: ContextMetricId, value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 });
 }
 
+function formatDifferenceValue(id: ContextMetricId, value: number) {
+  if (id === 'populationGrowth') {
+    return value.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+  }
+  return formatValue(id, value);
+}
+
+const normalizeCityQuery = (value: string) =>
+  value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
+
 export function ContextComparison() {
   const [metricId, setMetricId] = useState<ContextMetricId>('population');
   const [cityQuery, setCityQuery] = useState('');
   const metric = contextualMetrics.find(item => item.id === metricId)!;
-  const normalizedQuery = cityQuery.trim().toLocaleLowerCase('pt-BR');
+  const normalizedQuery = normalizeCityQuery(cityQuery);
   const visibleMunicipalities = normalizedQuery
-    ? contextualMunicipalities.filter(place => place.name.toLocaleLowerCase('pt-BR').includes(normalizedQuery))
+    ? contextualMunicipalities.filter(place => normalizeCityQuery(place.name).includes(normalizedQuery))
     : contextualMunicipalities;
 
   const referenceMunicipality = contextualMunicipalities.find(place => place.name === 'Águas Lindas de Goiás');
@@ -34,13 +44,13 @@ export function ContextComparison() {
         titleId="context-title"
         eyebrow="Contexto"
         title="Compare sem transformar em ranking"
-        description="A comparação serve para dar escala aos números de Águas Lindas. São oito municípios de referência; cada indicador mantém seu ano-base, unidade e definição. Crescimento e densidade de 2026 são cálculos derivados, sem nota, posição ou ranking."
+        description={`A comparação serve para dar escala aos números de Águas Lindas. São ${contextualMunicipalities.length} municípios de referência e ${contextualMetrics.length} indicadores; cada um mantém seu ano-base, unidade e definição. Crescimento e densidade de 2026 são cálculos derivados, sem nota, posição ou ranking.`}
       />
       <div className="context-comparison-shell rounded-3xl border border-white/10 bg-white/[0.025] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-6">
         <div className="context-comparison-meta">
-          <span><Users aria-hidden="true" /> 8 municípios</span>
+          <span><Users aria-hidden="true" /> {contextualMunicipalities.length} municípios</span>
           <span><MapPin aria-hidden="true" /> Referências de Goiás</span>
-          <span><Maximize2 aria-hidden="true" /> 6 indicadores</span>
+          <span><Maximize2 aria-hidden="true" /> {contextualMetrics.length} indicadores</span>
         </div>
 
         <div className="context-city-toolbar" aria-label="Ferramentas da comparação municipal">
@@ -111,7 +121,7 @@ export function ContextComparison() {
               <div className="context-city-source">IBGE · ano-base {metric.year}</div>
               {!isReference && (
                 <div className="mt-2 text-[11px] leading-4 text-slate-500" aria-label={`Diferença descritiva em relação a Águas Lindas: ${formatValue(metric.id, Math.abs(differenceFromReference))}`}>
-                  Em relação a Águas Lindas: {differenceFromReference > 0 ? '+' : differenceFromReference < 0 ? '−' : ''}{formatValue(metric.id, Math.abs(differenceFromReference))}
+                  Em relação a Águas Lindas: {differenceFromReference > 0 ? '+' : differenceFromReference < 0 ? '−' : ''}{formatDifferenceValue(metric.id, Math.abs(differenceFromReference))}
                 </div>
               )}
               <div className="context-city-details context-city-fact-grid">
@@ -135,7 +145,7 @@ export function ContextComparison() {
           })}
           {visibleMunicipalities.length === 0 && (
             <div className="context-city-empty sm:col-span-2 xl:col-span-4" role="status">
-              Nenhum município encontrado para “{cityQuery}”. Limpe a busca para ver as oito referências.
+              Nenhum município encontrado para “{cityQuery}”. Limpe a busca para ver as {contextualMunicipalities.length} referências.
             </div>
           )}
         </div>
