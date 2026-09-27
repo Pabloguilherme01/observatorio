@@ -40,11 +40,15 @@ must(
   modeToggle.includes('Leitura guiada') &&
   modeToggle.includes('Leitura auditável') &&
   hero.includes('Uma visão executiva da cidade') &&
-  audience.includes('O essencial da cidade, sem ruído.') &&
+  audience.includes('O essencial da cidade, em poucos passos.') &&
+  audience.includes('Entenda a cidade e encontre caminhos úteis.') &&
+  audience.includes('Confira dados, fontes e serviços em detalhe.') &&
   executive.includes('O essencial, sem ruído') &&
   dashboard.includes('Indicadores prontos para conferência') &&
   trust.includes('Confiança começa pela origem') &&
-  civic.includes('Da evidência à fonte'),
+  civic.includes('Confira e acesse') &&
+  civic.includes('Resolva e consulte') &&
+  civic.includes('Encontre o caminho certo'),
   'cada modo possui narrativa editorial própria sem alterar a neutralidade'
 );
 must(app.includes('modeForDestination') && readingModes.includes('return current;'), 'navegação preserva o modo atual quando o destino não exige elevação de leitura');
