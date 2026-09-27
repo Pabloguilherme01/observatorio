@@ -48,7 +48,7 @@ export function AudienceHub() {
           <div className="audience-intro-copy">
             <span className="audience-kicker">Seu ponto de partida</span>
             <h2 id="audience-title">
-              {isSummary ? 'O essencial da cidade, sem ruído.' : isTechnical ? 'Investigue cada número até a fonte.' : 'Entenda a cidade com contexto.'}
+              {isSummary ? 'Comece pelo que você precisa saber.' : isTechnical ? 'Confira cada número até a fonte.' : 'Entenda os dados da cidade com contexto.'}
             </h2>
             <p>
               {isSummary
@@ -69,7 +69,7 @@ export function AudienceHub() {
               <kbd>⌘K</kbd>
             </button>
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-              <span>{isSummary ? 'Ver visão executiva' : isTechnical ? 'Abrir auditoria dos dados' : 'Explorar com contexto'}</span>
+              <span>{isSummary ? 'Ver resumo' : isTechnical ? 'Ver fontes e métodos' : 'Ver indicadores explicados'}</span>
               <ArrowRight aria-hidden="true" />
             </button>
           </div>
@@ -126,12 +126,12 @@ export function AudienceHub() {
               <>
                 <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
                   <span className="audience-action-icon">?</span>
-                  <span><strong>Quiz · 200 perguntas</strong><small>5 níveis para conferir dados e fontes.</small></span>
+                  <span><strong>Teste seus conhecimentos</strong><small>Perguntas com explicação e fonte para aprender conferindo.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
                 <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
                   <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
-                  <span><strong>Eleitoral 360°</strong><small>Registros e informações eleitorais.</small></span>
+                  <span><strong>Dados eleitorais</strong><small>Consulte registros, candidaturas e informações oficiais.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
                 <button type="button" className="audience-action-card" onClick={() => jump('transporte')}>
@@ -172,10 +172,10 @@ export function AudienceHub() {
             <div className="audience-block-head">
               <div>
                 <span>03</span>
-                <h3 id="technical-title">Camada de verificação</h3>
+                <h3 id="technical-title">Fontes para conferência</h3>
               </div>
               <button type="button" onClick={() => jump('fontes')}>
-                Abrir trilha de evidências <ArrowRight aria-hidden="true" />
+                Ver fontes e evidências <ArrowRight aria-hidden="true" />
               </button>
             </div>
             <div className="audience-resource-grid">
