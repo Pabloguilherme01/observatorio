@@ -8,7 +8,7 @@ import { useLanguageMode } from '../context/LanguageModeContext';
 import { copyText } from '../lib/clipboard';
 
 const categoryFor = (id: string) => {
-  if (id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
+  if (id === 'budget' || id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
   if (id.includes('fare') || id.includes('transport')) return 'Mobilidade';
   if (id.startsWith('heal-') || id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
