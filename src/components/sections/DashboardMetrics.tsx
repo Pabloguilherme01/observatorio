@@ -183,7 +183,7 @@ export function DashboardMetrics() {
         </div>
       )}
 
-      {!isSummary && (
+      {languageMode === 'simple' && (
         <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">
           <div>
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80 light:text-emerald-700">Mais indicadores</div>
