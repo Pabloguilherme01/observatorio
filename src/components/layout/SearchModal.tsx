@@ -184,6 +184,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'density');
       return indicator ? { title: 'Densidade estimada 2026', value: Math.round(Number(indicator.value)).toLocaleString('pt-BR') + ' hab/km²', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
+    if ((q.includes('empresas') || q.includes('empresa')) && (q.includes('novas') || q.includes('novos') || q.includes('abertas'))) {
+      const indicator = d.indicators.find(item => item.id === 'companies-new');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' empresas', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('empresas') || q.includes('empresa')) {
       const indicator = d.indicators.find(item => item.id === 'companies');
       return indicator ? { title: 'Empresas ativas', value: indicator.value.toLocaleString('pt-BR') + ' empresas', id: 'dashboard', sourceId: indicator.sourceId } : null;
@@ -350,6 +354,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const range = d.education?.ideb2025Range;
       return range ? { title: 'Referência Ideb 2025', value: range[0].toLocaleString('pt-BR') + '–' + range[1].toLocaleString('pt-BR'), id: 'dashboard', sourceId: d.education?.sourceId ?? 'qedu-ideb-2025' } : null;
     }
+    if ((q.includes('ept') || q.includes('educacao profissional') || q.includes('educacao tecnica') || q.includes('ensino tecnico')) && (q.includes('matricula') || q.includes('tecnica') || q.includes('tecnico') || q === 'ept')) {
+      const indicator = d.indicators.find(item => item.id === 'ept-technical-2025');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' matrículas', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('matricula') || q.includes('matriculas') || q.includes('educacao basica')) {
       const indicator = d.indicators.find(item => item.id === 'basic-enrollments-2025');
       return indicator ? { title: 'Matrículas na educação básica 2025', value: Number(indicator.value).toLocaleString('pt-BR') + ' matrículas', id: 'dashboard', sourceId: indicator.sourceId } : null;
@@ -362,13 +370,17 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
       return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
+    if ((q.includes('obito') || q.includes('morte')) && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-related-deaths');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' óbitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('esgotamento') && q.includes('adequado')) {
+      const indicator = d.indicators.find(item => item.id === 'adequate-sewerage');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('investimento') && q.includes('saneamento')) {
       const indicator = d.indicators.find(item => item.id === 'sanitation-investment');
       return indicator ? { title: 'Investimento em saneamento', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'saude', sourceId: indicator.sourceId } : null;
-    }
-    if (q.includes('escolarizacao') || q.includes('escolarização')) {
-      const indicator = d.indicators.find(item => item.id === 'schooling-6-14');
-      return indicator ? { title: 'Escolarização de 6 a 14 anos', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId } : null;
     }
     if ((q.includes('heal') || q.includes('hospital')) && (q.includes('planej') || q.includes('298'))) {
       const indicator = d.indicators.find(item => item.id === 'heal-planned-beds');
