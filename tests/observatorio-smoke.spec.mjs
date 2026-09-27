@@ -161,7 +161,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await openSection(page, 'exportacao');
     await expect(page.locator('#exportacao')).toBeVisible();
     const downloadPromise = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'CSV' }).click();
+    await page.getByRole('button', { name: 'CSV', exact: true }).click();
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toMatch(/\.csv$/);
   });
@@ -653,7 +653,7 @@ test('cards premium organizam notas soltas sem overflow no mobile', async ({ pag
 
   await openSection(page, 'mudancas-snapshot');
   await expect(page.locator('#mudancas-snapshot .premium-info-card')).toHaveCount(2);
-  await expect(page.getByText('Snapshot identificado e rastreável')).toBeVisible();
+  await expect(page.getByText('Captura identificada e rastreável')).toBeVisible();
 
   const dimensions = await page.evaluate(() => ({
     client: document.documentElement.clientWidth,
@@ -774,11 +774,11 @@ test('ação de aprofundar percorre os três níveis de leitura no painel mobile
   const root = page.locator('html');
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
-  let deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+  let deepen = page.getByRole('button', { name: 'Aumentar nível de detalhe' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 
-  deepen = page.getByRole('button', { name: 'Aprofundar leitura' });
+  deepen = page.getByRole('button', { name: 'Aumentar nível de detalhe' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
@@ -1022,8 +1022,8 @@ test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
 test('busca leva ao quiz de educação cívica', async ({ page }) => {
   await page.goto('./');
   await page.getByRole('button', { name: 'Buscar no observatório' }).click();
-  await page.getByRole('combobox', { name: 'Buscar seção, fonte ou indicador' }).fill('quiz');
-  await page.getByRole('option', { name: /Quiz de dados · 200 perguntas/ }).click();
+  await page.getByRole('combobox', { name: 'Buscar dado, serviço, fonte ou seção' }).fill('quiz');
+  await page.getByRole('option', { name: /Teste seus conhecimentos/ }).click();
   await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
 });
 
@@ -1199,7 +1199,7 @@ test('CSV mantém colunas antigas e acrescenta identificadores e metadados', asy
   const indicatorPath = await indicatorDownload.path();
   expect(indicatorPath).toBeTruthy();
   const indicatorCsv = readFileSync(indicatorPath, 'utf8');
-  expect(indicatorCsv).toContain('categoria,indicador,valor,unidade,status,fonte_id,fonte_instituicao,data_referencia,observacao,indicador_id,fonte_natureza');
+  expect(indicatorCsv).toContain('"categoria";"indicador";"valor";"unidade";"status";"fonte_id";"fonte_instituicao";"data_referencia";"observacao";"indicador_id";"fonte_natureza";"status_rotulo"');
   expect(indicatorCsv).toContain('water-access-2024');
   expect(indicatorCsv).toContain('budget-health-per-capita-2026');
 
@@ -1209,7 +1209,7 @@ test('CSV mantém colunas antigas e acrescenta identificadores e metadados', asy
   const sourcePath = await sourceDownload.path();
   expect(sourcePath).toBeTruthy();
   const sourceCsv = readFileSync(sourcePath, 'utf8');
-  expect(sourceCsv).toContain('frequencia_atualizacao,ultima_verificacao,licenca');
+  expect(sourceCsv).toContain('"frequencia_atualizacao";"ultima_verificacao";"licenca"');
 });
 
 
@@ -1244,8 +1244,8 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
   const csv = readFileSync(path, 'utf8');
 
   expect(csv).toContain('status_rotulo');
-  expect(csv).toMatch(/Orcamento,[^\n]*budget-health-per-capita-2026/);
-  expect(csv).toMatch(/Saude,[^\n]*heal-current-stated-beds/);
+  expect(csv).toMatch(/"Orcamento";[^\n]*"budget-health-per-capita-2026"/);
+  expect(csv).toMatch(/"Saude";[^\n]*"heal-current-stated-beds"/);
   expect(csv).toContain('Registro datado');
 });
 
