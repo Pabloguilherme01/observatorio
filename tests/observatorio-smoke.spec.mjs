@@ -1429,6 +1429,36 @@ test('painel de dados mostra cobertura dos indicadores e notas metodológicas', 
   await expect(summary.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
 });
 
+test('busca responde indicadores públicos adicionais com fonte e contexto', async ({ page }) => {
+  await page.goto('./');
+
+  const searchFor = async (term) => {
+    await page.getByRole('button', { name: /buscar/i }).first().click();
+    const input = page.getByRole('combobox').first();
+    await input.fill(term);
+    return input;
+  };
+
+  await searchFor('empresas novas');
+  let answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Empresas novas no recorte/i);
+  await page.keyboard.press('Escape');
+
+  await searchFor('educação técnica matrículas');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/EPT técnica articulada ao Ensino Médio/i);
+  await page.keyboard.press('Escape');
+
+  await searchFor('esgotamento adequado');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Esgotamento sanitário adequado/i);
+  await page.keyboard.press('Escape');
+
+  await searchFor('óbitos água');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Óbitos por doenças relacionadas à água/i);
+});
+
 test('busca responde contagem de indicadores, fontes e cobertura temporal', async ({ page }) => {
   await page.goto('./');
 
