@@ -36,9 +36,9 @@ const civic = read('src/components/sections/CivicActionHub.tsx');
 
 must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '3 modos neutros de leitura disponíveis');
 must(
-  modeToggle.includes('Leitura executiva') &&
-  modeToggle.includes('Leitura guiada') &&
-  modeToggle.includes('Leitura auditável') &&
+  modeToggle.includes('Leitura essencial') &&
+  modeToggle.includes('Leitura explicada') &&
+  modeToggle.includes('Leitura detalhada') &&
   hero.includes('Uma visão executiva da cidade') &&
   audience.includes('O essencial da cidade, sem ruído.') &&
   executive.includes('O essencial, sem ruído') &&
