@@ -1248,3 +1248,31 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
   expect(csv).toMatch(/Saude,[^\n]*heal-current-stated-beds/);
   expect(csv).toContain('Registro datado');
 });
+
+
+test('transporte compara rotas usando o mesmo cenário sem ranking', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'transporte');
+
+  await expect(page.getByRole('heading', { name: /Mesmo cenário, destinos diferentes/i })).toBeVisible();
+  const comparison = page.getByLabel('Comparação de custo mensal entre rotas');
+  await expect(comparison.getByRole('button')).toHaveCount(3);
+  await expect(comparison.getByText(/Brasília|Plano Piloto/i).first()).toBeVisible();
+  await expect(comparison.getByText(/Taguatinga/i)).toBeVisible();
+  await expect(comparison.getByText(/Ceilândia/i)).toBeVisible();
+
+  const taguatinga = comparison.getByRole('button').filter({ hasText: /Taguatinga/i });
+  await taguatinga.click();
+  await expect(taguatinga).toHaveAttribute('aria-pressed', 'true');
+  await expect(taguatinga).toContainText(/Em uso|Rota selecionada/i);
+});
+
+test('busca responde custo mensal de transporte por destino com premissas explícitas', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  const input = page.getByRole('combobox').first();
+  await input.fill('custo mensal Taguatinga');
+  const answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Transporte mensal por pessoa · Taguatinga/i);
+  await expect(answer).toContainText(/2 trechos por dia × 22 dias por mês/i);
+});
