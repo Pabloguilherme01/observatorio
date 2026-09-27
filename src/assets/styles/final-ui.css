@@ -6992,27 +6992,68 @@ body{
 /* V44.20 · Header collision fix + intentional mobile scrollers */
 @media (min-width:1280px) and (max-width:1535px){
   .site-header-status{display:none!important}
-  .header-reading-mode{display:none!important}
-  .site-header .header-mode-shortcut{
-    display:inline-flex!important;
-    min-width:auto!important;
-    min-height:42px!important;
-    max-width:112px;
-    padding:8px 10px;
-    gap:7px;
-    flex:0 0 auto
-  }
-  .site-header .header-mode-shortcut svg{width:16px;height:16px;flex:0 0 auto}
-  .site-header .header-mode-shortcut span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .site-header .header-mode-shortcut{display:none!important}
   .site-header nav[aria-label="Navegação principal"]{
     overflow:hidden;
     flex:1 1 auto;
+    min-width:0
   }
   .site-header nav[aria-label="Navegação principal"]>a,
   .site-header nav[aria-label="Navegação principal"]>div{
-    flex:0 0 auto;
+    flex:0 0 auto
   }
-  .site-header-actions{flex:0 0 auto}
+  .site-header-actions{
+    flex:0 0 auto;
+    min-width:0
+  }
+  .header-reading-mode{
+    display:block!important;
+    flex:0 1 292px;
+    min-width:246px;
+    max-width:292px
+  }
+  .header-reading-mode .language-toggle-v3{
+    max-width:292px!important
+  }
+  .header-reading-mode .language-toggle-label,
+  .header-reading-mode .language-toggle-deepen{
+    display:none!important
+  }
+  .header-reading-mode .language-toggle-options{
+    gap:4px
+  }
+  .header-reading-mode .language-toggle-options>button{
+    min-height:42px!important;
+    padding:6px 8px!important;
+    gap:5px!important
+  }
+  .header-reading-mode .language-toggle-options>button small,
+  .header-reading-mode .language-toggle-options>button em{
+    display:none!important
+  }
+  .header-reading-mode .language-toggle-options>button strong{
+    font-size:10px!important
+  }
+  .header-contrast{
+    flex:0 0 auto
+  }
+  .header-contrast .contrast-toggle{
+    padding:4px!important;
+    gap:0!important
+  }
+  .header-contrast .contrast-toggle-label{
+    display:none!important
+  }
+  .header-contrast .contrast-toggle-options{
+    gap:3px
+  }
+  .header-contrast .contrast-toggle-options button{
+    min-height:36px!important;
+    padding:4px!important
+  }
+  .header-contrast .contrast-toggle-options small{
+    display:none!important
+  }
 }
 @media (min-width:1536px){
   .site-header .header-mode-shortcut{display:none!important}
