@@ -203,7 +203,7 @@ export function CivicActionHub() {
 
         <div className="public-service-intents" aria-label="Atalhos por necessidade">
           <span className="public-service-intents-label">Preciso de</span>
-          <div className="public-service-intents-list">
+          <div className="public-service-intents-list overflow-x-auto">
             {publicServiceIntents.map(intent => (
               <button
                 key={intent.label}
