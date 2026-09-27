@@ -1020,6 +1020,10 @@ test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo
 });
 
 test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
+  await page.goto('./');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('type', 'image/png');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', /pwa-192\.png$/);
+
   for (const [name, size] of [['pwa-192.png', 192], ['pwa-512.png', 512], ['apple-touch-icon.png', 180]]) {
     const response = await page.request.get(`http://127.0.0.1:4173/observatorio/${name}`);
     expect(response.ok()).toBeTruthy();

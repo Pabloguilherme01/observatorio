@@ -107,6 +107,30 @@ test.describe('bancada cross-browser de interface', () => {
     await assertViewportIntegrity(page);
   });
 
+  test('copiar link da seção usa a seção realmente visível no mobile', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'Fluxo pertence às ferramentas mobile.');
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: async text => { window.__lastCopiedSectionLink = text; } },
+      });
+    });
+    await page.goto('./#dashboard');
+
+    await navigate(page, 'acao');
+    await page.evaluate(() => {
+      window.history.replaceState(null, '', '#dashboard');
+    });
+    await expect(page.locator('#acao')).toBeVisible();
+    await expect(page).toHaveURL(/#dashboard$/);
+
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+    await page.getByRole('button', { name: 'Copiar link da seção' }).click();
+
+    const copied = await page.evaluate(() => window.__lastCopiedSectionLink);
+    expect(copied).toMatch(/#acao$/);
+  });
+
   test('botão Mais abre, gerencia foco, fecha com Escape e navega no mobile', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'Fluxo pertence à navegação inferior mobile.');
     await page.goto('./');

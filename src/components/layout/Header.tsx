@@ -154,7 +154,7 @@ export function Header() {
   };
 
   const copyCurrentSectionLink = async () => {
-    const hash = window.location.hash || '#dashboard';
+    const hash = '#' + activeSection;
     const url = window.location.origin + window.location.pathname + hash;
     const copied = await copyText(url);
     if (!copied) return;
