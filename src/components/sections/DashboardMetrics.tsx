@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
-import { dispatchInspect } from '../DataInspector';
+import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
@@ -131,7 +131,7 @@ export function DashboardMetrics() {
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature, sourceLabel }) => (
-          <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
+          <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
 
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -185,7 +185,7 @@ export function DashboardMetrics() {
           <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Valores já presentes no conjunto rastreável, reunidos para facilitar a consulta. Cada cartão mantém fonte e ano-base.</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {thematicIndicators.map(([label, value, year, sourceId]) => (
-              <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: /^\d{4}$/.test(year) ? year + '-12-31' : undefined })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-emerald-300/20 light:bg-white">
+              <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: /^\d{4}$/.test(year) ? year + '-12-31' : undefined })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-emerald-300/20 light:bg-white">
                 <div className="text-xs font-semibold text-slate-500">{label}</div>
                 <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
                 <div className="mt-1 text-[11px] text-slate-500">{year} · ver fonte</div>
@@ -209,6 +209,7 @@ export function DashboardMetrics() {
             <button
               key={item.label}
               type="button"
+              data-inspect-id={inspectDataId({ label: item.label, sourceId: item.sourceId })}
               onClick={() => dispatchInspect({ label: item.label, value: item.value, sourceId: item.sourceId, referenceDate: item.referenceDate, method: item.method })}
               className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
             >
@@ -254,7 +255,7 @@ export function DashboardMetrics() {
                 ['EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
                 ['Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
               ].map(([label,value,year,sourceId]) => (
-                <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
+                <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
                   <div className="text-xs font-semibold text-slate-500">{label}</div>
                   <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
                   <div className="mt-1 text-[11px] text-slate-500">{year}</div>
@@ -284,7 +285,7 @@ export function DashboardMetrics() {
             <span className="text-xs text-slate-500">Clique em qualquer valor</span>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[['Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022', 'ibge-cidades-2026'],['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025', 'ibge-cidades-2026'],['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023', 'ibge-cidades-2026'],['Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019', 'ibge-cidades-2026'],['Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022', 'ibge-cidades-2026'],['Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022', 'ibge-cidades-2026'],['Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024', 'ibge-cidades-2026']].map(([label,value,year,sourceId]) => <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"><div className="text-xs font-semibold text-slate-500">{label}</div><div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-[11px] text-slate-500">ano-base {year}</div></button>)}
+            {[['Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022', 'ibge-cidades-2026'],['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025', 'ibge-cidades-2026'],['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023', 'ibge-cidades-2026'],['Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019', 'ibge-cidades-2026'],['Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022', 'ibge-cidades-2026'],['Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022', 'ibge-cidades-2026'],['Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024', 'ibge-cidades-2026']].map(([label,value,year,sourceId]) => <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"><div className="text-xs font-semibold text-slate-500">{label}</div><div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-[11px] text-slate-500">ano-base {year}</div></button>)}
           </div>
         </div>
       )}
