@@ -52,10 +52,12 @@ export function MobileBottomNav() {
     });
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!moreOpen) return;
+    const firstItem = moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]');
+    firstItem?.focus();
     const frame = window.requestAnimationFrame(() => {
-      moreMenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
+      if (document.activeElement !== firstItem) firstItem?.focus();
     });
     return () => window.cancelAnimationFrame(frame);
   }, [moreOpen]);
@@ -200,11 +202,12 @@ export function MobileBottomNav() {
             onClick={() => closeMore(true)}
           />
           <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
-            {moreItems.map(item => (
+            {moreItems.map((item, index) => (
               <button
                 key={item.id}
                 type="button"
                 role="menuitem"
+                autoFocus={index === 0}
                 onClick={() => { closeMore(); jump(item.id); }}
               >
                 <span>{item.shortLabel}</span>
