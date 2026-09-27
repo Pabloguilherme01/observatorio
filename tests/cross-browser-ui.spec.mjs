@@ -184,11 +184,23 @@ test.describe('bancada cross-browser de interface', () => {
     await search.fill('ouvidoria');
     await expect(page.getByRole('link', { name: /Denúncias à Ouvidoria/i })).toBeVisible();
 
+    await search.fill('emprego');
+    await expect(page.getByRole('link', { name: /Processos seletivos/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Lista de espera em creches/i })).toHaveCount(0);
+
+    await search.fill('emergência');
+    await expect(page.getByRole('link', { name: /SAMU/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Defesa Civil/i })).toBeVisible();
+
     await search.fill('termo sem correspondência 987');
     await expect(page.getByText('Nenhum atalho com esse termo.')).toBeVisible();
 
     await search.fill('');
     await expect(page.getByRole('link', { name: /Medicamentos SUS/i })).toBeVisible();
+    const catalogue = page.locator('.official-more').filter({ hasText: /catálogo completo|Mais serviços oficiais/i }).first();
+    await expect(catalogue).toBeVisible();
+    await catalogue.locator('summary').click();
+    await expect(catalogue.getByRole('link', { name: /Processos seletivos/i })).toBeVisible();
     await assertViewportIntegrity(page);
   });
 
