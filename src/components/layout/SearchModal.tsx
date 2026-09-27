@@ -11,6 +11,14 @@ type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'p
 
 type SearchEntry = readonly [string, string, ResultKind];
 
+interface QuickAnswer {
+  readonly title: string;
+  readonly value: string;
+  readonly id: string;
+  readonly sourceId: string;
+  readonly note?: string;
+}
+
 const entries: readonly SearchEntry[] = [
   ['Indicadores', 'dashboard', 'primary'],
   ['Perfil eleitoral', 'eleitorado', 'primary'],
@@ -122,7 +130,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     };
   }, [open, onClose, initialShortcutGuideOpen]);
 
-  const quickAnswer = useMemo(() => {
+  const quickAnswer = useMemo<QuickAnswer | null>(() => {
     const q = normalize(query);
     if (!q || q.length < 4) return null;
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
@@ -163,6 +171,26 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if (q.includes('lixo') || q.includes('residuo') || q.includes('residuos')) return { title: 'Coleta domiciliar de resíduos', value: d.sanitation.householdWasteCollectionPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
     if (q.includes('agua') || q.includes('abastecimento')) return { title: 'Acesso à água', value: d.sanitation.waterAccessPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: d.sanitation.sourceId };
     if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitoral360', sourceId: 'tse-eleitorado-2026' };
+    if ((q.includes('orcamento') || q.includes('loa')) && q.includes('educacao')) {
+      const indicator = d.indicators.find(item => item.id === 'budget-education-share-2026');
+      return indicator ? { title: 'Educação na LOA 2026', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('orcamento') || q.includes('loa')) && q.includes('saude')) {
+      const indicator = d.indicators.find(item => item.id === 'budget-health-share-2026');
+      return indicator ? { title: 'Saúde na LOA 2026', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('orcamento') || q.includes('loa')) && q.includes('saneamento')) {
+      const indicator = d.indicators.find(item => item.id === 'budget-sanitation-share-2026');
+      return indicator ? { title: 'Saneamento na LOA 2026', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('diferenca') || q.includes('saldo')) && q.includes('receita') && q.includes('despesa')) {
+      const indicator = d.indicators.find(item => item.id === 'revenue-expense-difference-2025');
+      return indicator ? { title: 'Receitas realizadas − despesas empenhadas 2025', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('matriculas municipais') || (q.includes('matricula') && q.includes('municipal'))) {
+      const indicator = d.indicators.find(item => item.id === 'municipal-enrollment-share-2025');
+      return indicator ? { title: 'Matrículas municipais na educação básica', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('orcamento') || q.includes('loa')) return { title: 'LOA 2026', value: formatBudgetCurrency(d.budget.totalBrl), id: 'orcamento', sourceId: d.budget.sourceId };
     if (q.includes('esgoto')) return { title: 'Acesso ao serviço público de esgoto', value: d.sanitation.publicSewerServicePct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: 'sinisa-2024' };
     if (q.includes('tarifa') || q.includes('passagem') || q.includes('brasilia')) {
@@ -361,6 +389,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
               </a>
             )}
           </div>
+          {quickAnswer.note && <p className="mt-2 text-[11px] leading-5 text-slate-500">{quickAnswer.note}</p>}
           <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
 
