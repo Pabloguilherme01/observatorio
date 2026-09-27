@@ -168,6 +168,20 @@ test.describe('bancada cross-browser de interface', () => {
 
 
 
+  test('busca global de serviço abre um card existente', async ({ page }) => {
+    await page.goto('./');
+    const searchTrigger = page.getByRole('button', { name: /Buscar no observatório/i }).first();
+    await searchTrigger.click();
+    const search = page.getByRole('combobox', { name: /Buscar serviço, seção, fonte ou indicador/i });
+    await search.fill('SAMU');
+    const result = page.getByRole('option', { name: /SAMU/i }).first();
+    await expect(result).toBeVisible();
+    await result.click();
+    await expect(page.locator('#acao')).toBeVisible();
+    await expect(page.getByRole('link', { name: /SAMU/i })).toBeVisible();
+    await assertViewportIntegrity(page);
+  });
+
   test('entrada principal prioriza utilidade pública e leva ao serviço', async ({ page }) => {
     await page.goto('./');
     await navigate(page, 'descubra');
