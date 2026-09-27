@@ -141,6 +141,32 @@ test.describe('bancada cross-browser de interface', () => {
     await assertViewportIntegrity(page);
   });
 
+
+  test('header premium não quebra em larguras de notebook e desktop', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Contrato destinado a larguras desktop.');
+    for (const width of [1024, 1280, 1366, 1440]) {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto('./');
+      const header = page.locator('.site-header');
+      await expect(header).toBeVisible();
+      const integrity = await header.evaluate(node => {
+        const viewport = document.documentElement.clientWidth;
+        const offenders = [...node.querySelectorAll('a,button,[role="group"]')]
+          .filter(el => {
+            const style = getComputedStyle(el);
+            const rect = el.getBoundingClientRect();
+            return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0
+              && (rect.left < -1 || rect.right > viewport + 1);
+          })
+          .map(el => ({ tag: el.tagName, text: el.textContent?.trim().slice(0, 40) }));
+        return { width: node.scrollWidth, viewport, offenders };
+      });
+      expect(integrity.width).toBeLessThanOrEqual(integrity.viewport + 1);
+      expect(integrity.offenders).toEqual([]);
+    }
+  });
+
+
   test('gráficos principais mantêm geometria válida', async ({ page }) => {
     await page.goto('./');
     await navigate(page, 'dashboard');
