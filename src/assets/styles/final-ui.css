@@ -6972,3 +6972,18 @@ body{
   .public-service-intents-list button{flex:0 0 auto;min-height:42px}
 }
 @media(prefers-reduced-motion:reduce){.public-service-intents-list button{transition:none}}
+
+
+/* V44.19 · Service cards: explicit action language */
+.official-resource-card em{
+  display:block;margin-top:7px;font-style:normal;font-size:10px;font-weight:850;
+  letter-spacing:.02em;color:var(--reading-accent-strong)
+}
+.official-resource-card.compact em{margin-top:5px}
+:root[data-language-mode="simple"] .official-resource-card em{font-size:11px}
+:root[data-language-mode="technical"] .official-resource-card em{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;letter-spacing:.04em
+}
+@media(max-width:639px){
+  .official-resource-card em{margin-top:6px;font-size:10px}
+}
