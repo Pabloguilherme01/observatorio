@@ -46,24 +46,31 @@ export function MobileBottomNav() {
   }, []);
 
   useLayoutEffect(() => {
-    const shouldRestoreTrigger = !moreOpen && restoreMoreFocusRef.current;
-    if (!moreOpen && !shouldRestoreTrigger) return;
+    if (!moreOpen) return;
 
-    const focusTarget = () => {
-      if (moreOpen) {
-        moreMenuRef.current
-          ?.querySelector<HTMLButtonElement>('[role="menuitem"]')
-          ?.focus({ preventScroll: true });
-      } else if (shouldRestoreTrigger) {
-        moreButtonRef.current?.focus({ preventScroll: true });
-      }
+    const focusFirstItem = () => {
+      moreMenuRef.current
+        ?.querySelector<HTMLButtonElement>('[role="menuitem"]')?.focus();
     };
 
-    focusTarget();
-    const frame = window.requestAnimationFrame(focusTarget);
-    const timer = window.setTimeout(focusTarget, 0);
+    focusFirstItem();
+    const frame = window.requestAnimationFrame(focusFirstItem);
+    const timer = window.setTimeout(focusFirstItem, 0);
 
-    if (shouldRestoreTrigger) restoreMoreFocusRef.current = false;
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, [moreOpen]);
+
+  useLayoutEffect(() => {
+    if (moreOpen || !restoreMoreFocusRef.current) return;
+
+    const focusTrigger = () => moreButtonRef.current?.focus();
+    focusTrigger();
+    const frame = window.requestAnimationFrame(focusTrigger);
+    const timer = window.setTimeout(focusTrigger, 0);
+    restoreMoreFocusRef.current = false;
 
     return () => {
       window.cancelAnimationFrame(frame);
