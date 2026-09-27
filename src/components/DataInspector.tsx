@@ -170,7 +170,7 @@ export function DataInspector() {
           [urlParamKeys.readingMode]: languageMode,
         }
       : {},
-    data.sectionId ?? window.location.hash ?? '#dashboard',
+    data.sectionId ? data.sectionId : (window.location.hash || 'dashboard'),
   );
 
   const copyLink = async () => {
