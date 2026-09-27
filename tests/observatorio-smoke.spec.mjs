@@ -782,7 +782,7 @@ test('ação de aprofundar percorre os três níveis de leitura no painel mobile
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
-  await page.getByRole('button', { name: 'Voltar para leitura essencial' }).click();
+  await page.getByRole('button', { name: 'Voltar para leitura rápida' }).click();
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
 });
 
