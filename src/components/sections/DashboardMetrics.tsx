@@ -74,6 +74,21 @@ export function DashboardMetrics() {
     { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
     { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];
+  const thematicIndicators = [
+    ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'registro 2026', 'caged-sebrae-2026'],
+    ['Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
+    ['IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
+    ['IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
+    ['Salário formal médio', formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', '2024', 'ibge-cidades-2026'],
+    ['Investimento em saneamento', 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2024', 'sinisa-2024'],
+    ['Internações ligadas à água', formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), '2024', 'sinisa-2024'],
+    ['Óbitos ligados à água', formatNumber(Number(municipalIndicator('water-related-deaths'))), '2024', 'sinisa-2024'],
+    ['Matrículas básicas', formatNumber(Number(municipalIndicator('basic-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
+    ['Matrículas municipais', formatNumber(Number(municipalIndicator('municipal-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
+    ['EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
+    ['Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
+  ] as const;
+  const visibleThematicIndicators = languageMode === 'simple' ? thematicIndicators.slice(0, 8) : thematicIndicators;
 
   return (
     <section id="dashboard" className="dashboard-shell mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14" aria-labelledby="dashboard-title">
@@ -168,6 +183,25 @@ export function DashboardMetrics() {
         </div>
       )}
 
+      {!isSummary && (
+        <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">
+          <div>
+            <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80 light:text-emerald-700">Mais indicadores</div>
+            <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Economia, educação, saneamento e trabalho</h3>
+            <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Valores já presentes no conjunto rastreável, reunidos aqui para facilitar a consulta. Cada cartão mantém fonte e ano-base.</p>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {visibleThematicIndicators.map(([label, value, year, sourceId]) => (
+              <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year.match(/^\d{4}$/) ? year + '-12-31' : undefined })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-emerald-300/20 light:bg-white">
+                <div className="text-xs font-semibold text-slate-500">{label}</div>
+                <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
+                <div className="mt-1 text-[11px] text-slate-500">{year} · ver fonte</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -213,20 +247,7 @@ export function DashboardMetrics() {
               </div>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'registro 2026', 'caged-sebrae-2026'],
-                ['Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
-                ['IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
-                ['IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
-                ['Salário formal médio', formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', '2024', 'ibge-cidades-2026'],
-                ['Investimento em saneamento', 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2024', 'sinisa-2024'],
-                ['Internações ligadas à água', formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), '2024', 'sinisa-2024'],
-                ['Óbitos ligados à água', formatNumber(Number(municipalIndicator('water-related-deaths'))), '2024', 'sinisa-2024'],
-                ['Matrículas básicas', formatNumber(Number(municipalIndicator('basic-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
-                ['Matrículas municipais', formatNumber(Number(municipalIndicator('municipal-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
-                ['EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
-                ['Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
-              ].map(([label,value,year,sourceId]) => (
+              {thematicIndicators.map(([label,value,year,sourceId]) => (
                 <button key={label} type="button" onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
                   <div className="text-xs font-semibold text-slate-500">{label}</div>
                   <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
