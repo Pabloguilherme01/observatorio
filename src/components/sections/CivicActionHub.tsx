@@ -124,7 +124,7 @@ export function CivicActionHub() {
     ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
   ];
   const visiblePriority = technical ? citizenPriorityServices : citizenPriorityServices.slice(0, 6);
-  const visiblePriorityTitles = new Set(visiblePriority.map(service => service.title));
+  const visiblePriorityTitles = new Set<string>(visiblePriority.map(service => service.title));
   const remainingMunicipalServices = allMunicipalServices.filter(service => !visiblePriorityTitles.has(service.title));
   const normalizedServiceQuery = normalizeServiceQuery(serviceQuery);
   const expandedServiceQueries = publicServiceAliasQuery(serviceQuery);
