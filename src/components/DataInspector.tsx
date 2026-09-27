@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
 import { copyText } from '../lib/clipboard';
+import { useLanguageMode } from '../context/LanguageModeContext';
 
 type InspectorDetail = {
   label: string;
@@ -41,6 +42,7 @@ function dispatchInspect(detail: InspectorDetail) {
 export { dispatchInspect };
 
 export function DataInspector() {
+  const { mode: languageMode } = useLanguageMode();
   const [data, setData] = useState<InspectorDetail | null>(null);
   const [copied, setCopied] = useState(false);
   const [citationCopied, setCitationCopied] = useState(false);
@@ -151,7 +153,10 @@ export function DataInspector() {
   };
 
   const canonical = new URL(window.location.origin + window.location.pathname);
-  if (data.inspectId) canonical.searchParams.set('dado', data.inspectId);
+  if (data.inspectId) {
+    canonical.searchParams.set('dado', data.inspectId);
+    canonical.searchParams.set('leitura', languageMode);
+  }
   canonical.hash = data.sectionId ? '#' + data.sectionId : (window.location.hash || '#dashboard');
   const canonicalUrl = canonical.toString();
 
