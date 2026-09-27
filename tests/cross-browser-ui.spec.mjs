@@ -107,6 +107,40 @@ test.describe('bancada cross-browser de interface', () => {
     await assertViewportIntegrity(page);
   });
 
+  test('botão Mais abre, gerencia foco, fecha com Escape e navega no mobile', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'Fluxo pertence à navegação inferior mobile.');
+    await page.goto('./');
+
+    const trigger = page.locator('#mobile-bottom-more-trigger');
+    await expect(trigger).toBeVisible();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    const menu = page.locator('#mobile-bottom-more');
+    await expect(menu).toBeVisible();
+
+    const firstItem = menu.getByRole('menuitem').first();
+    await expect(firstItem).toBeFocused();
+
+    await page.keyboard.press('Escape');
+    await expect(menu).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    await trigger.click();
+    const target = menu.getByRole('menuitem').first();
+    const targetText = (await target.locator('span').textContent())?.trim();
+    await target.click();
+    await expect(menu).toHaveCount(0);
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(targetText).toBeTruthy();
+    const hash = await page.evaluate(() => window.location.hash);
+    expect(hash).not.toBe('');
+    await expect(page.locator(hash)).toBeVisible();
+    await assertViewportIntegrity(page);
+  });
+
   test('gráficos principais mantêm geometria válida', async ({ page }) => {
     await page.goto('./');
     await navigate(page, 'dashboard');
