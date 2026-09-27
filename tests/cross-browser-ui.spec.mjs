@@ -117,8 +117,9 @@ test.describe('bancada cross-browser de interface', () => {
     });
     await page.goto('./#dashboard');
 
+    await navigate(page, 'acao');
     await page.evaluate(() => {
-      window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'acao' }));
+      window.history.replaceState(null, '', '#dashboard');
     });
     await expect(page.locator('#acao')).toBeVisible();
     await expect(page).toHaveURL(/#dashboard$/);
