@@ -8,9 +8,8 @@ import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 export function DemographicDynamic() {
   const source = d.sources.find(s => s.id === 'ibge-estimativas-2026');
   const max = Math.max(...d.populationSeries.map(p => p.value), 0);
-  const initialPopulation = d.populationSeries.find(p => p.year === 2022)?.value ?? 0;
-  const finalPopulation = d.populationSeries.at(-1)?.value ?? 0;
-  const variation = initialPopulation > 0 ? (((finalPopulation / initialPopulation) - 1) * 100) : null;
+  const populationChange = Number(d.indicators.find(item => item.id === 'population-change-2022-2026')?.value ?? 0);
+  const populationGrowth = Number(d.indicators.find(item => item.id === 'population-growth-2022-2026')?.value ?? 0);
   return (
     <section id="demografia" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="demografia-title">
       <SectionHeader titleId="demografia-title" eyebrow="Demografia dinâmica" title="População em perspectiva temporal" description="Censo e estimativas ficam separados para evitar que uma estimativa seja lida como contagem censitária." />
@@ -27,9 +26,10 @@ export function DemographicDynamic() {
               </div>
             ))}
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/8 p-4"><Users className="h-4 w-4 text-sky-300" /><div className="mt-2 text-xs text-slate-500">Variação 2022 → 2026</div><strong className="text-xl text-white">{variation === null ? 'Indisponível' : variation.toFixed(1).replace('.', ',') + '%'}</strong></div>
-            <div className="rounded-2xl border border-white/8 p-4"><TrendingUp className="h-4 w-4 text-violet-300" /><div className="mt-2 text-xs text-slate-500">Natureza do último ponto</div><strong className="text-xl text-white">Estimativa</strong></div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/8 p-4"><Users className="h-4 w-4 text-sky-300" /><div className="mt-2 text-xs text-slate-500">Variação 2022 → 2026</div><strong className="text-xl text-white">+{populationGrowth.toFixed(1).replace('.', ',')}%</strong></div>
+            <div className="rounded-2xl border border-white/8 p-4"><TrendingUp className="h-4 w-4 text-violet-300" /><div className="mt-2 text-xs text-slate-500">Diferença entre as referências</div><strong className="text-xl text-white">+{formatNumber(populationChange)}</strong><span className="mt-1 block text-[11px] text-slate-500">habitantes</span></div>
+            <div className="rounded-2xl border border-white/8 p-4"><Database className="h-4 w-4 text-sky-300" /><div className="mt-2 text-xs text-slate-500">Natureza do último ponto</div><strong className="text-xl text-white">Estimativa</strong></div>
           </div>
           <PremiumInfoCard
             compact
@@ -47,8 +47,8 @@ export function DemographicDynamic() {
           <PremiumInfoCard tone="violet" icon={TrendingUp} eyebrow="Leitura rápida" title="Escala populacional com contexto">
             A série mostra mudança de escala populacional sem misturar natureza estatística. Para comparações com eleitorado, use o universo eleitoral do TSE separadamente.
           </PremiumInfoCard>
-          <PremiumInfoCard tone="slate" icon={Database} eyebrow="Contrato do painel" title="Snapshot local, estrutura preservada">
-            O painel atual usa o snapshot local. Uma integração automatizada pode substituir os pontos sem alterar a separação entre fonte, referência e interpretação.
+          <PremiumInfoCard tone="slate" icon={Database} eyebrow="Contrato do painel" title="Dados locais, estrutura preservada">
+            O painel usa o conjunto de dados publicado pelo projeto. Uma integração automatizada pode atualizar os pontos sem alterar a separação entre fonte, referência e interpretação.
           </PremiumInfoCard>
         </div>
       </div>
