@@ -232,6 +232,22 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'street-arborization');
       return indicator ? { title: 'Arborização de vias públicas', value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '%', id: 'dashboard', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
+    if ((q.includes('sem') || q.includes('falta')) && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-access-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('sem') || q.includes('fora')) && q.includes('esgoto') && q.includes('servico')) {
+      const indicator = d.indicators.find(item => item.id === 'public-sewer-service-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('esgoto') && q.includes('sem') && q.includes('coleta')) {
+      const indicator = d.indicators.find(item => item.id === 'sewer-collection-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if (q.includes('esgoto') && q.includes('sem') && q.includes('tratamento')) {
+      const indicator = d.indicators.find(item => item.id === 'sewer-treatment-gap-2024');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (q.includes('perda') && q.includes('agua')) {
       const indicator = d.indicators.find(item => item.id === 'water-distribution-loss-2024');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
