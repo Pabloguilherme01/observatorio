@@ -8,20 +8,29 @@ import { useLanguageMode } from '../context/LanguageModeContext';
 import { copyText } from '../lib/clipboard';
 
 const categoryFor = (id: string) => {
+  if (id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
   if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
   if (id.includes('fare') || id.includes('transport')) return 'Mobilidade';
   if (id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
-  if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste')) return 'Saneamento';
-  if (id.includes('budget') || id.includes('revenue') || id.includes('expense') || id.includes('gdp') || id.includes('companies') || id.includes('caged')) return 'Economia';
+  if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer')) return 'Saneamento';
+  if (id.includes('gdp') || id.includes('companies') || id.includes('caged') || id.includes('formal')) return 'Economia';
   if (id.includes('ideb') || id.includes('education') || id.includes('enroll')) return 'Educacao';
   return 'Geral';
 };
 
+const statusLabel = (status: string) => ({
+  current: 'Atual',
+  historical: 'Historico',
+  derived: 'Derivado',
+  snapshot: 'Registro datado',
+  planned: 'Planejado',
+}[status] ?? status);
+
 const rows: readonly (readonly ExportCell[])[] = [
-  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza'],
+  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza', 'status_rotulo'],
   ...d.indicators.map(item => {
     const source = d.sources.find(source => source.id === item.sourceId);
-    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? ''];
+    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', statusLabel(item.status)];
   }),
 ];
 
