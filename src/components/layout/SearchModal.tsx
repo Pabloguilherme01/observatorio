@@ -515,7 +515,13 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
     const publicServiceQuery = kind === 'public' && label ? (serviceQuery ?? label) : null;
     if (publicServiceQuery) {
-      navigateToSection('acao', { state: { ...(window.history.state ?? {}), publicServiceQuery } });
+      const currentState = typeof window.history.state === 'object' && window.history.state !== null
+        ? window.history.state
+        : {};
+      navigateToSection('acao', {
+        state: { ...currentState, publicServiceQuery },
+        searchParams: { servico: publicServiceQuery },
+      });
       window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: publicServiceQuery }));
       return;
     }

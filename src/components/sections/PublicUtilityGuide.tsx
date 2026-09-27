@@ -1,5 +1,6 @@
 import { BookOpenCheck, ExternalLink, SearchCheck, ShieldCheck, Stethoscope, GraduationCap, WalletCards, MessageCircle, BusFront, HeartHandshake } from 'lucide-react';
 import { PremiumInfoCard } from '../ui/PremiumInfoCard';
+import { navigateToSection } from '../../lib/sectionNavigation';
 
 const quickNeeds = [
   { icon: Stethoscope, label: 'Saúde e medicamentos', query: 'medicamentos' },
@@ -36,9 +37,15 @@ const steps = [
 
 export function PublicUtilityGuide() {
   const goToServices = (query = '') => {
-    window.history.replaceState({ publicServiceQuery: query }, '', '#acao');
+    const currentState = typeof window.history.state === 'object' && window.history.state !== null
+      ? window.history.state
+      : {};
+    navigateToSection('acao', {
+      state: { ...currentState, publicServiceQuery: query },
+      replace: true,
+      searchParams: { servico: query || null },
+    });
     window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: query }));
-    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: 'acao' }));
   };
 
   return (
