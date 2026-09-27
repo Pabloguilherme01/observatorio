@@ -2,13 +2,13 @@ import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'essencial', description: 'Mostra os pontos centrais com fonte e referência, reduzindo detalhes na tela.', icon: List },
-  { id: 'simple' as const, label: 'Explicado', sub: 'com contexto', description: 'Explica os números em linguagem direta e mantém fontes e referências acessíveis.', icon: FileText },
-  { id: 'technical' as const, label: 'Detalhado', sub: 'fonte e método', description: 'Exibe fonte, data, método, recortes, cálculos e limitações para conferência completa.', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'leitura rápida', description: 'Mostra os pontos principais e mantém as fontes acessíveis.', icon: List },
+  { id: 'simple' as const, label: 'Explicado', sub: 'com contexto', description: 'Explica o que os números significam em linguagem direta.', icon: FileText },
+  { id: 'technical' as const, label: 'Detalhado', sub: 'fonte e método', description: 'Mostra fonte, data, método, cálculos, recortes e limitações.', icon: Code2 },
 ] as const;
 
 const modeGuide = {
-  summary: { title: 'Leitura essencial', detail: 'Pontos centrais · fonte e referência continuam acessíveis', signal: 'Essencial' },
+  summary: { title: 'Leitura rápida', detail: 'Pontos principais · fontes continuam acessíveis', signal: 'Essencial' },
   simple: { title: 'Leitura explicada', detail: 'Números com contexto · linguagem direta', signal: 'Contexto' },
   technical: { title: 'Leitura detalhada', detail: 'Fonte, método e limites · conferência completa', signal: 'Evidência' },
 } as const;
@@ -46,10 +46,10 @@ export function LanguageModeToggle() {
         type="button"
         className="language-toggle-deepen"
         onClick={cycleMode}
-        aria-label={mode === 'technical' ? 'Voltar para leitura essencial' : 'Aumentar nível de detalhe'}
-        title={mode === 'technical' ? 'Voltar à leitura essencial' : 'Avançar para o próximo nível de detalhe'}
+        aria-label={mode === 'technical' ? 'Voltar para leitura rápida' : 'Aumentar nível de detalhe'}
+        title={mode === 'technical' ? 'Voltar à leitura rápida' : 'Avançar para o próximo nível de detalhe'}
       >
-        <span>{mode === 'technical' ? 'Voltar ao essencial' : mode === 'summary' ? 'Explicar com contexto' : 'Ver fonte e método'}</span>
+        <span>{mode === 'technical' ? 'Voltar ao resumo' : mode === 'summary' ? 'Explicar com contexto' : 'Ver fonte e método'}</span>
         <ChevronRight aria-hidden="true" />
       </button>
     </div>
