@@ -899,6 +899,12 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await expect(page).toHaveURL(/#transporte$/);
 });
 
+test('parâmetro de leitura inválido é ignorado com segurança', async ({ page }) => {
+  await page.goto('./?leitura=desconhecido#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
+  await expect(page.locator('#dashboard')).toBeVisible();
+});
+
 test('simulador restaura o cenário padrão e persiste a redefinição', async ({ page }) => {
   await page.goto('./');
   await openSection(page, 'transporte');
