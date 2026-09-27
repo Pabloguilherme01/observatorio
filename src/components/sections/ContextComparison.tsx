@@ -23,6 +23,8 @@ export function ContextComparison() {
     ? contextualMunicipalities.filter(place => place.name.toLocaleLowerCase('pt-BR').includes(normalizedQuery))
     : contextualMunicipalities;
 
+  const referenceMunicipality = contextualMunicipalities.find(place => place.name === 'Águas Lindas de Goiás');
+  const referenceValue = referenceMunicipality?.values[metricId] ?? 0;
   const formatPopulation = (value: number) => value.toLocaleString('pt-BR');
   const formatArea = (value: number) => value.toLocaleString('pt-BR', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' km²';
 
@@ -93,18 +95,25 @@ export function ContextComparison() {
               ? ((estimatedPopulation - place.census2022Population) / place.census2022Population) * 100
               : 0;
             const density2026 = place.areaKm2 ? estimatedPopulation / place.areaKm2 : 0;
+            const isReference = place.name === 'Águas Lindas de Goiás';
+            const differenceFromReference = place.values[metricId] - referenceValue;
 
             return (
-            <Card key={place.ibgeCode} className="context-comparison-card p-4 sm:p-5">
+            <Card key={place.ibgeCode} className={`context-comparison-card p-4 sm:p-5 ${isReference ? 'ring-1 ring-sky-300/30' : ''}`}>
               <div className="context-city-head">
                 <div>
                   <div className="context-city-name">{place.name}</div>
-                  <div className="context-city-code">IBGE · {place.ibgeCode}</div>
+                  <div className="context-city-code">IBGE · {place.ibgeCode}{isReference ? ' · município de referência' : ''}</div>
                 </div>
                 <span className="context-city-badge">GO</span>
               </div>
               <div className="context-city-value">{formatValue(metric.id, place.values[metric.id])}</div>
               <div className="context-city-source">IBGE · ano-base {metric.year}</div>
+              {!isReference && (
+                <div className="mt-2 text-[11px] leading-4 text-slate-500" aria-label={`Diferença descritiva em relação a Águas Lindas: ${formatValue(metric.id, Math.abs(differenceFromReference))}`}>
+                  Em relação a Águas Lindas: {differenceFromReference > 0 ? '+' : differenceFromReference < 0 ? '−' : ''}{formatValue(metric.id, Math.abs(differenceFromReference))}
+                </div>
+              )}
               <div className="context-city-details context-city-fact-grid">
                 <span className="context-city-fact-card"><strong>População 2026</strong>{formatPopulation(estimatedPopulation)} hab.</span>
                 <span className="context-city-fact-card"><strong>Censo 2022</strong>{formatPopulation(place.census2022Population)} hab.</span>
@@ -139,7 +148,7 @@ export function ContextComparison() {
           title="Comparação oferece contexto — não ranking"
           className="context-comparison-note mt-4"
         >
-          Os valores estão lado a lado para fornecer escala e referência. Crescimento populacional e densidade 2026 são derivados da população, do Censo 2022 e da área territorial publicados pelo IBGE. Um valor maior ou menor não recebe automaticamente o significado de “melhor” ou “pior”, porque cada indicador mede uma dimensão diferente.
+          Águas Lindas aparece como referência local; nos demais cartões, a diferença mostra apenas a distância numérica para o município no indicador selecionado. Crescimento populacional e densidade 2026 são derivados dos valores publicados pelo IBGE. Diferença positiva ou negativa não significa “melhor” ou “pior”.
         </PremiumInfoCard>
       </div>
     </section>
