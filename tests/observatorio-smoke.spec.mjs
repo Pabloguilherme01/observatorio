@@ -868,14 +868,14 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await dialog.getByRole('button', { name: 'Copiar link' }).click();
   await expect(dialog.getByRole('button', { name: 'Link copiado' })).toBeVisible();
   const copiedLink = await page.evaluate(() => window.__lastCopiedText);
+  expect(copiedLink).toContain('?dado=');
   expect(copiedLink).toMatch(/#dashboard$/);
-  expect(copiedLink).not.toContain('?');
   expect(copiedLink).not.toContain('utm_source');
 
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();
   const payload = await page.evaluate(() => window.__lastInspectorShare);
+  expect(payload?.url).toContain('?dado=');
   expect(payload?.url).toMatch(/#dashboard$/);
-  expect(payload?.url).not.toContain('?');
 
   await page.evaluate(() => {
     delete navigator.share;
@@ -883,10 +883,14 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   });
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();
   const fallbackShare = await page.evaluate(() => window.__lastCopiedText);
+  expect(fallbackShare).toContain('?dado=');
   expect(fallbackShare).toContain('#dashboard');
   expect(fallbackShare).not.toContain('utm_source');
 
   await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
+  await page.goto(copiedLink);
+  await expect(page.getByRole('dialog', { name: /Variação da população/i })).toBeVisible();
+  await page.getByRole('dialog', { name: /Variação da população/i }).getByRole('button', { name: 'Fechar', exact: true }).click();
   await page.keyboard.press('g');
   await page.keyboard.press('t');
   await expect(page).toHaveURL(/#transporte$/);
