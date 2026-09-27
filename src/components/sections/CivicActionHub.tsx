@@ -155,7 +155,7 @@ export function CivicActionHub() {
             value={serviceQuery}
             onChange={event => setServiceQuery(event.target.value)}
             placeholder="O que você precisa? Ex.: medicamentos, creche, contratos…"
-            aria-label="Buscar serviço público por necessidade"
+            aria-label="Buscar serviço municipal por necessidade"
             className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
           />
           {serviceQuery && (
