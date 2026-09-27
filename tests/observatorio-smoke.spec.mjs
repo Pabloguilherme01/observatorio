@@ -1454,6 +1454,11 @@ test('busca responde indicadores públicos adicionais com fonte e contexto', asy
   await expect(answer).toContainText(/Esgotamento sanitário adequado/i);
   await page.keyboard.press('Escape');
 
+  await searchFor('internações água');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/Internações por doenças relacionadas à água/i);
+  await page.keyboard.press('Escape');
+
   await searchFor('óbitos água');
   answer = page.locator('.search-quick-answer');
   await expect(answer).toContainText(/Óbitos por doenças relacionadas à água/i);
