@@ -153,6 +153,19 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const quickAnswer = useMemo<QuickAnswer | null>(() => {
     const q = normalizeSearchQuery(query);
     if (!q || q.length < 4) return null;
+    const sourceCount = d.sources.length;
+    const indicatorCount = d.indicators.length;
+    const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+    if ((q.includes('quantos') || q.includes('total')) && q.includes('indicadores')) {
+      return { title: 'Indicadores publicados', value: indicatorCount.toLocaleString('pt-BR') + ' indicadores', id: 'dados', sourceId: 'ibge-cidades-2026', note: 'Contagem do conjunto normalizado exibido pelo Observatório; não representa o total de indicadores existentes nas fontes originais.' };
+    }
+    if ((q.includes('quantas') || q.includes('total')) && q.includes('fontes')) {
+      return { title: 'Fontes registradas', value: sourceCount.toLocaleString('pt-BR') + ' fontes', id: 'dados', sourceId: 'ibge-cidades-2026', note: 'Contagem do catálogo de fontes registrado no conjunto publicado.' };
+    }
+    if (q.includes('cobertura') && q.includes('fontes')) {
+      const coverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
+      return { title: 'Cobertura temporal das fontes', value: coverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dados', sourceId: 'ibge-cidades-2026', note: 'Percentual de fontes registradas com data de referência ou publicação.' };
+    }
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if ((q.includes('crescimento') || q.includes('variacao') || q.includes('aumento')) && q.includes('populacao')) {
       const indicator = d.indicators.find(item => item.id === 'population-growth-2022-2026');
