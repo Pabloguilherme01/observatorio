@@ -1615,3 +1615,25 @@ test('busca de serviços remove atalhos sem destino real e expõe serviços exis
   await input.fill('Renúncias fiscais');
   await expect(page.getByRole('option', { name: /Renúncias fiscais/i })).toBeVisible();
 });
+
+
+test('histórico do navegador restaura seções carregadas sob demanda', async ({ page }) => {
+  await page.goto('./#dashboard');
+  await openSection(page, 'acao');
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toBeVisible();
+
+  await openSection(page, 'dados');
+  await expect(page).toHaveURL(/#dados$/);
+  await expect(page.locator('#dados')).toBeVisible();
+
+  await page.goBack();
+  await expect(page).toHaveURL(/#acao$/);
+  await expect(page.locator('#acao')).toBeVisible();
+  await expect(page.locator('#acao')).toBeInViewport();
+
+  await page.goForward();
+  await expect(page).toHaveURL(/#dados$/);
+  await expect(page.locator('#dados')).toBeVisible();
+  await expect(page.locator('#dados')).toBeInViewport();
+});
