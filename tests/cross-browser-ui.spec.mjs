@@ -168,6 +168,19 @@ test.describe('bancada cross-browser de interface', () => {
 
 
 
+  test('entrada principal prioriza utilidade pública e leva ao serviço', async ({ page }) => {
+    await page.goto('./');
+    await navigate(page, 'descubra');
+
+    const serviceAction = page.getByRole('button', { name: /Encontrar um serviço público/i });
+    await expect(serviceAction).toBeVisible();
+    await serviceAction.click();
+    await expect(page.locator('#acao')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Serviços públicos e fontes oficiais' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Encontre um serviço municipal' })).toBeVisible();
+    await assertViewportIntegrity(page);
+  });
+
   test('utilidade pública permite chegar ao serviço pela necessidade', async ({ page }) => {
     await page.goto('./');
     await navigate(page, 'acao');
@@ -193,7 +206,7 @@ test.describe('bancada cross-browser de interface', () => {
     await expect(page.getByRole('link', { name: /Defesa Civil/i })).toBeVisible();
 
     await search.fill('termo sem correspondência 987');
-    await expect(page.getByText('Nenhum atalho com esse termo.')).toBeVisible();
+    await expect(page.getByText('Não encontramos um serviço com esse termo.')).toBeVisible();
 
     await search.fill('');
     await expect(page.getByRole('link', { name: /SAMU/i })).toBeVisible();
