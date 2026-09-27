@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
 import { copyText } from '../lib/clipboard';
+import { useLanguageMode } from '../context/LanguageModeContext';
 
 type InspectorDetail = {
   label: string;
@@ -11,6 +12,8 @@ type InspectorDetail = {
   referenceDate?: string;
   note?: string;
   method?: string;
+  inspectId?: string;
+  sectionId?: string;
 };
 
 declare global {
@@ -19,13 +22,27 @@ declare global {
   }
 }
 
+export function inspectDataId(detail: Pick<InspectorDetail, 'label' | 'sourceId'>) {
+  const slug = detail.label
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase('pt-BR')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return (detail.sourceId ?? 'observatorio') + '--' + (slug || 'dado');
+}
+
 function dispatchInspect(detail: InspectorDetail) {
-  window.dispatchEvent(new CustomEvent('observatorio:inspect-data', { detail }));
+  window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
+    detail: { ...detail, inspectId: detail.inspectId ?? inspectDataId(detail) },
+  }));
 }
 
 export { dispatchInspect };
 
 export function DataInspector() {
+  const { mode: languageMode } = useLanguageMode();
   const [data, setData] = useState<InspectorDetail | null>(null);
   const [copied, setCopied] = useState(false);
   const [citationCopied, setCitationCopied] = useState(false);
@@ -39,10 +56,12 @@ export function DataInspector() {
   useEffect(() => {
     const onInspect = (event: WindowEventMap['observatorio:inspect-data']) => {
       openerRef.current = document.activeElement as HTMLElement | null;
-      setData(event.detail);
+      const sectionId = event.detail.sectionId
+        ?? openerRef.current?.closest<HTMLElement>('section[id]')?.id
+        ?? undefined;
+      setData({ ...event.detail, sectionId });
       setCopied(false);
       setCitationCopied(false);
-      setLinkCopied(false);
       setLinkCopied(false);
       setActionError(false);
     };
@@ -56,6 +75,18 @@ export function DataInspector() {
     };
   }, []);
 
+  const closeInspector = () => {
+    if (data?.inspectId) {
+      const current = new URL(window.location.href);
+      if (current.searchParams.get('dado') === data.inspectId) {
+        current.searchParams.delete('dado');
+        current.searchParams.delete('leitura');
+        window.history.replaceState(null, '', current.pathname + current.search + current.hash);
+      }
+    }
+    setData(null);
+  };
+
   useEffect(() => {
     if (!data) {
       openerRef.current?.focus?.();
@@ -63,7 +94,7 @@ export function DataInspector() {
     }
     const focusables = () => Array.from(modalRef.current?.querySelectorAll<HTMLElement>('button,input,[href],[tabindex]:not([tabindex="-1"])') ?? []).filter(node => !node.hasAttribute('disabled'));
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { event.preventDefault(); setData(null); return; }
+      if (event.key === 'Escape') { event.preventDefault(); closeInspector(); return; }
       if (event.key !== 'Tab') return;
       const nodes = focusables();
       if (!nodes.length) return;
@@ -133,7 +164,13 @@ export function DataInspector() {
     setActionError(true);
   };
 
-  const canonicalUrl = window.location.origin + window.location.pathname + (window.location.hash || '#dashboard');
+  const canonical = new URL(window.location.origin + window.location.pathname);
+  if (data.inspectId) {
+    canonical.searchParams.set('dado', data.inspectId);
+    canonical.searchParams.set('leitura', languageMode);
+  }
+  canonical.hash = data.sectionId ? '#' + data.sectionId : (window.location.hash || '#dashboard');
+  const canonicalUrl = canonical.toString();
 
   const copyLink = async () => {
     if (await copyText(canonicalUrl)) {
@@ -162,14 +199,14 @@ export function DataInspector() {
 
   return (
     <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
-      <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={() => setData(null)} />
+      <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={closeInspector} />
       <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Inspetor de dados</div>
             <h2 id="data-inspector-title" className="mt-1 text-xl font-black text-white">{data.label}</h2>
           </div>
-          <button ref={closeRef} type="button" onClick={() => setData(null)} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar">
+          <button ref={closeRef} type="button" onClick={closeInspector} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar">
             <X className="h-4 w-4" />
           </button>
         </div>
