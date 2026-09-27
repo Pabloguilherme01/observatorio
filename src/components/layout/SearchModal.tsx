@@ -15,7 +15,7 @@ interface QuickAnswer {
   readonly title: string;
   readonly value: string;
   readonly id: string;
-  readonly sourceId: string;
+  readonly sourceId?: string;
   readonly note?: string;
 }
 
@@ -53,8 +53,8 @@ const normalizeSearchQuery = (value: string) => {
 const hasTerm = (query: string, term: string) =>
   query.split(/\s+/).includes(term);
 
-const sourceForId = (sourceId: string) => d.sources.find(source => source.id === sourceId);
-const sourceLabel = (sourceId: string) => sourceForId(sourceId)?.label ?? sourceId;
+const sourceForId = (sourceId?: string) => sourceId ? d.sources.find(source => source.id === sourceId) : undefined;
+const sourceLabel = (sourceId?: string) => sourceId ? (sourceForId(sourceId)?.label ?? sourceId) : 'Conjunto publicado pelo Observatório';
 const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Baixar dados', acao: 'Serviços públicos', contexto: 'Comparação municipal', dados: 'Atualizações públicas' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
@@ -157,14 +157,14 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     const indicatorCount = d.indicators.length;
     const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
     if ((q.includes('quantos') || q.includes('total')) && q.includes('indicadores')) {
-      return { title: 'Indicadores publicados', value: indicatorCount.toLocaleString('pt-BR') + ' indicadores', id: 'dados', sourceId: 'ibge-cidades-2026', note: 'Contagem do conjunto normalizado exibido pelo Observatório; não representa o total de indicadores existentes nas fontes originais.' };
+      return { title: 'Indicadores publicados', value: indicatorCount.toLocaleString('pt-BR') + ' indicadores', id: 'dados', note: 'Contagem do conjunto normalizado exibido pelo Observatório; não representa o total de indicadores existentes nas fontes originais.' };
     }
     if ((q.includes('quantas') || q.includes('total')) && q.includes('fontes')) {
-      return { title: 'Fontes registradas', value: sourceCount.toLocaleString('pt-BR') + ' fontes', id: 'dados', sourceId: 'ibge-cidades-2026', note: 'Contagem do catálogo de fontes registrado no conjunto publicado.' };
+      return { title: 'Fontes registradas', value: sourceCount.toLocaleString('pt-BR') + ' fontes', id: 'dados', note: 'Contagem do catálogo de fontes registrado no conjunto publicado.' };
     }
     if (q.includes('cobertura') && q.includes('fontes')) {
       const coverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
-      return { title: 'Cobertura temporal das fontes', value: coverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dados', sourceId: 'ibge-cidades-2026', note: 'Percentual de fontes registradas com data de referência ou publicação.' };
+      return { title: 'Cobertura temporal das fontes', value: coverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'dados', note: 'Percentual de fontes registradas com data de referência ou publicação.' };
     }
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
     if ((q.includes('crescimento') || q.includes('variacao') || q.includes('aumento')) && q.includes('populacao')) {
