@@ -1,3 +1,5 @@
+import { applySearchParamUpdates, toRelativeUrl } from './urlState';
+
 export type SectionNavigationOptions = {
   readonly state?: unknown;
   readonly replace?: boolean;
@@ -11,14 +13,9 @@ export function navigateToSection(id: string, options: SectionNavigationOptions 
   const hash = '#' + target;
   const nextUrl = new URL(window.location.href);
   nextUrl.hash = hash;
-  if (options.searchParams) {
-    for (const [key, value] of Object.entries(options.searchParams)) {
-      if (value === null || value === undefined || value === '') nextUrl.searchParams.delete(key);
-      else nextUrl.searchParams.set(key, value);
-    }
-  }
+  applySearchParamUpdates(nextUrl, options.searchParams);
 
-  const nextRelativeUrl = nextUrl.pathname + nextUrl.search + nextUrl.hash;
+  const nextRelativeUrl = toRelativeUrl(nextUrl);
   const sameTarget = window.location.hash === hash;
   const hasState = Object.prototype.hasOwnProperty.call(options, 'state');
   const hasSearchParams = Boolean(options.searchParams && Object.keys(options.searchParams).length);
