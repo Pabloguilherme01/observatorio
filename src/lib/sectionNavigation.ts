@@ -19,12 +19,5 @@ export function navigateToSection(id: string, options: SectionNavigationOptions 
     window.history.replaceState(options.state ?? null, '', hash);
   }
 
-  const notify = () => window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
-  notify();
-
-  if (!document.getElementById(target)) {
-    window.requestAnimationFrame(() => {
-      if (!document.getElementById(target)) notify();
-    });
-  }
+  window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
 }
