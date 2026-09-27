@@ -1412,3 +1412,50 @@ test('busca responde contagem de indicadores, fontes e cobertura temporal', asyn
   await expect(answer).toContainText(/Cobertura temporal das fontes/i);
   await expect(answer).toContainText(/%/);
 });
+
+
+test('saneamento mostra lacunas complementares sem converter percentuais em pessoas', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'saude');
+
+  const gaps = page.getByLabel('Lacunas complementares de saneamento');
+  await expect(gaps).toBeVisible();
+  await expect(gaps.getByRole('button')).toHaveCount(4);
+  await expect(gaps.getByRole('button', { name: /Sem acesso à água/i })).toBeVisible();
+  await expect(gaps.getByRole('button', { name: /Esgoto gerado sem coleta/i })).toBeVisible();
+  await expect(gaps).not.toContainText(/pessoas sem/i);
+});
+
+test('lacuna de saneamento abre fonte e fórmula no inspetor', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'saude');
+
+  const gaps = page.getByLabel('Lacunas complementares de saneamento');
+  await gaps.getByRole('button', { name: /Sem acesso à água/i }).click();
+
+  const inspector = page.getByRole('dialog', { name: /Parcela sem acesso à água/i });
+  await expect(inspector).toBeVisible();
+  await expect(inspector).toContainText(/100% menos o indicador correspondente/i);
+  await expect(inspector).toContainText(/Não representa contagem de pessoas/i);
+});
+
+test('busca responde lacunas de água, coleta e tratamento com contexto', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('sem água');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Parcela sem acesso à água/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('esgoto sem coleta');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Esgoto gerado sem coleta/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('esgoto sem tratamento');
+  await expect(page.locator('.search-quick-answer')).toContainText(/Esgoto gerado sem tratamento/i);
+});
