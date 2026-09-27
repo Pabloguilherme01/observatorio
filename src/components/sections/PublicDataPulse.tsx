@@ -8,6 +8,7 @@ export function PublicDataPulse() {
   const sourceCount = d.sources.length;
   const indicatorCount = d.indicators.length;
   const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+  const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
   return (
     <section id="dados" className="mx-auto max-w-7xl px-4 py-12 sm:px-6" aria-labelledby="dados-title">
       <SectionHeader
@@ -16,10 +17,11 @@ export function PublicDataPulse() {
         title="O que mudou"
         description="Registros novos ou alterados no conjunto publicado. Cada item mantém sua data e fonte para conferência."
       />
-      <div className="mb-4 grid gap-3 sm:grid-cols-3" aria-label="Resumo do conjunto de dados">
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do conjunto de dados">
         <DataStat label="Indicadores publicados" value={indicatorCount} />
         <DataStat label="Fontes registradas" value={sourceCount} />
         <DataStat label="Fontes com data registrada" value={datedSources} />
+        <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} />
       </div>
       <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
         <Card>
@@ -76,11 +78,11 @@ export function PublicDataPulse() {
   );
 }
 
-function DataStat({ label, value }: { readonly label: string; readonly value: number }) {
+function DataStat({ label, value }: { readonly label: string; readonly value: number | string }) {
   return (
     <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
       <Database className="h-4 w-4 text-sky-300" aria-hidden="true" />
-      <strong className="mt-2 block text-2xl font-black text-white light:text-slate-900">{value.toLocaleString('pt-BR')}</strong>
+      <strong className="mt-2 block text-2xl font-black text-white light:text-slate-900">{typeof value === 'number' ? value.toLocaleString('pt-BR') : value}</strong>
       <span className="text-xs text-slate-500">{label}</span>
     </div>
   );
