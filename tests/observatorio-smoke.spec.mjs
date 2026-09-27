@@ -1059,6 +1059,9 @@ test('comparação municipal aceita busca sem acento e não duplica sinais nas d
   await citySearch.fill('');
   await page.getByRole('tab', { name: /Variação populacional 2022–2026/i }).click();
   await expect(page.locator('.context-comparison-cards')).not.toContainText(/\+\+|−\+/);
+
+  const luzianiaCard = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
+  await expect(luzianiaCard.locator('[aria-label^="Diferença descritiva"]')).toHaveAttribute('aria-label', /−[0-9]/);
 });
 
 
