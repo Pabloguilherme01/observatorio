@@ -1039,3 +1039,17 @@ test('comparação municipal expõe seis indicadores sem ranking', async ({ page
   await page.getByRole('tab', { name: /Densidade estimada 2026/i }).click();
   await expect(page.getByText(/cálculo derivado|calculada com a população de 2026/i).first()).toBeVisible();
 });
+
+
+test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'dashboard');
+  await expect(page.getByRole('heading', { name: /Proporções com a mesma base de referência/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Educação na LOA 2026/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Saúde na LOA 2026/i })).toBeVisible();
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+  await expect(page.getByRole('button', { name: /Saneamento na LOA 2026/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Matrículas municipais na educação básica/i })).toBeVisible();
+});
