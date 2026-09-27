@@ -1211,3 +1211,40 @@ test('CSV mantém colunas antigas e acrescenta identificadores e metadados', asy
   const sourceCsv = readFileSync(sourcePath, 'utf8');
   expect(sourceCsv).toContain('frequencia_atualizacao,ultima_verificacao,licenca');
 });
+
+
+test('busca diferencia referências do HEAL sem misturar capacidade atual e planejamento', async ({ page }) => {
+  await page.goto('./');
+
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  let input = page.getByRole('combobox').first();
+  await input.fill('HEAL leitos');
+  let answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/leitos explicitados no portal atual/i);
+  await expect(answer).toContainText(/85 leitos/i);
+
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: /buscar/i }).first().click();
+  input = page.getByRole('combobox').first();
+  await input.fill('HEAL planejamento');
+  answer = page.locator('.search-quick-answer');
+  await expect(answer).toContainText(/leitos no planejamento registrado/i);
+  await expect(answer).toContainText(/não representa capacidade já instalada/i);
+});
+
+test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de status', async ({ page }) => {
+  await page.goto('./');
+  await openSection(page, 'exportacao');
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'CSV', exact: true }).click();
+  const download = await downloadPromise;
+  const path = await download.path();
+  expect(path).toBeTruthy();
+  const csv = readFileSync(path, 'utf8');
+
+  expect(csv).toContain('status_rotulo');
+  expect(csv).toMatch(/Orcamento,[^\n]*budget-health-per-capita-2026/);
+  expect(csv).toMatch(/Saude,[^\n]*heal-current-stated-beds/);
+  expect(csv).toContain('Registro datado');
+});
