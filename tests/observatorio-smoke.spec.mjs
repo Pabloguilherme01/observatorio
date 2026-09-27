@@ -57,7 +57,7 @@ test.describe('Observatório smoke flows', () => {
     await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first()).toBeVisible();
 
     await openSection(page, 'acao');
-    await expect(page.getByRole('heading', { name: /Serviços e verificação/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Serviços públicos e fontes oficiais/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Abrir Serviços da Prefeitura|Medicamentos SUS/i }).first()).toBeVisible();
   });
 
@@ -1022,7 +1022,7 @@ test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
 test('busca leva ao quiz de educação cívica', async ({ page }) => {
   await page.goto('./');
   await page.getByRole('button', { name: 'Buscar no observatório' }).click();
-  await page.getByRole('combobox', { name: 'Buscar seção, fonte ou indicador' }).fill('quiz');
+  await page.getByRole('combobox', { name: 'Buscar serviço, seção, fonte ou indicador' }).fill('quiz');
   await page.getByRole('option', { name: /Quiz de dados · 200 perguntas/ }).click();
   await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
 });
