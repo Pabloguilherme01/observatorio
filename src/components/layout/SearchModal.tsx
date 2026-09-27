@@ -276,6 +276,14 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       const indicator = d.indicators.find(item => item.id === 'household-waste-collection-2024');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
+    if (q.includes('internacao') && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
+      return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
+    if ((q.includes('obito') || q.includes('morte')) && q.includes('agua')) {
+      const indicator = d.indicators.find(item => item.id === 'water-related-deaths');
+      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' óbitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
+    }
     if (hasTerm(q, 'agua') || q.includes('abastecimento')) {
       const indicator = d.indicators.find(item => item.id === 'water-access-2024');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
@@ -365,14 +373,6 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     if ((q.includes('saneamento') && (q.includes('per capita') || q.includes('por pessoa'))) || (q.includes('investimento') && q.includes('saneamento') && q.includes('habitante'))) {
       const indicator = d.indicators.find(item => item.id === 'sanitation-investment-per-capita');
       return indicator ? { title: 'Investimento em saneamento por pessoa', value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por pessoa', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
-    }
-    if (q.includes('internacao') && q.includes('agua')) {
-      const indicator = d.indicators.find(item => item.id === 'water-related-hospitalizations');
-      return indicator ? { title: 'Internações por doenças relacionadas à água', value: Number(indicator.value).toLocaleString('pt-BR') + ' internações', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
-    }
-    if ((q.includes('obito') || q.includes('morte')) && q.includes('agua')) {
-      const indicator = d.indicators.find(item => item.id === 'water-related-deaths');
-      return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' óbitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     if (q.includes('esgotamento') && q.includes('adequado')) {
       const indicator = d.indicators.find(item => item.id === 'adequate-sewerage');
