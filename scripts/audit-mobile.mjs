@@ -23,6 +23,7 @@ const files = {
   quizData: read('src/data/quiz/questionBank.ts'),
   research: read('src/components/sections/PoliticalResearch.tsx'),
   electoral: read('src/components/sections/Electoral360.tsx'),
+  dashboard: read('src/components/sections/DashboardMetrics.tsx'),
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
   index: read('index.html'),
@@ -79,6 +80,8 @@ must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'guided'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Avançar para aprendizado guiado'), 'os quatro modos e a progressão explícita de leitura continuam disponíveis');
+must(files.mobileFinal.includes('.language-toggle-v3 .language-toggle-options{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))'), 'CSS mobile base reconhece os quatro modos sem depender de override corretivo');
+must(files.dashboard.includes("isGuided ? 'Confira natureza, data e fonte'") && files.dashboard.includes("isGuided ? 'Confira fórmula, período e base'"), 'cards do modo guiado usam ações pedagógicas específicas para observações e comparativos');
 must(files.guidedCss.includes('@media(max-width:1023px)') && files.guidedCss.includes('grid-template-columns:repeat(2,minmax(0,1fr))') && files.guidedCss.includes('@media(max-width:767px)'), 'modo guiado usa seletor 2×2 em tablet/mobile e trilha responsiva');
 must(files.guidedCss.includes('#aprendizado-guiado') && files.guidedCss.includes('min-height:48px') && files.guidedCss.includes('.mobile-tools-mode .language-toggle-v3 .language-toggle-options') && files.guidedCss.includes('scroll-margin-bottom:calc(var(--mobile-nav-height,68px)'), 'trilha guiada mobile preserva toque confortável, seletor 2×2 e distância da navegação inferior');
 must(files.language.includes('data-active-mode={mode}') && files.language.includes('language-toggle-signal'), 'seletor de leitura expõe assinatura visual do modo ativo');
