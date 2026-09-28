@@ -213,7 +213,7 @@ export function CivicActionHub() {
         {serviceQuery && (
           <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
             <p className="text-[11px] text-slate-500" role="status" aria-live="polite" aria-atomic="true">
-              {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'}.
+              {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'} para “{serviceQuery.trim()}”.
             </p>
             <button
               type="button"
@@ -233,19 +233,34 @@ export function CivicActionHub() {
         {serviceQuery && visibleMunicipalServices.length === 0 && (
           <div className="mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-4" role="note">
             <strong className="block text-sm text-amber-100 light:text-amber-900">Nenhum serviço corresponde a todos os termos.</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">Tente termos como “saúde”, “emprego”, “documentos”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">A busca combina todos os termos informados. Tente uma necessidade mais curta, como “saúde”, “emprego”, “documentos”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
             <button type="button" onClick={() => setServiceQuery('')} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
           </div>
         )}
 
         <div className="official-resource-grid official-resource-grid-local">
-          {visibleMunicipalServices.map(({ icon: Icon, title, description, href }) => (
-            <a key={title} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
-              <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
-              <span className="min-w-0 flex-1"><strong>{title}</strong><small>{description}</small></span>
-              <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
-            </a>
-          ))}
+          {visibleMunicipalServices.map(service => {
+            const Icon = service.icon;
+            const cta = 'cta' in service && typeof service.cta === 'string' ? service.cta : null;
+            return (
+              <a
+                key={service.title}
+                href={service.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="official-resource-card"
+                aria-label={`${cta ?? 'Abrir serviço'}: ${service.title} — canal oficial em nova aba`}
+              >
+                <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
+                <span className="min-w-0 flex-1">
+                  <strong>{service.title}</strong>
+                  <small>{service.description}</small>
+                  {cta && <em>{cta}</em>}
+                </span>
+                <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
+              </a>
+            );
+          })}
         </div>
 
         {technical && !serviceQuery && <details className="official-more">
