@@ -129,6 +129,9 @@ export function SanitationHealthSection() {
   const openingToPlanIncreasePct = ((plannedBeds - d.health.openingReportedBeds) / d.health.openingReportedBeds) * 100;
   const currentStatedBeds = d.health.currentStatedWardBeds + d.health.currentStatedIcuBeds;
   const currentToPlanIncrease = plannedBeds - currentStatedBeds;
+  const planningBeds = d.health.plannedBeds ?? d.health.openingReportedBeds;
+  const minimumBeds = Math.min(d.health.openingReportedBeds, currentStatedBeds, planningBeds);
+  const maximumBeds = Math.max(d.health.openingReportedBeds, currentStatedBeds, planningBeds);
   const pressure = useMemo(() => {
     const attendancePerBed = d.health.firstYearAttendancesAtLeast / Math.max(plannedBeds, 1);
     const reductionPct = (1 - attendancePerBed / (d.health.firstYearAttendancesAtLeast / d.health.openingReportedBeds)) * 100;
@@ -251,11 +254,11 @@ export function SanitationHealthSection() {
           <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50">
             <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Como ler os números de leitos</div>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
-              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">164</strong><span className="mt-1 block text-xs text-slate-500">referência reportada na inauguração</span></div>
-              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">85</strong><span className="mt-1 block text-xs text-slate-500">32 enfermaria + 53 UTI, explicitados no portal atual</span></div>
-              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">298</strong><span className="mt-1 block text-xs text-slate-500">planejamento registrado no dataset, não capacidade instalada</span></div>
+              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">{formatNumber(d.health.openingReportedBeds)}</strong><span className="mt-1 block text-xs text-slate-500">referência reportada na inauguração</span></div>
+              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">{formatNumber(currentStatedBeds)}</strong><span className="mt-1 block text-xs text-slate-500">{formatNumber(d.health.currentStatedWardBeds)} enfermaria + {formatNumber(d.health.currentStatedIcuBeds)} UTI, explicitados no portal atual</span></div>
+              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">{formatNumber(planningBeds)}</strong><span className="mt-1 block text-xs text-slate-500">planejamento registrado no dataset, não capacidade instalada</span></div>
             </div>
-            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre 164 e 85; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
+            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre {formatNumber(d.health.openingReportedBeds)} e {formatNumber(currentStatedBeds)}; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -294,13 +297,13 @@ export function SanitationHealthSection() {
                   onChange={event => {
                     const value = event.target.value as 'opening' | 'current' | 'planning';
                     setBedReference(value);
-                    setPlannedBeds(value === 'opening' ? 164 : value === 'current' ? 85 : 298);
+                    setPlannedBeds(value === 'opening' ? d.health.openingReportedBeds : value === 'current' ? currentStatedBeds : planningBeds);
                   }}
                   aria-label="Selecionar referência de leitos"
                 >
-                  <option value="opening">164 · inauguração</option>
-                  <option value="current">85 · portal atual</option>
-                  <option value="planning">298 · planejamento</option>
+                  <option value="opening">{formatNumber(d.health.openingReportedBeds)} · inauguração</option>
+                  <option value="current">{formatNumber(currentStatedBeds)} · portal atual</option>
+                  <option value="planning">{formatNumber(planningBeds)} · planejamento</option>
                 </select>
               </label>
             </div>
@@ -310,20 +313,20 @@ export function SanitationHealthSection() {
                 <strong className="mt-1 block text-3xl font-black text-white light:text-slate-900">{formatNumber(plannedBeds)} leitos</strong>
               </div>
               <span className="text-right text-[11px] leading-5 text-slate-500">
-                164 = inauguração · 85 = capacidade explicitada no portal atual · 298 = planejamento registrado
+                {formatNumber(d.health.openingReportedBeds)} = inauguração · {formatNumber(currentStatedBeds)} = capacidade explicitada no portal atual · {formatNumber(planningBeds)} = planejamento registrado
               </span>
             </div>
             <input
               className="mt-4 w-full accent-sky-400"
               type="range"
-              min={85}
-              max={298}
+              min={minimumBeds}
+              max={maximumBeds}
               step={1}
               value={plannedBeds}
               onChange={event => setPlannedBeds(Number(event.target.value))}
               aria-label="Simular quantidade de leitos"
-              aria-valuemin={85}
-              aria-valuemax={298}
+              aria-valuemin={minimumBeds}
+              aria-valuemax={maximumBeds}
               aria-valuenow={plannedBeds}
             />
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
@@ -350,7 +353,7 @@ export function SanitationHealthSection() {
 
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50">
             <div className="flex items-center justify-between gap-3">
-              <span>Variação 164 → 298</span>
+              <span>Variação {formatNumber(d.health.openingReportedBeds)} → {formatNumber(planningBeds)}</span>
               <strong className="text-white light:text-slate-900">+{openingToPlanIncreasePct.toFixed(1).replace('.', ',')}%</strong>
             </div>
             <p className="mt-2">O número de referência do planejamento é tratado como cenário e não como capacidade já instalada.</p>
