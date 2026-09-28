@@ -29,6 +29,7 @@ const entries: readonly SearchEntry[] = [
   ['Transporte', 'transporte', 'primary'],
   ['Simulador de bolso · Transporte', 'transporte', 'transport'],
   ['Teste seus conhecimentos', 'quiz', 'primary'],
+  ['Aprendizado guiado · passo a passo', 'aprendizado-guiado', 'primary'],
   ['Saneamento e saúde', 'saude', 'primary'],
   ['Pesquisas', 'politica', 'primary'],
   ['Candidaturas', 'candidaturas', 'primary'],
@@ -57,7 +58,7 @@ const hasTerm = (query: string, term: string) =>
 
 const sourceForId = (sourceId?: string) => sourceId ? d.sources.find(source => source.id === sourceId) : undefined;
 const sourceLabel = (sourceId?: string) => sourceId ? (sourceForId(sourceId)?.label ?? sourceId) : 'Conjunto publicado pelo Observatório';
-const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Baixar dados', acao: 'Serviços públicos', contexto: 'Comparação municipal', dados: 'Atualizações públicas' }[id] ?? 'Seção do observatório');
+const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', 'aprendizado-guiado': 'Aprendizado guiado', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Baixar dados', acao: 'Serviços públicos', contexto: 'Comparação municipal', dados: 'Atualizações públicas' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
