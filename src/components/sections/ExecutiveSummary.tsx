@@ -54,7 +54,7 @@ export function ExecutiveSummary() {
   const publicFacts = [
     {
       id: 'populacao',
-      label: 'População',
+      label: 'População estimada',
       value: population.toLocaleString('pt-BR') + ' hab.',
       note: populationIndicator?.note ?? 'Estimativa populacional; confira a data de referência antes de comparar com censos.',
       source: populationSource?.label ?? 'IBGE',
@@ -67,7 +67,7 @@ export function ExecutiveSummary() {
       id: 'eleitorado',
       label: 'Eleitorado',
       value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores',
-      note: 'Registro eleitoral com data própria de referência.',
+      note: 'Registro do eleitorado no recorte indicado; não representa comparecimento nem população total.',
       source: d.sources.find(sourceItem => sourceItem.id === electorate.sourceId)?.label ?? 'TSE',
       badge: 'Recorte',
       status: 'snapshot',
@@ -87,7 +87,7 @@ export function ExecutiveSummary() {
     },
     {
       id: 'saneamento',
-      label: 'Atendimento de esgoto',
+      label: 'Atendimento por serviço público de esgoto',
       value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%',
       note: sanitationIndicator?.note ?? 'Cobertura do serviço público; não representa automaticamente coleta ou tratamento.',
       source: sanitationSource?.label ?? 'Fonte de saneamento',
@@ -170,8 +170,8 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Visão rápida</span>
-                <h3>Quatro sinais para começar</h3>
-                <p className="summary-public-lead">Uma leitura enxuta dos indicadores centrais, com contexto e fonte a um toque.</p>
+                <h3>Quatro indicadores para orientar a leitura</h3>
+                <p className="summary-public-lead">População, eleitorado, orçamento planejado e saneamento aparecem com natureza, data de referência e fonte para evitar comparações fora de contexto.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -197,7 +197,7 @@ export function ExecutiveSummary() {
               </div>
               <div className="summary-public-discovery-head">
                 <span>Indicadores em destaque</span>
-                <small>Fonte e referência em cada cartão</small>
+                <small>Natureza, referência e origem em cada cartão</small>
               </div>
 
               <div className="summary-public-facts" aria-label="Cartões de contexto rápido">
@@ -238,7 +238,7 @@ export function ExecutiveSummary() {
             </div>
             <div className="summary-simple-tip mt-3">
               <strong className="text-slate-200">Leitura guiada</strong>
-              <span className="ml-2">Comece pelo número, entenda o contexto e abra a fonte quando quiser ir além.</span>
+              <span className="ml-2">Leia o valor junto da data e da natureza do dado; depois abra a fonte para conferir escopo e metodologia.</span>
             </div>
           </>
         )}
