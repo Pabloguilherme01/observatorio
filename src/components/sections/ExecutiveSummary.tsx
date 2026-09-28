@@ -4,6 +4,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
+import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { copyText } from '../../lib/clipboard';
 import { navigateToCleanSection } from '../../lib/sectionNavigation';
@@ -11,15 +12,6 @@ import '../../assets/styles/summary-polish.css';
 
 function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-}
-
-function statusLabel(status?: string) {
-  if (status === 'derived') return 'Derivado';
-  if (status === 'current') return 'Atual';
-  if (status === 'snapshot') return 'Recorte';
-  if (status === 'historical') return 'Histórico';
-  if (status === 'planned') return 'Planejado';
-  return 'Fonte pública';
 }
 
 export function ExecutiveSummary() {
@@ -58,7 +50,7 @@ export function ExecutiveSummary() {
       value: population.toLocaleString('pt-BR') + ' hab.',
       note: populationIndicator?.note ?? 'Estimativa populacional; confira a data de referência antes de comparar com censos.',
       source: populationSource?.label ?? 'IBGE',
-      badge: statusLabel(populationIndicator?.status),
+      badge: formatIndicatorStatus(populationIndicator?.status, 'Fonte pública'),
       status: populationIndicator?.status ?? 'current',
       referenceDate: populationIndicator?.referenceDate ?? populationPoint?.referenceDate,
       target: 'dashboard',
@@ -69,7 +61,7 @@ export function ExecutiveSummary() {
       value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores',
       note: 'Registro do eleitorado no recorte indicado; não representa comparecimento nem população total.',
       source: d.sources.find(sourceItem => sourceItem.id === electorate.sourceId)?.label ?? 'TSE',
-      badge: 'Recorte',
+      badge: formatIndicatorStatus('snapshot', 'Fonte pública'),
       status: 'snapshot',
       referenceDate: electorate.snapshotDate,
       target: 'eleitorado',
@@ -80,7 +72,7 @@ export function ExecutiveSummary() {
       value: brl(budgetPerCapita) + '/ano',
       note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.',
       source: d.sources.find(sourceItem => sourceItem.id === budgetPerCapitaIndicator?.sourceId)?.label ?? budgetSource?.label ?? 'LOA municipal',
-      badge: statusLabel(budgetPerCapitaIndicator?.status),
+      badge: formatIndicatorStatus(budgetPerCapitaIndicator?.status, 'Fonte pública'),
       status: budgetPerCapitaIndicator?.status ?? 'derived',
       referenceDate: budgetPerCapitaIndicator?.referenceDate ?? budgetSource?.referenceDate,
       target: 'orcamento',
@@ -91,7 +83,7 @@ export function ExecutiveSummary() {
       value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%',
       note: sanitationIndicator?.note ?? 'Cobertura do serviço público; não representa automaticamente coleta ou tratamento.',
       source: sanitationSource?.label ?? 'Fonte de saneamento',
-      badge: statusLabel(sanitationIndicator?.status),
+      badge: formatIndicatorStatus(sanitationIndicator?.status, 'Fonte pública'),
       status: sanitationIndicator?.status ?? 'historical',
       referenceDate: sanitationIndicator?.referenceDate,
       target: 'saude',
