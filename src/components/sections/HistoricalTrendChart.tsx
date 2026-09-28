@@ -79,9 +79,7 @@ function TrendLine({
         const { cx, cy, payload, index } = props;
         if (typeof cx !== 'number' || typeof cy !== 'number' || !payload) return null;
         const value = payload[dataKey];
-        return value === null
-          ? <circle cx={cx} cy={cy} r={5} fill="none" stroke="currentColor" strokeWidth={2} strokeDasharray="2 2" aria-hidden="true" />
-          : <circle key={index} cx={cx} cy={cy} r={4} fill="currentColor" stroke="none" />;
+        return value === null ? null : <circle key={index} cx={cx} cy={cy} r={4} fill="currentColor" stroke="none" />;
       }}
       activeDot={{ r: 5 }}
       isAnimationActive
@@ -149,13 +147,13 @@ export function HistoricalTrendChart() {
             </div>
             <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">População e eleitorado</h3>
             <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">
-              Série de 2022 a 2026 com os pontos disponíveis no conjunto de dados. Anos sem observação não são interpolados e população e eleitorado mantêm universos separados.
+              Série de 2022 a 2026 com os pontos disponíveis no conjunto de dados. Anos sem observação aparecem como lacunas na linha, sem estimativa ou interpolação; população e eleitorado mantêm universos separados.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-slate-500">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 px-2.5 py-1.5 light:border-slate-200 light:bg-white"><Users className="h-3 w-3" aria-hidden="true" /> População</span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 px-2.5 py-1.5 light:border-slate-200 light:bg-white"><Activity className="h-3 w-3" aria-hidden="true" /> Eleitorado</span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-white/14 px-2.5 py-1.5 text-slate-500 light:border-slate-300 light:bg-white">○ Sem observação</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-white/14 px-2.5 py-1.5 text-slate-500 light:border-slate-300 light:bg-white">Lacunas não conectadas</span>
           </div>
         </div>
       </figcaption>
