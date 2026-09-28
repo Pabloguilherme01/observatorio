@@ -44,14 +44,14 @@ function navigateToHash(hash: string) {
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
 }
 
-function performHashScroll(hash: string) {
+function performHashScroll(hash: string, behaviorOverride?: ScrollBehavior) {
   if (!hash) return false;
   const target = document.getElementById(hash);
   if (!target) return false;
   const reduceMotion = document.documentElement.classList.contains('reduced-motion')
     || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   target.scrollIntoView({
-    behavior: reduceMotion ? 'auto' : 'smooth',
+    behavior: behaviorOverride ?? (reduceMotion ? 'auto' : 'smooth'),
     block: 'start',
   });
   if (target instanceof HTMLElement) {
@@ -60,9 +60,23 @@ function performHashScroll(hash: string) {
       const active = document.activeElement;
       const focusIsUnclaimed = !active || active === document.body || active === document.documentElement || active === target;
       if (focusIsUnclaimed) target.focus({ preventScroll: true });
-    }, reduceMotion ? 0 : 180);
+    }, behaviorOverride === 'auto' || reduceMotion ? 0 : 180);
   }
   return true;
+}
+
+function stabilizeHistoryScroll(hash: string) {
+  if (!hash) return;
+  scrollToHashWhenReady(hash);
+
+  const align = () => {
+    if (window.location.hash.slice(1) !== hash) return;
+    performHashScroll(hash, 'auto');
+  };
+
+  window.requestAnimationFrame(() => window.requestAnimationFrame(align));
+  window.setTimeout(align, 360);
+  window.setTimeout(align, 900);
 }
 
 function openDeepLinkedInspectorWhenReady() {
@@ -167,7 +181,7 @@ function NavigationModeBridge() {
       // hashchange already dispatches observatorio:navigate for history entries.
       // Keep popstate responsible only for mode restoration and scrolling so
       // Back/Forward emits a single navigation event.
-      scrollToHashWhenReady(target);
+      stabilizeHistoryScroll(target);
     };
 
     window.addEventListener('observatorio:navigate', onNavigate);
