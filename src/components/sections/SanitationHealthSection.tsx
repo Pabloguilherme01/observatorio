@@ -124,11 +124,11 @@ export function SanitationHealthSection() {
   const wasteCollectionIndicator = d.indicators.find(item => item.id === 'household-waste-collection-2024');
   const wasteCollectionYear = wasteCollectionIndicator?.referenceDate?.slice(0, 4) ?? sanitationReferenceYear;
   const [plannedBeds, setPlannedBeds] = useState(d.health.plannedBeds ?? d.health.openingReportedBeds);
-  const [bedReference, setBedReference] = useState<'opening' | 'current' | 'planning'>('planning');
+  const [bedReference, setBedReference] = useState<'opening' | 'current' | 'planning' | 'custom'>('planning');
   const minimumAttendancesPerOpeningBed = healthCapacity(d.health.firstYearAttendancesAtLeast, d.health.openingReportedBeds);
-  const openingToPlanIncreasePct = ((plannedBeds - d.health.openingReportedBeds) / d.health.openingReportedBeds) * 100;
+  const scenarioVsOpeningPct = ((plannedBeds - d.health.openingReportedBeds) / d.health.openingReportedBeds) * 100;
   const currentStatedBeds = d.health.currentStatedWardBeds + d.health.currentStatedIcuBeds;
-  const currentToPlanIncrease = plannedBeds - currentStatedBeds;
+  const scenarioVsCurrent = plannedBeds - currentStatedBeds;
   const planningBeds = d.health.plannedBeds ?? d.health.openingReportedBeds;
   const minimumBeds = Math.min(d.health.openingReportedBeds, currentStatedBeds, planningBeds);
   const maximumBeds = Math.max(d.health.openingReportedBeds, currentStatedBeds, planningBeds);
@@ -303,13 +303,14 @@ export function SanitationHealthSection() {
                 >
                   <option value="opening">{formatNumber(d.health.openingReportedBeds)} · inauguração</option>
                   <option value="current">{formatNumber(currentStatedBeds)} · portal atual</option>
-                  <option value="planning">{formatNumber(planningBeds)} · planejamento</option>
+                  <option value="planning">{formatNumber(planningBeds)} · planejamento publicado</option>
+                  {bedReference === 'custom' && <option value="custom">{formatNumber(plannedBeds)} · cenário personalizado</option>}
                 </select>
               </label>
             </div>
             <div className="mt-4 flex items-end justify-between gap-3">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Referência ativa</span>
+                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">{bedReference === 'custom' ? 'Cenário personalizado' : 'Referência ativa'}</span>
                 <strong className="mt-1 block text-3xl font-black text-white light:text-slate-900">{formatNumber(plannedBeds)} leitos</strong>
               </div>
               <span className="text-right text-[11px] leading-5 text-slate-500">
@@ -323,7 +324,10 @@ export function SanitationHealthSection() {
               max={maximumBeds}
               step={1}
               value={plannedBeds}
-              onChange={event => setPlannedBeds(Number(event.target.value))}
+              onChange={event => {
+                setPlannedBeds(Number(event.target.value));
+                setBedReference('custom');
+              }}
               aria-label="Simular quantidade de leitos"
               aria-valuemin={minimumBeds}
               aria-valuemax={maximumBeds}
@@ -339,24 +343,24 @@ export function SanitationHealthSection() {
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
               <strong className="block text-white light:text-slate-900">{formatNumber(plannedBeds)}</strong>
-              <span className="text-xs text-slate-500">leitos planejados no dataset</span>
+              <span className="text-xs text-slate-500">{bedReference === 'custom' ? 'leitos no cenário simulado' : bedReference === 'planning' ? 'leitos no planejamento publicado' : 'leitos na referência selecionada'}</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
               <strong className="block text-white light:text-slate-900">+{formatNumber(plannedBeds - d.health.openingReportedBeds)}</strong>
               <span className="text-xs text-slate-500">leitos vs. referência de inauguração</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">+{formatNumber(currentToPlanIncrease)}</strong>
+              <strong className="block text-white light:text-slate-900">+{formatNumber(scenarioVsCurrent)}</strong>
               <span className="text-xs text-slate-500">leitos vs. capacidade explicitada hoje</span>
             </div>
           </div>
 
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50">
             <div className="flex items-center justify-between gap-3">
-              <span>Variação {formatNumber(d.health.openingReportedBeds)} → {formatNumber(planningBeds)}</span>
-              <strong className="text-white light:text-slate-900">+{openingToPlanIncreasePct.toFixed(1).replace('.', ',')}%</strong>
+              <span>Variação da referência de inauguração → cenário selecionado</span>
+              <strong className="text-white light:text-slate-900">+{scenarioVsOpeningPct.toFixed(1).replace('.', ',')}%</strong>
             </div>
-            <p className="mt-2">O número de referência do planejamento é tratado como cenário e não como capacidade já instalada.</p>
+            <p className="mt-2">O cálculo acima usa a referência ou o cenário selecionado. Quando o controle é ajustado manualmente, o valor passa a ser uma simulação do usuário e não um dado publicado.</p>
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
