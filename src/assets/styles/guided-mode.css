@@ -181,10 +181,13 @@
 .light .guided-learning-reset{border-color:#e2e8f0;color:#475569}
 .light .guided-learning-next{border-color:#f5cf73;background:#fffbeb;color:#92400e}
 
-@media(max-width:767px){
+@media(max-width:1023px){
   .language-toggle-v3 .language-toggle-options{
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
   }
+}
+
+@media(max-width:767px){
   [data-language-mode="guided"] .audience-home .audience-topic-grid,
   [data-language-mode="guided"] .audience-home .audience-action-grid,
   [data-language-mode="guided"] .audience-home .audience-resource-grid{
