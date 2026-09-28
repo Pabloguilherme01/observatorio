@@ -22,13 +22,14 @@ Aplicação web de dados públicos e contexto municipal, construída com Vite + 
 
 ## Modos de leitura
 
-O site adapta o conteúdo e o visual a três modos, persistidos no navegador:
+O site adapta conteúdo, densidade e apoio à leitura em quatro modos, persistidos no navegador:
 
 - **Resumo** — leitura rápida dos pontos principais, com referência e origem preservadas.
 - **Explicado** — acrescenta contexto para entender natureza, período, definições e significado dos números.
+- **Guiado** — organiza a leitura em uma trilha pedagógica com perguntas-guia, glossário de status, próxima etapa sugerida e progresso por etapas visitadas. Usa os mesmos dados do Explicado e não recomenda escolhas políticas ou eleitorais.
 - **Detalhado** — amplia a leitura com fonte, data, método, cálculos, recortes e limitações. O **Mapa de Evidências** aparece neste modo.
 
-O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo e Explicado (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Detalhado.
+O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo, Explicado e Guiado (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Detalhado.
 
 ## Quiz do Observatório
 
@@ -79,8 +80,9 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 **V44.10.1 — Observatório de Dados Cívicos e Eleitorais.**
 
-- Três modos de leitura (Resumo, Explicado, Detalhado) com preferência persistida.
+- Quatro modos de leitura (Resumo, Explicado, Guiado, Detalhado) com preferência persistida e links compartilháveis.
 - Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
+- Aprendizado Guiado com trilha de 6 etapas, perguntas-guia, glossário de status e progresso local reiniciável.
 - Mapa de evidências reservado ao modo Detalhado, em mini cards de auditoria.
 - Navegação mobile com barra inferior, `aria-current`, áreas de toque >=44px e safe-area.
 - Carregamento diferido por proximidade da viewport, reduzindo o JavaScript inicial.
