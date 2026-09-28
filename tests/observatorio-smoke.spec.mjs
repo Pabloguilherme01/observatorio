@@ -1146,7 +1146,7 @@ test('comparação municipal aceita busca sem acento e não duplica sinais nas d
 test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ page }) => {
   await page.goto('./');
   await openSection(page, 'dashboard');
-  await expect(page.getByRole('heading', { name: /Proporções com a mesma base de referência/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Comparativos com método explícito/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Educação na LOA 2026/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Saúde na LOA 2026/i })).toBeVisible();
 

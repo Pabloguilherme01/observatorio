@@ -42,7 +42,7 @@ must(
   hero.includes('Uma visão executiva da cidade') &&
   audience.includes('Comece pelo que você precisa saber.') &&
   executive.includes('Resumo principal') &&
-  dashboard.includes('Indicadores com fonte e método') &&
+  (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
   trust.includes('Confiança começa pela origem') &&
   civic.includes('Da evidência à fonte'),
   'cada modo possui narrativa editorial própria sem alterar a neutralidade'
