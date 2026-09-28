@@ -123,6 +123,7 @@ export function DataInspector() {
   const effectiveNote = data?.note ?? source?.note;
   const statusLabel = formatIndicatorStatus(data?.status);
   const referenceLabel = publicDate(effectiveReferenceDate);
+  const sourcePublishedLabel = publicDate(source?.publishedAt);
 
   if (!data) return null;
 
@@ -131,7 +132,8 @@ export function DataInspector() {
     data.value,
     source ? `Fonte: ${source.institution} — ${source.label}` : '',
     statusLabel ? `Natureza/status: ${statusLabel}` : '',
-    referenceLabel ? `Referência: ${referenceLabel}` : '',
+    referenceLabel ? `Referência: ${referenceLabel}` : 'Referência: não informada',
+    sourcePublishedLabel ? `Publicação da fonte: ${sourcePublishedLabel}` : '',
     data.method ? `Método: ${data.method}` : '',
     effectiveNote ?? '',
   ].filter(Boolean).join('\n');
@@ -231,7 +233,7 @@ export function DataInspector() {
             <div className="mt-2 text-xs leading-5 text-slate-500">{data.method ?? 'Valor apresentado pelo conjunto de dados do observatório.'}</div>
             <div className="dashboard-card-meta mt-3">
               {data.status && <span className="dashboard-meta-chip" data-kind={data.status}>{statusLabel}</span>}
-              {effectiveReferenceDate && <span className="dashboard-meta-chip">ref. {referenceLabel}</span>}
+              <span className="dashboard-meta-chip">{effectiveReferenceDate ? `ref. ${referenceLabel}` : 'ref. não informada'}</span>
             </div>
           </div>
 
@@ -240,8 +242,20 @@ export function DataInspector() {
             <Info label="Base / conjunto" value={source?.label ?? 'Não informado'} />
             <Info label="Natureza / estado" value={statusLabel ?? source?.nature ?? 'Não informado'} />
             <Info label="Ano-base / referência" value={referenceLabel ?? 'Não informado'} />
+            <Info label="Publicação da fonte" value={sourcePublishedLabel ?? 'Não informada'} />
             <Info label="Atualização da fonte" value={source?.updateFrequency ?? 'Não informada'} />
           </div>
+
+          {!effectiveReferenceDate && (
+            <div className="rounded-2xl border border-amber-300/12 bg-amber-300/[0.025] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/40 light:bg-amber-50/70 light:text-slate-600">
+              <strong className="text-amber-200 light:text-amber-800">Referência temporal não estruturada</strong>
+              <p className="mt-1">
+                {sourcePublishedLabel
+                  ? `A fonte registra publicação em ${sourcePublishedLabel}, mas essa data não substitui o ano-base ou a referência do indicador.`
+                  : 'O registro não informa uma data de referência estruturada. Confira a fonte antes de tratar o valor como atual ou comparável a outro período.'}
+              </p>
+            </div>
+          )}
 
           {effectiveNote && (
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-400 light:border-slate-200 light:bg-slate-50 light:text-slate-600">
