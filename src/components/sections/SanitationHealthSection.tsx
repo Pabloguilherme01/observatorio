@@ -2,7 +2,7 @@ import { Droplets, HeartPulse, TriangleAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';
-import { formatNumber, formatPercent } from '../../utils/formatters';
+import { formatDate, formatNumber, formatPercent } from '../../utils/formatters';
 import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -12,6 +12,8 @@ const sewerHistory = [
   { year: 2020, value: 42.5 }, { year: 2021, value: 46.2 }, { year: 2022, value: 72.0 },
   { year: 2023, value: 80.8 }, { year: 2024, value: d.sanitation.publicSewerServicePct },
 ] as const;
+const sewerHistoryStartYear = sewerHistory[0].year;
+const sewerHistoryEndYear = sewerHistory[sewerHistory.length - 1].year;
 
 function MetricBar({ label, value, emphasis = false }: { readonly label: string; readonly value: number; readonly emphasis?: boolean }) {
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null);
@@ -66,9 +68,9 @@ function SewerCurve() {
   }));
   return (
     <figure className="mt-6 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
-      <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Histórico · atendimento por rede pública</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Indicador histórico de acesso ao serviço público de esgoto, 2017–2024.</p></figcaption>
-      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label="Histórico do atendimento por rede pública de esgoto entre 2017 e 2024, em escala de 0 a 100 por cento. Não é série de tratamento efetivo.">
-        <title>Atendimento por rede pública de esgoto, 2017 a 2024</title>
+      <figcaption><div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Histórico · atendimento por rede pública</div><p className="mt-1 text-sm text-slate-400 light:text-slate-600">Indicador histórico de acesso ao serviço público de esgoto, {sewerHistoryStartYear}–{sewerHistoryEndYear}.</p></figcaption>
+      <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" className="mt-4 h-auto w-full" role="img" aria-label={`Histórico do atendimento por rede pública de esgoto entre ${sewerHistoryStartYear} e ${sewerHistoryEndYear}, em escala de 0 a 100 por cento. Não é série de tratamento efetivo.`}>
+        <title>{`Atendimento por rede pública de esgoto, ${sewerHistoryStartYear} a ${sewerHistoryEndYear}`}</title>
         <desc>{sewerHistory.map(point => `${point.year}: ${String(point.value).replace('.', ',')} por cento`).join('; ')}.</desc>
         {[0, 50, 100].map(value => {
           const y = 28 + ((chartMax - value) / (chartMax - chartMin)) * 122;
@@ -115,6 +117,12 @@ function SewerCurve() {
 }
 
 export function SanitationHealthSection() {
+  const sanitationReference = d.indicators.find(item => item.id === 'public-sewer-service-2024');
+  const sanitationReferenceYear = sanitationReference?.referenceDate?.slice(0, 4) ?? String(sewerHistoryEndYear);
+  const adequateSewerageIndicator = d.indicators.find(item => item.id === 'adequate-sewerage');
+  const adequateSewerageYear = adequateSewerageIndicator?.referenceDate?.slice(0, 4) ?? 'ano-base próprio';
+  const wasteCollectionIndicator = d.indicators.find(item => item.id === 'household-waste-collection-2024');
+  const wasteCollectionYear = wasteCollectionIndicator?.referenceDate?.slice(0, 4) ?? sanitationReferenceYear;
   const [plannedBeds, setPlannedBeds] = useState(d.health.plannedBeds ?? d.health.openingReportedBeds);
   const [bedReference, setBedReference] = useState<'opening' | 'current' | 'planning'>('planning');
   const minimumAttendancesPerOpeningBed = healthCapacity(d.health.firstYearAttendancesAtLeast, d.health.openingReportedBeds);
@@ -146,6 +154,11 @@ export function SanitationHealthSection() {
             <Droplets className="h-5 w-5 text-sky-300" aria-hidden="true" />
           </div>
 
+          <div className="dashboard-card-meta mt-3">
+            <span className="dashboard-meta-chip" data-kind={sanitationReference?.status}>Base SINISA</span>
+            {sanitationReference?.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(sanitationReference.referenceDate)}</span>}
+          </div>
+
           <div className="mt-6 space-y-4">
             <MetricBar label="Acesso à água" value={d.sanitation.waterAccessPct} emphasis />
             <MetricBar label="Acesso ao serviço público de esgoto" value={d.sanitation.publicSewerServicePct} emphasis />
@@ -172,7 +185,7 @@ export function SanitationHealthSection() {
                   <button
                     key={id}
                     type="button"
-                    className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-3 text-left hover:border-amber-300/20 light:bg-white"
+                    className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-3 text-left hover:border-amber-300/20 light:bg-white"
                     data-inspect-id={indicator ? inspectDataId({ label: indicator.label, sourceId: indicator.sourceId }) : undefined}
                     onClick={() => indicator && dispatchInspect({
                       label: indicator.label,
@@ -185,7 +198,11 @@ export function SanitationHealthSection() {
                   >
                     <strong className="block text-xl font-black text-white light:text-slate-900">{formatPercent(Number(indicator?.value ?? 0), 1)}</strong>
                     <span className="mt-1 block text-xs text-slate-500">{label}</span>
-                    <span className="mt-2 inline-flex text-[10px] font-bold uppercase tracking-wide text-amber-200/80 light:text-amber-700">Ver fonte e fórmula</span>
+                    <div className="dashboard-card-meta mt-3">
+                      <span className="dashboard-meta-chip" data-kind={indicator?.status}>Derivado</span>
+                      {indicator?.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(indicator.referenceDate)}</span>}
+                    </div>
+                    <div className="dashboard-card-action mt-3">Ver fonte e fórmula</div>
                   </button>
                 );
               })}
@@ -196,9 +213,9 @@ export function SanitationHealthSection() {
             <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">Outra definição, outro ano-base</div>
             <div className="mt-2 flex items-end gap-3">
               <strong className="text-2xl font-black text-white light:text-slate-900">{formatPercent(Number(d.indicators.find(item => item.id === 'adequate-sewerage')?.value ?? 0), 2)}</strong>
-              <span className="text-xs leading-5 text-slate-500">esgotamento sanitário adequado · IBGE · 2022</span>
+              <span className="text-xs leading-5 text-slate-500">esgotamento sanitário adequado · IBGE · {adequateSewerageYear}</span>
             </div>
-            <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outro ano-base. Leia-o separadamente dos percentuais SINISA 2024.</p>
+            <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outro ano-base. Leia-o separadamente dos percentuais SINISA {sanitationReferenceYear}.</p>
           </div>
 
 <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -212,7 +229,7 @@ export function SanitationHealthSection() {
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
               <strong className="block text-white light:text-slate-900">{formatPercent(d.sanitation.householdWasteCollectionPct, 1)}</strong>
-              <span className="text-xs text-slate-500">domicílios com coleta de resíduos · SINISA 2024</span>
+              <span className="text-xs text-slate-500">domicílios com coleta de resíduos · SINISA {wasteCollectionYear}</span>
             </div>
           </div>
 
