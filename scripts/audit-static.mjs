@@ -122,6 +122,13 @@ must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json 
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
     && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
+    && ciWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
+    && ciWorkflow.includes('chrome-desktop')
+    && ciWorkflow.includes('firefox-desktop')
+    && ciWorkflow.includes('safari-desktop')
+    && ciWorkflow.includes('chrome-android')
+    && ciWorkflow.includes('safari-iphone')
+    && ciWorkflow.includes('safari-iphone-se')
     && deployWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
