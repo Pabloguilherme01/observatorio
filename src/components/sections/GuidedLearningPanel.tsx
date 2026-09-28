@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpenCheck, CheckCircle2, GraduationCap, RotateCcw } from 'lucide-react';
+import { ArrowRight, BookOpenCheck, CheckCircle2, Compass, GraduationCap, RotateCcw } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { STORAGE_NAMESPACE } from '../../config/version';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -10,36 +10,48 @@ const steps = [
   {
     id: 'valor',
     target: 'resumo',
+    skill: 'Leitura',
+    question: 'O que este número mede — e em qual unidade?',
     title: '1. Identifique o que o número mede',
     description: 'Comece pelo valor e pela unidade. Evite comparar antes de saber exatamente o que está sendo contado.',
   },
   {
     id: 'referencia',
     target: 'dashboard',
+    skill: 'Tempo',
+    question: 'De quando é o dado e qual é a sua natureza?',
     title: '2. Confira período e natureza',
     description: 'Veja a data de referência e se o indicador é publicado, histórico, planejado, recorte datado ou derivado.',
   },
   {
     id: 'contexto',
     target: 'eleitorado',
+    skill: 'Recorte',
+    question: 'Estou comparando universos e bases equivalentes?',
     title: '3. Separe universos e recortes',
     description: 'Observe população, eleitorado e outros universos separadamente. Diferenças de base não são erro automático.',
   },
   {
     id: 'utilidade',
     target: 'acao',
+    skill: 'Utilidade',
+    question: 'Qual canal oficial atende a necessidade prática?',
     title: '4. Leve a informação ao serviço certo',
     description: 'Use os canais oficiais quando a necessidade for prática: atendimento, documentos, saúde, assistência ou transparência.',
   },
   {
     id: 'fonte',
     target: 'fontes',
+    skill: 'Verificação',
+    question: 'Quem publicou, quando e com quais limitações?',
     title: '5. Confira a origem',
     description: 'Abra a fonte, confirme instituição e data e leia as limitações antes de usar o número em uma conclusão.',
   },
   {
     id: 'quiz',
     target: 'quiz',
+    skill: 'Revisão',
+    question: 'Consigo reconhecer valor, período, natureza e fonte?',
     title: '6. Teste a compreensão',
     description: 'Use o quiz de educação cívica para revisar conceitos. A pontuação é pessoal e não indica preferência política.',
   },
@@ -65,7 +77,9 @@ export function GuidedLearningPanel() {
   const [visited, setVisited] = useState<GuidedStepId[]>(readVisited);
 
   const visitedSet = useMemo(() => new Set(visited), [visited]);
-  const nextStep = steps.find(step => !visitedSet.has(step.id)) ?? steps[0];
+  const nextUnvisitedStep = steps.find(step => !visitedSet.has(step.id));
+  const continueStep = nextUnvisitedStep ?? steps[0];
+  const allVisited = visitedSet.size === steps.length;
   const progress = Math.round((visitedSet.size / steps.length) * 100);
 
   if (mode !== 'guided') return null;
@@ -91,26 +105,47 @@ export function GuidedLearningPanel() {
             <h2 id="guided-learning-title">Como ler dados públicos em etapas</h2>
             <p>A trilha organiza a navegação; os valores continuam vindo dos mesmos cards, fontes e métodos dos outros modos.</p>
           </div>
-          <div className="guided-learning-progress" aria-label={`${visitedSet.size} de ${steps.length} etapas visitadas`}>
+          <div
+            className="guided-learning-progress"
+            role="progressbar"
+            aria-label="Progresso da trilha guiada"
+            aria-valuemin={0}
+            aria-valuemax={steps.length}
+            aria-valuenow={visitedSet.size}
+            aria-valuetext={`${visitedSet.size} de ${steps.length} etapas visitadas`}
+          >
             <strong>{visitedSet.size}/{steps.length}</strong>
             <span>etapas visitadas</span>
             <div aria-hidden="true"><i style={{ width: progress + '%' }} /></div>
           </div>
         </div>
 
+        <div className="guided-learning-next-card" aria-live="polite">
+          <span><Compass aria-hidden="true" /> {allVisited ? 'Trilha visitada' : 'Próxima etapa sugerida'}</span>
+          <strong>{allVisited ? 'Revise qualquer etapa quando quiser' : continueStep.title}</strong>
+          <small>{allVisited ? 'O progresso indica navegação pelas etapas, não avaliação de conhecimento.' : continueStep.question}</small>
+        </div>
+
         <div className="guided-learning-grid">
           {steps.map(step => {
             const done = visitedSet.has(step.id);
+            const isNext = !allVisited && nextUnvisitedStep?.id === step.id;
             return (
               <button
                 key={step.id}
                 type="button"
-                className={`guided-learning-step ${done ? 'is-visited' : ''}`}
+                className={`guided-learning-step ${done ? 'is-visited' : ''} ${isNext ? 'is-next' : ''}`}
                 onClick={() => openStep(step)}
-                aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}`}
+                aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}. Pergunta-guia: ${step.question}`}
+                aria-current={isNext ? 'step' : undefined}
               >
                 <span className="guided-learning-check" aria-hidden="true">{done ? <CheckCircle2 /> : <BookOpenCheck />}</span>
-                <span className="guided-learning-copy"><strong>{step.title}</strong><small>{step.description}</small></span>
+                <span className="guided-learning-copy">
+                  <em>{step.skill}{isNext ? ' · próxima' : done ? ' · visitada' : ''}</em>
+                  <strong>{step.title}</strong>
+                  <small className="guided-learning-question">{step.question}</small>
+                  <small>{step.description}</small>
+                </span>
                 <ArrowRight aria-hidden="true" />
               </button>
             );
@@ -123,8 +158,8 @@ export function GuidedLearningPanel() {
             <button type="button" className="guided-learning-reset" onClick={reset} disabled={visited.length === 0}>
               <RotateCcw aria-hidden="true" /> Reiniciar trilha
             </button>
-            <button type="button" className="guided-learning-next" onClick={() => openStep(nextStep)}>
-              {visitedSet.size === steps.length ? 'Revisar desde o início' : `Continuar · ${nextStep.title.replace(/^\d+\.\s*/, '')}`}
+            <button type="button" className="guided-learning-next" onClick={() => openStep(continueStep)}>
+              {allVisited ? 'Revisar etapa 1' : `Continuar · ${continueStep.title.replace(/^\d+\.\s*/, '')}`}
               <ArrowRight aria-hidden="true" />
             </button>
           </div>
