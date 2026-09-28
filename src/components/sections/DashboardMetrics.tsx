@@ -40,40 +40,40 @@ export function DashboardMetrics() {
       label: 'Educação na LOA 2026',
       value: formatPercent(Number(municipalIndicator('budget-education-share-2026')), 1),
       caption: `${formatBudgetCurrency(budgetFunctionAmount('educacao-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
-      sourceId: 'loa-2026',
-      referenceDate: '2026-01-01',
+      indicatorId: 'budget-education-share-2026',
+      fallbackSourceId: 'loa-2026',
       method: 'Função Educação ÷ total da LOA 2026.',
     },
     {
       label: 'Saúde na LOA 2026',
       value: formatPercent(Number(municipalIndicator('budget-health-share-2026')), 1),
       caption: `${formatBudgetCurrency(budgetFunctionAmount('saude-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
-      sourceId: 'loa-2026',
-      referenceDate: '2026-01-01',
+      indicatorId: 'budget-health-share-2026',
+      fallbackSourceId: 'loa-2026',
       method: 'Função Saúde ÷ total da LOA 2026.',
     },
     {
       label: 'Saneamento na LOA 2026',
       value: formatPercent(Number(municipalIndicator('budget-sanitation-share-2026')), 1),
       caption: `${formatBudgetCurrency(budgetFunctionAmount('saneamento-f'))} de ${formatBudgetCurrency(budgetTotal)}`,
-      sourceId: 'loa-2026',
-      referenceDate: '2026-01-01',
+      indicatorId: 'budget-sanitation-share-2026',
+      fallbackSourceId: 'loa-2026',
       method: 'Função Saneamento ÷ total da LOA 2026.',
     },
     {
       label: 'Matrículas municipais na educação básica',
       value: formatPercent(Number(municipalIndicator('municipal-enrollment-share-2025')), 1),
       caption: `${formatNumber(Number(municipalIndicator('municipal-enrollments-2025')))} de ${formatNumber(Number(municipalIndicator('basic-enrollments-2025')))} matrículas em 2025`,
-      sourceId: 'pee-go-educacao-2025',
-      referenceDate: '2025-12-31',
+      indicatorId: 'municipal-enrollment-share-2025',
+      fallbackSourceId: 'pee-go-educacao-2025',
       method: 'Matrículas municipais ÷ matrículas totais da educação básica no mesmo ano-base.',
     },
     {
       label: 'Receitas realizadas − despesas empenhadas',
       value: formatBudgetCurrency(Number(municipalIndicator('revenue-expense-difference-2025'))),
       caption: 'diferença entre os dois totais publicados em 2025',
-      sourceId: 'ibge-cidades-2026',
-      referenceDate: '2025-12-31',
+      indicatorId: 'revenue-expense-difference-2025',
+      fallbackSourceId: 'ibge-cidades-2026',
       method: 'Receitas brutas realizadas menos despesas brutas empenhadas. Não equivale automaticamente a superávit fiscal.',
     },
   ] as const;
@@ -235,24 +235,39 @@ export function DashboardMetrics() {
           <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{visibleComparisons.length} comparativos</span>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-          {visibleComparisons.map(item => (
-            <button
-              key={item.label}
-              type="button"
-              data-inspect-id={inspectDataId({ label: item.label, sourceId: item.sourceId })}
-              onClick={() => dispatchInspect({ label: item.label, value: item.value, sourceId: item.sourceId, referenceDate: item.referenceDate, method: item.method })}
-              className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
-            >
-              <div className="text-xs font-semibold text-slate-500">{item.label}</div>
-              <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{item.value}</div>
-              <div className="mt-1 text-[11px] leading-5 text-slate-500">{item.caption}</div>
-              <div className="dashboard-card-meta mt-3">
-                <span className="dashboard-meta-chip" data-kind="derived">Derivado</span>
-                <span className="dashboard-meta-chip">ref. {formatReference(item.referenceDate)}</span>
-              </div>
-              <div className="dashboard-card-action mt-3">Abrir fórmula e fonte</div>
-            </button>
-          ))}
+          {visibleComparisons.map(item => {
+            const meta = indicatorMeta(item.indicatorId);
+            const sourceId = meta?.sourceId ?? item.fallbackSourceId;
+            const source = d.sources.find(sourceItem => sourceItem.id === sourceId);
+            const referenceDate = meta?.referenceDate ?? source?.referenceDate;
+            const nature = statusLabel(meta?.status ?? 'derived');
+            return (
+              <button
+                key={item.label}
+                type="button"
+                data-inspect-id={inspectDataId({ label: item.label, sourceId })}
+                onClick={() => dispatchInspect({
+                  label: item.label,
+                  value: item.value,
+                  sourceId,
+                  referenceDate,
+                  status: meta?.status ?? 'derived',
+                  note: meta?.note,
+                  method: item.method,
+                })}
+                className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
+              >
+                <div className="text-xs font-semibold text-slate-500">{item.label}</div>
+                <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{item.value}</div>
+                <div className="mt-1 text-[11px] leading-5 text-slate-500">{item.caption}</div>
+                <div className="dashboard-card-meta mt-3">
+                  <span className="dashboard-meta-chip" data-kind={meta?.status ?? 'derived'}>{nature}</span>
+                  {referenceDate && <span className="dashboard-meta-chip">ref. {formatReference(referenceDate)}</span>}
+                </div>
+                <div className="dashboard-card-action mt-3">Abrir fórmula e fonte</div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -298,13 +313,13 @@ export function DashboardMetrics() {
             </div>
           </div>
           <div className="technical-detail mt-4 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4">
+            <div className="rounded-2xl border border-sky-300/10 bg-sky-300/[0.03] p-4 light:border-sky-200 light:bg-sky-50/70">
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80">Leitura metodológica</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400">Os valores podem vir de censo, estimativa, registro de uma data específica ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400 light:text-slate-600">Os valores podem vir de censo, estimativa, registro de uma data específica ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400">{consolidatedElectorate === null ? <>O recorte local registra {formatNumber(electorate2026)} eleitores. Não há consolidado adicional registrado nesta versão do dataset; por isso nenhuma diferença entre recortes é inferida.</> : <ElectorateReconciliation local={electorate2026} consolidated={consolidatedElectorate} />}</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400 light:text-slate-600">{consolidatedElectorate === null ? <>O recorte local registra {formatNumber(electorate2026)} eleitores. Não há consolidado adicional registrado nesta versão do dataset; por isso nenhuma diferença entre recortes é inferida.</> : <ElectorateReconciliation local={electorate2026} consolidated={consolidatedElectorate} />}</p>
             </div>
           </div>
         </>
