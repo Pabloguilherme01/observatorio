@@ -940,6 +940,28 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await expect(page).toHaveURL(/#transporte$/);
 });
 
+test('inspetor separa publicação da fonte de referência temporal ausente', async ({ page }) => {
+  await page.goto('./');
+  await page.evaluate(() => {
+    window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
+      detail: {
+        label: 'Tarifa do Entorno · metadados',
+        value: 'R$ 7,65',
+        sourceId: 'antt-entorno-2026',
+        status: 'current',
+      },
+    }));
+  });
+
+  const dialog = page.getByRole('dialog', { name: /Tarifa do Entorno · metadados/i });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('ref. não informada');
+  await expect(dialog).toContainText('Ano-base / referência');
+  await expect(dialog).toContainText('Publicação da fonte');
+  await expect(dialog).toContainText('28/06/2026');
+  await expect(dialog).toContainText(/essa data não substitui o ano-base ou a referência do indicador/i);
+});
+
 test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ page }) => {
   await page.goto('./?leitura=guided#dashboard');
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
@@ -1428,7 +1450,7 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
   expect(csv).toMatch(/"Saude";[^\n]*"heal-current-stated-beds"/);
   expect(csv).toMatch(/"Educacao";[^\n]*"schooling-6-14"/);
   expect(csv).toMatch(/"Educacao";[^\n]*"ept-technical-2025"/);
-  expect(csv).toContain('Registro datado');
+  expect(csv).toContain('Recorte datado');
 });
 
 
@@ -1544,9 +1566,9 @@ test('comparação municipal marca Águas Lindas como referência e mantém leit
   await page.goto('./');
   await openSection(page, 'contexto');
   await expect(page.getByText(/município de referência/i).first()).toBeVisible();
-  await expect(page.getByText(/Diferença positiva ou negativa não significa “melhor” ou “pior”/i)).toBeVisible();
+  await expect(page.getByText(/sinal positivo ou negativo indica direção matemática, não avaliação/i)).toBeVisible();
   const luziania = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
-  await expect(luziania).toContainText(/Em relação a Águas Lindas:/i);
+  await expect(luziania).toContainText(/Diferença numérica para Águas Lindas:/i);
 });
 
 test('busca rápida cobre escolarização e arborização', async ({ page }) => {
