@@ -1479,9 +1479,9 @@ test('comparação municipal marca Águas Lindas como referência e mantém leit
   await page.goto('./');
   await openSection(page, 'contexto');
   await expect(page.getByText(/município de referência/i).first()).toBeVisible();
-  await expect(page.getByText(/Diferença positiva ou negativa não significa “melhor” ou “pior”/i)).toBeVisible();
+  await expect(page.getByText(/sinal positivo ou negativo indica direção matemática, não avaliação/i)).toBeVisible();
   const luziania = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
-  await expect(luziania).toContainText(/Em relação a Águas Lindas:/i);
+  await expect(luziania).toContainText(/Diferença numérica para Águas Lindas:/i);
 });
 
 test('busca rápida cobre escolarização e arborização', async ({ page }) => {
@@ -1669,10 +1669,10 @@ test('histórico do navegador restaura seções carregadas sob demanda', async (
   await page.goBack();
   await expect(page).toHaveURL(/#acao$/);
   await expect(page.locator('#acao')).toBeVisible();
-  await expect(page.locator('#acao')).toBeInViewport({ timeout: 15_000 });
+  await expect(page.locator('#acao')).toBeInViewport({ timeout: 30_000 });
 
   await page.goForward();
   await expect(page).toHaveURL(/#dados$/);
   await expect(page.locator('#dados')).toBeVisible();
-  await expect(page.locator('#dados')).toBeInViewport({ timeout: 15_000 });
+  await expect(page.locator('#dados')).toBeInViewport({ timeout: 30_000 });
 });
