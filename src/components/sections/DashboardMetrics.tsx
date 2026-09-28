@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
+import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -28,13 +29,7 @@ export function DashboardMetrics() {
   const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
   const formatReference = (date?: string, fallback = 'referência não informada') =>
     date ? date.split('-').reverse().join('/') : fallback;
-  const statusLabel = (status?: string) => ({
-    current: 'Atual',
-    historical: 'Histórico',
-    derived: 'Derivado',
-    snapshot: 'Registro',
-    planned: 'Planejado',
-  } as Record<string, string>)[status ?? ''] ?? 'Dado público';
+  const statusLabel = (status?: string) => formatIndicatorStatus(status, 'Dado público') ?? 'Dado público';
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
   const comparisonDetails = [
