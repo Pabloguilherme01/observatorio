@@ -65,6 +65,27 @@ function performHashScroll(hash: string) {
   return true;
 }
 
+function alignHashScroll(hash: string) {
+  const target = document.getElementById(hash);
+  if (!target) return false;
+  target.scrollIntoView({ behavior: 'auto', block: 'start' });
+  return true;
+}
+
+function stabilizeHistoryScroll(hash: string) {
+  if (!hash) return;
+  scrollToHashWhenReady(hash);
+
+  const align = () => {
+    if (window.location.hash.slice(1) !== hash) return;
+    alignHashScroll(hash);
+  };
+
+  window.requestAnimationFrame(() => window.requestAnimationFrame(align));
+  window.setTimeout(align, 360);
+  window.setTimeout(align, 900);
+}
+
 function openDeepLinkedInspectorWhenReady() {
   const inspectId = getSearchParam(urlParamKeys.inspector);
   if (!inspectId) return;
@@ -167,7 +188,7 @@ function NavigationModeBridge() {
       // hashchange already dispatches observatorio:navigate for history entries.
       // Keep popstate responsible only for mode restoration and scrolling so
       // Back/Forward emits a single navigation event.
-      scrollToHashWhenReady(target);
+      stabilizeHistoryScroll(target);
     };
 
     window.addEventListener('observatorio:navigate', onNavigate);
