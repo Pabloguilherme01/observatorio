@@ -31,6 +31,7 @@ export function HeroCountdown() {
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
+  const guided = mode === 'guided';
   const summary = mode === 'summary';
 
   return (
@@ -53,7 +54,9 @@ export function HeroCountdown() {
                 ? 'Uma visão rápida da cidade: números centrais, serviços públicos e fontes rastreáveis a poucos toques.'
                 : technical
                   ? 'Uma camada de auditoria dos dados: origem, método, recortes e limitações visíveis.'
-                  : 'Números públicos explicados com contexto, período e origem para você aprofundar quando precisar.'}
+                  : guided
+                    ? 'Aprenda a ler os dados em etapas: o que o número mede, de quando é, como interpretar e onde conferir.'
+                    : 'Números públicos explicados com contexto, período e origem para você aprofundar quando precisar.'}
             </p>
 
             <div className="hero-actions">
