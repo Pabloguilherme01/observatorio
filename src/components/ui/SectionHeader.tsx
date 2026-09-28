@@ -4,9 +4,9 @@ export function SectionHeader({ eyebrow, title, description, action, titleId }: 
   return (
     <div className="section-header mb-7 flex min-w-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
       <div>
-        <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300/80">{eyebrow}</div>
-        <h2 id={titleId} className="text-2xl font-black tracking-tight text-white md:text-3xl">{title}</h2>
-        {description && <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{description}</p>}
+        <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300/80 light:text-sky-700">{eyebrow}</div>
+        <h2 id={titleId} className="text-2xl font-black tracking-tight text-white light:text-slate-950 md:text-3xl">{title}</h2>
+        {description && <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400 light:text-slate-600">{description}</p>}
       </div>
       {action}
     </div>
