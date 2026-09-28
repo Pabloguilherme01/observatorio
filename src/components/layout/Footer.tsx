@@ -9,15 +9,15 @@ export function Footer() {
         <div className="site-footer-brand">
           <span className="site-footer-kicker">Observatório público</span>
           <strong>Águas Lindas de Goiás · {d.meta.edition}</strong>
-          <small>Atualizado em {formatDate(d.meta.updatedAt)} · dados públicos com fontes identificadas.</small>
+          <small>Painel atualizado em {formatDate(d.meta.updatedAt)} · cada indicador mantém sua própria referência temporal e fonte.</small>
         </div>
 
         <nav className="site-footer-links" aria-label="Links do rodapé">
-          <a href="#fontes">Fontes</a>
-          <a href="#contexto">Contexto</a>
-          <a href="#acao">Como usar</a>
-          <a href="#principios">Princípios</a>
-          <a href="https://github.com/Pabloguilherme01/observatorio" target="_blank" rel="noopener noreferrer">
+          <a href="#dashboard">Indicadores</a>
+          <a href="#acao">Serviços públicos</a>
+          <a href="#fontes">Fontes e método</a>
+          <a href="#exportacao">Baixar dados</a>
+          <a href="https://github.com/Pabloguilherme01/observatorio" target="_blank" rel="noopener noreferrer" aria-label="Abrir código-fonte do Observatório no GitHub em nova aba">
             Código-fonte <ExternalLink aria-hidden="true" />
           </a>
         </nav>
