@@ -29,6 +29,9 @@ const trendData: readonly TrendPoint[] = YEARS.map(year => ({
         : null,
 }));
 
+const populationObservations = trendData.filter(point => point.population !== null).length;
+const electorateObservations = trendData.filter(point => point.electorate !== null).length;
+
 function TrendTooltip({ active, payload, label }: {
   readonly active?: boolean;
   readonly payload?: readonly { dataKey?: string; value?: number | null; name?: string }[];
@@ -157,7 +160,12 @@ export function HistoricalTrendChart() {
         </div>
       </figcaption>
 
-      <div className="dashboard-history-chart mt-4 w-full min-w-0" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026.">
+      <div className="mt-4 grid gap-2 sm:grid-cols-2" aria-label="Cobertura das séries">
+        <div className="rounded-2xl border border-white/8 bg-white/[0.018] px-3 py-2 text-xs text-slate-500 light:border-slate-200 light:bg-white"><strong className="text-slate-300 light:text-slate-700">{populationObservations} de {YEARS.length}</strong> anos com observação de população</div>
+        <div className="rounded-2xl border border-white/8 bg-white/[0.018] px-3 py-2 text-xs text-slate-500 light:border-slate-200 light:bg-white"><strong className="text-slate-300 light:text-slate-700">{electorateObservations} de {YEARS.length}</strong> anos com observação de eleitorado</div>
+      </div>
+
+      <div className="dashboard-history-chart mt-4 w-full min-w-0" role="img" aria-label="Linha histórica de população e eleitorado de 2022 a 2026; anos ausentes permanecem sem interpolação.">
         <CombinedChart />
       </div>
 
@@ -179,7 +187,7 @@ export function HistoricalTrendChart() {
       </div>
 
       <details className="mt-3 rounded-2xl border border-white/8 bg-white/[0.015] px-3 py-2 light:border-slate-200 light:bg-white">
-        <summary className="cursor-pointer list-none text-xs font-bold text-slate-300 light:text-slate-700">Ver dados em tabela</summary>
+        <summary className="cursor-pointer list-none rounded-xl text-xs font-bold text-slate-300 outline-none focus-visible:ring-2 focus-visible:ring-sky-300/50 light:text-slate-700">Ver dados em tabela · alternativa acessível ao gráfico</summary>
         <div className="mt-2 overflow-x-auto">
           <table className="w-full min-w-[420px] text-left text-xs">
             <caption className="sr-only">Dados históricos de população e eleitorado entre 2022 e 2026</caption>
