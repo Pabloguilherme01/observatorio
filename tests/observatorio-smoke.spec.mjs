@@ -963,7 +963,7 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
 test('busca encontra e abre o aprendizado guiado', async ({ page }) => {
   await page.goto('./');
   await page.getByRole('button', { name: /Buscar no observatório/i }).first().click();
-  const search = page.getByRole('searchbox');
+  const search = page.getByRole('combobox').first();
   await search.fill('aprendizado guiado');
   await page.getByRole('option', { name: /Aprendizado guiado.*passo a passo/i }).click();
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
