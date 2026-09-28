@@ -21,6 +21,7 @@ export function DashboardMetrics() {
   const electorate2022 = d.electoral.electorate2022 ?? 0;
   const electorate2026 = d.electoral.electorate;
   const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
+  const electorateDifference = d.electoral.tseConsolidated - electorate2026;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
   const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
   const formatReference = (date?: string, fallback = 'referência não informada') =>
@@ -78,8 +79,8 @@ export function DashboardMetrics() {
   ] as const;
   const visibleComparisons = isSummary ? comparisonDetails.slice(0, 2) : comparisonDetails;
   const metricDetails: readonly MetricDetail[] = [
-    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: population2022 + ' → ' + population2026, simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
-    { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: electorate2022 + ' → ' + electorate2026, simpleExplanation: 'Mudança percentual do eleitorado entre os registros disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
+    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: formatNumber(population2022) + ' → ' + formatNumber(population2026), simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
+    { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: formatNumber(electorate2022) + ' → ' + formatNumber(electorate2026), simpleExplanation: 'Mudança percentual do eleitorado entre os registros disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
     { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado registrado e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
     { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
     { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
@@ -303,7 +304,7 @@ export function DashboardMetrics() {
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400">O recorte local registra 125.062 eleitores, enquanto o consolidado indicado no modelo é 125.501. A diferença é exibida como reconciliação, não como erro automático.</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400">O recorte local registra {formatNumber(electorate2026)} eleitores e o consolidado disponível registra {formatNumber(d.electoral.tseConsolidated)}. A diferença de {formatNumber(Math.abs(electorateDifference))} registros é mantida visível para reconciliação entre recortes, sem tratar bases de referência distintas como erro automático.</p>
             </div>
           </div>
         </>
