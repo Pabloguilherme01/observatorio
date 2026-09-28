@@ -17,7 +17,7 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
   const [mode, setModeState] = useState<LanguageMode>(() => {
     try {
       const value = localStorage.getItem(STORAGE_KEY);
-      return value === 'technical' || value === 'summary' || value === 'simple' ? value : 'summary';
+      return value === 'technical' || value === 'guided' || value === 'summary' || value === 'simple' ? value : 'summary';
     } catch {
       return 'summary';
     }
@@ -43,7 +43,7 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
   }, []);
 
   const cycleMode = useCallback(() => {
-    const nextMode = mode === 'summary' ? 'simple' : mode === 'simple' ? 'technical' : 'summary';
+    const nextMode = mode === 'summary' ? 'simple' : mode === 'simple' ? 'guided' : mode === 'guided' ? 'technical' : 'summary';
     setMode(nextMode);
   }, [mode, setMode]);
 
