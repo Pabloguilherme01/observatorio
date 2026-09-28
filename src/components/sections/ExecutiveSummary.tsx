@@ -143,16 +143,18 @@ export function ExecutiveSummary() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             titleId="executive-summary-title"
-            eyebrow={languageMode === 'technical' ? 'Fontes e detalhes' : languageMode === 'summary' ? 'Resumo principal' : 'Entenda os números'}
-            title={languageMode === 'technical' ? 'Dados preparados para conferência' : languageMode === 'summary' ? 'O essencial da cidade em quatro indicadores' : 'Entenda o que cada número representa'}
+            eyebrow={languageMode === 'technical' ? 'Fontes e detalhes' : languageMode === 'guided' ? 'Aprendizado guiado' : languageMode === 'summary' ? 'Resumo principal' : 'Entenda os números'}
+            title={languageMode === 'technical' ? 'Dados preparados para conferência' : languageMode === 'guided' ? 'Aprenda a ler cada indicador em etapas' : languageMode === 'summary' ? 'O essencial da cidade em quatro indicadores' : 'Entenda o que cada número representa'}
             description={languageMode === 'technical'
               ? 'Cada indicador vem acompanhado de referência, origem e limites para uma leitura verificável.'
-              : languageMode === 'summary'
-                ? 'Uma leitura rápida dos principais dados públicos, com referência e origem preservadas para consulta.'
-                : 'Cada cartão explica o valor, a natureza do dado e o cuidado necessário antes de comparar períodos ou fontes.'}
+              : languageMode === 'guided'
+                ? 'Use a trilha para praticar uma sequência simples: valor, referência, contexto e fonte — sem transformar dados em recomendação eleitoral.'
+                : languageMode === 'summary'
+                  ? 'Uma leitura rápida dos principais dados públicos, com referência e origem preservadas para consulta.'
+                  : 'Cada cartão explica o valor, a natureza do dado e o cuidado necessário antes de comparar períodos ou fontes.'}
           />
           <div className="flex flex-wrap items-center gap-2">
-            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Detalhado' : languageMode === 'summary' ? 'Resumo' : 'Explicado'}</span>
+            <span className="summary-mode-pill">{languageMode === 'technical' ? 'Detalhado' : languageMode === 'guided' ? 'Guiado' : languageMode === 'summary' ? 'Resumo' : 'Explicado'}</span>
             <button type="button" onClick={() => { void share(); }} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs font-bold text-slate-300 hover:border-sky-300/20 hover:text-white light:border-slate-200 light:text-slate-700" aria-label="Compartilhar resumo do observatório" disabled={shareBusy} aria-busy={shareBusy}>
               <Share2 className="h-4 w-4" aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}
             </button>
@@ -215,7 +217,7 @@ export function ExecutiveSummary() {
 
         </div>
 
-        {languageMode === 'simple' && (
+        {(languageMode === 'simple' || languageMode === 'guided') && (
           <>
             <div className="summary-simple-grid mt-3" aria-label="Resumo dos principais indicadores">
               {publicFacts.map(fact => (
@@ -232,8 +234,8 @@ export function ExecutiveSummary() {
               ))}
             </div>
             <div className="summary-simple-tip mt-3">
-              <strong className="text-slate-200">Leitura guiada</strong>
-              <span className="ml-2">Comece pelo valor, confira a data e veja se ele é atual, histórico, planejado ou derivado. Abra a fonte quando precisar verificar definição e escopo.</span>
+              <strong className="text-slate-200 light:text-slate-900">{languageMode === 'guided' ? 'Regra do passo a passo' : 'Leitura guiada'}</strong>
+              <span className="ml-2">{languageMode === 'guided' ? 'Para cada número: identifique o que mede, confira a referência, observe a natureza do dado e só então compare ou abra a fonte.' : 'Comece pelo valor, confira a data e veja se ele é atual, histórico, planejado ou derivado. Abra a fonte quando precisar verificar definição e escopo.'}</span>
             </div>
           </>
         )}
