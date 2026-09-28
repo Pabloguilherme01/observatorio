@@ -688,6 +688,7 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
     for (const mode of [
       { name: /^Resumo/, id: 'summary' },
       { name: /^Explicado/, id: 'simple' },
+      { name: /^Guiado/, id: 'guided' },
       { name: /^Detalhado/, id: 'technical' },
     ]) {
       await group.getByRole('button', { name: mode.name }).click();
@@ -704,9 +705,10 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
       });
     }
 
-    expect(new Set(Object.values(signatures).map(value => value.accent)).size).toBe(3);
+    expect(new Set(Object.values(signatures).map(value => value.accent)).size).toBe(4);
     expect(signatures.summary.radius).not.toBe(signatures.technical.radius);
     expect(signatures.summary.gap).not.toBe(signatures.simple.gap);
+    expect(signatures.guided.accent).not.toBe(signatures.simple.accent);
     expect(signatures.technical.backgroundImage).toContain('linear-gradient');
 
     const dimensions = await page.evaluate(() => ({
@@ -801,7 +803,7 @@ test('link da seção preserva modo de leitura e ignora rastreamento', async ({ 
   await expect(page.locator('#acao')).toBeVisible();
 });
 
-test('ação de aprofundar percorre os três níveis de leitura no painel mobile', async ({ page }) => {
+test('ação de aprofundar percorre os quatro modos de leitura no painel mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
   const root = page.locator('html');
@@ -811,7 +813,11 @@ test('ação de aprofundar percorre os três níveis de leitura no painel mobile
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
 
-  deepen = page.getByRole('button', { name: 'Aumentar nível de detalhe' });
+  deepen = page.getByRole('button', { name: 'Avançar para aprendizado guiado' });
+  await deepen.click();
+  await expect(root).toHaveAttribute('data-language-mode', 'guided');
+
+  deepen = page.getByRole('button', { name: 'Avançar para leitura detalhada' });
   await deepen.click();
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
 
@@ -825,6 +831,8 @@ test('modos de leitura persistem e podem avançar por atalho', async ({ page }) 
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
   await page.keyboard.press('Alt+m');
   await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await page.keyboard.press('Alt+m');
+  await expect(root).toHaveAttribute('data-language-mode', 'guided');
   await page.keyboard.press('Alt+m');
   await expect(root).toHaveAttribute('data-language-mode', 'technical');
   await page.reload();
@@ -930,6 +938,16 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await page.keyboard.press('g');
   await page.keyboard.press('t');
   await expect(page).toHaveURL(/#transporte$/);
+});
+
+test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ page }) => {
+  await page.goto('./?leitura=guided#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
+  const guide = page.locator('#aprendizado-guiado');
+  await expect(guide).toBeVisible();
+  await expect(guide).toContainText('Como ler dados públicos em etapas');
+  await expect(guide).toContainText(/não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais/i);
+  await expect(guide.getByRole('button')).toHaveCount(8);
 });
 
 test('parâmetro de leitura inválido é ignorado com segurança', async ({ page }) => {
