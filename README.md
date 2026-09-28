@@ -24,11 +24,11 @@ Aplicação web de dados públicos e contexto municipal, construída com Vite + 
 
 O site adapta o conteúdo e o visual a três modos, persistidos no navegador:
 
-- **Resumo** — modo inicial. Foco em beleza, números essenciais e utilidade. A maior parte das camadas técnicas fica oculta.
-- **Simples** — linguagem clara e direta, com os mesmos números centrais. Mapa de evidências oculto.
-- **Técnico** — detalhes, metodologia e rastreabilidade completas. O **Mapa de Evidências** aparece aqui, em mini cards de auditoria com natureza da fonte, data e link original.
+- **Resumo** — leitura rápida dos pontos principais, com referência e origem preservadas.
+- **Explicado** — acrescenta contexto para entender natureza, período, definições e significado dos números.
+- **Detalhado** — amplia a leitura com fonte, data, método, cálculos, recortes e limitações. O **Mapa de Evidências** aparece neste modo.
 
-O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo e Simples (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Técnico.
+O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo e Explicado (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Detalhado.
 
 ## Quiz do Observatório
 
@@ -77,7 +77,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-**V44.10.0 — Observatório de Dados Cívicos e Eleitorais.**
+**V44.10.1 — Observatório de Dados Cívicos e Eleitorais.**
 
 - Três modos de leitura (Resumo, Simples, Técnico) com preferência persistida.
 - Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
