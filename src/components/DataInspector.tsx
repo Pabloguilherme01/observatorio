@@ -237,7 +237,7 @@ export function DataInspector() {
 
         <div className="space-y-4 p-5">
           <p id="data-inspector-context" className="sr-only">Detalhes de origem, referência temporal, natureza e método do dado selecionado.</p>
-          <div className="rounded-2xl border border-sky-300/15 bg-sky-300/5 p-4">
+          <div className="rounded-2xl border border-sky-300/15 bg-sky-300/5 p-4 light:border-sky-200 light:bg-sky-50">
             <div className="text-3xl font-black text-white light:text-slate-900">{data.value}</div>
             <div className="mt-2 text-xs leading-5 text-slate-500">{data.method ?? 'Valor apresentado pelo conjunto de dados do observatório.'}</div>
             <div className="dashboard-card-meta mt-3">
@@ -247,14 +247,15 @@ export function DataInspector() {
           </div>
 
           <div className="data-inspector-grid grid gap-3 sm:grid-cols-2">
-            <Info label="Fonte" value={source?.institution ?? 'Não informada'} />
+            <Info label="Instituição" value={source?.institution ?? 'Não informada'} />
+            <Info label="Base / conjunto" value={source?.label ?? 'Não informado'} />
             <Info label="Natureza / estado" value={statusLabel ?? source?.nature ?? 'Não informado'} />
             <Info label="Ano-base / referência" value={referenceLabel ?? 'Não informado'} />
             <Info label="Atualização da fonte" value={source?.updateFrequency ?? 'Não informada'} />
           </div>
 
           {effectiveNote && (
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-400">
+            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-400 light:border-slate-200 light:bg-slate-50 light:text-slate-600">
               <strong className="text-slate-300 light:text-slate-700">Contexto e limites</strong>
               <p className="mt-1">{effectiveNote}</p>
             </div>
@@ -263,23 +264,23 @@ export function DataInspector() {
           {actionError && <p className="text-xs text-amber-300" role="status">Não foi possível concluir a ação. Tente novamente.</p>}
           <div className="data-inspector-actions flex flex-wrap gap-2">
             {source?.url && (
-              <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200">
+              <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200 light:border-sky-200 light:bg-sky-50 light:text-sky-800">
                 <ExternalLink className="h-3.5 w-3.5" /> Ver fonte
               </a>
             )}
-            <button type="button" onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+            <button type="button" onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
               {copied ? <Check className="h-3.5 w-3.5" /> : <Clipboard className="h-3.5 w-3.5" />}
               {copied ? 'Copiado' : 'Copiar'}
             </button>
-            <button type="button" onClick={copyCitation} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+            <button type="button" onClick={copyCitation} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
               {citationCopied ? <Check className="h-3.5 w-3.5" /> : <Quote className="h-3.5 w-3.5" />}
               {citationCopied ? 'Referência copiada' : 'Copiar referência'}
             </button>
-            <button type="button" onClick={copyLink} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+            <button type="button" onClick={copyLink} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
               {linkCopied ? <Check className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
               {linkCopied ? 'Link copiado' : 'Copiar link'}
             </button>
-            <button type="button" onClick={share} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300">
+            <button type="button" onClick={share} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
               {typeof navigator.share === 'function' ? <Share2 className="h-3.5 w-3.5" /> : <Link2 className="h-3.5 w-3.5" />}
               Compartilhar
             </button>
