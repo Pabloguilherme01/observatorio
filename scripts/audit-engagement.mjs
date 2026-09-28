@@ -89,6 +89,13 @@ must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { Sum
 must(read('src/components/sections/PoliticalResearch.tsx').includes('Pesquisas registradas') && read('src/components/sections/PoliticalResearch.tsx').includes('registrationNumber') && read('src/components/sections/PoliticalResearch.tsx').includes('Conferir fonte oficial'), 'pesquisas registradas exibem identificação, contexto e fonte');
 must(audience.includes('<strong>Serviços públicos</strong>') && audience.includes("jump('acao')"), 'Home oferece atalho direto para serviços públicos');
 must(!audience.includes("document.getElementById(id)?.scrollIntoView"), 'Home delega o scroll de navegação ao controlador central');
+must(
+  audience.includes('navigateToCleanSection') &&
+  executive.includes('navigateToCleanSection') &&
+  !audience.includes('window.history.replaceState') &&
+  !executive.includes('window.history.replaceState'),
+  'Resumo e Explorar usam navegação central com limpeza de URL'
+);
 must(electoral360Ui.includes('Nomes acompanhados no recorte') && electoral360Ui.includes('recorte editorial acompanhado') && electoral360Ui.includes('este recorte não representa uma lista completa de candidaturas') && electoral360.includes('Este snapshot não representa o universo completo'), 'Eleitoral 360 deixa explícito o caráter editorial e não exaustivo do recorte');
 must(electoral360Ui.includes('Captura com mais de 24h') && electoral360Ui.includes('A captura ultrapassou 24 horas'), 'Eleitoral 360 sinaliza snapshots potencialmente desatualizados');
 must(electoral360Ui.includes('className={`mb-4 rounded-2xl border ${snapshotWarning ?') && !electoral360Ui.includes('className=\"mb-4 rounded-2xl border ${snapshotWarning'), 'alerta de frescor do Eleitoral 360 usa interpolação JSX real');
