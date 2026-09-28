@@ -222,6 +222,36 @@ test.describe('aprendizado guiado no mobile', () => {
 });
 
 
+test('aprendizado guiado retoma progresso persistido e diferencia conclusão de avaliação', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('./?leitura=guided#aprendizado-guiado');
+
+  const guide = page.locator('#aprendizado-guiado');
+  const storageKey = await page.evaluate(() => Object.keys(localStorage).find(key => key.endsWith('-guided-learning-visited')) ?? null);
+
+  await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
+  await guide.locator('.guided-learning-step').first().click();
+  await page.goto('./?leitura=guided#aprendizado-guiado');
+
+  await expect(guide.getByText(/Retome de onde parou: 1 de 6 etapas já foram visitadas/i)).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Retomar · Confira período e natureza/i })).toBeVisible();
+
+  await page.evaluate(key => {
+    if (!key) throw new Error('storage key do aprendizado guiado não encontrado');
+    localStorage.setItem(key, JSON.stringify(['valor', 'referencia', 'contexto', 'utilidade', 'fonte', 'quiz']));
+  }, storageKey);
+  await page.reload();
+
+  await expect(guide.getByText('Trilha percorrida')).toBeVisible();
+  await expect(guide.getByText('As 6 etapas foram visitadas')).toBeVisible();
+  await expect(guide.getByText(/não uma nota nem uma avaliação de conhecimento/i)).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Revisar trilha · etapa 1/i })).toBeVisible();
+
+  await guide.getByRole('button', { name: /Reiniciar trilha/i }).click();
+  await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
+});
+
+
 test('menu Mais oferece acesso direto ao aprendizado guiado no celular', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('./');
