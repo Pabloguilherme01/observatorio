@@ -291,25 +291,40 @@ export function DashboardMetrics() {
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'registro 2026', 'caged-sebrae-2026'],
-                ['Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
-                ['IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
-                ['IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
-                ['Salário formal médio', formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', '2024', 'ibge-cidades-2026'],
-                ['Investimento em saneamento', 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2024', 'sinisa-2024'],
-                ['Internações ligadas à água', formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), '2024', 'sinisa-2024'],
-                ['Óbitos ligados à água', formatNumber(Number(municipalIndicator('water-related-deaths'))), '2024', 'sinisa-2024'],
-                ['Matrículas básicas', formatNumber(Number(municipalIndicator('basic-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
-                ['Matrículas municipais', formatNumber(Number(municipalIndicator('municipal-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
-                ['EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
-                ['Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
-              ].map(([label,value,year,sourceId]) => (
-                <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId })} className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
-                  <div className="text-xs font-semibold text-slate-500">{label}</div>
-                  <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
-                  <div className="mt-1 text-[11px] text-slate-500">{year}</div>
-                </button>
-              ))}
+                ['companies', 'Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'registro 2026', 'caged-sebrae-2026'],
+                ['cagedBalance', 'Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
+                ['idebInitial', 'IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
+                ['idebFinal', 'IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
+                ['formal-salary', 'Salário formal médio', formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', '2024', 'ibge-cidades-2026'],
+                ['sanitation-investment', 'Investimento em saneamento', 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2024', 'sinisa-2024'],
+                ['water-related-hospitalizations', 'Internações ligadas à água', formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), '2024', 'sinisa-2024'],
+                ['water-related-deaths', 'Óbitos ligados à água', formatNumber(Number(municipalIndicator('water-related-deaths'))), '2024', 'sinisa-2024'],
+                ['basic-enrollments-2025', 'Matrículas básicas', formatNumber(Number(municipalIndicator('basic-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
+                ['municipal-enrollments-2025', 'Matrículas municipais', formatNumber(Number(municipalIndicator('municipal-enrollments-2025'))), '2025', 'pee-go-educacao-2025'],
+                ['ept-technical-2025', 'EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
+                ['expenses-2025', 'Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
+              ].map(([indicatorId,label,value,fallbackReference,fallbackSourceId]) => {
+                const meta = indicatorMeta(indicatorId);
+                const sourceId = meta?.sourceId ?? fallbackSourceId;
+                const reference = formatReference(meta?.referenceDate, fallbackReference);
+                return (
+                  <button
+                    key={indicatorId}
+                    type="button"
+                    data-inspect-id={inspectDataId({ label, sourceId })}
+                    onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: meta?.referenceDate, status: meta?.status, note: meta?.note })}
+                    className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
+                  >
+                    <div className="text-xs font-semibold text-slate-500">{label}</div>
+                    <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
+                    <div className="dashboard-card-meta mt-3">
+                      <span className="dashboard-meta-chip" data-kind={meta?.status}>{statusLabel(meta?.status)}</span>
+                      <span className="dashboard-meta-chip">ref. {reference}</span>
+                    </div>
+                    <div className="dashboard-card-action mt-3">Abrir fonte e contexto</div>
+                  </button>
+                );
+              })}
             </div>
           </div>
           <div className="technical-detail mt-4 grid gap-3 sm:grid-cols-2">
@@ -334,7 +349,37 @@ export function DashboardMetrics() {
             <span className="text-xs text-slate-500">Clique em qualquer valor</span>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[['Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022', 'ibge-cidades-2026'],['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025', 'ibge-cidades-2026'],['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023', 'ibge-cidades-2026'],['Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019', 'ibge-cidades-2026'],['Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022', 'ibge-cidades-2026'],['Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022', 'ibge-cidades-2026'],['Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024', 'ibge-cidades-2026']].map(([label,value,year,sourceId]) => <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId })} className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"><div className="text-xs font-semibold text-slate-500">{label}</div><div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-[11px] text-slate-500">ano-base {year}</div></button>)}
+            {[
+              ['schooling-6-14', 'Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022'],
+              ['infant-mortality', 'Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025'],
+              ['revenue-2025', 'Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025'],
+              ['gdp-per-capita-2023', 'PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023'],
+              ['urbanized-area', 'Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019'],
+              ['street-arborization', 'Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022'],
+              ['adequate-sewerage', 'Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022'],
+              ['formal-workers', 'Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024'],
+            ].map(([indicatorId,label,value,fallbackReference]) => {
+              const meta = indicatorMeta(indicatorId);
+              const sourceId = meta?.sourceId ?? 'ibge-cidades-2026';
+              const reference = formatReference(meta?.referenceDate, fallbackReference);
+              return (
+                <button
+                  key={indicatorId}
+                  type="button"
+                  data-inspect-id={inspectDataId({ label, sourceId })}
+                  onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: meta?.referenceDate, status: meta?.status, note: meta?.note })}
+                  className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
+                >
+                  <div className="text-xs font-semibold text-slate-500">{label}</div>
+                  <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
+                  <div className="dashboard-card-meta mt-3">
+                    <span className="dashboard-meta-chip" data-kind={meta?.status}>{statusLabel(meta?.status)}</span>
+                    <span className="dashboard-meta-chip">ref. {reference}</span>
+                  </div>
+                  <div className="dashboard-card-action mt-3">Abrir fonte e contexto</div>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
