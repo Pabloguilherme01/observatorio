@@ -89,6 +89,7 @@ export function GuidedLearningPanel() {
   const continueStep = nextUnvisitedStep ?? steps[0];
   const allVisited = visitedSet.size === steps.length;
   const progress = Math.round((visitedSet.size / steps.length) * 100);
+  const hasProgress = visitedSet.size > 0;
 
   if (mode !== 'guided') return null;
 
@@ -112,6 +113,7 @@ export function GuidedLearningPanel() {
             <span className="guided-learning-eyebrow"><GraduationCap aria-hidden="true" /> Aprendizado guiado</span>
             <h2 id="guided-learning-title">Como ler dados públicos em etapas</h2>
             <p>A trilha organiza a navegação; os valores continuam vindo dos mesmos cards, fontes e métodos dos outros modos.</p>
+            {hasProgress && !allVisited ? <small className="guided-learning-resume">Retome de onde parou: {visitedSet.size} de {steps.length} etapas já foram visitadas.</small> : null}
           </div>
           <div
             className="guided-learning-progress"
@@ -129,9 +131,9 @@ export function GuidedLearningPanel() {
         </div>
 
         <div className="guided-learning-next-card" aria-live="polite">
-          <span><Compass aria-hidden="true" /> {allVisited ? 'Trilha visitada' : 'Próxima etapa sugerida'}</span>
-          <strong>{allVisited ? 'Revise qualquer etapa quando quiser' : continueStep.title}</strong>
-          <small>{allVisited ? 'O progresso indica navegação pelas etapas, não avaliação de conhecimento.' : continueStep.question}</small>
+          <span><Compass aria-hidden="true" /> {allVisited ? 'Trilha percorrida' : hasProgress ? 'Continue de onde parou' : 'Próxima etapa sugerida'}</span>
+          <strong>{allVisited ? 'As 6 etapas foram visitadas' : continueStep.title}</strong>
+          <small>{allVisited ? 'Isso registra a navegação pela trilha, não uma nota nem uma avaliação de conhecimento. Você pode revisar qualquer etapa.' : continueStep.question}</small>
         </div>
 
         <details className="guided-learning-glossary">
@@ -179,7 +181,7 @@ export function GuidedLearningPanel() {
               <RotateCcw aria-hidden="true" /> Reiniciar trilha
             </button>
             <button type="button" className="guided-learning-next" onClick={() => openStep(continueStep)}>
-              {allVisited ? 'Revisar etapa 1' : `Continuar · ${continueStep.title.replace(/^\d+\.\s*/, '')}`}
+              {allVisited ? 'Revisar trilha · etapa 1' : hasProgress ? `Retomar · ${continueStep.title.replace(/^\d+\.\s*/, '')}` : `Começar · ${continueStep.title.replace(/^\d+\.\s*/, '')}`}
               <ArrowRight aria-hidden="true" />
             </button>
           </div>

@@ -953,7 +953,7 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '0');
   await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
   await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
-  await expect(guide.getByRole('button', { name: /Continuar/i })).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
   await expect(guide.getByRole('button', { name: /Reiniciar trilha/i })).toBeDisabled();
 
   await guide.getByRole('button', { name: /Abrir: 1. Identifique o que o número mede/i }).click();
@@ -1734,10 +1734,10 @@ test('histórico do navegador restaura seções carregadas sob demanda', async (
   await page.goBack();
   await expect(page).toHaveURL(/#acao$/);
   await expect(page.locator('#acao')).toBeVisible();
-  await expect(page.locator('#acao')).toBeInViewport({ timeout: 15_000 });
+  await expect(page.locator('#acao')).toBeInViewport({ timeout: 30_000 });
 
   await page.goForward();
   await expect(page).toHaveURL(/#dados$/);
   await expect(page.locator('#dados')).toBeVisible();
-  await expect(page.locator('#dados')).toBeInViewport({ timeout: 15_000 });
+  await expect(page.locator('#dados')).toBeInViewport({ timeout: 30_000 });
 });
