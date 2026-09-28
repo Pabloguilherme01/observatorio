@@ -1,4 +1,4 @@
-import { BookOpenCheck, ExternalLink, SearchCheck, ShieldCheck, Stethoscope, GraduationCap, WalletCards, MessageCircle, BusFront, HeartHandshake, BriefcaseBusiness, FileText, ArrowRight } from 'lucide-react';
+import { BookOpenCheck, SearchCheck, ShieldCheck, Stethoscope, GraduationCap, WalletCards, MessageCircle, BusFront, HeartHandshake, BriefcaseBusiness, FileText, ArrowRight } from 'lucide-react';
 import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 import { navigateToSection } from '../../lib/sectionNavigation';
 
@@ -65,7 +65,7 @@ export function PublicUtilityGuide() {
             </p>
           </div>
           <button type="button" onClick={() => goToServices()} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/[0.06] px-4 text-sm font-bold text-sky-200 transition hover:bg-sky-300/[0.1] light:text-sky-800">
-            Abrir central de serviços <ExternalLink className="h-4 w-4" aria-hidden="true" />
+            Buscar serviços públicos <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
         <div className="public-utility-context mt-5" role="note">
@@ -73,7 +73,7 @@ export function PublicUtilityGuide() {
           <strong>Escolha uma necessidade para abrir a busca já filtrada.</strong>
           <small>Os resultados priorizam orientação e canais públicos; confirme horários, requisitos e disponibilidade no órgão responsável.</small>
         </div>
-        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4" aria-label="Atalhos por necessidade">
+        <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="Atalhos por necessidade">
           {primaryQuickNeeds.map(({ icon: Icon, label, hint, query }) => (
             <button key={label} type="button" onClick={() => goToServices(query)} className="public-utility-shortcut flex min-h-16 items-center gap-3 rounded-xl border border-white/8 bg-black/10 px-3 py-3 text-left text-slate-200 transition hover:border-sky-300/25 hover:bg-sky-300/[0.06] light:border-slate-200 light:bg-white light:text-slate-800">
               <span className="public-utility-shortcut-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span>
@@ -85,9 +85,9 @@ export function PublicUtilityGuide() {
             </button>
           ))}
         </div>
-        <div className="mt-2 flex flex-wrap gap-2" aria-label="Mais necessidades">
+        <div className="mt-2 grid gap-2 sm:grid-cols-2" aria-label="Mais necessidades">
           {secondaryQuickNeeds.map(({ icon: Icon, label, hint, query }) => (
-            <button key={label} type="button" onClick={() => goToServices(query)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.018] px-3 py-2 text-left text-xs font-bold text-slate-400 transition hover:border-sky-300/20 hover:text-sky-200 light:border-slate-200 light:bg-white light:text-slate-700">
+            <button key={label} type="button" onClick={() => goToServices(query)} className="inline-flex min-h-11 w-full items-center gap-2 rounded-xl border border-white/8 bg-white/[0.018] px-3 py-2 text-left text-xs font-bold text-slate-400 transition hover:border-sky-300/20 hover:text-sky-200 light:border-slate-200 light:bg-white light:text-slate-700">
               <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span>{label}<small className="ml-1 font-medium text-slate-600 light:text-slate-500">· {hint}</small></span>
             </button>
