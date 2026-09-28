@@ -215,11 +215,16 @@ export function MobileBottomNav() {
             onClick={() => closeMore(true)}
           />
           <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
+            <div className="mobile-bottom-more-heading" aria-hidden="true">
+              <strong>Mais áreas</strong>
+              <small>Dados, serviços, fontes e downloads</small>
+            </div>
             {moreItems.map(item => (
               <button
                 key={item.id}
                 type="button"
                 role="menuitem"
+                aria-current={window.location.hash.replace(/^#/, '') === item.id ? 'page' : undefined}
                 onClick={() => { closeMore(); jump(item.id); }}
               >
                 <span>{item.shortLabel}</span>
