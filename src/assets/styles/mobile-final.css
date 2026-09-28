@@ -253,7 +253,7 @@ main{padding-bottom:0}
   .language-toggle-v3 .language-toggle-label{min-height:48px;padding:9px 11px;gap:8px}
   .language-toggle-v3 .language-toggle-label strong{font-size:10px;letter-spacing:.08em}
   .language-toggle-v3 .language-toggle-label small{font-size:11px;line-height:1.25}
-  .language-toggle-v3 .language-toggle-options{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important}
+  .language-toggle-v3 .language-toggle-options{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px!important}
   .language-toggle-v3 .language-toggle-options button{min-width:0!important;min-height:56px!important;padding:7px 5px!important;border-radius:13px!important;gap:3px!important}
   .language-toggle-v3 .language-toggle-options button svg{width:17px;height:17px}
   .language-toggle-v3 .language-toggle-options button span{min-width:0}
