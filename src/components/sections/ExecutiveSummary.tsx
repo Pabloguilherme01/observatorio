@@ -57,6 +57,7 @@ export function ExecutiveSummary() {
       status: populationIndicator?.status ?? 'current',
       referenceDate: populationReferenceDate,
       target: 'dashboard',
+      guidedQuestion: 'É uma estimativa populacional ou um valor de censo?',
     },
     {
       id: 'eleitorado',
@@ -68,6 +69,7 @@ export function ExecutiveSummary() {
       status: 'snapshot',
       referenceDate: electorate.snapshotDate,
       target: 'eleitorado',
+      guidedQuestion: 'Este total representa eleitorado, população ou comparecimento?',
     },
     {
       id: 'orcamento-per-capita',
@@ -79,6 +81,7 @@ export function ExecutiveSummary() {
       status: budgetPerCapitaIndicator?.status ?? 'derived',
       referenceDate: budgetPerCapitaReferenceDate,
       target: 'orcamento',
+      guidedQuestion: 'Este valor representa planejamento autorizado ou execução financeira?',
     },
     {
       id: 'saneamento',
@@ -90,6 +93,7 @@ export function ExecutiveSummary() {
       status: sanitationIndicator?.status ?? 'historical',
       referenceDate: sanitationReferenceDate,
       target: 'saude',
+      guidedQuestion: 'Este percentual mede qual etapa do serviço de esgotamento?',
     },
   ] as const;
 
@@ -228,6 +232,7 @@ export function ExecutiveSummary() {
                     <span className="dashboard-meta-chip" data-kind={fact.status}>{fact.badge}</span>
                     {fact.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(fact.referenceDate)}</span>}
                   </div>
+                  {languageMode === 'guided' && <span className="summary-guided-question"><strong>Pergunta-guia</strong>{fact.guidedQuestion}</span>}
                   <em>{fact.note}</em>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
