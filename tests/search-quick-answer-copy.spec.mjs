@@ -17,9 +17,10 @@ test('resposta rápida pode ser copiada com fonte e URL oficial', async ({ page 
 
   const input = page.getByRole('combobox', { name: 'Buscar dado, serviço, fonte ou seção' });
   await input.fill('populacao');
-  await expect(page.getByText('População 2026', { exact: true })).toBeVisible();
+  const quickAnswer = page.locator('.search-quick-answer');
+  await expect(quickAnswer.getByText('População 2026', { exact: true })).toBeVisible();
 
-  const copyButton = page.getByRole('button', { name: 'Copiar resposta' });
+  const copyButton = quickAnswer.getByRole('button', { name: 'Copiar resposta' });
   await copyButton.click();
   await expect(copyButton).toContainText('Resposta copiada');
 
@@ -30,5 +31,5 @@ test('resposta rápida pode ser copiada com fonte e URL oficial', async ({ page 
   expect(copied).not.toContain('utm_');
 
   await input.fill('quantas fontes');
-  await expect(page.getByRole('button', { name: 'Copiar resposta' })).toBeVisible();
+  await expect(quickAnswer.getByRole('button', { name: 'Copiar resposta' })).toBeVisible();
 });
