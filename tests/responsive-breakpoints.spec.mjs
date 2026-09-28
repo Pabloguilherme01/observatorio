@@ -220,3 +220,22 @@ test.describe('aprendizado guiado no mobile', () => {
     });
   }
 });
+
+
+test('menu Mais oferece acesso direto ao aprendizado guiado no celular', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('./');
+  await page.locator('#mobile-bottom-more-trigger').click();
+
+  const menu = page.locator('#mobile-bottom-more');
+  await expect(menu).toBeVisible();
+  const guided = menu.getByRole('menuitem', { name: /Aprendizado guiado.*Trilha passo a passo/i });
+  await expect(guided).toBeVisible();
+  await guided.click();
+
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
+  await expect(page).toHaveURL(/#aprendizado-guiado$/);
+  await expect(page.locator('#aprendizado-guiado')).toBeVisible();
+  await expect(page.locator('#mobile-bottom-more')).toHaveCount(0);
+  await expect(page.locator('#mobile-bottom-more-trigger')).toHaveAttribute('aria-current', 'page');
+});
