@@ -1428,7 +1428,7 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
   expect(csv).toMatch(/"Saude";[^\n]*"heal-current-stated-beds"/);
   expect(csv).toMatch(/"Educacao";[^\n]*"schooling-6-14"/);
   expect(csv).toMatch(/"Educacao";[^\n]*"ept-technical-2025"/);
-  expect(csv).toContain('Registro datado');
+  expect(csv).toContain('Recorte datado');
 });
 
 
@@ -1544,9 +1544,9 @@ test('comparação municipal marca Águas Lindas como referência e mantém leit
   await page.goto('./');
   await openSection(page, 'contexto');
   await expect(page.getByText(/município de referência/i).first()).toBeVisible();
-  await expect(page.getByText(/Diferença positiva ou negativa não significa “melhor” ou “pior”/i)).toBeVisible();
+  await expect(page.getByText(/sinal positivo ou negativo indica direção matemática, não avaliação/i)).toBeVisible();
   const luziania = page.locator('.context-comparison-card').filter({ hasText: 'Luziânia' });
-  await expect(luziania).toContainText(/Em relação a Águas Lindas:/i);
+  await expect(luziania).toContainText(/Diferença numérica para Águas Lindas:/i);
 });
 
 test('busca rápida cobre escolarização e arborização', async ({ page }) => {
