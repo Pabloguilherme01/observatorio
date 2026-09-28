@@ -147,3 +147,76 @@ test.describe('header mobile e modos de leitura', () => {
     });
   }
 });
+
+
+test.describe('aprendizado guiado no mobile', () => {
+  for (const viewport of [
+    { width: 320, height: 740 },
+    { width: 375, height: 812 },
+    { width: 430, height: 932 },
+  ]) {
+    test(`trilha permanece legível e tocável em ${viewport.width}px`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto('./?leitura=guided#aprendizado-guiado');
+
+      const root = page.locator('html');
+      const guide = page.locator('#aprendizado-guiado');
+      await expect(root).toHaveAttribute('data-language-mode', 'guided');
+      await expect(guide).toBeVisible();
+      await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
+
+      const layout = await guide.evaluate(section => {
+        const rect = section.getBoundingClientRect();
+        const steps = [...section.querySelectorAll('.guided-learning-step')].map(step => {
+          const stepRect = step.getBoundingClientRect();
+          return { left: stepRect.left, right: stepRect.right, height: stepRect.height };
+        });
+        const summary = section.querySelector('.guided-learning-glossary > summary')?.getBoundingClientRect();
+        const controls = [...section.querySelectorAll('.guided-learning-footer button')].map(button => {
+          const buttonRect = button.getBoundingClientRect();
+          return { left: buttonRect.left, right: buttonRect.right, height: buttonRect.height };
+        });
+        return {
+          left: rect.left,
+          right: rect.right,
+          viewport: window.innerWidth,
+          steps,
+          summaryHeight: summary?.height ?? 0,
+          controls,
+          documentWidth: document.documentElement.scrollWidth,
+        };
+      });
+
+      expect(layout.left).toBeGreaterThanOrEqual(-1);
+      expect(layout.right).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.documentWidth).toBeLessThanOrEqual(layout.viewport + 1);
+      expect(layout.summaryHeight).toBeGreaterThanOrEqual(44);
+      for (const step of layout.steps) {
+        expect(step.left).toBeGreaterThanOrEqual(-1);
+        expect(step.right).toBeLessThanOrEqual(layout.viewport + 1);
+        expect(step.height).toBeGreaterThanOrEqual(88);
+      }
+      for (const control of layout.controls) {
+        expect(control.left).toBeGreaterThanOrEqual(-1);
+        expect(control.right).toBeLessThanOrEqual(layout.viewport + 1);
+        expect(control.height).toBeGreaterThanOrEqual(44);
+      }
+
+      await guide.getByText('Entenda os rótulos dos dados').click();
+      await expect(guide.locator('.guided-learning-glossary')).toHaveAttribute('open', '');
+      const glossaryWidth = await guide.locator('.guided-learning-glossary').evaluate(node => ({
+        client: node.clientWidth,
+        scroll: node.scrollWidth,
+      }));
+      expect(glossaryWidth.scroll).toBeLessThanOrEqual(glossaryWidth.client + 1);
+
+      await page.locator('.site-tools-button').click();
+      const modeButtons = page.locator('#mobile-tools .language-toggle-options button');
+      await expect(modeButtons).toHaveCount(4);
+      for (const button of await modeButtons.all()) {
+        const box = await button.boundingBox();
+        expect(box?.height ?? 0).toBeGreaterThanOrEqual(60);
+      }
+    });
+  }
+});
