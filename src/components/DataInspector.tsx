@@ -42,6 +42,25 @@ function dispatchInspect(detail: InspectorDetail) {
 
 export { dispatchInspect };
 
+const statusLabels: Record<string, string> = {
+  current: 'Atual',
+  snapshot: 'Recorte datado',
+  planned: 'Planejado',
+  derived: 'Derivado',
+  historical: 'Histórico',
+};
+
+function publicStatus(status?: string) {
+  return status ? (statusLabels[status] ?? status) : undefined;
+}
+
+function publicDate(value?: string) {
+  if (!value) return undefined;
+  const match = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(value);
+  if (!match) return value;
+  return `${match[3]}/${match[2]}/${match[1]}`;
+}
+
 export function DataInspector() {
   const { mode: languageMode } = useLanguageMode();
   const [data, setData] = useState<InspectorDetail | null>(null);
@@ -113,6 +132,8 @@ export function DataInspector() {
   );
   const effectiveReferenceDate = data?.referenceDate ?? source?.referenceDate;
   const effectiveNote = data?.note ?? source?.note;
+  const statusLabel = publicStatus(data?.status);
+  const referenceLabel = publicDate(effectiveReferenceDate);
 
   if (!data) return null;
 
@@ -120,8 +141,8 @@ export function DataInspector() {
     data.label,
     data.value,
     source ? `Fonte: ${source.institution} — ${source.label}` : '',
-    data.status ? `Natureza/status: ${data.status}` : '',
-    effectiveReferenceDate ? `Referência: ${effectiveReferenceDate}` : '',
+    statusLabel ? `Natureza/status: ${statusLabel}` : '',
+    referenceLabel ? `Referência: ${referenceLabel}` : '',
     data.method ? `Método: ${data.method}` : '',
     effectiveNote ?? '',
   ].filter(Boolean).join('\n');
@@ -129,7 +150,7 @@ export function DataInspector() {
   const citation = [
     `${data.label}: ${data.value}.`,
     source ? `Fonte: ${source.institution} — ${source.label}.` : '',
-    effectiveReferenceDate ? `Referência: ${effectiveReferenceDate}.` : '',
+    referenceLabel ? `Referência: ${referenceLabel}.` : '',
     source?.url ? `URL: ${source.url}` : '',
   ].filter(Boolean).join(' ');
 
@@ -203,13 +224,13 @@ export function DataInspector() {
   return (
     <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
       <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={closeInspector} />
-      <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl" aria-describedby="data-inspector-context">
-        <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
+      <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl light:bg-white light:text-slate-900" aria-describedby="data-inspector-context">
+        <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4 light:border-slate-200">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Inspetor de dados</div>
-            <h2 id="data-inspector-title" className="mt-1 text-xl font-black text-white">{data.label}</h2>
+            <h2 id="data-inspector-title" className="mt-1 text-xl font-black text-white light:text-slate-950">{data.label}</h2>
           </div>
-          <button ref={closeRef} type="button" onClick={closeInspector} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white" aria-label="Fechar">
+          <button ref={closeRef} type="button" onClick={closeInspector} className="rounded-xl p-2 text-slate-500 hover:bg-white/5 hover:text-white light:hover:bg-slate-100 light:hover:text-slate-950" aria-label="Fechar">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -220,15 +241,15 @@ export function DataInspector() {
             <div className="text-3xl font-black text-white light:text-slate-900">{data.value}</div>
             <div className="mt-2 text-xs leading-5 text-slate-500">{data.method ?? 'Valor apresentado pelo conjunto de dados do observatório.'}</div>
             <div className="dashboard-card-meta mt-3">
-              {data.status && <span className="dashboard-meta-chip" data-kind={data.status}>{data.status}</span>}
-              {effectiveReferenceDate && <span className="dashboard-meta-chip">ref. {effectiveReferenceDate}</span>}
+              {data.status && <span className="dashboard-meta-chip" data-kind={data.status}>{statusLabel}</span>}
+              {effectiveReferenceDate && <span className="dashboard-meta-chip">ref. {referenceLabel}</span>}
             </div>
           </div>
 
           <div className="data-inspector-grid grid gap-3 sm:grid-cols-2">
             <Info label="Fonte" value={source?.institution ?? 'Não informada'} />
-            <Info label="Natureza / estado" value={data.status ?? source?.nature ?? 'Não informado'} />
-            <Info label="Ano-base / referência" value={effectiveReferenceDate ?? 'Não informado'} />
+            <Info label="Natureza / estado" value={statusLabel ?? source?.nature ?? 'Não informado'} />
+            <Info label="Ano-base / referência" value={referenceLabel ?? 'Não informado'} />
             <Info label="Atualização da fonte" value={source?.updateFrequency ?? 'Não informada'} />
           </div>
 
@@ -270,8 +291,8 @@ export function DataInspector() {
 }
 
 function Info({ label, value }: { readonly label: string; readonly value: string }) {
-  return <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3">
+  return <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-slate-50">
     <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600">{label}</div>
-    <div className="mt-1 text-sm font-semibold text-white">{value}</div>
+    <div className="mt-1 text-sm font-semibold text-white light:text-slate-900">{value}</div>
   </div>;
 }
