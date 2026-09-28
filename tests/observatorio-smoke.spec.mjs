@@ -976,6 +976,7 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
   await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
   await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
+  await expect(guide.getByText('Ir ao resumo')).toBeVisible();
   await expect(guide.getByRole('button', { name: /Reiniciar trilha/i })).toBeDisabled();
 
   await guide.getByRole('button', { name: /Abrir: 1. Identifique o que o número mede/i }).click();

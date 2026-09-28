@@ -187,8 +187,8 @@
   border-radius:11px;
   background:rgba(255,255,255,.02);
 }
-.guided-learning-glossary strong{display:block;color:#e2e8f0;font-size:9px}
-.guided-learning-glossary small{display:block;margin-top:4px;color:#64748b;font-size:9px;line-height:1.4}
+.guided-learning-glossary strong{display:block;color:#e2e8f0;font-size:10px}
+.guided-learning-glossary small{display:block;margin-top:4px;color:#64748b;font-size:10px;line-height:1.5}
 
 .guided-learning-grid{
   display:grid;
@@ -247,7 +247,18 @@
   font-weight:750;
   line-height:1.45;
 }
-.guided-learning-step>svg{width:15px;height:15px;margin-top:8px;color:#64748b}
+.guided-learning-step-action{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-top:8px;
+  color:#fbbf24;
+  font-size:10px;
+  font-weight:850;
+  line-height:1.3;
+}
+.guided-learning-step-action svg{width:13px;height:13px}
+.guided-learning-step.is-visited .guided-learning-step-action{color:#6ee7b7}
 
 .guided-learning-footer{
   display:flex;
@@ -258,7 +269,7 @@
   padding-top:14px;
   border-top:1px solid rgba(148,163,184,.12);
 }
-.guided-learning-footer p{max-width:64ch;color:#64748b;font-size:11px;line-height:1.55}
+.guided-learning-footer p{max-width:64ch;color:#64748b;font-size:12px;line-height:1.55}
 .guided-learning-footer p strong{color:#cbd5e1}
 .guided-learning-footer>div{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
 .guided-learning-reset,.guided-learning-next{
@@ -284,6 +295,8 @@
 .light .guided-learning-head p,.light .guided-learning-copy small,.light .guided-learning-footer p,.light .guided-learning-next-card small{color:#64748b}
 .light .guided-learning-resume{border-color:#f3d28a;background:#fffbeb;color:#92400e}
 .light .guided-learning-copy .guided-learning-question{color:#334155}
+.light .guided-learning-step-action{color:#92400e}
+.light .guided-learning-step.is-visited .guided-learning-step-action{color:#047857}
 .light .guided-learning-next-card{border-color:#f3d28a;background:linear-gradient(135deg,#fff8e7,#f8fbff)}
 .light .guided-learning-next-card>span{color:#a16207}
 .light .guided-learning-glossary{border-color:#e2e8f0;background:#fff}
@@ -400,8 +413,8 @@
   .guided-learning-glossary>div>span{
     padding:10px;
   }
-  .guided-learning-glossary strong{font-size:10px}
-  .guided-learning-glossary small{font-size:10px;line-height:1.45}
+  .guided-learning-glossary strong{font-size:11px}
+  .guided-learning-glossary small{font-size:11px;line-height:1.5}
   .guided-learning-grid{
     grid-template-columns:1fr;
     gap:8px;
@@ -430,16 +443,17 @@
   }
   .guided-learning-copy .guided-learning-question{
     margin-top:6px;
-    font-size:11.5px;
+    font-size:12px;
     line-height:1.45;
   }
   .guided-learning-copy small{
-    font-size:10.5px;
+    font-size:12px;
     line-height:1.5;
   }
-  .guided-learning-step>svg{
-    align-self:center;
-    margin-top:0;
+  .guided-learning-step-action{
+    min-height:32px;
+    margin-top:7px;
+    font-size:11px;
   }
   .guided-learning-footer{
     align-items:stretch;
@@ -450,7 +464,7 @@
     scroll-margin-bottom:calc(var(--mobile-nav-height,68px) + env(safe-area-inset-bottom,0px) + 16px);
   }
   .guided-learning-footer p{
-    font-size:10.5px;
+    font-size:12px;
     line-height:1.5;
   }
   .guided-learning-footer>div{

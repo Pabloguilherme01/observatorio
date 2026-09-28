@@ -18,6 +18,7 @@ const steps = [
   {
     id: 'valor',
     target: 'resumo',
+    action: 'Ir ao resumo',
     skill: 'Leitura',
     question: 'O que este número mede — e em qual unidade?',
     title: '1. Identifique o que o número mede',
@@ -26,6 +27,7 @@ const steps = [
   {
     id: 'referencia',
     target: 'dashboard',
+    action: 'Ir aos indicadores',
     skill: 'Tempo',
     question: 'De quando é o dado e qual é a sua natureza?',
     title: '2. Confira período e natureza',
@@ -34,6 +36,7 @@ const steps = [
   {
     id: 'contexto',
     target: 'eleitorado',
+    action: 'Ver eleitorado',
     skill: 'Recorte',
     question: 'Estou comparando universos e bases equivalentes?',
     title: '3. Separe universos e recortes',
@@ -42,6 +45,7 @@ const steps = [
   {
     id: 'utilidade',
     target: 'acao',
+    action: 'Abrir serviços',
     skill: 'Utilidade',
     question: 'Qual canal oficial atende a necessidade prática?',
     title: '4. Leve a informação ao serviço certo',
@@ -50,6 +54,7 @@ const steps = [
   {
     id: 'fonte',
     target: 'fontes',
+    action: 'Conferir fontes',
     skill: 'Verificação',
     question: 'Quem publicou, quando e com quais limitações?',
     title: '5. Confira a origem',
@@ -58,6 +63,7 @@ const steps = [
   {
     id: 'quiz',
     target: 'quiz',
+    action: 'Fazer o quiz',
     skill: 'Revisão',
     question: 'Consigo reconhecer valor, período, natureza e fonte?',
     title: '6. Teste a compreensão',
@@ -113,7 +119,7 @@ export function GuidedLearningPanel() {
             <span className="guided-learning-eyebrow"><GraduationCap aria-hidden="true" /> Aprendizado guiado</span>
             <h2 id="guided-learning-title">Como ler dados públicos em etapas</h2>
             <p>A trilha organiza a navegação; os valores continuam vindo dos mesmos cards, fontes e métodos dos outros modos.</p>
-            {hasProgress && !allVisited ? <small className="guided-learning-resume">Retome de onde parou: {visitedSet.size} de {steps.length} etapas já foram visitadas.</small> : null}
+            {hasProgress && !allVisited ? <small className="guided-learning-resume">Retome de onde parou: {visitedSet.size} de {steps.length} destinos já foram abertos.</small> : null}
           </div>
           <div
             className="guided-learning-progress"
@@ -122,18 +128,18 @@ export function GuidedLearningPanel() {
             aria-valuemin={0}
             aria-valuemax={steps.length}
             aria-valuenow={visitedSet.size}
-            aria-valuetext={`${visitedSet.size} de ${steps.length} etapas visitadas`}
+            aria-valuetext={`${visitedSet.size} de ${steps.length} destinos abertos`}
           >
             <strong>{visitedSet.size}/{steps.length}</strong>
-            <span>etapas visitadas</span>
+            <span>destinos abertos</span>
             <div aria-hidden="true"><i style={{ width: progress + '%' }} /></div>
           </div>
         </div>
 
         <div className="guided-learning-next-card" aria-live="polite">
           <span><Compass aria-hidden="true" /> {allVisited ? 'Trilha percorrida' : hasProgress ? 'Continue de onde parou' : 'Próxima etapa sugerida'}</span>
-          <strong>{allVisited ? 'As 6 etapas foram visitadas' : continueStep.title}</strong>
-          <small>{allVisited ? 'Isso registra a navegação pela trilha, não uma nota nem uma avaliação de conhecimento. Você pode revisar qualquer etapa.' : continueStep.question}</small>
+          <strong>{allVisited ? 'Os 6 destinos foram abertos' : continueStep.title}</strong>
+          <small>{allVisited ? 'Isso registra os destinos abertos, não uma nota nem uma avaliação de conhecimento. Você pode revisar qualquer etapa.' : continueStep.question}</small>
         </div>
 
         <details className="guided-learning-glossary">
@@ -158,7 +164,7 @@ export function GuidedLearningPanel() {
                 type="button"
                 className={`guided-learning-step ${done ? 'is-visited' : ''} ${isNext ? 'is-next' : ''}`}
                 onClick={() => openStep(step)}
-                aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}. Pergunta-guia: ${step.question}`}
+                aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}. ${step.action}. Pergunta-guia: ${step.question}`}
                 aria-current={isNext ? 'step' : undefined}
               >
                 <span className="guided-learning-check" aria-hidden="true">{done ? <CheckCircle2 /> : <BookOpenCheck />}</span>
@@ -167,15 +173,15 @@ export function GuidedLearningPanel() {
                   <strong>{step.title}</strong>
                   <small className="guided-learning-question">{step.question}</small>
                   <small>{step.description}</small>
+                  <span className="guided-learning-step-action">{step.action}<ArrowRight aria-hidden="true" /></span>
                 </span>
-                <ArrowRight aria-hidden="true" />
               </button>
             );
           })}
         </div>
 
         <div className="guided-learning-footer">
-          <p><strong>Neutralidade:</strong> este modo ensina como ler e verificar dados. Ele não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais.</p>
+          <p><strong>Neutralidade:</strong> este modo ensina como ler e verificar dados. O progresso registra os destinos abertos; não confirma a leitura nem avalia o que você aprendeu. Ele não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais.</p>
           <div>
             <button type="button" className="guided-learning-reset" onClick={reset} disabled={visited.length === 0}>
               <RotateCcw aria-hidden="true" /> Reiniciar trilha

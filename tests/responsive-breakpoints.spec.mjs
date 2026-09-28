@@ -235,7 +235,7 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
 
   await page.goto('./?leitura=guided#aprendizado-guiado');
 
-  await expect(guide.getByText(/Retome de onde parou: 1 de 6 etapas já foram visitadas/i)).toBeVisible();
+  await expect(guide.getByText(/Retome de onde parou: 1 de 6 destinos já foram abertos/i)).toBeVisible();
   await expect(guide.getByRole('button', { name: /Retomar · Confira período e natureza/i })).toBeVisible();
 
   await page.evaluate(key => {
@@ -245,7 +245,7 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
   await page.reload();
 
   await expect(guide.getByText('Trilha percorrida')).toBeVisible();
-  await expect(guide.getByText('As 6 etapas foram visitadas')).toBeVisible();
+  await expect(guide.getByText('Os 6 destinos foram abertos')).toBeVisible();
   await expect(guide.getByText(/não uma nota nem uma avaliação de conhecimento/i)).toBeVisible();
   await expect(guide.getByRole('button', { name: /Revisar trilha · etapa 1/i })).toBeVisible();
 
