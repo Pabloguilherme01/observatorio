@@ -1,3 +1,4 @@
+import { formatIndicatorStatus } from '../utils/dataLabels';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
@@ -41,18 +42,6 @@ function dispatchInspect(detail: InspectorDetail) {
 }
 
 export { dispatchInspect };
-
-const statusLabels: Record<string, string> = {
-  current: 'Atual',
-  snapshot: 'Recorte datado',
-  planned: 'Planejado',
-  derived: 'Derivado',
-  historical: 'Histórico',
-};
-
-function publicStatus(status?: string) {
-  return status ? (statusLabels[status] ?? status) : undefined;
-}
 
 function publicDate(value?: string) {
   if (!value) return undefined;
@@ -132,7 +121,7 @@ export function DataInspector() {
   );
   const effectiveReferenceDate = data?.referenceDate ?? source?.referenceDate;
   const effectiveNote = data?.note ?? source?.note;
-  const statusLabel = publicStatus(data?.status);
+  const statusLabel = formatIndicatorStatus(data?.status);
   const referenceLabel = publicDate(effectiveReferenceDate);
 
   if (!data) return null;
