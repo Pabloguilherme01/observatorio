@@ -3,6 +3,7 @@ import { applySearchParamUpdates, toRelativeUrl } from './urlState';
 export type SectionNavigationOptions = {
   readonly state?: unknown;
   readonly replace?: boolean;
+  readonly clearSearch?: boolean;
   readonly searchParams?: Readonly<Record<string, string | null | undefined>>;
 };
 
@@ -12,13 +13,14 @@ export function navigateToSection(id: string, options: SectionNavigationOptions 
 
   const hash = '#' + target;
   const nextUrl = new URL(window.location.href);
+  if (options.clearSearch) nextUrl.search = '';
   nextUrl.hash = hash;
   applySearchParamUpdates(nextUrl, options.searchParams);
 
   const nextRelativeUrl = toRelativeUrl(nextUrl);
   const sameTarget = window.location.hash === hash;
   const hasState = Object.prototype.hasOwnProperty.call(options, 'state');
-  const hasSearchParams = Boolean(options.searchParams && Object.keys(options.searchParams).length);
+  const hasSearchParams = Boolean(options.clearSearch || (options.searchParams && Object.keys(options.searchParams).length));
 
   if (!sameTarget) {
     const state = hasState ? (options.state ?? null) : null;
@@ -30,4 +32,9 @@ export function navigateToSection(id: string, options: SectionNavigationOptions 
   }
 
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: target }));
+}
+
+
+export function navigateToCleanSection(id: string) {
+  navigateToSection(id, { replace: true, clearSearch: true });
 }

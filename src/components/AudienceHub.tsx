@@ -1,5 +1,6 @@
 import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
+import { navigateToCleanSection } from '../lib/sectionNavigation';
 
 type Topic = {
   id: string;
@@ -37,8 +38,7 @@ export function AudienceHub() {
   const isSummary = mode === 'summary';
 
   const jump = (id: string) => {
-    window.history.replaceState(null, '', '#' + id);
-    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+    navigateToCleanSection(id);
   };
 
   return (
