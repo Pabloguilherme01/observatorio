@@ -41,24 +41,24 @@ export function HeroCountdown() {
             <Badge>{technical ? `${EDITION} · dados + método` : 'Dados públicos · fontes rastreáveis'}</Badge>
             {technical && <Badge>Fontes visíveis</Badge>}
           </div>
-          <span className="hero-updated"><Database aria-hidden="true" /> Atualizado em {updatedAt}</span>
+          <span className="hero-updated"><Database aria-hidden="true" /> Painel atualizado em {updatedAt}</span>
         </div>
 
         <div className="hero-layout">
           <div className="hero-copy">
-            <span className="hero-kicker">Observatório Eleitoral</span>
+            <span className="hero-kicker">Observatório cívico e eleitoral</span>
             <h1 id="hero-title">Águas Lindas de Goiás <em>2026</em></h1>
             <p>
               {summary
-                ? 'Uma visão executiva da cidade: números centrais, serviços e fontes a poucos toques.'
+                ? 'Uma visão rápida da cidade: números centrais, serviços públicos e fontes rastreáveis a poucos toques.'
                 : technical
                   ? 'Uma camada de auditoria dos dados: origem, método, recortes e limitações visíveis.'
-                  : 'Números explicados com contexto suficiente para entender antes de aprofundar.'}
+                  : 'Números públicos explicados com contexto, período e origem para você aprofundar quando precisar.'}
             </p>
 
             <div className="hero-actions">
               <a href="#descubra" className="hero-action primary">
-                Explorar dados <ArrowRight aria-hidden="true" />
+                Explorar temas <ArrowRight aria-hidden="true" />
               </a>
               <a href="#fontes" className="hero-action secondary">
                 Conferir fontes
@@ -87,7 +87,7 @@ export function HeroCountdown() {
                 <CalendarClock aria-hidden="true" />
               </div>
               <Timer value={election} />
-              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="hero-official-link">
+              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="hero-official-link" aria-label="Abrir calendário oficial das Eleições 2026 no TSE em nova aba">
                 Calendário oficial do TSE <ExternalLink aria-hidden="true" />
               </a>
             </div>
