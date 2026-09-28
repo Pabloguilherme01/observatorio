@@ -286,7 +286,7 @@ const sharing = [
   read('src/components/sections/QuickQuiz.tsx'),
   read('src/components/TransportCalculator.tsx'),
 ].join('\n');
-must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modo Resumo/Simples/Técnico possui componente próprio');
+must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'guided'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modos Resumo/Explicado/Guiado/Detalhado possuem componente próprio');
 must(sharing.includes('navigator.share') && sharing.includes('copyText') && clipboard.includes('navigator.clipboard') && clipboard.includes("document.createElement('textarea')"), 'compartilhamento nativo usa um fallback de cópia único e resiliente');
 
 if (!errors.length) {
