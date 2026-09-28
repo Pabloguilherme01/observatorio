@@ -967,22 +967,28 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
   const guide = page.locator('#aprendizado-guiado');
   await expect(guide).toBeVisible();
-  await expect(guide).toContainText('Como ler dados públicos em etapas');
+  await expect(guide).toContainText('Expedição pelos dados públicos');
   await expect(guide).toContainText(/não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais/i);
-  await expect(guide).toContainText('Próxima etapa sugerida');
+  await expect(guide).toContainText('Próxima parada');
   await expect(guide).toContainText('O que este número mede — e em qual unidade?');
-  await expect(guide.getByText('Entenda os rótulos dos dados')).toBeVisible();
-  await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '0');
+  await expect(guide.getByText('Kit de pistas: entenda os rótulos')).toBeVisible();
+  await expect(guide.getByText('Rota de investigação')).toBeVisible();
+  await expect(guide.locator('.guided-learning-hint')).toHaveCount(6);
+  await expect(guide.getByRole('progressbar', { name: 'Progresso da rota de investigação' })).toHaveAttribute('aria-valuenow', '0');
   await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
   await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
   await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
   await expect(guide.getByText('Ir ao resumo')).toBeVisible();
   await expect(guide.getByRole('button', { name: /Reiniciar trilha/i })).toBeDisabled();
 
+  await guide.locator('.guided-learning-hint summary').first().click();
+  await expect(guide.locator('.guided-learning-hint').first()).toHaveAttribute('open', '');
+  await expect(guide).toContainText('Procure o nome completo do indicador, a unidade');
+
   await guide.getByRole('button', { name: /Abrir: 1. Identifique o que o número mede/i }).click();
   await expect(page).toHaveURL(/#resumo$/);
-  await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '1');
-  await expect(guide).toContainText('2. Confira período e natureza');
+  await expect(guide.getByRole('progressbar', { name: 'Progresso da rota de investigação' })).toHaveAttribute('aria-valuenow', '1');
+  await expect(guide).toContainText('Confira período e natureza');
 });
 
 test('busca encontra e abre o aprendizado guiado', async ({ page }) => {
