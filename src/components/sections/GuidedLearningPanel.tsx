@@ -6,6 +6,14 @@ import { navigateToCleanSection } from '../../lib/sectionNavigation';
 
 const STORAGE_KEY = `${STORAGE_NAMESPACE}-guided-learning-visited`;
 
+const dataTerms = [
+  { label: 'Atual', description: 'Referência corrente no conjunto; a data ainda precisa ser conferida.' },
+  { label: 'Histórico', description: 'Registro de período anterior, preservado para contexto ou comparação.' },
+  { label: 'Recorte datado', description: 'Captura válida para uma data específica; não significa atualização em tempo real.' },
+  { label: 'Derivado', description: 'Cálculo produzido a partir de valores e premissas identificadas.' },
+  { label: 'Planejado', description: 'Meta, previsão ou autorização; não equivale automaticamente a execução.' },
+] as const;
+
 const steps = [
   {
     id: 'valor',
@@ -125,6 +133,18 @@ export function GuidedLearningPanel() {
           <strong>{allVisited ? 'Revise qualquer etapa quando quiser' : continueStep.title}</strong>
           <small>{allVisited ? 'O progresso indica navegação pelas etapas, não avaliação de conhecimento.' : continueStep.question}</small>
         </div>
+
+        <details className="guided-learning-glossary">
+          <summary>Entenda os rótulos dos dados</summary>
+          <div>
+            {dataTerms.map(term => (
+              <span key={term.label}>
+                <strong>{term.label}</strong>
+                <small>{term.description}</small>
+              </span>
+            ))}
+          </div>
+        </details>
 
         <div className="guided-learning-grid">
           {steps.map(step => {
