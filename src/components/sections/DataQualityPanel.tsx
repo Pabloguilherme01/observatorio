@@ -23,6 +23,10 @@ export function DataQualityPanel() {
   const historical = d.indicators.filter(i => i.status === 'historical').length;
   const officialSources = d.sources.filter(source => source.nature === 'official').length;
   const secondarySources = d.sources.filter(source => source.nature === 'secondary').length;
+  const snapshot = d.indicators.filter(i => i.status === 'snapshot').length;
+  const planned = d.indicators.filter(i => i.status === 'planned').length;
+  const datedIndicators = d.indicators.filter(i => Boolean(i.referenceDate) || Boolean(d.sources.find(source => source.id === i.sourceId)?.referenceDate)).length;
+  const datedCoverage = d.indicators.length ? (datedIndicators / d.indicators.length) * 100 : 0;
   const poll = d.polls[0];
   const pollNamedPct = poll.results.reduce((sum, result) => sum + result.percentage, 0);
   const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
@@ -58,7 +62,14 @@ export function DataQualityPanel() {
         title="Veja de onde vêm os dados e quais são os limites"
         description="O Observatório diferencia dado atual, registro de uma data específica, histórico e cálculo feito a partir das fontes. Aqui você pode conferir atualização, método e limitações."
       />
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="quality-overview mb-4 rounded-3xl border border-white/8 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50/70">
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div><div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Cobertura documental</div><p className="mt-1 text-xs leading-5 text-slate-500">{datedIndicators} de {d.indicators.length} indicadores têm data própria ou referência temporal herdada da fonte.</p></div>
+          <strong className="text-2xl font-black text-white light:text-slate-900">{datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
+        </div>
+        <div className="quality-progress mt-3" aria-label={`Cobertura temporal ${datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`}><span style={{ width: `${Math.min(100, datedCoverage)}%` }} /></div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
           <div className="mt-3 text-3xl font-black text-white">{current}</div>
@@ -73,6 +84,16 @@ export function DataQualityPanel() {
           <TriangleAlert className="h-5 w-5 text-amber-300" aria-hidden="true" />
           <div className="mt-3 text-3xl font-black text-white">{historical}</div>
           <div className="text-xs text-slate-500">indicadores históricos</div>
+        </Card>
+        <Card>
+          <Database className="h-5 w-5 text-violet-300" aria-hidden="true" />
+          <div className="mt-3 text-3xl font-black text-white">{snapshot}</div>
+          <div className="text-xs text-slate-500">registros datados</div>
+        </Card>
+        <Card>
+          <CheckCircle2 className="h-5 w-5 text-cyan-300" aria-hidden="true" />
+          <div className="mt-3 text-3xl font-black text-white">{planned}</div>
+          <div className="text-xs text-slate-500">valores planejados</div>
         </Card>
       </div>
 
