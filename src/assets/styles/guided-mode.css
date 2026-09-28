@@ -127,6 +127,40 @@
 .guided-learning-next-card strong{color:#f8fafc;font-size:13px;line-height:1.35}
 .guided-learning-next-card small{color:#94a3b8;font-size:11px;line-height:1.5}
 
+.guided-learning-glossary{
+  margin-top:10px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:14px;
+  background:rgba(0,0,0,.08);
+}
+.guided-learning-glossary>summary{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  padding:10px 12px;
+  color:#cbd5e1;
+  cursor:pointer;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.06em;
+}
+.guided-learning-glossary>summary::marker{color:#fbbf24}
+.guided-learning-glossary>div{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
+  padding:0 10px 10px;
+}
+.guided-learning-glossary>div>span{
+  min-width:0;
+  padding:9px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:11px;
+  background:rgba(255,255,255,.02);
+}
+.guided-learning-glossary strong{display:block;color:#e2e8f0;font-size:9px}
+.guided-learning-glossary small{display:block;margin-top:4px;color:#64748b;font-size:9px;line-height:1.4}
+
 .guided-learning-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -220,6 +254,11 @@
 .light .guided-learning-copy .guided-learning-question{color:#334155}
 .light .guided-learning-next-card{border-color:#f3d28a;background:linear-gradient(135deg,#fff8e7,#f8fbff)}
 .light .guided-learning-next-card>span{color:#a16207}
+.light .guided-learning-glossary{border-color:#e2e8f0;background:#fff}
+.light .guided-learning-glossary>summary{color:#334155}
+.light .guided-learning-glossary>div>span{border-color:#e2e8f0;background:#f8fafc}
+.light .guided-learning-glossary strong{color:#0f172a}
+.light .guided-learning-glossary small{color:#64748b}
 .light .guided-learning-progress{border-color:#fde7ad;background:#fffaf0}
 .light .guided-learning-progress>div{background:#e2e8f0}
 .light .guided-learning-step{border-color:#e2e8f0;background:#fff}
@@ -235,6 +274,12 @@
   }
 }
 
+@media(min-width:768px){
+  .header-reading-mode .language-toggle-options{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+
 @media(max-width:767px){
   [data-language-mode="guided"] .audience-home .audience-topic-grid,
   [data-language-mode="guided"] .audience-home .audience-action-grid,
@@ -243,6 +288,7 @@
   }
   .guided-learning-head{grid-template-columns:1fr}
   .guided-learning-progress{min-width:0}
+  .guided-learning-glossary>div{grid-template-columns:1fr}
   .guided-learning-grid{grid-template-columns:1fr}
   .guided-learning-step{min-height:96px}
   .guided-learning-footer{align-items:stretch;flex-direction:column}
