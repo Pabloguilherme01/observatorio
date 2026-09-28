@@ -3469,11 +3469,6 @@ d,
   transform:translateY(-1px);
   border-color:rgba(125,211,252,.18);
 }
-.civic-local-hub input[type="search"]:focus-visible{
-  outline:2px solid rgba(125,211,252,.45);
-  outline-offset:4px;
-  border-radius:8px;
-}
 @media(max-width:639px){
   #dados [aria-label="Resumo do conjunto de dados"]>div{min-height:112px}
 }
