@@ -13,6 +13,7 @@ const files = {
   css: read('src/assets/styles/globals.css'),
   finalUi: read('src/assets/styles/final-ui.css'),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
+  guidedCss: read('src/assets/styles/guided-mode.css'),
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
@@ -76,7 +77,8 @@ must(files.finalUi.includes('.premium-info-card{') && files.finalUi.includes('.p
 must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero-reference-card{'), 'referências técnicas do hero usam mini-cards em vez de texto solto');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
-must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aumentar nível de detalhe'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
+must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'guided'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Avançar para aprendizado guiado'), 'os quatro modos e a progressão explícita de leitura continuam disponíveis');
+must(files.guidedCss.includes('@media(max-width:1023px)') && files.guidedCss.includes('grid-template-columns:repeat(2,minmax(0,1fr))') && files.guidedCss.includes('@media(max-width:767px)'), 'modo guiado usa seletor 2×2 em tablet/mobile e trilha responsiva');
 must(files.language.includes('data-active-mode={mode}') && files.language.includes('language-toggle-signal'), 'seletor de leitura expõe assinatura visual do modo ativo');
 must(files.finalUi.includes('--reading-radius:18px') && files.finalUi.includes('--reading-radius:17px') && files.finalUi.includes('--reading-radius:11px') && files.finalUi.includes('@media (max-width:359px)'), 'modos mantêm diferenças de densidade também em telas pequenas');
 must(files.finalUi.includes('@media (min-width:768px) and (max-width:1199px)') && files.finalUi.includes('@media (min-width:1200px)'), 'ritmo responsivo dos modos cobre tablet, notebook e desktop');
