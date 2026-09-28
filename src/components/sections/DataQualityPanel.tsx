@@ -46,11 +46,13 @@ export function DataQualityPanel() {
   const tseCapturedAt = generated.meta.downloadedAt ? new Date(generated.meta.downloadedAt) : null;
   const resultsSource = d.sources.find(source => source.id === 'tse-resultados-2026');
   const unresolved = generated.diff?.unresolved ?? 0;
+  const currentStatedBeds = d.health.currentStatedWardBeds + d.health.currentStatedIcuBeds;
+  const planningBeds = d.health.plannedBeds ?? d.health.openingReportedBeds;
   const warnings = [
     pollGapPct > 0 ? 'Pesquisa: ' + pollGapPct.toFixed(2).replace('.', ',') + ' p.p. estão fora das categorias publicadas.' : null,
     d.education?.note ? 'Educação: a faixa do Ideb 2025 está marcada como pendente de conferência pontual no INEP.' : null,
     'Orçamento: organizações, unidades e funções são níveis de classificação diferentes e não devem ser somados entre si.',
-    'Saúde: 164, 85 e 298 leitos representam referências distintas; não são tratados como uma série contínua de capacidade instalada.',
+    `Saúde: as referências de leitos — ${d.health.openingReportedBeds.toLocaleString('pt-BR')} na inauguração, ${currentStatedBeds.toLocaleString('pt-BR')} no portal atual e ${planningBeds.toLocaleString('pt-BR')} no planejamento — têm naturezas distintas e não formam uma série contínua de capacidade instalada.`,
     'Candidaturas: a captura estadual foi registrada, mas o recorte local atual é documental e não equivale ao universo municipal completo.',
   ].filter(Boolean) as string[];
 
@@ -72,27 +74,27 @@ export function DataQualityPanel() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{current}</div>
+          <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{current}</div>
           <div className="text-xs text-slate-500">indicadores atuais</div>
         </Card>
         <Card>
           <Database className="h-5 w-5 text-sky-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{derived}</div>
+          <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{derived}</div>
           <div className="text-xs text-slate-500">cálculos derivados</div>
         </Card>
         <Card>
           <TriangleAlert className="h-5 w-5 text-amber-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{historical}</div>
+          <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{historical}</div>
           <div className="text-xs text-slate-500">indicadores históricos</div>
         </Card>
         <Card>
           <Database className="h-5 w-5 text-violet-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{snapshot}</div>
+          <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{snapshot}</div>
           <div className="text-xs text-slate-500">registros datados</div>
         </Card>
         <Card>
           <CheckCircle2 className="h-5 w-5 text-cyan-300" aria-hidden="true" />
-          <div className="mt-3 text-3xl font-black text-white">{planned}</div>
+          <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{planned}</div>
           <div className="text-xs text-slate-500">valores planejados</div>
         </Card>
       </div>
@@ -162,12 +164,12 @@ export function DataQualityPanel() {
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
         <Card className="p-4">
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
-          <div className="mt-2 text-2xl font-black text-white">{d.sources.length}</div>
+          <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{d.sources.length}</div>
           <p className="mt-1 text-xs text-slate-500">{officialSources} oficiais · {secondarySources} secundárias</p>
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Última atualização do dataset</div>
-          <div className="mt-2 text-2xl font-black text-white">{formatDate(d.meta.updatedAt)}</div>
+          <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatDate(d.meta.updatedAt)}</div>
           <p className="mt-1 text-xs text-slate-500">Verifique a ficha de cada fonte para o respectivo ano-base.</p>
         </Card>
         <Card className="p-4">
@@ -180,19 +182,19 @@ export function DataQualityPanel() {
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Validação dos resultados</div>
-          <div className="mt-2 text-base font-black text-white">Integridade dos resultados</div>
+          <div className="mt-2 text-base font-black text-white light:text-slate-900">Integridade dos resultados</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão verifica o arquivo oficial antes de publicá-lo. JSON/JWS, contexto municipal e assinatura são tratados separadamente; a prova criptográfica só aparece como verificada quando todos os arquivos passam.</p>
           {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Simulado oficial TSE</div>
-          <div className="mt-2 text-base font-black text-white">22–24/09 · 9h–12h e 14h–17h</div>
+          <div className="mt-2 text-base font-black text-white light:text-slate-900">22–24/09 · 9h–12h e 14h–17h</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">Validação técnica isolada da produção. O ambiente de simulado usa pleito 17801 e códigos próprios; nenhum dado simulado entra no feed oficial.</p>
           <a href={SIMULATION_CONTEXT.docsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Ver documentação dos simulados TSE</a>
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Regra editorial</div>
-          <div className="mt-2 text-base font-black text-white">Sem ranking automático</div>
+          <div className="mt-2 text-base font-black text-white light:text-slate-900">Sem ranking automático</div>
           <p className="mt-1 text-xs text-slate-500">Comparações documentais não são convertidas em recomendação eleitoral.</p>
         </Card>
       </div>
