@@ -111,6 +111,8 @@ export function DataInspector() {
     () => d.sources.find(item => item.id === data?.sourceId),
     [data?.sourceId],
   );
+  const effectiveReferenceDate = data?.referenceDate ?? source?.referenceDate;
+  const effectiveNote = data?.note ?? source?.note;
 
   if (!data) return null;
 
@@ -119,15 +121,15 @@ export function DataInspector() {
     data.value,
     source ? `Fonte: ${source.institution} — ${source.label}` : '',
     data.status ? `Natureza/status: ${data.status}` : '',
-    data.referenceDate ? `Referência: ${data.referenceDate}` : '',
+    effectiveReferenceDate ? `Referência: ${effectiveReferenceDate}` : '',
     data.method ? `Método: ${data.method}` : '',
-    data.note ?? source?.note ?? '',
+    effectiveNote ?? '',
   ].filter(Boolean).join('\n');
 
   const citation = [
     `${data.label}: ${data.value}.`,
     source ? `Fonte: ${source.institution} — ${source.label}.` : '',
-    data.referenceDate || source?.referenceDate ? `Referência: ${data.referenceDate ?? source?.referenceDate}.` : '',
+    effectiveReferenceDate ? `Referência: ${effectiveReferenceDate}.` : '',
     source?.url ? `URL: ${source.url}` : '',
   ].filter(Boolean).join(' ');
 
@@ -201,7 +203,7 @@ export function DataInspector() {
   return (
     <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
       <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={closeInspector} />
-      <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl">
+      <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl" aria-describedby="data-inspector-context">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4">
           <div>
             <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Inspetor de dados</div>
@@ -213,22 +215,27 @@ export function DataInspector() {
         </div>
 
         <div className="space-y-4 p-5">
+          <p id="data-inspector-context" className="sr-only">Detalhes de origem, referência temporal, natureza e método do dado selecionado.</p>
           <div className="rounded-2xl border border-sky-300/15 bg-sky-300/5 p-4">
-            <div className="text-3xl font-black text-white">{data.value}</div>
-            <div className="mt-2 text-xs text-slate-500">{data.method ?? 'Valor apresentado pelo dataset do observatório.'}</div>
+            <div className="text-3xl font-black text-white light:text-slate-900">{data.value}</div>
+            <div className="mt-2 text-xs leading-5 text-slate-500">{data.method ?? 'Valor apresentado pelo conjunto de dados do observatório.'}</div>
+            <div className="dashboard-card-meta mt-3">
+              {data.status && <span className="dashboard-meta-chip" data-kind={data.status}>{data.status}</span>}
+              {effectiveReferenceDate && <span className="dashboard-meta-chip">ref. {effectiveReferenceDate}</span>}
+            </div>
           </div>
 
           <div className="data-inspector-grid grid gap-3 sm:grid-cols-2">
             <Info label="Fonte" value={source?.institution ?? 'Não informada'} />
             <Info label="Natureza / estado" value={data.status ?? source?.nature ?? 'Não informado'} />
-            <Info label="Ano-base / referência" value={data.referenceDate ?? source?.referenceDate ?? 'Não informado'} />
+            <Info label="Ano-base / referência" value={effectiveReferenceDate ?? 'Não informado'} />
             <Info label="Atualização da fonte" value={source?.updateFrequency ?? 'Não informada'} />
           </div>
 
-          {(data.note || source?.note) && (
+          {effectiveNote && (
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-400">
-              <strong className="text-slate-300">Nota metodológica</strong>
-              <p className="mt-1">{data.note ?? source?.note}</p>
+              <strong className="text-slate-300 light:text-slate-700">Contexto e limites</strong>
+              <p className="mt-1">{effectiveNote}</p>
             </div>
           )}
 
