@@ -8,10 +8,10 @@ export function PublicDataPulse() {
   const sourceCount = d.sources.length;
   const indicatorCount = d.indicators.length;
   const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
-  const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
   const datedIndicators = d.indicators.filter(item => item.referenceDate || d.sources.find(source => source.id === item.sourceId)?.referenceDate).length;
   const indicatorDateCoverage = indicatorCount ? (datedIndicators / indicatorCount) * 100 : 0;
   const indicatorsWithNotes = d.indicators.filter(item => Boolean(item.note?.trim())).length;
+  const methodologicalCoverage = indicatorCount ? (indicatorsWithNotes / indicatorCount) * 100 : 0;
   const indicatorStatus = d.indicators.reduce<Record<string, number>>((acc, item) => {
     acc[item.status] = (acc[item.status] ?? 0) + 1;
     return acc;
@@ -28,16 +28,14 @@ export function PublicDataPulse() {
       <SectionHeader
         titleId="dados-title"
         eyebrow="Atualizações públicas"
-        title="O que mudou"
-        description="Registros novos ou alterados no conjunto publicado. Cada item mantém sua data e fonte para conferência."
+        title="Pulso do conjunto publicado"
+        description="Um retrato da documentação disponível e das atualizações recentes. A qualidade detalhada fica concentrada no painel de rastreabilidade."
       />
-      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Resumo do conjunto de dados">
-        <DataStat label="Indicadores publicados" value={indicatorCount} />
-        <DataStat label="Fontes registradas" value={sourceCount} />
-        <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} />
-        <DataStat label="Indicadores com data de referência" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} />
-        <DataStat label="Indicadores com nota metodológica" value={indicatorsWithNotes} />
-        <DataStat label="Fontes com data registrada" value={datedSources} />
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do conjunto de dados">
+        <DataStat label="Indicadores publicados" value={indicatorCount} hint="itens rastreáveis no catálogo" />
+        <DataStat label="Fontes registradas" value={sourceCount} hint={datedSources + ' com data registrada'} />
+        <DataStat label="Referência temporal" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint="dos indicadores têm referência temporal" />
+        <DataStat label="Nota metodológica" value={methodologicalCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={indicatorsWithNotes + ' indicadores explicam limites ou método'} />
       </div>
       <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
         <Card>
@@ -51,7 +49,7 @@ export function PublicDataPulse() {
                 Última atualização do conjunto principal: <strong className="text-slate-300 light:text-slate-700">{d.meta.updatedAt.split('-').reverse().join('/')}</strong>.
               </p>
               <p className="mt-3 text-xs leading-5 text-slate-500">
-                Este bloco mostra mudanças recentes e a qualidade de documentação do conjunto. Indicadores, séries e metodologias permanecem nas seções temáticas; o catálogo de fontes pode ser baixado nesta área.
+                Este bloco resume a publicação sem duplicar o painel de qualidade: aqui você vê volume, documentação e mudanças recentes; nas seções temáticas ficam valores, séries e métodos.
               </p>
               <div className="mt-4 flex flex-wrap gap-2" aria-label="Tipos de indicador publicados">
                 {statusSummary.map(([label, count]) => (
@@ -101,12 +99,13 @@ export function PublicDataPulse() {
   );
 }
 
-function DataStat({ label, value }: { readonly label: string; readonly value: number | string }) {
+function DataStat({ label, value, hint }: { readonly label: string; readonly value: number | string; readonly hint?: string }) {
   return (
     <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
       <Database className="h-4 w-4 text-sky-300" aria-hidden="true" />
       <strong className="mt-2 block text-2xl font-black text-white light:text-slate-900">{typeof value === 'number' ? value.toLocaleString('pt-BR') : value}</strong>
-      <span className="text-xs text-slate-500">{label}</span>
+      <span className="text-xs font-semibold text-slate-400 light:text-slate-600">{label}</span>
+      {hint && <span className="mt-1 block text-[10px] leading-4 text-slate-600 light:text-slate-500">{hint}</span>}
     </div>
   );
 }
