@@ -108,7 +108,7 @@ test('healthcheck técnico usa base pública e permite tentar novamente', async 
 
   const retry = publicationCard.getByRole('button', { name: 'Atualizar status' });
   await retry.click();
-  await expect(publicationCard.getByRole('status')).toContainText(/publicação está íntegra/i);
+  await expect(publicationCard.getByRole('status')).toContainText(/healthcheck informa estado operacional/i);
   await expect(page.getByText(/Commit publicado:.*abc1234/)).toBeVisible();
 
   expect(calls).toBe(2);
