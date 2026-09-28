@@ -87,9 +87,13 @@ export function PublicUtilityGuide() {
         </div>
         <div className="mt-2 grid gap-2 sm:grid-cols-2" aria-label="Mais necessidades">
           {secondaryQuickNeeds.map(({ icon: Icon, label, hint, query }) => (
-            <button key={label} type="button" onClick={() => goToServices(query)} className="inline-flex min-h-11 w-full items-center gap-2 rounded-xl border border-white/8 bg-white/[0.018] px-3 py-2 text-left text-xs font-bold text-slate-400 transition hover:border-sky-300/20 hover:text-sky-200 light:border-slate-200 light:bg-white light:text-slate-700">
+            <button key={label} type="button" onClick={() => goToServices(query)} className="inline-flex min-h-14 w-full items-center gap-3 rounded-xl border border-white/8 bg-white/[0.018] px-3 py-2.5 text-left text-slate-400 transition hover:border-sky-300/20 hover:text-sky-200 light:border-slate-200 light:bg-white light:text-slate-700">
               <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-              <span>{label}<small className="ml-1 font-medium text-slate-600 light:text-slate-500">· {hint}</small></span>
+              <span className="public-utility-secondary-copy min-w-0">
+                <strong className="block text-xs font-black leading-4">{label}</strong>
+                <small className="mt-0.5 block text-[10px] font-medium leading-4 text-slate-600 light:text-slate-500">{hint}</small>
+              </span>
+              <ArrowRight className="ml-auto h-3.5 w-3.5 shrink-0 text-slate-600" aria-hidden="true" />
             </button>
           ))}
         </div>

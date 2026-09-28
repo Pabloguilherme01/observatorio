@@ -190,7 +190,7 @@ export function DashboardMetrics() {
         <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80 light:text-emerald-700">{isGuided ? 'Prática por tema' : 'Mais indicadores'}</div>
           <h3 className="mt-1 text-base font-black text-white light:text-slate-900">{isGuided ? 'Aplique a mesma regra em outros temas' : 'Economia, educação, saneamento e trabalho'}</h3>
-          <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Valores do conjunto rastreável, organizados por tema. Cada card mostra a natureza do dado e a referência disponível.</p>
+          <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">{isGuided ? 'Pratique uma leitura consistente: identifique natureza e referência antes de abrir a fonte.' : 'Valores do conjunto rastreável, organizados por tema. Cada card mostra a natureza do dado e a referência disponível.'}</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {thematicIndicators.map(item => {
               const meta = indicatorMeta(item.id);
@@ -231,7 +231,7 @@ export function DashboardMetrics() {
           <div>
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Comparativos úteis</div>
             <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Comparativos com método explícito</h3>
-            <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Relações descritivas calculadas sobre bases identificadas. Confira fórmula e data antes de comparar.</p>
+            <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">{isGuided ? 'Comece pela fórmula, depois confira período e base antes de usar o comparativo.' : 'Relações descritivas calculadas sobre bases identificadas. Confira fórmula e data antes de comparar.'}</p>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{visibleComparisons.length} comparativos</span>
         </div>
