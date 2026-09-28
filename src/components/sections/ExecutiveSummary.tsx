@@ -82,7 +82,7 @@ export function ExecutiveSummary() {
       source: d.sources.find(sourceItem => sourceItem.id === budgetPerCapitaIndicator?.sourceId)?.label ?? budgetSource?.label ?? 'LOA municipal',
       badge: statusLabel(budgetPerCapitaIndicator?.status),
       status: budgetPerCapitaIndicator?.status ?? 'derived',
-      referenceDate: budgetPerCapitaIndicator?.referenceDate,
+      referenceDate: budgetPerCapitaIndicator?.referenceDate ?? budgetSource?.referenceDate,
       target: 'orcamento',
     },
     {
