@@ -222,7 +222,7 @@ export function MobileBottomNav() {
           <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
             <div className="mobile-bottom-more-heading" aria-hidden="true">
               <strong>Mais áreas</strong>
-              <small>Aprendizado, dados, serviços, fontes e downloads</small>
+              <small>Aprendizado, serviços, fontes e dados</small>
             </div>
             {moreItems.map(item => (
               <button
