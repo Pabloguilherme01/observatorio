@@ -99,10 +99,10 @@ export function ExecutiveSummary() {
   ] as const;
 
   const topics = [
-    { id: 'eleitoral', label: 'Eleição', target: 'eleitoral360', caption: 'eleitorado, participação e candidaturas' },
-    { id: 'cidade', label: 'Cidade', target: 'dashboard', caption: 'população e indicadores' },
-    { id: 'servicos', label: 'Serviços', target: 'acao', caption: 'saúde, saneamento e canais públicos' },
-    { id: 'recursos', label: 'Recursos', target: 'orcamento', caption: 'orçamento e atualizações' },
+    { id: 'eleitoral', label: 'Eleitoral', target: 'eleitoral360', caption: 'eleitorado, participação e candidaturas' },
+    { id: 'cidade', label: 'Cidade', target: 'dashboard', caption: 'população e indicadores municipais' },
+    { id: 'servicos', label: 'Serviços públicos', target: 'acao', caption: 'saúde, saneamento e canais oficiais' },
+    { id: 'recursos', label: 'Orçamento', target: 'orcamento', caption: 'planejamento, funções e alterações' },
   ] as const;
 
   const openTopic = (topic: typeof topics[number]) => {
@@ -149,12 +149,12 @@ export function ExecutiveSummary() {
           <SectionHeader
             titleId="executive-summary-title"
             eyebrow={languageMode === 'technical' ? 'Fontes e detalhes' : languageMode === 'summary' ? 'Resumo principal' : 'Entenda os números'}
-            title={languageMode === 'technical' ? 'Evidência pronta para conferência' : languageMode === 'summary' ? 'O essencial, sem ruído' : 'Dos números ao contexto'}
+            title={languageMode === 'technical' ? 'Dados preparados para conferência' : languageMode === 'summary' ? 'O essencial da cidade em quatro indicadores' : 'Entenda o que cada número representa'}
             description={languageMode === 'technical'
               ? 'Cada indicador vem acompanhado de referência, origem e limites para uma leitura verificável.'
               : languageMode === 'summary'
-                ? 'Uma visão enxuta para captar o cenário. Quando algo chamar sua atenção, o contexto está a um toque.'
-                : 'Indicadores organizados para transformar números dispersos em uma leitura clara e contextualizada.'}
+                ? 'Uma leitura rápida dos principais dados públicos, com referência e origem preservadas para consulta.'
+                : 'Cada cartão explica o valor, a natureza do dado e o cuidado necessário antes de comparar períodos ou fontes.'}
           />
           <div className="flex flex-wrap items-center gap-2">
             <span className="summary-mode-pill">{languageMode === 'technical' ? 'Detalhado' : languageMode === 'summary' ? 'Resumo' : 'Explicado'}</span>
@@ -170,8 +170,8 @@ export function ExecutiveSummary() {
             <div className="summary-public-hero">
               <div className="summary-public-copy">
                 <span className="summary-public-kicker"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Visão rápida</span>
-                <h3>Quatro indicadores para orientar a leitura</h3>
-                <p className="summary-public-lead">População, eleitorado, orçamento planejado e saneamento aparecem com natureza, data de referência e fonte para evitar comparações fora de contexto.</p>
+                <h3>Quatro números para começar</h3>
+                <p className="summary-public-lead">População, eleitorado, orçamento planejado e saneamento resumem áreas diferentes da cidade. Data, natureza e fonte permanecem visíveis para evitar comparações indevidas.</p>
                 <div className="summary-public-topics" aria-label="Explorar por assunto">
                   {topics.map(topic => (
                     <button
@@ -197,7 +197,7 @@ export function ExecutiveSummary() {
               </div>
               <div className="summary-public-discovery-head">
                 <span>Indicadores em destaque</span>
-                <small>Natureza, referência e origem em cada cartão</small>
+                <small>Valor, referência e origem em cada cartão</small>
               </div>
 
               <div className="summary-public-facts" aria-label="Cartões de contexto rápido">
@@ -238,7 +238,7 @@ export function ExecutiveSummary() {
             </div>
             <div className="summary-simple-tip mt-3">
               <strong className="text-slate-200">Leitura guiada</strong>
-              <span className="ml-2">Leia o valor junto da data e da natureza do dado; depois abra a fonte para conferir escopo e metodologia.</span>
+              <span className="ml-2">Comece pelo valor, confira a data e veja se ele é atual, histórico, planejado ou derivado. Abra a fonte quando precisar verificar definição e escopo.</span>
             </div>
           </>
         )}
