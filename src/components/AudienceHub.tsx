@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, Droplets } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, HeartHandshake, Landmark, Search, ShieldCheck, Users, Vote, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { navigateToCleanSection } from '../lib/sectionNavigation';
 
@@ -10,18 +10,18 @@ type Topic = {
 };
 
 const topics: readonly Topic[] = [
-  { id: 'dashboard', label: 'Cidade', description: 'População e indicadores.', icon: BarChart3 },
+  { id: 'dashboard', label: 'Cidade', description: 'População, território e indicadores.', icon: BarChart3 },
   { id: 'eleitorado', label: 'Eleitorado', description: 'Perfil e dados eleitorais.', icon: Users },
-  { id: 'orcamento', label: 'Orçamento', description: 'Planejamento e dinheiro público.', icon: WalletCards },
-  { id: 'transporte', label: 'Transporte', description: 'Tarifa e impacto do deslocamento.', icon: BusFront },
-  { id: 'acao', label: 'Serviços', description: 'Canais públicos e atendimento.', icon: Droplets },
+  { id: 'orcamento', label: 'Orçamento', description: 'Planejamento, funções e valores públicos.', icon: WalletCards },
+  { id: 'transporte', label: 'Transporte', description: 'Tarifa, renda e custo do deslocamento.', icon: BusFront },
+  { id: 'acao', label: 'Serviços', description: 'Canais oficiais e atendimento público.', icon: HeartHandshake },
   { id: 'eleitoral360', label: 'Eleições', description: 'Candidaturas, pesquisas e registros.', icon: Landmark },
 ];
 
 const officialResources = [
   { label: 'Autoatendimento eleitoral', href: 'https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral', note: 'Título, situação e local de votação', icon: Vote },
   { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores oficiais', icon: BarChart3 },
-  { label: 'LOA 2026', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654', note: 'Orçamento municipal vigente', icon: WalletCards },
+  { label: 'LOA 2026', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654', note: 'Planejamento orçamentário aprovado para 2026', icon: WalletCards },
   { label: 'Resultados 2026', href: 'https://resultados.tse.jus.br/', note: 'Resultados oficiais quando publicados', icon: ShieldCheck },
 ] as const;
 
@@ -66,7 +66,7 @@ export function AudienceHub() {
                 <strong>Buscar</strong>
                 <small>um dado ou assunto</small>
               </span>
-              <kbd>⌘K</kbd>
+              <kbd>Ctrl/⌘ K</kbd>
             </button>
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
               <span>{isSummary ? 'Ver resumo' : isTechnical ? 'Ver fontes e métodos' : 'Ver indicadores explicados'}</span>
@@ -102,7 +102,7 @@ export function AudienceHub() {
         <section className="audience-block audience-actions-block" aria-labelledby="actions-title">
           <div className="audience-block-head">
             <div>
-              <span>{isSummary ? '02' : '02'}</span>
+              <span>02</span>
               <h3 id="actions-title">{isSummary ? 'Próximos passos' : isTechnical ? 'Ferramentas de verificação' : 'Continue a leitura'}</h3>
             </div>
             <p>{isSummary ? 'Do resumo à consulta em poucos toques.' : isTechnical ? 'Atalhos para conferir, cruzar e rastrear informações.' : 'Consulte, compare e avance sem perder o contexto.'}</p>
@@ -157,7 +157,7 @@ export function AudienceHub() {
             </div>
             <div className="audience-resource-grid">
               {officialResources.slice(0, isSummary ? 3 : officialResources.length).map(({ label, href, note, icon: Icon }) => (
-                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
+                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource" aria-label={`Abrir ${label} em nova aba`}>
                   <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
                   <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
                   <ExternalLink aria-hidden="true" />
