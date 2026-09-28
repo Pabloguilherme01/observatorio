@@ -103,7 +103,12 @@ must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length
 must(!(read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && !(read('src/components/sections/HeroCountdown.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
 must((read('src/components/sections/HeroCountdown.tsx')).includes('hero-reference-card') && (read('src/components/sections/HeroCountdown.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/HeroCountdown.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
 must(executive.includes('Orçamento planejado por habitante') && executive.includes('budgetPerCapita') && executive.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
-must(executive.includes('LOA 2026 ÷ IBGE 2026') && executive.includes('razão de planejamento'), 'indicador per capita explicita fórmula e natureza');
+must(
+  executive.includes('budgetPerCapitaIndicator') &&
+  executive.includes("status: budgetPerCapitaIndicator?.status ?? 'derived'") &&
+  executive.includes("note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.'"),
+  'indicador per capita explicita fórmula e natureza'
+);
 must(read('src/components/sections/HeroCountdown.tsx').includes('<small>Transporte</small>') && read('src/components/sections/HeroCountdown.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
 must((dashboard.includes('HistoricalTrendChart') && dashboardChart.includes('População e eleitorado')) || (dashboard.includes('Crescimento populacional · 2022–2026') && dashboard.includes('Eleitorado · 2018–2026')), 'dashboard mantém tendências históricas');
 const transport = read('src/components/TransportCalculator.tsx');
@@ -130,6 +135,16 @@ must(
   publicSanitation.includes('adequateSewerageYear') &&
   publicSanitation.includes('formatDate'),
   'saneamento deriva anos e referências dos indicadores'
+);
+const executiveSummary = read('src/components/sections/ExecutiveSummary.tsx');
+must(
+  executiveSummary.includes("filter(point => point.kind === 'estimate')") &&
+  executiveSummary.includes('budgetPerCapitaIndicator') &&
+  executiveSummary.includes('sanitationIndicator') &&
+  executiveSummary.includes('dashboard-meta-chip') &&
+  !executiveSummary.includes('find(point => point.year === 2026)') &&
+  !executiveSummary.includes("'Cálculo · LOA 2026 ÷ IBGE 2026'"),
+  'resumo executivo deriva anos e metadados do dataset estruturado'
 );
 must(transport.includes('minimumWageBrl'), 'simulador usa salário mínimo do dataset como referência');
 must(transport.includes('bilhetagem') && transport.includes('terminal'), 'simulador contextualiza integração de transporte');
