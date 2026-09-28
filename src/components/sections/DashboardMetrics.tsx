@@ -22,6 +22,16 @@ export function DashboardMetrics() {
   const electorate2026 = d.electoral.electorate;
   const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
+  const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
+  const formatReference = (date?: string, fallback = 'referência não informada') =>
+    date ? date.split('-').reverse().join('/') : fallback;
+  const statusLabel = (status?: string) => ({
+    current: 'Atual',
+    historical: 'Histórico',
+    derived: 'Derivado',
+    snapshot: 'Registro',
+    planned: 'Planejado',
+  } as Record<string, string>)[status ?? ''] ?? 'Dado público';
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
   const comparisonDetails = [
@@ -75,14 +85,14 @@ export function DashboardMetrics() {
     { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];
   const thematicIndicators = [
-    ['Empresas ativas', formatNumber(Number(municipalIndicator('companies'))), 'registro 2026', 'caged-sebrae-2026'],
-    ['Saldo celetista', formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', 'até jul/2026', 'caged-sebrae-2026'],
-    ['IDEB anos iniciais', formatNumber(Number(municipalIndicator('idebInitial')), 1), '2023', 'inep-2023'],
-    ['IDEB anos finais', formatNumber(Number(municipalIndicator('idebFinal')), 1), '2023', 'inep-2023'],
-    ['Salário formal médio', formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', '2024', 'ibge-cidades-2026'],
-    ['Investimento em saneamento', 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2024', 'sinisa-2024'],
-    ['Internações ligadas à água', formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), '2024', 'sinisa-2024'],
-    ['Óbitos ligados à água', formatNumber(Number(municipalIndicator('water-related-deaths'))), '2024', 'sinisa-2024'],
+    { id: 'companies', label: 'Empresas ativas', value: formatNumber(Number(municipalIndicator('companies'))), fallbackReference: 'registro 2026', fallbackSourceId: 'caged-sebrae-2026' },
+    { id: 'cagedBalance', label: 'Saldo celetista', value: formatNumber(Number(municipalIndicator('cagedBalance'))) + ' postos', fallbackReference: 'até jul/2026', fallbackSourceId: 'caged-sebrae-2026' },
+    { id: 'idebInitial', label: 'IDEB anos iniciais', value: formatNumber(Number(municipalIndicator('idebInitial')), 1), fallbackReference: '2023', fallbackSourceId: 'inep-2023' },
+    { id: 'idebFinal', label: 'IDEB anos finais', value: formatNumber(Number(municipalIndicator('idebFinal')), 1), fallbackReference: '2023', fallbackSourceId: 'inep-2023' },
+    { id: 'formal-salary', label: 'Salário formal médio', value: formatNumber(Number(municipalIndicator('formal-salary')), 1) + ' salários mínimos', fallbackReference: '2024', fallbackSourceId: 'ibge-cidades-2026' },
+    { id: 'sanitation-investment', label: 'Investimento em saneamento', value: 'R$ ' + (Number(municipalIndicator('sanitation-investment')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', fallbackReference: '2024', fallbackSourceId: 'sinisa-2024' },
+    { id: 'water-related-hospitalizations', label: 'Internações ligadas à água', value: formatNumber(Number(municipalIndicator('water-related-hospitalizations'))), fallbackReference: '2024', fallbackSourceId: 'sinisa-2024' },
+    { id: 'water-related-deaths', label: 'Óbitos ligados à água', value: formatNumber(Number(municipalIndicator('water-related-deaths'))), fallbackReference: '2024', fallbackSourceId: 'sinisa-2024' },
   ] as const;
 
   return (
@@ -92,9 +102,9 @@ export function DashboardMetrics() {
           <SectionHeader
             titleId="dashboard-title"
             eyebrow={isSummary ? 'Leitura rápida' : languageMode === 'simple' ? 'Leitura explicada' : 'Fonte e método'}
-            title={isSummary ? 'Cinco números para entender o cenário' : languageMode === 'simple' ? 'Cinco números explicados' : 'Indicadores com fonte e método'}
+            title={isSummary ? 'Cinco indicadores para começar' : languageMode === 'simple' ? 'Cinco indicadores explicados' : 'Indicadores com fonte, data e método'}
             description={isSummary
-              ? 'Uma visão rápida dos principais indicadores, sempre com origem e referência acessíveis.'
+              ? 'Uma leitura curta dos principais indicadores, com origem e referência acessíveis em cada card.'
               : languageMode === 'simple'
                 ? 'Cada número vem acompanhado de uma explicação curta; toque para abrir a fonte e continuar a leitura.'
                 : 'Cada indicador abre origem, referência, natureza e método para uma conferência completa.'}
@@ -125,7 +135,7 @@ export function DashboardMetrics() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Em um olhar' : languageMode === 'simple' ? 'Leitura em contexto' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Os principais números para começar.' : languageMode === 'simple' ? 'Cinco números explicados para conectar o cenário.' : 'Cada indicador abre fonte, referência, natureza e método.'}</p>
+          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Informação essencial, sem esconder a referência.' : languageMode === 'simple' ? 'Cinco indicadores com contexto e referência visível.' : 'Cada indicador abre fonte, data, natureza e método.'}</p>
         </div>
       </div>
 
@@ -137,7 +147,7 @@ export function DashboardMetrics() {
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
                   <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{value}</div>
-                  <div className="mt-1 text-[10px] font-semibold text-sky-300/80 light:text-sky-700">{sourceLabel}{referenceDate ? ' · ' + referenceDate.split('-').reverse().join('/') : ''}</div>
+                  <div className="mt-1 text-[10px] font-semibold text-sky-300/80 light:text-sky-700">{sourceLabel}</div>
                   {isSummary ? (
                     <div className="mt-1 text-[11px] leading-4 text-slate-500 light:text-slate-600">{caption}</div>
                   ) : languageMode === 'simple' ? (
@@ -148,15 +158,11 @@ export function DashboardMetrics() {
                       <div className="technical-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">Fonte, data e método no inspetor.</div>
                     </>
                   )}
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    <span className="kpi-source-pill inline-flex items-center rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide">{nature}</span>
-                    <span className="inline-flex items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">
-                      {isSummary ? 'Ver fonte' : languageMode === 'simple' ? 'Conferir' : 'Abrir'}
-                    </span>
+                  <div className="dashboard-card-meta mt-3">
+                    <span className="dashboard-meta-chip" data-kind={nature === 'Derivado' ? 'derived' : 'observed'}>{nature}</span>
+                    {referenceDate && <span className="dashboard-meta-chip">ref. {formatReference(referenceDate)}</span>}
+                    <span className="dashboard-card-action">{isSummary ? 'Ver fonte' : languageMode === 'simple' ? 'Conferir contexto' : 'Abrir método'}</span>
                   </div>
-                  {languageMode === 'technical' && (
-                    <span className="technical-detail mt-2 block text-[10px] text-slate-500">{referenceDate ? 'ref. ' + referenceDate.split('-').reverse().join('/') : 'sem referência'}</span>
-                  )}
                 </div>
                 <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
               </div>
@@ -182,15 +188,38 @@ export function DashboardMetrics() {
         <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">
           <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80 light:text-emerald-700">Mais indicadores</div>
           <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Economia, educação, saneamento e trabalho</h3>
-          <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Valores já presentes no conjunto rastreável, reunidos para facilitar a consulta. Cada cartão mantém fonte e ano-base.</p>
+          <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Valores do conjunto rastreável, organizados por tema. Cada card mostra a natureza do dado e a referência disponível.</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {thematicIndicators.map(([label, value, year, sourceId]) => (
-              <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: /^\d{4}$/.test(year) ? year + '-12-31' : undefined })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-emerald-300/20 light:bg-white">
-                <div className="text-xs font-semibold text-slate-500">{label}</div>
-                <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
-                <div className="mt-1 text-[11px] text-slate-500">{year} · ver fonte</div>
-              </button>
-            ))}
+            {thematicIndicators.map(item => {
+              const meta = indicatorMeta(item.id);
+              const sourceId = meta?.sourceId ?? item.fallbackSourceId;
+              const reference = formatReference(meta?.referenceDate, item.fallbackReference);
+              const nature = statusLabel(meta?.status);
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  data-inspect-id={inspectDataId({ label: item.label, sourceId })}
+                  onClick={() => dispatchInspect({
+                    label: item.label,
+                    value: item.value,
+                    sourceId,
+                    referenceDate: meta?.referenceDate,
+                    status: meta?.status,
+                    note: meta?.note,
+                  })}
+                  className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-emerald-300/20 light:bg-white"
+                >
+                  <div className="text-xs font-semibold text-slate-500">{item.label}</div>
+                  <div className="mt-2 text-xl font-black text-white light:text-slate-900">{item.value}</div>
+                  <div className="dashboard-card-meta mt-3">
+                    <span className="dashboard-meta-chip" data-kind={meta?.status}>{nature}</span>
+                    <span className="dashboard-meta-chip">ref. {reference}</span>
+                  </div>
+                  <div className="dashboard-card-action mt-3">Abrir fonte e contexto</div>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
@@ -199,8 +228,8 @@ export function DashboardMetrics() {
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Comparativos úteis</div>
-            <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Proporções com a mesma base de referência</h3>
-            <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">São relações descritivas. Percentuais maiores ou menores não significam, por si só, desempenho melhor ou pior.</p>
+            <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Comparativos com método explícito</h3>
+            <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Relações descritivas calculadas sobre bases identificadas. Confira fórmula e data antes de comparar.</p>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{visibleComparisons.length} comparativos</span>
         </div>
@@ -211,12 +240,16 @@ export function DashboardMetrics() {
               type="button"
               data-inspect-id={inspectDataId({ label: item.label, sourceId: item.sourceId })}
               onClick={() => dispatchInspect({ label: item.label, value: item.value, sourceId: item.sourceId, referenceDate: item.referenceDate, method: item.method })}
-              className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
+              className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"
             >
               <div className="text-xs font-semibold text-slate-500">{item.label}</div>
               <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{item.value}</div>
               <div className="mt-1 text-[11px] leading-5 text-slate-500">{item.caption}</div>
-              <span className="mt-3 inline-flex rounded-full border border-white/8 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-500 light:border-slate-200">Derivado · ver fórmula</span>
+              <div className="dashboard-card-meta mt-3">
+                <span className="dashboard-meta-chip" data-kind="derived">Derivado</span>
+                <span className="dashboard-meta-chip">ref. {formatReference(item.referenceDate)}</span>
+              </div>
+              <div className="dashboard-card-action mt-3">Abrir fórmula e fonte</div>
             </button>
           ))}
         </div>
@@ -255,7 +288,7 @@ export function DashboardMetrics() {
                 ['EPT técnica', formatNumber(Number(municipalIndicator('ept-technical-2025'))), '2025', 'pee-go-ept-2025'],
                 ['Despesa bruta empenhada', 'R$ ' + (Number(municipalIndicator('expenses-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],
               ].map(([label,value,year,sourceId]) => (
-                <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
+                <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white">
                   <div className="text-xs font-semibold text-slate-500">{label}</div>
                   <div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div>
                   <div className="mt-1 text-[11px] text-slate-500">{year}</div>
@@ -285,7 +318,7 @@ export function DashboardMetrics() {
             <span className="text-xs text-slate-500">Clique em qualquer valor</span>
           </div>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {[['Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022', 'ibge-cidades-2026'],['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025', 'ibge-cidades-2026'],['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023', 'ibge-cidades-2026'],['Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019', 'ibge-cidades-2026'],['Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022', 'ibge-cidades-2026'],['Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022', 'ibge-cidades-2026'],['Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024', 'ibge-cidades-2026']].map(([label,value,year,sourceId]) => <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"><div className="text-xs font-semibold text-slate-500">{label}</div><div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-[11px] text-slate-500">ano-base {year}</div></button>)}
+            {[['Escolarização 6–14', formatPercent(Number(municipalIndicator('schooling-6-14')), 1), '2022', 'ibge-cidades-2026'],['Mortalidade infantil', formatNumber(Number(municipalIndicator('infant-mortality')), 2) + '‰', '2025', 'ibge-cidades-2026'],['Receitas brutas', 'R$ ' + (Number(municipalIndicator('revenue-2025')) / 1_000_000).toFixed(1).replace('.', ',') + ' mi', '2025', 'ibge-cidades-2026'],['PIB per capita', 'R$ ' + formatNumber(Number(municipalIndicator('gdp-per-capita-2023')), 2), '2023', 'ibge-cidades-2026'],['Área urbanizada', formatNumber(Number(municipalIndicator('urbanized-area')), 2) + ' km²', '2019', 'ibge-cidades-2026'],['Arborização viária', formatPercent(Number(municipalIndicator('street-arborization')), 2), '2022', 'ibge-cidades-2026'],['Esgotamento adequado', formatPercent(Number(municipalIndicator('adequate-sewerage')), 2), '2022', 'ibge-cidades-2026'],['Pessoal ocupado', formatNumber(Number(municipalIndicator('formal-workers'))) + ' pessoas', '2024', 'ibge-cidades-2026']].map(([label,value,year,sourceId]) => <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate: year + '-12-31' })} className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-4 text-left hover:border-sky-300/20 light:bg-white"><div className="text-xs font-semibold text-slate-500">{label}</div><div className="mt-2 text-xl font-black text-white light:text-slate-900">{value}</div><div className="mt-1 text-[11px] text-slate-500">ano-base {year}</div></button>)}
           </div>
         </div>
       )}
