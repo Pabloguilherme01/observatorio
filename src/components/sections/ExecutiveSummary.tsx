@@ -6,6 +6,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { copyText } from '../../lib/clipboard';
+import { navigateToCleanSection } from '../../lib/sectionNavigation';
 import '../../assets/styles/summary-polish.css';
 
 function brl(value: number) {
@@ -28,8 +29,7 @@ export function ExecutiveSummary() {
   const { mode: languageMode } = useLanguageMode();
 
   const goToSection = (id: string) => {
-    window.history.replaceState(null, '', '#' + id);
-    window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: id }));
+    navigateToCleanSection(id);
   };
 
   const publicFacts = [
