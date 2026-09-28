@@ -502,7 +502,7 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
   const menu = page.getByRole('menu', { name: 'Mais áreas do observatório' });
   await expect(layer).toBeVisible();
   await expect(menu).toBeVisible();
-  await expect(menu.getByRole('menuitem')).toHaveCount(7);
+  await expect(menu.getByRole('menuitem')).toHaveCount(8);
   await expect(menu.getByRole('menuitem').first()).toBeFocused();
 
   const menuBox = await menu.evaluate(node => {
@@ -592,7 +592,7 @@ for (const viewport of [
 
     const reading = page.locator('.header-reading-mode');
     await expect(reading).toBeVisible();
-    await expect(reading.locator('.language-toggle-options > button')).toHaveCount(3);
+    await expect(reading.locator('.language-toggle-options > button')).toHaveCount(4);
     await expect(reading.locator('.language-toggle-label')).toBeHidden();
     await expect(reading.locator('.language-toggle-deepen')).toBeHidden();
 
