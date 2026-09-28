@@ -20,9 +20,8 @@ test('resposta rápida pode ser copiada com fonte e URL oficial', async ({ page 
   const quickAnswer = page.locator('.search-quick-answer');
   await expect(quickAnswer.getByText('População 2026', { exact: true })).toBeVisible();
 
-  const copyButton = quickAnswer.getByRole('button', { name: 'Copiar resposta' });
-  await copyButton.click();
-  await expect(copyButton).toContainText('Resposta copiada');
+  await quickAnswer.getByRole('button', { name: 'Copiar resposta' }).click();
+  await expect(quickAnswer.getByRole('button', { name: 'Resposta copiada' })).toBeVisible();
 
   const copied = await page.evaluate(() => window.__lastCopiedQuickAnswer);
   expect(copied).toMatch(/^População 2026:/);
