@@ -91,6 +91,18 @@
   font-size:13px;
   line-height:1.6;
 }
+.guided-learning-resume{
+  display:inline-flex;
+  margin-top:8px;
+  padding:6px 9px;
+  border:1px solid rgba(245,158,11,.16);
+  border-radius:999px;
+  background:rgba(245,158,11,.05);
+  color:#fde68a;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.35;
+}
 
 .guided-learning-progress{
   min-width:150px;
@@ -251,6 +263,7 @@
 .light .guided-learning-shell{border-color:#f3d28a;background:linear-gradient(180deg,#fffdf7,#fff);box-shadow:0 14px 40px rgba(15,23,42,.06)}
 .light .guided-learning-head h2,.light .guided-learning-progress strong,.light .guided-learning-copy strong,.light .guided-learning-next-card strong{color:#0f172a}
 .light .guided-learning-head p,.light .guided-learning-copy small,.light .guided-learning-footer p,.light .guided-learning-next-card small{color:#64748b}
+.light .guided-learning-resume{border-color:#f3d28a;background:#fffbeb;color:#92400e}
 .light .guided-learning-copy .guided-learning-question{color:#334155}
 .light .guided-learning-next-card{border-color:#f3d28a;background:linear-gradient(135deg,#fff8e7,#f8fbff)}
 .light .guided-learning-next-card>span{color:#a16207}
@@ -308,6 +321,13 @@
   .guided-learning-head p{
     font-size:12px;
     line-height:1.55;
+  }
+  .guided-learning-resume{
+    width:fit-content;
+    max-width:100%;
+    margin-top:7px;
+    border-radius:12px;
+    font-size:10px;
   }
   .guided-learning-progress{
     min-width:0;
