@@ -35,8 +35,8 @@ export function PublicDataPulse() {
       <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Resumo do conjunto de dados">
         <DataStat label="Indicadores publicados" value={indicatorCount} hint="itens rastreáveis no catálogo" />
         <DataStat label="Fontes registradas" value={sourceCount} hint={datedSources + ' com data registrada'} />
-        <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint="fontes com referência ou publicação datada" />
-        <DataStat label="Indicadores com data de referência" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint="referência temporal disponível para leitura" />
+        <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={datedSources + ' de ' + sourceCount + ' fontes com referência ou publicação datada'} />
+        <DataStat label="Indicadores com data de referência" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={datedIndicators + ' de ' + indicatorCount + ' indicadores com referência temporal disponível'} />
         <DataStat label="Indicadores com nota metodológica" value={indicatorsWithNotes} hint={methodologicalCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% do catálogo'} />
         <DataStat label="Fontes com data registrada" value={datedSources} hint="apoio para conferir atualidade e contexto" />
       </div>
@@ -49,7 +49,7 @@ export function PublicDataPulse() {
             <div>
               <h3 className="text-base font-black text-white light:text-slate-900">Estado da publicação</h3>
               <p className="mt-1 text-xs leading-5 text-slate-500">
-                Última atualização do conjunto principal: <strong className="text-slate-300 light:text-slate-700">{d.meta.updatedAt.split('-').reverse().join('/')}</strong>.
+                Última atualização do conjunto principal: <strong className="text-slate-300 light:text-slate-700">{d.meta.updatedAt.split('-').reverse().join('/')}</strong>. Esta data informa a publicação do painel; cada indicador mantém sua própria referência temporal.
               </p>
               <p className="mt-3 text-xs leading-5 text-slate-500">
                 Este bloco resume a publicação sem duplicar o painel de qualidade: aqui você vê volume, documentação e mudanças recentes; nas seções temáticas ficam valores, séries e métodos.
@@ -78,7 +78,7 @@ export function PublicDataPulse() {
               {updates.map(update => {
                 const sourceUrl = d.sources.find(source => source.id === update.sourceId)?.url;
                 return (
-                  <article key={update.law} className="rounded-2xl border border-white/8 bg-white/[0.018] p-3">
+                  <article key={update.law} className="rounded-2xl border border-white/8 bg-white/[0.018] p-3 light:border-slate-200 light:bg-slate-50">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <strong className="text-sm text-white light:text-slate-900">{update.title}</strong>
                       <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">{update.date.split('-').reverse().join('/')}</span>
