@@ -1363,7 +1363,7 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
   expect(csv).toMatch(/"Saude";[^\n]*"heal-current-stated-beds"/);
   expect(csv).toMatch(/"Educacao";[^\n]*"schooling-6-14"/);
   expect(csv).toMatch(/"Educacao";[^\n]*"ept-technical-2025"/);
-  expect(csv).toContain('Registro datado');
+  expect(csv).toContain('Recorte datado');
 });
 
 
