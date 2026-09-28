@@ -4,7 +4,7 @@ test('orçamento mostra natureza e referência nos cards por habitante', async (
   await page.goto('./#orcamento');
 
   const cards = page.locator('#orcamento .dashboard-secondary-card');
-  expect(await cards.count()).toBeGreaterThanOrEqual(3);
+  await expect(cards).toHaveCount(3);
   const first = cards.first();
   await expect(first.locator('.dashboard-meta-chip')).toHaveCount(2);
   await expect(first).toContainText('Derivado');
