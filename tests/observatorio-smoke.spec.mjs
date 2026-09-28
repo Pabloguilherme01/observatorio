@@ -940,6 +940,28 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await expect(page).toHaveURL(/#transporte$/);
 });
 
+test('inspetor separa publicação da fonte de referência temporal ausente', async ({ page }) => {
+  await page.goto('./');
+  await page.evaluate(() => {
+    window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
+      detail: {
+        label: 'Tarifa do Entorno · metadados',
+        value: 'R$ 7,65',
+        sourceId: 'antt-entorno-2026',
+        status: 'current',
+      },
+    }));
+  });
+
+  const dialog = page.getByRole('dialog', { name: /Tarifa do Entorno · metadados/i });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('ref. não informada');
+  await expect(dialog).toContainText('Ano-base / referência');
+  await expect(dialog).toContainText('Publicação da fonte');
+  await expect(dialog).toContainText('28/06/2026');
+  await expect(dialog).toContainText(/essa data não substitui o ano-base ou a referência do indicador/i);
+});
+
 test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ page }) => {
   await page.goto('./?leitura=guided#dashboard');
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
