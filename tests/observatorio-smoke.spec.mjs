@@ -949,6 +949,7 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(guide).toContainText(/não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais/i);
   await expect(guide).toContainText('Próxima etapa sugerida');
   await expect(guide).toContainText('O que este número mede — e em qual unidade?');
+  await expect(guide.getByText('Entenda os rótulos dos dados')).toBeVisible();
   await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '0');
   await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
   await expect(guide.getByRole('button')).toHaveCount(8);
@@ -957,6 +958,19 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(page).toHaveURL(/#resumo$/);
   await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '1');
   await expect(guide).toContainText('2. Confira período e natureza');
+});
+
+test('âncora da trilha ativa o modo guiado e redução de modo mantém destino visível', async ({ page }) => {
+  await page.goto('./#aprendizado-guiado');
+  const root = page.locator('html');
+  await expect(root).toHaveAttribute('data-language-mode', 'guided');
+  await expect(page.locator('#aprendizado-guiado')).toBeVisible();
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  await modes.getByRole('button', { name: /^Resumo/ }).click();
+  await expect(root).toHaveAttribute('data-language-mode', 'summary');
+  await expect(page).toHaveURL(/#resumo$/);
+  await expect(page.locator('#resumo')).toBeVisible();
 });
 
 test('parâmetro de leitura inválido é ignorado com segurança', async ({ page }) => {
