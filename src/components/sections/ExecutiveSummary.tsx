@@ -87,7 +87,7 @@ export function ExecutiveSummary() {
     },
     {
       id: 'saneamento',
-      label: 'Atendimento por serviço público de esgoto',
+      label: 'Atendimento de esgoto · serviço público',
       value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%',
       note: sanitationIndicator?.note ?? 'Cobertura do serviço público; não representa automaticamente coleta ou tratamento.',
       source: sanitationSource?.label ?? 'Fonte de saneamento',
