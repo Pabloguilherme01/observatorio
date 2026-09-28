@@ -1,4 +1,4 @@
-export type ReadingMode = 'summary' | 'simple' | 'technical';
+export type ReadingMode = 'summary' | 'simple' | 'guided' | 'technical';
 
 const TECHNICAL_ONLY_DESTINATIONS = new Set([
   'contexto',
