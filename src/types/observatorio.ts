@@ -133,6 +133,7 @@ export interface TransportProfile {
   readonly defaultWorkDaysPerMonth: number;
   readonly defaultTripsPerDay: number;
   readonly minimumWageBrl: number;
+  readonly minimumWageYear: number;
 }
 
 export interface SanitationSnapshot {

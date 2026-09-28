@@ -110,6 +110,27 @@ const transport = read('src/components/TransportCalculator.tsx');
 const transportLib = read('src/lib/transport.ts');
 must(transport.includes('Dias por semana'), 'simulador permite informar dias de trabalho por semana');
 must(transportLib.includes('4.4') || transportLib.includes('daysPerWeek'), 'cálculo do transporte suporta conversão semanal para mensal');
+const publicDataSource = read('src/data/observatorioData.ts');
+const publicBudget = read('src/components/sections/BudgetSection.tsx');
+const publicSanitation = read('src/components/sections/SanitationHealthSection.tsx');
+must(
+  publicDataSource.includes('minimumWageYear') &&
+  transport.includes('minimumWageYear') &&
+  transport.includes('salaryIsDefault'),
+  'simulador distingue renda padrão de valor ajustado com ano estruturado'
+);
+must(
+  publicBudget.includes('fiscalReferenceYear') &&
+  publicBudget.includes('dashboard-meta-chip') &&
+  publicBudget.includes('formatDate'),
+  'orçamento deriva ano-base e exibe metadados estruturados'
+);
+must(
+  publicSanitation.includes('sanitationReferenceYear') &&
+  publicSanitation.includes('adequateSewerageYear') &&
+  publicSanitation.includes('formatDate'),
+  'saneamento deriva anos e referências dos indicadores'
+);
 must(transport.includes('minimumWageBrl'), 'simulador usa salário mínimo do dataset como referência');
 must(transport.includes('bilhetagem') && transport.includes('terminal'), 'simulador contextualiza integração de transporte');
 const electoralProfile = read('src/components/sections/ElectoralProfile.tsx');

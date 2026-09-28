@@ -8,12 +8,14 @@ import { SectionHeader } from './ui/SectionHeader';
 
 export function TransportCalculator() {
   const routes = d.transport.routes;
+  const defaultSalary = d.transport.minimumWageBrl;
+  const minimumWageYear = d.transport.minimumWageYear;
   const [routeId, setRouteId] = useState('brasilia');
   const [daysPerWeek, setDaysPerWeek] = useState(5);
   const days = workDaysPerMonthFromWeeks(daysPerWeek);
   const [trips, setTrips] = useState(d.transport.defaultTripsPerDay);
   const [people, setPeople] = useState(1);
-  const [salary, setSalary] = useState(d.transport.minimumWageBrl);
+  const [salary, setSalary] = useState(defaultSalary);
   const [preferencesLoaded, setPreferencesLoaded] = useState(false);
 
   useEffect(() => {
@@ -94,11 +96,12 @@ export function TransportCalculator() {
     setDaysPerWeek(5);
     setTrips(d.transport.defaultTripsPerDay);
     setPeople(1);
-    setSalary(d.transport.minimumWageBrl);
+    setSalary(defaultSalary);
   };
 
   const source = d.sources.find(sourceItem => sourceItem.id === route.sourceId);
   const salaryShare = result.monthlyPctOfSalaryPerPerson ?? 0;
+  const salaryIsDefault = Math.abs(salary - defaultSalary) < 0.01;
   const salaryBarWidth = Math.min(100, Math.max(0, salaryShare));
   const share = async () => {
     const shareUrl = window.location.href.split('#')[0] + '#transporte';
@@ -122,7 +125,7 @@ export function TransportCalculator() {
         titleId="transporte-title"
         eyebrow="Mobilidade"
         title="Simulador de bolso"
-        description="Informe quantos dias por semana você faz o trajeto, veja o custo mensal e compare esse gasto com o salário mínimo de 2026. As premissas ficam abertas abaixo."
+        description={`Informe quantos dias por semana você faz o trajeto, veja o custo mensal e compare esse gasto com uma renda de referência. O padrão é o salário mínimo de ${minimumWageYear} e pode ser ajustado.`}
         action={source?.url ? (
           <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-sky-300">
             Fonte da tarifa <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -189,6 +192,9 @@ export function TransportCalculator() {
               <div className="mt-2 flex items-baseline justify-between gap-2">
                 <strong className="text-lg text-white light:text-slate-900">{salaryShare.toFixed(1).replace('.', ',')}%</strong>
                 <span className="text-[11px] text-slate-500">do valor de referência</span>
+              </div>
+              <div className="mt-2 text-[10px] font-bold uppercase tracking-[0.1em] text-slate-500">
+                {salaryIsDefault ? `padrão · salário mínimo ${minimumWageYear}` : 'valor ajustado pelo usuário'}
               </div>
             </div>
           </div>
@@ -278,7 +284,7 @@ export function TransportCalculator() {
 
         <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500">
           <strong className="text-slate-300 light:text-slate-700">Como o valor é calculado:</strong> tarifa × trechos/dia × dias/semana × 4,4 semanas/mês × pessoas.
-          O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados. A referência salarial de R$ 1.621,00 é o salário mínimo nacional vigente em 2026 e serve apenas como denominador de contexto.
+          O resultado não considera vale-transporte, integrações, gratuidades, faltas ou feriados. O campo de renda é ajustável: o padrão é {formatBRL(defaultSalary)}, correspondente ao salário mínimo nacional de {minimumWageYear}, usado apenas como denominador de contexto.
         </div>
       </Card>
     </section>
