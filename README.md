@@ -1,4 +1,4 @@
-# Observatório Eleitoral — Águas Lindas de Goiás 2026
+# Observatório de Dados Cívicos e Eleitorais — Águas Lindas de Goiás 2026
 
 Aplicação web de dados públicos e contexto municipal, construída com Vite + React + TypeScript + Tailwind CSS + Lucide React.
 
@@ -24,11 +24,11 @@ Aplicação web de dados públicos e contexto municipal, construída com Vite + 
 
 O site adapta o conteúdo e o visual a três modos, persistidos no navegador:
 
-- **Resumo** — modo inicial. Foco em beleza, números essenciais e utilidade. A maior parte das camadas técnicas fica oculta.
-- **Simples** — linguagem clara e direta, com os mesmos números centrais. Mapa de evidências oculto.
-- **Técnico** — detalhes, metodologia e rastreabilidade completas. O **Mapa de Evidências** aparece aqui, em mini cards de auditoria com natureza da fonte, data e link original.
+- **Resumo** — leitura rápida dos pontos principais, com referência e origem preservadas.
+- **Explicado** — acrescenta contexto para entender natureza, período, definições e significado dos números.
+- **Detalhado** — amplia a leitura com fonte, data, método, cálculos, recortes e limitações. O **Mapa de Evidências** aparece neste modo.
 
-O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo e Simples (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Técnico.
+O mapa de evidências é uma ferramenta de auditoria: fica oculto nos modos Resumo e Explicado (que já recebem proveniência nos próprios indicadores) e aparece apenas no modo Detalhado.
 
 ## Quiz do Observatório
 
@@ -56,7 +56,7 @@ npm run sync:results
 npm run build
 ```
 
-O CI executa em cada pull request **e a cada push na main**: auditoria estática, contratos de dados, typecheck, build e verificação pós-publicação do site. O deploy do GitHub Pages publica o diretório `dist`.
+Os workflows **Quality** e **CI** executam em cada pull request e em pushes na `main`. O Quality concentra validações estáticas, acessibilidade, mobile, contratos de dados e build; o CI complementa com testes de integração, fontes, navegadores, indisponibilidade do TSE e verificação do artefato PWA. O deploy do GitHub Pages publica o diretório `dist`.
 
 ## Princípios de dados
 
@@ -77,11 +77,11 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-**V44.10.0 — Observatório de Dados Cívicos e Eleitorais.**
+**V44.10.1 — Observatório de Dados Cívicos e Eleitorais.**
 
-- Três modos de leitura (Resumo, Simples, Técnico) com preferência persistida.
+- Três modos de leitura (Resumo, Explicado, Detalhado) com preferência persistida.
 - Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
-- Mapa de evidências reservado ao modo Técnico, em mini cards de auditoria.
+- Mapa de evidências reservado ao modo Detalhado, em mini cards de auditoria.
 - Navegação mobile com barra inferior, `aria-current`, áreas de toque >=44px e safe-area.
 - Carregamento diferido por proximidade da viewport, reduzindo o JavaScript inicial.
 - Compartilhamento por dado individual (Web Share API com fallback de cópia), kit para Instagram e exportação JSON/CSV.
@@ -96,7 +96,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 - Saneamento e saúde com cálculos derivados explicitados
 - Candidaturas e Eleitoral 360° com proveniência de snapshots
 - Linha do tempo eleitoral baseada em fontes oficiais
-- Orçamento, exportação e mapa de evidências (modo Técnico)
+- Orçamento, exportação e mapa de evidências (modo Detalhado)
 - Central de qualidade, fontes e inspeção de dados
 - Demografia dinâmica com série temporal e metodologia reutilizável
 - Leitura orçamentária per capita com denominadores preservados
