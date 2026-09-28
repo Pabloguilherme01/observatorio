@@ -25,15 +25,18 @@ export function ExecutiveSummary() {
     ? d.indicators.find(item => item.id === `population-${populationPoint.year}`)
     : undefined;
   const populationSource = d.sources.find(sourceItem => sourceItem.id === (populationIndicator?.sourceId ?? populationPoint?.sourceId));
+  const populationReferenceDate = populationIndicator?.referenceDate ?? populationPoint?.referenceDate ?? populationSource?.referenceDate;
   const sanitationPct = d.sanitation.publicSewerServicePct;
   const sanitationIndicator = d.indicators
     .filter(item => item.id.startsWith('public-sewer-service-') && item.sourceId === d.sanitation.sourceId)
     .sort((a, b) => (b.referenceDate ?? '').localeCompare(a.referenceDate ?? ''))[0];
   const sanitationSource = d.sources.find(sourceItem => sourceItem.id === (sanitationIndicator?.sourceId ?? d.sanitation.sourceId));
+  const sanitationReferenceDate = sanitationIndicator?.referenceDate ?? sanitationSource?.referenceDate;
   const budget = d.budget.totalBrl;
   const budgetPerCapitaIndicator = d.indicators.find(item => item.id === `budget-per-capita-${d.budget.year}`);
   const budgetPerCapita = Number(budgetPerCapitaIndicator?.value ?? (population > 0 ? budget / population : 0));
   const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
+  const budgetPerCapitaReferenceDate = budgetPerCapitaIndicator?.referenceDate ?? budgetSource?.referenceDate;
   const [shareStatus, setShareStatus] = useState('');
   const [shareBusy, setShareBusy] = useState(false);
   const [activeTopic, setActiveTopic] = useState('eleitoral');
@@ -52,7 +55,7 @@ export function ExecutiveSummary() {
       source: populationSource?.label ?? 'IBGE',
       badge: formatIndicatorStatus(populationIndicator?.status, 'Fonte pública'),
       status: populationIndicator?.status ?? 'current',
-      referenceDate: populationIndicator?.referenceDate ?? populationPoint?.referenceDate,
+      referenceDate: populationReferenceDate,
       target: 'dashboard',
     },
     {
@@ -74,7 +77,7 @@ export function ExecutiveSummary() {
       source: d.sources.find(sourceItem => sourceItem.id === budgetPerCapitaIndicator?.sourceId)?.label ?? budgetSource?.label ?? 'LOA municipal',
       badge: formatIndicatorStatus(budgetPerCapitaIndicator?.status, 'Fonte pública'),
       status: budgetPerCapitaIndicator?.status ?? 'derived',
-      referenceDate: budgetPerCapitaIndicator?.referenceDate ?? budgetSource?.referenceDate,
+      referenceDate: budgetPerCapitaReferenceDate,
       target: 'orcamento',
     },
     {
@@ -85,7 +88,7 @@ export function ExecutiveSummary() {
       source: sanitationSource?.label ?? 'Fonte de saneamento',
       badge: formatIndicatorStatus(sanitationIndicator?.status, 'Fonte pública'),
       status: sanitationIndicator?.status ?? 'historical',
-      referenceDate: sanitationIndicator?.referenceDate,
+      referenceDate: sanitationReferenceDate,
       target: 'saude',
     },
   ] as const;
@@ -109,10 +112,10 @@ export function ExecutiveSummary() {
     const text = [
       d.meta.name,
       `Eleitorado: ${electorate.electorate.toLocaleString('pt-BR')} eleitores.`,
-      `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationPoint?.referenceDate ? ` (referência ${formatDate(populationPoint.referenceDate)})` : ''}.`,
+      `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationReferenceDate ? ` (referência ${formatDate(populationReferenceDate)})` : ''}.`,
       `Orçamento LOA ${d.budget.year}: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
-      `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
-      `Orçamento por habitante: ${brl(budgetPerCapita)} por ano${budgetPerCapitaIndicator?.referenceDate ? ` (referência ${formatDate(budgetPerCapitaIndicator.referenceDate)})` : ''}.`,
+      `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%${sanitationReferenceDate ? ` (referência ${formatDate(sanitationReferenceDate)})` : ''}.`,
+      `Orçamento por habitante: ${brl(budgetPerCapita)} por ano${budgetPerCapitaReferenceDate ? ` (referência ${formatDate(budgetPerCapitaReferenceDate)})` : ''}.`,
     ].filter(Boolean).join(' ');
 
     try {
