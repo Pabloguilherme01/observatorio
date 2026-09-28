@@ -6,6 +6,7 @@ export interface ContextMetric {
   readonly unit: string;
   readonly year: number;
   readonly description: string;
+  readonly nature: 'published' | 'derived';
 }
 
 export interface ContextMunicipality {
@@ -24,6 +25,7 @@ export const contextualMetrics: readonly ContextMetric[] = [
     unit: 'habitantes',
     year: 2026,
     description: 'Estimativa populacional publicada pelo IBGE com referência em 1º de julho.',
+    nature: 'published',
   },
   {
     id: 'populationGrowth',
@@ -31,6 +33,7 @@ export const contextualMetrics: readonly ContextMetric[] = [
     unit: '%',
     year: 2026,
     description: 'Variação percentual entre a população do Censo 2022 e a estimativa de 2026. É um cálculo derivado a partir dos dois valores publicados pelo IBGE.',
+    nature: 'derived',
   },
   {
     id: 'density',
@@ -38,6 +41,7 @@ export const contextualMetrics: readonly ContextMetric[] = [
     unit: 'hab/km²',
     year: 2026,
     description: 'Estimativa de habitantes por quilômetro quadrado calculada com a população de 2026 e a área territorial registrada pelo IBGE.',
+    nature: 'derived',
   },
   {
     id: 'schooling',
@@ -45,6 +49,7 @@ export const contextualMetrics: readonly ContextMetric[] = [
     unit: '%',
     year: 2022,
     description: 'Percentual de crianças e adolescentes de 6 a 14 anos matriculados no ensino regular.',
+    nature: 'published',
   },
   {
     id: 'infantMortality',
@@ -52,6 +57,7 @@ export const contextualMetrics: readonly ContextMetric[] = [
     unit: 'óbitos por mil nascidos vivos',
     year: 2025,
     description: 'Óbitos de menores de 1 ano por mil nascidos vivos, conforme o indicador exibido pelo IBGE.',
+    nature: 'published',
   },
   {
     id: 'gdpPerCapita',
@@ -59,6 +65,7 @@ export const contextualMetrics: readonly ContextMetric[] = [
     unit: 'R$ por habitante',
     year: 2023,
     description: 'Produto Interno Bruto por habitante no ano-base indicado pelo IBGE.',
+    nature: 'published',
   },
 ];
 
