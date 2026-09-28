@@ -7,6 +7,16 @@ import { useLanguageMode } from '../context/LanguageModeContext';
 
 const correctionUrl = 'https://github.com/Pabloguilherme01/observatorio/issues/new?title=Corre%C3%A7%C3%A3o%20de%20dado%20ou%20fonte&labels=correcao';
 
+function formatPublicationTimestamp(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString('pt-BR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+    timeZone: 'America/Sao_Paulo',
+  });
+}
+
 export function ProjectTrustPanel() {
   const official = d.sources.filter(source => source.nature === 'official').length;
   const { mode } = useLanguageMode();
@@ -94,8 +104,8 @@ export function ProjectTrustPanel() {
             <div className="trust-card">
               <Server className="h-4 w-4 text-sky-300" />
               <strong>Publicação pública</strong>
-              <p role="status" aria-live="polite">{publication.status === 'ok' ? 'O endpoint público respondeu e a publicação está íntegra segundo o healthcheck.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a captura TSE está fora da janela recomendada.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
-              {publication.capturedAt && <small className="mt-1 block text-slate-500">Captura TSE: {new Date(publication.capturedAt).toLocaleString('pt-BR')}{publication.ageHours !== null ? ` · ${publication.ageHours.toFixed(1)}h atrás` : ''}.</small>}
+              <p role="status" aria-live="polite">{publication.status === 'ok' ? 'O endpoint público respondeu e o healthcheck informa estado operacional.' : publication.status === 'degraded' ? 'O endpoint público respondeu, mas a captura TSE está fora da janela recomendada.' : publication.status === 'error' ? 'A verificação pública não pôde ser concluída neste momento.' : 'Verificando o estado publicado…'}</p>
+              {publication.capturedAt && <small className="mt-1 block text-slate-500">Captura TSE: {formatPublicationTimestamp(publication.capturedAt)}{publication.ageHours !== null ? ` · ${publication.ageHours.toFixed(1)}h atrás` : ''}.</small>}
               <button
                 type="button"
                 onClick={() => setHealthRevision(value => value + 1)}
@@ -115,7 +125,7 @@ export function ProjectTrustPanel() {
 
           <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
             <strong className="text-slate-300">Conferência independente:</strong> o painel diferencia o estado informado pelo aplicativo do estado efetivamente respondido pela publicação pública. Isso evita confundir uma execução de CI/CD concluída com disponibilidade real para o público.
-            {publication.buildGeneratedAt && <span className="ml-1">Último build público: {new Date(publication.buildGeneratedAt).toLocaleString('pt-BR')}.</span>}
+            {publication.buildGeneratedAt && <span className="ml-1">Último build público: {formatPublicationTimestamp(publication.buildGeneratedAt)}.</span>}
           </div>
 
           <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500">
