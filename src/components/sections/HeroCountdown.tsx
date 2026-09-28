@@ -60,9 +60,15 @@ export function HeroCountdown() {
             </p>
 
             <div className="hero-actions">
-              <a href="#descubra" className="hero-action primary">
-                Explorar temas <ArrowRight aria-hidden="true" />
-              </a>
+              {guided ? (
+                <a href="#aprendizado-guiado" className="hero-action primary">
+                  Começar trilha <ArrowRight aria-hidden="true" />
+                </a>
+              ) : (
+                <a href="#descubra" className="hero-action primary">
+                  Explorar temas <ArrowRight aria-hidden="true" />
+                </a>
+              )}
               <a href="#fontes" className="hero-action secondary">
                 Conferir fontes
               </a>
