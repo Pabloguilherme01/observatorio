@@ -952,7 +952,9 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(guide.getByText('Entenda os rótulos dos dados')).toBeVisible();
   await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '0');
   await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
-  await expect(guide.getByRole('button')).toHaveCount(8);
+  await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
+  await expect(guide.getByRole('button', { name: /Continuar/i })).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Reiniciar trilha/i })).toBeDisabled();
 
   await guide.getByRole('button', { name: /Abrir: 1. Identifique o que o número mede/i }).click();
   await expect(page).toHaveURL(/#resumo$/);
