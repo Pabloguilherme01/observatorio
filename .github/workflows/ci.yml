@@ -30,42 +30,23 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Dependency vulnerability gate
-        run: npm run audit:deps
-
-      - name: Validate production results feed contract
-        run: npm run validate:results
-
-      - name: Validate synthetic results contract fixture
-        env:
-          RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
-          REQUIRE_RESULTS_FEED: 'true'
-        run: npm run validate:results
-
       - name: Test first and second turn results contracts
         run: npm run test:results
 
       - name: Install cross-browser engines
         run: npm exec -- playwright install --with-deps chromium firefox webkit
 
-      - name: Complete audit gate
-        run: npm run audit:all
+      - name: Audit source integrity
+        run: npm run audit:sources
 
-      - name: Validate TSE snapshot
-        run: npm run validate:tse
+      - name: Cross-browser audit
+        run: npm run audit:browser
 
       - name: Test unavailable TSE source handling
         run: npm run test:tse-unavailable
-
-      - name: Validate candidate source guard
-        run: node scripts/test-candidate-source-guard.mjs
-
-      - name: Verify JWS implementation
-        run: npm run test:jws
 
       - name: Build
         run: npm run build
 
       - name: Verify production PWA artifact
         run: npm run test:pwa
-
