@@ -8,6 +8,7 @@ export function PublicDataPulse() {
   const sourceCount = d.sources.length;
   const indicatorCount = d.indicators.length;
   const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
+  const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
   const datedIndicators = d.indicators.filter(item => item.referenceDate || d.sources.find(source => source.id === item.sourceId)?.referenceDate).length;
   const indicatorDateCoverage = indicatorCount ? (datedIndicators / indicatorCount) * 100 : 0;
   const indicatorsWithNotes = d.indicators.filter(item => Boolean(item.note?.trim())).length;
@@ -31,11 +32,13 @@ export function PublicDataPulse() {
         title="Pulso do conjunto publicado"
         description="Um retrato da documentação disponível e das atualizações recentes. A qualidade detalhada fica concentrada no painel de rastreabilidade."
       />
-      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Resumo do conjunto de dados">
+      <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Resumo do conjunto de dados">
         <DataStat label="Indicadores publicados" value={indicatorCount} hint="itens rastreáveis no catálogo" />
         <DataStat label="Fontes registradas" value={sourceCount} hint={datedSources + ' com data registrada'} />
-        <DataStat label="Referência temporal" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint="dos indicadores têm referência temporal" />
-        <DataStat label="Nota metodológica" value={methodologicalCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={indicatorsWithNotes + ' indicadores explicam limites ou método'} />
+        <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint="fontes com referência ou publicação datada" />
+        <DataStat label="Indicadores com data de referência" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint="referência temporal disponível para leitura" />
+        <DataStat label="Indicadores com nota metodológica" value={indicatorsWithNotes} hint={methodologicalCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% do catálogo'} />
+        <DataStat label="Fontes com data registrada" value={datedSources} hint="apoio para conferir atualidade e contexto" />
       </div>
       <div className="grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
         <Card>
