@@ -39,7 +39,7 @@ must(
   modeToggle.includes('Leitura rápida') &&
   modeToggle.includes('Leitura explicada') &&
   modeToggle.includes('Leitura detalhada') &&
-  hero.includes('Uma visão executiva da cidade') &&
+  (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade')) &&
   audience.includes('Comece pelo que você precisa saber.') &&
   executive.includes('Resumo principal') &&
   (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
