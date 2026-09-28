@@ -7,6 +7,7 @@ import { Card } from './ui/Card';
 import { EDITION } from '../config/version';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { copyText } from '../lib/clipboard';
+import { formatIndicatorStatus } from '../utils/dataLabels';
 
 const categoryFor = (id: string) => {
   if (id === 'budget' || id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
@@ -19,19 +20,11 @@ const categoryFor = (id: string) => {
   return 'Geral';
 };
 
-const statusLabel = (status: string) => ({
-  current: 'Atual',
-  historical: 'Historico',
-  derived: 'Derivado',
-  snapshot: 'Registro datado',
-  planned: 'Planejado',
-}[status] ?? status);
-
 const rows: readonly (readonly ExportCell[])[] = [
   ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza', 'status_rotulo'],
   ...d.indicators.map(item => {
     const source = d.sources.find(source => source.id === item.sourceId);
-    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', statusLabel(item.status)];
+    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', formatIndicatorStatus(item.status, item.status) ?? item.status];
   }),
 ];
 
@@ -120,16 +113,16 @@ export function DataExportActions() {
       <div className={`flex flex-col gap-4 md:flex-row md:items-center md:justify-between ${mode === 'summary' ? 'summary-export-head' : ''}`}>
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Dados para download</div>
-          <h3 className={`mt-2 font-black text-white ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Baixar dados' : 'Baixe dados, fontes e metadados'}</h3>
-          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400">CSV com indicadores e metadados; comparativo municipal descritivo; catálogo de fontes; JSON normalizado; metadados e API pública.</p>}
+          <h3 className={`mt-2 font-black text-white light:text-slate-900 ${mode === 'summary' ? 'text-base' : 'text-xl'}`}>{mode === 'summary' ? 'Baixar dados' : 'Baixe dados, fontes e metadados'}</h3>
+          {mode !== 'summary' && <p className="mt-1 text-sm text-slate-400 light:text-slate-600">CSV com indicadores e metadados; comparativo municipal descritivo; catálogo de fontes; JSON normalizado; metadados e API pública.</p>}
         </div>
         <div className={`flex flex-wrap gap-2 ${mode === 'summary' ? 'summary-export-actions' : ''}`}>
-          <button type="button" onClick={exportJson} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
-          <button type="button" onClick={exportCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
-          <button type="button" onClick={exportSourcesCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />Fontes CSV</button>
-          <button type="button" onClick={exportContextComparisonCsv} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Download className="h-4 w-4" aria-hidden="true" />Comparativo CSV</button>
-          <button type="button" onClick={copyMetadata} className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-white/5"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
-          <a href={import.meta.env.BASE_URL + "api/v1/observatorio.json"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 hover:bg-sky-300/10"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
+          <button type="button" onClick={exportJson} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Braces className="h-4 w-4" aria-hidden="true" />JSON</button>
+          <button type="button" onClick={exportCsv} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Download className="h-4 w-4" aria-hidden="true" />CSV</button>
+          <button type="button" onClick={exportSourcesCsv} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Download className="h-4 w-4" aria-hidden="true" />Fontes CSV</button>
+          <button type="button" onClick={exportContextComparisonCsv} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Download className="h-4 w-4" aria-hidden="true" />Comparativo CSV</button>
+          <button type="button" onClick={copyMetadata} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
+          <a href={import.meta.env.BASE_URL + "api/v1/observatorio.json"} target="_blank" rel="noopener noreferrer" aria-label="Abrir API pública do Observatório em nova aba" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 transition hover:bg-sky-300/10 light:border-sky-200 light:bg-sky-50 light:text-sky-800 light:hover:bg-sky-100"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
         </div>
       </div>
       {status && <div className="mt-4 text-xs font-semibold text-emerald-300" role="status" aria-live="polite">{status}</div>}
