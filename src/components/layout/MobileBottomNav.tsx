@@ -134,7 +134,7 @@ export function MobileBottomNav() {
         const node = document.getElementById(item.id);
         if (node) observer?.observe(node);
       });
-      ['resumo', 'analise'].forEach(id => {
+      ['resumo', 'analise', 'aprendizado-guiado'].forEach(id => {
         const node = document.getElementById(id);
         if (node) observer?.observe(node);
       });
@@ -163,7 +163,12 @@ export function MobileBottomNav() {
     };
   }, [closeMore]);
 
-  const moreItems = navigation.filter(item => item.group === 'more' && item.id !== 'quiz');
+  const guidedItem = {
+    id: 'aprendizado-guiado',
+    shortLabel: 'Aprendizado guiado',
+    description: 'Trilha passo a passo para ler e verificar os dados.',
+  } as const;
+  const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more' && item.id !== 'quiz')];
   const quizItem = navigation.find(item => item.id === 'quiz');
 
   return (
@@ -217,7 +222,7 @@ export function MobileBottomNav() {
           <div ref={moreMenuRef} id="mobile-bottom-more" className="mobile-bottom-more-menu" role="menu" aria-label="Mais áreas do observatório">
             <div className="mobile-bottom-more-heading" aria-hidden="true">
               <strong>Mais áreas</strong>
-              <small>Dados, serviços, fontes e downloads</small>
+              <small>Aprendizado, serviços, fontes e dados</small>
             </div>
             {moreItems.map(item => (
               <button

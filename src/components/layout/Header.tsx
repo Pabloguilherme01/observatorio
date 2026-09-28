@@ -1,4 +1,4 @@
-import { CalendarDays, FileText, Link2, List, Menu, Moon, Search, Sun, X, Code2 } from 'lucide-react';
+import { CalendarDays, Code2, FileText, GraduationCap, Link2, List, Menu, Moon, Search, Sun, X } from 'lucide-react';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { ContrastModeToggle } from './ContrastModeToggle';
 import { useTheme } from '../../context/ThemeContext';
@@ -294,11 +294,11 @@ export function Header() {
               type="button"
               onClick={cycleMode}
               className={'site-mode-shortcut md:hidden mode-' + languageMode}
-              aria-label={'Modo de leitura atual: ' + (languageMode === 'summary' ? 'Resumo. Toque para mudar para Simples.' : languageMode === 'simple' ? 'Simples. Toque para mudar para Técnico.' : 'Técnico. Toque para mudar para Resumo.')}
+              aria-label={'Modo de leitura atual: ' + (languageMode === 'summary' ? 'Resumo. Toque para mudar para Explicado.' : languageMode === 'simple' ? 'Explicado. Toque para mudar para Guiado.' : languageMode === 'guided' ? 'Guiado. Toque para mudar para Detalhado.' : 'Detalhado. Toque para mudar para Resumo.')}
               title="Mudar modo de leitura"
             >
-              {languageMode === 'summary' ? <List aria-hidden="true" /> : languageMode === 'simple' ? <FileText aria-hidden="true" /> : <Code2 aria-hidden="true" />}
-              <span>{languageMode === 'summary' ? 'Resumo' : languageMode === 'simple' ? 'Simples' : 'Técnico'}</span>
+              {languageMode === 'summary' ? <List aria-hidden="true" /> : languageMode === 'simple' ? <FileText aria-hidden="true" /> : languageMode === 'guided' ? <GraduationCap aria-hidden="true" /> : <Code2 aria-hidden="true" />}
+              <span>{languageMode === 'summary' ? 'Resumo' : languageMode === 'simple' ? 'Explicado' : languageMode === 'guided' ? 'Guiado' : 'Detalhado'}</span>
             </button>
             <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K" data-search-trigger="primary">
               <Search className="h-4 w-4" aria-hidden="true" />

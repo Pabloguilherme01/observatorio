@@ -260,14 +260,17 @@ if (!combined.includes('election-mode-actions') && !combined.includes('mode-elec
 else fail('Modo Eleição removido de forma incompleta');
 
 const finalUi = texts.find(item => item.file === 'src/assets/styles/final-ui.css')?.content ?? '';
+const guidedUi = texts.find(item => item.file === 'src/assets/styles/guided-mode.css')?.content ?? '';
 if (
   finalUi.includes(':root[data-language-mode="summary"]') &&
   finalUi.includes(':root[data-language-mode="simple"]') &&
   finalUi.includes(':root[data-language-mode="technical"]') &&
+  guidedUi.includes(':root[data-language-mode="guided"]') &&
   finalUi.includes('--reading-accent-rgb:56,189,248') &&
   finalUi.includes('--reading-accent-rgb:45,212,191') &&
+  guidedUi.includes('--reading-accent-rgb:245,158,11') &&
   finalUi.includes('--reading-accent-rgb:167,139,250')
-) pass('Resumo, Simples e Técnico possuem identidades visuais próprias');
+) pass('Resumo, Explicado, Guiado e Detalhado possuem identidades visuais próprias');
 else fail('modos de leitura não possuem diferenciação visual suficiente');
 if (finalUi.includes('background-size:32px 32px') && finalUi.includes('Technical: tighter geometry')) pass('modo Técnico possui textura e geometria próprias sem alterar conteúdo');
 else fail('modo Técnico não possui linguagem visual própria');
@@ -283,11 +286,13 @@ if (
   languageToggle.includes('aria-pressed') &&
   languageToggle.includes("summary") &&
   languageToggle.includes("simple") &&
+  languageToggle.includes("guided") &&
   languageToggle.includes("technical") &&
+  languageContext.includes("value === 'guided'") &&
   languageContext.includes("value === 'technical'") &&
   languageContext.includes("value === 'summary'")
-) pass('contrato de linguagem Resumo/Simples/Técnico presente');
-else fail('distinção de linguagem simples vs técnica incompleta');
+) pass('contrato de linguagem Resumo/Explicado/Guiado/Detalhado presente');
+else fail('contrato dos modos de leitura está incompleto');
 
 const mobileSafety = [
   '@media (max-width:390px)',

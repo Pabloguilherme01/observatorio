@@ -33,21 +33,27 @@ const readingModes = read('src/config/readingModes.ts');
 const hero = read('src/components/sections/HeroCountdown.tsx');
 const trust = read('src/components/ProjectTrustPanel.tsx');
 const civic = read('src/components/sections/CivicActionHub.tsx');
+const guided = read('src/components/sections/GuidedLearningPanel.tsx');
+const guidedCss = read('src/assets/styles/guided-mode.css');
 
-must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '3 modos neutros de leitura disponíveis');
+must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'guided'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '4 modos neutros de leitura disponíveis');
 must(
   modeToggle.includes('Leitura rápida') &&
   modeToggle.includes('Leitura explicada') &&
+  modeToggle.includes('Aprendizado guiado') &&
   modeToggle.includes('Leitura detalhada') &&
   (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade')) &&
   audience.includes('Comece pelo que você precisa saber.') &&
   executive.includes('Resumo principal') &&
   (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
   trust.includes('Confiança começa pela origem') &&
-  civic.includes('Da evidência à fonte'),
+  civic.includes('Da evidência à fonte') &&
+  guided.includes('Como ler dados públicos em etapas') &&
+  guided.includes('não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais'),
   'cada modo possui narrativa editorial própria sem alterar a neutralidade'
 );
-must(app.includes('modeForDestination') && readingModes.includes('return current;'), 'navegação preserva o modo atual quando o destino não exige elevação de leitura');
+must(app.includes('modeForDestination') && readingModes.includes('return current;') && readingModes.includes("'guided'"), 'navegação preserva o modo atual quando o destino não exige elevação de leitura');
+must(guidedCss.includes('[data-language-mode="guided"] .technical-detail') && guidedCss.includes('grid-template-columns:repeat(2,minmax(0,1fr))'), 'modo guiado preserva separação técnica e responsividade mobile');
 must(search.includes("Resumo principal") && search.includes("'resumo'"), 'busca expõe a seção de resumo sem confundir destino com modo de leitura');
 must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
 const quizPromptCount = (quizData.match(/prompt:/g) || []).length;

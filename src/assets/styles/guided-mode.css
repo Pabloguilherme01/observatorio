@@ -1,0 +1,533 @@
+/* Guided reading mode: pedagogical layer over the explained data view. */
+
+[data-language-mode="guided"] .technical-detail,
+[data-language-mode="guided"] .technical-only{
+  display:none!important;
+}
+
+:root[data-language-mode="guided"]{
+  --reading-accent-rgb:245,158,11;
+  --reading-radius:20px;
+  --reading-section-gap:1.35rem;
+}
+
+.language-toggle-v3 .language-toggle-options{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+[data-language-mode="guided"] .language-toggle-v3 .language-toggle-options button[data-mode="guided"][aria-pressed="true"]{
+  border-color:rgba(245,158,11,.42);
+  background:linear-gradient(145deg,rgba(245,158,11,.16),rgba(14,116,144,.08));
+  box-shadow:inset 0 0 0 1px rgba(253,230,138,.08),0 8px 24px rgba(120,53,15,.10);
+}
+
+:root[data-language-mode="guided"] #main-content .mode-scope{
+  margin-block:clamp(.7rem,2vw,1.35rem);
+}
+
+:root[data-language-mode="guided"] #main-content .mode-scope::before{
+  content:"";
+  display:block;
+  height:2px;
+  margin-inline:auto;
+  max-width:72rem;
+  background:linear-gradient(90deg,transparent,rgba(245,158,11,.18),transparent);
+}
+
+:root[data-language-mode="guided"] #main-content :where(.obs-card,.premium-info-card,.dashboard-kpi-card,.summary-simple-card,.audience-topic,.audience-action-card){
+  background:
+    radial-gradient(130% 90% at 0 0,rgba(245,158,11,.06),transparent 50%),
+    linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.018));
+}
+
+.executive-summary--guided .summary-shell{
+  border-color:rgba(245,158,11,.18);
+  background:
+    radial-gradient(circle at 0 0,rgba(245,158,11,.055),transparent 40%),
+    rgba(245,158,11,.025);
+}
+
+.guided-learning-shell{
+  overflow:hidden;
+  border:1px solid rgba(245,158,11,.20);
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 0 0,rgba(245,158,11,.09),transparent 38%),
+    linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  box-shadow:0 20px 60px rgba(0,0,0,.14);
+  padding:clamp(16px,3vw,26px);
+}
+
+.guided-learning-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:end;
+}
+
+.guided-learning-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:#fbbf24;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.guided-learning-eyebrow svg{width:16px;height:16px}
+.guided-learning-head h2{
+  margin-top:8px;
+  color:#f8fafc;
+  font-size:clamp(1.25rem,3vw,1.75rem);
+  font-weight:900;
+  letter-spacing:-.035em;
+}
+.guided-learning-head p{
+  max-width:68ch;
+  margin-top:7px;
+  color:#94a3b8;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.guided-learning-progress{
+  min-width:150px;
+  border:1px solid rgba(245,158,11,.16);
+  border-radius:16px;
+  padding:12px;
+  background:rgba(0,0,0,.12);
+}
+.guided-learning-progress strong{display:block;color:#f8fafc;font-size:20px}
+.guided-learning-progress span{display:block;margin-top:2px;color:#64748b;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.guided-learning-progress>div{height:5px;margin-top:9px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)}
+.guided-learning-progress i{display:block;height:100%;border-radius:999px;background:#fbbf24;transition:width .2s ease}
+
+.guided-learning-next-card{
+  display:grid;
+  gap:4px;
+  margin-top:16px;
+  padding:13px 14px;
+  border:1px solid rgba(245,158,11,.18);
+  border-radius:16px;
+  background:linear-gradient(135deg,rgba(245,158,11,.075),rgba(56,189,248,.025));
+}
+.guided-learning-next-card>span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:#fbbf24;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.guided-learning-next-card>span svg{width:14px;height:14px}
+.guided-learning-next-card strong{color:#f8fafc;font-size:13px;line-height:1.35}
+.guided-learning-next-card small{color:#94a3b8;font-size:11px;line-height:1.5}
+
+.guided-learning-glossary{
+  margin-top:10px;
+  border:1px solid rgba(148,163,184,.12);
+  border-radius:14px;
+  background:rgba(0,0,0,.08);
+}
+.guided-learning-glossary>summary{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  padding:10px 12px;
+  color:#cbd5e1;
+  cursor:pointer;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.06em;
+}
+.guided-learning-glossary>summary::marker{color:#fbbf24}
+.guided-learning-glossary>div{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
+  padding:0 10px 10px;
+}
+.guided-learning-glossary>div>span{
+  min-width:0;
+  padding:9px;
+  border:1px solid rgba(148,163,184,.10);
+  border-radius:11px;
+  background:rgba(255,255,255,.02);
+}
+.guided-learning-glossary strong{display:block;color:#e2e8f0;font-size:9px}
+.guided-learning-glossary small{display:block;margin-top:4px;color:#64748b;font-size:9px;line-height:1.4}
+
+.guided-learning-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:18px;
+}
+.guided-learning-step{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:11px;
+  align-items:start;
+  min-height:108px;
+  padding:14px;
+  border:1px solid rgba(148,163,184,.14);
+  border-radius:17px;
+  background:rgba(0,0,0,.10);
+  color:inherit;
+  text-align:left;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.guided-learning-step:hover{transform:translateY(-2px);border-color:rgba(245,158,11,.30);background:rgba(245,158,11,.045)}
+.guided-learning-step:focus-visible{outline:2px solid rgba(251,191,36,.92);outline-offset:3px}
+.guided-learning-step.is-visited{border-color:rgba(52,211,153,.20)}
+.guided-learning-step.is-next{
+  border-color:rgba(245,158,11,.34);
+  background:linear-gradient(135deg,rgba(245,158,11,.075),rgba(0,0,0,.08));
+  box-shadow:inset 3px 0 0 rgba(251,191,36,.72);
+}
+.guided-learning-check{
+  display:grid;
+  width:34px;
+  height:34px;
+  place-items:center;
+  border-radius:11px;
+  background:rgba(245,158,11,.08);
+  color:#fbbf24;
+}
+.guided-learning-step.is-visited .guided-learning-check{background:rgba(52,211,153,.08);color:#6ee7b7}
+.guided-learning-check svg{width:17px;height:17px}
+.guided-learning-copy em{
+  display:block;
+  margin-bottom:5px;
+  color:#fbbf24;
+  font-size:8px;
+  font-style:normal;
+  font-weight:900;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.guided-learning-step.is-visited .guided-learning-copy em{color:#6ee7b7}
+.guided-learning-copy strong{display:block;color:#e2e8f0;font-size:12px;line-height:1.3}
+.guided-learning-copy small{display:block;margin-top:5px;color:#64748b;font-size:11px;line-height:1.5}
+.guided-learning-copy .guided-learning-question{
+  color:#cbd5e1;
+  font-weight:750;
+  line-height:1.45;
+}
+.guided-learning-step>svg{width:15px;height:15px;margin-top:8px;color:#64748b}
+
+.guided-learning-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid rgba(148,163,184,.12);
+}
+.guided-learning-footer p{max-width:64ch;color:#64748b;font-size:11px;line-height:1.55}
+.guided-learning-footer p strong{color:#cbd5e1}
+.guided-learning-footer>div{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.guided-learning-reset,.guided-learning-next{
+  display:inline-flex;
+  min-height:44px;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border-radius:12px;
+  padding:9px 12px;
+  font-size:10px;
+  font-weight:900;
+}
+.guided-learning-reset{border:1px solid rgba(148,163,184,.16);color:#94a3b8}
+.guided-learning-reset:disabled{opacity:.45;cursor:not-allowed}
+.guided-learning-next{border:1px solid rgba(245,158,11,.24);background:rgba(245,158,11,.08);color:#fde68a}
+.guided-learning-reset svg,.guided-learning-next svg{width:14px;height:14px}
+
+.light .guided-learning-shell{border-color:#f3d28a;background:linear-gradient(180deg,#fffdf7,#fff);box-shadow:0 14px 40px rgba(15,23,42,.06)}
+.light .guided-learning-head h2,.light .guided-learning-progress strong,.light .guided-learning-copy strong,.light .guided-learning-next-card strong{color:#0f172a}
+.light .guided-learning-head p,.light .guided-learning-copy small,.light .guided-learning-footer p,.light .guided-learning-next-card small{color:#64748b}
+.light .guided-learning-copy .guided-learning-question{color:#334155}
+.light .guided-learning-next-card{border-color:#f3d28a;background:linear-gradient(135deg,#fff8e7,#f8fbff)}
+.light .guided-learning-next-card>span{color:#a16207}
+.light .guided-learning-glossary{border-color:#e2e8f0;background:#fff}
+.light .guided-learning-glossary>summary{color:#334155}
+.light .guided-learning-glossary>div>span{border-color:#e2e8f0;background:#f8fafc}
+.light .guided-learning-glossary strong{color:#0f172a}
+.light .guided-learning-glossary small{color:#64748b}
+.light .guided-learning-progress{border-color:#fde7ad;background:#fffaf0}
+.light .guided-learning-progress>div{background:#e2e8f0}
+.light .guided-learning-step{border-color:#e2e8f0;background:#fff}
+.light .guided-learning-step:hover{border-color:#f5c451;background:#fffbeb}
+.light .guided-learning-step.is-next{border-color:#f5c451;background:#fffbeb;box-shadow:inset 3px 0 0 #f59e0b}
+.light .guided-learning-footer p strong{color:#334155}
+.light .guided-learning-reset{border-color:#e2e8f0;color:#475569}
+.light .guided-learning-next{border-color:#f5cf73;background:#fffbeb;color:#92400e}
+
+@media(max-width:1023px){
+  .language-toggle-v3 .language-toggle-options{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+@media(min-width:768px){
+  .header-reading-mode .language-toggle-options{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:767px){
+  #aprendizado-guiado{
+    padding-left:max(12px,env(safe-area-inset-left,0px));
+    padding-right:max(12px,env(safe-area-inset-right,0px));
+    scroll-margin-top:calc(72px + env(safe-area-inset-top,0px));
+  }
+  [data-language-mode="guided"] .audience-home .audience-topic-grid,
+  [data-language-mode="guided"] .audience-home .audience-action-grid,
+  [data-language-mode="guided"] .audience-home .audience-resource-grid{
+    grid-template-columns:1fr!important;
+  }
+  .guided-learning-shell{
+    padding:14px;
+    border-radius:20px;
+    box-shadow:0 14px 38px rgba(0,0,0,.12);
+  }
+  .guided-learning-head{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .guided-learning-head h2{
+    font-size:clamp(1.3rem,6.4vw,1.55rem);
+    line-height:1.08;
+    text-wrap:balance;
+  }
+  .guided-learning-head p{
+    font-size:12px;
+    line-height:1.55;
+  }
+  .guided-learning-progress{
+    min-width:0;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    grid-template-rows:auto auto;
+    column-gap:10px;
+    row-gap:2px;
+    align-items:center;
+    padding:10px 11px;
+    border-radius:14px;
+  }
+  .guided-learning-progress strong{
+    grid-row:1 / 3;
+    font-size:18px;
+  }
+  .guided-learning-progress span{
+    margin-top:0;
+    font-size:9px;
+  }
+  .guided-learning-progress>div{
+    margin-top:2px;
+  }
+  .guided-learning-next-card{
+    margin-top:12px;
+    padding:11px 12px;
+    border-radius:14px;
+  }
+  .guided-learning-next-card strong{
+    font-size:12px;
+    line-height:1.4;
+  }
+  .guided-learning-next-card small{
+    font-size:10.5px;
+    line-height:1.45;
+  }
+  .guided-learning-glossary{
+    margin-top:9px;
+    border-radius:13px;
+  }
+  .guided-learning-glossary>summary{
+    min-height:48px;
+    padding:10px 11px;
+    font-size:10.5px;
+  }
+  .guided-learning-glossary>div{
+    grid-template-columns:1fr;
+    gap:6px;
+    padding:0 8px 8px;
+  }
+  .guided-learning-glossary>div>span{
+    padding:10px;
+  }
+  .guided-learning-glossary strong{font-size:10px}
+  .guided-learning-glossary small{font-size:10px;line-height:1.45}
+  .guided-learning-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-top:12px;
+  }
+  .guided-learning-step{
+    grid-template-columns:36px minmax(0,1fr) 16px;
+    min-height:0;
+    gap:10px;
+    padding:13px;
+    border-radius:15px;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .guided-learning-check{
+    width:36px;
+    height:36px;
+  }
+  .guided-learning-copy em{
+    margin-bottom:4px;
+    font-size:8.5px;
+  }
+  .guided-learning-copy strong{
+    font-size:13px;
+    line-height:1.32;
+  }
+  .guided-learning-copy .guided-learning-question{
+    margin-top:6px;
+    font-size:11.5px;
+    line-height:1.45;
+  }
+  .guided-learning-copy small{
+    font-size:10.5px;
+    line-height:1.5;
+  }
+  .guided-learning-step>svg{
+    align-self:center;
+    margin-top:0;
+  }
+  .guided-learning-footer{
+    align-items:stretch;
+    flex-direction:column;
+    gap:12px;
+    margin-top:14px;
+    padding-top:12px;
+    scroll-margin-bottom:calc(var(--mobile-nav-height,68px) + env(safe-area-inset-bottom,0px) + 16px);
+  }
+  .guided-learning-footer p{
+    font-size:10.5px;
+    line-height:1.5;
+  }
+  .guided-learning-footer>div{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:7px;
+  }
+  .guided-learning-reset,.guided-learning-next{
+    width:100%;
+    min-height:48px;
+    font-size:11px;
+    padding:10px 12px;
+    touch-action:manipulation;
+  }
+  .guided-learning-next{order:-1}
+  .summary-guided-question{
+    padding:9px 10px;
+    font-size:11px;
+    line-height:1.45;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button{
+    min-height:64px!important;
+    padding:9px!important;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button strong{
+    font-size:11px!important;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button small{
+    font-size:8px!important;
+  }
+}
+
+@media(min-width:480px) and (max-width:767px){
+  .guided-learning-glossary>div{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:390px){
+  #aprendizado-guiado{
+    padding-left:max(10px,env(safe-area-inset-left,0px));
+    padding-right:max(10px,env(safe-area-inset-right,0px));
+  }
+  .guided-learning-shell{
+    padding:12px;
+    border-radius:18px;
+  }
+  .guided-learning-step{
+    padding:12px 11px;
+  }
+  .guided-learning-next-card{
+    padding:10px 11px;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button{
+    min-height:62px!important;
+    padding:8px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .guided-learning-step,.guided-learning-progress i{transition:none}
+}
+
+
+.summary-guided-question{
+  display:grid;
+  gap:3px;
+  margin-top:9px;
+  padding:8px 9px;
+  border:1px solid rgba(245,158,11,.16);
+  border-radius:11px;
+  background:rgba(245,158,11,.045);
+  color:#cbd5e1;
+  font-size:10px;
+  line-height:1.4;
+}
+.summary-guided-question strong{
+  color:#fbbf24!important;
+  font-size:8px!important;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.light .summary-guided-question{
+  border-color:#f3d28a;
+  background:#fffbeb;
+  color:#334155;
+}
+.light .summary-guided-question strong{color:#a16207!important}
+
+
+.site-mode-shortcut.mode-guided{
+  border-color:rgba(245,158,11,.22);
+  background:rgba(245,158,11,.075);
+  color:#fde68a;
+}
+
+.light .site-mode-shortcut.mode-guided{
+  border-color:#f3d28a;
+  background:#fffbeb;
+  color:#92400e;
+}
+
+.light[data-language-mode="guided"] .language-toggle-v3 .language-toggle-options>button[data-mode="guided"][aria-pressed="true"]{
+  color:#92400e!important;
+  border-color:#f5c451!important;
+  background:linear-gradient(145deg,#fff7df,#fffbeb)!important;
+  box-shadow:inset 0 0 0 1px rgba(245,158,11,.08),0 8px 22px rgba(146,64,14,.08)!important;
+}
+.light[data-language-mode="guided"] .language-toggle-v3 .language-toggle-options>button[data-mode="guided"][aria-pressed="true"]>svg{
+  color:#b45309!important;
+}
+.light[data-language-mode="guided"] .language-toggle-v3 .language-toggle-label>svg,
+.light[data-language-mode="guided"] .language-toggle-v3 .language-toggle-signal{
+  color:#a16207!important;
+}

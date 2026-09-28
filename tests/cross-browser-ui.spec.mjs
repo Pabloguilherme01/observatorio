@@ -53,20 +53,20 @@ test.describe('bancada cross-browser de interface', () => {
       const shortcut = page.locator('.site-mode-shortcut');
       const root = page.locator('html');
       await expect(shortcut).toBeVisible();
-      for (let step = 0; step < 3; step += 1) {
+      for (let step = 0; step < 4; step += 1) {
         const current = await root.getAttribute('data-language-mode');
-        const next = current === 'summary' ? 'simple' : current === 'simple' ? 'technical' : 'summary';
+        const next = current === 'summary' ? 'simple' : current === 'simple' ? 'guided' : current === 'guided' ? 'technical' : 'summary';
         await shortcut.click();
         await expect(root).toHaveAttribute('data-language-mode', next);
         await assertViewportIntegrity(page);
       }
     } else {
       const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-      for (const label of ['Explicado', 'Detalhado', 'Resumo']) {
+      for (const label of ['Explicado', 'Guiado', 'Detalhado', 'Resumo']) {
         await modes.getByRole('button', { name: new RegExp('^' + label) }).click();
         await expect(page.locator('html')).toHaveAttribute(
           'data-language-mode',
-          label === 'Explicado' ? 'simple' : label === 'Detalhado' ? 'technical' : 'summary',
+          label === 'Explicado' ? 'simple' : label === 'Guiado' ? 'guided' : label === 'Detalhado' ? 'technical' : 'summary',
         );
         await assertViewportIntegrity(page);
       }

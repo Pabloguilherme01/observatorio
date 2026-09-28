@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
+import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -12,6 +13,8 @@ interface MetricDetail { readonly label: string; readonly value: string; readonl
 export function DashboardMetrics() {
   const { mode: languageMode } = useLanguageMode();
   const isSummary = languageMode === 'summary';
+  const isGuided = languageMode === 'guided';
+  const isExplained = languageMode === 'simple' || isGuided;
   const density = Number(d.indicators.find(i => i.id === 'density')?.value ?? 0);
   const area = Number(d.indicators.find(i => i.id === 'area')?.value ?? 0);
   const population2022 = d.populationSeries.find(p => p.year === 2022)?.value ?? 0;
@@ -26,13 +29,7 @@ export function DashboardMetrics() {
   const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
   const formatReference = (date?: string, fallback = 'referência não informada') =>
     date ? date.split('-').reverse().join('/') : fallback;
-  const statusLabel = (status?: string) => ({
-    current: 'Atual',
-    historical: 'Histórico',
-    derived: 'Derivado',
-    snapshot: 'Registro',
-    planned: 'Planejado',
-  } as Record<string, string>)[status ?? ''] ?? 'Dado público';
+  const statusLabel = (status?: string) => formatIndicatorStatus(status, 'Dado público') ?? 'Dado público';
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
   const comparisonDetails = [
@@ -102,16 +99,18 @@ export function DashboardMetrics() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeader
             titleId="dashboard-title"
-            eyebrow={isSummary ? 'Leitura rápida' : languageMode === 'simple' ? 'Leitura explicada' : 'Fonte e método'}
-            title={isSummary ? 'Cinco indicadores para começar' : languageMode === 'simple' ? 'Cinco indicadores explicados' : 'Indicadores com fonte, data e método'}
+            eyebrow={isSummary ? 'Leitura rápida' : isGuided ? 'Aprendizado guiado' : languageMode === 'simple' ? 'Leitura explicada' : 'Fonte e método'}
+            title={isSummary ? 'Cinco indicadores para começar' : isGuided ? 'Cinco indicadores para praticar a leitura' : languageMode === 'simple' ? 'Cinco indicadores explicados' : 'Indicadores com fonte, data e método'}
             description={isSummary
               ? 'Uma leitura curta dos principais indicadores, com origem e referência acessíveis em cada card.'
-              : languageMode === 'simple'
-                ? 'Cada número vem acompanhado de uma explicação curta; toque para abrir a fonte e continuar a leitura.'
-                : 'Cada indicador abre origem, referência, natureza e método para uma conferência completa.'}
+              : isGuided
+                ? 'Use os cards para praticar a sequência do modo Guiado: valor, unidade, referência, natureza e fonte.'
+                : languageMode === 'simple'
+                  ? 'Cada número vem acompanhado de uma explicação curta; toque para abrir a fonte e continuar a leitura.'
+                  : 'Cada indicador abre origem, referência, natureza e método para uma conferência completa.'}
           />
           <div className="flex flex-wrap items-center gap-2" aria-label="Estado do painel">
-            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> {languageMode === 'technical' ? 'Fonte e método disponíveis' : 'Fontes disponíveis'}</span>}
+            {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> {languageMode === 'technical' ? 'Fonte e método disponíveis' : isGuided ? 'Fonte disponível para verificar' : 'Fontes disponíveis'}</span>}
             <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Atualizado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
           </div>
         </div>
@@ -135,8 +134,8 @@ export function DashboardMetrics() {
 
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Em um olhar' : languageMode === 'simple' ? 'Leitura em contexto' : 'Indicadores principais'}</div>
-          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Informação essencial, sem esconder a referência.' : languageMode === 'simple' ? 'Cinco indicadores com contexto e referência visível.' : 'Cada indicador abre fonte, data, natureza e método.'}</p>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">{isSummary ? 'Em um olhar' : isGuided ? 'Pratique a leitura' : languageMode === 'simple' ? 'Leitura em contexto' : 'Indicadores principais'}</div>
+          <p className="mt-1 text-xs text-slate-500">{isSummary ? 'Informação essencial, sem esconder a referência.' : isGuided ? 'Leia valor, explicação, natureza e referência antes de abrir a fonte.' : languageMode === 'simple' ? 'Cinco indicadores com contexto e referência visível.' : 'Cada indicador abre fonte, data, natureza e método.'}</p>
         </div>
       </div>
 
@@ -151,7 +150,7 @@ export function DashboardMetrics() {
                   <div className="mt-1 text-[10px] font-semibold text-sky-300/80 light:text-sky-700">{sourceLabel}</div>
                   {isSummary ? (
                     <div className="mt-1 text-[11px] leading-4 text-slate-500 light:text-slate-600">{caption}</div>
-                  ) : languageMode === 'simple' ? (
+                  ) : isExplained ? (
                     <div className="simple-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">{simpleExplanation}</div>
                   ) : (
                     <>
@@ -162,7 +161,7 @@ export function DashboardMetrics() {
                   <div className="dashboard-card-meta mt-3">
                     <span className="dashboard-meta-chip" data-kind={nature === 'Derivado' ? 'derived' : 'observed'}>{nature}</span>
                     {referenceDate && <span className="dashboard-meta-chip">ref. {formatReference(referenceDate)}</span>}
-                    <span className="dashboard-card-action">{isSummary ? 'Ver fonte' : languageMode === 'simple' ? 'Conferir contexto' : 'Abrir método'}</span>
+                    <span className="dashboard-card-action">{isSummary ? 'Ver fonte' : isGuided ? 'Ver contexto e conferir fonte' : languageMode === 'simple' ? 'Conferir contexto' : 'Abrir método'}</span>
                   </div>
                 </div>
                 <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
@@ -175,9 +174,11 @@ export function DashboardMetrics() {
         <div className="dashboard-summary-note mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.025] px-4 py-3 text-xs leading-5 text-slate-500 light:border-sky-200 light:bg-sky-50/70 light:text-slate-600">
           Cada número mantém sua referência. Toque para ver origem e detalhes sem sair da leitura.
         </div>
-      ) : languageMode === 'simple' ? (
+      ) : isExplained ? (
         <div className="simple-detail mt-3 rounded-2xl border border-sky-300/10 bg-sky-300/[0.035] px-4 py-3 text-xs leading-5 text-slate-300 light:text-slate-600">
-          Contexto primeiro, fonte sempre acessível. Toque em qualquer indicador para conferir.
+          {isGuided
+            ? 'Pergunta de prática: você consegue dizer o que o valor mede, de quando é e se é publicado ou derivado antes de abrir a fonte?'
+            : 'Contexto primeiro, fonte sempre acessível. Toque em qualquer indicador para conferir.'}
         </div>
       ) : (
         <div className="technical-detail mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">
@@ -185,10 +186,10 @@ export function DashboardMetrics() {
         </div>
       )}
 
-      {languageMode === 'simple' && (
+      {isExplained && (
         <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">
-          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80 light:text-emerald-700">Mais indicadores</div>
-          <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Economia, educação, saneamento e trabalho</h3>
+          <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300/80 light:text-emerald-700">{isGuided ? 'Prática por tema' : 'Mais indicadores'}</div>
+          <h3 className="mt-1 text-base font-black text-white light:text-slate-900">{isGuided ? 'Aplique a mesma regra em outros temas' : 'Economia, educação, saneamento e trabalho'}</h3>
           <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Valores do conjunto rastreável, organizados por tema. Cada card mostra a natureza do dado e a referência disponível.</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {thematicIndicators.map(item => {

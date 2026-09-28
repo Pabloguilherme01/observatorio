@@ -13,6 +13,7 @@ const files = {
   css: read('src/assets/styles/globals.css'),
   finalUi: read('src/assets/styles/final-ui.css'),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
+  guidedCss: read('src/assets/styles/guided-mode.css'),
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
@@ -63,6 +64,7 @@ must(files.experience.includes('shortcutMap') && files.experience.includes('navi
 must(files.experience.includes('target.isContentEditable'), 'atalhos não interceptam elementos editáveis');
 must(read('src/config/navigation.ts').includes("id: 'saude'") && read('src/config/navigation.ts').includes("id: 'exportacao'"), 'menu Mais expõe saúde/saneamento e exportação sem criar novos destinos');
 must(!files.mobileNav.includes('useLanguageMode') && !files.mobileNav.includes('setMode(') && files.app.includes('modeForDestination') && files.readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') && files.readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') && files.languageContext.includes('fallbackDestinationForMode'), 'menu mobile e troca manual usam a mesma política central de visibilidade');
+must(files.mobileNav.includes("'aprendizado-guiado'") && files.mobileNav.includes('Aprendizado guiado') && files.mobileNav.includes('aria-current'), 'menu Mais oferece retorno direto e estado ativo para a trilha guiada sem acoplar a barra ao contexto de leitura');
 
 must(files.css.includes('--mobile-nav-height:64px') && files.css.includes('--mobile-nav-height:68px'), 'altura base e altura mobile da navegação inferior estão definidas explicitamente');
 must(files.css.includes('env(safe-area-inset-bottom'), 'safe-area inferior está contemplada');
@@ -76,7 +78,9 @@ must(files.finalUi.includes('.premium-info-card{') && files.finalUi.includes('.p
 must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero-reference-card{'), 'referências técnicas do hero usam mini-cards em vez de texto solto');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
-must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Aumentar nível de detalhe'), 'os três modos e a progressão explícita de leitura continuam disponíveis');
+must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'guided'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Avançar para aprendizado guiado'), 'os quatro modos e a progressão explícita de leitura continuam disponíveis');
+must(files.guidedCss.includes('@media(max-width:1023px)') && files.guidedCss.includes('grid-template-columns:repeat(2,minmax(0,1fr))') && files.guidedCss.includes('@media(max-width:767px)'), 'modo guiado usa seletor 2×2 em tablet/mobile e trilha responsiva');
+must(files.guidedCss.includes('#aprendizado-guiado') && files.guidedCss.includes('min-height:48px') && files.guidedCss.includes('.mobile-tools-mode .language-toggle-v3 .language-toggle-options') && files.guidedCss.includes('scroll-margin-bottom:calc(var(--mobile-nav-height,68px)'), 'trilha guiada mobile preserva toque confortável, seletor 2×2 e distância da navegação inferior');
 must(files.language.includes('data-active-mode={mode}') && files.language.includes('language-toggle-signal'), 'seletor de leitura expõe assinatura visual do modo ativo');
 must(files.finalUi.includes('--reading-radius:18px') && files.finalUi.includes('--reading-radius:17px') && files.finalUi.includes('--reading-radius:11px') && files.finalUi.includes('@media (max-width:359px)'), 'modos mantêm diferenças de densidade também em telas pequenas');
 must(files.finalUi.includes('@media (min-width:768px) and (max-width:1199px)') && files.finalUi.includes('@media (min-width:1200px)'), 'ritmo responsivo dos modos cobre tablet, notebook e desktop');

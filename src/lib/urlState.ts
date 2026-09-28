@@ -4,7 +4,7 @@ export const urlParamKeys = {
   readingMode: 'leitura',
 } as const;
 
-export type UrlReadingMode = 'summary' | 'simple' | 'technical';
+export type UrlReadingMode = 'summary' | 'simple' | 'guided' | 'technical';
 
 export type SearchParamUpdates = Readonly<Record<string, string | null | undefined>>;
 
@@ -21,7 +21,7 @@ export function getSearchParam(key: string, search?: string) {
 
 export function getReadingModeParam(search?: string): UrlReadingMode | null {
   const value = getSearchParam(urlParamKeys.readingMode, search);
-  return value === 'summary' || value === 'simple' || value === 'technical' ? value : null;
+  return value === 'summary' || value === 'simple' || value === 'guided' || value === 'technical' ? value : null;
 }
 
 export function getPublicServiceQuery() {

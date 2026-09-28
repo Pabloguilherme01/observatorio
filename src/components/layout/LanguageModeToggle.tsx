@@ -1,15 +1,17 @@
-import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
+import { Check, ChevronRight, Code2, FileText, GraduationCap, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
   { id: 'summary' as const, label: 'Resumo', sub: 'leitura rápida', description: 'Mostra apenas os pontos principais, mantendo referência e origem acessíveis.', icon: List },
   { id: 'simple' as const, label: 'Explicado', sub: 'com contexto', description: 'Acrescenta contexto para entender natureza, período e significado dos números.', icon: FileText },
+  { id: 'guided' as const, label: 'Guiado', sub: 'passo a passo', description: 'Organiza a leitura em uma trilha de aprendizado: valor, período, contexto, serviço e fonte.', icon: GraduationCap },
   { id: 'technical' as const, label: 'Detalhado', sub: 'fonte e método', description: 'Abre a leitura completa com fonte, data, método, cálculos, recortes e limitações.', icon: Code2 },
 ] as const;
 
 const modeGuide = {
   summary: { title: 'Leitura rápida', detail: 'Menos conteúdo · referências preservadas', signal: 'Essencial' },
   simple: { title: 'Leitura explicada', detail: 'Mais contexto · definições e períodos', signal: 'Contexto' },
+  guided: { title: 'Aprendizado guiado', detail: 'Passo a passo · leitura, contexto e verificação', signal: 'Aprender' },
   technical: { title: 'Leitura detalhada', detail: 'Maior densidade · fonte, método e limites', signal: 'Evidência' },
 } as const;
 
@@ -46,10 +48,10 @@ export function LanguageModeToggle() {
         type="button"
         className="language-toggle-deepen"
         onClick={cycleMode}
-        aria-label={mode === 'technical' ? 'Voltar para leitura rápida' : 'Aumentar nível de detalhe'}
-        title={mode === 'technical' ? 'Voltar à leitura rápida' : 'Avançar para o próximo nível de detalhe'}
+        aria-label={mode === 'technical' ? 'Voltar para leitura rápida' : mode === 'guided' ? 'Avançar para leitura detalhada' : mode === 'simple' ? 'Avançar para aprendizado guiado' : 'Aumentar nível de detalhe'}
+        title={mode === 'technical' ? 'Voltar à leitura rápida' : mode === 'guided' ? 'Abrir fonte, método e limites' : mode === 'simple' ? 'Aprender passo a passo' : 'Avançar para o próximo nível de detalhe'}
       >
-        <span>{mode === 'technical' ? 'Voltar ao resumo' : mode === 'summary' ? 'Explicar com contexto' : 'Ver fonte e método'}</span>
+        <span>{mode === 'technical' ? 'Voltar ao resumo' : mode === 'guided' ? 'Ver fonte e método' : mode === 'simple' ? 'Aprender passo a passo' : 'Explicar com contexto'}</span>
         <ChevronRight aria-hidden="true" />
       </button>
     </div>
