@@ -13,15 +13,34 @@ function brl(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
+function statusLabel(status?: string) {
+  if (status === 'derived') return 'Derivado';
+  if (status === 'current') return 'Atual';
+  if (status === 'snapshot') return 'Recorte';
+  if (status === 'historical') return 'Histórico';
+  if (status === 'planned') return 'Planejado';
+  return 'Fonte pública';
+}
+
 export function ExecutiveSummary() {
   
   const electorate = d.electoral;
-  const populationPoint = d.populationSeries.find(point => point.year === 2026);
+  const populationPoint = [...d.populationSeries]
+    .filter(point => point.kind === 'estimate')
+    .sort((a, b) => b.year - a.year)[0] ?? d.populationSeries[d.populationSeries.length - 1];
   const population = populationPoint?.value ?? 0;
+  const populationIndicator = populationPoint
+    ? d.indicators.find(item => item.id === `population-${populationPoint.year}`)
+    : undefined;
+  const populationSource = d.sources.find(sourceItem => sourceItem.id === (populationIndicator?.sourceId ?? populationPoint?.sourceId));
   const sanitationPct = d.sanitation.publicSewerServicePct;
-  const sanitationSource = d.sources.find(sourceItem => sourceItem.id === d.sanitation.sourceId);
+  const sanitationIndicator = d.indicators
+    .filter(item => item.id.startsWith('public-sewer-service-') && item.sourceId === d.sanitation.sourceId)
+    .sort((a, b) => (b.referenceDate ?? '').localeCompare(a.referenceDate ?? ''))[0];
+  const sanitationSource = d.sources.find(sourceItem => sourceItem.id === (sanitationIndicator?.sourceId ?? d.sanitation.sourceId));
   const budget = d.budget.totalBrl;
-  const budgetPerCapita = population > 0 ? budget / population : 0;
+  const budgetPerCapitaIndicator = d.indicators.find(item => item.id === `budget-per-capita-${d.budget.year}`);
+  const budgetPerCapita = Number(budgetPerCapitaIndicator?.value ?? (population > 0 ? budget / population : 0));
   const budgetSource = d.sources.find(sourceItem => sourceItem.id === d.budget.sourceId);
   const [shareStatus, setShareStatus] = useState('');
   const [shareBusy, setShareBusy] = useState(false);
@@ -33,10 +52,50 @@ export function ExecutiveSummary() {
   };
 
   const publicFacts = [
-    { id: 'populacao', label: 'População', value: population.toLocaleString('pt-BR') + ' hab.', note: 'Estimativa IBGE · referência ' + (populationPoint?.referenceDate ? formatDate(populationPoint.referenceDate) : '2026'), source: 'IBGE · estimativa 2026', badge: 'Fonte pública', target: 'dashboard' },
-    { id: 'eleitorado', label: 'Eleitorado', value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores', note: 'Registro TSE · referência ' + electorate.snapshotDate.split('-').reverse().join('/'), source: 'TSE · registro 2026', badge: 'Fonte pública', target: 'eleitorado' },
-    { id: 'orcamento-per-capita', label: 'Orçamento planejado por habitante', value: brl(budgetPerCapita) + '/ano', note: 'LOA 2026 · razão de planejamento, não gasto realizado.', source: 'Cálculo · LOA 2026 ÷ IBGE 2026', badge: 'Derivado', target: 'orcamento' },
-    { id: 'saneamento', label: 'Atendimento de esgoto', value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%', note: 'SINISA 2024 · cobertura do serviço público; não representa coleta ou tratamento.', source: sanitationSource?.label ?? 'Fonte de saneamento', badge: 'Fonte pública', target: 'saude' },
+    {
+      id: 'populacao',
+      label: 'População',
+      value: population.toLocaleString('pt-BR') + ' hab.',
+      note: populationIndicator?.note ?? 'Estimativa populacional; confira a data de referência antes de comparar com censos.',
+      source: populationSource?.label ?? 'IBGE',
+      badge: statusLabel(populationIndicator?.status),
+      status: populationIndicator?.status ?? 'current',
+      referenceDate: populationIndicator?.referenceDate ?? populationPoint?.referenceDate,
+      target: 'dashboard',
+    },
+    {
+      id: 'eleitorado',
+      label: 'Eleitorado',
+      value: electorate.electorate.toLocaleString('pt-BR') + ' eleitores',
+      note: 'Registro eleitoral com data própria de referência.',
+      source: d.sources.find(sourceItem => sourceItem.id === electorate.sourceId)?.label ?? 'TSE',
+      badge: 'Recorte',
+      status: 'snapshot',
+      referenceDate: electorate.snapshotDate,
+      target: 'eleitorado',
+    },
+    {
+      id: 'orcamento-per-capita',
+      label: 'Orçamento planejado por habitante',
+      value: brl(budgetPerCapita) + '/ano',
+      note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.',
+      source: d.sources.find(sourceItem => sourceItem.id === budgetPerCapitaIndicator?.sourceId)?.label ?? budgetSource?.label ?? 'LOA municipal',
+      badge: statusLabel(budgetPerCapitaIndicator?.status),
+      status: budgetPerCapitaIndicator?.status ?? 'derived',
+      referenceDate: budgetPerCapitaIndicator?.referenceDate,
+      target: 'orcamento',
+    },
+    {
+      id: 'saneamento',
+      label: 'Atendimento de esgoto',
+      value: sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%',
+      note: sanitationIndicator?.note ?? 'Cobertura do serviço público; não representa automaticamente coleta ou tratamento.',
+      source: sanitationSource?.label ?? 'Fonte de saneamento',
+      badge: statusLabel(sanitationIndicator?.status),
+      status: sanitationIndicator?.status ?? 'historical',
+      referenceDate: sanitationIndicator?.referenceDate,
+      target: 'saude',
+    },
   ] as const;
 
   const topics = [
@@ -56,17 +115,17 @@ export function ExecutiveSummary() {
     if (shareBusy) return;
     setShareBusy(true);
     const text = [
-      'Observatório Eleitoral — Águas Lindas de Goiás 2026',
+      d.meta.name,
       `Eleitorado: ${electorate.electorate.toLocaleString('pt-BR')} eleitores.`,
       `População estimada: ${population.toLocaleString('pt-BR')} habitantes${populationPoint?.referenceDate ? ` (referência ${formatDate(populationPoint.referenceDate)})` : ''}.`,
-      `Orçamento LOA 2026: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
+      `Orçamento LOA ${d.budget.year}: ${brl(budget)}${budgetSource?.referenceDate ? ` (referência ${formatDate(budgetSource.referenceDate)})` : ''}.`,
       `Serviço público de esgoto: ${sanitationPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%.`,
-      `Orçamento por habitante: ${brl(budgetPerCapita)} por ano (LOA 2026 ÷ população estimada).`,
+      `Orçamento por habitante: ${brl(budgetPerCapita)} por ano${budgetPerCapitaIndicator?.referenceDate ? ` (referência ${formatDate(budgetPerCapitaIndicator.referenceDate)})` : ''}.`,
     ].filter(Boolean).join(' ');
 
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'Observatório Eleitoral — Águas Lindas 2026', text, url: window.location.href });
+        await navigator.share({ title: d.meta.name, text, url: window.location.href });
         setShareStatus('Compartilhado');
         window.setTimeout(() => setShareStatus(''), 1800);
         return;
@@ -146,6 +205,10 @@ export function ExecutiveSummary() {
                   <button key={fact.id} type="button" className="summary-public-fact is-static text-left" onClick={() => goToSection(fact.target)} aria-label={`Abrir contexto de ${fact.label}`}>
                     <span className="block">{fact.label}</span>
                     <strong className="mt-1 block mobile-safe-wrap">{fact.value}</strong>
+                    <div className="dashboard-card-meta mt-2">
+                      <span className="dashboard-meta-chip" data-kind={fact.status}>{fact.badge}</span>
+                      {fact.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(fact.referenceDate)}</span>}
+                    </div>
                     <span className="summary-public-source">{fact.source}</span>
                     <em className="summary-public-note">{fact.note}</em>
                     <ArrowRight className="summary-public-arrow mt-2 h-4 w-4" aria-hidden="true" />
@@ -164,7 +227,10 @@ export function ExecutiveSummary() {
                 <button key={fact.id} type="button" className="summary-simple-card" onClick={() => goToSection(fact.target)}>
                   <span>{fact.label}</span>
                   <strong>{fact.value}</strong>
-                  <small>{fact.badge}</small>
+                  <div className="dashboard-card-meta">
+                    <span className="dashboard-meta-chip" data-kind={fact.status}>{fact.badge}</span>
+                    {fact.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(fact.referenceDate)}</span>}
+                  </div>
                   <em>{fact.note}</em>
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
@@ -190,6 +256,10 @@ export function ExecutiveSummary() {
                 >
                   <span className="summary-technical-kpi-label">{fact.label}</span>
                   <strong>{fact.value}</strong>
+                  <div className="dashboard-card-meta">
+                    <span className="dashboard-meta-chip" data-kind={fact.status}>{fact.badge}</span>
+                    {fact.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(fact.referenceDate)}</span>}
+                  </div>
                   <span className="summary-technical-kpi-source">{fact.source}</span>
                   <span className="summary-technical-kpi-note">{fact.note}</span>
                   <span className="summary-technical-kpi-cta"><ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /> Conferir contexto</span>
