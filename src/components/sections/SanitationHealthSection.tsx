@@ -15,6 +15,11 @@ const sewerHistory = [
 const sewerHistoryStartYear = sewerHistory[0].year;
 const sewerHistoryEndYear = sewerHistory[sewerHistory.length - 1].year;
 
+function formatSigned(value: number, digits = 0) {
+  const sign = value > 0 ? '+' : '';
+  return sign + formatNumber(value, digits);
+}
+
 function MetricBar({ label, value, emphasis = false }: { readonly label: string; readonly value: number; readonly emphasis?: boolean }) {
   const [tooltip, setTooltip] = useState<{ x: number; y: number } | null>(null);
   const width = Math.min(100, Math.max(0, value));
@@ -335,7 +340,7 @@ export function SanitationHealthSection() {
             />
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Atendimentos/leito</span><strong className="mt-1 block text-lg text-white light:text-slate-900">{formatNumber(Math.round(pressure.attendancePerBed))}</strong></div>
-              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Redução teórica da pressão</span><strong className="mt-1 block text-lg text-white light:text-slate-900">-{formatNumber(pressure.reductionPct, 1)}%</strong></div>
+              <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Variação teórica da pressão</span><strong className="mt-1 block text-lg text-white light:text-slate-900">{formatSigned(-pressure.reductionPct, 1)}%</strong><span className="mt-1 block text-[10px] leading-4 text-slate-500">negativo = menor pressão relativa; positivo = maior pressão relativa</span></div>
               <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200"><span className="text-xs text-slate-500">Indicador derivado</span><strong className="mt-1 block text-lg text-white light:text-slate-900">atendimentos/leito</strong></div>
             </div>
           </div>
@@ -346,21 +351,21 @@ export function SanitationHealthSection() {
               <span className="text-xs text-slate-500">{bedReference === 'custom' ? 'leitos no cenário simulado' : bedReference === 'planning' ? 'leitos no planejamento publicado' : 'leitos na referência selecionada'}</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">+{formatNumber(plannedBeds - d.health.openingReportedBeds)}</strong>
+              <strong className="block text-white light:text-slate-900">{formatSigned(plannedBeds - d.health.openingReportedBeds)}</strong>
               <span className="text-xs text-slate-500">leitos vs. referência de inauguração</span>
             </div>
             <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">+{formatNumber(scenarioVsCurrent)}</strong>
-              <span className="text-xs text-slate-500">leitos vs. capacidade explicitada hoje</span>
+              <strong className="block text-white light:text-slate-900">{formatSigned(scenarioVsCurrent)}</strong>
+              <span className="text-xs text-slate-500">leitos vs. capacidade explicitada no portal atual</span>
             </div>
           </div>
 
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50">
             <div className="flex items-center justify-between gap-3">
               <span>Variação da referência de inauguração → cenário selecionado</span>
-              <strong className="text-white light:text-slate-900">+{scenarioVsOpeningPct.toFixed(1).replace('.', ',')}%</strong>
+              <strong className="text-white light:text-slate-900">{formatSigned(scenarioVsOpeningPct, 1)}%</strong>
             </div>
-            <p className="mt-2">O cálculo acima usa a referência ou o cenário selecionado. Quando o controle é ajustado manualmente, o valor passa a ser uma simulação do usuário e não um dado publicado.</p>
+            <p className="mt-2">O cálculo acima usa a referência ou o cenário selecionado. Valores positivos indicam mais leitos que a referência de inauguração; valores negativos indicam menos. Quando o controle é ajustado manualmente, o valor passa a ser uma simulação do usuário e não um dado publicado.</p>
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
