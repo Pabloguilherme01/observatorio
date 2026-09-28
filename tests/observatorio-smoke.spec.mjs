@@ -960,6 +960,17 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(guide).toContainText('2. Confira período e natureza');
 });
 
+test('busca encontra e abre o aprendizado guiado', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /Buscar no observatório/i }).first().click();
+  const search = page.getByRole('searchbox');
+  await search.fill('aprendizado guiado');
+  await page.getByRole('option', { name: /Aprendizado guiado.*passo a passo/i }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
+  await expect(page).toHaveURL(/#aprendizado-guiado$/);
+  await expect(page.locator('#aprendizado-guiado')).toBeVisible();
+});
+
 test('modo guiado herda leitura explicada sem vazar conteúdo técnico', async ({ page }) => {
   await page.goto('./?leitura=guided#dashboard');
   const dashboard = page.locator('#dashboard');
