@@ -3446,3 +3446,38 @@ d,
 @media(max-width:639px){
   .quality-overview{border-radius:20px!important}
 }
+
+
+/* V44.15 · public data pulse + service discovery */
+#dados [aria-label="Resumo do conjunto de dados"]>div{
+  position:relative;
+  min-height:132px;
+  overflow:hidden;
+  transition:transform .16s ease,border-color .16s ease;
+}
+#dados [aria-label="Resumo do conjunto de dados"]>div::after{
+  content:'';
+  position:absolute;
+  right:-18px;
+  bottom:-28px;
+  width:72px;
+  height:72px;
+  border-radius:999px;
+  background:rgba(125,211,252,.045);
+}
+#dados [aria-label="Resumo do conjunto de dados"]>div:hover{
+  transform:translateY(-1px);
+  border-color:rgba(125,211,252,.18);
+}
+.civic-local-hub input[type="search"]:focus-visible{
+  outline:2px solid rgba(125,211,252,.45);
+  outline-offset:4px;
+  border-radius:8px;
+}
+@media(max-width:639px){
+  #dados [aria-label="Resumo do conjunto de dados"]>div{min-height:112px}
+}
+@media(prefers-reduced-motion:reduce){
+  #dados [aria-label="Resumo do conjunto de dados"]>div{transition:none}
+  #dados [aria-label="Resumo do conjunto de dados"]>div:hover{transform:none}
+}

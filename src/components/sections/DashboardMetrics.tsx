@@ -21,7 +21,7 @@ export function DashboardMetrics() {
   const electorate2022 = d.electoral.electorate2022 ?? 0;
   const electorate2026 = d.electoral.electorate;
   const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
-  const electorateDifference = d.electoral.tseConsolidated - electorate2026;
+  const consolidatedElectorate = d.electoral.tseConsolidated ?? null;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
   const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
   const formatReference = (date?: string, fallback = 'referência não informada') =>
@@ -304,7 +304,7 @@ export function DashboardMetrics() {
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400">O recorte local registra {formatNumber(electorate2026)} eleitores e o consolidado disponível registra {formatNumber(d.electoral.tseConsolidated)}. A diferença de {formatNumber(Math.abs(electorateDifference))} registros é mantida visível para reconciliação entre recortes, sem tratar bases de referência distintas como erro automático.</p>
+              <p className="mt-2 text-xs leading-5 text-slate-400">{consolidatedElectorate === null ? <>O recorte local registra {formatNumber(electorate2026)} eleitores. Não há consolidado adicional registrado nesta versão do dataset; por isso nenhuma diferença entre recortes é inferida.</> : <ElectorateReconciliation local={electorate2026} consolidated={consolidatedElectorate} />}</p>
             </div>
           </div>
         </>
@@ -325,4 +325,10 @@ export function DashboardMetrics() {
       )}
     </section>
   );
+}
+
+
+function ElectorateReconciliation({ local, consolidated }: { readonly local: number; readonly consolidated: number }) {
+  const difference = consolidated - local;
+  return <>O recorte local registra {formatNumber(local)} eleitores e o consolidado disponível registra {formatNumber(consolidated)}. A diferença de {formatNumber(Math.abs(difference))} registros é mantida visível para reconciliação entre recortes, sem tratar bases de referência distintas como erro automático.</>;
 }
