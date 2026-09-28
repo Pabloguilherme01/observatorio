@@ -538,7 +538,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
   const selectResult = (id: string, label?: string, kind?: ResultKind, serviceQuery?: string) => {
     onClose();
-    const knownDestination = ['resumo', 'contexto', 'dados', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
+    const knownDestination = ['resumo', 'aprendizado-guiado', 'contexto', 'dados', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
     const publicServiceQuery = kind === 'public' && label ? (serviceQuery ?? label) : null;
     if (publicServiceQuery) {
