@@ -12,6 +12,7 @@ export function PremiumInfoCard({
   compact = false,
   footer,
   className = '',
+  ariaLabel,
 }: {
   readonly icon: LucideIcon;
   readonly eyebrow: string;
@@ -21,11 +22,13 @@ export function PremiumInfoCard({
   readonly compact?: boolean;
   readonly footer?: ReactNode;
   readonly className?: string;
+  readonly ariaLabel?: string;
 }) {
   return (
     <article
       className={`premium-info-card ${compact ? 'is-compact' : ''} ${className}`}
       data-tone={tone}
+      aria-label={ariaLabel}
     >
       <div className="premium-info-icon" aria-hidden="true">
         <Icon />
