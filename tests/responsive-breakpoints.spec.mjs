@@ -254,6 +254,60 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
 });
 
 
+test.describe('cards guiados e utilidade pública no mobile', () => {
+  for (const viewport of [
+    { width: 320, height: 740 },
+    { width: 375, height: 812 },
+    { width: 430, height: 932 },
+  ]) {
+    test(`cards secundários permanecem legíveis em ${viewport.width}px`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await page.goto('./?leitura=guided#dashboard');
+
+      const practiceCards = page.locator('#dashboard .dashboard-secondary-card');
+      await expect(practiceCards.first()).toBeVisible();
+      const practiceLayout = await practiceCards.evaluateAll(cards => cards.slice(0, 8).map(card => {
+        const rect = card.getBoundingClientRect();
+        const action = card.querySelector('.dashboard-card-action')?.getBoundingClientRect();
+        return {
+          left: rect.left,
+          right: rect.right,
+          height: rect.height,
+          actionHeight: action?.height ?? 0,
+        };
+      }));
+
+      expect(practiceLayout.length).toBeGreaterThan(0);
+      for (const card of practiceLayout) {
+        expect(card.left).toBeGreaterThanOrEqual(-1);
+        expect(card.right).toBeLessThanOrEqual(viewport.width + 1);
+        expect(card.height).toBeGreaterThanOrEqual(120);
+        expect(card.actionHeight).toBeGreaterThanOrEqual(24);
+      }
+
+      await page.goto('./?leitura=guided#utilidade-publica');
+      const utility = page.locator('#utilidade-publica');
+      await expect(utility).toBeVisible();
+      const secondaryNeeds = utility.locator('[aria-label="Mais necessidades"] button');
+      await expect(secondaryNeeds).toHaveCount(2);
+
+      const utilityLayout = await secondaryNeeds.evaluateAll(buttons => buttons.map(button => {
+        const rect = button.getBoundingClientRect();
+        return { left: rect.left, right: rect.right, height: rect.height };
+      }));
+      for (const button of utilityLayout) {
+        expect(button.left).toBeGreaterThanOrEqual(-1);
+        expect(button.right).toBeLessThanOrEqual(viewport.width + 1);
+        expect(button.height).toBeGreaterThanOrEqual(52);
+      }
+
+      const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+      expect(documentWidth).toBeLessThanOrEqual(viewport.width + 1);
+    });
+  }
+});
+
+
 test('menu Mais oferece acesso direto ao aprendizado guiado no celular', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('./');
