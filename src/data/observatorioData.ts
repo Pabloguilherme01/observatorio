@@ -119,6 +119,7 @@ export const observatorioData: ObservatoryData = {
     defaultWorkDaysPerMonth: 22,
     defaultTripsPerDay: 2,
     minimumWageBrl: 1621,
+    minimumWageYear: 2026,
   },
 
   sanitation: {
