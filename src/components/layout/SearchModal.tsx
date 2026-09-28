@@ -1,5 +1,5 @@
 import '../../assets/styles/search-modal.css';
-import { BarChart3, BookOpen, BusFront, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
+import { BarChart3, BookOpen, BusFront, Check, Clipboard, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency } from '../../utils/formatters';
@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
 import { navigateToSection } from '../../lib/sectionNavigation';
 import { clearRecentSections, getRecentSections } from '../../lib/recentSections';
+import { copyText } from '../../lib/clipboard';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
@@ -88,6 +89,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const [activeIndex, setActiveIndex] = useState(0);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const [recentSections, setRecentSections] = useState<string[]>([]);
+  const [quickAnswerCopied, setQuickAnswerCopied] = useState(false);
+  const [quickAnswerCopyError, setQuickAnswerCopyError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -102,6 +105,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     setActiveIndex(0);
     setShortcutGuideOpen(initialShortcutGuideOpen);
     setRecentSections(getRecentSections());
+    setQuickAnswerCopied(false);
+    setQuickAnswerCopyError(false);
     const desktop = window.matchMedia?.('(min-width: 768px)').matches;
     const target = desktop ? inputRef.current : closeButtonRef.current;
     if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
@@ -413,6 +418,24 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   }, [query]);
 
   const quickSource = quickAnswer ? sourceForId(quickAnswer.sourceId) : null;
+  const quickAnswerCopyText = quickAnswer ? [
+    `${quickAnswer.title}: ${quickAnswer.value}.`,
+    `Fonte: ${sourceLabel(quickAnswer.sourceId)}.`,
+    quickAnswer.note ? `Nota: ${quickAnswer.note}` : '',
+    quickSource?.url ? `URL: ${quickSource.url}` : '',
+  ].filter(Boolean).join(' ') : '';
+
+  const copyQuickAnswer = async () => {
+    if (!quickAnswerCopyText) return;
+    const copied = await copyText(quickAnswerCopyText);
+    setQuickAnswerCopied(copied);
+    setQuickAnswerCopyError(!copied);
+  };
+
+  useEffect(() => {
+    setQuickAnswerCopied(false);
+    setQuickAnswerCopyError(false);
+  }, [query]);
 
   const filtered = useMemo(() => {
     const queryNormalized = normalizeSearchQuery(query);
@@ -575,6 +598,10 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
           <div className="mt-1 text-2xl font-black text-sky-300">{quickAnswer.value}</div>
           <div className="mt-3 flex flex-wrap gap-2">
             <button type="button" onClick={() => selectResult(quickAnswer.id)} className="search-quick-action">Abrir seção e contexto</button>
+            <button type="button" onClick={copyQuickAnswer} className="search-quick-action">
+              {quickAnswerCopied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Clipboard className="h-3.5 w-3.5" aria-hidden="true" />}
+              {quickAnswerCopied ? 'Resposta copiada' : 'Copiar resposta'}
+            </button>
             {quickSource?.url && (
               <a href={quickSource.url} target="_blank" rel="noopener noreferrer" className="search-quick-action">
                 Fonte oficial <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -582,6 +609,8 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
             )}
           </div>
           {quickAnswer.note && <p className="mt-2 text-[11px] leading-5 text-slate-500">{quickAnswer.note}</p>}
+          {quickAnswerCopyError && <p className="mt-2 text-[11px] text-amber-300" role="status">Não foi possível copiar a resposta. Tente novamente.</p>}
+          <span className="sr-only" role="status" aria-live="polite">{quickAnswerCopied ? 'Resposta rápida copiada.' : ''}</span>
           <span className="mt-2 block text-[10px] text-slate-600">Fonte: {sourceLabel(quickAnswer.sourceId)}</span>
         </div>}
 
