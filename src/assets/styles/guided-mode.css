@@ -281,19 +281,198 @@
 }
 
 @media(max-width:767px){
+  #aprendizado-guiado{
+    padding-left:max(12px,env(safe-area-inset-left,0px));
+    padding-right:max(12px,env(safe-area-inset-right,0px));
+    scroll-margin-top:calc(72px + env(safe-area-inset-top,0px));
+  }
   [data-language-mode="guided"] .audience-home .audience-topic-grid,
   [data-language-mode="guided"] .audience-home .audience-action-grid,
   [data-language-mode="guided"] .audience-home .audience-resource-grid{
     grid-template-columns:1fr!important;
   }
-  .guided-learning-head{grid-template-columns:1fr}
-  .guided-learning-progress{min-width:0}
-  .guided-learning-glossary>div{grid-template-columns:1fr}
-  .guided-learning-grid{grid-template-columns:1fr}
-  .guided-learning-step{min-height:96px}
-  .guided-learning-footer{align-items:stretch;flex-direction:column}
-  .guided-learning-footer>div{justify-content:stretch}
-  .guided-learning-reset,.guided-learning-next{flex:1}
+  .guided-learning-shell{
+    padding:14px;
+    border-radius:20px;
+    box-shadow:0 14px 38px rgba(0,0,0,.12);
+  }
+  .guided-learning-head{
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .guided-learning-head h2{
+    font-size:clamp(1.3rem,6.4vw,1.55rem);
+    line-height:1.08;
+    text-wrap:balance;
+  }
+  .guided-learning-head p{
+    font-size:12px;
+    line-height:1.55;
+  }
+  .guided-learning-progress{
+    min-width:0;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    grid-template-rows:auto auto;
+    column-gap:10px;
+    row-gap:2px;
+    align-items:center;
+    padding:10px 11px;
+    border-radius:14px;
+  }
+  .guided-learning-progress strong{
+    grid-row:1 / 3;
+    font-size:18px;
+  }
+  .guided-learning-progress span{
+    margin-top:0;
+    font-size:9px;
+  }
+  .guided-learning-progress>div{
+    margin-top:2px;
+  }
+  .guided-learning-next-card{
+    margin-top:12px;
+    padding:11px 12px;
+    border-radius:14px;
+  }
+  .guided-learning-next-card strong{
+    font-size:12px;
+    line-height:1.4;
+  }
+  .guided-learning-next-card small{
+    font-size:10.5px;
+    line-height:1.45;
+  }
+  .guided-learning-glossary{
+    margin-top:9px;
+    border-radius:13px;
+  }
+  .guided-learning-glossary>summary{
+    min-height:48px;
+    padding:10px 11px;
+    font-size:10.5px;
+  }
+  .guided-learning-glossary>div{
+    grid-template-columns:1fr;
+    gap:6px;
+    padding:0 8px 8px;
+  }
+  .guided-learning-glossary>div>span{
+    padding:10px;
+  }
+  .guided-learning-glossary strong{font-size:10px}
+  .guided-learning-glossary small{font-size:10px;line-height:1.45}
+  .guided-learning-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-top:12px;
+  }
+  .guided-learning-step{
+    grid-template-columns:36px minmax(0,1fr) 16px;
+    min-height:0;
+    gap:10px;
+    padding:13px;
+    border-radius:15px;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .guided-learning-check{
+    width:36px;
+    height:36px;
+  }
+  .guided-learning-copy em{
+    margin-bottom:4px;
+    font-size:8.5px;
+  }
+  .guided-learning-copy strong{
+    font-size:13px;
+    line-height:1.32;
+  }
+  .guided-learning-copy .guided-learning-question{
+    margin-top:6px;
+    font-size:11.5px;
+    line-height:1.45;
+  }
+  .guided-learning-copy small{
+    font-size:10.5px;
+    line-height:1.5;
+  }
+  .guided-learning-step>svg{
+    align-self:center;
+    margin-top:0;
+  }
+  .guided-learning-footer{
+    align-items:stretch;
+    flex-direction:column;
+    gap:12px;
+    margin-top:14px;
+    padding-top:12px;
+    scroll-margin-bottom:calc(var(--mobile-nav-height,68px) + env(safe-area-inset-bottom,0px) + 16px);
+  }
+  .guided-learning-footer p{
+    font-size:10.5px;
+    line-height:1.5;
+  }
+  .guided-learning-footer>div{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:7px;
+  }
+  .guided-learning-reset,.guided-learning-next{
+    width:100%;
+    min-height:48px;
+    font-size:11px;
+    padding:10px 12px;
+    touch-action:manipulation;
+  }
+  .guided-learning-next{order:-1}
+  .summary-guided-question{
+    padding:9px 10px;
+    font-size:11px;
+    line-height:1.45;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:7px!important;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button{
+    min-height:64px!important;
+    padding:9px!important;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button strong{
+    font-size:11px!important;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button small{
+    font-size:8px!important;
+  }
+}
+
+@media(min-width:480px) and (max-width:767px){
+  .guided-learning-glossary>div{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:390px){
+  #aprendizado-guiado{
+    padding-left:max(10px,env(safe-area-inset-left,0px));
+    padding-right:max(10px,env(safe-area-inset-right,0px));
+  }
+  .guided-learning-shell{
+    padding:12px;
+    border-radius:18px;
+  }
+  .guided-learning-step{
+    padding:12px 11px;
+  }
+  .guided-learning-next-card{
+    padding:10px 11px;
+  }
+  .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button{
+    min-height:62px!important;
+    padding:8px!important;
+  }
 }
 
 @media(prefers-reduced-motion:reduce){
