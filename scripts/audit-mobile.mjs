@@ -64,6 +64,7 @@ must(files.experience.includes('shortcutMap') && files.experience.includes('navi
 must(files.experience.includes('target.isContentEditable'), 'atalhos não interceptam elementos editáveis');
 must(read('src/config/navigation.ts').includes("id: 'saude'") && read('src/config/navigation.ts').includes("id: 'exportacao'"), 'menu Mais expõe saúde/saneamento e exportação sem criar novos destinos');
 must(!files.mobileNav.includes('useLanguageMode') && !files.mobileNav.includes('setMode(') && files.app.includes('modeForDestination') && files.readingModes.includes('TECHNICAL_ONLY_DESTINATIONS') && files.readingModes.includes('SUMMARY_HIDDEN_DESTINATIONS') && files.languageContext.includes('fallbackDestinationForMode'), 'menu mobile e troca manual usam a mesma política central de visibilidade');
+must(files.mobileNav.includes("'aprendizado-guiado'") && files.mobileNav.includes('Aprendizado guiado') && files.mobileNav.includes('aria-current'), 'menu Mais oferece retorno direto e estado ativo para a trilha guiada sem acoplar a barra ao contexto de leitura');
 
 must(files.css.includes('--mobile-nav-height:64px') && files.css.includes('--mobile-nav-height:68px'), 'altura base e altura mobile da navegação inferior estão definidas explicitamente');
 must(files.css.includes('env(safe-area-inset-bottom'), 'safe-area inferior está contemplada');
