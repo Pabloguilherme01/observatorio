@@ -63,6 +63,20 @@ const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServ
 const normalizeServiceQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
+const serviceSearchAliases: Record<string, string> = {
+  'Processos seletivos': 'emprego trabalho vaga vagas oportunidade oportunidades concurso concursos selecao qualificacao',
+  'Lista de estagiários': 'emprego trabalho vaga vagas estagio estagios estudante',
+  'Padrão remuneratório': 'salario salarios remuneracao servidor servidores',
+  'SIC direto': 'documentos informacao pedido acesso protocolo',
+  'Processos eletrônicos SEI': 'documentos processo processos protocolo requerimento',
+  'Planejamento orçamentário': 'orcamento loa ppa ldo planejamento',
+  'Despesas públicas': 'gastos gasto dinheiro despesas pagamentos',
+  'Licitações': 'compras contratacao compras publicas edital editais',
+  'Contratos': 'contratacao fornecedor fornecedores fiscal fiscais',
+  'CRAS e assistência social': 'beneficio beneficios cadastro unico cadunico bolsa familia vulnerabilidade',
+  'Trânsito e mobilidade urbana': 'transito transporte mobilidade rua sinalizacao',
+};
+
 export function CivicActionHub() {
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
@@ -84,7 +98,8 @@ export function CivicActionHub() {
   const serviceTerms = normalizedServiceQuery.split(/\s+/).filter(Boolean);
   const visibleMunicipalServices = normalizedServiceQuery
     ? allMunicipalServices.filter(service => {
-        const searchable = normalizeServiceQuery(service.title + ' ' + service.description + ' ' + ('cta' in service ? service.cta ?? '' : ''));
+        const aliases = serviceSearchAliases[service.title] ?? '';
+        const searchable = normalizeServiceQuery(service.title + ' ' + service.description + ' ' + ('cta' in service ? service.cta ?? '' : '') + ' ' + aliases);
         return serviceTerms.every(term => searchable.includes(term));
       })
     : visiblePriority;
@@ -185,7 +200,7 @@ export function CivicActionHub() {
             type="search"
             value={serviceQuery}
             onChange={event => setServiceQuery(event.target.value)}
-            placeholder="O que você precisa? Ex.: medicamentos, creche, contratos…"
+            placeholder="O que você precisa? Ex.: medicamentos, emprego, documentos, creche…"
             aria-label="Buscar serviço municipal por necessidade"
             className="min-h-11 min-w-0 flex-1 bg-transparent px-1 text-sm text-white outline-none placeholder:text-slate-600 light:text-slate-900"
           />
@@ -218,7 +233,7 @@ export function CivicActionHub() {
         {serviceQuery && visibleMunicipalServices.length === 0 && (
           <div className="mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-4" role="note">
             <strong className="block text-sm text-amber-100 light:text-amber-900">Nenhum serviço corresponde a todos os termos.</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">Tente palavras mais gerais, como “saúde”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">Tente termos como “saúde”, “emprego”, “documentos”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
             <button type="button" onClick={() => setServiceQuery('')} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
           </div>
         )}
