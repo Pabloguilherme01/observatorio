@@ -2,13 +2,16 @@ import { BookOpenCheck, ExternalLink, SearchCheck, ShieldCheck, Stethoscope, Gra
 import { PremiumInfoCard } from '../ui/PremiumInfoCard';
 import { navigateToSection } from '../../lib/sectionNavigation';
 
-const quickNeeds = [
+const primaryQuickNeeds = [
   { icon: Stethoscope, label: 'Saúde e medicamentos', hint: 'Buscar atendimento e canais', query: 'medicamentos' },
   { icon: GraduationCap, label: 'Creches e educação', hint: 'Encontrar orientação e acesso', query: 'creches' },
   { icon: WalletCards, label: 'Gastos e contratos', hint: 'Consultar despesas públicas', query: 'despesas' },
   { icon: MessageCircle, label: 'Ouvidoria e denúncia', hint: 'Localizar o canal adequado', query: 'denúncias' },
   { icon: BusFront, label: 'Trânsito e mobilidade', hint: 'Buscar serviços e orientação', query: 'trânsito' },
   { icon: HeartHandshake, label: 'Assistência social', hint: 'Encontrar atendimento social', query: 'CRAS' },
+] as const;
+
+const secondaryQuickNeeds = [
   { icon: BriefcaseBusiness, label: 'Emprego e renda', hint: 'Buscar trabalho e qualificação', query: 'emprego' },
   { icon: FileText, label: 'Documentos e tributos', hint: 'Localizar serviços e orientações', query: 'documentos' },
 ] as const;
@@ -71,7 +74,7 @@ export function PublicUtilityGuide() {
           <small>Os resultados priorizam orientação e canais públicos; confirme horários, requisitos e disponibilidade no órgão responsável.</small>
         </div>
         <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4" aria-label="Atalhos por necessidade">
-          {quickNeeds.map(({ icon: Icon, label, hint, query }) => (
+          {primaryQuickNeeds.map(({ icon: Icon, label, hint, query }) => (
             <button key={label} type="button" onClick={() => goToServices(query)} className="public-utility-shortcut flex min-h-16 items-center gap-3 rounded-xl border border-white/8 bg-black/10 px-3 py-3 text-left text-slate-200 transition hover:border-sky-300/25 hover:bg-sky-300/[0.06] light:border-slate-200 light:bg-white light:text-slate-800">
               <span className="public-utility-shortcut-icon"><Icon className="h-4 w-4" aria-hidden="true" /></span>
               <span className="min-w-0">
@@ -79,6 +82,14 @@ export function PublicUtilityGuide() {
                 <small className="mt-1 block text-[10px] font-semibold leading-4 text-slate-500">{hint}</small>
               </span>
               <ArrowRight className="ml-auto h-3.5 w-3.5 shrink-0 text-slate-600" aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2" aria-label="Mais necessidades">
+          {secondaryQuickNeeds.map(({ icon: Icon, label, hint, query }) => (
+            <button key={label} type="button" onClick={() => goToServices(query)} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.018] px-3 py-2 text-left text-xs font-bold text-slate-400 transition hover:border-sky-300/20 hover:text-sky-200 light:border-slate-200 light:bg-white light:text-slate-700">
+              <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span>{label}<small className="ml-1 font-medium text-slate-600 light:text-slate-500">· {hint}</small></span>
             </button>
           ))}
         </div>
