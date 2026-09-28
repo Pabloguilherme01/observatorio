@@ -218,7 +218,7 @@ export function DashboardMetrics() {
                     <span className="dashboard-meta-chip" data-kind={meta?.status}>{nature}</span>
                     <span className="dashboard-meta-chip">ref. {reference}</span>
                   </div>
-                  <div className="dashboard-card-action mt-3">Abrir fonte e contexto</div>
+                  <div className="dashboard-card-action mt-3">{isGuided ? 'Confira natureza, data e fonte' : 'Abrir fonte e contexto'}</div>
                 </button>
               );
             })}
@@ -265,7 +265,7 @@ export function DashboardMetrics() {
                   <span className="dashboard-meta-chip" data-kind={meta?.status ?? 'derived'}>{nature}</span>
                   {referenceDate && <span className="dashboard-meta-chip">ref. {formatReference(referenceDate)}</span>}
                 </div>
-                <div className="dashboard-card-action mt-3">Abrir fórmula e fonte</div>
+                <div className="dashboard-card-action mt-3">{isGuided ? 'Confira fórmula, período e base' : 'Abrir fórmula e fonte'}</div>
               </button>
             );
           })}
