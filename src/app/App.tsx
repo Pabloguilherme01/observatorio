@@ -44,14 +44,14 @@ function navigateToHash(hash: string) {
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
 }
 
-function performHashScroll(hash: string, behaviorOverride?: ScrollBehavior) {
+function performHashScroll(hash: string) {
   if (!hash) return false;
   const target = document.getElementById(hash);
   if (!target) return false;
   const reduceMotion = document.documentElement.classList.contains('reduced-motion')
     || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   target.scrollIntoView({
-    behavior: behaviorOverride ?? (reduceMotion ? 'auto' : 'smooth'),
+    behavior: reduceMotion ? 'auto' : 'smooth',
     block: 'start',
   });
   if (target instanceof HTMLElement) {
@@ -60,8 +60,15 @@ function performHashScroll(hash: string, behaviorOverride?: ScrollBehavior) {
       const active = document.activeElement;
       const focusIsUnclaimed = !active || active === document.body || active === document.documentElement || active === target;
       if (focusIsUnclaimed) target.focus({ preventScroll: true });
-    }, behaviorOverride === 'auto' || reduceMotion ? 0 : 180);
+    }, reduceMotion ? 0 : 180);
   }
+  return true;
+}
+
+function alignHashScroll(hash: string) {
+  const target = document.getElementById(hash);
+  if (!target) return false;
+  target.scrollIntoView({ behavior: 'auto', block: 'start' });
   return true;
 }
 
@@ -71,7 +78,7 @@ function stabilizeHistoryScroll(hash: string) {
 
   const align = () => {
     if (window.location.hash.slice(1) !== hash) return;
-    performHashScroll(hash, 'auto');
+    alignHashScroll(hash);
   };
 
   window.requestAnimationFrame(() => window.requestAnimationFrame(align));
