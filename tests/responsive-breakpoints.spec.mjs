@@ -34,7 +34,7 @@ test.describe('responsividade entre breakpoints', () => {
       expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewport + 1);
       expect(layout.clipped).toBe(0);
 
-      for (const mode of ['summary', 'simple', 'technical']) {
+      for (const mode of ['summary', 'simple', 'guided', 'technical']) {
         await page.evaluate(nextMode => {
           document.documentElement.dataset.languageMode = nextMode;
         }, mode);
@@ -103,6 +103,8 @@ test.describe('header mobile e modos de leitura', () => {
       await shortcut.click();
       await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
       await shortcut.click();
+      await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
+      await shortcut.click();
       await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'technical');
       await shortcut.click();
       await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
@@ -112,11 +114,13 @@ test.describe('header mobile e modos de leitura', () => {
       await expect(page.locator('#mobile-tools')).toBeVisible();
 
       const modeButtons = page.locator('#mobile-tools .language-toggle-options button');
-      await expect(modeButtons).toHaveCount(3);
+      await expect(modeButtons).toHaveCount(4);
 
       await modeButtons.nth(1).click();
       await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
       await modeButtons.nth(2).click();
+      await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
+      await modeButtons.nth(3).click();
       await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'technical');
       await modeButtons.nth(0).click();
       await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
