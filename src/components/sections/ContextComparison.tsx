@@ -129,7 +129,11 @@ export function ContextComparison() {
         >
           <div className="text-sm font-bold text-white light:text-slate-900">{metric.label}</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">{metric.description}</p>
-          <div className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">Ano-base: {metric.year} · unidade: {metric.unit}</div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="dashboard-meta-chip" data-kind={metric.nature === 'derived' ? 'derived' : 'current'}>{metric.nature === 'derived' ? 'Derivado' : 'Publicado'}</span>
+            <span className="dashboard-meta-chip">ano-base {metric.year}</span>
+            <span className="dashboard-meta-chip">{metric.unit}</span>
+          </div>
         </div>
 
         <div className="context-comparison-cards mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -155,7 +159,7 @@ export function ContextComparison() {
               <div className="context-city-source">IBGE · ano-base {metric.year}</div>
               {!isReference && (
                 <div className="mt-2 text-[11px] leading-4 text-slate-500" aria-label={`Diferença descritiva em relação a Águas Lindas: ${formatSignedDifference(metric.id, differenceFromReference)}`}>
-                  Em relação a Águas Lindas: {formatSignedDifference(metric.id, differenceFromReference)}
+                  Diferença numérica para Águas Lindas: {formatSignedDifference(metric.id, differenceFromReference)}
                 </div>
               )}
               <div className="context-city-details context-city-fact-grid">
@@ -171,7 +175,7 @@ export function ContextComparison() {
                   {density2026.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} hab/km²
                 </span>
               </div>
-              <a href={place.url} target="_blank" rel="noopener noreferrer" className="context-city-link">
+              <a href={place.url} target="_blank" rel="noopener noreferrer" className="context-city-link" aria-label={`Abrir ficha de ${place.name} no IBGE em nova aba`}>
                 Conferir ficha no IBGE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             </Card>
@@ -179,7 +183,7 @@ export function ContextComparison() {
           })}
           {visibleMunicipalities.length === 0 && (
             <div className="context-city-empty sm:col-span-2 xl:col-span-4" role="status">
-              Nenhum município encontrado para “{cityQuery}”. Limpe a busca para ver as {contextualMunicipalities.length} referências.
+              Nenhum município encontrado para “{cityQuery}”. Ajuste ou limpe a busca para ver os {contextualMunicipalities.length} municípios de referência.
             </div>
           )}
         </div>
@@ -192,7 +196,7 @@ export function ContextComparison() {
           title="Comparação oferece contexto — não ranking"
           className="context-comparison-note mt-4"
         >
-          Águas Lindas aparece como referência local; nos demais cartões, a diferença mostra apenas a distância numérica para o município no indicador selecionado. Crescimento populacional e densidade 2026 são derivados dos valores publicados pelo IBGE. Diferença positiva ou negativa não significa “melhor” ou “pior”.
+          Águas Lindas aparece como referência local; nos demais cartões, a diferença mostra apenas a distância numérica no indicador selecionado. O sinal positivo ou negativo indica direção matemática, não avaliação. Crescimento populacional e densidade 2026 são derivados dos valores publicados pelo IBGE.
         </PremiumInfoCard>
       </div>
     </section>
