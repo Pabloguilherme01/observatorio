@@ -3390,3 +3390,39 @@ d,
 @media(prefers-reduced-motion:reduce){
   .public-utility-shortcut::after{transition:none}
 }
+
+
+/* V44.13 · dashboard information hierarchy */
+.dashboard-kpi-card{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+}
+.dashboard-kpi-card::before{
+  content:'';
+  position:absolute;
+  inset:0 auto 0 0;
+  width:2px;
+  background:linear-gradient(180deg,rgba(125,211,252,.72),rgba(125,211,252,.04));
+  opacity:.55;
+}
+.dashboard-kpi-card .dashboard-card-meta{align-items:center}
+.dashboard-card-action{
+  margin-left:auto;
+  font-weight:800;
+  letter-spacing:.01em;
+}
+.dashboard-secondary-card{
+  transition:transform .16s ease,border-color .16s ease,background-color .16s ease;
+}
+.dashboard-secondary-card:hover{transform:translateY(-1px)}
+@media(max-width:767px){
+  .dashboard-kpi-card{min-height:154px}
+  .dashboard-kpi-card .dashboard-card-meta{gap:5px}
+  .dashboard-card-action{width:100%;margin-left:0;padding-top:2px}
+  .dashboard-secondary-card{min-height:128px}
+}
+@media(prefers-reduced-motion:reduce){
+  .dashboard-secondary-card{transition:none}
+  .dashboard-secondary-card:hover{transform:none}
+}
