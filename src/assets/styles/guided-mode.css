@@ -40,6 +40,23 @@
     linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.018));
 }
 
+[data-language-mode="guided"] #dashboard .dashboard-secondary-card{
+  border-color:rgba(245,158,11,.18)!important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(245,158,11,.085),transparent 38%),
+    linear-gradient(180deg,rgba(255,255,255,.038),rgba(255,255,255,.014))!important;
+}
+[data-language-mode="guided"] #dashboard .dashboard-secondary-card::before{
+  background:linear-gradient(90deg,transparent,rgba(251,191,36,.72),rgba(125,211,252,.30),transparent);
+  opacity:.9;
+}
+[data-language-mode="guided"] #dashboard .dashboard-secondary-card .dashboard-card-action{
+  color:#fde68a;
+}
+[data-language-mode="guided"] #dashboard .dashboard-secondary-card:hover{
+  border-color:rgba(245,158,11,.34)!important;
+}
+
 .executive-summary--guided .summary-shell{
   border-color:rgba(245,158,11,.18);
   background:
@@ -261,6 +278,8 @@
 .guided-learning-reset svg,.guided-learning-next svg{width:14px;height:14px}
 
 .light .guided-learning-shell{border-color:#f3d28a;background:linear-gradient(180deg,#fffdf7,#fff);box-shadow:0 14px 40px rgba(15,23,42,.06)}
+.light[data-language-mode="guided"] #dashboard .dashboard-secondary-card{border-color:#f3d28a!important;background:linear-gradient(180deg,#fffdf7,#fff)!important}
+.light[data-language-mode="guided"] #dashboard .dashboard-secondary-card .dashboard-card-action{color:#92400e}
 .light .guided-learning-head h2,.light .guided-learning-progress strong,.light .guided-learning-copy strong,.light .guided-learning-next-card strong{color:#0f172a}
 .light .guided-learning-head p,.light .guided-learning-copy small,.light .guided-learning-footer p,.light .guided-learning-next-card small{color:#64748b}
 .light .guided-learning-resume{border-color:#f3d28a;background:#fffbeb;color:#92400e}
@@ -445,6 +464,25 @@
     font-size:11px;
     padding:10px 12px;
     touch-action:manipulation;
+  }
+  [data-language-mode="guided"] #dashboard .dashboard-secondary-card{
+    min-height:132px;
+    padding:13px!important;
+    border-radius:15px!important;
+  }
+  [data-language-mode="guided"] #dashboard .dashboard-secondary-card .dashboard-card-meta{
+    gap:5px;
+  }
+  [data-language-mode="guided"] #dashboard .dashboard-secondary-card .dashboard-meta-chip{
+    min-height:24px;
+    padding:5px 7px;
+    font-size:8.5px;
+  }
+  [data-language-mode="guided"] #dashboard .dashboard-secondary-card .dashboard-card-action{
+    display:flex;
+    min-height:28px;
+    align-items:center;
+    line-height:1.35;
   }
   .guided-learning-next{order:-1}
   .summary-guided-question{
