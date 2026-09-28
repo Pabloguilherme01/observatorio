@@ -2,15 +2,15 @@ import { Check, ChevronRight, Code2, FileText, Info, List } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 const items = [
-  { id: 'summary' as const, label: 'Resumo', sub: 'leitura rápida', description: 'Mostra os pontos principais e mantém as fontes acessíveis.', icon: List },
-  { id: 'simple' as const, label: 'Explicado', sub: 'com contexto', description: 'Explica o que os números significam em linguagem direta.', icon: FileText },
-  { id: 'technical' as const, label: 'Detalhado', sub: 'fonte e método', description: 'Mostra fonte, data, método, cálculos, recortes e limitações.', icon: Code2 },
+  { id: 'summary' as const, label: 'Resumo', sub: 'leitura rápida', description: 'Mostra apenas os pontos principais, mantendo referência e origem acessíveis.', icon: List },
+  { id: 'simple' as const, label: 'Explicado', sub: 'com contexto', description: 'Acrescenta contexto para entender natureza, período e significado dos números.', icon: FileText },
+  { id: 'technical' as const, label: 'Detalhado', sub: 'fonte e método', description: 'Abre a leitura completa com fonte, data, método, cálculos, recortes e limitações.', icon: Code2 },
 ] as const;
 
 const modeGuide = {
-  summary: { title: 'Leitura rápida', detail: 'Pontos principais · fontes continuam acessíveis', signal: 'Essencial' },
-  simple: { title: 'Leitura explicada', detail: 'Números com contexto · linguagem direta', signal: 'Contexto' },
-  technical: { title: 'Leitura detalhada', detail: 'Fonte, método e limites · conferência completa', signal: 'Evidência' },
+  summary: { title: 'Leitura rápida', detail: 'Menos conteúdo · referências preservadas', signal: 'Essencial' },
+  simple: { title: 'Leitura explicada', detail: 'Mais contexto · definições e períodos', signal: 'Contexto' },
+  technical: { title: 'Leitura detalhada', detail: 'Maior densidade · fonte, método e limites', signal: 'Evidência' },
 } as const;
 
 export function LanguageModeToggle() {
