@@ -7,6 +7,7 @@ import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
+import { IndicatorComparator } from './IndicatorComparator';
 
 interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; readonly nature: string; readonly sourceLabel: string; }
 
@@ -185,6 +186,8 @@ export function DashboardMetrics() {
           <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> população e eleitorado são universos diferentes e podem ter datas de referência diferentes. A razão eleitorado/população é um cálculo estatístico; não mede comparecimento às urnas.
         </div>
       )}
+
+      <IndicatorComparator />
 
       {isExplained && (
         <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">

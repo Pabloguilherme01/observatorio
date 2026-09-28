@@ -34,6 +34,30 @@ async function assertNoHorizontalOverflow(page) {
   expect(overflow).toEqual([]);
 }
 
+test('comparador de indicadores mostra fonte, período e alerta metodológico no mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto('./#dashboard');
+  await expect(page.locator('#dashboard')).toBeVisible();
+
+  const comparator = page.getByRole('region', { name: 'Compare dois indicadores' });
+  await expect(comparator).toBeVisible();
+  await expect(comparator.locator('.indicator-compare-card')).toHaveCount(2);
+  await expect(comparator).toContainText('Acesso à água');
+  await expect(comparator).toContainText('Coleta do esgoto gerado');
+  await expect(comparator).toContainText('SINISA 2024');
+  await expect(comparator).toContainText(/Unidade, data de referência e fonte coincidem/i);
+
+  await comparator.getByRole('combobox', { name: 'Escolha o primeiro indicador' }).selectOption('population-2026');
+  await expect(comparator).toContainText('População 2026');
+  await expect(comparator).toContainText(/Há diferenças de unidade, data ou fonte/i);
+
+  const dimensions = await page.evaluate(() => ({
+    client: document.documentElement.clientWidth,
+    scroll: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
+});
+
 test.describe('mobile repagination', () => {
   for (const viewport of [
     { width: 390, height: 844, name: '390px' },
