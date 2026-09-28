@@ -131,6 +131,16 @@ must(
   publicSanitation.includes('formatDate'),
   'saneamento deriva anos e referências dos indicadores'
 );
+const executiveSummary = read('src/components/sections/ExecutiveSummary.tsx');
+must(
+  executiveSummary.includes("filter(point => point.kind === 'estimate')") &&
+  executiveSummary.includes('budgetPerCapitaIndicator') &&
+  executiveSummary.includes('sanitationIndicator') &&
+  executiveSummary.includes('dashboard-meta-chip') &&
+  !executiveSummary.includes('find(point => point.year === 2026)') &&
+  !executiveSummary.includes("'Cálculo · LOA 2026 ÷ IBGE 2026'"),
+  'resumo executivo deriva anos e metadados do dataset estruturado'
+);
 must(transport.includes('minimumWageBrl'), 'simulador usa salário mínimo do dataset como referência');
 must(transport.includes('bilhetagem') && transport.includes('terminal'), 'simulador contextualiza integração de transporte');
 const electoralProfile = read('src/components/sections/ElectoralProfile.tsx');
