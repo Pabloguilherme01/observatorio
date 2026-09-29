@@ -520,6 +520,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                 onClick={() => selectResult(item.id, item.label, item.kind, item.serviceQuery)}
                 className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
                 role="option"
+                aria-label={item.label}
                 aria-selected={activeIndex === index}
               >
                 <span className="search-result-icon"><Icon aria-hidden="true" /></span>

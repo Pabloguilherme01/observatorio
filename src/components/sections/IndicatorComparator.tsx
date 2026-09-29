@@ -1,6 +1,6 @@
 import '../../assets/styles/indicator-comparator.css';
 import { useMemo, useState } from 'react';
-import { ArrowLeftRight, ExternalLink, Scale } from 'lucide-react';
+import { ArrowLeftRight, Copy, ExternalLink, Scale } from 'lucide-react';
 import { observatorioData as data } from '../../data/observatorioData';
 import type { MunicipalIndicator } from '../../types/observatorio';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
@@ -59,8 +59,21 @@ function IndicatorCard({ indicator, side }: { readonly indicator: MunicipalIndic
 }
 
 export function IndicatorComparator() {
-  const [leftId, setLeftId] = useState(initialLeft);
-  const [rightId, setRightId] = useState(initialRight);
+  const getInitialPair = () => {
+    if (typeof window === 'undefined') return [initialLeft, initialRight] as const;
+    const params = new URLSearchParams(window.location.search);
+    const sharedLeft = params.get('comparar');
+    const sharedRight = params.get('com');
+    const validLeft = comparableIndicators.some(indicator => indicator.id === sharedLeft);
+    const validRight = comparableIndicators.some(indicator => indicator.id === sharedRight);
+    return validLeft && validRight && sharedLeft !== sharedRight
+      ? [sharedLeft, sharedRight] as const
+      : [initialLeft, initialRight] as const;
+  };
+  const [initialPair] = useState(getInitialPair);
+  const [leftId, setLeftId] = useState(initialPair[0]);
+  const [rightId, setRightId] = useState(initialPair[1]);
+  const [shareMessage, setShareMessage] = useState('');
   const left = comparableIndicators.find(indicator => indicator.id === leftId) ?? comparableIndicators[0];
   const right = comparableIndicators.find(indicator => indicator.id === rightId)
     ?? comparableIndicators.find(indicator => indicator.id !== left?.id)
@@ -81,6 +94,18 @@ export function IndicatorComparator() {
   const relation = matchedCount === 3
     ? 'Unidade, data de referência e fonte coincidem. Ainda confira a definição e o denominador de cada indicador.'
     : 'Há diferenças de unidade, data ou fonte. Use a comparação para entender o contexto; não subtraia nem ordene os valores como se fossem equivalentes.';
+
+  const copyComparisonLink = async () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('comparar', left.id);
+    url.searchParams.set('com', right.id);
+    try {
+      await navigator.clipboard.writeText(url.toString());
+      setShareMessage('Link da comparação copiado.');
+    } catch {
+      setShareMessage('Não foi possível copiar. Copie o endereço da página.');
+    }
+  };
 
   return (
     <section className="indicator-comparator" aria-labelledby="indicator-comparator-title">
@@ -118,7 +143,14 @@ export function IndicatorComparator() {
         <IndicatorCard indicator={right} side="B" />
       </div>
 
-      <p className={`indicator-compare-guidance ${matchedCount === 3 ? 'is-aligned' : ''}`} role="status">
+      <div className="indicator-compare-share">
+        <button type="button" onClick={copyComparisonLink}>
+          <Copy aria-hidden="true" /> Copiar link desta comparação
+        </button>
+        <span aria-live="polite">{shareMessage}</span>
+      </div>
+
+      <p className={`indicator-compare-guidance ${matchedCount === 3 ? 'is-aligned' : ''}`}>
         <strong>{matchedCount === 3 ? 'Pontos de referência alinhados' : 'Confira antes de comparar'}</strong>
         <span>{relation}</span>
       </p>

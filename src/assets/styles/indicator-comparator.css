@@ -24,6 +24,11 @@
 .indicator-compare-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
 .indicator-compare-card{display:flex;min-width:0;flex-direction:column;padding:16px;border:1px solid rgba(148,163,184,.14);border-radius:17px;background:rgba(5,10,15,.3)}
 .indicator-compare-card-kicker{color:#7dd3fc;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.indicator-compare-share{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+.indicator-compare-share button{display:inline-flex;min-height:44px;align-items:center;gap:7px;padding:8px 12px;border:1px solid rgba(125,211,252,.25);border-radius:12px;background:rgba(56,189,248,.07);color:#bae6fd;font-size:13px;font-weight:800}
+.indicator-compare-share button:focus-visible{outline:3px solid rgba(125,211,252,.8);outline-offset:2px}
+.indicator-compare-share button svg{width:15px;height:15px}
+.indicator-compare-share span{color:#94a3b8;font-size:12px}
 .indicator-compare-card h4{margin-top:6px;color:#e2e8f0;font-size:15px;font-weight:850;line-height:1.35;overflow-wrap:anywhere}
 .indicator-compare-value{margin-top:12px;color:#f8fafc;font-size:clamp(1.35rem,3vw,1.8rem);font-weight:950;letter-spacing:-.035em;line-height:1.12;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .indicator-compare-meta{display:grid;gap:8px;margin-top:14px}
@@ -47,10 +52,13 @@
 .light .indicator-compare-selectors option{background:#fff;color:#0f172a}
 .light .indicator-compare-card{border-color:#dbe5ec;background:#fff}
 .light .indicator-compare-card h4{color:#1e293b}
+.light .indicator-compare-card-kicker{color:#075985}
 .light .indicator-compare-meta dt{color:#64748b}
 .light .indicator-compare-meta dd{color:#334155}
 .light .indicator-compare-note{border-color:#e2e8f0;color:#475569}
 .light .indicator-compare-source{color:#0369a1}
+.light .indicator-compare-share button{border-color:#bae6fd;background:#f0f9ff;color:#075985}
+.light .indicator-compare-share span{color:#475569}
 .light .indicator-compare-guidance{border-color:#f3d28a;background:#fffbeb;color:#92400e}
 .light .indicator-compare-guidance span{color:#475569}
 .light .indicator-compare-guidance.is-aligned{border-color:#a7f3d0;background:#ecfdf5;color:#047857}

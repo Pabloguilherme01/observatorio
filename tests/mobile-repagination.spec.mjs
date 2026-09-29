@@ -58,6 +58,13 @@ test('comparador de indicadores mostra fonte, período e alerta metodológico no
   expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
 });
 
+test('comparador restaura indicadores válidos de um link compartilhado', async ({ page }) => {
+  await page.goto('./?comparar=population-2026&com=area#dashboard');
+  const comparator = page.getByRole('region', { name: 'Compare dois indicadores' });
+  await expect(comparator).toContainText('População 2026');
+  await expect(comparator).toContainText('Área territorial');
+});
+
 test.describe('mobile repagination', () => {
   for (const viewport of [
     { width: 390, height: 844, name: '390px' },
