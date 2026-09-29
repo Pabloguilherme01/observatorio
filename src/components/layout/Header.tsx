@@ -54,6 +54,9 @@ export function Header() {
 
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') return;
+    const observedSections = new Set<Element>();
+    let observeRaf = 0;
+
     const observer = new IntersectionObserver(entries => {
       const visibleEntries = entries.filter(entry => entry.isIntersecting);
       const pendingTarget = pendingNavigationRef.current;
@@ -80,7 +83,17 @@ export function Header() {
     const observeSections = () => {
       navigation.forEach(item => {
         const node = document.getElementById(item.id);
-        if (node) observer.observe(node);
+        if (!node || observedSections.has(node)) return;
+        observer.observe(node);
+        observedSections.add(node);
+      });
+    };
+
+    const scheduleObserveSections = () => {
+      if (observeRaf) return;
+      observeRaf = window.requestAnimationFrame(() => {
+        observeRaf = 0;
+        observeSections();
       });
     };
 
@@ -97,16 +110,18 @@ export function Header() {
           pendingNavigationTimerRef.current = null;
         }, 1400);
       }
-      window.requestAnimationFrame(observeSections);
+      scheduleObserveSections();
     };
     const root = document.getElementById('main-content') ?? document.body;
-    const mutationObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(() => observeSections());
+    const mutationObserver = typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleObserveSections);
     mutationObserver?.observe(root, { childList: true, subtree: true });
 
     window.addEventListener('observatorio:navigate', onNavigate);
     return () => {
       observer.disconnect();
       mutationObserver?.disconnect();
+      if (observeRaf) window.cancelAnimationFrame(observeRaf);
+      observedSections.clear();
       if (pendingNavigationTimerRef.current) window.clearTimeout(pendingNavigationTimerRef.current);
       pendingNavigationTimerRef.current = null;
       pendingNavigationRef.current = null;
