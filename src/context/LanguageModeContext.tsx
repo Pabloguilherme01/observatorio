@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { STORAGE_NAMESPACE } from '../config/version';
 import { fallbackDestinationForMode, type ReadingMode } from '../config/readingModes';
+import { replaceCurrentUrl } from '../lib/urlState';
 
 export type LanguageMode = ReadingMode;
 
@@ -36,7 +37,7 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
     const fallback = fallbackDestinationForMode(target, nextMode);
     if (!fallback || fallback === target) return;
 
-    window.history.replaceState(null, '', '#' + fallback);
+    replaceCurrentUrl({}, { hash: fallback });
     window.requestAnimationFrame(() => {
       window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: fallback }));
     });
