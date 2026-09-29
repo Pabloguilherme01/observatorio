@@ -33,22 +33,34 @@ export function ExperienceShell({ children }: { readonly children: ReactNode }) 
   }, []);
 
   useEffect(() => {
-    let scrollRaf = 0;
-    const onScroll = () => {
-      if (scrollRaf) return;
-      scrollRaf = window.requestAnimationFrame(() => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0;
-        progressRef.current?.style.setProperty('width', progress + '%');
-        scrollRaf = 0;
-      });
+    let progressRaf = 0;
+
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0;
+      progressRef.current?.style.setProperty('width', progress + '%');
+      progressRaf = 0;
     };
 
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    const scheduleProgressUpdate = () => {
+      if (progressRaf) return;
+      progressRaf = window.requestAnimationFrame(updateProgress);
+    };
+
+    const resizeObserver = typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver(scheduleProgressUpdate);
+
+    scheduleProgressUpdate();
+    resizeObserver?.observe(document.body);
+    window.addEventListener('scroll', scheduleProgressUpdate, { passive: true });
+    window.addEventListener('resize', scheduleProgressUpdate, { passive: true });
+
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (scrollRaf) window.cancelAnimationFrame(scrollRaf);
+      window.removeEventListener('scroll', scheduleProgressUpdate);
+      window.removeEventListener('resize', scheduleProgressUpdate);
+      resizeObserver?.disconnect();
+      if (progressRaf) window.cancelAnimationFrame(progressRaf);
     };
   }, []);
 
