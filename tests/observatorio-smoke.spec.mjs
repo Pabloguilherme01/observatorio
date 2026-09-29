@@ -771,6 +771,20 @@ test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
+
+test('reduzir modo preserva parâmetros de contexto ao redirecionar seção incompatível', async ({ page }) => {
+  await page.goto('./?servico=saude&utm_source=teste#qualidade');
+  const root = page.locator('html');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/\?servico=saude&utm_source=teste#fontes$/);
+  await expect(page.locator('#fontes')).toBeVisible();
+});
+
 test('link da seção preserva modo de leitura e ignora rastreamento', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {
