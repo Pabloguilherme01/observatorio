@@ -771,6 +771,50 @@ test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
+
+test('reduzir modo preserva estado de contexto ao redirecionar seção incompatível', async ({ page }) => {
+  await page.goto('./#qualidade');
+  const root = page.locator('html');
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+
+  await expect(root).toHaveAttribute('data-language-mode', 'technical');
+  await page.evaluate(() => {
+    window.history.replaceState(
+      { publicServiceQuery: 'CRAS', marker: 'preservar' },
+      '',
+      window.location.href,
+    );
+  });
+
+  await modes.getByRole('button', { name: /^Explicado/ }).click();
+
+  await expect(root).toHaveAttribute('data-language-mode', 'simple');
+  await expect(page).toHaveURL(/#fontes$/);
+  await expect.poll(() => page.evaluate(() => window.history.state?.publicServiceQuery ?? '')).toBe('CRAS');
+  await expect.poll(() => page.evaluate(() => window.history.state?.marker ?? '')).toBe('preservar');
+});
+
+test('barra de leitura reage a mudanças de altura sem exigir novo scroll', async ({ page }) => {
+  await page.goto('./');
+  const progress = page.locator('.reading-progress');
+
+  await page.evaluate(() => {
+    window.scrollTo(0, Math.max(400, Math.floor(document.documentElement.scrollHeight * 0.35)));
+  });
+  await expect.poll(async () => parseFloat(await progress.evaluate(node => getComputedStyle(node).width))).toBeGreaterThan(0);
+
+  const before = await progress.evaluate(node => parseFloat(getComputedStyle(node).width));
+  await page.evaluate(() => {
+    const spacer = document.createElement('div');
+    spacer.id = 'reading-progress-resize-probe';
+    spacer.style.height = '5000px';
+    spacer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(spacer);
+  });
+
+  await expect.poll(async () => parseFloat(await progress.evaluate(node => getComputedStyle(node).width))).toBeLessThan(before);
+});
+
 test('link da seção preserva modo de leitura e ignora rastreamento', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() => {
