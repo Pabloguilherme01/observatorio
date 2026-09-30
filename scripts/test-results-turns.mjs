@@ -36,7 +36,11 @@ try {
   validate(second, true);
   validate({ ...second, entries: [{ ...second.entries[0], electionCode: 6259 }] }, false);
   validate({ ...second, entries: [{ ...second.entries[0], sourceFile: 'go93343-c0003-e006259-u.json' }] }, false);
-  console.log('Results feed validates first and second turns and rejects mismatched election codes.');
+  const legislativeSecondTurn = structuredClone(second);
+  legislativeSecondTurn.entries[0].cargo = 'Senador';
+  legislativeSecondTurn.entries[0].items[0].cargo = 'Senador';
+  validate(legislativeSecondTurn, false);
+  console.log('Results feed validates first and second turns and rejects mismatched codes or legislative offices in turn 2.');
 } finally {
   rmSync(dir, { recursive: true, force: true });
 }
