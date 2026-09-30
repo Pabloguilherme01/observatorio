@@ -233,7 +233,14 @@ export function CivicActionHub() {
         {serviceQuery && visibleMunicipalServices.length === 0 && (
           <div className="mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-4" role="note">
             <strong className="block text-sm text-amber-100 light:text-amber-900">Nenhum serviço corresponde a todos os termos.</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">A busca combina todos os termos informados. Tente uma necessidade mais curta, como “saúde”, “emprego”, “documentos”, “educação”, “obras”, “contratos” ou “ouvidoria”.</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">A busca combina todos os termos informados. Tente uma necessidade mais curta ou escolha uma busca frequente:</p>
+            <div className="mt-3 flex flex-wrap gap-2" aria-label="Buscas frequentes por serviço">
+              {['medicamentos', 'emprego', 'creches', 'obras', 'contratos'].map(suggestion => (
+                <button key={suggestion} type="button" onClick={() => setServiceQuery(suggestion)} className="min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-200 transition hover:bg-white/5 light:border-slate-200 light:text-sky-800 light:hover:bg-white">
+                  {suggestion[0].toUpperCase() + suggestion.slice(1)}
+                </button>
+              ))}
+            </div>
             <button type="button" onClick={() => setServiceQuery('')} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
           </div>
         )}

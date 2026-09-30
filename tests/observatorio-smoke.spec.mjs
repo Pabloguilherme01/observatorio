@@ -125,7 +125,25 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     const serviceSearch = page.getByRole('searchbox', { name: /Buscar serviço municipal/ });
     await expect(serviceSearch).toHaveValue('CAPS');
     await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
+ 
+
+  test('busca de serviços oferece atalhos úteis quando não há correspondências', async ({ page }) => {
+    await page.goto('./#acao');
+    const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal por necessidade' });
+    await serviceSearch.fill('necessidade sem resultado');
+    const noResults = page.getByRole('note').filter({ hasText: 'Nenhum serviço corresponde' });
+    await expect(noResults).toBeVisible();
+    await noResults.getByRole('button', { name: 'Emprego', exact: true }).click();
+    await expect(serviceSearch).toHaveValue('emprego');
+    await expect(page.getByRole('link', { name: /Processos seletivos/i })).toBeVisible();
   });
+
+  test('painel de qualidade informa lacunas de referência e links de fonte', async ({ page }) => {
+    await page.goto('./#qualidade');
+    await expect(page.getByText(/Fonte com link:/)).toBeVisible();
+    await expect(page.getByText(/sem referência temporal e .* sem link de fonte/)).toBeVisible();
+  });
+});
 
   test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
     await page.goto('./');

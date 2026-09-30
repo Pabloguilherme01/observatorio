@@ -27,6 +27,12 @@ export function DataQualityPanel() {
   const planned = d.indicators.filter(i => i.status === 'planned').length;
   const datedIndicators = d.indicators.filter(i => Boolean(i.referenceDate) || Boolean(d.sources.find(source => source.id === i.sourceId)?.referenceDate)).length;
   const datedCoverage = d.indicators.length ? (datedIndicators / d.indicators.length) * 100 : 0;
+  const sourceLinkedIndicators = d.indicators.filter(indicator => {
+    const source = d.sources.find(item => item.id === indicator.sourceId);
+    return Boolean(source?.resourceUrl || source?.url);
+  }).length;
+  const missingDateIndicators = d.indicators.length - datedIndicators;
+  const missingSourceIndicators = d.indicators.length - sourceLinkedIndicators;
   const poll = d.polls[0];
   const pollNamedPct = poll.results.reduce((sum, result) => sum + result.percentage, 0);
   const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
@@ -66,7 +72,7 @@ export function DataQualityPanel() {
       />
       <div className="quality-overview mb-4 rounded-3xl border border-white/8 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50/70">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-          <div><div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Cobertura documental</div><p className="mt-1 text-xs leading-5 text-slate-500">{datedIndicators} de {d.indicators.length} indicadores têm data própria ou referência temporal herdada da fonte.</p></div>
+          <div><div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Cobertura documental</div><p className="mt-1 text-xs leading-5 text-slate-500">{datedIndicators} de {d.indicators.length} indicadores têm data própria ou referência temporal herdada da fonte.</p><p className="mt-1 text-[11px] leading-5 text-slate-500">Fonte com link: {sourceLinkedIndicators} de {d.indicators.length}. Para completar: {missingDateIndicators} sem referência temporal e {missingSourceIndicators} sem link de fonte.</p></div>
           <strong className="text-2xl font-black text-white light:text-slate-900">{datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
         </div>
         <div className="quality-progress mt-3" aria-label={`Cobertura temporal ${datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`}><span style={{ width: `${Math.min(100, datedCoverage)}%` }} /></div>
