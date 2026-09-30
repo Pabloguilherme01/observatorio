@@ -186,6 +186,21 @@ export function DataInspector() {
       : {},
     data.sectionId ? data.sectionId : (window.location.hash || 'dashboard'),
   );
+  const correctionBody = [
+    '## Dado a verificar',
+    `- Indicador: ${data.label}`,
+    `- Valor exibido: ${data.value}`,
+    `- Fonte: ${source ? `${source.institution} — ${source.label}` : 'não informada'}`,
+    `- Referência: ${referenceLabel ?? 'não informada'}`,
+    `- Link para o contexto: ${canonicalUrl}`,
+    '',
+    '## O que deve ser conferido?',
+    'Descreva a correção, atualização ou evidência sugerida. Não inclua dados pessoais.',
+  ].join('\n');
+  const correctionUrl = new URL('https://github.com/Pabloguilherme01/observatorio/issues/new');
+  correctionUrl.searchParams.set('title', `Revisar dado: ${data.label}`);
+  correctionUrl.searchParams.set('labels', 'correcao');
+  correctionUrl.searchParams.set('body', correctionBody);
 
   const copyLink = async () => {
     if (await copyText(canonicalUrl)) {
@@ -271,6 +286,9 @@ export function DataInspector() {
                 <ExternalLink className="h-3.5 w-3.5" /> Ver fonte
               </a>
             )}
+            <a href={correctionUrl.toString()} target="_blank" rel="noopener noreferrer" aria-label={`Sugerir correção para ${data.label}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-3 py-2 text-xs font-bold text-amber-100 light:border-amber-200 light:bg-amber-50 light:text-amber-800">
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> Sugerir correção
+            </a>
             <button type="button" onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
               {copied ? <Check className="h-3.5 w-3.5" /> : <Clipboard className="h-3.5 w-3.5" />}
               {copied ? 'Copiado' : 'Copiar'}

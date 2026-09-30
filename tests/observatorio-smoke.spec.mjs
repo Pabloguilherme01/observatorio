@@ -895,6 +895,12 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
 
   const dialog = page.getByRole('dialog', { name: /Variação da população/i });
   await expect(dialog).toBeVisible();
+  const correctionLink = dialog.getByRole('link', { name: /Sugerir correção/i });
+  const correctionUrl = new URL(await correctionLink.getAttribute('href'));
+  expect(correctionUrl.searchParams.get('title')).toContain('Variação da população');
+  expect(correctionUrl.searchParams.get('body')).toContain('Fonte:');
+  expect(correctionUrl.searchParams.get('body')).toContain('Referência:');
+  expect(correctionUrl.searchParams.get('body')).toContain('Link para o contexto:');
 
   await page.keyboard.press('g');
   await page.keyboard.press('t');
