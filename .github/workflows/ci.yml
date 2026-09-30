@@ -33,9 +33,10 @@ jobs:
       - name: Test first and second turn results contracts
         run: npm run test:results
 
+      - name: Test source audit availability policy
+        run: npm run test:source-audit-policy
+
       - name: Audit source integrity
-        env:
-          SOURCE_AUDIT_ALLOW_SERVER_ERRORS: 'true'
         run: npm run audit:sources
 
       - name: Test unavailable TSE source handling
