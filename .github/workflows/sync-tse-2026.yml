@@ -12,6 +12,7 @@ concurrency:
 permissions:
   actions: write
   contents: write
+  issues: write
   pull-requests: write
 
 jobs:
@@ -93,8 +94,35 @@ jobs:
           test -n "$run_id"
           gh run watch "$run_id" --exit-status
 
-          gh pr create \
+          if pr_url="$(gh pr create \
             --base main \
             --head "$branch" \
             --title "data: sync TSE 2026 candidates" \
-            --body "Snapshot TSE validado automaticamente. A branch foi validada pelo CI completo antes da abertura da PR."
+            --body "Snapshot TSE validado automaticamente. A branch foi validada pelo CI completo antes da abertura da PR." \
+            2>/tmp/tse-pr-error.log)"; then
+            echo "PR criada: $pr_url"
+            pending_issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "Automação TSE 2026: PR pendente") | .number' | head -n 1)"
+            if [ -n "$pending_issue" ]; then
+              gh issue close "$pending_issue" --comment "PR automática criada: $pr_url"
+            fi
+          else
+            error_message="$(tr '\n' ' ' < /tmp/tse-pr-error.log | head -c 500)"
+            echo "::warning title=PR automática TSE indisponível::$error_message"
+            compare_url="https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}?expand=1"
+            cat > /tmp/tse-pending-pr.md <<EOF
+A captura TSE foi concluída e a branch passou pelo CI completo, mas o token do GitHub Actions não pôde criar a pull request.
+
+- Branch validada: `$branch`
+- CI: https://github.com/${GITHUB_REPOSITORY}/actions/runs/$run_id
+- Abrir PR manualmente: $compare_url
+- Workflow de origem: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+
+A branch não é publicada diretamente na `main`; revisão e merge continuam obrigatórios.
+EOF
+            pending_issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "Automação TSE 2026: PR pendente") | .number' | head -n 1)"
+            if [ -n "$pending_issue" ]; then
+              gh issue edit "$pending_issue" --body-file /tmp/tse-pending-pr.md
+            else
+              gh issue create --title "Automação TSE 2026: PR pendente" --body-file /tmp/tse-pending-pr.md
+            fi
+          fi
