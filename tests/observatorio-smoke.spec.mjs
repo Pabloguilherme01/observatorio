@@ -1430,7 +1430,7 @@ test('busca direciona indicadores para a seção temática correta', async ({ pa
   await input.fill('Perdas na distribuição de água');
   const waterLossResult = page.locator('#search-results').getByRole('option', { name: /Perdas na distribuição de água/i });
   await expect(waterLossResult).toContainText(/Histórico/i);
-  await expect(waterLossResult).toContainText(/ref\\./i);
+  await expect(waterLossResult).toContainText(/ref\./i);
   await expect(waterLossResult).toContainText(/SINISA 2024/i);
   await waterLossResult.click();
   await expect(page).toHaveURL(/#saude$/);
