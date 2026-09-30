@@ -22,7 +22,7 @@ export function ConnectivityStatus() {
     }, 2800);
   }, [clearHideTimer]);
 
-  const verifyConnection = useCallback(async () => {
+  const verifyConnection = useCallback(async ({ quiet = false }: { readonly quiet?: boolean } = {}) => {
     clearHideTimer();
     requestRef.current?.abort();
 
@@ -33,16 +33,22 @@ export function ConnectivityStatus() {
 
     const controller = new AbortController();
     requestRef.current = controller;
-    setState('checking');
+    if (!quiet) setState('checking');
 
     try {
-      const response = await fetch(import.meta.env.BASE_URL + 'api/v1/health.json', {
+      const probeUrl = new URL(import.meta.env.BASE_URL + 'api/v1/health.json', window.location.origin);
+      probeUrl.searchParams.set('probe', Date.now().toString());
+      const response = await fetch(probeUrl, {
         cache: 'no-store',
         signal: controller.signal,
       });
       if (!response.ok) throw new Error('healthcheck-unavailable');
-      setState('restored');
-      scheduleHide();
+      if (quiet) {
+        setState('hidden');
+      } else {
+        setState('restored');
+        scheduleHide();
+      }
     } catch (error) {
       if ((error as DOMException)?.name === 'AbortError') return;
       setState('offline');
@@ -64,6 +70,7 @@ export function ConnectivityStatus() {
 
     window.addEventListener('offline', onOffline);
     window.addEventListener('online', onOnline);
+    void verifyConnection({ quiet: true });
 
     return () => {
       window.removeEventListener('offline', onOffline);
