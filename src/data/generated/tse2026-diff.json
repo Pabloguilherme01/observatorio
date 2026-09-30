@@ -22,8 +22,8 @@
         "office": "DEPUTADO ESTADUAL",
         "status": null,
         "federation": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA",
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
+        "generationDate": "30/09/2026",
+        "generationTime": "05:30:54",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -52,7 +52,7 @@
         "status": null,
         "federation": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA",
         "generationDate": "30/09/2026",
-        "generationTime": "05:30:54",
+        "generationTime": "12:30:34",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -68,7 +68,6 @@
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     },
@@ -88,8 +87,8 @@
         "office": "DEPUTADO ESTADUAL",
         "status": null,
         "federation": null,
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
+        "generationDate": "30/09/2026",
+        "generationTime": "05:30:54",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -118,7 +117,7 @@
         "status": null,
         "federation": null,
         "generationDate": "30/09/2026",
-        "generationTime": "05:30:54",
+        "generationTime": "12:30:34",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -134,7 +133,6 @@
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     },
@@ -154,8 +152,8 @@
         "office": "DEPUTADO ESTADUAL",
         "status": null,
         "federation": null,
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
+        "generationDate": "30/09/2026",
+        "generationTime": "05:30:54",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -184,7 +182,7 @@
         "status": null,
         "federation": null,
         "generationDate": "30/09/2026",
-        "generationTime": "05:30:54",
+        "generationTime": "12:30:34",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -200,7 +198,6 @@
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     },
@@ -220,8 +217,8 @@
         "office": "DEPUTADO ESTADUAL",
         "status": null,
         "federation": "FEDERAÇÃO UNIÃO PROGRESSISTA",
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
+        "generationDate": "30/09/2026",
+        "generationTime": "05:30:54",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -250,7 +247,7 @@
         "status": null,
         "federation": "FEDERAÇÃO UNIÃO PROGRESSISTA",
         "generationDate": "30/09/2026",
-        "generationTime": "05:30:54",
+        "generationTime": "12:30:34",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -266,7 +263,6 @@
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     },
@@ -286,8 +282,8 @@
         "office": "DEPUTADO ESTADUAL",
         "status": null,
         "federation": null,
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
+        "generationDate": "30/09/2026",
+        "generationTime": "05:30:54",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -316,7 +312,7 @@
         "status": null,
         "federation": null,
         "generationDate": "30/09/2026",
-        "generationTime": "05:30:54",
+        "generationTime": "12:30:34",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -332,7 +328,6 @@
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     },
@@ -352,8 +347,8 @@
         "office": "DEPUTADO ESTADUAL",
         "status": null,
         "federation": null,
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
+        "generationDate": "30/09/2026",
+        "generationTime": "05:30:54",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -382,7 +377,7 @@
         "status": null,
         "federation": null,
         "generationDate": "30/09/2026",
-        "generationTime": "05:30:54",
+        "generationTime": "12:30:34",
         "candidateIdKind": "tse_csv_sq_candidate",
         "municipality": null,
         "municipalityCodeTse": null,
@@ -398,7 +393,6 @@
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     },
@@ -406,35 +400,6 @@
       "key": "90002544890",
       "type": "changed",
       "before": {
-        "sqCandidate": "90002544890",
-        "ballotNumber": 45007,
-        "name": "RIBEIRO DO TÚLLIO",
-        "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
-        "gender": "MASCULINO",
-        "education": "SUPERIOR COMPLETO",
-        "occupation": "POLICIAL MILITAR",
-        "declaredAssetsTotal": 2632041.93,
-        "party": "PSDB",
-        "office": "DEPUTADO ESTADUAL",
-        "status": null,
-        "federation": "FEDERAÇÃO PSDB CIDADANIA",
-        "generationDate": "29/09/2026",
-        "generationTime": "19:30:26",
-        "candidateIdKind": "tse_csv_sq_candidate",
-        "municipality": null,
-        "municipalityCodeTse": null,
-        "photoUrl": null,
-        "instagramUrl": null,
-        "photoAvailableInTseArchive": false,
-        "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-        "watchlistName": "Ribeiro do Túllio",
-        "localEvidence": "Disputou a Prefeitura de Águas Lindas de Goiás em 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
-        "evidenceSourceUrls": [
-          "https://meuvoto.org.br/candidato/90002544890.html"
-        ],
-        "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
-      },
-      "after": {
         "sqCandidate": "90002544890",
         "ballotNumber": 45007,
         "name": "RIBEIRO DO TÚLLIO",
@@ -463,8 +428,36 @@
         ],
         "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
       },
+      "after": {
+        "sqCandidate": "90002544890",
+        "ballotNumber": 45007,
+        "name": "RIBEIRO DO TÚLLIO",
+        "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
+        "gender": "MASCULINO",
+        "education": "SUPERIOR COMPLETO",
+        "occupation": "POLICIAL MILITAR",
+        "declaredAssetsTotal": 2632041.93,
+        "party": "PSDB",
+        "office": "DEPUTADO ESTADUAL",
+        "status": null,
+        "federation": "FEDERAÇÃO PSDB CIDADANIA",
+        "generationDate": "30/09/2026",
+        "generationTime": "12:30:34",
+        "candidateIdKind": "tse_csv_sq_candidate",
+        "municipality": null,
+        "municipalityCodeTse": null,
+        "photoUrl": null,
+        "instagramUrl": null,
+        "photoAvailableInTseArchive": false,
+        "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+        "watchlistName": "Ribeiro do Túllio",
+        "localEvidence": "Disputou a Prefeitura de Águas Lindas de Goiás em 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
+        "evidenceSourceUrls": [
+          "https://meuvoto.org.br/candidato/90002544890.html"
+        ],
+        "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+      },
       "changedFields": [
-        "generationDate",
         "generationTime"
       ]
     }
