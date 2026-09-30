@@ -145,7 +145,7 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
       if (typeof candidate.candidateId !== 'string' || !candidate.candidateId.trim()) return false;
       if (typeof candidate.candidate !== 'string' || !candidate.candidate.trim()) return false;
       if (candidate.cargo !== row.cargo) return false;
-      if (typeof candidate.votes !== 'number' || !Number.isFinite(candidate.votes) || candidate.votes < 0) return false;
+      if (typeof candidate.votes !== 'number' || !Number.isSafeInteger(candidate.votes) || candidate.votes < 0) return false;
       return true;
     });
   });
