@@ -40,7 +40,15 @@ try {
   legislativeSecondTurn.entries[0].cargo = 'Senador';
   legislativeSecondTurn.entries[0].items[0].cargo = 'Senador';
   validate(legislativeSecondTurn, false);
-  console.log('Results feed validates first and second turns and rejects mismatched codes or legislative offices in turn 2.');
+
+  const impossibleSections = structuredClone(fixture);
+  impossibleSections.entries[0].sectionsCounted = impossibleSections.entries[0].sectionsTotal + 1;
+  validate(impossibleSections, false);
+
+  const negativeAggregate = structuredClone(fixture);
+  negativeAggregate.entries[0].totalVotes = -1;
+  validate(negativeAggregate, false);
+  console.log('Results feed validates both turns and rejects mismatched offices, codes and impossible aggregate counts.');
 } finally {
   rmSync(dir, { recursive: true, force: true });
 }
