@@ -103,16 +103,16 @@ jobs:
             error_message="$(tr '\n' ' ' < /tmp/results-pr-error.log | head -c 500)"
             echo "::warning title=PR automática de resultados indisponível::$error_message"
             compare_url="https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}?expand=1"
-            cat > /tmp/results-pending-pr.md <<EOF
-O feed oficial de resultados foi capturado e a branch passou pelo CI completo, mas o token do GitHub Actions não pôde criar a pull request.
-
-- Branch validada: `$branch`
-- CI: https://github.com/${GITHUB_REPOSITORY}/actions/runs/$run_id
-- Abrir PR manualmente: $compare_url
-- Workflow de origem: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-
-O workflow não faz merge direto na `main`. A publicação exige uma pull request revisada.
-EOF
+            printf '%s\n' \
+              "O feed oficial de resultados foi capturado e a branch passou pelo CI completo, mas o token do GitHub Actions não pôde criar a pull request." \
+              "" \
+              "- Branch validada: `$branch`" \
+              "- CI: https://github.com/${GITHUB_REPOSITORY}/actions/runs/$run_id" \
+              "- Abrir PR manualmente: $compare_url" \
+              "- Workflow de origem: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+              "" \
+              "O workflow não faz merge direto na `main`. A publicação exige uma pull request revisada." \
+              > /tmp/results-pending-pr.md
             pending_issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "Resultados TSE 2026: PR pendente") | .number' | head -n 1)"
             if [ -n "$pending_issue" ]; then
               gh issue edit "$pending_issue" --body-file /tmp/results-pending-pr.md
