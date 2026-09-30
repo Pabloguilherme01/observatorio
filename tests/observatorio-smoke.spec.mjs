@@ -148,7 +148,6 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await reviewList.getByRole('button', { name: 'Abrir ficha' }).first().click();
     await expect(page.getByRole('dialog')).toBeVisible();
   });
-});
 
   test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
     await page.goto('./');
