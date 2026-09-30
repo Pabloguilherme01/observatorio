@@ -412,6 +412,21 @@ test.describe('mobile layout and interaction', () => {
 
 
 
+test('detecta publicação inacessível mesmo quando o navegador informa online', async ({ page }) => {
+  await page.route('**/api/v1/health.json**', route => route.abort('failed'));
+  await page.goto('./');
+
+  const status = page.getByRole('status', { name: 'Status de conexão' });
+  await expect.poll(() => page.evaluate(() => navigator.onLine)).toBe(true);
+  await expect(status).toBeVisible();
+  await expect(status).toContainText('Sem conexão');
+
+  await page.unroute('**/api/v1/health.json**');
+  await status.getByRole('button', { name: 'Verificar' }).click();
+  await expect(status).toContainText('Conexão restabelecida');
+  await expect(status).toHaveCount(0, { timeout: 5000 });
+});
+
 test('status de conexão informa offline e confirma reconexão', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
