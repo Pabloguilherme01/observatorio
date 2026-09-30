@@ -78,6 +78,10 @@ if (
   && resultsFeed.includes("capturedAt drives live → stale state")
 ) pass('feed de resultados preserva o último snapshot validado em falhas transitórias.');
 else fail('feed de resultados pode apagar snapshot válido após falha transitória.');
+const preOpenGuard = resultsFeed.indexOf("if (now < RESULTS_WINDOW_START) return 'pre_open';");
+const completeGuard = resultsFeed.indexOf("if (data?.state === 'complete') return 'complete';");
+if (preOpenGuard >= 0 && completeGuard >= 0 && preOpenGuard < completeGuard) pass('janela pública de resultados prevalece sobre qualquer snapshot antecipado.');
+else fail('snapshot de resultados pode aparecer antes da abertura da janela pública.');
 
 const experience = read('src/components/ExperienceShell.tsx');
 if (
