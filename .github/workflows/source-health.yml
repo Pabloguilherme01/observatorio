@@ -24,3 +24,7 @@ jobs:
         run: npm run audit:deps
       - name: Check source reachability
         run: npm run audit:sources
+      - name: Check direct public-service shortcuts
+        env:
+          AUDIT_PUBLIC_SERVICES_LIVE: 'true'
+        run: npm run audit:public-services
