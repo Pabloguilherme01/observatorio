@@ -9,9 +9,6 @@ test.describe('Fluxos públicos críticos', () => {
 
     if (isMobile) {
       await page.getByRole('button', { name: 'Abrir menu' }).click();
-      await expect(page.getByRole('button', { name: 'Aumentar nível de detalhe' })).toBeVisible();
-      await expect(page.getByRole('button', { name: 'Voltar para leitura rápida' })).toBeVisible();
-      return;
     }
 
     const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
@@ -47,11 +44,6 @@ test.describe('Fluxos públicos críticos', () => {
 
     if (isMobile) {
       await page.getByRole('button', { name: 'Abrir menu' }).click();
-      await page.getByRole('button', { name: 'Aumentar nível de detalhe' }).click();
-      await expect(root).toHaveAttribute('data-language-mode', 'simple');
-      await page.getByRole('button', { name: 'Voltar para leitura rápida' }).click();
-      await expect(root).toHaveAttribute('data-language-mode', 'summary');
-      return;
     }
 
     const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
