@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { strict as assert } from 'node:assert';
 
 const sw = readFileSync('dist/sw.js', 'utf8');
@@ -15,6 +15,11 @@ for (const suffix of ['static', 'fonts', 'documents', 'api']) {
 assert.doesNotMatch(sw, /observatorio-(?:static|fonts|documents|api)-v13/);
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-192.png' && icon.purpose.includes('maskable')));
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-512.png' && icon.purpose.includes('maskable')));
+for (const icon of manifest.icons) {
+  const relativePath = String(icon.src).replace(/^\/observatorio\//, '').replace(/^\/+/, '');
+  assert.ok(relativePath && !relativePath.includes('..'), `caminho de ícone inválido no manifest: ${icon.src}`);
+  assert.ok(existsSync('dist/' + relativePath), `ícone declarado no manifest não existe no build: ${icon.src}`);
+}
 
 const precacheOccurrences = asset =>
   sw.split(`url:\"${asset}\"`).length - 1 + sw.split(`url:'${asset}'`).length - 1;
