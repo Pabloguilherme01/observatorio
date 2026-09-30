@@ -1,13 +1,13 @@
 import { Activity, Gauge, Map, Users, Database, Info, AlertCircle } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
+const IndicatorComparator = lazy(() => import('./IndicatorComparator').then(module => ({ default: module.IndicatorComparator })));
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { dispatchInspect, inspectDataId } from '../DataInspector';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
-import { IndicatorComparator } from './IndicatorComparator';
 
 interface MetricDetail { readonly label: string; readonly value: string; readonly caption: string; readonly simpleExplanation: string; readonly icon: typeof Users; readonly sourceId: string; readonly referenceDate?: string; readonly status?: string; readonly note?: string; readonly nature: string; readonly sourceLabel: string; }
 
@@ -187,7 +187,11 @@ export function DashboardMetrics() {
         </div>
       )}
 
-      <IndicatorComparator />
+      {!isSummary && (
+        <Suspense fallback={<div className="mt-5 h-40 animate-pulse rounded-3xl border border-white/8 bg-white/[0.02]" aria-hidden="true" />}>
+          <IndicatorComparator />
+        </Suspense>
+      )}
 
       {isExplained && (
         <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70 sm:p-5" aria-label="Indicadores por tema">
