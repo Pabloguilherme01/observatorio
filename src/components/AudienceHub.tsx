@@ -1,5 +1,7 @@
 import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, HeartHandshake, Landmark, Search, Share2, ShieldCheck, Users, Vote, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
+import { useState } from 'react';
+import { copyText } from '../lib/clipboard';
 import { navigateToCleanSection } from '../lib/sectionNavigation';
 
 type Topic = {
@@ -34,6 +36,7 @@ const technicalLinks = [
 
 export function AudienceHub() {
   const { mode } = useLanguageMode();
+  const [shareStatus, setShareStatus] = useState('');
   const isTechnical = mode === 'technical';
   const isSummary = mode === 'summary';
 
@@ -51,12 +54,14 @@ export function AudienceHub() {
     try {
       if (navigator.share) {
         await navigator.share(shareData);
+        setShareStatus('Compartilhamento aberto.');
         return;
       }
-      await navigator.clipboard?.writeText(window.location.href);
-      // Em navegadores sem Web Share, copiar o endereço é o fallback mais simples.
+
+      const copied = await copyText(window.location.href);
+      setShareStatus(copied ? 'Link copiado para compartilhar.' : 'Não foi possível copiar o link.');
     } catch {
-      // Cancelamento do compartilhamento nativo não deve gerar erro de interface.
+      // Cancelamento do compartilhamento nativo não precisa gerar erro de interface.
     }
   };
 
@@ -79,6 +84,7 @@ export function AudienceHub() {
           </div>
 
           <div className="audience-intro-actions">
+            {shareStatus && <span className="sr-only" role="status" aria-live="polite">{shareStatus}</span>}
             <button type="button" className="audience-search-card" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
               <Search aria-hidden="true" />
               <span>
