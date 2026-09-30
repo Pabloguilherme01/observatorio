@@ -88,7 +88,7 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
     if (typeof item.candidateId !== 'string' || !item.candidateId.trim()) fail(`entry ${index} item ${itemIndex}: candidateId ausente.`);
     if (typeof item.candidate !== 'string' || !item.candidate.trim()) fail(`entry ${index} item ${itemIndex}: candidate ausente.`);
     if (item.cargo !== entry.cargo) fail(`entry ${index} item ${itemIndex}: cargo divergente.`);
-    if (typeof item.votes !== 'number' || !Number.isFinite(item.votes) || item.votes < 0) fail(`entry ${index} item ${itemIndex}: votes inválido.`);
+    if (typeof item.votes !== 'number' || !Number.isSafeInteger(item.votes) || item.votes < 0) fail(`entry ${index} item ${itemIndex}: votes deve ser inteiro não negativo.`);
   }
 }
 
