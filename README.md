@@ -57,7 +57,7 @@ npm run sync:results
 npm run build
 ```
 
-Os workflows **Quality** e **CI** executam em cada pull request e em pushes na `main`. O Quality concentra validações estáticas, acessibilidade, mobile, contratos de dados e build; o CI complementa com testes de integração, fontes, navegadores, indisponibilidade do TSE e verificação do artefato PWA. O deploy do GitHub Pages publica o diretório `dist`.
+Os workflows **Quality** e **CI** executam em cada pull request e em pushes na `main`. O Quality mantém uma auditoria independente; o CI é o gate completo de publicação, reunindo contratos estáticos, dados, segurança, fontes e a matriz de navegadores. O deploy do GitHub Pages só inicia depois que o CI de um push na `main` termina com sucesso e publica exatamente o SHA validado.
 
 ## Princípios de dados
 
@@ -108,7 +108,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ### Estado da sincronização eleitoral
 
-A edição atual contém uma primeira captura de candidatos em escopo `watchlist`, com 905 linhas de origem e 7 correspondências no snapshot versionado. O estado do snapshot atual é `changed`. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-2026.yml` executa captura e validação automatizadas. O recorte atual é uma watchlist estadual com evidência documental de vínculo local, não uma lista municipal completa.
+A edição atual mantém uma captura de candidatos em escopo `watchlist`; quantidade de linhas de origem, correspondências, estado e horário ficam no metadado versionado do snapshot, evitando números fixos na documentação. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-2026.yml` executa captura e validação automatizadas. O recorte atual é uma watchlist estadual com evidência documental de vínculo local, não uma lista municipal completa.
 
 A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
 
