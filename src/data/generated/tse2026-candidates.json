@@ -1,22 +1,22 @@
 {
   "schemaVersion": 3,
   "meta": {
-    "snapshotId": "tse-candidatos-2026-local-mapeado-2026-09-26",
+    "snapshotId": "tse-candidatos-2026-local-mapeado-2026-09-29",
     "source": "TSE — Candidatos 2026",
     "sourceUrl": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026",
     "scope": "GO",
     "localFilter": "Águas Lindas de Goiás",
-    "downloadedAt": "2026-09-26T05:49:30.672Z",
-    "sourceFileSha256": "c09fd605be98f3b9d930a3edf7f352b53e7d33176e3d436f2035ceee35e48b05",
+    "downloadedAt": "2026-09-29T23:24:53.838Z",
+    "sourceFileSha256": "fd2192b265ed80de599b235f164609b67ae500961db47925c0607470eb177edd",
     "sourceHashKind": "source_zip",
-    "sourceRows": 905,
+    "sourceRows": 906,
     "originalMatchedRows": 7,
     "matchedRows": 7,
-    "workflowRunId": "manual-2026-09-24",
-    "gitCommit": null,
+    "workflowRunId": "36644983802",
+    "gitCommit": "2e2034a1eb426fc235dd4a53195232803b0c2082",
     "state": "changed",
     "retrievalMethod": "official_tse_zip_csv",
-    "resourceUrl": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip",
+    "resourceUrl": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip",
     "captureTransport": "official_tse_snapshot_plus_documentary_local_evidence",
     "selection": "local_evidence_watchlist",
     "candidateUniverseScope": "GO",
@@ -62,8 +62,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA",
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -76,7 +76,7 @@
       "evidenceSourceUrls": [
         "https://portal.al.go.leg.br/deputados/perfil-biografico/809"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     },
     {
       "sqCandidate": "90002543127",
@@ -91,8 +91,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": null,
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -105,7 +105,7 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002543127.html"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     },
     {
       "sqCandidate": "90002537423",
@@ -120,8 +120,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": null,
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -134,7 +134,7 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002537423.html"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     },
     {
       "sqCandidate": "90002547004",
@@ -149,8 +149,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": "FEDERAÇÃO UNIÃO PROGRESSISTA",
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -163,7 +163,7 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002547004.html"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     },
     {
       "sqCandidate": "90002543768",
@@ -178,8 +178,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": null,
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -192,7 +192,7 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002543768.html"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     },
     {
       "sqCandidate": "90002543113",
@@ -207,8 +207,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": null,
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -221,7 +221,7 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002543113.html"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     },
     {
       "sqCandidate": "90002544890",
@@ -236,8 +236,8 @@
       "office": "DEPUTADO ESTADUAL",
       "status": null,
       "federation": "FEDERAÇÃO PSDB CIDADANIA",
-      "generationDate": "25/09/2026",
-      "generationTime": "19:30:44",
+      "generationDate": "29/09/2026",
+      "generationTime": "19:30:26",
       "candidateIdKind": "tse_csv_sq_candidate",
       "municipality": null,
       "municipalityCodeTse": null,
@@ -250,7 +250,7 @@
       "evidenceSourceUrls": [
         "https://meuvoto.org.br/candidato/90002544890.html"
       ],
-      "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+      "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
     }
   ],
   "diff": {
@@ -265,29 +265,6 @@
         "key": "90002549161",
         "type": "changed",
         "before": {
-          "sqCandidate": "90002549161",
-          "ballotNumber": 25789,
-          "name": "ANDERSON TEODORO",
-          "party": "PRD",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
-          "fullName": "ANDERSON TEODORO DA CUNHA DOURADO",
-          "gender": "MASCULINO",
-          "education": "SUPERIOR INCOMPLETO",
-          "occupation": "VEREADOR",
-          "declaredAssetsTotal": 990000,
-          "watchlistName": "Anderson teodoro",
-          "localEvidence": "Base eleitoral declarada em Águas Lindas de Goiás e trajetória política iniciada no município.",
-          "evidenceSourceUrls": [
-            "https://portal.al.go.leg.br/deputados/perfil-biografico/809"
-          ],
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": true
-        },
-        "after": {
           "sqCandidate": "90002549161",
           "ballotNumber": 25789,
           "name": "ANDERSON TEODORO",
@@ -316,13 +293,38 @@
           ],
           "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
+        "after": {
+          "sqCandidate": "90002549161",
+          "ballotNumber": 25789,
+          "name": "ANDERSON TEODORO",
+          "fullName": "ANDERSON TEODORO DA CUNHA DOURADO",
+          "gender": "MASCULINO",
+          "education": "SUPERIOR INCOMPLETO",
+          "occupation": "VEREADOR",
+          "declaredAssetsTotal": 990000,
+          "party": "PRD",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": "FEDERAÇÃO RENOVAÇÃO SOLIDÁRIA",
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": true,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+          "watchlistName": "Anderson teodoro",
+          "localEvidence": "Base eleitoral declarada em Águas Lindas de Goiás e trajetória política iniciada no município.",
+          "evidenceSourceUrls": [
+            "https://portal.al.go.leg.br/deputados/perfil-biografico/809"
+          ],
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+        },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       },
@@ -333,24 +335,30 @@
           "sqCandidate": "90002543127",
           "ballotNumber": 33070,
           "name": "ZÉ DA IMPERIAL",
-          "party": "MOBILIZA",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
           "fullName": "JOSE BARBOSA DA SILVA",
           "gender": "MASCULINO",
           "education": "ENSINO MÉDIO COMPLETO",
           "occupation": "COMERCIANTE",
           "declaredAssetsTotal": 105000,
+          "party": "MOBILIZA",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": null,
+          "generationDate": "25/09/2026",
+          "generationTime": "19:30:44",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": true,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
           "watchlistName": "Zé da imperial",
           "localEvidence": "Disputou eleição para vereador em Águas Lindas de Goiás e mantém trajetória eleitoral vinculada ao município.",
           "evidenceSourceUrls": [
             "https://meuvoto.org.br/candidato/90002543127.html"
           ],
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": true
+          "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
         "after": {
           "sqCandidate": "90002543127",
@@ -365,8 +373,8 @@
           "office": "DEPUTADO ESTADUAL",
           "status": null,
           "federation": null,
-          "generationDate": "25/09/2026",
-          "generationTime": "19:30:44",
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
           "candidateIdKind": "tse_csv_sq_candidate",
           "municipality": null,
           "municipalityCodeTse": null,
@@ -379,15 +387,11 @@
           "evidenceSourceUrls": [
             "https://meuvoto.org.br/candidato/90002543127.html"
           ],
-          "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
         },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       },
@@ -395,29 +399,6 @@
         "key": "90002537423",
         "type": "changed",
         "before": {
-          "sqCandidate": "90002537423",
-          "ballotNumber": 20070,
-          "name": "BAIANO DOS COCOS",
-          "party": "PODE",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
-          "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
-          "gender": "MASCULINO",
-          "education": "ENSINO MÉDIO COMPLETO",
-          "occupation": "COMERCIANTE",
-          "declaredAssetsTotal": 60000,
-          "watchlistName": "Baiano dos cocos",
-          "localEvidence": "Foi candidato a vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
-          "evidenceSourceUrls": [
-            "https://meuvoto.org.br/candidato/90002537423.html"
-          ],
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": true
-        },
-        "after": {
           "sqCandidate": "90002537423",
           "ballotNumber": 20070,
           "name": "BAIANO DOS COCOS",
@@ -446,13 +427,38 @@
           ],
           "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
+        "after": {
+          "sqCandidate": "90002537423",
+          "ballotNumber": 20070,
+          "name": "BAIANO DOS COCOS",
+          "fullName": "SILDIOMAR DE CARVALHO RIBEIRO",
+          "gender": "MASCULINO",
+          "education": "ENSINO MÉDIO COMPLETO",
+          "occupation": "COMERCIANTE",
+          "declaredAssetsTotal": 60000,
+          "party": "PODE",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": null,
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": true,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+          "watchlistName": "Baiano dos cocos",
+          "localEvidence": "Foi candidato a vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
+          "evidenceSourceUrls": [
+            "https://meuvoto.org.br/candidato/90002537423.html"
+          ],
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+        },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       },
@@ -460,29 +466,6 @@
         "key": "90002547004",
         "type": "changed",
         "before": {
-          "sqCandidate": "90002547004",
-          "ballotNumber": 44360,
-          "name": "ABADYAS DAMASCENO",
-          "party": "UNIÃO",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
-          "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
-          "gender": "MASCULINO",
-          "education": "ENSINO MÉDIO INCOMPLETO",
-          "occupation": "ELETRICISTA E ASSEMELHADOS",
-          "declaredAssetsTotal": 57531,
-          "watchlistName": "Abadyas damasceno",
-          "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
-          "evidenceSourceUrls": [
-            "https://meuvoto.org.br/candidato/90002547004.html"
-          ],
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": true
-        },
-        "after": {
           "sqCandidate": "90002547004",
           "ballotNumber": 44360,
           "name": "ABADYAS DAMASCENO",
@@ -511,13 +494,38 @@
           ],
           "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
+        "after": {
+          "sqCandidate": "90002547004",
+          "ballotNumber": 44360,
+          "name": "ABADYAS DAMASCENO",
+          "fullName": "ABADIAS SOUZA DO NASCIMENTO DAMASCENO",
+          "gender": "MASCULINO",
+          "education": "ENSINO MÉDIO INCOMPLETO",
+          "occupation": "ELETRICISTA E ASSEMELHADOS",
+          "declaredAssetsTotal": 57531,
+          "party": "UNIÃO",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": "FEDERAÇÃO UNIÃO PROGRESSISTA",
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": true,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+          "watchlistName": "Abadyas damasceno",
+          "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; o vínculo local é histórico e documental.",
+          "evidenceSourceUrls": [
+            "https://meuvoto.org.br/candidato/90002547004.html"
+          ],
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+        },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       },
@@ -525,29 +533,6 @@
         "key": "90002543768",
         "type": "changed",
         "before": {
-          "sqCandidate": "90002543768",
-          "ballotNumber": 22133,
-          "name": "FELIPE GALDINO",
-          "party": "PL",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
-          "fullName": "FELIPE DE MOURA GALDINO FERNANDES",
-          "gender": "MASCULINO",
-          "education": "SUPERIOR INCOMPLETO",
-          "occupation": "EMPRESÁRIO",
-          "declaredAssetsTotal": 29000,
-          "watchlistName": "Felipe galdino",
-          "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; também foi oficializado para a disputa estadual de 2026.",
-          "evidenceSourceUrls": [
-            "https://meuvoto.org.br/candidato/90002543768.html"
-          ],
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": true
-        },
-        "after": {
           "sqCandidate": "90002543768",
           "ballotNumber": 22133,
           "name": "FELIPE GALDINO",
@@ -576,13 +561,38 @@
           ],
           "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
+        "after": {
+          "sqCandidate": "90002543768",
+          "ballotNumber": 22133,
+          "name": "FELIPE GALDINO",
+          "fullName": "FELIPE DE MOURA GALDINO FERNANDES",
+          "gender": "MASCULINO",
+          "education": "SUPERIOR INCOMPLETO",
+          "occupation": "EMPRESÁRIO",
+          "declaredAssetsTotal": 29000,
+          "party": "PL",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": null,
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": true,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+          "watchlistName": "Felipe galdino",
+          "localEvidence": "Disputou eleições para vereador em Águas Lindas de Goiás em 2020 e 2024; também foi oficializado para a disputa estadual de 2026.",
+          "evidenceSourceUrls": [
+            "https://meuvoto.org.br/candidato/90002543768.html"
+          ],
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+        },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       },
@@ -590,30 +600,6 @@
         "key": "90002543113",
         "type": "changed",
         "before": {
-          "sqCandidate": "90002543113",
-          "ballotNumber": 33777,
-          "name": "KEKE DA VULKANIC",
-          "party": "MOBILIZA",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
-          "fullName": "CLERISTON ROCHA DA TRINDADE",
-          "gender": "MASCULINO",
-          "education": "SUPERIOR COMPLETO",
-          "occupation": "VENDEDOR PRACISTA, REPRESENTANTE, CAIXEIRO-VIAJANTE E ASSEMELHADOS",
-          "declaredAssetsTotal": 270700,
-          "watchlistName": "Keké da Vulkanic",
-          "localEvidence": "Foi vereador eleito em Águas Lindas de Goiás em 2020 e 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
-          "evidenceSourceUrls": [
-            "https://meuvoto.org.br/candidato/90002543113.html"
-          ],
-          "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": false
-        },
-        "after": {
           "sqCandidate": "90002543113",
           "ballotNumber": 33777,
           "name": "KEKE DA VULKANIC",
@@ -642,13 +628,38 @@
           ],
           "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
+        "after": {
+          "sqCandidate": "90002543113",
+          "ballotNumber": 33777,
+          "name": "KEKE DA VULKANIC",
+          "fullName": "CLERISTON ROCHA DA TRINDADE",
+          "gender": "MASCULINO",
+          "education": "SUPERIOR COMPLETO",
+          "occupation": "VENDEDOR PRACISTA, REPRESENTANTE, CAIXEIRO-VIAJANTE E ASSEMELHADOS",
+          "declaredAssetsTotal": 270700,
+          "party": "MOBILIZA",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": null,
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": false,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+          "watchlistName": "Keké da Vulkanic",
+          "localEvidence": "Foi vereador eleito em Águas Lindas de Goiás em 2020 e 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
+          "evidenceSourceUrls": [
+            "https://meuvoto.org.br/candidato/90002543113.html"
+          ],
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+        },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       },
@@ -656,30 +667,6 @@
         "key": "90002544890",
         "type": "changed",
         "before": {
-          "sqCandidate": "90002544890",
-          "ballotNumber": 45007,
-          "name": "RIBEIRO DO TÚLLIO",
-          "party": "PSDB",
-          "office": "DEPUTADO ESTADUAL",
-          "status": "DEFERIDO",
-          "municipality": null,
-          "photoUrl": null,
-          "instagramUrl": null,
-          "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
-          "gender": "MASCULINO",
-          "education": "SUPERIOR COMPLETO",
-          "occupation": "POLICIAL MILITAR",
-          "declaredAssetsTotal": 2632041.93,
-          "watchlistName": "Ribeiro do Túllio",
-          "localEvidence": "Disputou a Prefeitura de Águas Lindas de Goiás em 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
-          "evidenceSourceUrls": [
-            "https://meuvoto.org.br/candidato/90002544890.html"
-          ],
-          "sourceResource": "https://divulgacandcontas.tse.jus.br/divulga/rest/v1/candidatura/listar/2026/GO/20322002026/7/candidatos",
-          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
-          "photoAvailableInTseArchive": false
-        },
-        "after": {
           "sqCandidate": "90002544890",
           "ballotNumber": 45007,
           "name": "RIBEIRO DO TÚLLIO",
@@ -708,13 +695,38 @@
           ],
           "sourceResource": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
         },
+        "after": {
+          "sqCandidate": "90002544890",
+          "ballotNumber": 45007,
+          "name": "RIBEIRO DO TÚLLIO",
+          "fullName": "FRANCISCO JOSE RODRIGUES RIBEIRO",
+          "gender": "MASCULINO",
+          "education": "SUPERIOR COMPLETO",
+          "occupation": "POLICIAL MILITAR",
+          "declaredAssetsTotal": 2632041.93,
+          "party": "PSDB",
+          "office": "DEPUTADO ESTADUAL",
+          "status": null,
+          "federation": "FEDERAÇÃO PSDB CIDADANIA",
+          "generationDate": "29/09/2026",
+          "generationTime": "19:30:26",
+          "candidateIdKind": "tse_csv_sq_candidate",
+          "municipality": null,
+          "municipalityCodeTse": null,
+          "photoUrl": null,
+          "instagramUrl": null,
+          "photoAvailableInTseArchive": false,
+          "photoArchiveUrl": "https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/fotos/foto_cand2026_GO_div.zip",
+          "watchlistName": "Ribeiro do Túllio",
+          "localEvidence": "Disputou a Prefeitura de Águas Lindas de Goiás em 2024; candidatura estadual de 2026 identificada no cruzamento documental.",
+          "evidenceSourceUrls": [
+            "https://meuvoto.org.br/candidato/90002544890.html"
+          ],
+          "sourceResource": "https://dadosabertos.tse.jus.br/dataset/candidatos-2026/resource/7748de82-a23b-47c4-9ec1-35535d945e5b/download/consulta_cand_2026.zip"
+        },
         "changedFields": [
-          "status",
-          "federation",
           "generationDate",
           "generationTime",
-          "candidateIdKind",
-          "municipalityCodeTse",
           "sourceResource"
         ]
       }
