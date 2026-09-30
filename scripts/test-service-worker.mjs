@@ -9,4 +9,10 @@ assert.match(sw, /\.pathname\.startsWith\(["']\/observatorio\/api\/v1\/["']\)/);
 assert.doesNotMatch(sw, /BASE_PATH\s*\+\s*API_ROOT/);
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-192.png' && icon.purpose.includes('maskable')));
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-512.png' && icon.purpose.includes('maskable')));
+
+const precacheOccurrences = asset =>
+  sw.split(`url:\"${asset}\"`).length - 1 + sw.split(`url:'${asset}'`).length - 1;
+for (const asset of ['pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png', 'offline.html']) {
+  assert.equal(precacheOccurrences(asset), 1, `${asset} deve aparecer uma única vez no precache`);
+}
 console.log('Production Service Worker and mobile manifest verified.');

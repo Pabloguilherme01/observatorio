@@ -180,7 +180,6 @@ export default defineConfig({
           { src: BASE_PATH + 'pwa-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any' },
         ],
       },
-      includeAssets: ['pwa-192.svg', 'pwa-512.svg', 'pwa-192.png', 'pwa-512.png', 'apple-touch-icon.png', 'offline.html'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         navigateFallback: '/observatorio/index.html',
