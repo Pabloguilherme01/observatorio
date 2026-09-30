@@ -1,10 +1,18 @@
 import { test, expect } from 'playwright/test';
 
 test.describe('Fluxos públicos críticos', () => {
-  test('entrada pública carrega e expõe os quatro modos de leitura', async ({ page }) => {
+  test('entrada pública carrega e expõe o controle de leitura adequado ao dispositivo', async ({ page, isMobile }) => {
     await page.goto('./');
     await expect(page).toHaveTitle(/Observatório Eleitoral — Águas Lindas de Goiás 2026/);
     await expect(page.locator('#root')).toBeVisible();
+    await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
+
+    if (isMobile) {
+      await page.getByRole('button', { name: 'Abrir menu' }).click();
+      await expect(page.getByRole('button', { name: 'Aumentar nível de detalhe' })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Voltar para leitura rápida' })).toBeVisible();
+      return;
+    }
 
     const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
     await expect(modes).toBeVisible();
@@ -33,10 +41,20 @@ test.describe('Fluxos públicos críticos', () => {
     await expect(page.getByText(/fonte oficial/i).first()).toBeVisible();
   });
 
-  test('troca de modo de leitura é funcional e reversível', async ({ page }) => {
+  test('troca de modo de leitura é funcional e reversível', async ({ page, isMobile }) => {
     await page.goto('./');
-    const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+    const root = page.locator('html');
 
+    if (isMobile) {
+      await page.getByRole('button', { name: 'Abrir menu' }).click();
+      await page.getByRole('button', { name: 'Aumentar nível de detalhe' }).click();
+      await expect(root).toHaveAttribute('data-language-mode', 'simple');
+      await page.getByRole('button', { name: 'Voltar para leitura rápida' }).click();
+      await expect(root).toHaveAttribute('data-language-mode', 'summary');
+      return;
+    }
+
+    const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
     const guided = modes.getByRole('button', { name: /^Guiado/ });
     await guided.click();
     await expect(guided).toHaveAttribute('aria-pressed', 'true');
