@@ -154,6 +154,7 @@ must(!read('src/components/sections/PoliticalResearch.tsx').includes('computeThe
 must(
   read('src/components/layout/Header.tsx').includes('Versão local do conjunto publicada em')
     && read('src/components/layout/Header.tsx').includes('cada indicador pode ter data-base própria')
+    && read('src/components/layout/Header.tsx').includes('<span>Versão {updatedAt}</span>')
     && !read('src/components/layout/Header.tsx').includes('Captura recente'),
   'cabeçalho distingue a versão local do frescor individual das fontes',
 );
