@@ -935,7 +935,15 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   expect(fallbackShare).toContain('#dashboard');
   expect(fallbackShare).not.toContain('utm_source');
 
+  await dialog.getByRole('button', { name: 'Salvar para depois' }).click();
+  await expect(dialog.getByRole('button', { name: 'Remover dos salvos' })).toHaveAttribute('aria-pressed', 'true');
   await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
+  await page.getByRole('button', { name: /Buscar no observatório/i }).first().click();
+  const savedReading = page.getByRole('link', { name: /Variação da população.*Abrir indicador salvo/i });
+  await expect(savedReading).toBeVisible();
+  await expect(savedReading).toHaveAttribute('href', /dado=/);
+  await page.keyboard.press('Escape');
+
   await page.goto(copiedLink);
   await expect(page.getByRole('dialog', { name: /Variação da população/i })).toBeVisible();
   await page.getByRole('dialog', { name: /Variação da população/i }).getByRole('button', { name: 'Fechar', exact: true }).click();
@@ -1354,7 +1362,11 @@ test('busca direciona indicadores para a seção temática correta', async ({ pa
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
   await input.fill('Perdas na distribuição de água');
-  await page.locator('#search-results').getByRole('option', { name: /Perdas na distribuição de água/i }).click();
+  const waterLossResult = page.locator('#search-results').getByRole('option', { name: /Perdas na distribuição de água/i });
+  await expect(waterLossResult).toContainText(/Histórico/i);
+  await expect(waterLossResult).toContainText(/ref\\./i);
+  await expect(waterLossResult).toContainText(/SINISA 2024/i);
+  await waterLossResult.click();
   await expect(page).toHaveURL(/#saude$/);
 
   await page.getByRole('button', { name: /buscar/i }).first().click();

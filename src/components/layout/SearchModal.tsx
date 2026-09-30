@@ -1,13 +1,15 @@
 import '../../assets/styles/search-modal.css';
-import { BarChart3, BookOpen, BusFront, Check, Clipboard, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
+import { BarChart3, BookOpen, Bookmark, BusFront, Check, Clipboard, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
-import { formatBudgetCurrency } from '../../utils/formatters';
+import { formatBudgetCurrency, formatDate } from '../../utils/formatters';
+import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
 import { navigateToSection } from '../../lib/sectionNavigation';
 import { clearRecentSections, getRecentSections } from '../../lib/recentSections';
 import { copyText } from '../../lib/clipboard';
+import { clearSavedIndicators, getSavedIndicators, type SavedIndicator } from '../../lib/savedIndicators';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
@@ -90,6 +92,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const [activeIndex, setActiveIndex] = useState(0);
   const [shortcutGuideOpen, setShortcutGuideOpen] = useState(false);
   const [recentSections, setRecentSections] = useState<string[]>([]);
+  const [savedIndicators, setSavedIndicators] = useState<SavedIndicator[]>([]);
   const [quickAnswerCopied, setQuickAnswerCopied] = useState(false);
   const [quickAnswerCopyError, setQuickAnswerCopyError] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +109,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     setActiveIndex(0);
     setShortcutGuideOpen(initialShortcutGuideOpen);
     setRecentSections(getRecentSections());
+    setSavedIndicators(getSavedIndicators());
     setQuickAnswerCopied(false);
     setQuickAnswerCopyError(false);
     const desktop = window.matchMedia?.('(min-width: 768px)').matches;
@@ -450,7 +454,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
       ...d.sources.map(source => [source.label, 'fontes', 'source'] as SearchEntry),
       ...d.candidates.map(candidate => [candidate.name, 'candidaturas', 'candidate'] as SearchEntry),
       ...d.transport.routes.map(route => [route.label, 'transporte', 'transport'] as SearchEntry),
-      ...d.indicators.map(indicator => [indicator.label, indicatorDestination(indicator.id), 'data'] as SearchEntry),
+      ...d.indicators.map(indicator => [indicator.label, indicatorDestination(indicator.id), 'data', indicator.id] as SearchEntry),
     ];
     const seen = new Set<string>();
     return all
@@ -510,6 +514,17 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
           {groupItems.map(item => {
             const Icon = resultIcon(item.id);
             const index = filtered.indexOf(item);
+            const indicator = item.kind === 'data' && item.serviceQuery
+              ? d.indicators.find(entry => entry.id === item.serviceQuery)
+              : undefined;
+            const indicatorContext = indicator
+              ? [
+                  destinationLabel(item.id),
+                  formatIndicatorStatus(indicator.status),
+                  indicator.referenceDate ? `ref. ${formatDate(indicator.referenceDate)}` : 'referência não informada',
+                  sourceLabel(indicator.sourceId),
+                ].filter(Boolean).join(' · ')
+              : destinationLabel(item.id);
             return (
               <button
                 key={item.label + '-' + item.id}
@@ -525,7 +540,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                 <span className="search-result-icon"><Icon aria-hidden="true" /></span>
                 <span className="min-w-0 flex-1 text-left">
                   <strong>{item.label}</strong>
-                  <small>{destinationLabel(item.id)}</small>
+                  <small>{indicatorContext}</small>
                 </span>
                 <span className="search-result-enter" aria-hidden="true">{activeIndex === index ? '↵' : '›'}</span>
               </button>
@@ -655,6 +670,27 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                   </button>
                 );
               })}
+            </div>
+          </section>
+        )}
+
+        {!query && savedIndicators.length > 0 && (
+          <section className="search-result-group" aria-labelledby="search-saved-title">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h3 id="search-saved-title" className="search-result-group-title">Leituras salvas</h3>
+                <p className="mt-1 text-[10px] text-slate-600">Disponíveis somente neste dispositivo.</p>
+              </div>
+              <button type="button" className="search-clear-query" onClick={() => { clearSavedIndicators(); setSavedIndicators([]); inputRef.current?.focus(); }}>Limpar salvos</button>
+            </div>
+            <div className="search-result-group-list">
+              {savedIndicators.map(item => (
+                <a key={item.id} href={item.url} onClick={onClose} className="search-result-row">
+                  <span className="search-result-icon"><Bookmark aria-hidden="true" /></span>
+                  <span className="min-w-0 flex-1 text-left"><strong>{item.title}</strong><small>Abrir indicador salvo</small></span>
+                  <span className="search-result-enter" aria-hidden="true">›</span>
+                </a>
+              ))}
             </div>
           </section>
         )}
