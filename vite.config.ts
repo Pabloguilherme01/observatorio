@@ -12,7 +12,6 @@ const API_ROOT = '/api/v1/';
 const PUBLIC_COMMIT_SHA = process.env.OBSERVATORIO_COMMIT_SHA ?? process.env.GITHUB_SHA ?? 'local-development';
 const PUBLIC_BUILD_ENV = process.env.GITHUB_ACTIONS === 'true' ? 'github-actions' : 'local';
 const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0];
-const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0];
 
 const getApiRequestPath = (value: string) => {
   const path = value.split('?')[0];
