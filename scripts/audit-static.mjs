@@ -100,6 +100,15 @@ must((appSource.includes('skip-link') && appSource.includes('Pular para o conte�
 must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
 must(vite.includes("globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}']") && vite.includes("navigateFallback: '/observatorio/index.html'") && !vite.includes('includeAssets:'), 'VitePWA usa um único caminho de precache para assets públicos e shell offline');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
+must(
+  vite.includes("const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0]")
+    && vite.includes('observatorio-static-v${RUNTIME_CACHE_VERSION}')
+    && vite.includes('observatorio-fonts-v${RUNTIME_CACHE_VERSION}')
+    && vite.includes('observatorio-documents-v${RUNTIME_CACHE_VERSION}')
+    && vite.includes('observatorio-api-v${RUNTIME_CACHE_VERSION}')
+    && !vite.includes('-v13'),
+  'caches runtime do PWA acompanham automaticamente o major da aplicação',
+);
 must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/HeroCountdown.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
 must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 

@@ -11,6 +11,7 @@ const BASE_PATH = '/observatorio/';
 const API_ROOT = '/api/v1/';
 const PUBLIC_COMMIT_SHA = process.env.OBSERVATORIO_COMMIT_SHA ?? process.env.GITHUB_SHA ?? 'local-development';
 const PUBLIC_BUILD_ENV = process.env.GITHUB_ACTIONS === 'true' ? 'github-actions' : 'local';
+const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0];
 
 const getApiRequestPath = (value: string) => {
   const path = value.split('?')[0];
@@ -189,7 +190,7 @@ export default defineConfig({
             urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'observatorio-static-v13',
+              cacheName: `observatorio-static-v${RUNTIME_CACHE_VERSION}`,
               expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -198,7 +199,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'font',
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'observatorio-fonts-v13',
+              cacheName: `observatorio-fonts-v${RUNTIME_CACHE_VERSION}`,
               expiration: { maxEntries: 16, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -207,7 +208,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'document' && request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-documents-v13',
+              cacheName: `observatorio-documents-v${RUNTIME_CACHE_VERSION}`,
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -216,7 +217,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-api-v13',
+              cacheName: `observatorio-api-v${RUNTIME_CACHE_VERSION}`,
               networkTimeoutSeconds: 3,
               expiration: { maxEntries: 32, maxAgeSeconds: 60 * 60 * 24 * 7, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
