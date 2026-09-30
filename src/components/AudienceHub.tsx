@@ -54,7 +54,7 @@ export function AudienceHub() {
         return;
       }
       await navigator.clipboard?.writeText(window.location.href);
-      window.dispatchEvent(new CustomEvent('observatorio:toast', { detail: 'Link copiado para compartilhar' }));
+      // Em navegadores sem Web Share, copiar o endereço é o fallback mais simples.
     } catch {
       // Cancelamento do compartilhamento nativo não deve gerar erro de interface.
     }
