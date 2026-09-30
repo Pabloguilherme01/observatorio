@@ -17,6 +17,8 @@ export function Footer() {
           <a href="#acao">Serviços públicos</a>
           <a href="#fontes">Fontes e método</a>
           <a href="#exportacao">Baixar dados</a>
+          <a href={import.meta.env.BASE_URL + 'acessibilidade.html'}>Acessibilidade</a>
+          <a href={import.meta.env.BASE_URL + 'privacidade.html'}>Privacidade</a>
           <a href="https://github.com/Pabloguilherme01/observatorio" target="_blank" rel="noopener noreferrer" aria-label="Abrir código-fonte do Observatório no GitHub em nova aba">
             Código-fonte <ExternalLink aria-hidden="true" />
           </a>
