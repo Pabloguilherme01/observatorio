@@ -288,7 +288,7 @@ export function Header() {
           >
             <span className="h-1.5 w-1.5 rounded-full bg-slate-300" aria-hidden="true" />
             <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Captura {updatedAt}</span>
+            <span>Versão {updatedAt}</span>
           </div>
 
           <div className="site-header-actions ml-auto flex items-center gap-1">
