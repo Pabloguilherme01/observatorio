@@ -169,7 +169,6 @@ export default defineConfig({
         theme_color: '#0d1117',
         background_color: '#0d1117',
         display: 'standalone',
-        orientation: 'portrait-primary',
         start_url: BASE_PATH,
         scope: BASE_PATH,
         categories: ['public-services', 'education'],
@@ -212,6 +211,10 @@ export default defineConfig({
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname === '/observatorio/api/v1/health.json' || url.pathname === '/api/v1/health.json',
+            handler: 'NetworkOnly',
           },
           {
             urlPattern: ({ url }) => url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'),
