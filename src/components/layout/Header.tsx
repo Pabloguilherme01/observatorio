@@ -36,17 +36,8 @@ export function Header() {
   const updatedAt = formatDate(d.meta.updatedAt);
   const moreActive = moreNavigation.some(item => item.id === activeSection);
 
-  const captureDate = new Date(d.meta.updatedAt);
-  const now = new Date();
-  const ageDays = Number.isFinite(captureDate.getTime())
-    ? Math.max(0, Math.floor((now.getTime() - captureDate.getTime()) / 86400000))
-    : 0;
-  const updateState = ageDays === 0 ? 'today' : ageDays <= 7 ? 'recent' : 'stale';
-  const freshnessLabel = updateState === 'today'
-    ? 'Captura hoje'
-    : updateState === 'recent'
-      ? 'Captura recente · ' + ageDays + (ageDays === 1 ? ' dia' : ' dias')
-      : 'Captura desatualizada · ' + ageDays + ' dias';
+  // Esta data descreve a versão local publicada, não a atualização das fontes originais.
+  // Evita classificá-la como "recente" sem uma captura individual e verificável por indicador.
 
   useEffect(() => {
     moreOpenRef.current = moreOpen;
@@ -276,15 +267,11 @@ export function Header() {
           </nav>
 
           <div
-            className={'site-header-status hidden items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[10px] font-bold lg:flex ' + (updateState === 'today'
-              ? 'border-emerald-300/20 bg-emerald-300/[0.06] text-emerald-200'
-              : updateState === 'recent'
-                ? 'border-sky-300/20 bg-sky-300/[0.06] text-sky-200'
-                : 'border-amber-300/25 bg-amber-300/[0.06] text-amber-200')}
-            aria-label={'Captura local do conjunto principal em ' + updatedAt + (updateState === 'today' ? '; captura de hoje' : updateState === 'recent' ? '; captura dos últimos 7 dias' : '; captura com mais de 7 dias')}
-            title="Data da captura local do conjunto principal; cada indicador pode ter data-base própria"
+            className="site-header-status hidden items-center gap-1.5 rounded-full border border-slate-300/20 bg-slate-300/[0.06] px-2.5 py-1.5 text-[10px] font-bold text-slate-200 lg:flex"
+            aria-label={'Versão local do conjunto publicada em ' + updatedAt + '; cada indicador pode ter data-base própria'}
+            title="Data da versão local do conjunto; consulte a data-base e a captura informada para cada fonte"
           >
-            <span className={'h-1.5 w-1.5 rounded-full ' + (updateState === 'today' ? 'bg-emerald-300' : updateState === 'recent' ? 'bg-sky-300' : 'bg-amber-300')} aria-hidden="true" />
+            <span className="h-1.5 w-1.5 rounded-full bg-slate-300" aria-hidden="true" />
             <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Captura {updatedAt}</span>
           </div>
@@ -322,7 +309,7 @@ export function Header() {
                   <span className="mobile-tools-label">Leitura</span>
                   <span className="mobile-tools-updated">
                     <CalendarDays className="h-3 w-3" aria-hidden="true" />
-                    {freshnessLabel} · {updatedAt}
+                    Versão local · {updatedAt}
                   </span>
                 </div>
                 <LanguageModeToggle />
