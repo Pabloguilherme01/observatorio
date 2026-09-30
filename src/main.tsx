@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useMemo, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './assets/styles/globals.css';
 import './assets/styles/mobile-final.css';
@@ -93,6 +93,8 @@ function PwaInstallPrompt() {
     || ('standalone' in navigator && Boolean((navigator as Navigator & { standalone?: boolean }).standalone));
 
   const [installed, setInstalled] = useState(isStandalone);
+  const installShortcutRef = useRef<HTMLButtonElement>(null);
+  const installGuideRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onBeforeInstall = (event: Event) => {
@@ -112,6 +114,54 @@ function PwaInstallPrompt() {
       window.removeEventListener('appinstalled', onInstalled);
     };
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const focusFirstControl = () => {
+      installGuideRef.current
+        ?.querySelector<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
+        ?.focus();
+    };
+    const frame = window.requestAnimationFrame(focusFirstControl);
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const guide = installGuideRef.current;
+      if (!guide) return;
+      const controls = Array.from(
+        guide.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'),
+      ).filter(node => node.tabIndex >= 0 && !node.hasAttribute('hidden'));
+      if (!controls.length) return;
+
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      window.requestAnimationFrame(() => installShortcutRef.current?.focus());
+    };
+  }, [open]);
 
   if (installed || dismissed || (!platform.mobile && !installEvent)) return null;
 
@@ -139,6 +189,7 @@ function PwaInstallPrompt() {
   return (
     <>
       <button
+        ref={installShortcutRef}
         type="button"
         className="pwa-install-shortcut"
         onClick={install}
@@ -152,6 +203,7 @@ function PwaInstallPrompt() {
       {open && (
         <div className="pwa-install-guide-backdrop" role="presentation" onClick={() => setOpen(false)}>
           <section
+            ref={installGuideRef}
             className="pwa-install-guide"
             role="dialog"
             aria-modal="true"
