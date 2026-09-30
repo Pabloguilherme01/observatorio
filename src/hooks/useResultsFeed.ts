@@ -69,8 +69,8 @@ export function isResultsWindowOpen(now = Date.now()) {
 }
 
 function getResultsFeedPhase(data: ResultsFeed | null, now = Date.now()): ResultsFeedPhase {
-  if (data?.state === 'complete') return 'complete';
   if (now < RESULTS_WINDOW_START) return 'pre_open';
+  if (data?.state === 'complete') return 'complete';
   if (now > RESULTS_WINDOW_END) return data?.state === 'live' ? 'archived_partial' : 'ended_unavailable';
   if (data?.state === 'live') {
     const capturedAt = Date.parse(data.capturedAt);
@@ -81,6 +81,10 @@ function getResultsFeedPhase(data: ResultsFeed | null, now = Date.now()): Result
 
 function isIsoDate(value: unknown): value is string {
   return typeof value === 'string' && Number.isFinite(Date.parse(value));
+}
+
+function isOptionalNonNegativeInteger(value: unknown): boolean {
+  return value === undefined || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0);
 }
 
 function isOfficialResultsUrl(value: unknown): value is string {
@@ -132,6 +136,8 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
     if (!electionCodeMatchesCargo(row.electionCode as number, payload.uf as string, row.cargo as string, payload.turn as 1 | 2)) return false;
     if (typeof row.sourceFile !== 'string' || !row.sourceFile.endsWith(`-e${String(row.electionCode).padStart(6, '0')}-u.json`)) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
+    if (!['sectionsTotal', 'sectionsCounted', 'totalVotes', 'validVotes', 'blankVotes', 'nullVotes', 'abstentions'].every(key => isOptionalNonNegativeInteger(row[key]))) return false;
+    if (typeof row.sectionsTotal === 'number' && typeof row.sectionsCounted === 'number' && row.sectionsCounted > row.sectionsTotal) return false;
     if (!Array.isArray(row.items)) return false;
     return row.items.every(item => {
       if (!item || typeof item !== 'object') return false;
@@ -139,7 +145,7 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
       if (typeof candidate.candidateId !== 'string' || !candidate.candidateId.trim()) return false;
       if (typeof candidate.candidate !== 'string' || !candidate.candidate.trim()) return false;
       if (candidate.cargo !== row.cargo) return false;
-      if (typeof candidate.votes !== 'number' || !Number.isFinite(candidate.votes) || candidate.votes < 0) return false;
+      if (typeof candidate.votes !== 'number' || !Number.isSafeInteger(candidate.votes) || candidate.votes < 0) return false;
       return true;
     });
   });
@@ -161,20 +167,14 @@ export function useResultsFeed(intervalMs = 300000) {
       setChecking(true);
       try {
         const response = await fetch(RESULTS_FEED_URL, { cache: 'no-store', headers: { Accept: 'application/json' } });
-        if (!response.ok) {
-          if (active) setData(current => current?.state === 'complete' ? current : null);
-          return;
-        }
+        if (!response.ok) return;
 
         const payload: unknown = await response.json();
-        if (!active || !isValidResultsFeed(payload)) {
-          if (active) setData(current => current?.state === 'complete' ? current : null);
-          return;
-        }
+        if (!active || !isValidResultsFeed(payload)) return;
 
         setData(payload);
       } catch {
-        if (active) setData(current => current?.state === 'complete' ? current : null);
+        // Preserve the last validated snapshot; its capturedAt drives live → stale state.
       } finally {
         if (active) setChecking(false);
       }

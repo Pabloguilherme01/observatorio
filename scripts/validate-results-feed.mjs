@@ -11,9 +11,10 @@ function electionCodeMatchesCargo(electionCode, uf, cargo, turn) {
   if (!Number.isSafeInteger(electionCode) || electionCode <= 0) return false;
   if (turn === 2 && [6257, 6259, 6261].includes(electionCode)) return false;
   const presidential = cargo === 'Presidente';
+  const governor = cargo === 'Governador';
   const stateOffice = ['Governador', 'Senador', 'Deputado Federal', 'Deputado Estadual'].includes(cargo);
   const districtOffice = cargo === 'Deputado Distrital';
-  if (turn === 2) return presidential || (uf === 'DF' ? districtOffice : stateOffice);
+  if (turn === 2) return presidential || governor;
   if (electionCode === 6257) return presidential;
   if (electionCode === 6259) return uf !== 'DF' && stateOffice;
   if (electionCode === 6261) return uf === 'DF' && districtOffice;
@@ -45,6 +46,7 @@ const errors = [];
 const warnings = [];
 const fail = message => errors.push(message);
 const isDate = value => typeof value === 'string' && Number.isFinite(Date.parse(value));
+const isOptionalNonNegativeInteger = value => value === undefined || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0);
 
 if (payload.schemaVersion !== SCHEMA_VERSION) fail('schemaVersion deve ser 3.');
 if (payload.environment !== 'official') fail('environment deve ser official.');
@@ -72,6 +74,10 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
   if (Number.isInteger(entry.electionCode) && typeof entry.cargo === 'string' && !electionCodeMatchesCargo(entry.electionCode, payload.uf, entry.cargo, payload.turn)) fail(`entry ${index}: electionCode incompatível com o cargo.`);
   if (typeof entry.sourceFile !== 'string' || !entry.sourceFile.endsWith(`-e${String(entry.electionCode).padStart(6, '0')}-u.json`)) fail(`entry ${index}: sourceFile inválido.`);
   if (!isDate(entry.referenceDate) || !isDate(entry.updatedAt)) fail(`entry ${index}: data inválida.`);
+  for (const field of ['sectionsTotal', 'sectionsCounted', 'totalVotes', 'validVotes', 'blankVotes', 'nullVotes', 'abstentions']) {
+    if (!isOptionalNonNegativeInteger(entry[field])) fail(`entry ${index}: ${field} deve ser inteiro não negativo quando informado.`);
+  }
+  if (typeof entry.sectionsTotal === 'number' && typeof entry.sectionsCounted === 'number' && entry.sectionsCounted > entry.sectionsTotal) fail(`entry ${index}: sectionsCounted não pode exceder sectionsTotal.`);
   if (!Array.isArray(entry.items)) fail(`entry ${index}: items deve ser array.`);
 
   for (const [itemIndex, item] of (entry.items ?? []).entries()) {
@@ -82,7 +88,7 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
     if (typeof item.candidateId !== 'string' || !item.candidateId.trim()) fail(`entry ${index} item ${itemIndex}: candidateId ausente.`);
     if (typeof item.candidate !== 'string' || !item.candidate.trim()) fail(`entry ${index} item ${itemIndex}: candidate ausente.`);
     if (item.cargo !== entry.cargo) fail(`entry ${index} item ${itemIndex}: cargo divergente.`);
-    if (typeof item.votes !== 'number' || !Number.isFinite(item.votes) || item.votes < 0) fail(`entry ${index} item ${itemIndex}: votes inválido.`);
+    if (typeof item.votes !== 'number' || !Number.isSafeInteger(item.votes) || item.votes < 0) fail(`entry ${index} item ${itemIndex}: votes deve ser inteiro não negativo.`);
   }
 }
 

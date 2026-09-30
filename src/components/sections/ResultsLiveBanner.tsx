@@ -4,6 +4,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 
 const RESULTS_DOCS_URL = 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados';
 const formatVotes = (value: number) => value.toLocaleString('pt-BR');
+const formatPercentage = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
 const formatCapturedAt = (value: string) => new Date(value).toLocaleString('pt-BR', {
   dateStyle: 'short',
   timeStyle: 'short',
@@ -68,13 +69,17 @@ export function ResultsLiveBanner() {
           {data.entries.map(entry => {
             const counted = entry.sectionsCounted;
             const total = entry.sectionsTotal;
-            const percentage = total && counted != null ? Math.min(100, Math.round(counted / total * 100)) : null;
+            const percentage = total && counted != null
+              ? counted >= total
+                ? 100
+                : Math.min(99.9, Math.floor((counted / total * 100) * 10) / 10)
+              : null;
             const sorted = [...entry.items].sort((a, b) => b.votes - a.votes);
             return (
               <div key={entry.sourceFile} className="rounded-xl border border-white/10 p-3 light:border-slate-200 light:bg-white">
                 <h3 className="text-sm font-bold text-slate-100 light:text-slate-900">{entry.cargo}</h3>
                 <p className="mt-1 text-xs text-slate-400">
-                  {percentage == null ? 'Seções apuradas não informadas' : `${formatVotes(counted!)} de ${formatVotes(total!)} seções · ${percentage}%`}
+                  {percentage == null ? 'Seções apuradas não informadas' : `${formatVotes(counted!)} de ${formatVotes(total!)} seções · ${formatPercentage(percentage)}%`}
                   {entry.validVotes != null ? ` · ${formatVotes(entry.validVotes)} votos válidos` : ''}
                 </p>
                 {sorted.length ? (

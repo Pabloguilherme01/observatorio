@@ -14,6 +14,7 @@ const files = [
   'src/components/DataExportActions.tsx',
   'src/components/sections/BudgetImpact.tsx',
   'src/components/sections/DemographicDynamic.tsx',
+  'src/hooks/useResultsFeed.ts',
 ];
 
 const failures = [];
@@ -68,6 +69,19 @@ if (
 else fail('verificação de reconexão não está protegida por healthcheck abortável.');
 if (connectivity.includes('hideTimerRef') && connectivity.includes('window.clearTimeout(hideTimerRef.current)')) pass('feedback de reconexão limpa timer pendente.');
 else fail('feedback de reconexão pode deixar timer pendente.');
+
+const resultsFeed = read('src/hooks/useResultsFeed.ts');
+if (
+  resultsFeed.includes("if (!response.ok) return;")
+  && resultsFeed.includes("if (!active || !isValidResultsFeed(payload)) return;")
+  && !resultsFeed.includes("setData(current => current?.state === 'complete' ? current : null)")
+  && resultsFeed.includes("now - capturedAt <= RESULTS_LIVE_MAX_AGE_MS ? 'live' : 'stale'")
+) pass('feed de resultados preserva o último snapshot validado em falhas transitórias e usa a idade para marcar stale.');
+else fail('feed de resultados pode apagar snapshot válido após falha transitória.');
+const preOpenGuard = resultsFeed.indexOf("if (now < RESULTS_WINDOW_START) return 'pre_open';");
+const completeGuard = resultsFeed.indexOf("if (data?.state === 'complete') return 'complete';");
+if (preOpenGuard >= 0 && completeGuard >= 0 && preOpenGuard < completeGuard) pass('janela pública de resultados prevalece sobre qualquer snapshot antecipado.');
+else fail('snapshot de resultados pode aparecer antes da abertura da janela pública.');
 
 const experience = read('src/components/ExperienceShell.tsx');
 if (
