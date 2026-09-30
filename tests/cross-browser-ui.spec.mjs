@@ -62,8 +62,15 @@ test.describe('bancada cross-browser de interface', () => {
       }
     } else {
       const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+      // Navegar entre várias seções pode deixar o Safari desktop estabilizando a rolagem
+      // quando o teste tenta usar o controle fixo no cabeçalho. Traga o controle para a
+      // viewport e aguarde a posição assentar; o click continua validando visibilidade real.
+      await modes.scrollIntoViewIfNeeded();
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
       for (const label of ['Explicado', 'Guiado', 'Detalhado', 'Resumo']) {
-        await modes.getByRole('button', { name: new RegExp('^' + label) }).click();
+        const modeButton = modes.getByRole('button', { name: new RegExp('^' + label) });
+        await modeButton.scrollIntoViewIfNeeded();
+        await modeButton.click();
         await expect(page.locator('html')).toHaveAttribute(
           'data-language-mode',
           label === 'Explicado' ? 'simple' : label === 'Guiado' ? 'guided' : label === 'Detalhado' ? 'technical' : 'summary',

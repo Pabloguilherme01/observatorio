@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpenCheck, CheckCircle2, Compass, GraduationCap, RotateCcw } from 'lucide-react';
+import { ArrowRight, BookOpen, BookOpenCheck, Compass, GraduationCap, Lightbulb, RotateCcw } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { STORAGE_NAMESPACE } from '../../config/version';
 import { useLanguageMode } from '../../context/LanguageModeContext';
@@ -18,50 +18,62 @@ const steps = [
   {
     id: 'valor',
     target: 'resumo',
+    action: 'Ir ao resumo',
     skill: 'Leitura',
     question: 'O que este número mede — e em qual unidade?',
     title: '1. Identifique o que o número mede',
     description: 'Comece pelo valor e pela unidade. Evite comparar antes de saber exatamente o que está sendo contado.',
+    hint: 'Procure o nome completo do indicador, a unidade — como habitantes, eleitores ou reais — e o valor mostrado.',
   },
   {
     id: 'referencia',
     target: 'dashboard',
+    action: 'Ir aos indicadores',
     skill: 'Tempo',
     question: 'De quando é o dado e qual é a sua natureza?',
     title: '2. Confira período e natureza',
     description: 'Veja a data de referência e se o indicador é publicado, histórico, planejado, recorte datado ou derivado.',
+    hint: 'Localize o mês, ano ou data exata. “Atual” ainda precisa ser lido junto da referência indicada no cartão.',
   },
   {
     id: 'contexto',
     target: 'eleitorado',
+    action: 'Ver eleitorado',
     skill: 'Recorte',
     question: 'Estou comparando universos e bases equivalentes?',
     title: '3. Separe universos e recortes',
     description: 'Observe população, eleitorado e outros universos separadamente. Diferenças de base não são erro automático.',
+    hint: 'Confira território, período e grupo contado. População e eleitorado são bases diferentes e não medem comparecimento.',
   },
   {
     id: 'utilidade',
     target: 'acao',
+    action: 'Abrir serviços',
     skill: 'Utilidade',
     question: 'Qual canal oficial atende a necessidade prática?',
     title: '4. Leve a informação ao serviço certo',
     description: 'Use os canais oficiais quando a necessidade for prática: atendimento, documentos, saúde, assistência ou transparência.',
+    hint: 'Leia o que o serviço resolve e confirme se o link leva ao órgão municipal, estadual ou federal responsável.',
   },
   {
     id: 'fonte',
     target: 'fontes',
+    action: 'Conferir fontes',
     skill: 'Verificação',
     question: 'Quem publicou, quando e com quais limitações?',
     title: '5. Confira a origem',
     description: 'Abra a fonte, confirme instituição e data e leia as limitações antes de usar o número em uma conclusão.',
+    hint: 'Procure instituição, data de publicação, método e limitações. A data da publicação pode ser diferente do período medido.',
   },
   {
     id: 'quiz',
     target: 'quiz',
+    action: 'Fazer o quiz',
     skill: 'Revisão',
     question: 'Consigo reconhecer valor, período, natureza e fonte?',
     title: '6. Teste a compreensão',
     description: 'Use o quiz de educação cívica para revisar conceitos. A pontuação é pessoal e não indica preferência política.',
+    hint: 'Tente responder com base no cartão e depois leia a explicação. O quiz revisa conceitos; não mede preferência política.',
   },
 ] as const;
 
@@ -111,33 +123,33 @@ export function GuidedLearningPanel() {
         <div className="guided-learning-head">
           <div>
             <span className="guided-learning-eyebrow"><GraduationCap aria-hidden="true" /> Aprendizado guiado</span>
-            <h2 id="guided-learning-title">Como ler dados públicos em etapas</h2>
-            <p>A trilha organiza a navegação; os valores continuam vindo dos mesmos cards, fontes e métodos dos outros modos.</p>
-            {hasProgress && !allVisited ? <small className="guided-learning-resume">Retome de onde parou: {visitedSet.size} de {steps.length} etapas já foram visitadas.</small> : null}
+            <h2 id="guided-learning-title">Expedição pelos dados públicos</h2>
+            <p>Cada parada traz uma pergunta, uma pista opcional e um lugar para investigar. Explore no seu ritmo; os dados e as fontes continuam os mesmos.</p>
+            {hasProgress && !allVisited ? <small className="guided-learning-resume">Sua rota: {visitedSet.size} de {steps.length} paradas já abertas.</small> : null}
           </div>
           <div
             className="guided-learning-progress"
             role="progressbar"
-            aria-label="Progresso da trilha guiada"
+            aria-label="Progresso da rota de investigação"
             aria-valuemin={0}
             aria-valuemax={steps.length}
             aria-valuenow={visitedSet.size}
-            aria-valuetext={`${visitedSet.size} de ${steps.length} etapas visitadas`}
+            aria-valuetext={`${visitedSet.size} de ${steps.length} paradas abertas`}
           >
             <strong>{visitedSet.size}/{steps.length}</strong>
-            <span>etapas visitadas</span>
+            <span>paradas abertas</span>
             <div aria-hidden="true"><i style={{ width: progress + '%' }} /></div>
           </div>
         </div>
 
         <div className="guided-learning-next-card" aria-live="polite">
-          <span><Compass aria-hidden="true" /> {allVisited ? 'Trilha percorrida' : hasProgress ? 'Continue de onde parou' : 'Próxima etapa sugerida'}</span>
-          <strong>{allVisited ? 'As 6 etapas foram visitadas' : continueStep.title}</strong>
-          <small>{allVisited ? 'Isso registra a navegação pela trilha, não uma nota nem uma avaliação de conhecimento. Você pode revisar qualquer etapa.' : continueStep.question}</small>
+          <span><Compass aria-hidden="true" /> {allVisited ? 'Rota percorrida' : hasProgress ? 'Continue sua expedição' : 'Próxima parada'}</span>
+          <strong>{allVisited ? 'Você abriu as seis paradas' : continueStep.title}</strong>
+          <small>{allVisited ? 'Isso registra as paradas abertas, não uma nota nem uma avaliação de conhecimento. Você pode voltar a qualquer ponto.' : continueStep.question}</small>
         </div>
 
         <details className="guided-learning-glossary">
-          <summary>Entenda os rótulos dos dados</summary>
+            <summary>Kit de pistas: entenda os rótulos</summary>
           <div>
             {dataTerms.map(term => (
               <span key={term.label}>
@@ -148,40 +160,56 @@ export function GuidedLearningPanel() {
           </div>
         </details>
 
-        <div className="guided-learning-grid">
-          {steps.map(step => {
+        <div className="guided-learning-route-heading">
+          <div>
+            <span><Compass aria-hidden="true" /> Rota de investigação</span>
+            <p>Seis paradas curtas para observar, conferir e usar dados com cuidado.</p>
+          </div>
+          <small>Sem corrida. Avance no seu ritmo.</small>
+        </div>
+
+        <ol className="guided-learning-grid" aria-label="Seis paradas da rota de investigação">
+          {steps.map((step, index) => {
             const done = visitedSet.has(step.id);
             const isNext = !allVisited && nextUnvisitedStep?.id === step.id;
             return (
-              <button
-                key={step.id}
-                type="button"
-                className={`guided-learning-step ${done ? 'is-visited' : ''} ${isNext ? 'is-next' : ''}`}
-                onClick={() => openStep(step)}
-                aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}. Pergunta-guia: ${step.question}`}
-                aria-current={isNext ? 'step' : undefined}
-              >
-                <span className="guided-learning-check" aria-hidden="true">{done ? <CheckCircle2 /> : <BookOpenCheck />}</span>
-                <span className="guided-learning-copy">
-                  <em>{step.skill}{isNext ? ' · próxima' : done ? ' · visitada' : ''}</em>
-                  <strong>{step.title}</strong>
-                  <small className="guided-learning-question">{step.question}</small>
-                  <small>{step.description}</small>
-                </span>
-                <ArrowRight aria-hidden="true" />
-              </button>
+              <li key={step.id} className={`guided-learning-stop ${done ? 'is-opened' : ''} ${isNext ? 'is-next' : ''}`}>
+                <span className="guided-learning-stop-marker" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <div className="guided-learning-stop-card">
+                  <button
+                    type="button"
+                    className={`guided-learning-step ${done ? 'is-opened' : ''} ${isNext ? 'is-next' : ''}`}
+                    onClick={() => openStep(step)}
+                    aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}. ${step.action}. Pergunta-guia: ${step.question}`}
+                    aria-current={isNext ? 'step' : undefined}
+                  >
+                    <span className="guided-learning-copy">
+                      <em>{isNext ? 'Sua próxima parada' : done ? 'Destino aberto' : step.skill}</em>
+                      <strong>{step.title.replace(/^\d+\.\s*/, '')}</strong>
+                      <small className="guided-learning-question">{step.question}</small>
+                      <small>{step.description}</small>
+                      <span className="guided-learning-step-action">{step.action}<ArrowRight aria-hidden="true" /></span>
+                    </span>
+                    <span className="guided-learning-check" aria-hidden="true">{done ? <BookOpen /> : <BookOpenCheck />}</span>
+                  </button>
+                  <details className="guided-learning-hint">
+                    <summary><Lightbulb aria-hidden="true" /> Abrir uma pista · {step.skill}</summary>
+                    <p>{step.hint}</p>
+                  </details>
+                </div>
+              </li>
             );
           })}
-        </div>
+        </ol>
 
         <div className="guided-learning-footer">
-          <p><strong>Neutralidade:</strong> este modo ensina como ler e verificar dados. Ele não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais.</p>
+          <p><strong>Jogo limpo:</strong> a rota ensina a ler e verificar dados públicos. O progresso registra apenas as paradas abertas; não confirma a leitura nem avalia o que você aprendeu. O modo não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais.</p>
           <div>
             <button type="button" className="guided-learning-reset" onClick={reset} disabled={visited.length === 0}>
               <RotateCcw aria-hidden="true" /> Reiniciar trilha
             </button>
             <button type="button" className="guided-learning-next" onClick={() => openStep(continueStep)}>
-              {allVisited ? 'Revisar trilha · etapa 1' : hasProgress ? `Retomar · ${continueStep.title.replace(/^\d+\.\s*/, '')}` : `Começar · ${continueStep.title.replace(/^\d+\.\s*/, '')}`}
+              {allVisited ? 'Revisar rota · parada 1' : hasProgress ? `Retomar · ${continueStep.title.replace(/^\d+\.\s*/, '')}` : `Começar · ${continueStep.title.replace(/^\d+\.\s*/, '')}`}
               <ArrowRight aria-hidden="true" />
             </button>
           </div>

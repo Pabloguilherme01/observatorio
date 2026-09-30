@@ -202,7 +202,7 @@ test.describe('aprendizado guiado no mobile', () => {
         expect(control.height).toBeGreaterThanOrEqual(44);
       }
 
-      await guide.getByText('Entenda os rótulos dos dados').click();
+      await guide.getByText('Kit de pistas: entenda os rótulos').click();
       await expect(guide.locator('.guided-learning-glossary')).toHaveAttribute('open', '');
       const glossaryWidth = await guide.locator('.guided-learning-glossary').evaluate(node => ({
         client: node.clientWidth,
@@ -235,7 +235,7 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
 
   await page.goto('./?leitura=guided#aprendizado-guiado');
 
-  await expect(guide.getByText(/Retome de onde parou: 1 de 6 etapas já foram visitadas/i)).toBeVisible();
+  await expect(guide.getByText(/Sua rota: 1 de 6 paradas já abertas/i)).toBeVisible();
   await expect(guide.getByRole('button', { name: /Retomar · Confira período e natureza/i })).toBeVisible();
 
   await page.evaluate(key => {
@@ -244,10 +244,10 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
   }, storageKey);
   await page.reload();
 
-  await expect(guide.getByText('Trilha percorrida')).toBeVisible();
-  await expect(guide.getByText('As 6 etapas foram visitadas')).toBeVisible();
+  await expect(guide.getByText('Rota percorrida')).toBeVisible();
+  await expect(guide.getByText('Você abriu as seis paradas')).toBeVisible();
   await expect(guide.getByText(/não uma nota nem uma avaliação de conhecimento/i)).toBeVisible();
-  await expect(guide.getByRole('button', { name: /Revisar trilha · etapa 1/i })).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Revisar rota · parada 1/i })).toBeVisible();
 
   await guide.getByRole('button', { name: /Reiniciar trilha/i }).click();
   await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();

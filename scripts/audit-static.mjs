@@ -20,6 +20,7 @@ const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 const ciWorkflow = read('.github/workflows/ci.yml');
 const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
+const sourceHealthWorkflow = read('.github/workflows/source-health.yml');
 const viteSource = vite;
 const deploySource = deployWorkflow;
 const spaFallback = read('public/404.html');
@@ -119,6 +120,7 @@ for (const file of workflowFiles) {
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
 must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json registra gate de vulnerabilidades de dependências');
+must(pkgScripts['test:source-audit-policy'] === 'node scripts/test-source-audit-policy.mjs', 'package.json registra teste determinístico da política de disponibilidade das fontes');
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
     && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
@@ -137,6 +139,8 @@ must(
   'CI e deploy usam Playwright fixado pelo lockfile e preparam motores antes da auditoria cross-browser',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
+must(ciWorkflow.includes('npm run test:source-audit-policy'), 'CI testa a política de indisponibilidade externa sem depender da internet');
+must(sourceHealthWorkflow.includes("SOURCE_AUDIT_STRICT: 'true'") && sourceHealthWorkflow.includes("AUDIT_PUBLIC_SERVICES_LIVE: 'true'"), 'monitor agendado de fontes usa modo estrito e verifica atalhos públicos ao vivo');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
@@ -147,7 +151,13 @@ must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
 must(!read('src/components/sections/PoliticalResearch.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalResearch.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
-must(read('src/components/layout/Header.tsx').includes('Captura ') && read('src/components/layout/Header.tsx').includes('updatedAt'), 'cabeçalho exibe a data da captura local do conjunto principal');
+must(
+  read('src/components/layout/Header.tsx').includes('Versão local do conjunto publicada em')
+    && read('src/components/layout/Header.tsx').includes('cada indicador pode ter data-base própria')
+    && read('src/components/layout/Header.tsx').includes('<span>Versão {updatedAt}</span>')
+    && !read('src/components/layout/Header.tsx').includes('Captura recente'),
+  'cabeçalho distingue a versão local do frescor individual das fontes',
+);
 must(
   deployWorkflow.includes('npm run audit:all')
     || (deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile')),

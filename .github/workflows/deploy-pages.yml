@@ -39,7 +39,6 @@ jobs:
       - name: Run complete quality gate
         env:
           AUDIT_PUBLIC_SERVICES_LIVE: 'true'
-          SOURCE_AUDIT_ALLOW_SERVER_ERRORS: 'true'
         run: npm run audit:all
       - name: Validate TSE candidate snapshot contract
         env:

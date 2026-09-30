@@ -23,6 +23,8 @@ jobs:
       - name: Dependency vulnerability gate
         run: npm run audit:deps
       - name: Check source reachability
+        env:
+          SOURCE_AUDIT_STRICT: 'true'
         run: npm run audit:sources
       - name: Check direct public-service shortcuts
         env:

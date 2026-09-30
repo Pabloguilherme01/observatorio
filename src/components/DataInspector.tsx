@@ -1,10 +1,11 @@
 import { formatIndicatorStatus } from '../utils/dataLabels';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
+import { Bookmark, BookmarkCheck, Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
 import { copyText } from '../lib/clipboard';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { buildCanonicalUrl, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../lib/urlState';
+import { isIndicatorSaved, toggleSavedIndicator } from '../lib/savedIndicators';
 
 type InspectorDetail = {
   label: string;
@@ -57,6 +58,7 @@ export function DataInspector() {
   const [citationCopied, setCitationCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [actionError, setActionError] = useState(false);
+  const [saved, setSaved] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -73,6 +75,7 @@ export function DataInspector() {
       setCitationCopied(false);
       setLinkCopied(false);
       setActionError(false);
+      setSaved(isIndicatorSaved(event.detail.inspectId ?? inspectDataId(event.detail)));
     };
     window.addEventListener('observatorio:inspect-data', onInspect);
     return () => {
@@ -186,6 +189,26 @@ export function DataInspector() {
       : {},
     data.sectionId ? data.sectionId : (window.location.hash || 'dashboard'),
   );
+  const correctionBody = [
+    '## Dado a verificar',
+    `- Indicador: ${data.label}`,
+    `- Valor exibido: ${data.value}`,
+    `- Fonte: ${source ? `${source.institution} — ${source.label}` : 'não informada'}`,
+    `- Referência: ${referenceLabel ?? 'não informada'}`,
+    `- Link para o contexto: ${canonicalUrl}`,
+    '',
+    '## O que deve ser conferido?',
+    'Descreva a correção, atualização ou evidência sugerida. Não inclua dados pessoais.',
+  ].join('\n');
+  const correctionUrl = new URL('https://github.com/Pabloguilherme01/observatorio/issues/new');
+  correctionUrl.searchParams.set('title', `Revisar dado: ${data.label}`);
+  correctionUrl.searchParams.set('labels', 'correcao');
+  correctionUrl.searchParams.set('body', correctionBody);
+
+  const toggleSaved = () => {
+    const next = toggleSavedIndicator({ id: data.inspectId ?? inspectDataId(data), title: data.label, url: canonicalUrl });
+    setSaved(next.some(item => item.id === (data.inspectId ?? inspectDataId(data))));
+  };
 
   const copyLink = async () => {
     if (await copyText(canonicalUrl)) {
@@ -266,11 +289,18 @@ export function DataInspector() {
 
           {actionError && <p className="text-xs text-amber-300" role="status">Não foi possível concluir a ação. Tente novamente.</p>}
           <div className="data-inspector-actions flex flex-wrap gap-2">
+            <button type="button" onClick={toggleSaved} aria-pressed={saved} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-violet-300/20 bg-violet-300/[0.06] px-3 py-2 text-xs font-bold text-violet-100 light:border-violet-200 light:bg-violet-50 light:text-violet-800">
+              {saved ? <BookmarkCheck className="h-3.5 w-3.5" aria-hidden="true" /> : <Bookmark className="h-3.5 w-3.5" aria-hidden="true" />}
+              {saved ? 'Remover dos salvos' : 'Salvar para depois'}
+            </button>
             {source?.url && (
               <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/10 px-3 py-2 text-xs font-bold text-sky-200 light:border-sky-200 light:bg-sky-50 light:text-sky-800">
                 <ExternalLink className="h-3.5 w-3.5" /> Ver fonte
               </a>
             )}
+            <a href={correctionUrl.toString()} target="_blank" rel="noopener noreferrer" aria-label={`Sugerir correção para ${data.label}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-3 py-2 text-xs font-bold text-amber-100 light:border-amber-200 light:bg-amber-50 light:text-amber-800">
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> Sugerir correção
+            </a>
             <button type="button" onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
               {copied ? <Check className="h-3.5 w-3.5" /> : <Clipboard className="h-3.5 w-3.5" />}
               {copied ? 'Copiado' : 'Copiar'}

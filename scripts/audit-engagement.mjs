@@ -48,7 +48,9 @@ must(
   (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
   trust.includes('Confiança começa pela origem') &&
   civic.includes('Da evidência à fonte') &&
-  guided.includes('Como ler dados públicos em etapas') &&
+  guided.includes('Expedição pelos dados públicos') &&
+  guided.includes('Rota de investigação') &&
+  guided.includes('Abrir uma pista') &&
   guided.includes('não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais'),
   'cada modo possui narrativa editorial própria sem alterar a neutralidade'
 );
