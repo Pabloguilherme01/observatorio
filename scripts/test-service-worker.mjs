@@ -3,10 +3,19 @@ import { strict as assert } from 'node:assert';
 
 const sw = readFileSync('dist/sw.js', 'utf8');
 const manifest = JSON.parse(readFileSync('dist/manifest.webmanifest', 'utf8'));
+const runtimeCleanup = readFileSync('dist/sw-runtime-cleanup.js', 'utf8');
 
 assert.match(sw, /createHandlerBoundToURL\(["']\/observatorio\/index\.html["']\)/);
 assert.match(sw, /\.pathname\.startsWith\(["']\/observatorio\/api\/v1\/["']\)/);
 assert.doesNotMatch(sw, /BASE_PATH\s*\+\s*API_ROOT/);
+assert.match(sw, /sw-runtime-cleanup\.js/);
+for (const cacheName of ['observatorio-static', 'observatorio-fonts', 'observatorio-documents', 'observatorio-api']) {
+  assert.match(sw, new RegExp(`cacheName:[\"']?${cacheName.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\assert.doesNotMatch(sw, /BASE_PATH\s*\+\s*API_ROOT/);
+')}[\"']?`));
+}
+assert.doesNotMatch(sw, /observatorio-(?:static|fonts|documents|api)-v\d+/);
+assert.match(runtimeCleanup, /observatorio-\(\?:static\|fonts\|documents\|api\)-v\\d\+\$/);
+assert.match(runtimeCleanup, /caches\.delete\(key\)/);
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-192.png' && icon.purpose.includes('maskable')));
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-512.png' && icon.purpose.includes('maskable')));
 
