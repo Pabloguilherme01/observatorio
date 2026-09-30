@@ -123,19 +123,23 @@ must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json 
 must(pkgScripts['test:source-audit-policy'] === 'node scripts/test-source-audit-policy.mjs', 'package.json registra teste determinístico da política de disponibilidade das fontes');
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
-    && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
+    && ciWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
+    && ciWorkflow.includes('project: chrome-desktop')
+    && ciWorkflow.includes('engine: chromium')
+    && ciWorkflow.includes('project: firefox-desktop')
+    && ciWorkflow.includes('engine: firefox')
+    && ciWorkflow.includes('project: safari-desktop')
+    && ciWorkflow.includes('project: chrome-android')
+    && ciWorkflow.includes('project: safari-iphone')
+    && ciWorkflow.includes('project: safari-iphone-se')
+    && ciWorkflow.includes('engine: webkit')
     && ciWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
-    && ciWorkflow.includes('chrome-desktop')
-    && ciWorkflow.includes('firefox-desktop')
-    && ciWorkflow.includes('safari-desktop')
-    && ciWorkflow.includes('chrome-android')
-    && ciWorkflow.includes('safari-iphone')
-    && ciWorkflow.includes('safari-iphone-se')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
+    && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
     && !deployWorkflow.includes('playwright install')
     && !deployWorkflow.includes('playwright test'),
-  'CI concentra a matriz Playwright e o deploy não repete a suíte cross-browser',
+  'CI mantém seis perfis Playwright instalando apenas o motor necessário e o deploy não repete a suíte cross-browser',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
 must(ciWorkflow.includes('npm run test:source-audit-policy'), 'CI testa a política de indisponibilidade externa sem depender da internet');
