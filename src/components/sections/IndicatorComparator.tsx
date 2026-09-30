@@ -5,6 +5,7 @@ import { observatorioData as data } from '../../data/observatorioData';
 import type { MunicipalIndicator } from '../../types/observatorio';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { formatBudgetCurrency, formatDate, formatNumber, formatPercent } from '../../utils/formatters';
+import { copyText } from '../../lib/clipboard';
 
 const comparableIndicators = data.indicators.filter(
   (indicator): indicator is MunicipalIndicator & { readonly value: number } =>
@@ -99,12 +100,8 @@ export function IndicatorComparator() {
     const url = new URL(window.location.href);
     url.searchParams.set('comparar', left.id);
     url.searchParams.set('com', right.id);
-    try {
-      await navigator.clipboard.writeText(url.toString());
-      setShareMessage('Link da comparação copiado.');
-    } catch {
-      setShareMessage('Não foi possível copiar. Copie o endereço da página.');
-    }
+    const copied = await copyText(url.toString());
+    setShareMessage(copied ? 'Link da comparação copiado.' : 'Não foi possível copiar. Copie o endereço da página.');
   };
 
   return (
