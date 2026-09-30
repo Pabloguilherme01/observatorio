@@ -30,6 +30,9 @@ jobs:
       - name: Check source reachability
         env:
           SOURCE_AUDIT_STRICT: 'true'
+          SOURCE_AUDIT_ATTEMPTS: '4'
+          SOURCE_AUDIT_TIMEOUT_MS: '12000'
+          SOURCE_AUDIT_CONCURRENCY: '2'
         run: npm run audit:sources
       - name: Check direct public-service shortcuts
         env:
