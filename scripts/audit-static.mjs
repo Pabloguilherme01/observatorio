@@ -50,6 +50,7 @@ must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
 must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da versão');
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
+must(footerSource.includes('Edição-base em') && footerSource.includes('referência temporal, publicação e fonte') && !footerSource.includes('Painel atualizado em'), 'rodapé não confunde data da edição com frescor individual das fontes');
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
 must(fs.existsSync(path.join(root, 'src/assets/styles/final-ui.css')) && appSource.includes("../assets/styles/final-ui.css"), 'camada visual final está consolidada em um único stylesheet global');
 must(!fs.existsSync(path.join(root, 'src/assets/styles/premium-finish.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/visual-final.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/site-final.css')), 'camadas visuais globais antigas não permanecem duplicadas');
@@ -58,7 +59,11 @@ must(deploySource.includes("status=\"$(curl -sS --retry 3") && deploySource.incl
 must(!vite.includes('allowedHosts: true'), 'Vite não aceita qualquer hostname no servidor de desenvolvimento');
 const resultsConfig = read('src/data/resultsConfig.ts');
 const dataExport = read('src/components/DataExportActions.tsx');
+const footerSource = read('src/components/layout/Footer.tsx');
 must(vite.includes("src: BASE_PATH + 'pwa-192.png'") && vite.includes("src: BASE_PATH + 'pwa-512.png'") && vite.includes('scope: BASE_PATH'), 'ícones PNG e escopo PWA respeitam o subcaminho publicado');
+must(!vite.includes("orientation: 'portrait-primary'") && !vite.includes('orientation: "portrait-primary"'), 'PWA não restringe orientação e preserva uso em landscape');
+must(vite.includes("url.pathname === '/observatorio/api/v1/health.json'") && vite.includes("handler: 'NetworkOnly'"), 'healthcheck publicado nunca usa cache do Service Worker como prova de conectividade');
+
 must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("url.pathname.startsWith('/observatorio/api/v1/')"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
 must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.png"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
