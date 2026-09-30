@@ -137,6 +137,12 @@ jobs:
           printf '%s' "$manifest" | grep -F 'Observatório Águas Lindas 2026'
           printf '%s' "$manifest" | grep -F 'pwa-192.png'
           printf '%s' "$manifest" | grep -F 'pwa-512.png'
+          accessibility="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/acessibilidade.html)"
+          printf '%s' "$accessibility" | grep -F '<h1>Acessibilidade</h1>'
+          printf '%s' "$accessibility" | grep -F 'uso em retrato ou paisagem'
+          privacy="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/privacidade.html)"
+          printf '%s' "$privacy" | grep -F '<h1>Privacidade e armazenamento local</h1>'
+          printf '%s' "$privacy" | grep -F 'sendDefaultPii: false'
           for icon in pwa-192.png pwa-512.png apple-touch-icon.png; do
             bytes="$(curl -fsSL --retry 3 --max-time 20 "https://pabloguilherme01.github.io/observatorio/$icon" | wc -c)"
             test "$bytes" -gt 1000
