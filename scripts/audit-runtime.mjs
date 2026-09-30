@@ -14,6 +14,7 @@ const files = [
   'src/components/DataExportActions.tsx',
   'src/components/sections/BudgetImpact.tsx',
   'src/components/sections/DemographicDynamic.tsx',
+  'src/hooks/useResultsFeed.ts',
 ];
 
 const failures = [];
@@ -68,6 +69,15 @@ if (
 else fail('verificação de reconexão não está protegida por healthcheck abortável.');
 if (connectivity.includes('hideTimerRef') && connectivity.includes('window.clearTimeout(hideTimerRef.current)')) pass('feedback de reconexão limpa timer pendente.');
 else fail('feedback de reconexão pode deixar timer pendente.');
+
+const resultsFeed = read('src/hooks/useResultsFeed.ts');
+if (
+  resultsFeed.includes("if (!response.ok) return;")
+  && resultsFeed.includes("if (!active || !isValidResultsFeed(payload)) return;")
+  && !resultsFeed.includes("setData(current => current?.state === 'complete' ? current : null)")
+  && resultsFeed.includes("capturedAt drives live → stale state")
+) pass('feed de resultados preserva o último snapshot validado em falhas transitórias.');
+else fail('feed de resultados pode apagar snapshot válido após falha transitória.');
 
 const experience = read('src/components/ExperienceShell.tsx');
 if (
