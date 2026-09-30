@@ -9,7 +9,7 @@ export function Footer() {
         <div className="site-footer-brand">
           <span className="site-footer-kicker">Observatório público</span>
           <strong>Águas Lindas de Goiás · {d.meta.edition}</strong>
-          <small>Painel atualizado em {formatDate(d.meta.updatedAt)} · cada indicador mantém sua própria referência temporal e fonte.</small>
+          <small>Edição-base em {formatDate(d.meta.updatedAt)} · cada indicador mantém sua própria referência temporal, publicação e fonte.</small>
         </div>
 
         <nav className="site-footer-links" aria-label="Links do rodapé">
