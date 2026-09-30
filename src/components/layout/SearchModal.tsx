@@ -517,11 +517,13 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
             const indicator = item.kind === 'data' && item.serviceQuery
               ? d.indicators.find(entry => entry.id === item.serviceQuery)
               : undefined;
+            const indicatorSource = indicator ? sourceForId(indicator.sourceId) : undefined;
+            const indicatorReferenceDate = indicator?.referenceDate ?? indicatorSource?.referenceDate;
             const indicatorContext = indicator
               ? [
                   destinationLabel(item.id),
                   formatIndicatorStatus(indicator.status),
-                  indicator.referenceDate ? `ref. ${formatDate(indicator.referenceDate)}` : 'referência não informada',
+                  indicatorReferenceDate ? `ref. ${formatDate(indicatorReferenceDate)}` : 'referência não informada',
                   sourceLabel(indicator.sourceId),
                 ].filter(Boolean).join(' · ')
               : destinationLabel(item.id);
