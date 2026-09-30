@@ -90,10 +90,11 @@ export function ConnectivityStatus() {
       className={'connectivity-status connectivity-status-' + state}
       role="status"
       aria-live="polite"
+      aria-atomic="true"
       aria-label="Status de conexão"
     >
       <span className="connectivity-status-icon" aria-hidden="true">
-        {restored ? <Wifi /> : <WifiOff />}
+        {restored ? <Wifi /> : checking ? <RefreshCw className="is-spinning" /> : <WifiOff />}
       </span>
       <span className="connectivity-status-copy">
         <strong>{restored ? 'Conexão restabelecida' : checking ? 'Verificando conexão…' : 'Sem conexão'}</strong>
