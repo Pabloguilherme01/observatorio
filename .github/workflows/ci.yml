@@ -30,6 +30,30 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      - name: Core quality contract
+        run: npm run quality:check
+
+      - name: Audit practical usability
+        run: npm run audit:usability
+
+      - name: Audit public-service catalog contract
+        run: npm run audit:public-services
+
+      - name: Validate observatory data contracts
+        run: npm run validate:observatorio
+
+      - name: Runtime hardening audit
+        run: npm run audit:runtime
+
+      - name: Audit engagement contracts
+        run: npm run audit:engagement
+
+      - name: Audit quiz integrity
+        run: npm run audit:quiz
+
+      - name: Validate TSE architecture isolation
+        run: npm run audit:tse-architecture
+
       - name: Test first and second turn results contracts
         run: npm run test:results
 
@@ -41,6 +65,27 @@ jobs:
 
       - name: Test unavailable TSE source handling
         run: npm run test:tse-unavailable
+
+      - name: Validate TSE candidate snapshot contract
+        run: npm run validate:tse
+
+      - name: Validate candidate source guard
+        run: node scripts/test-candidate-source-guard.mjs
+
+      - name: Dependency vulnerability gate
+        run: npm run audit:deps
+
+      - name: Validate production results feed contract
+        run: npm run validate:results
+
+      - name: Validate synthetic results contract fixture
+        env:
+          RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
+          REQUIRE_RESULTS_FEED: 'true'
+        run: npm run validate:results
+
+      - name: Verify JWS implementation
+        run: npm run test:jws
 
       - name: Build
         run: npm run build
@@ -58,13 +103,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project:
-          - chrome-desktop
-          - firefox-desktop
-          - safari-desktop
-          - chrome-android
-          - safari-iphone
-          - safari-iphone-se
+        include:
+          - project: chrome-desktop
+            engine: chromium
+          - project: firefox-desktop
+            engine: firefox
+          - project: safari-desktop
+            engine: webkit
+          - project: chrome-android
+            engine: chromium
+          - project: safari-iphone
+            engine: webkit
+          - project: safari-iphone-se
+            engine: webkit
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -78,8 +129,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Install cross-browser engines
-        run: npm exec -- playwright install --with-deps chromium firefox webkit
+      - name: Install browser engine
+        run: npm exec -- playwright install --with-deps "${{ matrix.engine }}"
 
       - name: Cross-browser audit
         run: npm exec -- playwright test --config=playwright.config.mjs --project="${{ matrix.project }}"

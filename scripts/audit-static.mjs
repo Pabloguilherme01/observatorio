@@ -123,23 +123,66 @@ must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json 
 must(pkgScripts['test:source-audit-policy'] === 'node scripts/test-source-audit-policy.mjs', 'package.json registra teste determinístico da política de disponibilidade das fontes');
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
-    && ciWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
+    && ciWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
+    && ciWorkflow.includes('project: chrome-desktop')
+    && ciWorkflow.includes('engine: chromium')
+    && ciWorkflow.includes('project: firefox-desktop')
+    && ciWorkflow.includes('engine: firefox')
+    && ciWorkflow.includes('project: safari-desktop')
+    && ciWorkflow.includes('project: chrome-android')
+    && ciWorkflow.includes('project: safari-iphone')
+    && ciWorkflow.includes('project: safari-iphone-se')
+    && ciWorkflow.includes('engine: webkit')
     && ciWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
-    && ciWorkflow.includes('chrome-desktop')
-    && ciWorkflow.includes('firefox-desktop')
-    && ciWorkflow.includes('safari-desktop')
-    && ciWorkflow.includes('chrome-android')
-    && ciWorkflow.includes('safari-iphone')
-    && ciWorkflow.includes('safari-iphone-se')
-    && deployWorkflow.includes('npm exec -- playwright install --with-deps chromium firefox webkit')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
-    && !deployWorkflow.includes('npm install playwright')
-    && !deployWorkflow.includes('npx playwright'),
-  'CI e deploy usam Playwright fixado pelo lockfile e preparam motores antes da auditoria cross-browser',
+    && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
+    && !deployWorkflow.includes('playwright install')
+    && !deployWorkflow.includes('playwright test'),
+  'CI mantém seis perfis Playwright instalando apenas o motor necessário e o deploy não repete a suíte cross-browser',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
+const playwrightConfig = read('playwright.config.mjs');
+must(
+  playwrightConfig.includes('fullyParallel: true')
+    && playwrightConfig.includes('workers: process.env.CI ? 2 : undefined'),
+  'Playwright paraleliza testes isolados com dois workers no CI para reduzir latência sem saturar o runner',
+);
 must(ciWorkflow.includes('npm run test:source-audit-policy'), 'CI testa a política de indisponibilidade externa sem depender da internet');
+must(
+  [
+    'npm run quality:check',
+    'npm run audit:usability',
+    'npm run audit:public-services',
+    'npm run validate:observatorio',
+    'npm run audit:runtime',
+    'npm run audit:engagement',
+    'npm run audit:quiz',
+    'npm run audit:tse-architecture',
+    'npm run validate:tse',
+    'npm run audit:deps',
+    'npm run validate:results',
+    'npm run test:jws',
+    'npm run audit:bundle',
+    'npm run test:pwa',
+  ].every(command => ciWorkflow.includes(command)),
+  'CI principal reúne todos os gates essenciais antes da publicação',
+);
+must(
+  deployWorkflow.includes('workflow_run:')
+    && deployWorkflow.includes('workflows: ["CI"]')
+    && deployWorkflow.includes("github.event.workflow_run.conclusion == 'success'")
+    && deployWorkflow.includes("github.event.workflow_run.event == 'push'")
+    && deployWorkflow.includes("github.event.workflow_run.head_branch == 'main'")
+    && deployWorkflow.includes('github.event.workflow_run.head_sha')
+    && deployWorkflow.includes('Require successful push CI for manual deploys'),
+  'deploy publica somente SHA da main aprovado pelo CI, inclusive no acionamento manual',
+);
+must(
+  deployWorkflow.includes('OBSERVATORIO_COMMIT_SHA')
+    && vite.includes('process.env.OBSERVATORIO_COMMIT_SHA ?? process.env.GITHUB_SHA'),
+  'metadado público registra exatamente o commit validado pelo CI',
+);
 must(sourceHealthWorkflow.includes("SOURCE_AUDIT_STRICT: 'true'") && sourceHealthWorkflow.includes("AUDIT_PUBLIC_SERVICES_LIVE: 'true'"), 'monitor agendado de fontes usa modo estrito e verifica atalhos públicos ao vivo');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
@@ -159,11 +202,15 @@ must(
   'cabeçalho distingue a versão local do frescor individual das fontes',
 );
 must(
-  deployWorkflow.includes('npm run audit:all')
-    || (deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile')),
-  'deploy exige auditorias principais',
+  deployWorkflow.includes('npm run audit:deps')
+    && deployWorkflow.includes('npm run validate:tse')
+    && deployWorkflow.includes('npm run build')
+    && deployWorkflow.includes('npm run audit:bundle')
+    && deployWorkflow.includes('npm run test:pwa'),
+  'deploy reconstrói e valida o artefato após o CI sem repetir a suíte de navegadores',
 );
-must(deployWorkflow.includes('npm run audit:bundle'), 'deploy bloqueia regressões de tamanho do bundle de produção');
+must(deployWorkflow.includes('test "$public_commit" = "${DEPLOY_SHA}"'), 'verificação publicada exige paridade com o SHA aprovado pelo CI');
+must(deployWorkflow.includes('test "$count" = "1"'), 'verificação publicada impede regressão de duplicação no precache PWA');
 
 const mainSource = read('src/main.tsx');
 must(mainSource.includes("import { App } from './app/App'") && mainSource.includes("import { ErrorBoundary } from './components/system/ErrorBoundary'"), 'bootstrap principal não depende de import dinâmico para montar o React');

@@ -9,7 +9,7 @@ import { sourceRegistry } from './src/data/sourceRegistry.js';
 
 const BASE_PATH = '/observatorio/';
 const API_ROOT = '/api/v1/';
-const PUBLIC_COMMIT_SHA = process.env.GITHUB_SHA ?? 'local-development';
+const PUBLIC_COMMIT_SHA = process.env.OBSERVATORIO_COMMIT_SHA ?? process.env.GITHUB_SHA ?? 'local-development';
 const PUBLIC_BUILD_ENV = process.env.GITHUB_ACTIONS === 'true' ? 'github-actions' : 'local';
 
 const getApiRequestPath = (value: string) => {
