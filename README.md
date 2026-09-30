@@ -88,7 +88,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 - Carregamento diferido por proximidade da viewport, reduzindo o JavaScript inicial.
 - Compartilhamento por dado individual (Web Share API com fallback de cópia), kit para Instagram e exportação JSON/CSV.
 - PWA com cache local e `theme-color` acompanhando o tema claro/escuro.
-- Atualizações eleitorais são capturadas em branch automática, validadas por CI antes da PR e preservam o último snapshot válido quando a fonte externa está indisponível.
+- Atualizações eleitorais são capturadas em branch automática e validadas pelo CI antes da PR. Se a configuração administrativa do GitHub bloquear a criação automática da PR, o workflow mantém a branch validada e atualiza uma issue única com link direto para abrir a PR manualmente. Nenhum snapshot eleitoral é mesclado diretamente na `main`.
 
 ### Camadas atuais
 
