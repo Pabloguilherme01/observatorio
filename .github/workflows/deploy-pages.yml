@@ -1,63 +1,75 @@
 name: Deploy to GitHub Pages
-# Pipeline: quality, build, deploy and published-site verification.
+# Publication starts only after the complete CI for main succeeds.
+# Manual dispatch is allowed only for a main commit that already has a successful push CI run.
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
   workflow_dispatch:
+
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: pages-v2
+  group: pages-v3
   cancel-in-progress: true
 
-# A publicação é disparada exclusivamente por push/manual para evitar loops.
+env:
+  DEPLOY_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+  OBSERVATORIO_COMMIT_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
 jobs:
   build:
+    if: >-
+      ${{
+        (github.event_name == 'workflow_run'
+          && github.event.workflow_run.conclusion == 'success'
+          && github.event.workflow_run.event == 'push'
+          && github.event.workflow_run.head_branch == 'main')
+        || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+      }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
-      - name: Checkout exact validated commit
+      - name: Checkout exact CI-validated commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ env.DEPLOY_SHA }}
+
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
           cache: npm
+
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
+
+      - name: Require successful push CI for manual deploys
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          successful_runs="$(gh api             "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${DEPLOY_SHA}&event=push&status=success&per_page=1"             --jq '.total_count')"
+          test "$successful_runs" -ge 1
+          echo "Validated CI gate found for ${DEPLOY_SHA}."
+
       - name: Dependency vulnerability gate
         run: npm run audit:deps
-      - name: Install cross-browser engines
-        run: npm exec -- playwright install --with-deps chromium firefox webkit
-      - name: Run complete quality gate
-        env:
-          AUDIT_PUBLIC_SERVICES_LIVE: 'true'
-        run: npm run audit:all
-      - name: Validate TSE candidate snapshot contract
+
+      - name: Validate versioned TSE snapshot contract
         env:
           REQUIRE_TSE_SYNC: 'false'
           REQUIRE_TSE_FRESH: 'false'
           TSE_MAX_AGE_HOURS: '24'
         run: npm run validate:tse
-      - name: Validate candidate source guard
-        run: node scripts/test-candidate-source-guard.mjs
 
-      - name: Verify TSE architecture
-        run: npm run audit:tse-architecture
-
-      - name: Validate production results feed contract
-        run: npm run validate:results
-      - name: Test first and second turn results contracts
-        run: npm run test:results
-      - name: Verify JWS implementation
-        run: npm run test:jws
       - name: Build production artifact
         run: npm run build
 
@@ -69,6 +81,7 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
@@ -108,7 +121,7 @@ jobs:
           printf '%s' "$health" | grep -F '"maxAgeHours": 24'
           printf '%s' "$health" | grep -F '"contract": "publication-parity-v1"'
           public_commit="$(printf '%s' "$health" | grep -oE '"commitSha": "[^"]+"' | head -n 1 | cut -d'"' -f4)"
-          test "$public_commit" = "${GITHUB_SHA}"
+          test "$public_commit" = "${DEPLOY_SHA}"
           if printf '%s' "$health" | grep -Fq '"status": "degraded"'; then
             echo "TSE upstream stale/unavailable; published site is intentionally degraded, previous validated snapshot preserved."
           fi
@@ -141,7 +154,13 @@ jobs:
             bytes="$(curl -fsSL --retry 3 --max-time 20 "https://pabloguilherme01.github.io/observatorio/$icon" | wc -c)"
             test "$bytes" -gt 1000
           done
-          curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js | grep -F 'observatorio-static-v'
+
+          sw="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/sw.js)"
+          printf '%s' "$sw" | grep -F 'observatorio-static-v'
+          for asset in pwa-192.png pwa-512.png apple-touch-icon.png offline.html; do
+            count="$(printf '%s' "$sw" | grep -o "url:\"$asset\"" | wc -l)"
+            test "$count" = "1"
+          done
 
           asset_js="$(printf '%s' "$page" | grep -oE 'src="[^"]+\.js"' | head -n 1 | cut -d'"' -f2)"
           asset_css="$(printf '%s' "$page" | grep -oE 'href="[^"]+\.css"' | head -n 1 | cut -d'"' -f2)"
