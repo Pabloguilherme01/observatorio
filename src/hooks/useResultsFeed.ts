@@ -83,6 +83,10 @@ function isIsoDate(value: unknown): value is string {
   return typeof value === 'string' && Number.isFinite(Date.parse(value));
 }
 
+function isOptionalNonNegativeInteger(value: unknown): boolean {
+  return value === undefined || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0);
+}
+
 function isOfficialResultsUrl(value: unknown): value is string {
   if (typeof value !== 'string') return false;
   try {
@@ -132,6 +136,8 @@ function isValidResultsFeed(value: unknown): value is ResultsFeed {
     if (!electionCodeMatchesCargo(row.electionCode as number, payload.uf as string, row.cargo as string, payload.turn as 1 | 2)) return false;
     if (typeof row.sourceFile !== 'string' || !row.sourceFile.endsWith(`-e${String(row.electionCode).padStart(6, '0')}-u.json`)) return false;
     if (!isIsoDate(row.referenceDate) || !isIsoDate(row.updatedAt)) return false;
+    if (!['sectionsTotal', 'sectionsCounted', 'totalVotes', 'validVotes', 'blankVotes', 'nullVotes', 'abstentions'].every(key => isOptionalNonNegativeInteger(row[key]))) return false;
+    if (typeof row.sectionsTotal === 'number' && typeof row.sectionsCounted === 'number' && row.sectionsCounted > row.sectionsTotal) return false;
     if (!Array.isArray(row.items)) return false;
     return row.items.every(item => {
       if (!item || typeof item !== 'object') return false;
