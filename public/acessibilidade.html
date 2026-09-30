@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://pabloguilherme01.github.io/observatorio/acessibilidade.html">
+  <title>Acessibilidade · Observatório Águas Lindas</title>
+  <style>
+    :root{color-scheme:dark light;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#0b1117;color:#e2e8f0}
+    body{margin:0;background:#0b1117;color:#e2e8f0}
+    main{max-width:860px;margin:0 auto;padding:40px 20px 72px}
+    a{color:#7dd3fc}
+    a:focus-visible,button:focus-visible{outline:3px solid #fbbf24;outline-offset:3px}
+    .eyebrow{font-size:.75rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#7dd3fc}
+    h1{font-size:clamp(2rem,7vw,3.5rem);line-height:1.02;margin:.45rem 0 1rem}
+    h2{margin-top:2rem;font-size:1.25rem}
+    p,li{line-height:1.7;color:#cbd5e1}
+    .card{margin-top:1rem;padding:18px;border:1px solid rgba(148,163,184,.22);border-radius:18px;background:rgba(255,255,255,.035)}
+    .back{display:inline-flex;min-height:44px;align-items:center;margin-bottom:28px;padding:0 14px;border:1px solid rgba(125,211,252,.25);border-radius:12px;text-decoration:none;font-weight:800}
+    small{color:#94a3b8}
+    @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+    @media (prefers-color-scheme:light){:root,body{background:#f8fafc;color:#0f172a}p,li{color:#334155}.card{background:#fff;border-color:#cbd5e1}small{color:#475569}}
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="/observatorio/">← Voltar ao Observatório</a>
+  <div class="eyebrow">Compromisso público</div>
+  <h1>Acessibilidade</h1>
+  <p>O Observatório busca permitir consulta por teclado, tecnologias assistivas, telas pequenas, alto contraste e preferência por movimento reduzido. Esta página descreve o que já é tratado no produto e o que ainda exige validação humana.</p>
+
+  <section class="card" aria-labelledby="recursos">
+    <h2 id="recursos">Recursos implementados</h2>
+    <ul>
+      <li>Link para pular diretamente ao conteúdo principal.</li>
+      <li>Foco visível e navegação por teclado nos controles principais.</li>
+      <li>Diálogos com gerenciamento de foco e fechamento por teclado.</li>
+      <li>Compatibilidade com preferência por movimento reduzido e alto contraste.</li>
+      <li>Alvos de toque ampliados e testes automatizados em larguras compactas.</li>
+      <li>Gráficos e estados dinâmicos com rótulos ou alternativas textuais quando aplicável.</li>
+      <li>Uso em retrato ou paisagem; o PWA não restringe a orientação da tela.</li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="validacao">
+    <h2 id="validacao">Validação e limitações</h2>
+    <p>O projeto usa auditorias automatizadas de acessibilidade e testes em Chrome, Firefox, Safari, Android e iPhone. Isso reduz regressões, mas não substitui uma avaliação manual completa com leitor de tela.</p>
+    <p>A validação manual com NVDA, VoiceOver e usuários com diferentes necessidades continua sendo uma etapa importante do processo.</p>
+  </section>
+
+  <section class="card" aria-labelledby="relatar">
+    <h2 id="relatar">Encontrou uma barreira?</h2>
+    <p>Você pode registrar um problema de acessibilidade no repositório público. Descreva a tarefa que tentou realizar, o navegador/dispositivo e o que impediu a conclusão. Evite incluir dados pessoais.</p>
+    <p><a href="https://github.com/Pabloguilherme01/observatorio/issues/new?template=melhoria-ux.yml" rel="noopener noreferrer">Relatar uma barreira de acessibilidade no GitHub</a></p>
+  </section>
+
+  <small>Revisado em 30/09/2026.</small>
+</main>
+</body>
+</html>
