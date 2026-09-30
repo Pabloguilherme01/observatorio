@@ -48,6 +48,10 @@ try {
   const negativeAggregate = structuredClone(fixture);
   negativeAggregate.entries[0].totalVotes = -1;
   validate(negativeAggregate, false);
+
+  const fractionalVotes = structuredClone(fixture);
+  fractionalVotes.entries[0].items[0].votes = 1.5;
+  validate(fractionalVotes, false);
   console.log('Results feed validates both turns and rejects mismatched offices, codes and impossible aggregate counts.');
 } finally {
   rmSync(dir, { recursive: true, force: true });
