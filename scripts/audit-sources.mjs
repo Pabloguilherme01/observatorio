@@ -48,16 +48,17 @@ for (let index = 0; index < urls.length; index += concurrency) {
 
 // A auditoria de PR/deploy valida contratos e links inexistentes sem deixar
 // a indisponibilidade momentânea de terceiros bloquear uma entrega segura.
-// O monitor agendado usa SOURCE_AUDIT_STRICT=true para detectar 5xx persistentes.
+// O monitor agendado usa SOURCE_AUDIT_STRICT=true para detectar 5xx ou falhas de rede persistentes.
 const strictAvailability = process.env.SOURCE_AUDIT_STRICT === 'true';
 const serverWarnings = results.filter(item => item.status !== null && item.status >= 500);
-const errors = strictAvailability ? serverWarnings : [];
 const networkWarnings = results.filter(item => item.status === null);
+const errors = strictAvailability ? [...serverWarnings, ...networkWarnings] : [];
 const clientWarnings = results.filter(item => item.status >= 400 && item.status < 500);
 const missingSources = results.filter(item => item.status === 404 || item.status === 410);
 
 for (const item of results.sort((a, b) => a.url.localeCompare(b.url))) {
-  if (item.status === null) console.log('WARN', item.url, 'unreachable:', item.error);
+  if (item.status === null && strictAvailability) console.log('FAIL', item.url, 'unreachable:', item.error);
+  else if (item.status === null) console.log('WARN', item.url, 'unreachable:', item.error);
   else if (item.status >= 500 && strictAvailability) console.log('FAIL', item.status, item.url);
   else if (item.status >= 500) console.log('WARN', item.status, item.url, '(fonte externa temporariamente indisponível)');
   else if (item.status === 404 || item.status === 410) console.log('FAIL', item.status, item.url);

@@ -50,6 +50,11 @@ test.describe('bancada cross-browser de interface', () => {
     }
 
     if (isMobile) {
+      // Separe o ciclo de leitura das rotas que podem impor um modo específico.
+      // Isso elimina uma corrida do Safari entre o último evento de navegação e o clique seguinte.
+      await navigate(page, 'dashboard');
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+
       const shortcut = page.locator('.site-mode-shortcut');
       const root = page.locator('html');
       await expect(shortcut).toBeVisible();
