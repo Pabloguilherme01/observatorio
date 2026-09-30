@@ -21,6 +21,7 @@ const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 const ciWorkflow = read('.github/workflows/ci.yml');
 const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
 const sourceHealthWorkflow = read('.github/workflows/source-health.yml');
+const codeqlWorkflow = read('.github/workflows/codeql.yml');
 const viteSource = vite;
 const deploySource = deployWorkflow;
 const spaFallback = read('public/404.html');
@@ -40,6 +41,20 @@ must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sinc
 must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && packageJson.devDependencies?.['@axe-core/playwright'] === '4.13.0', 'Playwright e Axe estão fixados nas devDependencies');
 const lockJson = JSON.parse(read('package-lock.json'));
 must(lockJson.lockfileVersion === 3, 'package-lock usa lockfileVersion 3');
+must(
+  codeqlWorkflow.includes('name: CodeQL')
+    && codeqlWorkflow.includes('security-events: write')
+    && codeqlWorkflow.includes('languages: javascript-typescript')
+    && codeqlWorkflow.includes('build-mode: none')
+    && codeqlWorkflow.includes('queries: security-extended')
+    && codeqlWorkflow.includes('github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2')
+    && codeqlWorkflow.includes('github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2')
+    && codeqlWorkflow.includes('pull_request:')
+    && codeqlWorkflow.includes('branches: [main]')
+    && codeqlWorkflow.includes('schedule:'),
+  'CodeQL analisa JavaScript/TypeScript com consultas estendidas e Actions pinadas por SHA',
+);
+
 must(lockJson.packages?.['']?.version === packageJson.version, 'package.json e package-lock usam a mesma versão');
 must(lockJson.packages?.['']?.dependencies && lockJson.packages?.['']?.devDependencies, 'package-lock registra as dependências diretas do projeto');
 must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
