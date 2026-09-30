@@ -125,7 +125,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     const serviceSearch = page.getByRole('searchbox', { name: /Buscar serviço municipal/ });
     await expect(serviceSearch).toHaveValue('CAPS');
     await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
- 
+  });
 
   test('busca de serviços oferece atalhos úteis quando não há correspondências', async ({ page }) => {
     await page.goto('./#acao');
