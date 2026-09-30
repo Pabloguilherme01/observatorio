@@ -161,20 +161,14 @@ export function useResultsFeed(intervalMs = 300000) {
       setChecking(true);
       try {
         const response = await fetch(RESULTS_FEED_URL, { cache: 'no-store', headers: { Accept: 'application/json' } });
-        if (!response.ok) {
-          if (active) setData(current => current?.state === 'complete' ? current : null);
-          return;
-        }
+        if (!response.ok) return;
 
         const payload: unknown = await response.json();
-        if (!active || !isValidResultsFeed(payload)) {
-          if (active) setData(current => current?.state === 'complete' ? current : null);
-          return;
-        }
+        if (!active || !isValidResultsFeed(payload)) return;
 
         setData(payload);
       } catch {
-        if (active) setData(current => current?.state === 'complete' ? current : null);
+        // Preserve the last validated snapshot; its capturedAt drives live → stale state.
       } finally {
         if (active) setChecking(false);
       }
