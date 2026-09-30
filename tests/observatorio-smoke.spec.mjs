@@ -127,6 +127,28 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await expect(page.getByRole('link', { name: /CAPS/i })).toBeVisible();
   });
 
+  test('busca de serviços oferece atalhos úteis quando não há correspondências', async ({ page }) => {
+    await page.goto('./#acao');
+    const serviceSearch = page.getByRole('searchbox', { name: 'Buscar serviço municipal por necessidade' });
+    await serviceSearch.fill('necessidade sem resultado');
+    const noResults = page.getByRole('note').filter({ hasText: 'Nenhum serviço corresponde' });
+    await expect(noResults).toBeVisible();
+    await noResults.getByRole('button', { name: 'Emprego', exact: true }).click();
+    await expect(serviceSearch).toHaveValue('emprego');
+    await expect(page.getByRole('link', { name: /Processos seletivos/i })).toBeVisible();
+  });
+
+  test('painel de qualidade informa lacunas de referência e links de fonte', async ({ page }) => {
+    await page.goto('./#qualidade');
+    await expect(page.getByText(/Fonte com link:/)).toBeVisible();
+    await expect(page.getByText(/sem referência temporal e .* sem link de fonte/)).toBeVisible();
+    const reviewList = page.locator('#qualidade .quality-overview details');
+    await reviewList.locator('summary').click();
+    await expect(reviewList.getByRole('button', { name: 'Abrir ficha' }).first()).toBeVisible();
+    await reviewList.getByRole('button', { name: 'Abrir ficha' }).first().click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+  });
+
   test('resposta rápida oferece acesso direto à fonte oficial', async ({ page }) => {
     await page.goto('./');
     await page.getByRole('button', { name: /buscar/i }).first().click();
@@ -939,6 +961,12 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
 
   const dialog = page.getByRole('dialog', { name: /Variação da população/i });
   await expect(dialog).toBeVisible();
+  const correctionLink = dialog.getByRole('link', { name: /Sugerir correção/i });
+  const correctionUrl = new URL(await correctionLink.getAttribute('href'));
+  expect(correctionUrl.searchParams.get('title')).toContain('Variação da população');
+  expect(correctionUrl.searchParams.get('body')).toContain('Fonte:');
+  expect(correctionUrl.searchParams.get('body')).toContain('Referência:');
+  expect(correctionUrl.searchParams.get('body')).toContain('Link para o contexto:');
 
   await page.keyboard.press('g');
   await page.keyboard.press('t');
@@ -973,7 +1001,15 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   expect(fallbackShare).toContain('#dashboard');
   expect(fallbackShare).not.toContain('utm_source');
 
+  await dialog.getByRole('button', { name: 'Salvar para depois' }).click();
+  await expect(dialog.getByRole('button', { name: 'Remover dos salvos' })).toHaveAttribute('aria-pressed', 'true');
   await dialog.getByRole('button', { name: 'Fechar', exact: true }).click();
+  await page.getByRole('button', { name: /Buscar no observatório/i }).first().click();
+  const savedReading = page.getByRole('link', { name: /Variação da população.*Abrir indicador salvo/i });
+  await expect(savedReading).toBeVisible();
+  await expect(savedReading).toHaveAttribute('href', /dado=/);
+  await page.keyboard.press('Escape');
+
   await page.goto(copiedLink);
   await expect(page.getByRole('dialog', { name: /Variação da população/i })).toBeVisible();
   await page.getByRole('dialog', { name: /Variação da população/i }).getByRole('button', { name: 'Fechar', exact: true }).click();
@@ -1011,21 +1047,28 @@ test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ pa
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
   const guide = page.locator('#aprendizado-guiado');
   await expect(guide).toBeVisible();
-  await expect(guide).toContainText('Como ler dados públicos em etapas');
+  await expect(guide).toContainText('Expedição pelos dados públicos');
   await expect(guide).toContainText(/não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais/i);
-  await expect(guide).toContainText('Próxima etapa sugerida');
+  await expect(guide).toContainText('Próxima parada');
   await expect(guide).toContainText('O que este número mede — e em qual unidade?');
-  await expect(guide.getByText('Entenda os rótulos dos dados')).toBeVisible();
-  await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '0');
+  await expect(guide.getByText('Kit de pistas: entenda os rótulos')).toBeVisible();
+  await expect(guide.getByText('Rota de investigação')).toBeVisible();
+  await expect(guide.locator('.guided-learning-hint')).toHaveCount(6);
+  await expect(guide.getByRole('progressbar', { name: 'Progresso da rota de investigação' })).toHaveAttribute('aria-valuenow', '0');
   await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
   await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
   await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
+  await expect(guide.getByText('Ir ao resumo')).toBeVisible();
   await expect(guide.getByRole('button', { name: /Reiniciar trilha/i })).toBeDisabled();
+
+  await guide.locator('.guided-learning-hint summary').first().click();
+  await expect(guide.locator('.guided-learning-hint').first()).toHaveAttribute('open', '');
+  await expect(guide).toContainText('Procure o nome completo do indicador, a unidade');
 
   await guide.getByRole('button', { name: /Abrir: 1. Identifique o que o número mede/i }).click();
   await expect(page).toHaveURL(/#resumo$/);
-  await expect(guide.getByRole('progressbar', { name: 'Progresso da trilha guiada' })).toHaveAttribute('aria-valuenow', '1');
-  await expect(guide).toContainText('2. Confira período e natureza');
+  await expect(guide.getByRole('progressbar', { name: 'Progresso da rota de investigação' })).toHaveAttribute('aria-valuenow', '1');
+  await expect(guide).toContainText('Confira período e natureza');
 });
 
 test('busca encontra e abre o aprendizado guiado', async ({ page }) => {
@@ -1385,19 +1428,23 @@ test('busca direciona indicadores para a seção temática correta', async ({ pa
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
   await input.fill('Perdas na distribuição de água');
-  await page.getByRole('option', { name: /Perdas na distribuição de água/i }).click();
+  const waterLossResult = page.locator('#search-results').getByRole('option', { name: /Perdas na distribuição de água/i });
+  await expect(waterLossResult).toContainText(/Histórico/i);
+  await expect(waterLossResult).toContainText(/ref\\./i);
+  await expect(waterLossResult).toContainText(/SINISA 2024/i);
+  await waterLossResult.click();
   await expect(page).toHaveURL(/#saude$/);
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   input = page.getByRole('combobox').first();
   await input.fill('Receitas brutas realizadas 2025');
-  await page.getByRole('option', { name: /Receitas brutas realizadas 2025/i }).click();
+  await page.locator('#search-results').getByRole('option', { name: /Receitas brutas realizadas 2025/i }).click();
   await expect(page).toHaveURL(/#orcamento$/);
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   input = page.getByRole('combobox').first();
   await input.fill('Tarifa Brasília');
-  await page.getByRole('option', { name: /Tarifa Brasília/i }).click();
+  await page.locator('#search-results').getByRole('option', { name: /Tarifa Brasília/i }).click();
   await expect(page).toHaveURL(/#transporte$/);
 });
 
