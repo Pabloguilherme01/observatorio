@@ -181,6 +181,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        importScripts: ['sw-runtime-cleanup.js'],
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
         navigateFallback: '/observatorio/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/observatorio\/api\//],
@@ -189,7 +190,7 @@ export default defineConfig({
             urlPattern: ({ request }) => ['script', 'style', 'image'].includes(request.destination),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'observatorio-static-v13',
+              cacheName: 'observatorio-static',
               expiration: { maxEntries: 160, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -198,7 +199,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'font',
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'observatorio-fonts-v13',
+              cacheName: 'observatorio-fonts',
               expiration: { maxEntries: 16, maxAgeSeconds: 60 * 60 * 24 * 180, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -207,7 +208,7 @@ export default defineConfig({
             urlPattern: ({ request }) => request.destination === 'document' && request.mode === 'navigate',
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-documents-v13',
+              cacheName: 'observatorio-documents',
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
@@ -216,7 +217,7 @@ export default defineConfig({
             urlPattern: ({ url }) => url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'),
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'observatorio-api-v13',
+              cacheName: 'observatorio-api',
               networkTimeoutSeconds: 3,
               expiration: { maxEntries: 32, maxAgeSeconds: 60 * 60 * 24 * 7, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
