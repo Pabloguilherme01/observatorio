@@ -16,6 +16,8 @@ const appSource = read('src/app/App.tsx');
 const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
 const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
+const accessibilityPage = read('public/acessibilidade.html');
+const privacyPage = read('public/privacidade.html');
 const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 const ciWorkflow = read('.github/workflows/ci.yml');
@@ -66,6 +68,29 @@ must(vite.includes("url.pathname === '/observatorio/api/v1/health.json'") && vit
 
 must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("url.pathname.startsWith('/observatorio/api/v1/')"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
 must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.png"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
+must(
+  accessibilityPage.includes('<h1>Acessibilidade</h1>')
+    && accessibilityPage.includes('leitor de tela')
+    && accessibilityPage.includes('Evite incluir dados pessoais'),
+  'declaração pública de acessibilidade descreve recursos, limitações e canal de relato',
+);
+must(
+  privacyPage.includes('<h1>Privacidade e armazenamento local</h1>')
+    && privacyPage.includes('sendDefaultPii: false')
+    && privacyPage.includes('armazenamento local'),
+  'página pública de privacidade corresponde ao comportamento técnico implementado',
+);
+must(
+  footerSource.includes("import.meta.env.BASE_URL + 'acessibilidade.html'")
+    && footerSource.includes("import.meta.env.BASE_URL + 'privacidade.html'"),
+  'rodapé expõe páginas públicas de acessibilidade e privacidade respeitando BASE_URL',
+);
+must(
+  sitemap.includes('/observatorio/acessibilidade.html')
+    && sitemap.includes('/observatorio/privacidade.html'),
+  'sitemap publica páginas de confiança para descoberta e indexação',
+);
+
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
 const pngSize = file => {
   const bytes = fs.readFileSync(path.join(root, 'public', file));
