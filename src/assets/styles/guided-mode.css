@@ -147,7 +147,7 @@
   align-items:center;
   gap:6px;
   color:#fbbf24;
-  font-size:9px;
+  font-size:10px;
   font-weight:900;
   letter-spacing:.12em;
   text-transform:uppercase;
@@ -308,7 +308,7 @@
   display:block;
   margin-bottom:5px;
   color:#fbbf24;
-  font-size:8px;
+  font-size:10px;
   font-style:normal;
   font-weight:900;
   letter-spacing:.11em;
@@ -634,7 +634,7 @@
     font-size:11px!important;
   }
   .mobile-tools-mode .language-toggle-v3 .language-toggle-options>button small{
-    font-size:8px!important;
+    font-size:10px!important;
   }
 }
 
@@ -684,7 +684,7 @@
 }
 .summary-guided-question strong{
   color:#fbbf24!important;
-  font-size:8px!important;
+  font-size:10px!important;
   letter-spacing:.11em;
   text-transform:uppercase;
 }
