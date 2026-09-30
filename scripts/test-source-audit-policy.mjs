@@ -15,8 +15,8 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const address = server.address();
 const sourceUrl = status => `http://127.0.0.1:${address.port}/?status=${status}`;
 
-function runAudit(status, strict = false) {
-  const env = { ...process.env, SOURCE_AUDIT_URLS: sourceUrl(status), SOURCE_AUDIT_ATTEMPTS: '1', SOURCE_AUDIT_TIMEOUT_MS: '1000' };
+function runAuditUrl(url, strict = false) {
+  const env = { ...process.env, SOURCE_AUDIT_URLS: url, SOURCE_AUDIT_ATTEMPTS: '1', SOURCE_AUDIT_TIMEOUT_MS: '1000' };
   delete env.SOURCE_AUDIT_STRICT;
   if (strict) env.SOURCE_AUDIT_STRICT = 'true';
   return new Promise((resolve, reject) => {
@@ -28,6 +28,10 @@ function runAudit(status, strict = false) {
     child.once('error', reject);
     child.once('close', statusCode => resolve({ status: statusCode, stdout, stderr }));
   });
+}
+
+function runAudit(status, strict = false) {
+  return runAuditUrl(sourceUrl(status), strict);
 }
 
 try {
@@ -47,7 +51,21 @@ try {
   assert.equal(healthySource.status, 0, healthySource.stderr);
   assert.match(healthySource.stdout, /PASS 200/);
 
-  console.log('PASS política da auditoria separa links quebrados de indisponibilidade temporária');
+  const probe = createServer();
+  await new Promise(resolve => probe.listen(0, '127.0.0.1', resolve));
+  const probeAddress = probe.address();
+  const unavailableUrl = `http://127.0.0.1:${probeAddress.port}/`;
+  await new Promise((resolve, reject) => probe.close(error => error ? reject(error) : resolve()));
+
+  const networkWarning = await runAuditUrl(unavailableUrl);
+  assert.equal(networkWarning.status, 0, 'falha de rede não deve bloquear PR/deploy em modo normal');
+  assert.match(networkWarning.stdout, /WARN .*unreachable/);
+
+  const strictNetworkOutage = await runAuditUrl(unavailableUrl, true);
+  assert.equal(strictNetworkOutage.status, 1, 'monitor estrito deve falhar em indisponibilidade de rede persistente');
+  assert.match(strictNetworkOutage.stdout, /FAIL .*unreachable/);
+
+  console.log('PASS política da auditoria separa links quebrados e indisponibilidade persistente do modo normal');
 } finally {
   await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
 }
