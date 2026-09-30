@@ -237,3 +237,46 @@ test.describe('bancada de robustez adicional', () => {
     ).toBeTruthy();
   });
 });
+
+
+test.describe('instalação PWA acessível', () => {
+  test('guia móvel prende o foco, fecha com Escape e devolve foco ao acionador', async ({ page, browserName, isMobile }) => {
+    test.skip(browserName !== 'chromium' || isMobile, 'Cenário controlado no Chromium desktop com viewport móvel.');
+
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'userAgent', {
+        configurable: true,
+        get: () => 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1',
+      });
+      Object.defineProperty(navigator, 'platform', {
+        configurable: true,
+        get: () => 'iPhone',
+      });
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('./');
+
+    const trigger = page.getByRole('button', { name: 'Adicionar Observatório à tela inicial' });
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+
+    const dialog = page.getByRole('dialog', { name: 'Instale o Observatório' });
+    await expect(dialog).toBeVisible();
+    const close = dialog.getByRole('button', { name: 'Fechar instruções' });
+    const later = dialog.getByRole('button', { name: 'Agora não' });
+    await expect(close).toBeFocused();
+
+    await page.keyboard.press('Shift+Tab');
+    await expect(later).toBeFocused();
+    await page.keyboard.press('Tab');
+    await expect(close).toBeFocused();
+
+    const bodyOverflow = await page.evaluate(() => document.body.style.overflow);
+    expect(bodyOverflow).toBe('hidden');
+
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await expect.poll(() => page.evaluate(() => document.body.style.overflow)).toBe('');
+  });
+});
