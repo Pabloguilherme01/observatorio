@@ -140,8 +140,8 @@ must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('gro
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
 must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
-must(syncWorkflow.includes('pull-requests: write') && syncWorkflow.includes('gh pr create') && !/^\\s*git push\\s*$/m.test(syncWorkflow), 'workflow TSE não faz push direto para main');
-must(resultsWorkflow.includes('pull-requests: write') && resultsWorkflow.includes('gh pr create') && !/^\\s*git push\\s*$/m.test(resultsWorkflow), 'workflow de resultados não faz push direto para main');
+must(syncWorkflow.includes('actions: write') && syncWorkflow.includes('pull-requests: write') && syncWorkflow.includes('gh workflow run ci.yml') && syncWorkflow.includes('gh pr create') && !/^\\s*git push\\s*$/m.test(syncWorkflow), 'workflow TSE valida a branch no CI antes da PR e possui permissão para dispará-lo');
+must(resultsWorkflow.includes('actions: write') && resultsWorkflow.includes('pull-requests: write') && resultsWorkflow.includes('gh workflow run ci.yml') && resultsWorkflow.includes('gh pr create') && !/^\\s*git push\\s*$/m.test(resultsWorkflow), 'workflow de resultados valida a branch no CI antes da publicação');
 must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')), 'não existem dois workflows concorrentes para a mesma captura TSE');
 must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 'pipeline antigo de ingestão municipal removido após consolidação');
 must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
@@ -153,6 +153,7 @@ must(
     || (deployWorkflow.includes('npm run audit:static') && deployWorkflow.includes('npm run audit:a11y') && deployWorkflow.includes('npm run audit:mobile')),
   'deploy exige auditorias principais',
 );
+must(deployWorkflow.includes('npm run audit:bundle'), 'deploy bloqueia regressões de tamanho do bundle de produção');
 
 const mainSource = read('src/main.tsx');
 must(mainSource.includes("import { App } from './app/App'") && mainSource.includes("import { ErrorBoundary } from './components/system/ErrorBoundary'"), 'bootstrap principal não depende de import dinâmico para montar o React');
@@ -176,6 +177,7 @@ must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#d
 const audienceHub = read('src/components/AudienceHub.tsx');
 must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a âncora pública #dashboard');
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
+must(audienceHub.includes('Serviços públicos') && audienceHub.includes('Ver indicadores') && audienceHub.includes('Dados eleitorais'), 'Resumo oferece três caminhos públicos claros: serviços, cidade e eleições');
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
 must(dashboardMetrics.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');

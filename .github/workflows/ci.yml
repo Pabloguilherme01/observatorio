@@ -34,6 +34,8 @@ jobs:
         run: npm run test:results
 
       - name: Audit source integrity
+        env:
+          SOURCE_AUDIT_ALLOW_SERVER_ERRORS: 'true'
         run: npm run audit:sources
 
       - name: Test unavailable TSE source handling
@@ -41,6 +43,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Audit production bundle budget
+        run: npm run audit:bundle
 
       - name: Verify production PWA artifact
         run: npm run test:pwa

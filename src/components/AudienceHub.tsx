@@ -118,7 +118,12 @@ export function AudienceHub() {
                 </button>
                 <button type="button" className="audience-action-card" onClick={() => jump('dashboard')}>
                   <span className="audience-action-icon"><BarChart3 aria-hidden="true" /></span>
-                  <span><strong>Ver indicadores</strong><small>Abra a leitura completa dos números.</small></span>
+                  <span><strong>Ver indicadores</strong><small>Entenda a cidade pelos principais números.</small></span>
+                  <ArrowRight aria-hidden="true" />
+                </button>
+                <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
+                  <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
+                  <span><strong>Dados eleitorais</strong><small>Consulte o recorte e siga para as fontes oficiais.</small></span>
                   <ArrowRight aria-hidden="true" />
                 </button>
               </>

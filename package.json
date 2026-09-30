@@ -34,7 +34,8 @@
     "audit:public-services": "node --check scripts/audit-public-services.mjs && node scripts/audit-public-services.mjs",
     "test:browser": "playwright test --config=playwright.config.mjs",
     "audit:browser": "npm run test:browser",
-    "audit:deps": "npm audit --audit-level=high"
+    "audit:deps": "npm audit --audit-level=high",
+    "audit:bundle": "node scripts/audit-bundle.mjs"
   },
   "dependencies": {
     "@sentry/react": "10.75.2",

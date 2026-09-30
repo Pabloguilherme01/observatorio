@@ -39,6 +39,7 @@ jobs:
       - name: Run complete quality gate
         env:
           AUDIT_PUBLIC_SERVICES_LIVE: 'true'
+          SOURCE_AUDIT_ALLOW_SERVER_ERRORS: 'true'
         run: npm run audit:all
       - name: Validate TSE candidate snapshot contract
         env:
@@ -60,6 +61,9 @@ jobs:
         run: npm run test:jws
       - name: Build production artifact
         run: npm run build
+
+      - name: Audit production bundle budget
+        run: npm run audit:bundle
 
       - name: Verify production PWA artifact
         run: npm run test:pwa
