@@ -75,8 +75,8 @@ if (
   resultsFeed.includes("if (!response.ok) return;")
   && resultsFeed.includes("if (!active || !isValidResultsFeed(payload)) return;")
   && !resultsFeed.includes("setData(current => current?.state === 'complete' ? current : null)")
-  && resultsFeed.includes("capturedAt drives live → stale state")
-) pass('feed de resultados preserva o último snapshot validado em falhas transitórias.');
+  && resultsFeed.includes("now - capturedAt <= RESULTS_LIVE_MAX_AGE_MS ? 'live' : 'stale'")
+) pass('feed de resultados preserva o último snapshot validado em falhas transitórias e usa a idade para marcar stale.');
 else fail('feed de resultados pode apagar snapshot válido após falha transitória.');
 const preOpenGuard = resultsFeed.indexOf("if (now < RESULTS_WINDOW_START) return 'pre_open';");
 const completeGuard = resultsFeed.indexOf("if (data?.state === 'complete') return 'complete';");
