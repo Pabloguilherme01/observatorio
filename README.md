@@ -88,6 +88,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 - Carregamento diferido por proximidade da viewport, reduzindo o JavaScript inicial.
 - Compartilhamento por dado individual (Web Share API com fallback de cópia), kit para Instagram e exportação JSON/CSV.
 - PWA com cache local e `theme-color` acompanhando o tema claro/escuro.
+- Atualizações eleitorais são capturadas em branch automática, validadas por CI antes da PR e preservam o último snapshot válido quando a fonte externa está indisponível.
 
 ### Camadas atuais
 
