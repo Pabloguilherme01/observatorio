@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './assets/styles/globals.css';
 import './assets/styles/mobile-final.css';
 import { App } from './app/App';
+import './assets/styles/mobile-refinements.css';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
 import { captureObservatorioException } from './lib/sentry';
 import { Download, MoreVertical, Share2, X } from 'lucide-react';
