@@ -142,6 +142,11 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await page.goto('./#qualidade');
     await expect(page.getByText(/Fonte com link:/)).toBeVisible();
     await expect(page.getByText(/sem referência temporal e .* sem link de fonte/)).toBeVisible();
+    const reviewList = page.locator('#qualidade .quality-overview details');
+    await reviewList.locator('summary').click();
+    await expect(reviewList.getByRole('button', { name: 'Abrir ficha' }).first()).toBeVisible();
+    await reviewList.getByRole('button', { name: 'Abrir ficha' }).first().click();
+    await expect(page.getByRole('dialog')).toBeVisible();
   });
 });
 

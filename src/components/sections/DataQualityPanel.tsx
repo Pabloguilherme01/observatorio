@@ -33,6 +33,12 @@ export function DataQualityPanel() {
   }).length;
   const missingDateIndicators = d.indicators.length - datedIndicators;
   const missingSourceIndicators = d.indicators.length - sourceLinkedIndicators;
+  const indicatorsNeedingDocumentation = d.indicators.filter(indicator => {
+    const source = d.sources.find(item => item.id === indicator.sourceId);
+    const hasDate = Boolean(indicator.referenceDate || source?.referenceDate);
+    const hasSourceLink = Boolean(source?.resourceUrl || source?.url);
+    return !hasDate || !hasSourceLink;
+  });
   const poll = d.polls[0];
   const pollNamedPct = poll.results.reduce((sum, result) => sum + result.percentage, 0);
   const pollCoveredPct = pollNamedPct + (poll.nonePct ?? 0) + (poll.notSurePct ?? 0);
@@ -76,6 +82,36 @@ export function DataQualityPanel() {
           <strong className="text-2xl font-black text-white light:text-slate-900">{datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
         </div>
         <div className="quality-progress mt-3" aria-label={`Cobertura temporal ${datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`}><span style={{ width: `${Math.min(100, datedCoverage)}%` }} /></div>
+        <details className="mt-3 rounded-2xl border border-white/8 bg-black/10 p-3 light:border-slate-200 light:bg-white">
+          <summary className="min-h-10 cursor-pointer text-xs font-bold text-sky-200 light:text-sky-800">
+            {indicatorsNeedingDocumentation.length
+              ? `Ver ${indicatorsNeedingDocumentation.length} ficha${indicatorsNeedingDocumentation.length === 1 ? '' : 's'} para revisar`
+              : 'Verificar fichas do conjunto'}
+          </summary>
+          <p className="mt-2 text-[11px] leading-5 text-slate-500">A lista aponta campos não registrados nesta ficha; isso, por si só, não invalida o valor. Abra cada registro para conferir seu contexto e sugerir uma correção se necessário.</p>
+          {indicatorsNeedingDocumentation.length ? (
+            <ul className="mt-3 space-y-2">
+              {indicatorsNeedingDocumentation.map(indicator => {
+                const source = d.sources.find(item => item.id === indicator.sourceId);
+                const hasDate = Boolean(indicator.referenceDate || source?.referenceDate);
+                const hasSourceLink = Boolean(source?.resourceUrl || source?.url);
+                const missingFields = [!hasDate ? 'referência temporal' : null, !hasSourceLink ? 'link da fonte' : null].filter(Boolean).join(' e ');
+                return (
+                  <li key={indicator.id} className="flex flex-col gap-2 rounded-xl border border-white/8 p-3 sm:flex-row sm:items-center sm:justify-between light:border-slate-200">
+                    <span className="min-w-0"><strong className="block text-xs text-slate-200 light:text-slate-800">{indicator.label}</strong><small className="mt-1 block text-[10px] text-slate-500">{source?.label ?? 'Fonte não identificada'} · falta registrar {missingFields}</small></span>
+                    <button
+                      type="button"
+                      className="min-h-10 shrink-0 rounded-xl border border-sky-300/20 px-3 text-xs font-bold text-sky-200 light:border-sky-200 light:text-sky-800"
+                      onClick={() => window.dispatchEvent(new CustomEvent('observatorio:inspect-data', { detail: { label: indicator.label, value: String(indicator.value), sourceId: indicator.sourceId, status: indicator.status, referenceDate: indicator.referenceDate, note: indicator.note, sectionId: 'qualidade' } }))}
+                    >
+                      Abrir ficha
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : <p className="mt-3 text-xs text-slate-500">Não há lacunas de data ou link registradas nas fichas.</p>}
+        </details>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
