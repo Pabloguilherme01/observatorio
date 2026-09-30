@@ -69,8 +69,8 @@ export function isResultsWindowOpen(now = Date.now()) {
 }
 
 function getResultsFeedPhase(data: ResultsFeed | null, now = Date.now()): ResultsFeedPhase {
-  if (data?.state === 'complete') return 'complete';
   if (now < RESULTS_WINDOW_START) return 'pre_open';
+  if (data?.state === 'complete') return 'complete';
   if (now > RESULTS_WINDOW_END) return data?.state === 'live' ? 'archived_partial' : 'ended_unavailable';
   if (data?.state === 'live') {
     const capturedAt = Date.parse(data.capturedAt);
