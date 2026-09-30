@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, HeartHandshake, Landmark, Search, ShieldCheck, Users, Vote, WalletCards } from 'lucide-react';
+import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, HeartHandshake, Landmark, Search, Share2, ShieldCheck, Users, Vote, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { navigateToCleanSection } from '../lib/sectionNavigation';
 
@@ -41,6 +41,25 @@ export function AudienceHub() {
     navigateToCleanSection(id);
   };
 
+  const shareProject = async () => {
+    const shareData = {
+      title: 'Observatório de Águas Lindas',
+      text: 'Dados, indicadores, serviços e fontes públicas de Águas Lindas de Goiás.',
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        return;
+      }
+      await navigator.clipboard?.writeText(window.location.href);
+      window.dispatchEvent(new CustomEvent('observatorio:toast', { detail: 'Link copiado para compartilhar' }));
+    } catch {
+      // Cancelamento do compartilhamento nativo não deve gerar erro de interface.
+    }
+  };
+
   return (
     <section id="descubra" className="audience-home mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12" aria-labelledby="audience-title">
       <div className="audience-page-card">
@@ -71,6 +90,13 @@ export function AudienceHub() {
             <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
               <span>{isSummary ? 'Ver resumo' : isTechnical ? 'Ver fontes e métodos' : 'Ver indicadores explicados'}</span>
               <ArrowRight aria-hidden="true" />
+            </button>
+            <button type="button" className="audience-search-card" onClick={shareProject} aria-label="Compartilhar o Observatório">
+              <Share2 aria-hidden="true" />
+              <span>
+                <strong>Compartilhar</strong>
+                <small>enviar este projeto</small>
+              </span>
             </button>
           </div>
         </header>
