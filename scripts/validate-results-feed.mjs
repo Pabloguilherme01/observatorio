@@ -46,6 +46,7 @@ const errors = [];
 const warnings = [];
 const fail = message => errors.push(message);
 const isDate = value => typeof value === 'string' && Number.isFinite(Date.parse(value));
+const isOptionalNonNegativeInteger = value => value === undefined || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0);
 
 if (payload.schemaVersion !== SCHEMA_VERSION) fail('schemaVersion deve ser 3.');
 if (payload.environment !== 'official') fail('environment deve ser official.');
@@ -73,6 +74,10 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
   if (Number.isInteger(entry.electionCode) && typeof entry.cargo === 'string' && !electionCodeMatchesCargo(entry.electionCode, payload.uf, entry.cargo, payload.turn)) fail(`entry ${index}: electionCode incompatível com o cargo.`);
   if (typeof entry.sourceFile !== 'string' || !entry.sourceFile.endsWith(`-e${String(entry.electionCode).padStart(6, '0')}-u.json`)) fail(`entry ${index}: sourceFile inválido.`);
   if (!isDate(entry.referenceDate) || !isDate(entry.updatedAt)) fail(`entry ${index}: data inválida.`);
+  for (const field of ['sectionsTotal', 'sectionsCounted', 'totalVotes', 'validVotes', 'blankVotes', 'nullVotes', 'abstentions']) {
+    if (!isOptionalNonNegativeInteger(entry[field])) fail(`entry ${index}: ${field} deve ser inteiro não negativo quando informado.`);
+  }
+  if (typeof entry.sectionsTotal === 'number' && typeof entry.sectionsCounted === 'number' && entry.sectionsCounted > entry.sectionsTotal) fail(`entry ${index}: sectionsCounted não pode exceder sectionsTotal.`);
   if (!Array.isArray(entry.items)) fail(`entry ${index}: items deve ser array.`);
 
   for (const [itemIndex, item] of (entry.items ?? []).entries()) {
