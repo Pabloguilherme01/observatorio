@@ -28,6 +28,7 @@
     "audit:tse-architecture": "node scripts/audit-tse-architecture.mjs",
     "audit:usability": "node scripts/audit-usability.mjs",
     "audit:sources": "node scripts/audit-sources.mjs",
+    "test:source-audit-policy": "node scripts/test-source-audit-policy.mjs",
     "audit:runtime": "node scripts/audit-runtime.mjs",
     "audit:engagement": "node scripts/audit-engagement.mjs",
     "audit:quiz": "node scripts/audit-quiz.mjs",
