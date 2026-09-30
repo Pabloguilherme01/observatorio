@@ -47,8 +47,11 @@ for (let index = 0; index < urls.length; index += concurrency) {
 // Erros de rede (DNS, TLS, timeout) são tratados como aviso: dependem de
 // infraestrutura externa e não devem quebrar o build por instabilidade
 // transitória. Apenas 5xx persistente no servidor é uma falha real.
+const allowServerErrors = process.env.SOURCE_AUDIT_ALLOW_SERVER_ERRORS === 'true';
 const transientServerWarnings = results.filter(item => item.status !== null && item.status >= 500 && /legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(item.url));
-const errors = results.filter(item => item.status !== null && item.status >= 500 && !/legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(item.url));
+const serverFailures = results.filter(item => item.status !== null && item.status >= 500 && !/legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(item.url));
+const serverWarnings = allowServerErrors ? serverFailures : [];
+const errors = allowServerErrors ? [] : serverFailures;
 const networkWarnings = results.filter(item => item.status === null);
 const clientWarnings = results.filter(item => item.status >= 400 && item.status < 500);
 const missingSources = results.filter(item => item.status === 404 || item.status === 410);
@@ -56,6 +59,7 @@ const missingSources = results.filter(item => item.status === 404 || item.status
 for (const item of results.sort((a, b) => a.url.localeCompare(b.url))) {
   if (item.status === null) console.log('WARN', item.url, 'unreachable:', item.error);
   else if (item.status >= 500 && /legislacao\.aguaslindasdegoias\.go\.gov\.br/i.test(item.url)) console.log('WARN', item.status, item.url, '(portal municipal instável no runner; fonte oficial permanece registrada)');
+  else if (item.status >= 500 && allowServerErrors) console.log('WARN', item.status, item.url, '(indisponibilidade externa não bloqueia este pipeline)');
   else if (item.status >= 500) console.log('FAIL', item.status, item.url);
   else if (item.status === 404 || item.status === 410) console.log('FAIL', item.status, item.url);
   else if (item.status >= 400) console.log('WARN', item.status, item.url);
@@ -69,6 +73,7 @@ console.log(JSON.stringify({
   missingSources: missingSources.length,
   networkWarnings: networkWarnings.length,
   transientServerWarnings: transientServerWarnings.length,
+  serverWarnings: serverWarnings.length,
   errors: errors.length,
 }, null, 2));
 
