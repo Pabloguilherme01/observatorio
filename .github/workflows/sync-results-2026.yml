@@ -90,7 +90,14 @@ jobs:
           test -n "$run_id"
           gh run watch "$run_id" --exit-status
 
-          if pr_url="$(gh pr create \
+          existing_pr="$(gh pr list --state open --base main --head "$branch" --json number,url --jq '.[0].url // empty')"
+          if [ -n "$existing_pr" ]; then
+            echo "PR já existente: $existing_pr"
+            pending_issue="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "Resultados TSE 2026: PR pendente") | .number' | head -n 1)"
+            if [ -n "$pending_issue" ]; then
+              gh issue close "$pending_issue" --comment "PR já existente: $existing_pr"
+            fi
+          elif pr_url="$(gh pr create \
             --base main \
             --head "$branch" \
             --title "data: sync official TSE results snapshot" \
