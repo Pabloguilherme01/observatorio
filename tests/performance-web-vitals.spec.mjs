@@ -43,19 +43,19 @@ test.describe('performance budgets · Chrome desktop', () => {
     await expect(page.getByText(/Simulador de bolso/i).first()).toBeVisible();
     const interactionMs = Date.now() - interactionStart;
 
-    const metrics = await page.evaluate(() => ({
+    const vitals = await page.evaluate(() => ({
       lcp: Math.round(window.__obsPerf?.lcp || 0),
       cls: Number((window.__obsPerf?.cls || 0).toFixed(3)),
       fcp: Math.round(window.__obsPerf?.fcp || 0),
       longTasks: window.__obsPerf?.longTasks || 0,
     }));
 
-    console.log(JSON.stringify({ ...metrics, interactionMs }, null, 2));
-    expect(metrics.fcp).toBeLessThan(5000);
-    expect(metrics.lcp).toBeGreaterThan(0);
-    expect(metrics.lcp).toBeLessThan(8000);
-    expect(metrics.cls).toBeLessThan(0.25);
+    console.log(JSON.stringify({ ...vitals, interactionMs }, null, 2));
+    expect(vitals.fcp).toBeLessThan(5000);
+    expect(vitals.lcp).toBeGreaterThan(0);
+    expect(vitals.lcp).toBeLessThan(8000);
+    expect(vitals.cls).toBeLessThan(0.25);
     expect(interactionMs).toBeLessThan(1000);
-    expect(metrics.longTasks).toBeLessThan(80);
+    expect(vitals.longTasks).toBeLessThan(80);
   });
 });
