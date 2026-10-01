@@ -34,3 +34,8 @@ O CI também executa `npm run check:main-provenance` em pushes para `main`. O gu
 Isso não substitui a proteção nativa da branch. Porém, evita que um push direto em `main` seja considerado um release válido pelo pipeline e, portanto, impede que esse caminho alcance o deploy de Pages.
 
 A proteção nativa de branch/ruleset continua recomendada para bloquear o push na origem, antes mesmo da execução do CI.
+## Operação idempotente das sincronizações
+
+- Os workflows TSE verificam se já existe uma PR aberta para a branch de automação antes de chamar `gh pr create`.
+- Reexecuções do mesmo ciclo não devem criar PRs duplicadas.
+- Se a criação de PR continuar bloqueada por permissão do GitHub, a issue operacional permanece como fallback único e não autoriza merge automático.
