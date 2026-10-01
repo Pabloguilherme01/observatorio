@@ -54,9 +54,9 @@ const workflowText = [ci, quality, read('.github/workflows/codeql.yml'), deploy,
 if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
 else fail('CI não inclui o release gate consolidado.');
 if (quality.includes('npm run audit:release')) pass('Quality inclui o release gate consolidado.');
+else fail('Quality não inclui o release gate consolidado.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
-else fail('Quality não inclui o release gate consolidado.');
 if (deploy.includes('workflows: ["CI"]') && deploy.includes("github.event.workflow_run.conclusion == 'success'") && deploy.includes("github.event.workflow_run.event == 'push'") && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')) pass('Deploy preserva a cadeia CI -> SHA -> publicação.');
 else fail('Deploy perdeu a cadeia de paridade com o CI.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
