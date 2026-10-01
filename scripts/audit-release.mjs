@@ -61,6 +61,8 @@ if (deploy.includes('workflows: ["CI"]') && deploy.includes("github.event.workfl
 else fail('Deploy perdeu a cadeia de paridade com o CI.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
 else fail('sincronizações TSE usam Node divergente do CI.');
+if (syncTse.includes('gh pr list --state open --base main --head') && syncResults.includes('gh pr list --state open --base main --head')) pass('automação TSE evita PRs duplicadas para a mesma branch.');
+else fail('automação TSE não possui guarda idempotente de PR.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
 const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));
