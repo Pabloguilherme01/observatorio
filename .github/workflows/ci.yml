@@ -97,6 +97,9 @@ jobs:
       - name: Verify production PWA artifact
         run: npm run test:pwa
 
+      - name: Release readiness contract
+        run: npm run audit:release
+
   browser:
     name: Browser · ${{ matrix.project }}
     runs-on: ubuntu-latest
