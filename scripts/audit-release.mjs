@@ -37,6 +37,13 @@ const requiredFiles = [
   '.github/workflows/sync-results-2026.yml',
   'scripts/audit-release.mjs',
   'scripts/assert-main-provenance.mjs',
+  'scripts/audit-workflows.mjs',
+  'scripts/audit-styles.mjs',
+  'scripts/audit-performance.mjs',
+  'scripts/cleanup-tse-automation.mjs',
+  'src/assets/styles/index.css',
+  'src/hooks/useDialogFocus.ts',
+  '.github/workflows/cleanup-tse-automation.yml',
 ];
 
 for (const file of requiredFiles) {
