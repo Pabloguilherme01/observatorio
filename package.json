@@ -38,7 +38,8 @@
     "audit:deps": "npm audit --audit-level=high",
     "audit:bundle": "node scripts/audit-bundle.mjs",
     "audit:release": "node scripts/audit-release.mjs",
-    "release:check": "npm run check:deploy && npm run audit:release"
+    "release:check": "npm run check:deploy && npm run audit:release",
+    "check:main-provenance": "node scripts/assert-main-provenance.mjs"
   },
   "dependencies": {
     "@sentry/react": "10.75.2",
