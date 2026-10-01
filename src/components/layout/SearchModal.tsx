@@ -99,7 +99,6 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const inputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const openerRef = useRef<HTMLElement | null>(null);
   const filteredLengthRef = useRef(0);
 
   const openSearch = useCallback(() => {
