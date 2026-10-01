@@ -64,6 +64,11 @@ jobs:
       - name: Dependency vulnerability gate
         run: npm run audit:deps
 
+      - name: Release readiness contract
+        env:
+          RELEASE_EXPECTED_SHA: ${{ env.DEPLOY_SHA }}
+        run: npm run audit:release
+
       - name: Validate versioned TSE snapshot contract
         env:
           REQUIRE_TSE_SYNC: 'false'

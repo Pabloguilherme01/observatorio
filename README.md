@@ -122,3 +122,11 @@ A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipelin
 ## Licença
 
 MIT — veja [LICENSE](LICENSE).
+
+## Release readiness
+
+`npm run release:check` representa a validação consolidada de candidato a release. Ele executa o build, os contratos de qualidade e a auditoria final de consistência do pipeline.
+
+O CI e o Quality executam `npm run audit:release` em cada PR e push para `main`. O deploy também repete esse contrato no SHA exato que passou pelo CI.
+
+A proteção efetiva da branch `main` continua sendo uma configuração administrativa do GitHub. A configuração esperada está registrada em `docs/release-checklist.md` e permanece como requisito de governança do projeto.

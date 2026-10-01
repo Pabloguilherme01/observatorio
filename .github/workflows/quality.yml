@@ -72,3 +72,5 @@ jobs:
         run: npm run build
       - name: Audit production bundle budget
         run: npm run audit:bundle
+      - name: Release readiness contract
+        run: npm run audit:release
