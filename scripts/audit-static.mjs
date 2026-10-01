@@ -20,6 +20,7 @@ const sitemap = read('public/sitemap.xml');
 const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 const ciWorkflow = read('.github/workflows/ci.yml');
+const browserWorkflow = read('.github/workflows/browser.yml');
 const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
 const sourceHealthWorkflow = read('.github/workflows/source-health.yml');
 const codeqlWorkflow = read('.github/workflows/codeql.yml');
@@ -148,17 +149,17 @@ must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json 
 must(pkgScripts['test:source-audit-policy'] === 'node scripts/test-source-audit-policy.mjs', 'package.json registra teste determinístico da política de disponibilidade das fontes');
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
-    && ciWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
-    && ciWorkflow.includes('project: chrome-desktop')
-    && ciWorkflow.includes('engine: chromium')
-    && ciWorkflow.includes('project: firefox-desktop')
-    && ciWorkflow.includes('engine: firefox')
-    && ciWorkflow.includes('project: safari-desktop')
-    && ciWorkflow.includes('project: chrome-android')
-    && ciWorkflow.includes('project: safari-iphone')
-    && ciWorkflow.includes('project: safari-iphone-se')
-    && ciWorkflow.includes('engine: webkit')
-    && ciWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
+    && browserWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
+    && browserWorkflow.includes('project: chrome-desktop')
+    && browserWorkflow.includes('engine: chromium')
+    && browserWorkflow.includes('project: firefox-desktop')
+    && browserWorkflow.includes('engine: firefox')
+    && browserWorkflow.includes('project: safari-desktop')
+    && browserWorkflow.includes('project: chrome-android')
+    && browserWorkflow.includes('project: safari-iphone')
+    && browserWorkflow.includes('project: safari-iphone-se')
+    && browserWorkflow.includes('engine: webkit')
+    && browserWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
