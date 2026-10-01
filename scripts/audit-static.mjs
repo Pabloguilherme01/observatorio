@@ -66,7 +66,7 @@ must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da 
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
-must(fs.existsSync(path.join(root, 'src/assets/styles/final-ui.css')) && appSource.includes("../assets/styles/final-ui.css"), 'camada visual final está consolidada em um único stylesheet global');
+must(fs.existsSync(path.join(root, 'src/assets/styles/index.css')) && appSource.includes("./assets/styles/index.css"), 'camadas visuais compartilhadas usam o entrypoint canônico de styles/index.css');
 must(!fs.existsSync(path.join(root, 'src/assets/styles/premium-finish.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/visual-final.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/site-final.css')), 'camadas visuais globais antigas não permanecem duplicadas');
 must(spaFallback.includes('obsSpaFallback') && spaFallback.includes('encodeURIComponent'), 'fallback 404 da SPA preserva a rota solicitada');
 must(deploySource.includes("status=\"$(curl -sS --retry 3") && deploySource.includes('test "$status" = "404"'), 'deploy aceita explicitamente o 404 esperado do fallback SPA');
