@@ -5,6 +5,7 @@ type DialogFocusOptions = {
   readonly dialogRef: RefObject<HTMLElement | null>;
   readonly getInitialFocus?: () => HTMLElement | null;
   readonly restoreRef?: RefObject<HTMLElement | null>;
+  readonly restoreToOpener?: boolean;
   readonly restoreSelector?: string;
   readonly onEscape?: () => void;
 };
@@ -14,6 +15,7 @@ export function useDialogFocus({
   dialogRef,
   getInitialFocus,
   restoreRef,
+  restoreToOpener = true,
   restoreSelector,
   onEscape,
 }: DialogFocusOptions): void {
@@ -22,6 +24,7 @@ export function useDialogFocus({
 
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const previousOverflow = document.body.style.overflow;
+    const restoreOpener = restoreToOpener ? opener : null;
 
     const focusables = () => Array.from(
       dialogRef.current?.querySelectorAll<HTMLElement>(
@@ -60,8 +63,8 @@ export function useDialogFocus({
       document.body.style.overflow = previousOverflow;
       const restore = restoreRef?.current
         ?? (restoreSelector ? document.querySelector<HTMLElement>(restoreSelector) : null)
-        ?? opener;
+        ?? restoreOpener;
       if (restore?.isConnected) window.requestAnimationFrame(() => restore.focus());
     };
-  }, [dialogRef, getInitialFocus, onEscape, open, restoreRef, restoreSelector]);
+  }, [dialogRef, getInitialFocus, onEscape, open, restoreRef, restoreSelector, restoreToOpener]);
 }
