@@ -40,6 +40,7 @@ function stepNames(text, job) {
 
 const required = [
   '.github/workflows/ci.yml',
+  '.github/workflows/browser.yml',
   '.github/workflows/quality.yml',
   '.github/workflows/codeql.yml',
   '.github/workflows/deploy-pages.yml',
@@ -70,11 +71,15 @@ for (const step of ['Guard main provenance', 'Release readiness contract', 'Audi
   if (ciSteps.includes(step)) pass('CI mantém etapa estrutural: ' + step);
   else fail('CI não possui etapa esperada: ' + step);
 }
+
+const browser = workflows['.github/workflows/browser.yml'];
 const browserNames = ['chrome-desktop', 'firefox-desktop', 'safari-desktop', 'chrome-android', 'safari-iphone', 'safari-iphone-se'];
 for (const name of browserNames) {
-  if (ci.includes('project: ' + name)) pass('matriz de navegador contém ' + name);
+  if (browser.includes('project: ' + name)) pass('matriz de navegador contém ' + name);
   else fail('matriz de navegador perdeu ' + name);
 }
+if (/project: safari-desktop[\s\S]*?non_blocking:\s*true/.test(browser)) pass('Safari desktop não bloqueia o gate principal quando o runner WebKit trava.');
+else fail('Safari desktop não possui isolamento não bloqueante.');
 
 const quality = workflows['.github/workflows/quality.yml'];
 if (stepNames(quality, 'quality').includes('Audit workflow structure')) pass('Quality audita a estrutura dos workflows.');
