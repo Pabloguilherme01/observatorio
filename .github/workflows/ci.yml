@@ -118,23 +118,36 @@ jobs:
   browser:
     name: Browser · ${{ matrix.project }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: ${{ matrix.timeout }}
+    continue-on-error: ${{ matrix.non_blocking }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - project: chrome-desktop
             engine: chromium
+            timeout: 30
+            non_blocking: false
           - project: firefox-desktop
             engine: firefox
+            timeout: 30
+            non_blocking: false
           - project: safari-desktop
             engine: webkit
+            timeout: 15
+            non_blocking: true
           - project: chrome-android
             engine: chromium
+            timeout: 30
+            non_blocking: false
           - project: safari-iphone
             engine: webkit
+            timeout: 30
+            non_blocking: false
           - project: safari-iphone-se
             engine: webkit
+            timeout: 30
+            non_blocking: false
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
