@@ -1,7 +1,6 @@
 import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import './assets/styles/globals.css';
-import './assets/styles/mobile-final.css';
+import './assets/styles/index.css';
 import { App } from './app/App';
 import './assets/styles/mobile-refinements.css';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
