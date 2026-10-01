@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
+import { StrictMode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './assets/styles/index.css';
 import { App } from './app/App';
@@ -94,6 +94,11 @@ function PwaInstallPrompt() {
   const [installed, setInstalled] = useState(isStandalone);
   const installShortcutRef = useRef<HTMLButtonElement>(null);
   const installGuideRef = useRef<HTMLElement>(null);
+  const closeInstallGuide = useCallback(() => setOpen(false), []);
+  const focusInstallGuide = useCallback(
+    () => installGuideRef.current?.querySelector<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])') ?? null,
+    [],
+  );
 
   useEffect(() => {
     const onBeforeInstall = (event: Event) => {
@@ -119,8 +124,8 @@ function PwaInstallPrompt() {
     dialogRef: installGuideRef,
     restoreRef: installShortcutRef,
     restoreToOpener: false,
-    getInitialFocus: () => installGuideRef.current?.querySelector<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])') ?? null,
-    onEscape: () => setOpen(false),
+    getInitialFocus: focusInstallGuide,
+    onEscape: closeInstallGuide,
   });
 
   if (installed || dismissed || (!platform.mobile && !installEvent)) return null;
