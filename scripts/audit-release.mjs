@@ -64,11 +64,17 @@ if (quality.includes('npm run audit:release')) pass('Quality inclui o release ga
 else fail('Quality não inclui o release gate consolidado.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
+if (ci.includes('npm run audit:workflows') && ci.includes('npm run audit:styles') && ci.includes('npm run audit:performance')) pass('CI executa os novos gates estruturais, de estilos e performance.');
+else fail('CI não executa todos os novos gates de manutenção.');
+if (quality.includes('npm run audit:workflows') && quality.includes('npm run audit:styles') && quality.includes('npm run audit:performance')) pass('Quality executa os novos gates estruturais, de estilos e performance.');
+else fail('Quality não executa todos os novos gates de manutenção.');
 if (deploy.includes('workflows: ["CI"]') && deploy.includes("github.event.workflow_run.conclusion == 'success'") && deploy.includes("github.event.workflow_run.event == 'push'") && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')) pass('Deploy preserva a cadeia CI -> SHA -> publicação.');
 else fail('Deploy perdeu a cadeia de paridade com o CI.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
 else fail('sincronizações TSE usam Node divergente do CI.');
 if (syncTse.includes('gh pr list --state open --base main --head') && syncResults.includes('gh pr list --state open --base main --head')) pass('automação TSE evita PRs duplicadas para a mesma branch.');
+if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
+else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
 else fail('automação TSE não possui guarda idempotente de PR.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
