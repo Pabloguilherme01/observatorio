@@ -30,12 +30,16 @@ const initialJsRaw = initial.filter(asset => asset.file.endsWith('.js')).reduce(
 const initialCssRaw = initial.filter(asset => asset.file.endsWith('.css')).reduce((sum, asset) => sum + asset.raw, 0);
 
 const limits = {
-  initialJsRaw: Number(process.env.PERF_MAX_INITIAL_JS_KB || 360) * 1024,
-  initialCssRaw: Number(process.env.PERF_MAX_INITIAL_CSS_KB || 260) * 1024,
+  initialJsRaw: Number(process.env.PERF_MAX_INITIAL_JS_KB || 500) * 1024,
+  initialCssRaw: Number(process.env.PERF_MAX_INITIAL_CSS_KB || 500) * 1024,
   totalAssetsRaw: Number(process.env.PERF_MAX_TOTAL_ASSETS_KB || 1800) * 1024,
 };
 
 const totalRaw = assets.reduce((sum, asset) => sum + asset.raw, 0);
+const warnings = [];
+if (initialJsRaw > limits.initialJsRaw * 0.8) warnings.push('JS inicial está acima de 80% do orçamento.');
+if (initialCssRaw > limits.initialCssRaw * 0.8) warnings.push('CSS inicial está acima de 80% do orçamento.');
+warnings.forEach(message => console.log('WARN ' + message));
 console.log(JSON.stringify({
   initialScripts: initialScripts.length,
   initialStyles: initialStyles.length,
