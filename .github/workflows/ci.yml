@@ -34,6 +34,12 @@ jobs:
       - name: Core quality contract
         run: npm run quality:check
 
+      - name: Audit workflow structure
+        run: npm run audit:workflows
+
+      - name: Audit style source budget
+        run: npm run audit:styles
+
       - name: Guard main provenance
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         env:
@@ -99,6 +105,9 @@ jobs:
 
       - name: Audit production bundle budget
         run: npm run audit:bundle
+
+      - name: Audit performance budgets
+        run: npm run audit:performance
 
       - name: Verify production PWA artifact
         run: npm run test:pwa
