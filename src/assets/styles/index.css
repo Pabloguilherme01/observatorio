@@ -1,0 +1,10 @@
+/* Canonical style entrypoint.
+ * Keep component-only styles local to their component; shared layers load here once.
+ */
+@import './globals.css';
+@import './final-ui.css';
+@import './summary-polish.css';
+@import './mobile-final.css';
+@import './mobile-refinements.css';
+@import './guided-mode.css';
+@import './responsive-type.css';
