@@ -34,6 +34,12 @@ jobs:
       - name: Core quality contract
         run: npm run quality:check
 
+      - name: Guard main provenance
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run check:main-provenance
+
       - name: Audit practical usability
         run: npm run audit:usability
 
