@@ -28,6 +28,10 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci --no-audit --no-fund
+      - name: Audit workflow structure
+        run: npm run audit:workflows
+      - name: Audit style source budget
+        run: npm run audit:styles
       - name: Audit practical usability and links
         run: npm run audit:usability
       - name: Audit direct public service shortcuts
@@ -72,5 +76,7 @@ jobs:
         run: npm run build
       - name: Audit production bundle budget
         run: npm run audit:bundle
+      - name: Audit performance budgets
+        run: npm run audit:performance
       - name: Release readiness contract
         run: npm run audit:release

@@ -13,12 +13,14 @@ const index = read('index.html');
 const vite = read('vite.config.ts');
 const navigation = read('src/config/navigation.ts');
 const appSource = read('src/app/App.tsx');
+const bootstrapSource = read('src/main.tsx');
 const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
 const robots = read('public/robots.txt');
 const sitemap = read('public/sitemap.xml');
 const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
 const ciWorkflow = read('.github/workflows/ci.yml');
+const browserWorkflow = read('.github/workflows/browser.yml');
 const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
 const sourceHealthWorkflow = read('.github/workflows/source-health.yml');
 const codeqlWorkflow = read('.github/workflows/codeql.yml');
@@ -66,7 +68,7 @@ must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da 
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
-must(fs.existsSync(path.join(root, 'src/assets/styles/final-ui.css')) && appSource.includes("../assets/styles/final-ui.css"), 'camada visual final está consolidada em um único stylesheet global');
+must(fs.existsSync(path.join(root, 'src/assets/styles/index.css')) && bootstrapSource.includes("./assets/styles/index.css"), 'camadas visuais compartilhadas usam o entrypoint canônico de styles/index.css');
 must(!fs.existsSync(path.join(root, 'src/assets/styles/premium-finish.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/visual-final.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/site-final.css')), 'camadas visuais globais antigas não permanecem duplicadas');
 must(spaFallback.includes('obsSpaFallback') && spaFallback.includes('encodeURIComponent'), 'fallback 404 da SPA preserva a rota solicitada');
 must(deploySource.includes("status=\"$(curl -sS --retry 3") && deploySource.includes('test "$status" = "404"'), 'deploy aceita explicitamente o 404 esperado do fallback SPA');
@@ -147,17 +149,17 @@ must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json 
 must(pkgScripts['test:source-audit-policy'] === 'node scripts/test-source-audit-policy.mjs', 'package.json registra teste determinístico da política de disponibilidade das fontes');
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
-    && ciWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
-    && ciWorkflow.includes('project: chrome-desktop')
-    && ciWorkflow.includes('engine: chromium')
-    && ciWorkflow.includes('project: firefox-desktop')
-    && ciWorkflow.includes('engine: firefox')
-    && ciWorkflow.includes('project: safari-desktop')
-    && ciWorkflow.includes('project: chrome-android')
-    && ciWorkflow.includes('project: safari-iphone')
-    && ciWorkflow.includes('project: safari-iphone-se')
-    && ciWorkflow.includes('engine: webkit')
-    && ciWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
+    && browserWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
+    && browserWorkflow.includes('project: chrome-desktop')
+    && browserWorkflow.includes('engine: chromium')
+    && browserWorkflow.includes('project: firefox-desktop')
+    && browserWorkflow.includes('engine: firefox')
+    && browserWorkflow.includes('project: safari-desktop')
+    && browserWorkflow.includes('project: chrome-android')
+    && browserWorkflow.includes('project: safari-iphone')
+    && browserWorkflow.includes('project: safari-iphone-se')
+    && browserWorkflow.includes('engine: webkit')
+    && browserWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')

@@ -1,12 +1,11 @@
-import { StrictMode, useEffect, useMemo, useRef, useState } from 'react';
+import { StrictMode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import './assets/styles/globals.css';
-import './assets/styles/mobile-final.css';
+import './assets/styles/index.css';
 import { App } from './app/App';
-import './assets/styles/mobile-refinements.css';
 import { ErrorBoundary } from './components/system/ErrorBoundary';
 import { captureObservatorioException } from './lib/sentry';
 import { Download, MoreVertical, Share2, X } from 'lucide-react';
+import { useDialogFocus } from './hooks/useDialogFocus';
 
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
 const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';
@@ -95,6 +94,11 @@ function PwaInstallPrompt() {
   const [installed, setInstalled] = useState(isStandalone);
   const installShortcutRef = useRef<HTMLButtonElement>(null);
   const installGuideRef = useRef<HTMLElement>(null);
+  const closeInstallGuide = useCallback(() => setOpen(false), []);
+  const focusInstallGuide = useCallback(
+    () => installGuideRef.current?.querySelector<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])') ?? null,
+    [],
+  );
 
   useEffect(() => {
     const onBeforeInstall = (event: Event) => {
@@ -115,53 +119,14 @@ function PwaInstallPrompt() {
     };
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const focusFirstControl = () => {
-      installGuideRef.current
-        ?.querySelector<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')
-        ?.focus();
-    };
-    const frame = window.requestAnimationFrame(focusFirstControl);
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setOpen(false);
-        return;
-      }
-      if (event.key !== 'Tab') return;
-
-      const guide = installGuideRef.current;
-      if (!guide) return;
-      const controls = Array.from(
-        guide.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'),
-      ).filter(node => node.tabIndex >= 0 && !node.hasAttribute('hidden'));
-      if (!controls.length) return;
-
-      const first = controls[0];
-      const last = controls.at(-1);
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last?.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first?.focus();
-      }
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.cancelAnimationFrame(frame);
-      document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = previousOverflow;
-      window.requestAnimationFrame(() => installShortcutRef.current?.focus());
-    };
-  }, [open]);
+  useDialogFocus({
+    open,
+    dialogRef: installGuideRef,
+    restoreRef: installShortcutRef,
+    restoreToOpener: false,
+    getInitialFocus: focusInstallGuide,
+    onEscape: closeInstallGuide,
+  });
 
   if (installed || dismissed || (!platform.mobile && !installEvent)) return null;
 

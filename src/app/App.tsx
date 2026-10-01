@@ -16,9 +16,6 @@ import { DataInspector } from '../components/DataInspector';
 import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
 import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
-import '../assets/styles/final-ui.css';
-import '../assets/styles/responsive-type.css';
-import '../assets/styles/guided-mode.css';
 import { modeForDestination } from '../config/readingModes';
 import { getReadingModeParam, getSearchParam, urlParamKeys } from '../lib/urlState';
 

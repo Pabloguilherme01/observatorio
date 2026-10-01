@@ -192,15 +192,16 @@ if (inspector.includes("url: canonicalUrl") && inspector.includes("copyText(cano
 else fail('ações de link do inspetor divergem entre si');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
+const dialogFocus = texts.find(item => item.file === 'src/hooks/useDialogFocus.ts')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
 if (search.includes('const editingQuery = event.target === inputRef.current') && search.includes("!editingQuery && event.key === 'Home'") && search.includes("!editingQuery && event.key === 'End'")) pass('busca preserva Home/End para edição nativa no campo de texto');
 else fail('busca intercepta Home/End e pode quebrar edição de texto');
 if (search.includes('id="search-result-status"') && search.includes('role="status"') && search.includes('aria-live="polite"') && search.includes('aria-describedby="search-result-status"')) pass('busca anuncia mudanças na quantidade de resultados');
 else fail('busca não anuncia mudanças de resultados para tecnologia assistiva');
-if (search.includes('closeButtonRef') && search.includes("desktop ? inputRef.current : closeButtonRef.current") && header.includes('closeTools(false)')) pass('busca mobile move foco para dentro do diálogo sem reabrir teclado virtual');
+if (search.includes('closeButtonRef') && search.includes('window.matchMedia?.(\'(min-width: 768px)\')') && search.includes("restoreSelector: '[data-search-trigger=\"primary\"]'") && dialogFocus.includes('document.body.style.overflow = \'hidden\'') && header.includes('closeTools(false)')) pass('busca mobile move foco para dentro do diálogo sem reabrir teclado virtual');
 else fail('busca mobile pode deixar foco atrás do diálogo');
-if (search.includes('canRestoreOpener') && search.includes('opener !== document.body') && search.includes('opener.tabIndex >= 0') && search.includes('[data-search-trigger="primary"]') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco apenas em acionador válido e usa fallback estável');
+if (search.includes("restoreSelector: '[data-search-trigger=\"primary\"]'") && dialogFocus.includes('restore?.isConnected') && header.includes('data-search-trigger="primary"')) pass('busca restaura foco apenas em acionador válido e usa fallback estável');
 else fail('fechar busca pode perder o foco quando o acionador original não existe mais');
 const headerUsesCanonicalShareHelper =
   header.includes('copyCurrentSectionLink') &&
@@ -219,7 +220,7 @@ if (header.includes('aria-live="polite"') && header.includes('Link da seção co
 else fail('cópia de link não anuncia sucesso para tecnologia assistiva');
 if (search.includes('search-clear-query') && search.includes("setQuery('')") && search.includes('setActiveIndex(0)')) pass('busca oferece limpeza explícita sem fechar o diálogo');
 else fail('busca não oferece ação explícita para limpar a consulta');
-if (search.includes('search-shortcut-guide') && search.includes('navigation.map(item =>') && search.includes("a[href], summary")) pass('busca expõe guia de atalhos e mantém o summary no ciclo de foco');
+if (search.includes('search-shortcut-guide') && search.includes('navigation.map(item =>') && (search.includes("a[href], summary") || dialogFocus.includes('summary'))) pass('busca expõe guia de atalhos e mantém o summary no ciclo de foco');
 else fail('guia de atalhos da busca está ausente ou fora do ciclo de foco');
 if (experience.includes("event.key === '?'") && header.includes('observatorio:shortcut-help') && search.includes('initialShortcutGuideOpen')) pass('atalho ? abre diretamente a ajuda de atalhos');
 else fail('ajuda global de atalhos não possui acesso direto por teclado');

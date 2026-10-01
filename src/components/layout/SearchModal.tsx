@@ -4,12 +4,13 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
 import { formatBudgetCurrency, formatDate } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
 import { navigateToSection } from '../../lib/sectionNavigation';
 import { clearRecentSections, getRecentSections } from '../../lib/recentSections';
 import { copyText } from '../../lib/clipboard';
 import { clearSavedIndicators, getSavedIndicators, type SavedIndicator } from '../../lib/savedIndicators';
+import { useDialogFocus } from '../../hooks/useDialogFocus';
 
 type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
@@ -98,13 +99,9 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const inputRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
-  const openerRef = useRef<HTMLElement | null>(null);
   const filteredLengthRef = useRef(0);
-  const focusTimerRef = useRef<number | null>(null);
-  const hasOpenedRef = useRef(false);
 
-  const openSearch = () => {
-    openerRef.current = document.activeElement as HTMLElement | null;
+  const openSearch = useCallback(() => {
     setQuery('');
     setActiveIndex(0);
     setShortcutGuideOpen(initialShortcutGuideOpen);
@@ -112,60 +109,37 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
     setSavedIndicators(getSavedIndicators());
     setQuickAnswerCopied(false);
     setQuickAnswerCopyError(false);
-    const desktop = window.matchMedia?.('(min-width: 768px)').matches;
-    const target = desktop ? inputRef.current : closeButtonRef.current;
-    if (focusTimerRef.current) window.clearTimeout(focusTimerRef.current);
-    focusTimerRef.current = window.setTimeout(() => {
-      focusTimerRef.current = null;
-      target?.focus();
-    }, 40);
-  };
+  }, [initialShortcutGuideOpen]);
+
+  const getInitialFocus = useCallback(
+    () => window.matchMedia?.('(min-width: 768px)').matches ? inputRef.current : closeButtonRef.current,
+    [],
+  );
 
   const mobileModeHint = typeof window !== 'undefined' && window.matchMedia?.('(max-width: 767px)').matches;
 
 
-  useEffect(() => {
-    if (!open) {
-      if (!hasOpenedRef.current) return;
-      hasOpenedRef.current = false;
-      const opener = openerRef.current;
-      const fallback = document.querySelector<HTMLElement>('[data-search-trigger="primary"]');
-      const canRestoreOpener = Boolean(opener?.isConnected && opener !== document.body && opener.tabIndex >= 0);
-      if (canRestoreOpener) opener?.focus();
-      else fallback?.focus();
-      return;
-    }
-    hasOpenedRef.current = true;
-    openSearch();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+  useDialogFocus({
+    open,
+    dialogRef,
+    getInitialFocus,
+    restoreSelector: '[data-search-trigger="primary"]',
+    onEscape: onClose,
+  });
 
+  useEffect(() => {
+    if (!open) return;
+    openSearch();
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { event.preventDefault(); onClose(); return; }
       const editingQuery = event.target === inputRef.current;
       if (event.key === 'ArrowDown') { event.preventDefault(); setActiveIndex(index => Math.min(index + 1, Math.max(filteredLengthRef.current - 1, 0))); return; }
       if (event.key === 'ArrowUp') { event.preventDefault(); setActiveIndex(index => Math.max(index - 1, 0)); return; }
       if (!editingQuery && event.key === 'Home') { event.preventDefault(); setActiveIndex(0); return; }
       if (!editingQuery && event.key === 'End') { event.preventDefault(); setActiveIndex(Math.max(filteredLengthRef.current - 1, 0)); return; }
-      if (event.key === 'Tab' && dialogRef.current) {
-        const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, input, a[href], summary')).filter(node => !node.hasAttribute('disabled'));
-        if (!focusable.length) return;
-        const first = focusable[0], last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-      }
     };
-
     window.addEventListener('keydown', handleKey);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKey);
-      if (focusTimerRef.current) {
-        window.clearTimeout(focusTimerRef.current);
-        focusTimerRef.current = null;
-      }
-    };
-  }, [open, onClose, initialShortcutGuideOpen]);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [open, openSearch]);
 
   const quickAnswer = useMemo<QuickAnswer | null>(() => {
     const q = normalizeSearchQuery(query);

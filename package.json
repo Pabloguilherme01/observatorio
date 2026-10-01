@@ -38,8 +38,12 @@
     "audit:deps": "npm audit --audit-level=high",
     "audit:bundle": "node scripts/audit-bundle.mjs",
     "audit:release": "node scripts/audit-release.mjs",
-    "release:check": "npm run check:deploy && npm run audit:release",
-    "check:main-provenance": "node scripts/assert-main-provenance.mjs"
+    "release:check": "npm run check:deploy && npm run audit:workflows && npm run audit:styles && npm run audit:performance && npm run audit:release",
+    "check:main-provenance": "node scripts/assert-main-provenance.mjs",
+    "audit:workflows": "node scripts/audit-workflows.mjs",
+    "audit:styles": "node scripts/audit-styles.mjs",
+    "audit:performance": "node scripts/audit-performance.mjs",
+    "cleanup:tse": "node scripts/cleanup-tse-automation.mjs"
   },
   "dependencies": {
     "@sentry/react": "10.75.2",

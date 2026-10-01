@@ -9,6 +9,7 @@ const must = (condition, message) => condition ? pass(message) : errors.push(mes
 
 const app = read('src/app/App.tsx');
 const search = read('src/components/layout/SearchModal.tsx');
+const dialogFocus = read('src/hooks/useDialogFocus.ts');
 const modeToggle = read('src/components/layout/LanguageModeToggle.tsx');
 const quiz = read('src/components/sections/QuickQuiz.tsx');
 const quizData = read('src/data/quiz/questionBank.ts');
@@ -76,7 +77,7 @@ must(quiz.includes('QUIZ_TOTAL') && quiz.includes('QUESTIONS_PER_LEVEL') && quiz
 must(quiz.includes('disabled={locked}') && quiz.includes('aria-disabled={locked}'), 'quiz bloqueia fases ainda não liberadas');
 must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual');
 must(!search.includes('autoFocus'), 'busca não usa autoFocus');
-must(search.includes("min-width: 768px") && search.includes('desktop ? inputRef.current : closeButtonRef.current'), 'busca foca o campo no desktop e um controle seguro no mobile');
+must(search.includes('const getInitialFocus') && search.includes('closeButtonRef') && dialogFocus.includes('getInitialFocus?.()') && dialogFocus.includes('target?.focus()'), 'busca foca o campo no desktop e um controle seguro no mobile');
 must(app.includes("window.location.hash") && app.includes("hashchange") && app.includes('observatorio:navigate'), 'links com UTM + âncora recebem navegação resiliente');
 must(css.includes('overflow-wrap:anywhere') && css.includes('.mobile-safe-wrap'), 'contenção de overflow textual está ativa');
 must(electoral360.includes('photoUrl: candidate.photoUrl ?? null') && electoral360.includes('instagramUrl: candidate.instagramUrl ?? null'), 'metadados de mídia do candidato são preservados quando validados');
