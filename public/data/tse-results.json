@@ -1,0 +1,6838 @@
+{
+  "schemaVersion": 3,
+  "environment": "official",
+  "scope": "municipality",
+  "state": "live",
+  "source": "official-tse",
+  "sourceBaseUrl": "https://resultados.tse.jus.br/oficial",
+  "pleito": 3220,
+  "turn": 1,
+  "uf": "GO",
+  "municipalityCode": "93343",
+  "municipalityName": "Águas Lindas de Goiás",
+  "referenceDate": "2026-10-04T22:37:25.706Z",
+  "capturedAt": "2026-10-04T22:37:25.706Z",
+  "entries": [
+    {
+      "electionCode": 6257,
+      "cargo": "Presidente",
+      "sourceFile": "go93343-c0001-e006257-u.json",
+      "referenceDate": "2026-10-04T03:00:00.000Z",
+      "updatedAt": "2026-10-04T22:32:16.000Z",
+      "sectionsTotal": 322,
+      "sectionsCounted": 220,
+      "totalVotes": 67242,
+      "validVotes": 64719,
+      "blankVotes": 1123,
+      "nullVotes": 1399,
+      "abstentions": 17983,
+      "items": [
+        {
+          "candidateId": "280002551544",
+          "candidate": "FLAVIO BOLSONARO",
+          "party": "PL",
+          "cargo": "Presidente",
+          "votes": 30502,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002551932",
+          "candidate": "RONALDO CAIADO",
+          "party": "PSD",
+          "cargo": "Presidente",
+          "votes": 6889,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002542548",
+          "candidate": "LULA",
+          "party": "PT",
+          "cargo": "Presidente",
+          "votes": 25015,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002552484",
+          "candidate": "CLARIANA BARAO",
+          "party": "DC",
+          "cargo": "Presidente",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002551975",
+          "candidate": "EDMILSON COSTA",
+          "party": "PCB",
+          "cargo": "Presidente",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002541457",
+          "candidate": "HERTZ DIAS",
+          "party": "PSTU",
+          "cargo": "Presidente",
+          "votes": 20,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002551547",
+          "candidate": "ESCRITOR AUGUSTO CURY",
+          "party": "AVANTE",
+          "cargo": "Presidente",
+          "votes": 1003,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002539826",
+          "candidate": "ZEMA",
+          "party": "NOVO",
+          "cargo": "Presidente",
+          "votes": 30,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002538811",
+          "candidate": "SAMARA",
+          "party": "UP",
+          "cargo": "Presidente",
+          "votes": 47,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002548139",
+          "candidate": "VETERINÁRIO WILSON GRASSI",
+          "party": "DEMOCRATA",
+          "cargo": "Presidente",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002540694",
+          "candidate": "RENAN SANTOS",
+          "party": "MISSÃO",
+          "cargo": "Presidente",
+          "votes": 1190,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "280002552487",
+          "candidate": "RUI COSTA PIMENTA",
+          "party": "PCO",
+          "cargo": "Presidente",
+          "votes": 5,
+          "status": "Válido"
+        }
+      ]
+    },
+    {
+      "electionCode": 6259,
+      "cargo": "Governador",
+      "sourceFile": "go93343-c0003-e006259-u.json",
+      "referenceDate": "2026-10-04T03:00:00.000Z",
+      "updatedAt": "2026-10-04T22:31:22.000Z",
+      "sectionsTotal": 322,
+      "sectionsCounted": 219,
+      "totalVotes": 66731,
+      "validVotes": 55936,
+      "blankVotes": 7165,
+      "nullVotes": 3630,
+      "abstentions": 17875,
+      "items": [
+        {
+          "candidateId": "90002551791",
+          "candidate": "WILDER MORAIS",
+          "party": "PL",
+          "cargo": "Governador",
+          "votes": 10691,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550707",
+          "candidate": "LUCIANA AMORIM",
+          "party": "UP",
+          "cargo": "Governador",
+          "votes": 259,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002545476",
+          "candidate": "LUIS CESAR BUENO",
+          "party": "PT",
+          "cargo": "Governador",
+          "votes": 8085,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002553733",
+          "candidate": "DANILO DA SILVA",
+          "party": "PCO",
+          "cargo": "Governador",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540993",
+          "candidate": "DANIEL VILELA",
+          "party": "MDB",
+          "cargo": "Governador",
+          "votes": 34740,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543463",
+          "candidate": "MARCONI PERILLO",
+          "party": "PSDB",
+          "cargo": "Governador",
+          "votes": 2143,
+          "status": "Válido"
+        }
+      ]
+    },
+    {
+      "electionCode": 6259,
+      "cargo": "Senador",
+      "sourceFile": "go93343-c0005-e006259-u.json",
+      "referenceDate": "2026-10-04T03:00:00.000Z",
+      "updatedAt": "2026-10-04T22:31:22.000Z",
+      "sectionsTotal": 322,
+      "sectionsCounted": 219,
+      "totalVotes": 133462,
+      "validVotes": 99301,
+      "blankVotes": 21097,
+      "nullVotes": 13064,
+      "abstentions": 17875,
+      "items": [
+        {
+          "candidateId": "90002540998",
+          "candidate": "GUSTAVO MENDANHA",
+          "party": "PRD",
+          "cargo": "Senador",
+          "votes": 12134,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540997",
+          "candidate": "GRACINHA CAIADO",
+          "party": "UNIÃO",
+          "cargo": "Senador",
+          "votes": 21390,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543556",
+          "candidate": "GUSTAVO GAYER",
+          "party": "PL",
+          "cargo": "Senador",
+          "votes": 27926,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543560",
+          "candidate": "OSÉIAS VARÃO",
+          "party": "PL",
+          "cargo": "Senador",
+          "votes": 9224,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546974",
+          "candidate": "DR. ZACHARIAS CALIL",
+          "party": "MDB",
+          "cargo": "Senador",
+          "votes": 6933,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551198",
+          "candidate": "GUILHERME DARQUES",
+          "party": "UP",
+          "cargo": "Senador",
+          "votes": 262,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543215",
+          "candidate": "VANDERLAN CARDOSO",
+          "party": "PSD",
+          "cargo": "Senador",
+          "votes": 7886,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541455",
+          "candidate": "ISAURA LEMOS",
+          "party": "PSB",
+          "cargo": "Senador",
+          "votes": 6100,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541454",
+          "candidate": "CINTIA DIAS",
+          "party": "PSOL",
+          "cargo": "Senador",
+          "votes": 6603,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002545243",
+          "candidate": "ERNESTO ROLLER",
+          "party": "PSDB",
+          "cargo": "Senador",
+          "votes": 443,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002545244",
+          "candidate": "IURE CASTRO",
+          "party": "CIDADANIA",
+          "cargo": "Senador",
+          "votes": 400,
+          "status": "Válido"
+        }
+      ]
+    },
+    {
+      "electionCode": 6259,
+      "cargo": "Deputado Federal",
+      "sourceFile": "go93343-c0006-e006259-u.json",
+      "referenceDate": "2026-10-04T03:00:00.000Z",
+      "updatedAt": "2026-10-04T22:31:27.000Z",
+      "sectionsTotal": 322,
+      "sectionsCounted": 219,
+      "totalVotes": 66731,
+      "validVotes": 54882,
+      "blankVotes": 8650,
+      "nullVotes": 3069,
+      "abstentions": 17875,
+      "items": [
+        {
+          "candidateId": "90002543218",
+          "candidate": "FLÁVIA MORAIS",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 198,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543226",
+          "candidate": "CÉLIO SILVEIRA",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 976,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543220",
+          "candidate": "LUCAS VERGÍLIO",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 3516,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543227",
+          "candidate": "SUBTENENTE SÉRGIO",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 79,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543222",
+          "candidate": "MIZAIR LEMES JR",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543229",
+          "candidate": "DOMINGAS DA SAÚDE",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 33,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543233",
+          "candidate": "JOÃOZINHO GUIMARÃES",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543221",
+          "candidate": "CORONEL BRAULIO",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543231",
+          "candidate": "SANDRO PEDROSO",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543228",
+          "candidate": "GLEIMO MARTINS",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543232",
+          "candidate": "NAILDE LIMA",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550540",
+          "candidate": "BOMBEIRA LOUIZA",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543219",
+          "candidate": "REGINA CÉLIA",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543223",
+          "candidate": "MESTRE FRANCISCO TAEKWONDO",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543225",
+          "candidate": "MIRIÃ PIRES",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543217",
+          "candidate": "PAPACAPIM",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543224",
+          "candidate": "ELISANGELA ARAUJO",
+          "party": "MDB",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540944",
+          "candidate": "DELEGADO HUMBERTO TEÓFILO",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 881,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540949",
+          "candidate": "LUCIANO GUIMARÃES",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540933",
+          "candidate": "GISELDA DA SAÚDE",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540943",
+          "candidate": "PHILIPPE ABNER",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540948",
+          "candidate": "DANIEL SHAMAH",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 14,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540950",
+          "candidate": "MARCELO PRADO",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540935",
+          "candidate": "GABRIELLA MACHADO",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540939",
+          "candidate": "GABRIELA PUGLIESI",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540945",
+          "candidate": "ROBERTO GOMES",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540946",
+          "candidate": "LUCAS BRÁS",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540947",
+          "candidate": "LAION",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540938",
+          "candidate": "MANU PÁDUA",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540940",
+          "candidate": "SANTANA PIRES",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540942",
+          "candidate": "SANDRA AZEVEDO",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540936",
+          "candidate": "JOÃO BATISTA",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540934",
+          "candidate": "FAGNER SKY",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 291,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540941",
+          "candidate": "ROSA GONOLLI",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540937",
+          "candidate": "JUIZ CUBAS",
+          "party": "NOVO",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Anulado sub judice"
+        },
+        {
+          "candidateId": "90002541700",
+          "candidate": "JOÃO NOLETO",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 184,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541709",
+          "candidate": "GUILHERME KHALIL",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 88,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541706",
+          "candidate": "MAYKEL CARVALHO",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541698",
+          "candidate": "FERNANDA BORGES",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541697",
+          "candidate": "JHONE SANTOS",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541707",
+          "candidate": "DR REILLER LOPES",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541699",
+          "candidate": "OZEIAS SOARES",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 14,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541702",
+          "candidate": "GABRIEL MORSE MISSÃO",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541703",
+          "candidate": "ALINE LIMA",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541705",
+          "candidate": "ANDER ALVES",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541701",
+          "candidate": "ANASTÁCIA ALMEIDA",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554387",
+          "candidate": "MAGNA MOTA",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002541704",
+          "candidate": "ROBERTO JUNIOR (RAVENGAAR)",
+          "party": "MISSÃO",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550210",
+          "candidate": "SALMO CABRAL",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 72,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550212",
+          "candidate": "EDSON CANDIDO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550200",
+          "candidate": "PROF. MOACIR",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 81,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550203",
+          "candidate": "SARGENTO CARNEIRO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550213",
+          "candidate": "ADRIANO DA CASA DE APOIO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 34,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550201",
+          "candidate": "LETICIA DA LUZ",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 15,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550217",
+          "candidate": "CARLOS BRASIL",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550204",
+          "candidate": "ORLANDO ALVES",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550215",
+          "candidate": "PASTOR JUAREZ DA SAÚDE",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550202",
+          "candidate": "RUBINHO DO POVÃO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550205",
+          "candidate": "ALESSANDRA CARMO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550214",
+          "candidate": "TALITA LEMKE",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550216",
+          "candidate": "MISSIONÁRIA LUIZA",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550211",
+          "candidate": "PADRE ROBERTO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550206",
+          "candidate": "ELISEU FRANCISCO",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550208",
+          "candidate": "JESSICA KAROLINE",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002550207",
+          "candidate": "PATRICIA DA MOTA",
+          "party": "PDT",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543237",
+          "candidate": "BRUNO PEIXOTO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 3791,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543246",
+          "candidate": "JOSE NELTO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 4000,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543243",
+          "candidate": "SILVYE ALVES",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 229,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543248",
+          "candidate": "DELEGADO WALDIR",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 199,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543244",
+          "candidate": "CAMILA ROSA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 14,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543250",
+          "candidate": "CAPITÃO RODOLFO SOUZA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 203,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543247",
+          "candidate": "SALMA DA PESTALOZZI",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 20,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543242",
+          "candidate": "LILIANE COSTA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543236",
+          "candidate": "WEDERSON LOPES",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543245",
+          "candidate": "LORRAYNE CASTRO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543235",
+          "candidate": "SUBTENENTE DENISE BRASIL",
+          "party": "UNIÃO",
+          "cargo": "Deputado Federal",
+          "votes": 34,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543239",
+          "candidate": "ADRIANO DO BALDY",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 600,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543238",
+          "candidate": "SANCHES",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 1546,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543251",
+          "candidate": "PROFESSOR ALEX MARTINS",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543252",
+          "candidate": "VALERIA PETTERSEN",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543240",
+          "candidate": "VAL NASCIMENTO",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543241",
+          "candidate": "LUANA RAIADO",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 17,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554413",
+          "candidate": "PASTORA LÉIA FERNANDES",
+          "party": "PP",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Anulado sub judice"
+        },
+        {
+          "candidateId": "90002547109",
+          "candidate": "PROFESSOR ALCIDES",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 1075,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547092",
+          "candidate": "ADAIR HENRIQUES VOVÔ DO JEEP",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547104",
+          "candidate": "ITAMAR LEÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 36,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547105",
+          "candidate": "GLAUCIA MELO",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547096",
+          "candidate": "LEOZÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547094",
+          "candidate": "REBECA ROMERO",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547101",
+          "candidate": "FELIPE CECÍLIO",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 24,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547097",
+          "candidate": "ALEXANDRE TOCANTINS",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547093",
+          "candidate": "RODOLFO VALENTE",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554472",
+          "candidate": "ANA FLÁVIA RESENDE",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 20,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547099",
+          "candidate": "OSMAR LISBOA",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547107",
+          "candidate": "CEPITA",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547108",
+          "candidate": "TENENTE EGLAI",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547100",
+          "candidate": "JEFERSON RODRIGUES",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547098",
+          "candidate": "ELIETE PAIXÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547095",
+          "candidate": "JOÃO DA LUZ",
+          "party": "CIDADANIA",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547102",
+          "candidate": "ARIANA FIDELIS",
+          "party": "CIDADANIA",
+          "cargo": "Deputado Federal",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543566",
+          "candidate": "LUCAS CALIL",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 344,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543568",
+          "candidate": "BILL GUERRA MOCHILINK",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 79,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543571",
+          "candidate": "SILVIO VAZ",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543562",
+          "candidate": "PEDRO CANEDO",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554189",
+          "candidate": "ADEMIR AMADOR",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554188",
+          "candidate": "WASHINGTON ALVES",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544116",
+          "candidate": "JAQUE MOURA",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543565",
+          "candidate": "LO FERREIRA",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002553971",
+          "candidate": "SARGENTO WIVIANE",
+          "party": "PRD",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543569",
+          "candidate": "DANILO FARIA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 285,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544115",
+          "candidate": "DENES PEREIRA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 28,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544113",
+          "candidate": "DR. ANTONIO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 101,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543572",
+          "candidate": "ELIEL JUNIOR",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543570",
+          "candidate": "TATIELY SOUSA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544114",
+          "candidate": "DRA CRISTINA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543561",
+          "candidate": "CHRISTOVAM MACHADO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543564",
+          "candidate": "TENENTE RHAINNA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543563",
+          "candidate": "JOÃO PEDRO ALMEIDA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551415",
+          "candidate": "DR PAULO DAHER",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551401",
+          "candidate": "CATALÃO-ZIM",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551409",
+          "candidate": "JUAREZ EXPLOSÃO",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551408",
+          "candidate": "IRMÃO RALFF ALERTA TOTAL",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551403",
+          "candidate": "TELVES CUNHA",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551414",
+          "candidate": "LIS MARQUES",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551402",
+          "candidate": "JOELMA SILVA",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551412",
+          "candidate": "MÔNICA NASSER",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551417",
+          "candidate": "MAURICIO COMUNICATIVO LESTE",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551404",
+          "candidate": "JÚLIO CESAR",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551405",
+          "candidate": "CARLOS BRANDAO",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551413",
+          "candidate": "DRA. FABRICIA SETTE",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551416",
+          "candidate": "JOÃO DADALTE",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551406",
+          "candidate": "DOM VALDILEY",
+          "party": "DC",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543458",
+          "candidate": "LILIA MONTEIRO",
+          "party": "REDE",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543453",
+          "candidate": "PASTOR CAMIONEIRO",
+          "party": "REDE",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543460",
+          "candidate": "DAMIÃO DA MORADIA",
+          "party": "REDE",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543450",
+          "candidate": "FERNANDO VIANA",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 75,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543454",
+          "candidate": "BARBARA BOMBOM",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 24,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543457",
+          "candidate": "HUMBERTO CHAVES",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 28,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543456",
+          "candidate": "ANNA CLAUDIA DIAS",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 22,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543462",
+          "candidate": "PROFESSORA CARMEM",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 165,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543449",
+          "candidate": "MAGNO CONSTANTINO",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543452",
+          "candidate": "MARIA VERÔNICA",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543459",
+          "candidate": "THAÍS CASTRO",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 87,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543448",
+          "candidate": "XAVIER",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543461",
+          "candidate": "FONTES LUCENA",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543455",
+          "candidate": "VICTOR VERDE",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543451",
+          "candidate": "SULAMITA SANTOS",
+          "party": "PSOL",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543470",
+          "candidate": "LUCAS DO VALE",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 531,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543473",
+          "candidate": "DANIEL AGROBOM",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 5872,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543474",
+          "candidate": "PROFESSORA FÁTIMA GAVIOLI",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 3084,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543471",
+          "candidate": "DR. ISMAEL ALEXANDRINO",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 829,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543475",
+          "candidate": "DRA. ZELI",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 209,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543468",
+          "candidate": "ITAMAR BARRETO",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543472",
+          "candidate": "ROSELI DA SAÚDE E SOCIAL",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543476",
+          "candidate": "PAULO MARTINEZ",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543469",
+          "candidate": "SARGENTO JOÉLCIO",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543465",
+          "candidate": "BETINHA DA LARANJA",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543466",
+          "candidate": "PROFESSOR ÉLIO LIMA",
+          "party": "PSD",
+          "cargo": "Deputado Federal",
+          "votes": 14,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548376",
+          "candidate": "MARUSSA BOLDRIN",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 871,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548364",
+          "candidate": "LÊDA BORGES",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 1708,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548378",
+          "candidate": "RICARDO QUIRINO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 1901,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548379",
+          "candidate": "WILLIARD PONTES",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548369",
+          "candidate": "DRA. ALINE LIMA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 16,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548367",
+          "candidate": "MARIANE STIVAL",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548373",
+          "candidate": "MORAES DA LANCHONETE",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548374",
+          "candidate": "PAULO DA FARMÁCIA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548377",
+          "candidate": "FERNANDO COBRADOR",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548371",
+          "candidate": "VIRGÍNIA DO SOCIAL",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548372",
+          "candidate": "MÁRCIA FOFA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 16,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548365",
+          "candidate": "KELLY FERA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554348",
+          "candidate": "SAMUEL DA RAÇÃO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548363",
+          "candidate": "DANIELLE NAVA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548370",
+          "candidate": "FERREIRA DO PORTAL NOTÍCIA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548368",
+          "candidate": "EWERTON GARCIA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537390",
+          "candidate": "GLAUSTIN DA FOKUS",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 1789,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537640",
+          "candidate": "JOÃO CAMPOS",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 515,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537637",
+          "candidate": "SAMUEL SANTOS",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 559,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537635",
+          "candidate": "IGOR FRANCO",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 97,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549181",
+          "candidate": "CORONEL MAIA",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537634",
+          "candidate": "GABRIELA RODART",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537393",
+          "candidate": "ELAINE DA FLAGYN",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552720",
+          "candidate": "PASTORA GIZELLE TELES",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537391",
+          "candidate": "ZÉ CAMELO",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537641",
+          "candidate": "VANESSA FARIAS",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537389",
+          "candidate": "GISLAINE MAIA",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537642",
+          "candidate": "ROSANGELA DA HABITAÇÃO",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 94,
+          "status": "Anulado sub judice"
+        },
+        {
+          "candidateId": "90002537636",
+          "candidate": "ANGELITA DUARTE",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537639",
+          "candidate": "DR. RICARDO CAIADO",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537643",
+          "candidate": "LUCIANA DA CULINÁRIA",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537392",
+          "candidate": "JOSY FERRARI",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537638",
+          "candidate": "LEO MACHADO VERDADE",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549180",
+          "candidate": "FABRÍCIO DA 44",
+          "party": "PODE",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542618",
+          "candidate": "FRED RODRIGUES",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 923,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542624",
+          "candidate": "MAGDA MOFATTO",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 2365,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542626",
+          "candidate": "MAJOR VITOR HUGO",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 2210,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542616",
+          "candidate": "FÁBIO SOUSA",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 555,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542614",
+          "candidate": "LUCÉLIA RODRIGUES",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 278,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542620",
+          "candidate": "MAYCON TOMBINI",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 59,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542611",
+          "candidate": "POLICIAL FEDERAL SUENDER",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 186,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542621",
+          "candidate": "DR. WAGNER MIRANDA HOSP.CANCER",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 133,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542625",
+          "candidate": "RENATO RIBEIRO",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542613",
+          "candidate": "HENRIQUE VILELA",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 67,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542617",
+          "candidate": "RAPHAEL BARRA",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 34,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542622",
+          "candidate": "CAMILA MONDARDO",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 90,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542623",
+          "candidate": "YVELÔNIA",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 108,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542615",
+          "candidate": "CAROL MOLINARI",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 155,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542619",
+          "candidate": "DRA. ALESSANDRA JACOB",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 42,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542612",
+          "candidate": "ADÍLIA RORIZ",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 165,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542610",
+          "candidate": "JORDANA FERREIRA",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542609",
+          "candidate": "JOSÉ OTÁVIO",
+          "party": "PL",
+          "cargo": "Deputado Federal",
+          "votes": 32,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547139",
+          "candidate": "AAVA SANTIAGO",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 1240,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547404",
+          "candidate": "TALES DE CASTRO",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547140",
+          "candidate": "FELLIPE FONSECA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547129",
+          "candidate": "NIXON DAS CASINHAS",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547401",
+          "candidate": "DRA. IVANE",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547136",
+          "candidate": "SÉRGIO BRAVO JR",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547131",
+          "candidate": "LORENA SILVA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547138",
+          "candidate": "DR. EZIZIO BARBOSA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547137",
+          "candidate": "WESLEY COSTA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 20,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554320",
+          "candidate": "CARMEM LUCIA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547132",
+          "candidate": "MAX DA SAÚDE",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547134",
+          "candidate": "MUCIO SANTANA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547130",
+          "candidate": "NATÁLIA RINCO",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547402",
+          "candidate": "TATIANA LEMOS",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547127",
+          "candidate": "ALCILENA CARMO",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547403",
+          "candidate": "ADEDY SANTANA",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547133",
+          "candidate": "HANSMULLER SALOME",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547128",
+          "candidate": "JÚLIO BARRETO",
+          "party": "PSB",
+          "cargo": "Deputado Federal",
+          "votes": 58,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539161",
+          "candidate": "FÁBIO TOKARSKI",
+          "party": "PCDOB",
+          "cargo": "Deputado Federal",
+          "votes": 92,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539146",
+          "candidate": "CLAUDIA TRAJANO",
+          "party": "PCDOB",
+          "cargo": "Deputado Federal",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539157",
+          "candidate": "DELEGADA ADRIANA ACCORSI",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 2035,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539151",
+          "candidate": "RUBENS OTONI",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 2063,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539153",
+          "candidate": "PROFESSOR EDWARD",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 149,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539148",
+          "candidate": "DELÚBIO",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 645,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539156",
+          "candidate": "VALÉRIO LUIZ",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 33,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539158",
+          "candidate": "DANIEL CAÇAPAVA",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 87,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539144",
+          "candidate": "PROFESSORA RAILDA",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 267,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539155",
+          "candidate": "FLAVIANE SANTOS",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 64,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539149",
+          "candidate": "PROFESSOR MAURÉLIO",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 16,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539152",
+          "candidate": "MÃE ISABEL DE OXUM",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 31,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539154",
+          "candidate": "MAJU FERRARI",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 30,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539150",
+          "candidate": "CATARINO SILVA",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 39,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539147",
+          "candidate": "SUZANA CARVALHO",
+          "party": "PT",
+          "cargo": "Deputado Federal",
+          "votes": 16,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539160",
+          "candidate": "DENISE SANTOS",
+          "party": "PV",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002539159",
+          "candidate": "EDMOTOS",
+          "party": "PV",
+          "cargo": "Deputado Federal",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551836",
+          "candidate": "EMILY ELOÁ",
+          "party": "UP",
+          "cargo": "Deputado Federal",
+          "votes": 33,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551835",
+          "candidate": "FAUSTO ANDRÉ",
+          "party": "UP",
+          "cargo": "Deputado Federal",
+          "votes": 7,
+          "status": "Válido"
+        }
+      ]
+    },
+    {
+      "electionCode": 6259,
+      "cargo": "Deputado Estadual",
+      "sourceFile": "go93343-c0007-e006259-u.json",
+      "referenceDate": "2026-10-04T03:00:00.000Z",
+      "updatedAt": "2026-10-04T22:31:38.000Z",
+      "sectionsTotal": 322,
+      "sectionsCounted": 219,
+      "totalVotes": 66731,
+      "validVotes": 58480,
+      "blankVotes": 6079,
+      "nullVotes": 2076,
+      "abstentions": 17875,
+      "items": [
+        {
+          "candidateId": "90002548664",
+          "candidate": "ALESSANDRO MOREIRA",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 54,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548670",
+          "candidate": "PAULIN VAI NELE",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549161",
+          "candidate": "ANDERSON TEODORO",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 15434,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549167",
+          "candidate": "CRISTÓVÃO",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 305,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549172",
+          "candidate": "JOÃO ALBERTO RODRIGUES",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549177",
+          "candidate": "CLEITIN MIL GRAUS",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548671",
+          "candidate": "SANTIAGO GOMES",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549163",
+          "candidate": "ALVARO REZENDE",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549164",
+          "candidate": "PERPETUA BARBOSA",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548663",
+          "candidate": "ASTRIDE MAGALHÃES",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548669",
+          "candidate": "JHANE LEOPOLDINA",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548665",
+          "candidate": "MAURO FERRATECH",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549174",
+          "candidate": "ADRICIELE DALACORTE",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548674",
+          "candidate": "ERNESTO DIAS",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548676",
+          "candidate": "ROSANGELA CHEIROSA",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548678",
+          "candidate": "ELAINE RODRIGUES",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549169",
+          "candidate": "PAULO MIRANDA",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549178",
+          "candidate": "FLORISVALDO RIBEIRO",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549179",
+          "candidate": "ROSI",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554187",
+          "candidate": "MICHELE DINIZ",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548677",
+          "candidate": "PROFESSOR CARLOS DOURADO",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549173",
+          "candidate": "RAISLA SOUZA",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548667",
+          "candidate": "IRINEU",
+          "party": "PRD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549166",
+          "candidate": "WAGNER NETO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548672",
+          "candidate": "CRISTIANO GALINDO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 212,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549171",
+          "candidate": "JULIO PINA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549168",
+          "candidate": "CORONEL ADAILTON",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548679",
+          "candidate": "KELLY RIBEIRO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549162",
+          "candidate": "CLEZER OLIVEIRA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549175",
+          "candidate": "CARLA DA FOCINHO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552718",
+          "candidate": "GALEGO DA FERRAGISTA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548673",
+          "candidate": "KEZIO MONTALVÃO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548675",
+          "candidate": "RONDINELLY HÉLIO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548666",
+          "candidate": "IVAIR GAGUINHO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549165",
+          "candidate": "RENATA DO MATOZZO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548680",
+          "candidate": "VIVIANE MADEIRA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552719",
+          "candidate": "ADELSON DA MONTLAJES",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549176",
+          "candidate": "SANDRA BARRÃO",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002549170",
+          "candidate": "KATIA MARIA",
+          "party": "SOLIDARIEDADE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543834",
+          "candidate": "AMANDA COSTA",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 19,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543846",
+          "candidate": "ENIO BRITO",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543835",
+          "candidate": "SIMONE DA ENFERMAGEM",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543836",
+          "candidate": "THEFI AMÂNCIO",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543852",
+          "candidate": "ANA MARIA DA SAÚDE",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543826",
+          "candidate": "PROFESSORA MIRANDA",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543855",
+          "candidate": "PROFESSOR ALEX",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543831",
+          "candidate": "MATEUS MOURA",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 17,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543856",
+          "candidate": "ADONIAS DOURADO",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543827",
+          "candidate": "AIRTON COELHO",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543828",
+          "candidate": "MANDATA COLETIVA",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 64,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543849",
+          "candidate": "GERALDO DO BAIRRO GOIÁ",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543837",
+          "candidate": "SARGENTO ROCHA",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543842",
+          "candidate": "ALEIDO AFIUNE",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543838",
+          "candidate": "BRUNO GG",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543851",
+          "candidate": "EDMILSON CAPELÃO",
+          "party": "PSOL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543833",
+          "candidate": "ANTONIO ZAYEK",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543853",
+          "candidate": "ZÉ DO CAIXÃO",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543850",
+          "candidate": "VALÉRIA ANASTÁCIO",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543847",
+          "candidate": "SARGENTO LIMA",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543824",
+          "candidate": "IRMÃ MARI",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543840",
+          "candidate": "GERSON MORAIS",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543848",
+          "candidate": "FERNANDO VIEIRA",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543830",
+          "candidate": "MISSIONÁRIA THAMYRES",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543854",
+          "candidate": "ALEX ALMEIDA",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543841",
+          "candidate": "THAÍS OLIVEIRA",
+          "party": "REDE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548074",
+          "candidate": "CARDOSO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 1255,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548064",
+          "candidate": "VIVIAN NAVES",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 72,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548054",
+          "candidate": "ÁLVARO GUIMARÃES",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 29,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548065",
+          "candidate": "GUSTAVO DA POPULAR",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548073",
+          "candidate": "SANDES JUNIOR",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548059",
+          "candidate": "RONI FERREIRA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548067",
+          "candidate": "VICTOR SALATIEL",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548072",
+          "candidate": "KESLEY",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548055",
+          "candidate": "LUÍS COSTA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548063",
+          "candidate": "ANA CAROLINA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548052",
+          "candidate": "ELCIMAR CONEXÃO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548051",
+          "candidate": "TITÉ D'CAPRIO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548068",
+          "candidate": "SAMUEL CARVALHO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548056",
+          "candidate": "ELTINHO JK",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548069",
+          "candidate": "AIANE GAMA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548071",
+          "candidate": "MARCELA PATROCÍNIO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548075",
+          "candidate": "ADELSON MOURA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548077",
+          "candidate": "JOÃO COSTA ANÁPOLIS SOLIDÁRIO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548066",
+          "candidate": "PAULO SÉRGIO DO POVO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548060",
+          "candidate": "TOQUINHO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548078",
+          "candidate": "VALDECY DA SAÚDE",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548058",
+          "candidate": "DR. FRANKLIN CARVALHO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548076",
+          "candidate": "PROF. HÉLIO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548053",
+          "candidate": "PRISCILLA MOREIRA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548061",
+          "candidate": "ROSINHA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554347",
+          "candidate": "PATRÍCIA SANTIAGO",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548062",
+          "candidate": "MARCILENE SILVA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002548057",
+          "candidate": "LUCIANE ALMEIDA",
+          "party": "REPUBLICANOS",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547125",
+          "candidate": "PAULO DO VALE",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 61,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547115",
+          "candidate": "CORONEL EDSON RAIADO",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 260,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547124",
+          "candidate": "BIA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547120",
+          "candidate": "SAMUEL ALMEIDA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 57,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547110",
+          "candidate": "MÁRCIO GORDO",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547119",
+          "candidate": "ADRIANO GUIMARÃES",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547112",
+          "candidate": "FOGUINHO",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 29,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547123",
+          "candidate": "LEO DE OLIVEIRA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547111",
+          "candidate": "MARIANA ARRUDA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547118",
+          "candidate": "RALIL BUZAIM",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547114",
+          "candidate": "SARGENTO SARA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547117",
+          "candidate": "REGINA ALICE",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547116",
+          "candidate": "TENENTE ANA PAULA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547122",
+          "candidate": "SARGENTO ANA PAULA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547113",
+          "candidate": "LUCIANA GOUVEIA",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547121",
+          "candidate": "RAFAEL RODRIGUES",
+          "party": "PSD",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540149",
+          "candidate": "FABRICIO ROSA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 767,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540139",
+          "candidate": "ANTONIO GOMIDE",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 371,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540142",
+          "candidate": "KÁTIA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 566,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540861",
+          "candidate": "BIA DE LIMA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 495,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540138",
+          "candidate": "MAURO RUBEM",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 410,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540134",
+          "candidate": "DELEGADO YASSER",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 101,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540152",
+          "candidate": "CASSIANA TORMIN",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 242,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540150",
+          "candidate": "JU DAMANDO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540147",
+          "candidate": "ANA CAROL",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 46,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540857",
+          "candidate": "ALESSANDRO CAXOTINHO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 21,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540145",
+          "candidate": "PROFESSOR PANTALEÃO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002545509",
+          "candidate": "PASTOR ALANMAIN",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540863",
+          "candidate": "ANGELA DA SAUDE",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540144",
+          "candidate": "CLEITON SILVA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540136",
+          "candidate": "WELTON DIVINO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540856",
+          "candidate": "TADEU COSTA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540860",
+          "candidate": "FERNANDES",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 74,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540153",
+          "candidate": "DR. JOSE NILTON CARVALHO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540141",
+          "candidate": "WESLEY TOLEDO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540133",
+          "candidate": "PROFESSORA HILVANY",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540858",
+          "candidate": "GESSIMONE SANTANA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554096",
+          "candidate": "HÉLLEM COSTA QUILOMBOLA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540862",
+          "candidate": "ZÉ SANTANA DA VIOLA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542599",
+          "candidate": "PROFESSOR LUIZ CARVALHO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540140",
+          "candidate": "BOLA DE FOGO ZERO MEIA DOIS",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542598",
+          "candidate": "JONAS ALVES",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540865",
+          "candidate": "ROSALINA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540148",
+          "candidate": "PATRICIA ROSA",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540868",
+          "candidate": "CICERO GOIAS",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540864",
+          "candidate": "WALCY VIEIRA - MICK JAGGER",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542595",
+          "candidate": "ORLANES MARANHÃO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540855",
+          "candidate": "SAVIO PRATES",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540867",
+          "candidate": "NEGUINHA DO PT",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540854",
+          "candidate": "MARA DO QUIOSQUE",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540137",
+          "candidate": "ISMAEL CALOM",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540143",
+          "candidate": "RUBÃO",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540859",
+          "candidate": "VALDIR MELO SANTOS",
+          "party": "PT",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540866",
+          "candidate": "EVERALDO PASTORE",
+          "party": "PV",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542597",
+          "candidate": "GOIANO SIDNEY",
+          "party": "PV",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002542596",
+          "candidate": "LUCIA TOMÉ",
+          "party": "PV",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540135",
+          "candidate": "PROFESSOR EDINAN BRAÚNA",
+          "party": "PCDOB",
+          "cargo": "Deputado Estadual",
+          "votes": 44,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540151",
+          "candidate": "REGIANE FREIRE",
+          "party": "PCDOB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540967",
+          "candidate": "DR. AMARILDO",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 379,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540987",
+          "candidate": "NETO KARFAN",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540983",
+          "candidate": "NAYARA BARCELOS",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540952",
+          "candidate": "BRENDA GONTIJO",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 14,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540988",
+          "candidate": "WELTON LEMOS",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540971",
+          "candidate": "MISAEL",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540961",
+          "candidate": "LEANDRO VENTURA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540958",
+          "candidate": "WALTINHO",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 36,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540955",
+          "candidate": "LEANDRO SENA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540978",
+          "candidate": "PV MARQUES",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540951",
+          "candidate": "EDNA COSTA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540982",
+          "candidate": "RODRIGO PALMEIRA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 62,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540969",
+          "candidate": "DRA. FERNANDA SARELLI",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540965",
+          "candidate": "CRISTIANO ZOI",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540980",
+          "candidate": "DANILO RIOS",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540984",
+          "candidate": "JOSÉ DE LIMA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540974",
+          "candidate": "NETO BESSA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540963",
+          "candidate": "MARCKENNEDY",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540962",
+          "candidate": "WAGNER VASCONCELOS",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540990",
+          "candidate": "TATIANE GUIMARÃES",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540968",
+          "candidate": "PAULO HENRIQUE PH",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540986",
+          "candidate": "JÚLIO CÉSAR",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540964",
+          "candidate": "HEBERT CARDOSO",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540976",
+          "candidate": "DR. WANDERLEY",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540959",
+          "candidate": "CLÉSIA OLIVEIRA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540989",
+          "candidate": "PATRÍCIA DA INCLUSÃO",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540985",
+          "candidate": "CHARLLES JOSÉ DA FREDCAR",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540992",
+          "candidate": "ARTHUR RAZEC",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540954",
+          "candidate": "MARCELO DERZE",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554396",
+          "candidate": "VELUZ COLETIVO DA SEG PRIVADA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540960",
+          "candidate": "HENRIQUE ARAUJO",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 120,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540991",
+          "candidate": "RAFAEL DA MALLHARIA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 96,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540970",
+          "candidate": "SUNAMITA RODRIGUES",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540975",
+          "candidate": "JOANA REZENDE",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540957",
+          "candidate": "PATRÍCIA SANTANA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540977",
+          "candidate": "MILKA HUME",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540981",
+          "candidate": "DELCIDES ASSIS",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540979",
+          "candidate": "TÚLIO BAPTISTELLA",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002540966",
+          "candidate": "FÁBIO DE MOURA BRASIL",
+          "party": "NOVO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547090",
+          "candidate": "RUBENS MARQUES",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547083",
+          "candidate": "KARLOS CABRAL",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 19,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547075",
+          "candidate": "VETER MARTINS",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547082",
+          "candidate": "PROFESSOR JOÃO COELHO",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 17,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547087",
+          "candidate": "PROFESSOR PAULO",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547071",
+          "candidate": "PAULINHO PROFESSOR",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547072",
+          "candidate": "SAMUEL MENDES",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 25,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547076",
+          "candidate": "WALTER CAMARGO",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547080",
+          "candidate": "MARTA QUINTILIANO",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551840",
+          "candidate": "PALOMA LUDMYLA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547077",
+          "candidate": "WENNER PATRICK",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547079",
+          "candidate": "CRIS SOUZA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547081",
+          "candidate": "SIMONE FORMIGUINHA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547070",
+          "candidate": "FLÁVIO COUTINHO",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547074",
+          "candidate": "WALTTERLENNE",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547073",
+          "candidate": "YAGO GONÇALVES",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551734",
+          "candidate": "ADÃO PEDREIRO",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547078",
+          "candidate": "LÚCIA ROBERTA (LUCINHA)",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547085",
+          "candidate": "JADISON FEITOSA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547069",
+          "candidate": "MARIA DOS SANTOS",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547086",
+          "candidate": "MARIA OCIONIRA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547084",
+          "candidate": "JHÔNATAN XAVIER",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551839",
+          "candidate": "MARCIENE ANDRADE",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551733",
+          "candidate": "JOÃO TAPUIA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551838",
+          "candidate": "LENA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551735",
+          "candidate": "HIGOR JR.",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547088",
+          "candidate": "RONALDO  QUADROS",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547089",
+          "candidate": "SILVANA",
+          "party": "PSB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554683",
+          "candidate": "CAROL DO AMILTINHO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 43,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546219",
+          "candidate": "ISSY QUINAN",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 19,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546244",
+          "candidate": "DR. GEORGE MORAIS",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 21,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546224",
+          "candidate": "LINEU OLIMPIO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 33,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546225",
+          "candidate": "CAIRO SALIM",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 22,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546221",
+          "candidate": "CHARLES BENTO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 139,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546220",
+          "candidate": "PAULO CEZAR MARTINS",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546243",
+          "candidate": "CARLÃO DA FOX",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 11,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546223",
+          "candidate": "PABIO MOSSORÓ",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 40,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546222",
+          "candidate": "ADIB ELIAS",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546236",
+          "candidate": "TEREZINHA AMARAL",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546247",
+          "candidate": "ABIMAEL SILVA DA TV",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546227",
+          "candidate": "MARQUIM ARAÚJO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546245",
+          "candidate": "RONES FERREIRA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546233",
+          "candidate": "CÉLIA VALADÃO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546237",
+          "candidate": "MAJOR EMANNUELLE",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551489",
+          "candidate": "JUSTINO BORGES",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002553737",
+          "candidate": "TENENTE ROSY",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546230",
+          "candidate": "FERNANDO SALES",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551267",
+          "candidate": "BOMBEIRA LUNA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546228",
+          "candidate": "CLENYS PINHEIRA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546226",
+          "candidate": "VANESSA DO SALÃO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552588",
+          "candidate": "SGT. SILVANA MARIA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002553738",
+          "candidate": "CAPITÃO WILSON DE OLIVEIRA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546234",
+          "candidate": "DONA LÚCIA QUILOMBOLA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551487",
+          "candidate": "SGT ZENAIDE FREITAS",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546229",
+          "candidate": "DRA JENNIFER MORAIS",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551486",
+          "candidate": "ALESSANDRA ISKANDAR",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554466",
+          "candidate": "GIOVANI",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551485",
+          "candidate": "DÉLICE BRASIL",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546240",
+          "candidate": "EDILSON TAQUARAL O MIÓ",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551484",
+          "candidate": "ANNE KELLY",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546235",
+          "candidate": "ELIETY",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546246",
+          "candidate": "PAULA CASTRO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546238",
+          "candidate": "PASTORA NEIDE",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546232",
+          "candidate": "GALDINO NETO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546241",
+          "candidate": "HELIO GALENO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551268",
+          "candidate": "TIANINHA",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002546231",
+          "candidate": "RAIMUNDA SOARES DE ARAÚJO",
+          "party": "MDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537428",
+          "candidate": "HENRIQUE CÉSAR",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537441",
+          "candidate": "WILLIAN PANDA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537434",
+          "candidate": "DÉBORA DOMINGUES",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 30,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537448",
+          "candidate": "DENIS BENTO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537438",
+          "candidate": "ISAAC MARTINS",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537459",
+          "candidate": "VANILSON BUENO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537427",
+          "candidate": "FELIPE MABEL",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 18,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537458",
+          "candidate": "MAGRÃO DA RÁDIO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537439",
+          "candidate": "LÉO PORTILHO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537443",
+          "candidate": "RAFAEL MARRA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537453",
+          "candidate": "TEN CORONEL NILSON",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 50,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537440",
+          "candidate": "DR. LOURIVAL LOBO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537430",
+          "candidate": "PIMENTINHA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537429",
+          "candidate": "PROFESSOR MARCOS JUNIOR",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537447",
+          "candidate": "ELISA DA SAÚDE",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537445",
+          "candidate": "FERNANDO CINTRA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537426",
+          "candidate": "LARISSA LAFAIETE",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537433",
+          "candidate": "JUSCÉLIO SANTOS",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537455",
+          "candidate": "MIGUEL JUNIOR",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537450",
+          "candidate": "SID PEÃO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537425",
+          "candidate": "ZILMA DA INCLUSÃO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537451",
+          "candidate": "DR. RAMON",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537436",
+          "candidate": "CLEONÃO DO POVO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537432",
+          "candidate": "ZÉ BARBOSA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537444",
+          "candidate": "VÂNIA DA SAÚDE",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537435",
+          "candidate": "TENENTE CESAR SALUSTIANO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002538942",
+          "candidate": "GISELE COLLETE",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537424",
+          "candidate": "GABRIEL MANCINI CANTOR",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537449",
+          "candidate": "DRA FABIANA GONÇALVES",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537446",
+          "candidate": "ENEAS AMARAL",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537454",
+          "candidate": "BIEIZ VALERIANO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537437",
+          "candidate": "SGT JANAÍNA CÂNDIDO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002538943",
+          "candidate": "MILLA CARVALHO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537452",
+          "candidate": "CLEIA PEDROZO",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537431",
+          "candidate": "SAMUEL LACERDA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537457",
+          "candidate": "PROFESSORA CIDA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537442",
+          "candidate": "DAIANA OLIVEIRA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002537456",
+          "candidate": "LEIDE ALVES JORNALISTA",
+          "party": "PODE",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543800",
+          "candidate": "AMAURI RIBEIRO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 243,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543807",
+          "candidate": "LISSAUER VIEIRA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 120,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543799",
+          "candidate": "CORONEL URZEDA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 214,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543783",
+          "candidate": "EDUARDO PRADO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 286,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543792",
+          "candidate": "CARLINHOS CANZI",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543795",
+          "candidate": "MARQUINHO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 531,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543788",
+          "candidate": "MAJOR ARAÚJO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 159,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543789",
+          "candidate": "PROF. REGINALDO PACHECO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 208,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543801",
+          "candidate": "DIEYME VASCONCELOS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 93,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543781",
+          "candidate": "WILLIAN VELOSO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 71,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543769",
+          "candidate": "JEAN CARLOS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 22,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543805",
+          "candidate": "RAMOS SOMAR",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 54,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543779",
+          "candidate": "DIOGO YAGI",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543776",
+          "candidate": "PASTOR ALEX NEPOMOCENO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543784",
+          "candidate": "NARA COUTRIN",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 30,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543770",
+          "candidate": "JULIO CUNHA (PRÓ-ARMAS)",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 37,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543790",
+          "candidate": "BETINHO DO AGRO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543766",
+          "candidate": "DRA. JULMARA TOLEDO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543786",
+          "candidate": "RAFAEL VASCONCELOS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543806",
+          "candidate": "MAJOR HUGO CHRISTIANI",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 22,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543773",
+          "candidate": "BRENA SANTOS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 31,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543803",
+          "candidate": "ZEQUINHA NOGUEIRA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543774",
+          "candidate": "OSÓRIO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543772",
+          "candidate": "DIEGO MORAIS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543791",
+          "candidate": "MAGDA RIBEIRO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543798",
+          "candidate": "ALEX VILLAS BOAS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 15,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543796",
+          "candidate": "CLAUDINHA CRUVINEL",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543771",
+          "candidate": "GISLEIDE RIBEIRO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543802",
+          "candidate": "VERA AGUIAR",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543767",
+          "candidate": "MEIRE CRUVINEL",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 24,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543793",
+          "candidate": "GILSON BRAVO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543797",
+          "candidate": "ALEX DOS GARIS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 17,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002553967",
+          "candidate": "CHRISTINA RAKEL",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543782",
+          "candidate": "LUCY MEDEIROS",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 21,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543785",
+          "candidate": "CELIA DUARTE",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543794",
+          "candidate": "EDINALVA ROSA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543777",
+          "candidate": "ZÉ MARIA XERIFE",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543780",
+          "candidate": "ISABEL CRISTINA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543778",
+          "candidate": "SUZE GUERREIRA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543775",
+          "candidate": "EUNICE BENTO",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543804",
+          "candidate": "PATRÍCIA BARRA",
+          "party": "PL",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543157",
+          "candidate": "GRACIELE DA ARTE TRIGO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543189",
+          "candidate": "JOSCILENE DO MANGÃO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 154,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543178",
+          "candidate": "DELEGADO CRISTIOMÁRIO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 147,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543170",
+          "candidate": "ROSANGELA REZENDE",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 37,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543182",
+          "candidate": "FABIO CORREA",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 116,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543163",
+          "candidate": "DR KASSIO GUIMARAES",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 19,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543166",
+          "candidate": "EDINHO CARVALHO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543173",
+          "candidate": "FERNANDO CRUVINEL",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543171",
+          "candidate": "WESLEY SANTOS",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552717",
+          "candidate": "EDSON AUTOMÓVEIS FILHO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543168",
+          "candidate": "POLICIAL GISLENE",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543167",
+          "candidate": "DINO MARIANO EXCURSÕES",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543181",
+          "candidate": "SGT WASHINTON DA CAVALARIA",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543164",
+          "candidate": "MARQUINHO DO POVO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543155",
+          "candidate": "KENIA VANUSSE",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543161",
+          "candidate": "CLEITON LAZARO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543175",
+          "candidate": "LAZARO LC",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543158",
+          "candidate": "KATHREIN MOURA COM OS PÉS",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543162",
+          "candidate": "FERNANDO DR NILDO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543169",
+          "candidate": "ELIANE DA SAUDE",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543188",
+          "candidate": "ALVES BATISTA ALVIM",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543160",
+          "candidate": "SIRIS ZONA RURAL",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551194",
+          "candidate": "MIRIAM RÓGERIO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551195",
+          "candidate": "POLLY ALMEIDA",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543177",
+          "candidate": "MARCELO BRITES",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543184",
+          "candidate": "ALESSANDRA OLIVEIRA",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543174",
+          "candidate": "OSMAR GONÇALVES",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543179",
+          "candidate": "SALOMÃO DO POVO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543176",
+          "candidate": "IRMÃO ANTÔNIO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543159",
+          "candidate": "RONEI DE BRITO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543156",
+          "candidate": "RUI PIPA",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Anulado sub judice"
+        },
+        {
+          "candidateId": "90002543180",
+          "candidate": "DRA KELI MARTINS",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543165",
+          "candidate": "CLAUDIA DIAS",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551196",
+          "candidate": "CASSIANO VIEIRA",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543187",
+          "candidate": "NEILA CAVALCANTE",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543185",
+          "candidate": "APOSTOLO WESLEY SANDER",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543190",
+          "candidate": "DENICE PATROA DO BRASIL",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543186",
+          "candidate": "CLAUDINHA DA VALDETE",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543154",
+          "candidate": "MARLENE SAMPAIO",
+          "party": "AGIR",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544858",
+          "candidate": "GCM ROMÁRIO POLICARPO",
+          "party": "CIDADANIA",
+          "cargo": "Deputado Estadual",
+          "votes": 322,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544896",
+          "candidate": "JANDY MARCOLINO",
+          "party": "CIDADANIA",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554043",
+          "candidate": "ROSA MARIA",
+          "party": "CIDADANIA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544878",
+          "candidate": "JOSÉ MACHADO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 36,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544876",
+          "candidate": "GUSTAVO SEBBA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544892",
+          "candidate": "GUGU NADER",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544869",
+          "candidate": "MAGAL",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 46,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544867",
+          "candidate": "CLÉCIO ALVES",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 178,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544882",
+          "candidate": "WESLEY SUSPENCAR",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544871",
+          "candidate": "DRA. FABIANNE LEÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544864",
+          "candidate": "DR. HELIO DE SOUSA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 17,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544860",
+          "candidate": "NÉDIO LEITE",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544868",
+          "candidate": "PEDRO ARAÚJO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544884",
+          "candidate": "PROFESSOR ZENILTON",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544898",
+          "candidate": "DR. WALTER VOSGRAU",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544899",
+          "candidate": "MEIRANNY REIS",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 21,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544879",
+          "candidate": "MATHEUS RIBEIRO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544877",
+          "candidate": "FÁBIO FAYAD",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544865",
+          "candidate": "MARCO AURÉLIO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544873",
+          "candidate": "CAPITÃ WALESKA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544861",
+          "candidate": "WALBER DA REFRIGERAÇÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544885",
+          "candidate": "MARINA MORENA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544890",
+          "candidate": "RIBEIRO DO TÚLLIO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 836,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544872",
+          "candidate": "PROF. MARIA ZILMA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544863",
+          "candidate": "DOMINGOS RODRIGUES",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544889",
+          "candidate": "THÁLLITA TELES",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544881",
+          "candidate": "FLORISVALDO PEREIRA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544895",
+          "candidate": "DR. RANNIERI LOPES",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544891",
+          "candidate": "JADIEL DA BRONCA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544866",
+          "candidate": "PATRÍCIA FIRMINO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544883",
+          "candidate": "GÊNIO EURÍPEDES",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544880",
+          "candidate": "THIAGO RIBEIRÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544862",
+          "candidate": "PAULA ALESSANDRA",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544894",
+          "candidate": "ANDREA SANTOS",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544897",
+          "candidate": "CLEIA NEVES",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544874",
+          "candidate": "NÉLIO FREITAS",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544893",
+          "candidate": "KESIA DE JESUS",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544875",
+          "candidate": "ADRIANINHO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544886",
+          "candidate": "DRA. SIMONE ADAD",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544859",
+          "candidate": "OZIEL GALVÃO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544870",
+          "candidate": "HÉLIO DEBREY",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002544888",
+          "candidate": "JOSÉ DIVINO",
+          "party": "PSDB",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551436",
+          "candidate": "DR MARCIO MORAES",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552468",
+          "candidate": "SARGENTO  MARUZAN",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551438",
+          "candidate": "ADILSON DO GÁS",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552471",
+          "candidate": "TACIMAR NEGÃO",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552472",
+          "candidate": "ENFERMEIRA MICHELLY",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552469",
+          "candidate": "ADRIANE MAIA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552477",
+          "candidate": "JACIRA PIRES",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552473",
+          "candidate": "DIVINO",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552475",
+          "candidate": "DINAIR DINO RODAS",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551429",
+          "candidate": "ANGELA MARIA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551440",
+          "candidate": "DANIEL NOGUEIRA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552479",
+          "candidate": "RAILSON",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552482",
+          "candidate": "LUCIRENE MARTINS",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552483",
+          "candidate": "PASTOR DEJESUS",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551432",
+          "candidate": "SARGENTO SANTOS",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551434",
+          "candidate": "JUNINHO DO POVÃO",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551433",
+          "candidate": "REGINA MORAIS",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551439",
+          "candidate": "VIVIAN BUENO",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552481",
+          "candidate": "RAIMUNDO MOTA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552464",
+          "candidate": "FAUSTO PIRES",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552480",
+          "candidate": "DANIEL DUTRA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552466",
+          "candidate": "HELIDA BARBOSA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552465",
+          "candidate": "ROSA ALVES",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552470",
+          "candidate": "SERGIO SILVA",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 19,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002552478",
+          "candidate": "SERGIO FRANCISCO",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551430",
+          "candidate": "RAIMUNDO AGUIAR",
+          "party": "DC",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543147",
+          "candidate": "BESSA",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 13,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543128",
+          "candidate": "LUCAS KITÃO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 6,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543113",
+          "candidate": "KEKE DA VULKANIC",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 16416,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543146",
+          "candidate": "MÁRCIO LUÍS",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 24,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543142",
+          "candidate": "CABO SENNA",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 75,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543149",
+          "candidate": "MALAQUIAS",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 103,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543134",
+          "candidate": "SIMEYZON",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 177,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543151",
+          "candidate": "DANIEL MESSAC",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543153",
+          "candidate": "FRED VIDIGAL",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543135",
+          "candidate": "ANA PAULA DO ALEOMAR",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543127",
+          "candidate": "ZÉ DA IMPERIAL",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 7908,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543122",
+          "candidate": "LEANDRO RIBEIRO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543129",
+          "candidate": "SERGIO BRAVO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 28,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543124",
+          "candidate": "MAJOR ELDECIRIO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543126",
+          "candidate": "GIL TAVARES",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543125",
+          "candidate": "ZÉ DINIZ",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543121",
+          "candidate": "PEDRO PAULO CAIADO CANEDO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543140",
+          "candidate": "ETHIENNE GAYER",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 46,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543119",
+          "candidate": "FELIPE CORTEZ",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 26,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543144",
+          "candidate": "SARGENTO ARTUR",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543143",
+          "candidate": "PROFESSOR CLEIDOMAR ENFERMEIRO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543150",
+          "candidate": "MOTORISTA DANÇARINO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 8,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543132",
+          "candidate": "CARPEGIANE SILVESTRE",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543136",
+          "candidate": "DENISE MARTINS",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543141",
+          "candidate": "BATIQUIRA",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543137",
+          "candidate": "BIANY LOURENÇO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543115",
+          "candidate": "ROUZMARI",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543133",
+          "candidate": "PROFESSORA LÚCIA VASCONCELOS",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543152",
+          "candidate": "LUIZA DA ASSESSORIA",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543120",
+          "candidate": "SILVEIRA MOURA",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543117",
+          "candidate": "ULISSES SOUSA LÍDERCOMUNITÁRIO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543148",
+          "candidate": "NEILA GONÇALVES",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543130",
+          "candidate": "DRA. CAMILA ALVES",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543139",
+          "candidate": "MISSIONÁRIA ROSANE",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543138",
+          "candidate": "MCCARTNEA MENNAID",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543131",
+          "candidate": "BIANCA VINHAL",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543118",
+          "candidate": "DILMA DA CASA DE APOIO",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543123",
+          "candidate": "ELKE MARQUES",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543116",
+          "candidate": "MARIA MUNIZ",
+          "party": "MOBILIZA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543505",
+          "candidate": "SARGENTO NOVANDIR",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 36,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543488",
+          "candidate": "LÍVIO LUCIANO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543498",
+          "candidate": "RICARDO FORTUNATO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002553739",
+          "candidate": "CORONEL HEMERSON",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543499",
+          "candidate": "TARCISIO GAROTINHO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543479",
+          "candidate": "GEORGE MARANHÃO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 10,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543502",
+          "candidate": "CORONEL MARREIROS",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543486",
+          "candidate": "FLORISMAR JUNIOR",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543487",
+          "candidate": "KLEYBE MORAIS",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543496",
+          "candidate": "PROFESSOR ANTÔNIO ÁVILA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543500",
+          "candidate": "HENRIQUE ZINI",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543493",
+          "candidate": "ELIANE NASCIMENTO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543480",
+          "candidate": "PASTORA EDNA ABADIA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543482",
+          "candidate": "ANTONIO CARLOS CAVALCANTE",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 7,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543507",
+          "candidate": "ANTÔNIO CARNEIRO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543490",
+          "candidate": "ANDREIA LUCIA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543485",
+          "candidate": "SINARA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543478",
+          "candidate": "FRAN DO PORTAL",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543497",
+          "candidate": "SILVIO FELIPE",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543492",
+          "candidate": "JHENIFFER TAVARES",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543484",
+          "candidate": "ISAEL PANTERA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543489",
+          "candidate": "TAYANNY DA PAPELARIA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543506",
+          "candidate": "JEANE GÓIS",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543501",
+          "candidate": "ANA LUCIA DO SALÃO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543483",
+          "candidate": "LOHANY CARVALHO",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543503",
+          "candidate": "MARCINHA F-250",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543494",
+          "candidate": "LORENNA LOUZADA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543504",
+          "candidate": "MARIA COSTA",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543481",
+          "candidate": "LEONCIO AMORIM",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002543477",
+          "candidate": "PAULO DANTAS",
+          "party": "DEMOCRATA",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547018",
+          "candidate": "VIRMONDES CRUVINEL",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 9,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547039",
+          "candidate": "ANDRÉ DO PREMIUM",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 411,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547032",
+          "candidate": "WILDE CAMBÃO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 35,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547030",
+          "candidate": "TALLES BARRETO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 51,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547013",
+          "candidate": "LINCOLN TEJOTA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 20,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547031",
+          "candidate": "CIÊ DO SACOLÃO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 20,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547026",
+          "candidate": "LUCÍULA DO RECANTO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547012",
+          "candidate": "ARIANNE CÂNDIDO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547027",
+          "candidate": "SUCENA CONTADORA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547004",
+          "candidate": "ABADYAS DAMASCENO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 2329,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547028",
+          "candidate": "WANESSA DA LEYSER DO ERCY",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547014",
+          "candidate": "DIÓGENES RESÍDUO ZERO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 5,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547038",
+          "candidate": "MÁRCIO PASSOS",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547005",
+          "candidate": "ROSI GUIMARÃES",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547023",
+          "candidate": "PR. MARCIEL DAQUI",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547006",
+          "candidate": "BETO NEVES",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 4,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547037",
+          "candidate": "SHEILISMAR RIBEIRO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547044",
+          "candidate": "TENENTE CORONEL FERNANDO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547011",
+          "candidate": "SARGENTO MARTINS (FEIJÃO)",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547020",
+          "candidate": "SARGENTO THAIS",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 3,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547043",
+          "candidate": "BETÂNIA MACEDO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547035",
+          "candidate": "DJANIRA SOARES",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547025",
+          "candidate": "TENENTE CORONEL MICHELLA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547017",
+          "candidate": "VIRGINIA VALERIA DOS PEIXOTOS",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547015",
+          "candidate": "JULIANA OLIVEIRA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547003",
+          "candidate": "DONA ANA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547016",
+          "candidate": "GUSTAVO GAMBOA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547029",
+          "candidate": "SUBTENENTE HIGOR",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547040",
+          "candidate": "JHONE PALMERINHA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547008",
+          "candidate": "DULCE MARTINS",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547021",
+          "candidate": "PROFESSORA MEIRE",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547033",
+          "candidate": "ELIENE CORRETORA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547024",
+          "candidate": "MISSIONÁRIA GILDA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 2,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547036",
+          "candidate": "RADIALISTA MARCELO SILVA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547042",
+          "candidate": "NEGA NA MODA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547019",
+          "candidate": "LU GOMES",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 1,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002554513",
+          "candidate": "DR. ASSILVO D'ABBADIA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Anulado sub judice"
+        },
+        {
+          "candidateId": "90002547022",
+          "candidate": "CLAUDIA SILVA",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547034",
+          "candidate": "GILBERTO PATRÍCIO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547007",
+          "candidate": "CAROL MONTEIRO",
+          "party": "UNIÃO",
+          "cargo": "Deputado Estadual",
+          "votes": 0,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547010",
+          "candidate": "JAMIL CALIFE",
+          "party": "PP",
+          "cargo": "Deputado Estadual",
+          "votes": 12,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002547009",
+          "candidate": "NÁRCIA KELLY",
+          "party": "PP",
+          "cargo": "Deputado Estadual",
+          "votes": 15,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551842",
+          "candidate": "LARISSA MOURA",
+          "party": "UP",
+          "cargo": "Deputado Estadual",
+          "votes": 27,
+          "status": "Válido"
+        },
+        {
+          "candidateId": "90002551841",
+          "candidate": "PROF. PEDRO AUGUSTO",
+          "party": "UP",
+          "cargo": "Deputado Estadual",
+          "votes": 9,
+          "status": "Válido"
+        }
+      ]
+    }
+  ],
+  "integrity": {
+    "files": [
+      {
+        "sourceFile": "go93343-c0001-e006257-u.json",
+        "sha256": "8d742b0b6b45f0ec4d360537fcf968d3b4fe6c50ba66c16bad71b2b47e43fb87",
+        "jwsProofSha256": "2e411c7c0d9d12fa19b5622b1f18ea1f6e961cc8a3e18b2be0a1558cc956857d",
+        "signatureStatus": "verified",
+        "verificationMethod": "tse-official-jwk-ed25519",
+        "verifiedAt": "2026-10-04T22:37:25.084Z",
+        "algorithm": "EdDSA",
+        "curve": "Ed25519",
+        "kid": "sNbt9Q_fLS65zE1_ZLNV-XRRwPY",
+        "keyFingerprint": "ca4fca1cbb8692546177678c4896fb6004306a00ba7349b54e021cf852aa2a00",
+        "etag": "\"e9feb50ba2714ed207659246e91d1eb2\"",
+        "lastModified": "Sun, 04 Oct 2026 22:33:47 GMT",
+        "jwsEtag": "\"24261ac92d7992b9ed096662447fc934\"",
+        "jwsLastModified": "Sun, 04 Oct 2026 22:33:45 GMT"
+      },
+      {
+        "sourceFile": "go93343-c0003-e006259-u.json",
+        "sha256": "221d218dbae60797b1e48a3e8f0e890ebb925b47aab74e44bfd1d18de9e4319b",
+        "jwsProofSha256": "06f6191a90862cf2a8c7e97cbe6c4a94c4d7aa3e9f4a6fd2b335771df10aeaa5",
+        "signatureStatus": "verified",
+        "verificationMethod": "tse-official-jwk-ed25519",
+        "verifiedAt": "2026-10-04T22:37:25.236Z",
+        "algorithm": "EdDSA",
+        "curve": "Ed25519",
+        "kid": "sNbt9Q_fLS65zE1_ZLNV-XRRwPY",
+        "keyFingerprint": "ca4fca1cbb8692546177678c4896fb6004306a00ba7349b54e021cf852aa2a00",
+        "etag": "\"2ca53b962b31413353584d5cb2ea07bc\"",
+        "lastModified": "Sun, 04 Oct 2026 22:32:33 GMT",
+        "jwsEtag": "\"7820cc1b2a16f0e211573b07dfeb7fd4\"",
+        "jwsLastModified": "Sun, 04 Oct 2026 22:32:31 GMT"
+      },
+      {
+        "sourceFile": "go93343-c0005-e006259-u.json",
+        "sha256": "b3f2a1630782ca71b0509fb3858fda2c7ed756d8cae4b36c25517cf0af4b1cca",
+        "jwsProofSha256": "109efc2d0581d8dbbc4c4758928955efb26c090b860f4bb294d89839d3ed4627",
+        "signatureStatus": "verified",
+        "verificationMethod": "tse-official-jwk-ed25519",
+        "verifiedAt": "2026-10-04T22:37:25.360Z",
+        "algorithm": "EdDSA",
+        "curve": "Ed25519",
+        "kid": "sNbt9Q_fLS65zE1_ZLNV-XRRwPY",
+        "keyFingerprint": "ca4fca1cbb8692546177678c4896fb6004306a00ba7349b54e021cf852aa2a00",
+        "etag": "\"667fe361b4a736cbb7b1c9dc62dd0b5c\"",
+        "lastModified": "Sun, 04 Oct 2026 22:32:34 GMT",
+        "jwsEtag": "\"af95612b94112de6213f93d8a8a81157\"",
+        "jwsLastModified": "Sun, 04 Oct 2026 22:32:33 GMT"
+      },
+      {
+        "sourceFile": "go93343-c0006-e006259-u.json",
+        "sha256": "c0d13b866b0901270032e7db0da97ec06fb96f649b8f7bd9ff17179327e3d995",
+        "jwsProofSha256": "a8cbc1c1ad7edcd99db287cfce6c1644a514e4ee60a85fbcbd725b82042a2a00",
+        "signatureStatus": "verified",
+        "verificationMethod": "tse-official-jwk-ed25519",
+        "verifiedAt": "2026-10-04T22:37:25.435Z",
+        "algorithm": "EdDSA",
+        "curve": "Ed25519",
+        "kid": "sNbt9Q_fLS65zE1_ZLNV-XRRwPY",
+        "keyFingerprint": "ca4fca1cbb8692546177678c4896fb6004306a00ba7349b54e021cf852aa2a00",
+        "etag": "\"12f32f587b3bdb4d956ffd6cae9eced0\"",
+        "lastModified": "Sun, 04 Oct 2026 22:32:33 GMT",
+        "jwsEtag": "\"49149b6c19d6f6600c2f4737efe9d0c2\"",
+        "jwsLastModified": "Sun, 04 Oct 2026 22:32:34 GMT"
+      },
+      {
+        "sourceFile": "go93343-c0007-e006259-u.json",
+        "sha256": "ded89e955def3ca22e588a8d8d02c031985c9346d0585230f271c1c368594fd7",
+        "jwsProofSha256": "454189a464dbef22e5738b9a74fbad796f4b0d2df72f01310c214f369b2f3fd6",
+        "signatureStatus": "verified",
+        "verificationMethod": "tse-official-jwk-ed25519",
+        "verifiedAt": "2026-10-04T22:37:25.698Z",
+        "algorithm": "EdDSA",
+        "curve": "Ed25519",
+        "kid": "sNbt9Q_fLS65zE1_ZLNV-XRRwPY",
+        "keyFingerprint": "ca4fca1cbb8692546177678c4896fb6004306a00ba7349b54e021cf852aa2a00",
+        "etag": "\"a47ddbfa6466c2d01d2a808b4fd62f01\"",
+        "lastModified": "Sun, 04 Oct 2026 22:32:34 GMT",
+        "jwsEtag": "\"f527bf2a190b5367dc4ae58c47af0ebc\"",
+        "jwsLastModified": "Sun, 04 Oct 2026 22:32:33 GMT"
+      }
+    ],
+    "allVerified": true
+  }
+}

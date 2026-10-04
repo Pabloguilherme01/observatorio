@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "files": {
+    "go93343-c0001-e006257-u.json": {
+      "etag": "\"e9feb50ba2714ed207659246e91d1eb2\"",
+      "lastModified": "Sun, 04 Oct 2026 22:33:47 GMT",
+      "jwsEtag": "\"24261ac92d7992b9ed096662447fc934\"",
+      "jwsLastModified": "Sun, 04 Oct 2026 22:33:45 GMT",
+      "capturedAt": "2026-10-04T22:37:25.085Z"
+    },
+    "go93343-c0003-e006259-u.json": {
+      "etag": "\"2ca53b962b31413353584d5cb2ea07bc\"",
+      "lastModified": "Sun, 04 Oct 2026 22:32:33 GMT",
+      "jwsEtag": "\"7820cc1b2a16f0e211573b07dfeb7fd4\"",
+      "jwsLastModified": "Sun, 04 Oct 2026 22:32:31 GMT",
+      "capturedAt": "2026-10-04T22:37:25.237Z"
+    },
+    "go93343-c0005-e006259-u.json": {
+      "etag": "\"667fe361b4a736cbb7b1c9dc62dd0b5c\"",
+      "lastModified": "Sun, 04 Oct 2026 22:32:34 GMT",
+      "jwsEtag": "\"af95612b94112de6213f93d8a8a81157\"",
+      "jwsLastModified": "Sun, 04 Oct 2026 22:32:33 GMT",
+      "capturedAt": "2026-10-04T22:37:25.361Z"
+    },
+    "go93343-c0006-e006259-u.json": {
+      "etag": "\"12f32f587b3bdb4d956ffd6cae9eced0\"",
+      "lastModified": "Sun, 04 Oct 2026 22:32:33 GMT",
+      "jwsEtag": "\"49149b6c19d6f6600c2f4737efe9d0c2\"",
+      "jwsLastModified": "Sun, 04 Oct 2026 22:32:34 GMT",
+      "capturedAt": "2026-10-04T22:37:25.439Z"
+    },
+    "go93343-c0007-e006259-u.json": {
+      "etag": "\"a47ddbfa6466c2d01d2a808b4fd62f01\"",
+      "lastModified": "Sun, 04 Oct 2026 22:32:34 GMT",
+      "jwsEtag": "\"f527bf2a190b5367dc4ae58c47af0ebc\"",
+      "jwsLastModified": "Sun, 04 Oct 2026 22:32:33 GMT",
+      "capturedAt": "2026-10-04T22:37:25.705Z"
+    }
+  }
+}
