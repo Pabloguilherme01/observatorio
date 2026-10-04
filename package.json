@@ -46,8 +46,8 @@
     "cleanup:tse": "node scripts/cleanup-tse-automation.mjs"
   },
   "dependencies": {
-    "@sentry/react": "10.75.2",
-    "lucide-react": "1.48.0",
+    "@sentry/react": "11.1.0",
+    "lucide-react": "1.47.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "recharts": "3.10.1"

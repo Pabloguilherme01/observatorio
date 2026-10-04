@@ -14,7 +14,16 @@ if (dsn) {
       release: 'observatorio@' + APP_VERSION,
       integrations: [Sentry.browserTracingIntegration()],
       tracesSampleRate: 0.1,
-      sendDefaultPii: false,
+      // Mantém a postura restritiva do SDK v10 após a migração para Sentry 11.
+      dataCollection: {
+        userInfo: false,
+        cookies: false,
+        httpHeaders: { request: false, response: false },
+        httpBodies: [],
+        genAI: { inputs: false, outputs: false },
+        databaseQueryData: false,
+        queues: false,
+      },
       enabled: true,
     });
     return Sentry;
