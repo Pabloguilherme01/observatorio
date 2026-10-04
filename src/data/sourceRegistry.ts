@@ -557,7 +557,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     id: 'tre-go-zona-28-contato-2026',
     label: 'TRE-GO — Contato da 28ª Zona Eleitoral de Águas Lindas',
     institution: 'Tribunal Regional Eleitoral de Goiás',
-    url: 'https://apps.tre-go.jus.br/contato-zonas/',
+    url: 'https://www.tre-go.jus.br/institucional/unidades-e-contatos/contatos',
     nature: 'official',
     referenceDate: '2026-09-24',
     note: 'Página oficial de contato das zonas eleitorais. A 28ª Zona Eleitoral corresponde a Águas Lindas de Goiás.',

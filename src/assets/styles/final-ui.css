@@ -4133,6 +4133,7 @@ main p a:not(.official-resource-card):not(.hero-action){
 .light .hero-election-heading span,.light .hero-timer-cell span{color:#475569!important}
 .light .hero-election-heading strong,.light .hero-timer-cell strong{color:#0f172a!important}
 .light .hero-timer-cell,.light .hero-timer-status{background:#f8fafc!important;border-color:#dbe5ec!important}
+.light .hero-timer-status{color:#334155!important}
 .light .hero-official-link{color:#075985!important}
 .light .audience-page-card{background:#ffffff!important;border-color:#dbe5ec!important;box-shadow:0 10px 30px rgba(15,23,42,.06)!important}
 .light .audience-intro-copy h2,.light .audience-block-head h3,.light .audience-topic-copy strong,.light .audience-action-card strong,.light .audience-resource-copy strong{color:#0f172a!important}

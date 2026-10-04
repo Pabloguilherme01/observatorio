@@ -279,7 +279,7 @@ test('busca preserva Home e End para edição de texto e anuncia resultados', as
   await page.getByRole('button', { name: 'Buscar no observatório' }).click();
 
   const input = page.getByRole('combobox').first();
-  const status = page.getByRole('status');
+  const status = page.locator('#search-result-status');
   await input.fill('transporte');
 
   await input.press('Home');
