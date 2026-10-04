@@ -30,7 +30,7 @@ jobs:
 
       - name: Cleanup stale automation branches
         env:
-          GITHUB_TOKEN: \${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
           CLEANUP_DRY_RUN: 'false'
           CLEANUP_MAX_AGE_DAYS: '7'
           CLEANUP_KEEP_PER_PREFIX: '2'

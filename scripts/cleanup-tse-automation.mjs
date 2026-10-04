@@ -1,10 +1,10 @@
-const token = process.env.GITHUB_TOKEN;
+const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
 const repository = process.env.GITHUB_REPOSITORY;
 const dryRun = process.env.CLEANUP_DRY_RUN !== 'false';
 const maxAgeDays = Number(process.env.CLEANUP_MAX_AGE_DAYS || 7);
 const keepPerPrefix = Number(process.env.CLEANUP_KEEP_PER_PREFIX || 2);
 
-if (!token || !repository) throw new Error('GITHUB_TOKEN e GITHUB_REPOSITORY são obrigatórios.');
+if (!token || !repository) throw new Error('GITHUB_TOKEN/GH_TOKEN e GITHUB_REPOSITORY são obrigatórios.');
 
 const headers = {
   Accept: 'application/vnd.github+json',
