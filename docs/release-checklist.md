@@ -11,8 +11,8 @@
 
 ## Publicação
 
-- O deploy deve ocorrer somente a partir de um CI de push bem-sucedido na `main`.
-- O deploy deve publicar exatamente o SHA validado pelo CI.
+- O deploy deve ocorrer somente quando `CI`, `Quality`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA de push na `main`.
+- O deploy deve publicar exatamente o SHA validado pelos quatro gates.
 - O healthcheck pós-publicação deve confirmar paridade do SHA, estado do snapshot TSE, OpenAPI e assets PWA.
 
 ## Automação eleitoral
