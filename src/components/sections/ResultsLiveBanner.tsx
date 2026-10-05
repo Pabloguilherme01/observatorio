@@ -40,17 +40,17 @@ export function ResultsLiveBanner() {
 
   const archived = phase === 'complete' || phase === 'archived_partial';
   const title = phase === 'complete'
-    ? 'Resultados oficiais · arquivo consolidado do turno'
+    ? 'Resultado oficial · 1º turno conferido'
     : phase === 'archived_partial'
-      ? 'Resultados oficiais · último snapshot validado'
+      ? 'Resultado oficial · último registro conferido'
       : phase === 'stale'
-        ? 'Resultados oficiais · snapshot preservado'
-        : 'Resultados oficiais · atualização histórica';
+        ? 'Resultado oficial · último registro preservado'
+        : 'Resultado oficial · atualização';
 
   const verified = data.integrity?.files.filter(file => file.signatureStatus === 'verified').length ?? 0;
   const integrity = data.integrity?.allVerified
-    ? `${verified}/${data.integrity.files.length} arquivos com assinatura JWS verificada pela chave oficial do TSE`
-    : 'snapshot sem prova criptográfica completa publicada';
+    ? `Fonte oficial e assinatura digital conferidas pelo TSE`
+    : 'verificação técnica incompleta; confira a fonte oficial';
 
   return (
     <section id="resultados" className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite" aria-label="Resultados oficiais do TSE">
@@ -63,11 +63,11 @@ export function ResultsLiveBanner() {
             <div>
               <strong className="block text-sm text-slate-100 light:text-slate-900">{title}</strong>
               <p className="text-xs leading-5 text-slate-400 light:text-slate-600">
-                {data.municipalityName} · turno {data.turn} · captura {formatCapturedAt(data.capturedAt)} · {integrity}
+                {data.municipalityName} · turno {data.turn} · conferido em {formatCapturedAt(data.capturedAt)} · {integrity}
               </p>
               {archived && (
                 <p className="mt-1 text-xs text-sky-200 light:text-sky-800">
-                  A apuração deste turno é tratada como registro histórico. O snapshot permanece consultável, enquanto a arquitetura continua pronta para um eventual segundo turno.
+                  Este resultado fica disponível como registro histórico. Se houver nova apuração, ela será apresentada separadamente para não misturar turnos.
                 </p>
               )}
             </div>
@@ -112,7 +112,7 @@ export function ResultsLiveBanner() {
 
         <div className="mt-3 flex flex-wrap gap-2">
           <a href={RESULTS_DOCS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-slate-300 light:text-slate-700">
-            Documentação oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            Como o TSE publica os resultados <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
           <a href="#fontes" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-slate-300 light:text-slate-700">
             Ver cadeia de fontes
