@@ -4,7 +4,6 @@ import { test, expect } from 'playwright/test';
 
 const navigationSource = readFileSync(resolve('src/config/navigation.ts'), 'utf8');
 const configuredMoreItems = (navigationSource.match(/group: 'more'/g) ?? []).length;
-import { readFileSync } from 'node:fs';
 
 async function openSection(page, id) {
   await page.evaluate(sectionId => {
