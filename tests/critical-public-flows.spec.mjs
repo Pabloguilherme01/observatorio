@@ -28,7 +28,7 @@ test.describe('Fluxos públicos críticos', () => {
 
     const caps = page.getByRole('link', { name: /CAPS/i }).first();
     await expect(caps).toBeVisible();
-    await expect(caps).toHaveAttribute('href', /aguaslindasdegoias\.go\.gov\.br\/estrutura\/secretaria-de-saude-2\/caps/i);
+    await expect(caps).toHaveAttribute('href', /^https:\/\/aguaslindasdegoias\.go\.gov\.br\/estrutura\/secretaria-de-saude-2\/caps-centro-de-atencao-psicossocial\/?$/i);
   });
 
   test('recorte eleitoral deixa explícito que não é uma lista municipal completa', async ({ page }) => {
