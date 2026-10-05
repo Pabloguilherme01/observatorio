@@ -41,6 +41,7 @@ const requiredFiles = [
   'scripts/audit-styles.mjs',
   'scripts/audit-performance.mjs',
   'scripts/cleanup-tse-automation.mjs',
+  'scripts/test-post-election-transition.mjs',
   'src/assets/styles/index.css',
   'src/hooks/useDialogFocus.ts',
   '.github/workflows/cleanup-tse-automation.yml',
