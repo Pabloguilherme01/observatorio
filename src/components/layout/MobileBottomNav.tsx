@@ -1,4 +1,4 @@
-import { CircleHelp, Compass, Home, Landmark, MoreHorizontal } from 'lucide-react';
+import { CircleHelp, Compass, History, Home, Landmark, MoreHorizontal } from 'lucide-react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { navigation } from '../../config/navigation';
@@ -8,6 +8,7 @@ const primaryItems = [
   { id: 'dashboard', label: 'Início', icon: Home },
   { id: 'descubra', label: 'Explorar', icon: Compass },
   { id: 'eleitoral360', label: 'Eleições', icon: Landmark },
+  { id: 'resultados', label: 'Resultados', icon: History },
 ] as const;
 
 const sectionToTab = (id: string) => {
@@ -15,6 +16,7 @@ const sectionToTab = (id: string) => {
   if (id === 'resumo' || id === 'dashboard' || id === 'analise') return 'dashboard';
   if (id === 'descubra') return 'descubra';
   if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica' || id === 'eleitorado') return 'eleitoral360';
+  if (id === 'resultados') return 'resultados';
   if (id === 'quiz') return 'quiz';
   return 'more';
 };
@@ -168,7 +170,7 @@ export function MobileBottomNav() {
     shortLabel: 'Aprendizado guiado',
     description: 'Trilha passo a passo para ler e verificar os dados.',
   } as const;
-  const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more' && item.id !== 'quiz')];
+  const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more')];
   const quizItem = navigation.find(item => item.id === 'quiz');
 
   return (
