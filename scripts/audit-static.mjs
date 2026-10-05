@@ -52,6 +52,25 @@ must(
     ? 'package.json referencia scripts inexistentes: ' + missingLocalScriptRefs.map(ref => ref.path + ' (' + ref.scriptName + ')').join(', ')
     : 'package.json referencia somente scripts existentes.',
 );
+
+const workflowScriptDir = path.join(root, '.github/workflows');
+const workflowScriptFiles = fs.existsSync(workflowScriptDir)
+  ? fs.readdirSync(workflowScriptDir).filter(file => /\.ya?ml$/.test(file)).map(file => path.join(workflowScriptDir, file))
+  : [];
+const workflowScriptRefs = [];
+for (const file of workflowScriptFiles) {
+  const workflow = fs.readFileSync(file, 'utf8');
+  for (const match of workflow.matchAll(/\bnode\s+(scripts\/[A-Za-z0-9_./-]+\.mjs)\b/g)) {
+    workflowScriptRefs.push({ file: path.relative(root, file), path: match[1] });
+  }
+}
+const missingWorkflowScriptRefs = workflowScriptRefs.filter(ref => !fs.existsSync(path.join(root, ref.path)));
+must(
+  missingWorkflowScriptRefs.length === 0,
+  missingWorkflowScriptRefs.length
+    ? 'workflows referenciam scripts inexistentes: ' + missingWorkflowScriptRefs.map(ref => ref.path + ' (' + ref.file + ')').join(', ')
+    : 'workflows com chamadas node scripts referenciam somente arquivos existentes.',
+);
 must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
 must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 
@@ -116,6 +135,7 @@ must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'
 must(vite.includes('start_url: BASE_PATH') && vite.includes('scope: BASE_PATH'), 'PWA mantém start_url e scope no subcaminho publicado');
 must(viteSource.includes('freshness') && viteSource.includes('maxAgeHours = 24') && viteSource.includes('tseCandidates'), 'API health expõe contrato de frescor TSE');
 must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
+must(vite.includes("url.pathname === '/observatorio/api/v1/health.json'") && vite.includes("handler: 'NetworkOnly'"), 'healthcheck público não é servido pelo cache do Service Worker');
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
@@ -218,7 +238,7 @@ must(
     && browserWorkflow.includes('non_blocking: false')
     && browserWorkflow.includes('name: Browser · build production')
     && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
-    && browserWorkflow.includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')
+    && browserWorkflow.includes('actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131')
     && browserWorkflow.includes('needs: build')
     && read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
     && !read('playwright.config.mjs').includes("npm run build && npm run preview")

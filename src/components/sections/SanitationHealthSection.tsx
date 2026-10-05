@@ -123,7 +123,9 @@ function SewerCurve() {
 
 export function SanitationHealthSection() {
   const sanitationReference = d.indicators.find(item => item.id === 'public-sewer-service-2024');
-  const sanitationReferenceYear = sanitationReference?.referenceDate?.slice(0, 4) ?? String(sewerHistoryEndYear);
+  const sanitationSource = d.sources.find(source => source.id === d.sanitation.sourceId);
+  const sanitationReferenceDate = sanitationReference?.referenceDate ?? sanitationSource?.referenceDate;
+  const sanitationReferenceYear = sanitationReferenceDate?.slice(0, 4) ?? String(sewerHistoryEndYear);
   const adequateSewerageIndicator = d.indicators.find(item => item.id === 'adequate-sewerage');
   const adequateSewerageYear = adequateSewerageIndicator?.referenceDate?.slice(0, 4) ?? 'ano-base próprio';
   const wasteCollectionIndicator = d.indicators.find(item => item.id === 'household-waste-collection-2024');
@@ -164,7 +166,7 @@ export function SanitationHealthSection() {
 
           <div className="dashboard-card-meta mt-3">
             <span className="dashboard-meta-chip" data-kind={sanitationReference?.status}>Base SINISA</span>
-            {sanitationReference?.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(sanitationReference.referenceDate)}</span>}
+            {sanitationReferenceDate && <span className="dashboard-meta-chip">ref. {formatDate(sanitationReferenceDate)}</span>}
           </div>
 
           <div className="mt-6 space-y-4">

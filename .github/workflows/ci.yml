@@ -86,7 +86,7 @@ jobs:
         run: npm run validate:tse
 
       - name: Validate candidate source guard
-        run: node scripts/test-candidate-source-guard.mjs
+        run: npm run test:candidate-source-guard
 
       - name: Dependency vulnerability gate
         run: npm run audit:deps

@@ -86,7 +86,12 @@ test.describe('Observatório smoke flows', () => {
   await expect(page.locator('#resumo')).toBeVisible();
 });
 
-test('healthcheck técnico usa base pública e permite tentar novamente', async ({ page }) => {
+test('healthcheck técnico usa base pública e permite tentar novamente', async ({ browser }) => {
+  // Este teste valida uma falha/recuperação de rede deliberadamente simulada.
+  // O Service Worker é coberto por testes próprios; bloqueá-lo aqui mantém o
+  // page.route() determinístico e evita uma segunda leitura real após o takeover.
+  const context = await browser.newContext({ serviceWorkers: 'block' });
+  const page = await context.newPage();
   let calls = 0;
   const requestedPaths = [];
   await page.route('**/api/v1/health.json', async route => {
@@ -117,10 +122,13 @@ test('healthcheck técnico usa base pública e permite tentar novamente', async 
   const retry = publicationCard.getByRole('button', { name: 'Atualizar status' });
   await retry.click();
   await expect(publicationCard.getByRole('status')).toContainText(/healthcheck informa estado operacional/i);
-  await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).getByText('abc1234', { exact: true })).toBeVisible();
+  const publicationParity = page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first();
+  await expect(publicationParity).toContainText('abc1234');
+  await expect(publicationParity).toContainText('health-v1');
 
   expect(calls).toBe(2);
   expect(requestedPaths.every(path => path.endsWith('/observatorio/api/v1/health.json'))).toBeTruthy();
+  await context.close();
 });
 
 test('busca global abre o serviço municipal já filtrado', async ({ page }) => {

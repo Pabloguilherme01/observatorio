@@ -31,6 +31,9 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
 
   const setMode = useCallback((nextMode: LanguageMode) => {
     setModeState(nextMode);
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.languageMode = nextMode;
+    }
     if (typeof window === 'undefined') return;
 
     const target = window.location.hash.slice(1);

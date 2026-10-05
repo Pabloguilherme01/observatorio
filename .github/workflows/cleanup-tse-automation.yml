@@ -34,4 +34,4 @@ jobs:
           CLEANUP_DRY_RUN: 'false'
           CLEANUP_MAX_AGE_DAYS: '7'
           CLEANUP_KEEP_PER_PREFIX: '2'
-        run: node scripts/cleanup-tse-automation.mjs
+        run: npm run cleanup:tse

@@ -82,7 +82,7 @@ if (/project: safari-desktop[\s\S]*?non_blocking:\s*false/.test(browser)) pass('
 else fail('Safari desktop não está protegido como gate bloqueante.');
 if (/jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a/.test(browser)
   && /jobs:[\s\S]*?browser:\s*\n[\s\S]*?needs:\s*build/.test(browser)
-  && browser.includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')) {
+  && browser.includes('actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131')) {
   pass('Browser constrói uma única vez e compartilha o artefato de produção entre os perfis.');
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
