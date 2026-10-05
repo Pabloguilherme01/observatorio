@@ -191,14 +191,19 @@ must(
     && browserWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
     && browserWorkflow.includes('safari-desktop')
     && browserWorkflow.includes('non_blocking: false')
-    && read('playwright.config.mjs').includes("npm run build && npm run preview -- --host 127.0.0.1 --port 4173")
+    && browserWorkflow.includes('name: Browser · build production')
+    && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
+    && browserWorkflow.includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')
+    && browserWorkflow.includes('needs: build')
+    && read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
+    && !read('playwright.config.mjs').includes("npm run build && npm run preview")
     && read('playwright.config.mjs').includes('mobile-core')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
     && !deployWorkflow.includes('playwright install')
     && !deployWorkflow.includes('playwright test'),
-  'CI mantém sete perfis Playwright, incluindo o gate Axe, executando o artefato de produção, com Safari desktop bloqueante e sem repetir a suíte no deploy',
+  'CI mantém sete perfis Playwright, compartilha um único artefato de produção, inclui o gate Axe, Safari desktop bloqueante e não repete a suíte no deploy',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
 const playwrightConfig = read('playwright.config.mjs');
