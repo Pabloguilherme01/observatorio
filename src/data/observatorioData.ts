@@ -4,10 +4,10 @@ import { EDITION } from '../config/version.js';
 import generatedCandidates from './generated/tse2026-candidates.json' with { type: 'json' };
 
 const rawGeneratedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt?.slice(0, 10);
-const generatedCandidateSnapshotDate: ISODate =
-  rawGeneratedCandidateSnapshotDate && /^\d{4}-\d{2}-\d{2}$/.test(rawGeneratedCandidateSnapshotDate)
-    ? (rawGeneratedCandidateSnapshotDate as ISODate)
-    : '2026-09-24';
+if (!rawGeneratedCandidateSnapshotDate || !/^\d{4}-\d{2}-\d{2}$/.test(rawGeneratedCandidateSnapshotDate)) {
+  throw new Error('Snapshot de candidatos TSE sem downloadedAt válido.');
+}
+const generatedCandidateSnapshotDate = rawGeneratedCandidateSnapshotDate as ISODate;
 
 const generatedMatched: CandidateSnapshot[] = generatedCandidates.matched.map(candidate => ({
   name: candidate.name,
