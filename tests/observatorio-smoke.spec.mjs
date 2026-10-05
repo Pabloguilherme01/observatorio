@@ -1231,7 +1231,7 @@ test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo
   await page.goto('./');
   await expect(page.getByText('Resultados oficiais · último snapshot validado')).toBeVisible();
   await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
-  await expect(page.getByText(/estes números não são uma atualização ao vivo/i)).toBeVisible();
+  await expect(page.getByText(/A apuração deste turno é tratada como registro histórico/i)).toBeVisible();
 });
 
 test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
