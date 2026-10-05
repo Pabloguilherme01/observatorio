@@ -652,9 +652,6 @@
     grid-template-columns:1fr;
   }
 
-  #resumo .summary-public-action{
-    min-height:48px;
-  }
 
   #resumo .summary-simple-card{
     min-height:136px;
@@ -1157,9 +1154,7 @@
     font-size:8px;
     line-height:1.1;
   }
-  .language-toggle-v3 .language-toggle-options > button em{
-    display:none;
-  }
+
 }
 @media (max-width:390px){
   .language-toggle-v3 .language-toggle-options{
@@ -1173,12 +1168,8 @@
     width:17px;
     height:17px;
   }
-  .language-toggle-v3 .language-toggle-options > button strong{
-    font-size:10px;
-  }
-  .language-toggle-v3 .language-toggle-options > button small{
-    font-size:7px;
-  }
+
+
 }
 
 /* Light theme: amber text variants must remain readable on white surfaces. */
@@ -1608,18 +1599,13 @@
     min-height:38px;
     padding:7px 9px;
   }
-  .language-toggle-v3 .language-toggle-options{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:6px;
-  }
+
   .language-toggle-v3 .language-toggle-options > button{
     min-height:56px;
     padding:9px 9px;
     border-radius:14px;
   }
-  .language-toggle-v3 .language-toggle-options > button strong{
-    font-size:10px;
-  }
+
   .language-toggle-v3 .language-toggle-options > button small{
     font-size:8px;
     letter-spacing:.045em;
@@ -2623,7 +2609,7 @@ html {
   }
   .language-toggle-v3 .language-toggle-options > button strong { font-size: 9.5px !important; }
   .language-toggle-v3 .language-toggle-options > button small { font-size: 8px !important; }
-  .audience-home { padding-inline: var(--vf-page-gutter); }
+
   .audience-home :where(.audience-topic,.audience-action-card,.audience-resource,.audience-link) { min-height: 68px; }
   .quiz-option { min-height: 52px; }
   .mobile-bottom-nav button { min-height: 46px !important; font-size: 9px !important; }
@@ -4576,9 +4562,7 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
 .audience-intro{
   gap:18px!important;
 }
-.audience-intro-copy{
-  min-width:0;
-}
+
 .audience-intro-copy h2{
   max-width:18ch!important;
   text-wrap:balance;
@@ -6937,9 +6921,7 @@ body{
   border-color:var(--civic-line-hover)!important;
   background:rgba(56,189,248,.045)!important;
 }
-.section-header h2{
-  text-wrap:balance;
-}
+
 .section-header p{
   text-wrap:pretty;
 }
