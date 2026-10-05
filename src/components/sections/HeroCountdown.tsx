@@ -37,6 +37,7 @@ export function HeroCountdown() {
             </p>
             <div className="hero-actions">
               <a href="#resultados" className="hero-action primary">Ver resultados <ArrowRight aria-hidden="true" /></a>
+              <a href="#descubra" className="hero-action secondary">Explorar temas</a>
               <a href="#fontes" className="hero-action secondary">Conferir fontes</a>
               <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
                 <Search aria-hidden="true" /> Buscar
