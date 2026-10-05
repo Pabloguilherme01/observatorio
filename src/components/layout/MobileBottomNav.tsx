@@ -1,4 +1,4 @@
-import { CircleHelp, Compass, History, Home, Landmark, MoreHorizontal } from 'lucide-react';
+import { Compass, History, Home, Landmark, MoreHorizontal } from 'lucide-react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { navigation } from '../../config/navigation';
@@ -171,7 +171,6 @@ export function MobileBottomNav() {
     description: 'Trilha passo a passo para ler e verificar os dados.',
   } as const;
   const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more')];
-  const quizItem = navigation.find(item => item.id === 'quiz');
 
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação principal no celular">
@@ -187,17 +186,6 @@ export function MobileBottomNav() {
           <span>{label}</span>
         </button>
       ))}
-      {quizItem && (
-        <button
-          type="button"
-          onClick={() => { moreOpenRef.current = false; setMoreOpen(false); jump(quizItem.id); }}
-          className={activeSection === 'quiz' ? 'is-active' : ''}
-          aria-current={activeSection === 'quiz' ? 'page' : undefined}
-        >
-          <CircleHelp className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-          <span>Quiz</span>
-        </button>
-      )}
       <div className="relative">
         <button
           id="mobile-bottom-more-trigger"
