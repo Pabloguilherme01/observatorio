@@ -1,7 +1,7 @@
 {
   "name": "observatorio-aguas-lindas",
   "private": true,
-  "version": "44.10.1",
+  "version": "45.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 3000",
@@ -43,7 +43,8 @@
     "audit:workflows": "node scripts/audit-workflows.mjs",
     "audit:styles": "node scripts/audit-styles.mjs",
     "audit:performance": "node scripts/audit-performance.mjs",
-    "cleanup:tse": "node scripts/cleanup-tse-automation.mjs"
+    "cleanup:tse": "node scripts/cleanup-tse-automation.mjs",
+    "test:post-election": "node scripts/test-post-election-transition.mjs"
   },
   "dependencies": {
     "@sentry/react": "11.1.0",

@@ -70,6 +70,9 @@ jobs:
       - name: Test first and second turn results contracts
         run: npm run test:results
 
+      - name: Test post-election transition contract
+        run: npm run test:post-election
+
       - name: Test source audit availability policy
         run: npm run test:source-audit-policy
 

@@ -1,10 +1,9 @@
-import { ExternalLink, Radio, RefreshCw, ShieldCheck } from 'lucide-react';
+import { Database, ExternalLink, History, ShieldCheck } from 'lucide-react';
 import { useResultsFeed } from '../../hooks/useResultsFeed';
 import { observatorioData as d } from '../../data/observatorioData';
 
 const RESULTS_DOCS_URL = 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados';
 const formatVotes = (value: number) => value.toLocaleString('pt-BR');
-const formatPercentage = (value: number) => value.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
 const formatCapturedAt = (value: string) => new Date(value).toLocaleString('pt-BR', {
   dateStyle: 'short',
   timeStyle: 'short',
@@ -24,9 +23,13 @@ export function ResultsLiveBanner() {
           <div className="flex items-start gap-3">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
             <div>
-              <strong className="block text-sm text-slate-100 light:text-amber-900">{ended ? 'Feed oficial não capturado localmente' : 'Resultados oficiais · aguardando arquivo TSE'}</strong>
+              <strong className="block text-sm text-slate-100 light:text-amber-900">
+                {ended ? 'Arquivo oficial de resultados não disponível neste snapshot' : 'Resultados oficiais · aguardando arquivo TSE'}
+              </strong>
               <span className="text-xs leading-5 text-slate-500 light:text-slate-600">
-                {ended ? 'A janela prevista terminou sem um feed oficial validado neste observatório.' : 'Nenhum resultado é inferido ou preenchido manualmente; o painel só acende quando o arquivo oficial passa pela validação local.'}
+                {ended
+                  ? 'A janela de apuração terminou. O Observatório não inventa nem reconstrói resultados que não estejam em um arquivo oficial validado.'
+                  : 'Nenhum número é preenchido manualmente; o painel só exibe dados depois da validação do arquivo oficial.'}
               </span>
             </div>
           </div>
@@ -35,36 +38,45 @@ export function ResultsLiveBanner() {
     );
   }
 
-  const label = phase === 'complete' ? 'FEED COMPLETO · TSE'
-    : phase === 'archived_partial' ? 'RESULTADO PARCIAL ARQUIVADO · TSE'
-      : phase === 'stale' ? 'CAPTURA DESATUALIZADA · TSE'
-        : 'AO VIVO · Apuração TSE';
+  const archived = phase === 'complete' || phase === 'archived_partial';
+  const title = phase === 'complete'
+    ? 'Resultados oficiais · arquivo consolidado do turno'
+    : phase === 'archived_partial'
+      ? 'Resultados oficiais · último snapshot validado'
+      : phase === 'stale'
+        ? 'Resultados oficiais · snapshot preservado'
+        : 'Resultados oficiais · atualização histórica';
+
   const verified = data.integrity?.files.filter(file => file.signatureStatus === 'verified').length ?? 0;
   const integrity = data.integrity?.allVerified
-    ? `${verified}/${data.integrity.files.length} assinaturas JWS verificadas com chave oficial TSE`
-    : 'sem prova criptográfica publicada';
+    ? `${verified}/${data.integrity.files.length} arquivos com assinatura JWS verificada pela chave oficial do TSE`
+    : 'snapshot sem prova criptográfica completa publicada';
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite" aria-label="Resultados oficiais do TSE">
+    <section id="resultados" className="mx-auto max-w-7xl px-4 sm:px-6" aria-live="polite" aria-label="Resultados oficiais do TSE">
       <div className="mb-4 rounded-2xl border border-sky-400/15 bg-sky-400/[0.035] p-4 light:border-sky-200 light:bg-sky-50/70">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-3">
-            <Radio className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
+            {archived
+              ? <History className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />
+              : <Database className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" aria-hidden="true" />}
             <div>
-              <strong className="block text-sm text-slate-100 light:text-slate-900">{label}</strong>
+              <strong className="block text-sm text-slate-100 light:text-slate-900">{title}</strong>
               <p className="text-xs leading-5 text-slate-400 light:text-slate-600">
-                {data.municipalityName} · turno {data.turn} · capturado em {formatCapturedAt(data.capturedAt)} · {integrity}
+                {data.municipalityName} · turno {data.turn} · captura {formatCapturedAt(data.capturedAt)} · {integrity}
               </p>
-              {(phase === 'stale' || phase === 'archived_partial') && (
-                <p className="mt-1 text-xs text-amber-200 light:text-amber-800">Snapshot preservado; estes números não são uma atualização ao vivo.</p>
+              {archived && (
+                <p className="mt-1 text-xs text-sky-200 light:text-sky-800">
+                  A apuração deste turno é tratada como registro histórico. O snapshot permanece consultável, enquanto a arquitetura continua pronta para um eventual segundo turno.
+                </p>
               )}
             </div>
           </div>
-          <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">
-            {checking ? <RefreshCw className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : null}
-            {checking ? 'verificando atualização' : 'verificação periódica'}
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">
+            {checking ? 'verificando' : archived ? 'arquivo verificável' : 'atualização periódica'}
           </span>
         </div>
+
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {data.entries.map(entry => {
             const counted = entry.sectionsCounted;
@@ -78,8 +90,8 @@ export function ResultsLiveBanner() {
             return (
               <div key={entry.sourceFile} className="rounded-xl border border-white/10 p-3 light:border-slate-200 light:bg-white">
                 <h3 className="text-sm font-bold text-slate-100 light:text-slate-900">{entry.cargo}</h3>
-                <p className="mt-1 text-xs text-slate-400">
-                  {percentage == null ? 'Seções apuradas não informadas' : `${formatVotes(counted!)} de ${formatVotes(total!)} seções · ${formatPercentage(percentage)}%`}
+                <p className="mt-1 text-xs text-slate-400 light:text-slate-500">
+                  {percentage == null ? 'Seções apuradas não informadas' : `${formatVotes(counted!)} de ${formatVotes(total!)} seções · ${percentage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`}
                   {entry.validVotes != null ? ` · ${formatVotes(entry.validVotes)} votos válidos` : ''}
                 </p>
                 {sorted.length ? (
@@ -97,9 +109,15 @@ export function ResultsLiveBanner() {
             );
           })}
         </div>
-        <a href={RESULTS_DOCS_URL} target="_blank" rel="noopener noreferrer" aria-label="Abrir documentação oficial de divulgação de resultados do TSE em nova aba" className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-slate-300 light:text-slate-700">
-          Conferir documentação do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-        </a>
+
+        <div className="mt-3 flex flex-wrap gap-2">
+          <a href={RESULTS_DOCS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-slate-300 light:text-slate-700">
+            Documentação oficial do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+          <a href="#fontes" className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-slate-300 light:text-slate-700">
+            Ver cadeia de fontes
+          </a>
+        </div>
       </div>
     </section>
   );

@@ -2,7 +2,7 @@ import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo,
 import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
-import { HeroCountdown } from '../components/sections/HeroCountdown';
+import { PostElectionHero } from '../components/sections/HeroCountdown';
 import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
@@ -314,7 +314,7 @@ export function App() {
         <ExperienceShell>
           <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
-          <SectionErrorBoundary label="Resumo inicial"><HeroCountdown /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Resumo inicial"><PostElectionHero /></SectionErrorBoundary>
           <main id="main-content">
             <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo principal"><ExecutiveSummary /></SectionErrorBoundary>
