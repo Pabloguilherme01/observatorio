@@ -12,6 +12,15 @@ test.describe('Observatório smoke flows', () => {
     await page.goto('./');
     await expect(page).toHaveTitle(/Observatório Eleitoral — Águas Lindas de Goiás 2026/);
     await expect(page.locator('#root')).toBeVisible();
+  const duplicateIds = await page.evaluate(() => {
+    const counts = new Map();
+    document.querySelectorAll('[id]').forEach(node => {
+      const id = node.id;
+      counts.set(id, (counts.get(id) ?? 0) + 1);
+    });
+    return [...counts.entries()].filter(([, count]) => count > 1).map(([id, count]) => ({ id, count }));
+  });
+  expect(duplicateIds).toEqual([]);
     await expect(page.getByRole('group', { name: 'Escolha como você quer ler os dados' })).toBeVisible();
 
     const modeGroup = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
