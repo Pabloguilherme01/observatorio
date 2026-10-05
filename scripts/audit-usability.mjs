@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { readCssImportGraph } from './lib/readCssImportGraph.mjs';
 
 const root = process.cwd();
 const errors = [];
@@ -266,12 +267,7 @@ else pass('rótulos de ações principais são suficientemente descritivos');
 if (!combined.includes('election-mode-actions') && !combined.includes('mode-election') && !combined.includes('electionMode')) pass('Modo Eleição cosmético removido do fluxo principal');
 else fail('Modo Eleição removido de forma incompleta');
 
-const finalUi = [
-  'src/assets/styles/final-ui.css',
-  'src/assets/styles/final-ui/premium-finish.css',
-  'src/assets/styles/final-ui/visual-final.css',
-  'src/assets/styles/final-ui/site-final.css',
-].map(file => texts.find(item => item.file === file)?.content ?? '').join('\n');
+const finalUi = readCssImportGraph('src/assets/styles/final-ui.css', { root });
 const guidedUi = texts.find(item => item.file === 'src/assets/styles/guided-mode.css')?.content ?? '';
 if (
   finalUi.includes(':root[data-language-mode="summary"]') &&
