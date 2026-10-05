@@ -150,7 +150,7 @@ if (intraFileDuplicates.length) {
 }
 if (adjacentSelectorDuplicates.size) {
   for (const [key, count] of adjacentSelectorDuplicates.entries()) {
-    const [file, context, selector] = key.split('\\n');
+    const [file, context, selector] = key.split('\n');
     failures.push(file + ' possui regra CSS adjacente repetida no mesmo contexto (' + context + '): ' + selector + ' (' + count + ' ocorrências).');
   }
 }
