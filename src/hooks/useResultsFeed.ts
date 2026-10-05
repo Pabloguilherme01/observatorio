@@ -157,9 +157,19 @@ export function useResultsFeed(intervalMs = 300000) {
 
   useEffect(() => {
     let active = true;
+    let endedFetchDone = false;
+    let timer: number | null = null;
+
+    const stopPolling = () => {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    };
 
     const fetchFeed = async () => {
-      if (!isResultsWindowOpen() && Date.now() < RESULTS_WINDOW_START) {
+      const now = Date.now();
+      if (now < RESULTS_WINDOW_START || (now > RESULTS_WINDOW_END && endedFetchDone)) {
         setChecking(false);
         return;
       }
@@ -176,22 +186,31 @@ export function useResultsFeed(intervalMs = 300000) {
       } catch {
         // Preserve the last validated snapshot; its capturedAt drives live → stale state.
       } finally {
-        if (active) setChecking(false);
+        if (active) {
+          setChecking(false);
+          if (Date.now() > RESULTS_WINDOW_END) {
+            endedFetchDone = true;
+            stopPolling();
+          }
+        }
       }
     };
 
     const refresh = () => {
       if (document.visibilityState === 'hidden') return;
-      if (Date.now() >= RESULTS_WINDOW_START) void fetchFeed();
+      const now = Date.now();
+      if (now < RESULTS_WINDOW_START || (now > RESULTS_WINDOW_END && endedFetchDone)) return;
+      void fetchFeed();
     };
 
-    if (Date.now() >= RESULTS_WINDOW_START) void fetchFeed();
-    const timer = window.setInterval(refresh, intervalMs);
+    const now = Date.now();
+    if (now >= RESULTS_WINDOW_START) void fetchFeed();
+    if (now <= RESULTS_WINDOW_END) timer = window.setInterval(refresh, intervalMs);
     document.addEventListener('visibilitychange', refresh);
 
     return () => {
       active = false;
-      window.clearInterval(timer);
+      stopPolling();
       document.removeEventListener('visibilitychange', refresh);
     };
   }, [intervalMs]);
