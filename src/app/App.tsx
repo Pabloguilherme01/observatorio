@@ -11,7 +11,7 @@ import { LanguageModeProvider, useLanguageMode } from '../context/LanguageModeCo
 import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
 const GuidedLearningPanel = lazy(() => import('../components/sections/GuidedLearningPanel').then(module => ({ default: module.GuidedLearningPanel })));
-import { PublicUtilityGuide } from '../components/sections/PublicUtilityGuide';
+const PublicUtilityGuide = lazy(() => import('../components/sections/PublicUtilityGuide').then(module => ({ default: module.PublicUtilityGuide })));
 import { DataInspector } from '../components/DataInspector';
 import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
 import { Footer } from '../components/layout/Footer';
@@ -319,7 +319,7 @@ export function App() {
             <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo principal"><ExecutiveSummary /></SectionErrorBoundary>
             <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
-            <SectionErrorBoundary label="Guia de utilidade pública"><PublicUtilityGuide /></SectionErrorBoundary>
+            <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><DashboardMetrics /></SectionErrorBoundary></div>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
