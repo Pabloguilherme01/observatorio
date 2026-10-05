@@ -46,7 +46,7 @@ export const priorityPublicServices = [
   { icon: Smartphone, title: 'Portal SEI · Pessoa com deficiência', description: 'Localize a unidade municipal responsável pelas políticas e atendimento à pessoa com deficiência.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: ShieldCheck, title: 'Portal SEI · Proteção e bem-estar animal', description: 'Localize o FUBEM e o Canil Municipal na estrutura oficial do município.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/' },
   { icon: Smartphone, title: 'Trânsito e mobilidade urbana', description: 'Consulte a Secretaria Municipal de Trânsito e Mobilidade Urbana, contatos e horários oficiais.', href: 'https://aguaslindasdegoias.go.gov.br/estrutura/secretaria-de-transito-e-mobilidade-urbana/' },
-] as const;
+] as const satisfies readonly PublicServiceResource[];
 
 export const additionalPublicServices = [
   { icon: WalletCards, title: 'Diárias e passagens', description: 'Consulte despesas de diárias e passagens publicadas pela Prefeitura.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/transparencia/sgdiarias', cta: 'Consultar diárias' },
@@ -77,8 +77,7 @@ export const additionalPublicServices = [
   { icon: Scale, title: 'Renúncias fiscais', description: 'Consulte renúncias de receita publicadas pelo município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/resp_fiscal/renunciareceita', cta: 'Consultar renúncias' },
   { icon: GraduationCap, title: 'Plano Municipal de Educação', description: 'Consulte o relatório de resultados do planejamento educacional municipal.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/plano_municipal_educacao', cta: 'Consultar educação' },
   { icon: FileQuestion, title: 'Processos eletrônicos SEI', description: 'Consulte o portal oficial do SEI de Águas Lindas de Goiás.', href: 'https://portalsei.aguaslindasdegoias.go.gov.br/', cta: 'Abrir Portal SEI' },
-] as const;
-
+] as const satisfies readonly PublicServiceResource[];
 
 export const allMunicipalServices = [...priorityPublicServices, ...additionalPublicServices];
 
