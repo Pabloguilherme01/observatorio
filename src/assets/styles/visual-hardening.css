@@ -1,0 +1,184 @@
+/* V45.1 · visual hardening
+ * Regras finais de contenção, alinhamento e responsividade.
+ * Esta camada vem por último para concentrar correções transversais sem
+ * espalhar overrides adicionais pelos arquivos históricos de estilo.
+ */
+:where(html, body, #root, #main-content) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(body, #root) {
+  overflow-x: clip;
+}
+
+:where(#main-content, #main-content > *, #main-content > * > *) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(.hero-shell, .hero-inner, .hero-layout, .hero-copy, .hero-election-panel,
+  .hero-election-card, .audience-home, .audience-block, .audience-topic,
+  .audience-action-card, .audience-resource, .results-public-card) {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hero-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, .82fr);
+  align-items: stretch;
+  gap: clamp(16px, 2.5vw, 28px);
+}
+
+:where(.hero-copy > p, .hero-election-card p, .hero-election-heading strong,
+  .hero-action, .hero-reference-card, .audience-topic-copy,
+  .audience-action-card > span:nth-child(2), .audience-resource-copy) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+:where(.hero-action, .audience-topic, .audience-action-card, .audience-resource) {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.audience-block-head {
+  min-width: 0;
+}
+
+.audience-block-head > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+:where(.audience-topic-copy small, .audience-action-card small,
+  .audience-resource-copy small) {
+  overflow-wrap: anywhere;
+}
+
+.results-public-card {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.results-public-card ol,
+.results-public-card li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.results-public-card li > span:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.results-public-card li > strong {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+:where(.overflow-x-auto, .table-scroll, .data-table-wrap, .recharts-responsive-container) {
+  max-width: 100%;
+}
+
+:where([id]) {
+  scroll-margin-top: clamp(76px, 10vw, 104px);
+}
+
+@media (max-width: 1023px) {
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-shell {
+    padding-inline: clamp(12px, 4vw, 18px) !important;
+  }
+
+  .hero-layout {
+    gap: 14px;
+  }
+
+  .hero-copy h1 {
+    max-width: 100%;
+    font-size: clamp(2.4rem, 12vw, 4rem) !important;
+    letter-spacing: -.055em !important;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .hero-actions .hero-action.primary,
+  .hero-actions .hero-action.ghost {
+    grid-column: 1 / -1;
+  }
+
+  .hero-action {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero-election-card {
+    padding: 14px;
+  }
+
+  .audience-block {
+    padding-inline: 14px;
+  }
+
+  .audience-block-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .audience-block-head p {
+    max-width: 60ch;
+    text-align: left;
+  }
+
+  :where(.audience-topic-grid, .audience-action-grid, .audience-resource-grid) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .results-public-card li {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .mobile-bottom-nav {
+    max-width: 100vw;
+    overflow-x: clip;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-copy h1 {
+    font-size: clamp(2.25rem, 13vw, 3.1rem) !important;
+  }
+
+  .hero-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-actions .hero-action {
+    grid-column: 1 / -1;
+  }
+
+  .audience-block {
+    padding-inline: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.audience-topic, .audience-action-card, .audience-resource, .hero-action) {
+    transition: none !important;
+  }
+}
