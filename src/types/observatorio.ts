@@ -11,7 +11,7 @@ export interface SourceRef {
   readonly resourceUrl?: string;
   readonly updateFrequency?: string;
   readonly license?: string;
-  readonly lastCheckedAt?: string;
+  readonly lastCheckedAt?: ISODate;
   readonly nature: DataNature;
   readonly referenceDate?: ISODate;
   readonly publishedAt?: ISODate;
