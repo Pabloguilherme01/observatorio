@@ -20,6 +20,14 @@ const generatedMatched: CandidateSnapshot[] = generatedCandidates.matched.map(ca
 
 const candidateSnapshots: ObservatoryData['candidates'] = generatedMatched;
 
+const TRANSPORT_FARES_BRL = {
+  brasilia: 11.45,
+  taguatinga: 7.65,
+  ceilandia: 5.85,
+} as const;
+
+const MINIMUM_WAGE_2026_BRL = 1621;
+
 /**
  * Dataset V45, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
@@ -112,13 +120,13 @@ export const observatorioData: ObservatoryData = {
 
   transport: {
     routes: [
-      { id: 'brasilia', label: 'Águas Lindas → Brasília / Plano Piloto', fareBrl: 11.45, regulator: 'Tabela publicada pela UTB', sourceId: 'utb-tarifas' },
-      { id: 'taguatinga', label: 'Águas Lindas → Taguatinga', fareBrl: 7.65, regulator: 'ANTT / Taguatur', sourceId: 'antt-entorno-2026' },
-      { id: 'ceilandia', label: 'Águas Lindas → Ceilândia', fareBrl: 5.85, regulator: 'ANTT / Taguatur', sourceId: 'antt-entorno-2026' },
+      { id: 'brasilia', label: 'Águas Lindas → Brasília / Plano Piloto', fareBrl: TRANSPORT_FARES_BRL.brasilia, regulator: 'Tabela publicada pela UTB', sourceId: 'utb-tarifas' },
+      { id: 'taguatinga', label: 'Águas Lindas → Taguatinga', fareBrl: TRANSPORT_FARES_BRL.taguatinga, regulator: 'ANTT / Taguatur', sourceId: 'antt-entorno-2026' },
+      { id: 'ceilandia', label: 'Águas Lindas → Ceilândia', fareBrl: TRANSPORT_FARES_BRL.ceilandia, regulator: 'ANTT / Taguatur', sourceId: 'antt-entorno-2026' },
     ],
     defaultWorkDaysPerMonth: 22,
     defaultTripsPerDay: 2,
-    minimumWageBrl: 1621,
+    minimumWageBrl: MINIMUM_WAGE_2026_BRL,
     minimumWageYear: 2026,
   },
 
@@ -203,10 +211,10 @@ export const observatorioData: ObservatoryData = {
     { id: 'electorate', label: 'Eleitorado 2026', value: 125062, unit: 'eleitores', status: 'snapshot', referenceDate: '2026-07-15', sourceId: 'tse-eleitorado-2026' },
     { id: 'electorateShare', label: 'Razão eleitorado/população', value: (125062 / 249978) * 100, unit: '%', status: 'derived', sourceId: 'tse-eleitorado-2026', note: 'Razão estatística entre universos distintos; não é comparecimento.' },
     { id: 'fare', label: 'Tarifa Brasília', value: 11.45, unit: 'BRL/trecho', status: 'current', sourceId: 'utb-tarifas' },
-    { id: 'transport-monthly-brasilia-default', label: 'Transporte mensal por pessoa · Brasília · cenário padrão', value: 11.45 * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'utb-tarifas', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
-    { id: 'transport-monthly-taguatinga-default', label: 'Transporte mensal por pessoa · Taguatinga · cenário padrão', value: 7.65 * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'antt-entorno-2026', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
-    { id: 'transport-monthly-ceilandia-default', label: 'Transporte mensal por pessoa · Ceilândia · cenário padrão', value: 5.85 * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'antt-entorno-2026', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
-    { id: 'transport-brasilia-min-wage-share-default', label: 'Transporte para Brasília no salário mínimo · cenário padrão', value: ((11.45 * 2 * 22) / 1621) * 100, unit: '%', status: 'derived', sourceId: 'utb-tarifas', note: 'Custo mensal de referência para Brasília ÷ salário mínimo de 2026. É uma relação de contexto, não mede renda disponível nem benefício de vale-transporte.' },
+    { id: 'transport-monthly-brasilia-default', label: 'Transporte mensal por pessoa · Brasília · cenário padrão', value: TRANSPORT_FARES_BRL.brasilia * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'utb-tarifas', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
+    { id: 'transport-monthly-taguatinga-default', label: 'Transporte mensal por pessoa · Taguatinga · cenário padrão', value: TRANSPORT_FARES_BRL.taguatinga * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'antt-entorno-2026', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
+    { id: 'transport-monthly-ceilandia-default', label: 'Transporte mensal por pessoa · Ceilândia · cenário padrão', value: TRANSPORT_FARES_BRL.ceilandia * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'antt-entorno-2026', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
+    { id: 'transport-brasilia-min-wage-share-default', label: 'Transporte para Brasília no salário mínimo · cenário padrão', value: ((TRANSPORT_FARES_BRL.brasilia * 2 * 22) / MINIMUM_WAGE_2026_BRL) * 100, unit: '%', status: 'derived', sourceId: 'utb-tarifas', note: 'Custo mensal de referência para Brasília ÷ salário mínimo de 2026. É uma relação de contexto, não mede renda disponível nem benefício de vale-transporte.' },
     { id: 'water-access-2024', label: 'Acesso à água', value: 95.8, unit: '%', status: 'historical', note: 'Ano-base 2024.', sourceId: 'sinisa-2024' },
     { id: 'public-sewer-service-2024', label: 'Acesso ao serviço público de esgoto', value: 84.8, unit: '%', status: 'historical', note: 'Ano-base 2024.', sourceId: 'sinisa-2024' },
     { id: 'sewer-collection-2024', label: 'Coleta do esgoto gerado', value: 60.1, unit: '%', status: 'historical', note: 'Ano-base 2024.', sourceId: 'sinisa-2024' },
