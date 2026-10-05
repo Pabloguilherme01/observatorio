@@ -202,6 +202,17 @@ const searchQuickAnswer = texts
   .map(item => item.content)
   .join('\n');
 const searchCombined = search + '\n' + searchQuickAnswer;
+const searchQuickAnswerEntry = texts.find(item => item.file === 'src/components/layout/searchQuickAnswer.ts')?.content ?? '';
+const quickAnswerResolverOrder = [
+  searchQuickAnswerEntry.indexOf('resolvePrimaryQuickAnswer(q)'),
+  searchQuickAnswerEntry.indexOf('resolveCivicQuickAnswer(q)'),
+  searchQuickAnswerEntry.indexOf('resolveProfileQuickAnswer(q)'),
+];
+if (quickAnswerResolverOrder.every(index => index >= 0) && quickAnswerResolverOrder.every((index, position) => position === 0 || quickAnswerResolverOrder[position - 1] < index)) {
+  pass('respostas rápidas preservam a precedência primary -> civic -> profile.');
+} else {
+  fail('ordem dos resolvedores de resposta rápida mudou e pode alterar a prioridade das consultas.');
+}
 const dialogFocus = texts.find(item => item.file === 'src/hooks/useDialogFocus.ts')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
