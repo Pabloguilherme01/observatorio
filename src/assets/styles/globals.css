@@ -658,17 +658,8 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
     padding: 10px 12px !important;
   }
 
-  .transport-input {
-    min-height: 48px;
-  }
 
-  button, a, input, select, textarea {
-    max-width: 100%;
-  }
 
-  input, select, textarea {
-    font-size: 16px;
-  }
 }
 
 @media (max-width: 390px) {
@@ -2628,15 +2619,8 @@ d,
 
 /* Mobile final polish · 2026-09-24 */
 @media (max-width: 767px) {
-  :root {
-    --mobile-page-gutter: 14px;
-    --mobile-nav-height: 64px;
-  }
 
-  html {
-    scroll-padding-top: 72px;
-    scroll-padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
-  }
+
 
   body {
     padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
@@ -2655,9 +2639,6 @@ d,
     grid-template-columns: 1fr !important;
   }
 
-  .hero-shell .mt-5.flex.flex-wrap > * {
-    min-height: 46px;
-  }
 
   .mobile-bottom-nav {
     position: fixed;
@@ -2715,20 +2696,11 @@ d,
     max-width: 100%;
   }
 
-  .candidate-card .flex.flex-wrap.gap-2 {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
 
   .candidate-card .flex.flex-wrap.gap-2 > * {
     min-width: 0;
   }
 
-  #linha-do-tempo .overflow-x-auto > div {
-    min-width: max-content;
-    width: max-content;
-  }
 
   #linha-do-tempo .overflow-x-auto {
     scroll-snap-type: x proximity;
@@ -2893,10 +2865,6 @@ d,
     font-size: 8.5px !important;
   }
 
-  .mobile-bottom-nav button svg {
-    width: 17px !important;
-    height: 17px !important;
-  }
 
   .hero-shell {
     padding-inline: 12px !important;
