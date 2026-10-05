@@ -106,8 +106,16 @@ if (ci.includes('npm run audit:workflows') && ci.includes('npm run audit:styles'
 else fail('CI não executa todos os novos gates de manutenção.');
 if (qualityCommands.length === 2 && qualityCommands.includes('audit:provenance') && qualityCommands.includes('audit:candidate-snapshot')) pass('Quality permanece enxuto e cobre os dois contratos independentes de manutenção.');
 else fail('Quality perdeu ou duplicou gates independentes de manutenção.');
-if (deploy.includes('workflows: ["CI"]') && deploy.includes("github.event.workflow_run.conclusion == 'success'") && deploy.includes("github.event.workflow_run.event == 'push'") && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')) pass('Deploy preserva a cadeia CI -> SHA -> publicação.');
-else fail('Deploy perdeu a cadeia de paridade com o CI.');
+if (
+  deploy.includes('workflows: ["CI", "Quality", "Browser compatibility", "CodeQL"]')
+  && deploy.includes("github.event.workflow_run.conclusion == 'success'")
+  && deploy.includes("github.event.workflow_run.event == 'push'")
+  && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')
+  && deploy.includes('Require all release gates for exact SHA')
+  && deploy.includes('ci.yml quality.yml browser.yml codeql.yml')
+  && deploy.includes('sort_by(.created_at) | reverse | .[0]')
+) pass('Deploy preserva a cadeia completa CI + Quality + Browser + CodeQL -> SHA -> publicação.');
+else fail('Deploy não exige todos os gates de release no mesmo SHA.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
 else fail('sincronizações TSE usam Node divergente do CI.');
 if (syncTse.includes('gh pr list --state open --base main --head') && syncResults.includes('gh pr list --state open --base main --head')) pass('automação TSE evita PRs duplicadas para a mesma branch.');
