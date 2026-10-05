@@ -25,15 +25,23 @@ Quando os endpoints oficiais recusarem o acesso do executor (HTTP 403), baixe o 
 
 ## GitHub Actions
 
-`.github/workflows/sync-tse-candidates.yml` é manual por design. O objetivo é evitar transformar indisponibilidade, WAF ou bloqueio de rede do TSE em indisponibilidade de produção.
+`.github/workflows/sync-tse-2026.yml` é o workflow de atualização de candidatos. Ele roda manualmente e a cada 4 horas, mas mantém a atualização eleitoral separada da publicação do site. Indisponibilidade, WAF ou bloqueio de rede do TSE não deve transformar a atualização de dados em indisponibilidade de produção.
+
+Quando há mudança no snapshot, o workflow:
+
+1. captura e valida os dados oficiais;
+2. cria uma branch automática;
+3. executa o CI completo nessa branch;
+4. abre uma pull request para `main`;
+5. deixa revisão e merge fora da automação de captura.
 
 O fluxo de produção é:
 
-`Quality -> Build -> GitHub Pages`
+`PR revisada -> CI em main -> GitHub Pages`
 
 O fluxo de atualização eleitoral é independente:
 
-`captura direta TSE -> validação -> commit do snapshot`
+`captura direta TSE -> validação -> branch -> CI -> PR -> merge revisado`
 
 ## Proveniência
 
