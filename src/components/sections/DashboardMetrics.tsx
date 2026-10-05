@@ -31,6 +31,8 @@ export function DashboardMetrics() {
   const formatReference = (date?: string, fallback = 'referência não informada') =>
     date ? date.split('-').reverse().join('/') : fallback;
   const statusLabel = (status?: string) => formatIndicatorStatus(status, 'Dado público') ?? 'Dado público';
+  const sourceReferenceDate = (id: string) => sourceMeta(id)?.referenceDate;
+  const sourceMeta = (id: string) => d.sources.find(source => source.id === id);
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
   const comparisonDetails = [
@@ -77,11 +79,11 @@ export function DashboardMetrics() {
   ] as const;
   const visibleComparisons = isSummary ? comparisonDetails.slice(0, 2) : comparisonDetails;
   const metricDetails: readonly MetricDetail[] = [
-    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: formatNumber(population2022) + ' → ' + formatNumber(population2026), simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
+    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: formatNumber(population2022) + ' → ' + formatNumber(population2026), simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: sourceReferenceDate('ibge-estimativas-2026'), nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
     { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: formatNumber(electorate2022) + ' → ' + formatNumber(electorate2026), simpleExplanation: 'Mudança percentual do eleitorado entre os registros disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
     { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado registrado e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
-    { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-04-30', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: sourceReferenceDate('ibge-estimativas-2026'), nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
+    { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: sourceReferenceDate('ibge-cidades-2026'), nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];
   const thematicIndicators = [
     { id: 'companies', label: 'Empresas ativas', value: formatNumber(Number(municipalIndicator('companies'))), fallbackReference: 'registro 2026', fallbackSourceId: 'caged-sebrae-2026' },
