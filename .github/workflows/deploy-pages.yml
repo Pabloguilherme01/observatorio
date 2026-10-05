@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
-# Publication starts only after CI, Quality, Browser compatibility and CodeQL are all green for the exact main SHA.
-# Manual dispatch is allowed only for a main commit whose four release gates are green.
+# Publication starts only after CI, Browser compatibility and CodeQL are all green for the exact main SHA.
+# Manual dispatch is allowed only for a main commit whose three release gates are green.
 
 on:
   workflow_run:
-    workflows: ["CI", "Quality", "Browser compatibility", "CodeQL"]
+    workflows: ["CI", "Browser compatibility", "CodeQL"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -56,7 +56,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          workflows=(ci.yml quality.yml browser.yml codeql.yml)
+          workflows=(ci.yml browser.yml codeql.yml)
           for attempt in $(seq 1 30); do
             ready=true
             for workflow in "${workflows[@]}"; do

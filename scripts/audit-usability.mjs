@@ -196,6 +196,8 @@ if (inspector.includes("url: canonicalUrl") && inspector.includes("copyText(cano
 else fail('ações de link do inspetor divergem entre si');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
+const searchQuickAnswer = texts.find(item => item.file === 'src/components/layout/searchQuickAnswer.ts')?.content ?? '';
+const searchCombined = search + '\n' + searchQuickAnswer;
 const dialogFocus = texts.find(item => item.file === 'src/hooks/useDialogFocus.ts')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
@@ -233,8 +235,8 @@ else fail('botão de busca não declara aria-keyshortcuts');
 if (search.includes('observatorio:public-service-search') && civic.includes('Buscar serviço municipal') && civic.includes('visibleMunicipalServices')) pass('busca global entrega o serviço municipal já filtrado');
 else fail('resultado de serviço público pode abrir uma lista genérica sem destacar o item procurado');
 if (
-  search.includes("const knownDestination =") &&
-  search.includes("navigation.some(item => item.id === id)") &&
+  searchCombined.includes("const knownDestination =") &&
+  searchCombined.includes("navigation.some(item => item.id === id)") &&
   search.includes("navigateToSection(target)")
 ) pass('busca preserva destinos lazy e aciona a navegação central');
 else fail('busca pode perder destinos lazy antes da montagem do componente');
@@ -243,8 +245,8 @@ const appForLazy = texts.find(item => item.file === 'src/app/App.tsx')?.content 
 if (
   appForLazy.includes('<DeferredEvidenceGroup />') &&
   !appForLazy.includes('loadEvidenceGroup') &&
-  search.includes("'politica', 'qualidade'") &&
-  search.includes("knownDestination ? id")
+  searchCombined.includes("'politica', 'qualidade'") &&
+  searchCombined.includes("knownDestination ? id")
 ) pass('busca preserva destinos de fontes/exportação já montados e destinos técnicos lazy');
 else fail('aliases da busca podem apontar para destinos sem montagem compatível');
 
@@ -264,7 +266,12 @@ else pass('rótulos de ações principais são suficientemente descritivos');
 if (!combined.includes('election-mode-actions') && !combined.includes('mode-election') && !combined.includes('electionMode')) pass('Modo Eleição cosmético removido do fluxo principal');
 else fail('Modo Eleição removido de forma incompleta');
 
-const finalUi = texts.find(item => item.file === 'src/assets/styles/final-ui.css')?.content ?? '';
+const finalUi = [
+  'src/assets/styles/final-ui.css',
+  'src/assets/styles/final-ui/premium-finish.css',
+  'src/assets/styles/final-ui/visual-final.css',
+  'src/assets/styles/final-ui/site-final.css',
+].map(file => texts.find(item => item.file === file)?.content ?? '').join('\n');
 const guidedUi = texts.find(item => item.file === 'src/assets/styles/guided-mode.css')?.content ?? '';
 if (
   finalUi.includes(':root[data-language-mode="summary"]') &&

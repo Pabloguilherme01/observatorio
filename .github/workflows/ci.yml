@@ -79,6 +79,12 @@ jobs:
       - name: Audit source integrity
         run: npm run audit:sources
 
+      - name: Audit source provenance
+        run: npm run audit:provenance
+
+      - name: Audit TSE candidate snapshot provenance
+        run: npm run audit:candidate-snapshot
+
       - name: Test unavailable TSE source handling
         run: npm run test:tse-unavailable
 
