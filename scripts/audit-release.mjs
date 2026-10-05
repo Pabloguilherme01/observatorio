@@ -30,6 +30,8 @@ else fail('EDITION não corresponde ao major da versão.');
 const requiredFiles = [
   'tests/a11y.spec.mjs',
   'tests/public-api-contract.spec.mjs',
+  'tests/public-entry-flows.spec.mjs',
+  'tests/mobile-core.spec.mjs',
 
   '.github/workflows/ci.yml',
   '.github/workflows/quality.yml',
@@ -113,7 +115,9 @@ if (
   read('playwright.config.mjs').includes("npm run build && npm run preview -- --host 127.0.0.1 --port 4173")
   && read('.github/workflows/browser.yml').includes('safari-desktop')
   && read('.github/workflows/browser.yml').includes('non_blocking: false')
-) pass('browser gate executa build de produção e mantém Safari desktop bloqueante.');
+  && read('playwright.config.mjs').includes('mobile-core')
+) pass('browser gate executa build de produção, mantém Safari desktop bloqueante e cobre o mobile-core nos dispositivos móveis.');
+else fail('browser gate ainda não valida produção, Safari bloqueante ou cobertura mobile-core.');
 else fail('browser gate ainda não valida o artefato de produção ou mantém navegador crítico não bloqueante.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
