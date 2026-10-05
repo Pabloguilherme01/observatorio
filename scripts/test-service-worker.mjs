@@ -3,6 +3,7 @@ import { strict as assert } from 'node:assert';
 
 const sw = readFileSync('dist/sw.js', 'utf8');
 const manifest = JSON.parse(readFileSync('dist/manifest.webmanifest', 'utf8'));
+const viteConfig = readFileSync('vite.config.ts', 'utf8');
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const cacheMajor = String(packageJson.version).split('.')[0];
 
@@ -16,6 +17,9 @@ assert.match(sw, /NetworkFirst/);
 assert.match(sw, /NetworkOnly/);
 assert.match(sw, /health\.json/);
 assert.match(sw, /tse-results\.json/);
+const healthRouteIndex = viteConfig.indexOf("url.pathname === '/observatorio/api/v1/health.json'");
+const genericApiRouteIndex = viteConfig.indexOf("url.pathname.startsWith('/observatorio/api/v1/')");
+assert.ok(healthRouteIndex >= 0 && genericApiRouteIndex >= 0 && healthRouteIndex < genericApiRouteIndex, 'healthcheck deve preceder a rota genérica da API');
 assert.doesNotMatch(sw, /observatorio-(?:static|fonts|documents|api)-v13/);
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-192.png' && icon.purpose.includes('maskable')));
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-512.png' && icon.purpose.includes('maskable')));

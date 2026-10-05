@@ -127,13 +127,18 @@ if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substit
 else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
 else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
+const viteConfig = read('vite.config.ts');
+const healthRouteIndex = viteConfig.indexOf("url.pathname === '/observatorio/api/v1/health.json'");
+const genericApiRouteIndex = viteConfig.indexOf("url.pathname.startsWith('/observatorio/api/v1/')");
 if (
-  read('vite.config.ts').includes("globIgnores: ['**/data/tse-results.json']")
-  && read('vite.config.ts').includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
-  && read('vite.config.ts').includes("handler: 'NetworkOnly'")
-  && read('vite.config.ts').includes("url.pathname === '/observatorio/api/v1/health.json'")
-) pass('feed de resultados permanece dinâmico e o healthcheck público fica sempre em rede.');
-else fail('Service Worker pode congelar resultados públicos ou o healthcheck.');
+  viteConfig.includes("globIgnores: ['**/data/tse-results.json']")
+  && viteConfig.includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
+  && viteConfig.includes("handler: 'NetworkOnly'")
+  && healthRouteIndex >= 0
+  && genericApiRouteIndex >= 0
+  && healthRouteIndex < genericApiRouteIndex
+) pass('feed de resultados permanece dinâmico e o healthcheck público fica sempre em rede antes da regra genérica.');
+else fail('Service Worker pode congelar resultados públicos ou interceptar o healthcheck pela regra genérica.');
 if (
   read('tests/accessibility-smoke.spec.mjs').includes('@axe-core/playwright')
   && !read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
