@@ -103,7 +103,7 @@ else fail('CI não executa todos os novos gates de manutenção.');
 if (ci.includes('npm run audit:provenance') && ci.includes('npm run audit:candidate-snapshot')) pass('CI consolidado cobre proveniência e snapshot TSE.');
 else fail('CI consolidado não cobre proveniência e snapshot TSE.');
 if (
-  deploy.includes('workflows: ["CI", "Browser compatibility", "CodeQL"]')
+  deploy.includes('workflows: ["CI"]')
   && deploy.includes("github.event.workflow_run.conclusion == 'success'")
   && deploy.includes("github.event.workflow_run.event == 'push'")
   && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')
