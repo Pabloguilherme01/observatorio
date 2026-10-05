@@ -99,8 +99,9 @@ if (text.includes("interviews: 400") && text.includes("theoreticalMarginErrorPct
   fail('Pesquisa perdeu a marcação de margem teórica.');
 }
 
-if (text.includes("fareBrl: 11.45")) pass('Tarifa Brasília está em R$ 11,45.');
-else fail('Tarifa Brasília não está em R$ 11,45.');
+const brasiliaFare = Number(text.match(/brasilia:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
+if (brasiliaFare === 11.45 && text.includes("fareBrl: TRANSPORT_FARES_BRL.brasilia")) pass('Tarifa Brasília está em R$ 11,45 e usa premissa centralizada.');
+else fail('Tarifa Brasília não está em R$ 11,45 ou não usa a premissa centralizada.');
 
 if (text.includes("state: 'not_synced'")) pass('Snapshot TSE local continua explícito como não sincronizado.');
 else pass('Snapshot TSE local já não está em placeholder.');
@@ -110,7 +111,7 @@ const numericChecks = [
   ['eleitorado atual', electorate],
   ['população 2026', Number(text.match(/year:\s*2026,\s*value:\s*([0-9]+)/)?.[1] ?? 0)],
   ['orçamento total 2026', Number(text.match(/totalBrl:\s*([0-9_\.]+)/)?.[1]?.replaceAll('_', '') ?? 0)],
-  ['tarifa Brasília', text.includes("id: 'brasilia'") && text.includes('fareBrl: 11.45') ? 11.45 : 0],
+  ['tarifa Brasília', brasiliaFare],
 ];
 for (const [label, value] of numericChecks) {
   if (!Number.isFinite(value) || value <= 0) fail(label + ' possui valor numérico inválido: ' + value);
