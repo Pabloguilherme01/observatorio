@@ -95,6 +95,11 @@ for (const file of files) {
     selectorFiles.set(selector, set);
     if (normalizedBody) {
       const context = getAtRuleContext(css, match.index + (match[1]?.length ?? 0));
+      if (previousBlock && previousBlock.context === context && previousBlock.selector === selector) {
+        const key = file + '\n' + context + '\n' + selector;
+        adjacentSelectorDuplicates.set(key, (adjacentSelectorDuplicates.get(key) ?? 1) + 1);
+      }
+      previousBlock = { context, selector };
       const exactKey = context + '\n' + selector + '{' + normalizedBody + '}';
       const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
       blocks.push(file);
