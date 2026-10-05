@@ -126,8 +126,8 @@ must(
     && !vite.includes('-v13'),
   'caches runtime do PWA acompanham automaticamente o major da aplicação',
 );
-must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/HeroCountdown.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
-must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
+must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/PostElectionHero.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
+must(!read('src/components/sections/PostElectionHero.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 
 const pkgScripts = packageJson.scripts ?? {};
 const workflowsDir = path.join(root, '.github/workflows');
@@ -295,7 +295,7 @@ must(candidates.meta.state === 'local_filter_pending' || ['official_tse_zip_csv'
 const runtimeFiles = [
   'src/app/App.tsx',
   'src/components/ExperienceShell.tsx',
-  'src/components/sections/HeroCountdown.tsx',
+  'src/components/sections/PostElectionHero.tsx',
   'src/components/sections/ContextComparison.tsx',
   'src/components/sections/CivicActionHub.tsx',
   'src/context/LanguageModeContext.tsx',
