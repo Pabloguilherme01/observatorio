@@ -88,8 +88,8 @@ if (/jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae
 
 
 const quality = workflows['.github/workflows/quality.yml'];
-const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\\s]+)/g)].map(match => match[1]);
-const qualityRunCommands = [...quality.matchAll(/run:\s*npm run ([^\\s]+)/g)].map(match => match[1]);
+const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
+const qualityRunCommands = [...quality.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
 const duplicatedQualityCommands = qualityRunCommands.filter(command => ciRunCommands.includes(command));
 if (qualityRunCommands.length === 2 && qualityRunCommands.includes('audit:provenance') && qualityRunCommands.includes('audit:candidate-snapshot') && duplicatedQualityCommands.length === 0) {
   pass('Quality mantém apenas gates independentes de proveniência e snapshot TSE, sem duplicar comandos do CI.');
