@@ -78,8 +78,8 @@ for (const name of browserNames) {
   if (browser.includes('project: ' + name)) pass('matriz de navegador contém ' + name);
   else fail('matriz de navegador perdeu ' + name);
 }
-if (/project: safari-desktop[\s\S]*?non_blocking:\s*true/.test(browser)) pass('Safari desktop não bloqueia o gate principal quando o runner WebKit trava.');
-else fail('Safari desktop não possui isolamento não bloqueante.');
+if (/project: safari-desktop[\s\S]*?non_blocking:\s*false/.test(browser)) pass('Safari desktop é um gate bloqueante para regressões reais no WebKit.');
+else fail('Safari desktop não está protegido como gate bloqueante.');
 
 const quality = workflows['.github/workflows/quality.yml'];
 if (stepNames(quality, 'quality').includes('Audit workflow structure')) pass('Quality audita a estrutura dos workflows.');
