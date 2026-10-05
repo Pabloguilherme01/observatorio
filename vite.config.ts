@@ -68,10 +68,10 @@ const getHealthPayload = () => {
 };
 
 const getSourcesPayload = () => ({
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
-  sources: sourceRegistry.map(({ id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, nature }) => ({
-    id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, nature,
+  sources: sourceRegistry.map(({ id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, lastCheckedAt, nature, note }) => ({
+    id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, lastCheckedAt, nature, note,
   })),
 });
 
