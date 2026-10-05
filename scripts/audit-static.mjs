@@ -7,13 +7,6 @@ const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 
 const packageJson = JSON.parse(read('package.json'));
-const sourceIds = [...sourceRegistry.matchAll(/id:\s*'([^']+)'/g)].map(match => match[1]);
-const duplicateSourceIds = sourceIds.filter((id, index) => sourceIds.indexOf(id) !== index);
-must(duplicateSourceIds.length === 0, duplicateSourceIds.length
-  ? 'sourceRegistry possui IDs duplicados: ' + [...new Set(duplicateSourceIds)].join(', ')
-  : 'sourceRegistry possui IDs únicos.',
-);
-
 const versionSource = read('src/config/version.ts');
 const dataSource = read('src/data/observatorioData.ts');
 const sourceRegistry = read('src/data/sourceRegistry.ts');
@@ -41,6 +34,13 @@ const errors = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 const must = (condition, message) => condition ? pass(message) : fail(message);
+
+const sourceIds = [...sourceRegistry.matchAll(/id:\s*'([^']+)'/g)].map(match => match[1]);
+const duplicateSourceIds = sourceIds.filter((id, index) => sourceIds.indexOf(id) !== index);
+must(duplicateSourceIds.length === 0, duplicateSourceIds.length
+  ? 'sourceRegistry possui IDs duplicados: ' + [...new Set(duplicateSourceIds)].join(', ')
+  : 'sourceRegistry possui IDs únicos.',
+);
 
 const localScriptRefs = Object.entries(packageJson.scripts ?? {}).flatMap(([scriptName, command]) =>
   [...String(command).matchAll(/(?:^|\s)(scripts\/[A-Za-z0-9_.-]+\.mjs)\b/g)].map(match => ({ scriptName, path: match[1] })),
