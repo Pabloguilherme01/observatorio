@@ -26,3 +26,9 @@ export function dispatchInspect(detail: InspectorDetail) {
     detail: { ...detail, inspectId: detail.inspectId ?? inspectDataId(detail) },
   }));
 }
+
+declare global {
+  interface WindowEventMap {
+    'observatorio:inspect-data': CustomEvent<InspectorDetail>;
+  }
+}
