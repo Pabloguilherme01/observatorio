@@ -33,9 +33,9 @@ test.describe('Contrato da API pública', () => {
         path: './api/v1/openapi.json',
         assert: body => {
           expect(body.openapi).toBe('3.0.3');
-          expect(body.paths).toHaveProperty('/api/v1/health.json');
-          expect(body.paths).toHaveProperty('/api/v1/sources.json');
-          expect(body.paths).toHaveProperty('/api/v1/observatorio.json');
+          expect(body.paths['/api/v1/health.json']).toBeTruthy();
+          expect(body.paths['/api/v1/sources.json']).toBeTruthy();
+          expect(body.paths['/api/v1/observatorio.json']).toBeTruthy();
         },
       },
       {
