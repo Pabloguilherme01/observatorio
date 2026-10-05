@@ -40,7 +40,7 @@ export function ResultsLiveBanner() {
 
   const archived = phase === 'complete' || phase === 'archived_partial';
   const title = phase === 'complete'
-    ? 'Resultados oficiais · arquivo consolidado'
+    ? 'Resultados oficiais · arquivo consolidado do turno'
     : phase === 'archived_partial'
       ? 'Resultados oficiais · último snapshot validado'
       : phase === 'stale'
@@ -67,7 +67,7 @@ export function ResultsLiveBanner() {
               </p>
               {archived && (
                 <p className="mt-1 text-xs text-sky-200 light:text-sky-800">
-                  A apuração é tratada como registro histórico. O snapshot permanece consultável mesmo depois do encerramento.
+                  A apuração deste turno é tratada como registro histórico. O snapshot permanece consultável, enquanto a arquitetura continua pronta para um eventual segundo turno.
                 </p>
               )}
             </div>
