@@ -287,7 +287,7 @@ if (!combined.includes('election-mode-actions') && !combined.includes('mode-elec
 else fail('Modo Eleição removido de forma incompleta');
 
 const finalUi = readCssImportGraph('src/assets/styles/final-ui.css', { root });
-const guidedUi = texts.find(item => item.file === 'src/assets/styles/guided-mode.css')?.content ?? '';
+const guidedUi = readCssImportGraph('src/assets/styles/guided-mode.css', { root });
 if (
   finalUi.includes(':root[data-language-mode="summary"]') &&
   finalUi.includes(':root[data-language-mode="simple"]') &&
