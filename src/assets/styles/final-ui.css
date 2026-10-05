@@ -7132,5 +7132,4 @@ body{
 @media(prefers-reduced-motion:reduce){
   .dashboard-secondary-card,
   .public-utility-shortcut{transition:none!important}
-  .dashboard-secondary-card:hover{transform:none}
 }
