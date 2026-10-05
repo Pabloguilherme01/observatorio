@@ -1,6 +1,6 @@
 import { Landmark, TrendingUp } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
-import { dispatchInspect, inspectDataId } from '../DataInspector';
+import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { formatBudgetCurrency, formatDate, formatPercent } from '../../utils/formatters';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
