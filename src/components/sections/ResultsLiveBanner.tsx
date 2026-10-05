@@ -1,8 +1,8 @@
 import { Database, ExternalLink, History, ShieldCheck } from 'lucide-react';
 import { useResultsFeed } from '../../hooks/useResultsFeed';
 import { observatorioData as d } from '../../data/observatorioData';
+import { RESULTS_DOCS_URL } from '../../data/resultsConfig';
 
-const RESULTS_DOCS_URL = 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados';
 const formatVotes = (value: number) => value.toLocaleString('pt-BR');
 const formatCapturedAt = (value: string) => new Date(value).toLocaleString('pt-BR', {
   dateStyle: 'short',
