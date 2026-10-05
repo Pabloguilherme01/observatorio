@@ -13,6 +13,7 @@
 
 - O deploy deve ocorrer somente quando `CI`, `Quality`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA de push na `main`.
 - O deploy deve publicar exatamente o SHA validado pelos quatro gates.
+- Antes da publicação, `main` deve continuar apontando para esse mesmo SHA; se a branch avançar, o deploy antigo deve abortar.
 - O healthcheck pós-publicação deve confirmar paridade do SHA, estado do snapshot TSE, OpenAPI e assets PWA.
 
 ## Automação eleitoral
