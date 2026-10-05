@@ -85,38 +85,30 @@ for (const file of requiredFiles) {
 }
 
 const ci = read('.github/workflows/ci.yml');
-const quality = read('.github/workflows/ci.yml');
 const deploy = read('.github/workflows/deploy-pages.yml');
 const syncTse = read('.github/workflows/sync-tse-2026.yml');
 const syncResults = read('.github/workflows/sync-results-2026.yml');
-const workflowText = [ci, quality, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
+const workflowText = [ci, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
 
 if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
 else fail('CI não inclui o release gate consolidado.');
-const qualityCommands = [...quality.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
-if (
-  !quality.includes('npm run audit:provenance')
-  || !quality.includes('npm run audit:candidate-snapshot')
-  || qualityCommands.includes('audit:release')
-) fail('Quality não está restrito aos gates independentes de proveniência e snapshot TSE.');
-else pass('Quality mantém apenas os gates independentes de proveniência e snapshot TSE.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
 if (ci.includes('npm run audit:workflows') && ci.includes('npm run audit:styles') && ci.includes('npm run audit:performance')) pass('CI executa os novos gates estruturais, de estilos e performance.');
 else fail('CI não executa todos os novos gates de manutenção.');
-if (qualityCommands.length === 2 && qualityCommands.includes('audit:provenance') && qualityCommands.includes('audit:candidate-snapshot')) pass('Quality permanece enxuto e cobre os dois contratos independentes de manutenção.');
-else fail('Quality perdeu ou duplicou gates independentes de manutenção.');
+if (ci.includes('npm run audit:provenance') && ci.includes('npm run audit:candidate-snapshot')) pass('CI consolidado cobre proveniência e snapshot TSE.');
+else fail('CI consolidado não cobre proveniência e snapshot TSE.');
 if (
-  deploy.includes('workflows: ["CI", "Quality", "Browser compatibility", "CodeQL"]')
+  deploy.includes('workflows: ["CI", "Browser compatibility", "CodeQL"]')
   && deploy.includes("github.event.workflow_run.conclusion == 'success'")
   && deploy.includes("github.event.workflow_run.event == 'push'")
   && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')
   && deploy.includes('Require all release gates for exact SHA')
-  && deploy.includes('ci.yml quality.yml browser.yml codeql.yml')
+  && deploy.includes('ci.yml browser.yml codeql.yml')
   && deploy.includes('sort_by(.created_at) | reverse | .[0]')
   && deploy.includes('Ensure main still points to validated SHA')
   && deploy.includes('git/ref/heads/main')
-) pass('Deploy preserva a cadeia completa CI + Quality + Browser + CodeQL -> SHA -> publicação.');
+) pass('Deploy preserva a cadeia completa CI + Browser + CodeQL -> SHA -> publicação.');
 else fail('Deploy não exige todos os gates de release no mesmo SHA.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
 else fail('sincronizações TSE usam Node divergente do CI.');
