@@ -102,6 +102,13 @@ if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /ev
   pass('Deploy preserva workflow_run sucesso + push + SHA exato.');
 } else fail('Deploy não preserva integralmente a cadeia de proveniência.');
 
+const tseRefreshDoc = read('docs/TSE-DATA-REFRESH.md');
+if (tseRefreshDoc.includes('sync-tse-2026.yml') && !tseRefreshDoc.includes('sync-tse-candidates.yml') && tseRefreshDoc.includes('branch -> CI -> PR -> merge revisado')) {
+  pass('documentação TSE acompanha o workflow atual e o fluxo branch -> CI -> PR.');
+} else {
+  fail('documentação TSE está divergente do workflow atual ou ainda cita o fluxo legado.');
+}
+
 for (const file of ['.github/workflows/sync-tse-2026.yml', '.github/workflows/sync-results-2026.yml']) {
   const text = workflows[file];
   if (/node-version:\s*24/.test(text)) pass(file + ' usa Node 24.');
