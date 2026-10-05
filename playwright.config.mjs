@@ -25,7 +25,7 @@ export default defineConfig({
     },
     {
       name: 'firefox-desktop',
-      testMatch: /(cross-browser-ui|mobile-core|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['Desktop Firefox'] },
     },
     {
@@ -40,12 +40,12 @@ export default defineConfig({
     },
     {
       name: 'safari-iphone',
-      testMatch: /(cross-browser-ui|mobile-repagination|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['iPhone 14'] },
     },
     {
       name: 'safari-iphone-se',
-      testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['iPhone SE'] },
     },
   ],
