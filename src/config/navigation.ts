@@ -5,6 +5,7 @@ export const navigation = [
   { id: 'transporte', label: 'Transporte', shortLabel: 'Transporte', description: 'Tarifas, custos mensais e comparação de rotas', shortcut: 'G T', group: 'more' },
   { id: 'saude', label: 'Saúde e saneamento', shortLabel: 'Saúde', description: 'Saúde, água, esgoto, resíduos e capacidade', shortcut: 'G S', group: 'more' },
   { id: 'eleitoral360', label: 'Eleições 2026', shortLabel: 'Eleições', description: 'Eleitorado, candidaturas e registros oficiais', shortcut: 'G X', group: 'primary' },
+  { id: 'resultados', label: 'Resultados 2026', shortLabel: 'Resultados', description: 'Resultado oficial por turno e snapshot verificado', shortcut: 'G R2', group: 'primary' },
   { id: 'quiz', label: 'Teste seus conhecimentos', shortLabel: 'Quiz', description: 'Perguntas de educação cívica', shortcut: 'G QZ', group: 'more' },
   { id: 'orcamento', label: 'Orçamento', shortLabel: 'Orçamento', description: 'Receitas, despesas e valores por habitante', shortcut: 'G O', group: 'more' },
   { id: 'acao', label: 'Serviços públicos', shortLabel: 'Serviços', description: 'Encontre canais e serviços oficiais', shortcut: 'G U', group: 'more' },
