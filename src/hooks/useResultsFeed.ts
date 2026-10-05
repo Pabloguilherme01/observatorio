@@ -158,7 +158,9 @@ export function useResultsFeed(intervalMs = 300000) {
   useEffect(() => {
     let active = true;
     let endedFetchDone = false;
+    let requestInFlight = false;
     let timer: number | null = null;
+    let controller: AbortController | null = null;
 
     const stopPolling = () => {
       if (timer !== null) {
@@ -168,24 +170,38 @@ export function useResultsFeed(intervalMs = 300000) {
     };
 
     const fetchFeed = async () => {
+      if (!active) return;
+
       const now = Date.now();
       if (now < RESULTS_WINDOW_START || (now > RESULTS_WINDOW_END && endedFetchDone)) {
-        setChecking(false);
+        if (active) setChecking(false);
         return;
       }
 
+      if (requestInFlight) return;
+
+      requestInFlight = true;
+      controller = new AbortController();
       setChecking(true);
       try {
-        const response = await fetch(RESULTS_FEED_URL, { cache: 'no-store', headers: { Accept: 'application/json' } });
+        const response = await fetch(RESULTS_FEED_URL, {
+          cache: 'no-store',
+          headers: { Accept: 'application/json' },
+          signal: controller.signal,
+        });
         if (!response.ok) return;
 
         const payload: unknown = await response.json();
         if (!active || !isValidResultsFeed(payload)) return;
 
         setData(payload);
-      } catch {
-        // Preserve the last validated snapshot; its capturedAt drives live → stale state.
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === 'AbortError')) {
+          // Preserve the last validated snapshot; its capturedAt drives live → stale state.
+        }
       } finally {
+        requestInFlight = false;
+        controller = null;
         if (active) {
           setChecking(false);
           if (Date.now() > RESULTS_WINDOW_END) {
@@ -211,6 +227,8 @@ export function useResultsFeed(intervalMs = 300000) {
     return () => {
       active = false;
       stopPolling();
+      controller?.abort();
+      controller = null;
       document.removeEventListener('visibilitychange', refresh);
     };
   }, [intervalMs]);

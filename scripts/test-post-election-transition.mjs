@@ -21,6 +21,10 @@ const checks = [
   [data.includes("updatedAt: '2026-10-04'"), 'dataset local marcado com a data da edição'],
   [config.includes('arquivo público, nunca como apuração ao vivo'), 'contrato de resultados distingue arquivo de apuração ao vivo'],
   [resultsHook.includes('let endedFetchDone = false;') && resultsHook.includes('stopPolling();') && resultsHook.includes('Date.now() > RESULTS_WINDOW_END'), 'polling de resultados termina após a última tentativa da janela histórica'],
+  [resultsHook.includes('let requestInFlight = false;') && resultsHook.includes('if (requestInFlight) return;'), 'feed não sobrepõe requisições periódicas'],
+  [resultsHook.includes('const controller = new AbortController();') || resultsHook.includes('controller = new AbortController();'), 'feed usa AbortController para o request ativo'],
+  [resultsHook.includes('signal: controller.signal'), 'request do feed aceita cancelamento'],
+  [resultsHook.includes('controller?.abort();'), 'request ativo é abortado no cleanup do hook'],
 ];
 
 const failures = checks.filter(([, ok]) => !ok).map(([, message]) => message);
