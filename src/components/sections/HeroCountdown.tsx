@@ -1,33 +1,11 @@
-import { ArrowRight, CalendarClock, Database, ExternalLink, Search } from 'lucide-react';
+import { ArrowRight, Database, ExternalLink, Search } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
-import { useCountdown } from '../../hooks/useCountdown';
 import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
-function Timer({ value, compact = false }: { value: ReturnType<typeof useCountdown>; compact?: boolean }) {
-  if (value.completed) {
-    return <div className="hero-timer-status" role="status">Encerrado</div>;
-  }
-
-  const values = [['Dias', value.days], ['Horas', value.hours], ['Min', value.minutes], ['Seg', value.seconds]] as const;
-  return (
-    <div className={compact ? 'hero-timer-grid compact' : 'hero-timer-grid'} role="timer" aria-label="Contagem regressiva para a votação">
-      {values.map(([label, amount]) => (
-        <div key={label} className="hero-timer-cell">
-          <strong>{String(amount).padStart(2, '0')}</strong>
-          <span>{label}</span>
-        </div>
-      ))}
-      <span className="sr-only" aria-live="polite">{value.days > 0 ? `Faltam ${value.days} dias.` : 'Falta menos de um dia.'}</span>
-    </div>
-  );
-}
-
 export function HeroCountdown() {
-  const election = useCountdown('2026-10-04T08:00:00-03:00');
-  const secondRound = useCountdown('2026-10-25T08:00:00-03:00');
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
@@ -39,80 +17,59 @@ export function HeroCountdown() {
       <div className="hero-inner mx-auto max-w-7xl">
         <div className="hero-topline">
           <div className="hero-badges">
-            <Badge>{technical ? `${EDITION} · dados + método` : 'Dados públicos · fontes rastreáveis'}</Badge>
-            {technical && <Badge>Fontes visíveis</Badge>}
+            <Badge>{technical ? EDITION + ' · arquivo + método' : 'Dados públicos · fontes rastreáveis'}</Badge>
+            {technical && <Badge>Resultados consolidados</Badge>}
           </div>
           <span className="hero-updated"><Database aria-hidden="true" /> Painel atualizado em {updatedAt}</span>
         </div>
-
         <div className="hero-layout">
           <div className="hero-copy">
             <span className="hero-kicker">Observatório cívico e eleitoral</span>
             <h1 id="hero-title">Águas Lindas de Goiás <em>2026</em></h1>
             <p>
               {summary
-                ? 'Uma visão rápida da cidade: números centrais, serviços públicos e fontes rastreáveis a poucos toques.'
+                ? 'Uma visão rápida da cidade e do ciclo eleitoral de 2026, com números centrais e fontes rastreáveis.'
                 : technical
-                  ? 'Uma camada de auditoria dos dados: origem, método, recortes e limitações visíveis.'
+                  ? 'Um arquivo auditável do ciclo eleitoral: resultados, fontes, método, recortes e limitações ficam separados e verificáveis.'
                   : guided
-                    ? 'Aprenda a ler os dados em etapas: o que o número mede, de quando é, como interpretar e onde conferir.'
-                    : 'Números públicos explicados com contexto, período e origem para você aprofundar quando precisar.'}
+                    ? 'Aprenda a ler os resultados e os indicadores sem misturar apuração, contexto municipal, estimativa e dado derivado.'
+                    : 'Dados públicos de Águas Lindas organizados para consulta, conferência e fiscalização cívica depois da eleição.'}
             </p>
-
             <div className="hero-actions">
-              {guided ? (
-                <a href="#aprendizado-guiado" className="hero-action primary">
-                  Começar trilha <ArrowRight aria-hidden="true" />
-                </a>
-              ) : (
-                <a href="#descubra" className="hero-action primary">
-                  Explorar temas <ArrowRight aria-hidden="true" />
-                </a>
-              )}
-              <a href="#fontes" className="hero-action secondary">
-                Conferir fontes
-              </a>
+              <a href="#resultados" className="hero-action primary">Ver resultados <ArrowRight aria-hidden="true" /></a>
+              <a href="#fontes" className="hero-action secondary">Conferir fontes</a>
               <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
                 <Search aria-hidden="true" /> Buscar
               </button>
             </div>
-
             {technical && (
               <div className="hero-reference-strip" aria-label="Referências rápidas">
-                <span className="hero-reference-card"><small>População</small><strong>IBGE</strong></span>
+                <span className="hero-reference-card"><small>Resultados</small><strong>TSE</strong></span>
                 <span className="hero-reference-card"><small>Eleitorado</small><strong>TSE</strong></span>
-                <span className="hero-reference-card"><small>Transporte</small><strong>Tarifa semiurbana · Entorno-DF</strong></span>
+                <span className="hero-reference-card"><small>Indicadores municipais</small><strong>IBGE · SINISA · LOA</strong></span>
               </div>
             )}
           </div>
-
           <div className="hero-election-panel">
             <div className="hero-election-card">
               <div className="hero-election-heading">
                 <div>
-                  <span>Próximo marco</span>
-                  <strong>1º turno · 04/10</strong>
+                  <span>Estado do ciclo</span>
+                  <strong>Eleição 2026 · arquivo pós-apuração</strong>
                 </div>
-                <CalendarClock aria-hidden="true" />
               </div>
-              <Timer value={election} />
-              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="hero-official-link" aria-label="Abrir calendário oficial das Eleições 2026 no TSE em nova aba">
-                Calendário oficial do TSE <ExternalLink aria-hidden="true" />
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                A contagem regressiva foi retirada da interface pública. O ciclo eleitoral agora é tratado como histórico, com foco em resultados, fontes e acompanhamento pós-eleitoral.
+              </p>
+              <div className="mt-4 grid gap-2 text-xs text-slate-400">
+                <span>• Resultados oficiais versionados</span>
+                <span>• Proveniência e integridade visíveis</span>
+                <span>• Dados municipais separados da apuração</span>
+              </div>
+              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="hero-official-link">
+                Página oficial das Eleições 2026 <ExternalLink aria-hidden="true" />
               </a>
             </div>
-
-            {technical && (
-              <div className="hero-election-card secondary">
-                <div className="hero-election-heading">
-                  <div>
-                    <span>Se houver segundo turno</span>
-                    <strong>25/10</strong>
-                  </div>
-                  <CalendarClock aria-hidden="true" />
-                </div>
-                <Timer value={secondRound} compact />
-              </div>
-            )}
           </div>
         </div>
       </div>
