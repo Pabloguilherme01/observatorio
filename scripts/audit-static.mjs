@@ -135,7 +135,14 @@ must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'
 must(vite.includes('start_url: BASE_PATH') && vite.includes('scope: BASE_PATH'), 'PWA mantém start_url e scope no subcaminho publicado');
 must(viteSource.includes('freshness') && viteSource.includes('maxAgeHours = 24') && viteSource.includes('tseCandidates'), 'API health expõe contrato de frescor TSE');
 must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
-must(vite.includes("url.pathname === '/observatorio/api/v1/health.json'") && vite.includes("handler: 'NetworkOnly'"), 'healthcheck público não é servido pelo cache do Service Worker');
+const healthRouteIndex = vite.indexOf("url.pathname === '/observatorio/api/v1/health.json'");
+const genericApiRouteIndex = vite.indexOf("url.pathname.startsWith('/observatorio/api/v1/')");
+must(
+  healthRouteIndex >= 0
+    && genericApiRouteIndex >= 0
+    && healthRouteIndex < genericApiRouteIndex,
+  'rota NetworkOnly do healthcheck precede a regra genérica da API no Service Worker',
+);
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
