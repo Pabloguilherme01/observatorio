@@ -52,6 +52,25 @@ must(
     ? 'package.json referencia scripts inexistentes: ' + missingLocalScriptRefs.map(ref => ref.path + ' (' + ref.scriptName + ')').join(', ')
     : 'package.json referencia somente scripts existentes.',
 );
+
+const workflowDir = path.join(root, '.github/workflows');
+const workflowFiles = fs.existsSync(workflowDir)
+  ? fs.readdirSync(workflowDir).filter(file => /\\.ya?ml$/.test(file)).map(file => path.join(workflowDir, file))
+  : [];
+const workflowScriptRefs = [];
+for (const file of workflowFiles) {
+  const workflow = fs.readFileSync(file, 'utf8');
+  for (const match of workflow.matchAll(/\\bnode\\s+(scripts\\/[A-Za-z0-9_./-]+\\.mjs)\\b/g)) {
+    workflowScriptRefs.push({ file: path.relative(root, file), path: match[1] });
+  }
+}
+const missingWorkflowScriptRefs = workflowScriptRefs.filter(ref => !fs.existsSync(path.join(root, ref.path)));
+must(
+  missingWorkflowScriptRefs.length === 0,
+  missingWorkflowScriptRefs.length
+    ? 'workflows referenciam scripts inexistentes: ' + missingWorkflowScriptRefs.map(ref => ref.path + ' (' + ref.file + ')').join(', ')
+    : 'workflows com chamadas node scripts referenciam somente arquivos existentes.',
+);
 must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
 must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 
