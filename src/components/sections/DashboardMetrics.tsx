@@ -4,7 +4,7 @@ const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(mo
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
-import { dispatchInspect, inspectDataId } from '../DataInspector';
+import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { IndicatorComparator } from './IndicatorComparator';
