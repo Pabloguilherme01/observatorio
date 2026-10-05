@@ -1,5 +1,5 @@
 import { formatIndicatorStatus } from '../utils/dataLabels';
-import { dispatchInspect, inspectDataId, type InspectorDetail } from '../lib/dataInspectorEvents';
+import { inspectDataId, type InspectorDetail } from '../lib/dataInspectorEvents';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Bookmark, BookmarkCheck, Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
