@@ -2,7 +2,7 @@ import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo,
 import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
-import { PostElectionHero } from '../components/sections/HeroCountdown';
+import { PostElectionHero } from '../components/sections/PostElectionHero';
 import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
