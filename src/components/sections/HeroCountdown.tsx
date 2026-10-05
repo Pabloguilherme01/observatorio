@@ -55,11 +55,11 @@ export function HeroCountdown() {
               <div className="hero-election-heading">
                 <div>
                   <span>Estado do ciclo</span>
-                  <strong>Eleição 2026 · arquivo pós-apuração</strong>
+                  <strong>Eleição 2026 · pós-1º turno</strong>
                 </div>
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                A contagem regressiva foi retirada da interface pública. O ciclo eleitoral agora é tratado como histórico, com foco em resultados, fontes e acompanhamento pós-eleitoral.
+                A contagem regressiva foi retirada da interface pública. A votação de 4 de outubro passa a ser tratada como registro histórico, mantendo a arquitetura preparada para um eventual segundo turno.
               </p>
               <div className="mt-4 grid gap-2 text-xs text-slate-400">
                 <span>• Resultados oficiais versionados</span>
