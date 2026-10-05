@@ -3063,7 +3063,6 @@ main summary:focus-visible{
     max-width:100%;
     scrollbar-width:none;
   }
-  .hero-shell .hero-badges::-webkit-scrollbar{display:none}
   .hero-shell .hero-badges>*{flex:0 0 auto}
   .hero-shell .mt-5.flex.flex-wrap{
     display:grid!important;
