@@ -44,7 +44,8 @@
     "cleanup:tse": "node scripts/cleanup-tse-automation.mjs",
     "test:post-election": "node scripts/test-post-election-transition.mjs",
     "audit:provenance": "node scripts/audit-provenance.mjs",
-    "audit:candidate-snapshot": "node scripts/audit-candidate-snapshot.mjs"
+    "audit:candidate-snapshot": "node scripts/audit-candidate-snapshot.mjs",
+    "test:candidate-source-guard": "node scripts/test-candidate-source-guard.mjs"
   },
   "dependencies": {
     "@sentry/react": "11.1.0",
