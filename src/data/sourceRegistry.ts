@@ -622,17 +622,6 @@ export const sourceRegistry: readonly SourceRef[] = [
   },
 
   {
-    id: 'tse-chatvote-2026',
-    label: 'TSE — Assistente virtual ChatVote 2026',
-    institution: 'Tribunal Superior Eleitoral',
-    url: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/tse-lanca-assistente-virtual-para-ampliar-acesso-a-informacoes-sobre-as-eleicoes-2026',
-    nature: 'official',
-    publishedAt: '2026-09-23',
-    referenceDate: '2026-09-23',
-    note: 'Assistente virtual com IA para dúvidas sobre as Eleições 2026, disponível no e-Título e no Portal do TSE.',
-    lastCheckedAt: '2026-10-05',
-  },
-  {
     id: 'tse-whatsapp-2026',
     label: 'TSE — Canal oficial no WhatsApp 2026',
     institution: 'Tribunal Superior Eleitoral',
