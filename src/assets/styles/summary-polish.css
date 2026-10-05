@@ -845,7 +845,6 @@
 
   /* formulários e filtros: toque confortável sem ocupar a tela inteira */
   input, select, textarea, button { touch-action: manipulation; }
-  button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 430px) {
