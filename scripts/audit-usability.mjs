@@ -213,6 +213,11 @@ if (quickAnswerResolverOrder.every(index => index >= 0) && quickAnswerResolverOr
 } else {
   fail('ordem dos resolvedores de resposta rápida mudou e pode alterar a prioridade das consultas.');
 }
+const duplicatedQuickAnswerTerminalReturn = texts
+  .filter(item => item.file.startsWith('src/components/layout/searchQuickAnswer/'))
+  .some(item => /return null;\s*return null;/.test(item.content));
+if (duplicatedQuickAnswerTerminalReturn) fail('módulos de resposta rápida possuem retorno terminal duplicado.');
+else pass('módulos de resposta rápida não possuem retornos terminais duplicados.');
 const dialogFocus = texts.find(item => item.file === 'src/hooks/useDialogFocus.ts')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
 else pass('busca possui resposta rápida e navegação por teclado');
