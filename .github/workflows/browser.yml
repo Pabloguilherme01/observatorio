@@ -37,8 +37,8 @@ jobs:
             non_blocking: false
           - project: safari-desktop
             engine: webkit
-            timeout: 15
-            non_blocking: true
+            timeout: 30
+            non_blocking: false
           - project: chrome-android
             engine: chromium
             timeout: 30
