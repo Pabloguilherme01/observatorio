@@ -9,7 +9,7 @@ function listCssFiles(directory, base = directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const full = path.join(directory, entry.name);
     if (entry.isDirectory()) files.push(...listCssFiles(full, base));
-    else if (entry.name.endsWith('.css')) files.push(path.relative(base, full).replaceAll('\\\\', '/'));
+    else if (entry.name.endsWith('.css')) files.push(path.relative(base, full).split(path.sep).join('/'));
   }
   return files;
 }
