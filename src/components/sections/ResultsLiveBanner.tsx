@@ -40,7 +40,7 @@ export function ResultsLiveBanner() {
 
   const archived = phase === 'complete' || phase === 'archived_partial';
   const title = phase === 'complete'
-    ? 'Resultado oficial · 1º turno conferido'
+    ? `Resultado oficial · ${data.turn === 2 ? '2º' : '1º'} turno conferido`
     : phase === 'archived_partial'
       ? 'Resultado oficial · último registro conferido'
       : phase === 'stale'
