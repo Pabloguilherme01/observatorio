@@ -17,17 +17,19 @@ for (const file of files) {
   const kb = Math.round(bytes / 1024 * 10) / 10;
   console.log(JSON.stringify({ file, kb }));
   if (bytes > maxSourceKb * 1024) failures.push(file + ' excede o teto de fonte de ' + maxSourceKb + ' KB.');
-  for (const match of css.matchAll(/(^|})\s*([^@}{][^{}]+)\{/gm)) {
+  for (const match of css.matchAll(/(^|})\s*([^@}{][^{}]+)\{([^{}]*)\}/gm)) {
     const selector = match[2].trim().replace(/\s+/g, ' ');
+    const normalizedBody = match[3].trim().replace(/\s+/g, ' ');
     if (!selector || selector.startsWith('--')) continue;
     const set = selectorFiles.get(selector) ?? new Set();
     set.add(file);
     selectorFiles.set(selector, set);
-    const normalizedBody = match[0].slice(match[0].indexOf('{') + 1, match[0].lastIndexOf('}')).trim().replace(/\s+/g, ' ');
-    const exactKey = selector + '{' + normalizedBody + '}';
-    const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
-    blocks.push(file);
-    exactDuplicateBlocks.set(exactKey, blocks);
+    if (normalizedBody) {
+      const exactKey = selector + '{' + normalizedBody + '}';
+      const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
+      blocks.push(file);
+      exactDuplicateBlocks.set(exactKey, blocks);
+    }
   }
 }
 
