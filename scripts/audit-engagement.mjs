@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { readCssImportGraph } from './lib/readCssImportGraph.mjs';
 
 const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
@@ -16,7 +17,7 @@ const quizData = read('src/data/quiz/questionBank.ts');
 const electoral360 = read('src/data/electoral360.ts');
 const electoral360Ui = read('src/components/sections/Electoral360.tsx');
 const main = read('src/main.tsx');
-const css = read('src/assets/styles/globals.css');
+const css = readCssImportGraph('src/assets/styles/globals.css', { root });
 const pwaConfig = read('vite.config.ts');
 const packageJson = JSON.parse(read('package.json'));
 const sync = read('.github/workflows/sync-tse-2026.yml');
