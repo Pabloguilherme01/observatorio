@@ -3,7 +3,7 @@
 ## Gate técnico
 
 - Pull request para `main` obrigatória.
-- Checks obrigatórios: `CI · quality gate`, seis jobs `Browser · ...`, `Quality · independent audit` e `CodeQL · javascript-typescript`.
+- Checks obrigatórios: `CI · quality gate`, sete jobs `Browser · ...` (Chrome desktop, Chrome a11y, Firefox desktop, Safari desktop, Chrome Android, Safari iPhone e Safari iPhone SE), `Quality · independent audit` e `CodeQL · javascript-typescript`.
 - Branch deve estar atualizada antes do merge.
 - Push direto em `main` deve ser bloqueado.
 - Administradores devem seguir as mesmas regras quando a operação do repositório permitir.
