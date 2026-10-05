@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, FileQuestion, GraduationCap, Landmark, Link2, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
+import { BriefcaseBusiness, Building2, CheckCircle2, ClipboardCheck, Droplets, ExternalLink, FileQuestion, GraduationCap, Landmark, Link2, MessageCircle, Pill, ReceiptText, Scale, SearchCheck, ShieldCheck, Smartphone, Stethoscope, WalletCards } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
 import { copyText } from '../../lib/clipboard';
