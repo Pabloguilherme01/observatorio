@@ -293,7 +293,9 @@ must(
     && deployWorkflow.includes('github.event.workflow_run.head_sha')
     && deployWorkflow.includes('Require all release gates for exact SHA')
     && deployWorkflow.includes('ci.yml quality.yml browser.yml codeql.yml')
-    && deployWorkflow.includes('sort_by(.created_at) | reverse | .[0]'),
+    && deployWorkflow.includes('sort_by(.created_at) | reverse | .[0]')
+    && deployWorkflow.includes('Ensure main still points to validated SHA')
+    && deployWorkflow.includes('git/ref/heads/main'),
   'deploy exige CI + Quality + Browser + CodeQL para o SHA exato da main, inclusive no acionamento manual',
 );
 must(
