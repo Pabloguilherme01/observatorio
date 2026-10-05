@@ -2,10 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = process.cwd();
-const file = path.join(root, 'src/components/sections/CivicActionHub.tsx');
-const source = fs.readFileSync(file, 'utf8');
+const hubFile = path.join(root, 'src/components/sections/CivicActionHub.tsx');
+const catalogFile = path.join(root, 'src/data/publicServices.ts');
+const hubSource = fs.readFileSync(hubFile, 'utf8');
+const catalogSource = fs.readFileSync(catalogFile, 'utf8');
 
-const required = [
+const municipalRequired = [
   ['Medicamentos SUS', 'medicamentos_sus'],
   ['Estoque de medicamentos', 'estoque_medicamentos_farmacias'],
   ['Regulação municipal', 'lista_espera_regulacoes'],
@@ -21,6 +23,11 @@ const required = [
   ['Conselho Tutelar', 'conselho-tutelar'],
   ['CAPS', 'caps-centro-de-atencao-psicossocial'],
   ['SAMU', 'samu-servico-de-atendimento-movel-de-urgencia'],
+  ['Portal SEI · Pessoa com deficiência', 'portalsei.aguaslindasdegoias.go.gov.br'],
+  ['Portal SEI · Proteção e bem-estar animal', 'portalsei.aguaslindasdegoias.go.gov.br'],
+  ['Trânsito e mobilidade urbana', 'secretaria-de-transito-e-mobilidade-urbana'],
+];
+const tseRequired = [
   ['Consultar situação eleitoral', 'titulo-eleitoral/autoatendimento-eleitoral'],
   ['Candidaturas e contas', 'divulgacandcontas.tse.jus.br'],
   ['Resultados oficiais', 'resultados.tse.jus.br'],
@@ -44,21 +51,25 @@ async function checkLive(url) {
 const fail = [];
 const pass = message => console.log('PASS', message);
 
-for (const [label, pathFragment] of required) {
-  if (!source.includes(label) || !source.includes(pathFragment)) fail.push(label);
-  else pass(label + ' possui atalho direto');
+for (const [label, pathFragment] of municipalRequired) {
+  if (!catalogSource.includes(label) || !catalogSource.includes(pathFragment)) fail.push(label);
+  else pass(label + ' possui atalho direto no catálogo de dados');
+}
+for (const [label, pathFragment] of tseRequired) {
+  if (!hubSource.includes(label) || !hubSource.includes(pathFragment)) fail.push(label);
+  else pass(label + ' possui atalho direto no hub TSE');
 }
 
-const priorityBlock = source.slice(source.indexOf('const priorityPublicServices'), source.indexOf('const additionalPublicServices'));
-const additionalBlock = source.slice(source.indexOf('const additionalPublicServices'), source.indexOf('export function CivicActionHub'));
-const tseBlock = source.slice(source.indexOf('const tesser = ['), source.indexOf('const visiblePriority'));
+const priorityBlock = catalogSource.slice(catalogSource.indexOf('const priorityPublicServices'), catalogSource.indexOf('export const additionalPublicServices'));
+const additionalBlock = catalogSource.slice(catalogSource.indexOf('export const additionalPublicServices'), catalogSource.indexOf('export const allMunicipalServices'));
+const tseBlock = hubSource.slice(hubSource.indexOf('const tesser = ['), hubSource.indexOf('const visiblePriority'));
 
 const objectUrls = block => [...block.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]);
 const tupleUrls = [...tseBlock.matchAll(/'(https:\/\/[^']+)'/g)].map(match => match[1]);
 const serviceUrls = [...objectUrls(priorityBlock), ...objectUrls(additionalBlock), ...tupleUrls];
 const urls = [...new Set(serviceUrls)];
 
-const renderedLinks = [...source.matchAll(/<a\b[^>]*href="(?:https?:\/\/)[^"]+"[^>]*>/g)].map(match => match[0]);
+const renderedLinks = [...hubSource.matchAll(/<a\b[^>]*href="(?:https?:\/\/)[^"]+"[^>]*>/g)].map(match => match[0]);
 const insecureLinks = renderedLinks.filter(link => /target="_blank"/.test(link) && !/rel="[^"]*noopener[^"]*"/.test(link));
 if (insecureLinks.length) fail.push(`links públicos com target=_blank sem noopener: ${insecureLinks.length}`);
 else pass('links públicos externos preservam noopener em target=_blank');
@@ -78,14 +89,14 @@ const additionalUrls = objectUrls(additionalBlock);
 if (additionalUrls.length !== 28) fail.push(`catálogo técnico adicional esperado=28 atual=${additionalUrls.length}`);
 else pass('28 serviços oficiais adicionais permanecem disponíveis no aprofundamento técnico');
 
-if (!source.includes("const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);")) {
+if (!hubSource.includes("const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);")) {
   fail.push('serviços prioritários podem voltar a duplicar no modo técnico');
 } else {
   pass('modo técnico separa atalhos prioritários do catálogo expandido sem duplicação');
 }
 
 for (const staleMarker of ['const actions = [', 'function PublicServiceLink', 'function shareWhatsApp', 'immediatePublicContacts']) {
-  if (source.includes(staleMarker)) fail.push('código morto reintroduzido: ' + staleMarker);
+  if (hubSource.includes(staleMarker)) fail.push('código morto reintroduzido: ' + staleMarker);
 }
 if (!fail.some(item => item.startsWith('código morto reintroduzido'))) pass('hub não mantém ações órfãs sem interface');
 
