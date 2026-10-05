@@ -1217,7 +1217,7 @@ test('mostra resultado completo após o encerramento da janela', async ({ page }
   await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
   await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
   await page.goto('./');
-  await expect(page.getByText('Resultados oficiais · arquivo consolidado do turno')).toBeVisible();
+  await expect(page.getByText('Resultado oficial · 2º turno conferido')).toBeVisible();
   await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
   await expect(page.getByText('10 de 10 seções · 100%')).toBeVisible();
 });
@@ -1229,7 +1229,7 @@ test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo
   await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
   await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
   await page.goto('./');
-  await expect(page.getByText('Resultados oficiais · último snapshot validado')).toBeVisible();
+  await expect(page.getByText('Resultado oficial · último registro conferido')).toBeVisible();
   await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
   await expect(page.getByText(/A apuração deste turno é tratada como registro histórico/i)).toBeVisible();
 });
