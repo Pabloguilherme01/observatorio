@@ -14,7 +14,6 @@ export function BudgetImpact() {
   const shownTotal = health + education + sanitation;
   const shownShare = d.budget.totalBrl ? (shownTotal / d.budget.totalBrl) * 100 : 0;
   const indicator = (id: string) => d.indicators.find(item => item.id === id);
-  const indicatorValue = (id: string) => Number(indicator(id)?.value ?? 0);
   const rows = [
     ['Saúde', health, 'budget-health-share-2026', 'budget-health-per-capita-2026'],
     ['Educação', education, 'budget-education-share-2026', 'budget-education-per-capita-2026'],
