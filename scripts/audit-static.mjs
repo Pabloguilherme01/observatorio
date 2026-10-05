@@ -55,12 +55,12 @@ must(
 
 const workflowDir = path.join(root, '.github/workflows');
 const workflowFiles = fs.existsSync(workflowDir)
-  ? fs.readdirSync(workflowDir).filter(file => /\\.ya?ml$/.test(file)).map(file => path.join(workflowDir, file))
+  ? fs.readdirSync(workflowDir).filter(file => /\.ya?ml$/.test(file)).map(file => path.join(workflowDir, file))
   : [];
 const workflowScriptRefs = [];
 for (const file of workflowFiles) {
   const workflow = fs.readFileSync(file, 'utf8');
-  for (const match of workflow.matchAll(/\\bnode\\s+(scripts\\/[A-Za-z0-9_./-]+\\.mjs)\\b/g)) {
+  for (const match of workflow.matchAll(/\bnode\s+(scripts\/[A-Za-z0-9_./-]+\.mjs)\b/g)) {
     workflowScriptRefs.push({ file: path.relative(root, file), path: match[1] });
   }
 }
