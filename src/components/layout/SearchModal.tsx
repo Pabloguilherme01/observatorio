@@ -1,9 +1,7 @@
 import '../../assets/styles/search-modal.css';
-import { BarChart3, BookOpen, Bookmark, BusFront, Check, Clipboard, Database, Droplets, ExternalLink, FileCheck2, Landmark, Search, ShieldCheck, Users, Vote, WalletCards, X } from 'lucide-react';
+import { Bookmark, Check, Clipboard, ExternalLink, Search, X } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { navigation } from '../../config/navigation';
-import { formatDate } from '../../utils/formatters';
-import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { publicServiceSearchEntries } from '../../data/publicServiceSearch';
 import { navigateToSection } from '../../lib/sectionNavigation';
@@ -12,8 +10,9 @@ import { copyText } from '../../lib/clipboard';
 import { clearSavedIndicators, getSavedIndicators, type SavedIndicator } from '../../lib/savedIndicators';
 import { useDialogFocus } from '../../hooks/useDialogFocus';
 import { resolveQuickAnswer } from './searchQuickAnswer';
+import { SearchResultGroups } from './search/SearchResultGroups';
+import { resultIcon, sourceForId, sourceLabel, type ResultKind } from './search/searchResultMeta';
 
-type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
 
 type SearchEntry = readonly [string, string, ResultKind, string?];
 
@@ -49,10 +48,6 @@ const normalizeSearchQuery = (value: string) => {
   return normalized;
 };
 
-
-const sourceForId = (sourceId?: string) => sourceId ? d.sources.find(source => source.id === sourceId) : undefined;
-const sourceLabel = (sourceId?: string) => sourceId ? (sourceForId(sourceId)?.label ?? sourceId) : 'Conjunto publicado pelo Observatório';
-const destinationLabel = (id: string) => navigation.find(item => item.id === id)?.label ?? ({ resumo: 'Resumo', 'aprendizado-guiado': 'Aprendizado guiado', saude: 'Saúde e serviços', candidaturas: 'Candidaturas', exportacao: 'Baixar dados', acao: 'Serviços públicos', contexto: 'Comparação municipal', dados: 'Atualizações públicas' }[id] ?? 'Seção do observatório');
 
 const brlMillions = (value: number) => (value / 1_000_000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' milhões';
 
@@ -192,78 +187,6 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   }, [activeIndex]);
 
   if (!open) return null;
-
-  const resultGroups: Array<{ key: ResultKind; label: string }> = [
-    { key: 'primary', label: 'Resultados principais' },
-    { key: 'data', label: 'Estatísticas e dados' },
-    { key: 'source', label: 'Fontes oficiais' },
-    { key: 'candidate', label: 'Candidaturas' },
-    { key: 'transport', label: 'Transporte' },
-    { key: 'public', label: 'Serviços públicos' },
-  ];
-
-  const resultIcon = (id: string) => {
-    if (id === 'eleitorado') return Users;
-    if (id === 'transporte') return BusFront;
-    if (id === 'saude') return Droplets;
-    if (id === 'politica') return Vote;
-    if (id === 'candidaturas') return FileCheck2;
-    if (id === 'orcamento') return WalletCards;
-    if (id === 'fontes') return Database;
-    if (id === 'qualidade') return ShieldCheck;
-    if (id === 'exportacao') return BookOpen;
-    if (id === 'acao') return Landmark;
-    return BarChart3;
-  };
-
-  const renderResults = (items: typeof filtered) => resultGroups.map(group => {
-    const groupItems = items.filter(item => item.kind === group.key);
-    if (!groupItems.length) return null;
-    return (
-      <section key={group.key} className="search-result-group" aria-labelledby={'search-group-' + group.key}>
-        <h3 id={'search-group-' + group.key} className="search-result-group-title">{group.label}</h3>
-        <div className="search-result-group-list">
-          {groupItems.map(item => {
-            const Icon = resultIcon(item.id);
-            const index = filtered.indexOf(item);
-            const indicator = item.kind === 'data' && item.serviceQuery
-              ? d.indicators.find(entry => entry.id === item.serviceQuery)
-              : undefined;
-            const indicatorSource = indicator ? sourceForId(indicator.sourceId) : undefined;
-            const indicatorReferenceDate = indicator?.referenceDate ?? indicatorSource?.referenceDate;
-            const indicatorContext = indicator
-              ? [
-                  destinationLabel(item.id),
-                  formatIndicatorStatus(indicator.status),
-                  indicatorReferenceDate ? `ref. ${formatDate(indicatorReferenceDate)}` : 'referência não informada',
-                  sourceLabel(indicator.sourceId),
-                ].filter(Boolean).join(' · ')
-              : destinationLabel(item.id);
-            return (
-              <button
-                key={item.label + '-' + item.id}
-                id={'search-result-' + index}
-                type="button"
-                data-search-index={index}
-                onMouseEnter={() => setActiveIndex(index)}
-                onClick={() => selectResult(item.id, item.label, item.kind, item.serviceQuery)}
-                className={'search-result-row ' + (activeIndex === index ? 'is-active' : '')}
-                role="option"
-                aria-selected={activeIndex === index}
-              >
-                <span className="search-result-icon"><Icon aria-hidden="true" /></span>
-                <span className="min-w-0 flex-1 text-left">
-                  <strong>{item.label}</strong>
-                  <small>{indicatorContext}</small>
-                </span>
-                <span className="search-result-enter" aria-hidden="true">{activeIndex === index ? '↵' : '›'}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-    );
-  });
 
   const selectResult = (id: string, label?: string, kind?: ResultKind, serviceQuery?: string) => {
     onClose();
@@ -437,7 +360,12 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
         </details>
 
         <div id="search-results" className="search-results" role="listbox" aria-label="Resultados da busca">
-          {renderResults(filtered)}
+          <SearchResultGroups
+            items={filtered}
+            activeIndex={activeIndex}
+            onActiveIndexChange={setActiveIndex}
+            onSelect={selectResult}
+          />
           {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente medicamentos, orçamento, eleitorado, transporte, saneamento ou saúde.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
         </div>
       </div>
