@@ -908,7 +908,9 @@ test('modos de leitura persistem e podem avançar por atalho', async ({ page }) 
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
   await page.evaluate(() => {
-    localStorage.setItem('observatorio-v44-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
+    const quizKey = Object.keys(localStorage).find(key => /quiz-best-scores$/.test(key));
+    if (!quizKey) localStorage.setItem('observatorio-v45-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
+    else localStorage.setItem(quizKey, JSON.stringify([24, 0, 0, 0, 0]));
   });
   await page.reload();
   await openSection(page, 'quiz');
@@ -928,7 +930,7 @@ test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async
 
   await page.goto('./');
   await page.evaluate(() => {
-    localStorage.removeItem('observatorio-v44-quiz-best-scores');
+    for (const key of Object.keys(localStorage)) if (/quiz-best-scores$/.test(key)) localStorage.removeItem(key);
   });
   await page.reload();
   await openSection(page, 'quiz');
@@ -939,7 +941,7 @@ test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async
   }
 
   await expect(page.locator('.quiz-result-score')).toContainText('40 de 40 acertos');
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('observatorio-v44-quiz-best-scores') || '[0,0,0,0,0]'));
+  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem(Object.keys(localStorage).find(key => /quiz-best-scores$/.test(key)) || '') || '[0,0,0,0,0]'));
   expect(saved[0]).toBe(40);
 });
 
@@ -1209,8 +1211,8 @@ test('mostra resultado completo após o encerramento da janela', async ({ page }
   feed.state = 'complete';
   feed.capturedAt = '2026-10-26T22:00:00-03:00';
   feed.turn = 2;
-  feed.entries[0].electionCode = 7001;
-  feed.entries[0].sourceFile = 'go93343-c0003-e007001-u.json';
+  feed.entries[0].electionCode = 6259;
+  feed.entries[0].sourceFile = 'go93343-c0003-e006259-u.json';
   feed.integrity.files[0].sourceFile = feed.entries[0].sourceFile;
   await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
   await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
@@ -1227,7 +1229,7 @@ test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo
   await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
   await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
   await page.goto('./');
-  await expect(page.getByText('RESULTADO PARCIAL ARQUIVADO · TSE')).toBeVisible();
+  await expect(page.getByText('Resultados oficiais · último snapshot validado')).toBeVisible();
   await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
   await expect(page.getByText(/estes números não são uma atualização ao vivo/i)).toBeVisible();
 });
