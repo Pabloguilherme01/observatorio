@@ -27,6 +27,10 @@ jobs:
             engine: chromium
             timeout: 30
             non_blocking: false
+          - project: chrome-a11y
+            engine: chromium
+            timeout: 30
+            non_blocking: false
           - project: firefox-desktop
             engine: firefox
             timeout: 30
