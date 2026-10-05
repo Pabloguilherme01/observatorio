@@ -109,8 +109,8 @@ jobs:
       - name: Verify JWS implementation
         run: npm run test:jws
 
-      - name: Build
-        run: npm run build
+      - name: Build production bundle
+        run: npm run build:bundle
 
       - name: Audit production bundle budget
         run: npm run audit:bundle

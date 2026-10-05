@@ -107,7 +107,7 @@ jobs:
         run: npm run validate:tse
 
       - name: Build production artifact
-        run: npm run build
+        run: npm run build:bundle
 
       - name: Audit production bundle budget
         run: npm run audit:bundle
