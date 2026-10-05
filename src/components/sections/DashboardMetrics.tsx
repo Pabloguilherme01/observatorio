@@ -31,8 +31,8 @@ export function DashboardMetrics() {
   const formatReference = (date?: string, fallback = 'referência não informada') =>
     date ? date.split('-').reverse().join('/') : fallback;
   const statusLabel = (status?: string) => formatIndicatorStatus(status, 'Dado público') ?? 'Dado público';
-  const sourceReferenceDate = (id: string) => sourceMeta(id)?.referenceDate;
   const sourceMeta = (id: string) => d.sources.find(source => source.id === id);
+  const sourceReferenceDate = (id: string) => sourceMeta(id)?.referenceDate;
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
   const comparisonDetails = [
