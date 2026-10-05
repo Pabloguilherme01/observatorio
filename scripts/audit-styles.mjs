@@ -9,6 +9,7 @@ const warnings = [];
 const failures = [];
 const selectorFiles = new Map();
 const exactDuplicateBlocks = new Map();
+const intraFileDuplicateBlocks = new Map();
 
 for (const file of files) {
   const full = path.join(styleRoot, file);
@@ -29,6 +30,9 @@ for (const file of files) {
       const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
       blocks.push(file);
       exactDuplicateBlocks.set(exactKey, blocks);
+      const localBlocks = intraFileDuplicateBlocks.get(file) ?? new Map();
+      localBlocks.set(exactKey, (localBlocks.get(exactKey) ?? 0) + 1);
+      intraFileDuplicateBlocks.set(file, localBlocks);
     }
   }
 }
@@ -40,11 +44,15 @@ const repeatedExactBlocks = [...exactDuplicateBlocks.entries()]
   .filter(([, files]) => files.length >= 2)
   .map(([block, files]) => ({ block: block.slice(0, 240), files }))
   .sort((a, b) => b.files.length - a.files.length || b.block.length - a.block.length);
+const intraFileDuplicates = [...intraFileDuplicateBlocks.entries()]
+  .flatMap(([file, blocks]) => [...blocks.entries()].filter(([, count]) => count > 1).map(([block, count]) => ({ file, count, block: block.slice(0, 240) })));
+
 
 console.log(JSON.stringify({
   cssFiles: files.length,
   crossFileDuplicateSelectors: crossFileDuplicates.length,
   exactDuplicateBlocks: repeatedExactBlocks.length,
+  intraFileExactDuplicateBlocks: intraFileDuplicates.length,
   largestRepeatedSelectors: crossFileDuplicates.slice(0, 20),
 }, null, 2));
 
@@ -53,6 +61,9 @@ if (crossFileDuplicates.length > 80) {
 }
 if (repeatedExactBlocks.length > 120) {
   warnings.push('Há ' + repeatedExactBlocks.length + ' blocos CSS exatamente repetidos; consolidar em rodadas pequenas e verificadas.');
+}
+if (intraFileDuplicates.length) {
+  intraFileDuplicates.forEach(({ file, count }) => failures.push(file + ' possui ' + count + ' bloco(s) CSS exatamente repetido(s) dentro do mesmo arquivo.'));
 }
 warnings.forEach(message => console.log('WARN ' + message));
 if (failures.length) {
