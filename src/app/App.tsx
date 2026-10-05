@@ -12,7 +12,7 @@ const AudienceHub = lazy(() => import('../components/AudienceHub').then(module =
 const ExecutiveSummary = lazy(() => import('../components/sections/ExecutiveSummary').then(module => ({ default: module.ExecutiveSummary })));
 const GuidedLearningPanel = lazy(() => import('../components/sections/GuidedLearningPanel').then(module => ({ default: module.GuidedLearningPanel })));
 const PublicUtilityGuide = lazy(() => import('../components/sections/PublicUtilityGuide').then(module => ({ default: module.PublicUtilityGuide })));
-const DataInspector = lazy(() => import('../components/DataInspector').then(module => ({ default: module.DataInspector })));
+import { DataInspector } from '../components/DataInspector';
 import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
 import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
