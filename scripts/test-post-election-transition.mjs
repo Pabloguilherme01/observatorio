@@ -6,6 +6,7 @@ const results = read('src/components/sections/ResultsLiveBanner.tsx');
 const version = read('src/config/version.ts');
 const data = read('src/data/observatorioData.ts');
 const config = read('src/data/resultsConfig.ts');
+const packageJson = JSON.parse(read('package.json'));
 
 const checks = [
   [!hero.includes('useCountdown'), 'hero não depende mais de contagem regressiva'],
@@ -13,7 +14,8 @@ const checks = [
   [results.includes('id="resultados"'), 'resultados possuem âncora pública'],
   [results.includes('arquivo consolidado do turno'), 'resultados completos são apresentados como arquivo'],
   [results.includes('assinatura JWS'), 'integridade criptográfica permanece visível'],
-  [version.includes("APP_VERSION = '45.0.0'"), 'versão V45 presente'],
+  [packageJson.version === (version.match(/APP_VERSION = '([^']+)'/)?.[1] ?? ''), 'package.json e APP_VERSION estão sincronizados'],
+  [version.includes("EDITION = 'V" + packageJson.version.split('.')[0] + "'"), 'EDITION acompanha o major da versão'],
   [version.includes("STORAGE_NAMESPACE = 'observatorio-v45'"), 'namespace V45 presente'],
   [data.includes("updatedAt: '2026-10-04'"), 'dataset local marcado com a data da edição'],
   [config.includes('arquivo público, nunca como apuração ao vivo'), 'contrato de resultados distingue arquivo de apuração ao vivo'],
