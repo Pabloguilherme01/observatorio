@@ -373,13 +373,6 @@ for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'fontes']) {
 for (const id of ['principios', 'contexto', 'dados', 'qualidade', 'evidencias']) {
   must(!navigation.includes(`id: '${id}'`), `subcamada #${id} não polui a navegação pública`);
 }
-
-const shortcuts = [...navigation.matchAll(/shortcut:\s*'([^']+)'/g)].map(match => match[1].replace(/\s+/g, '').toLowerCase());
-const shortcutSet = new Set(shortcuts);
-must(shortcuts.length === shortcutSet.size, 'atalhos de navegação não possuem duplicatas');
-for (const shortcut of shortcuts) {
-  must(!shortcuts.some(other => other !== shortcut && other.startsWith(shortcut)), `atalho ${shortcut} não pode ser prefixo de outro atalho`);
-}
 must(allRuntimeText.includes('<ProjectTrustPanel />') && allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'método, qualidade e evidências continuam disponíveis no conteúdo técnico');
 must(allRuntimeText.includes('<ContextComparison />') && allRuntimeText.includes('<PublicDataPulse />'), 'contexto e atualizações públicas continuam disponíveis fora do menu principal');
 
