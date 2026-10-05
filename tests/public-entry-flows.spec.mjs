@@ -155,7 +155,7 @@ test('busca global abre o serviço municipal já filtrado', async ({ page }) => 
     await input.fill('população');
     const sourceLink = page.getByRole('link', { name: 'Fonte oficial', exact: true });
     await expect(sourceLink).toBeVisible();
-    await expect(sourceLink).toHaveAttribute('href', /ibge\.gov\.br/);
+    await expect(sourceLink).toHaveAttribute('href', /^https:\/\/www\.ibge\.gov\.br\//);
   });
 
   test('hub prioriza serviços eleitorais oficiais de uso direto', async ({ page }) => {
