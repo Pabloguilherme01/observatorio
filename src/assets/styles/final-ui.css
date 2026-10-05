@@ -3286,7 +3286,6 @@ main summary:focus-visible{
     border-radius:12px!important;
     overflow:hidden!important;
   }
-  .mobile-bottom-nav button svg{width:18px!important;height:18px!important}
   .mobile-bottom-nav button span{font-size:9px!important}
 
   .mobile-tools-sheet{
