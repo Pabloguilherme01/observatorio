@@ -192,6 +192,7 @@ must(
     && browserWorkflow.includes('safari-desktop')
     && browserWorkflow.includes('non_blocking: false')
     && read('playwright.config.mjs').includes("npm run build && npm run preview -- --host 127.0.0.1 --port 4173")
+    && read('playwright.config.mjs').includes('mobile-core')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
