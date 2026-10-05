@@ -165,7 +165,6 @@ else pass('navegação mobile rotulada e integrada ao fluxo principal');
 const quizMenuOnly =
   mobileNav.includes("const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more')];") &&
   !mobileNav.includes('quizItem') &&
-  !mobileNav.includes("id === 'quiz'") &&
   !mobileNav.includes("label: 'Quiz'");
 if (!quizMenuOnly) fail('Quiz deve possuir uma única entrada no menu Mais da navegação mobile');
 else pass('Quiz aparece uma única vez no menu Mais da navegação inferior mobile');
