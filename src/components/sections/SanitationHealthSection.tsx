@@ -3,9 +3,10 @@ import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';
 import { formatDate, formatNumber, formatPercent } from '../../utils/formatters';
-import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { SanitationGapCard } from './sanitation/SanitationGapCard';
+import { StatTile } from './sanitation/StatTile';
 
 const sewerHistory = [
   { year: 2017, value: 2.9 }, { year: 2018, value: 19.0 }, { year: 2019, value: 39.2 },
@@ -189,33 +190,9 @@ export function SanitationHealthSection() {
                 ['Fora do serviço público de esgoto', 'public-sewer-service-gap-2024'],
                 ['Esgoto gerado sem coleta', 'sewer-collection-gap-2024'],
                 ['Esgoto gerado sem tratamento', 'sewer-treatment-gap-2024'],
-              ].map(([label, id]) => {
-                const indicator = d.indicators.find(item => item.id === id);
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    className="metric-interactive dashboard-secondary-card rounded-2xl border border-white/8 bg-black/10 p-3 text-left hover:border-amber-300/20 light:bg-white"
-                    data-inspect-id={indicator ? inspectDataId({ label: indicator.label, sourceId: indicator.sourceId }) : undefined}
-                    onClick={() => indicator && dispatchInspect({
-                      label: indicator.label,
-                      value: formatPercent(Number(indicator.value), 1),
-                      sourceId: indicator.sourceId,
-                      referenceDate: indicator.referenceDate,
-                      note: indicator.note,
-                      method: 'Complemento calculado como 100% menos o indicador correspondente, preservando o mesmo denominador.',
-                    })}
-                  >
-                    <strong className="block text-xl font-black text-white light:text-slate-900">{formatPercent(Number(indicator?.value ?? 0), 1)}</strong>
-                    <span className="mt-1 block text-xs text-slate-500">{label}</span>
-                    <div className="dashboard-card-meta mt-3">
-                      <span className="dashboard-meta-chip" data-kind={indicator?.status}>Derivado</span>
-                      {indicator?.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(indicator.referenceDate)}</span>}
-                    </div>
-                    <div className="dashboard-card-action mt-3">Ver fonte e fórmula</div>
-                  </button>
-                );
-              })}
+              ].map(([label, id]) => (
+                <SanitationGapCard key={id} label={label} indicatorId={id} />
+              ))}
             </div>
           </div>
 
@@ -228,19 +205,10 @@ export function SanitationHealthSection() {
             <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outro ano-base. Leia-o separadamente dos percentuais SINISA {sanitationReferenceYear}.</p>
           </div>
 
-<div className="mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatPercent(d.sanitation.waterDistributionLossPct, 1)}</strong>
-              <span className="text-xs text-slate-500">perdas na distribuição de água</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatNumber(d.sanitation.waterConsumptionLitersPerPersonDay, 1)} L</strong>
-              <span className="text-xs text-slate-500">consumo por pessoa/dia</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatPercent(d.sanitation.householdWasteCollectionPct, 1)}</strong>
-              <span className="text-xs text-slate-500">domicílios com coleta de resíduos · SINISA {wasteCollectionYear}</span>
-            </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <StatTile value={formatPercent(d.sanitation.waterDistributionLossPct, 1)} label="perdas na distribuição de água" />
+            <StatTile value={formatNumber(d.sanitation.waterConsumptionLitersPerPersonDay, 1) + ' L'} label="consumo por pessoa/dia" />
+            <StatTile value={formatPercent(d.sanitation.householdWasteCollectionPct, 1)} label={'domicílios com coleta de resíduos · SINISA ' + wasteCollectionYear} />
           </div>
 
           <div className="mt-4 flex items-start gap-2 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
@@ -261,9 +229,9 @@ export function SanitationHealthSection() {
           <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50">
             <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Como ler os números de leitos</div>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
-              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">{formatNumber(d.health.openingReportedBeds)}</strong><span className="mt-1 block text-xs text-slate-500">referência reportada na inauguração</span></div>
-              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">{formatNumber(currentStatedBeds)}</strong><span className="mt-1 block text-xs text-slate-500">{formatNumber(d.health.currentStatedWardBeds)} enfermaria + {formatNumber(d.health.currentStatedIcuBeds)} UTI, explicitados no portal atual</span></div>
-              <div className="rounded-2xl border border-white/8 p-3 light:border-slate-200"><strong className="block text-sm text-white light:text-slate-900">{formatNumber(planningBeds)}</strong><span className="mt-1 block text-xs text-slate-500">planejamento registrado no dataset, não capacidade instalada</span></div>
+              <StatTile value={formatNumber(d.health.openingReportedBeds)} label="referência reportada na inauguração" valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
+              <StatTile value={formatNumber(currentStatedBeds)} label={formatNumber(d.health.currentStatedWardBeds) + ' enfermaria + ' + formatNumber(d.health.currentStatedIcuBeds) + ' UTI, explicitados no portal atual'} valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
+              <StatTile value={formatNumber(planningBeds)} label="planejamento registrado no dataset, não capacidade instalada" valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
             </div>
             <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre {formatNumber(d.health.openingReportedBeds)} e {formatNumber(currentStatedBeds)}; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
           </div>
@@ -348,18 +316,9 @@ export function SanitationHealthSection() {
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatNumber(plannedBeds)}</strong>
-              <span className="text-xs text-slate-500">{bedReference === 'custom' ? 'leitos no cenário simulado' : bedReference === 'planning' ? 'leitos no planejamento publicado' : 'leitos na referência selecionada'}</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatSigned(plannedBeds - d.health.openingReportedBeds)}</strong>
-              <span className="text-xs text-slate-500">leitos vs. referência de inauguração</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatSigned(scenarioVsCurrent)}</strong>
-              <span className="text-xs text-slate-500">leitos vs. capacidade explicitada no portal atual</span>
-            </div>
+            <StatTile value={formatNumber(plannedBeds)} label={bedReference === 'custom' ? 'leitos no cenário simulado' : bedReference === 'planning' ? 'leitos no planejamento publicado' : 'leitos na referência selecionada'} />
+            <StatTile value={formatSigned(plannedBeds - d.health.openingReportedBeds)} label="leitos vs. referência de inauguração" />
+            <StatTile value={formatSigned(scenarioVsCurrent)} label="leitos vs. capacidade explicitada no portal atual" />
           </div>
 
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50">
@@ -371,14 +330,8 @@ export function SanitationHealthSection() {
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">R$ {formatNumber(d.health.openingInvestmentBrl / 1_000_000, 0)} mi</strong>
-              <span className="text-xs text-slate-500">investimento reportado na inauguração</span>
-            </div>
-            <div className="rounded-2xl border border-white/10 p-3 light:border-slate-200">
-              <strong className="block text-white light:text-slate-900">{formatNumber(d.health.firstYearAttendancesAtLeast)}+</strong>
-              <span className="text-xs text-slate-500">atendimentos no primeiro ano</span>
-            </div>
+            <StatTile value={'R$ ' + formatNumber(d.health.openingInvestmentBrl / 1_000_000, 0) + ' mi'} label="investimento reportado na inauguração" />
+            <StatTile value={formatNumber(d.health.firstYearAttendancesAtLeast) + '+'} label="atendimentos no primeiro ano" />
           </div>
         </Card>
       </div>
