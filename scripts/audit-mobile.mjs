@@ -11,7 +11,12 @@ const files = {
   experience: read('src/components/ExperienceShell.tsx'),
   hero: read('src/components/sections/PostElectionHero.tsx'),
   css: read('src/assets/styles/globals.css'),
-  finalUi: read('src/assets/styles/final-ui.css'),
+  finalUi: [
+    read('src/assets/styles/final-ui.css'),
+    read('src/assets/styles/final-ui/premium-finish.css'),
+    read('src/assets/styles/final-ui/visual-final.css'),
+    read('src/assets/styles/final-ui/site-final.css'),
+  ].join('\n'),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
   guidedCss: read('src/assets/styles/guided-mode.css'),
   visualHardening: exists('src/assets/styles/visual-hardening.css') ? read('src/assets/styles/visual-hardening.css') : '',
