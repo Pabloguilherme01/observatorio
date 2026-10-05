@@ -18,6 +18,22 @@ const appVersion = versionSource.match(/APP_VERSION = '([^']+)'/)?.[1] ?? null;
 const edition = versionSource.match(/EDITION = '([^']+)'/)?.[1] ?? null;
 const major = packageJson.version?.split('.')[0] ?? null;
 
+function parseMajorMinorPatch(value) {
+  const match = /^([0-9]+)\\.([0-9]+)\\.([0-9]+)/.exec(String(value ?? ''));
+  return match ? match.slice(1).map(Number) : null;
+}
+
+function atLeast(version, minimum) {
+  const current = parseMajorMinorPatch(version);
+  const target = parseMajorMinorPatch(minimum);
+  if (!current || !target) return false;
+  for (let index = 0; index < 3; index += 1) {
+    if (current[index] !== target[index]) return current[index] > target[index];
+  }
+  return true;
+}
+
+
 if (packageJson.version === appVersion) pass('package.json e APP_VERSION estão sincronizados.');
 else fail('versão divergente entre package.json e src/config/version.ts.');
 
@@ -26,6 +42,17 @@ else fail('package-lock.json está fora de sincronia com package.json.');
 
 if (edition === 'V' + major) pass('EDITION está alinhada ao major da versão.');
 else fail('EDITION não corresponde ao major da versão.');
+
+const lockEsToolkitVersion = packageLock.packages?.['node_modules/es-toolkit']?.version ?? null;
+const rechartsMajor = parseMajorMinorPatch(packageJson.dependencies?.recharts)?.[0] ?? null;
+const viteMajor = parseMajorMinorPatch(packageJson.devDependencies?.vite)?.[0] ?? null;
+if (rechartsMajor !== null && viteMajor !== null && viteMajor >= 8 && rechartsMajor >= 3) {
+  if (lockEsToolkitVersion && atLeast(lockEsToolkitVersion, '1.47.1')) {
+    pass('Vite 8 + Recharts 3 usam es-toolkit >= 1.47.1, que possui resolução ESM corrigida para compat/*.');
+  } else {
+    fail('Vite 8 + Recharts 3 exigem es-toolkit >= 1.47.1 para evitar a resolução CJS problemática de compat/*.');
+  }
+}
 
 const requiredFiles = [
   'tests/a11y.spec.mjs',
