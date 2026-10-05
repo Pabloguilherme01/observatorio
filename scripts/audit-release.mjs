@@ -61,7 +61,6 @@ const requiredFiles = [
   'tests/mobile-core.spec.mjs',
 
   '.github/workflows/ci.yml',
-  '.github/workflows/ci.yml',
   '.github/workflows/codeql.yml',
   '.github/workflows/deploy-pages.yml',
   '.github/workflows/source-health.yml',
@@ -72,12 +71,17 @@ const requiredFiles = [
   'scripts/audit-workflows.mjs',
   'scripts/audit-styles.mjs',
   'scripts/audit-performance.mjs',
+  'scripts/lib/readCssImportGraph.mjs',
   'scripts/cleanup-tse-automation.mjs',
   'scripts/test-post-election-transition.mjs',
   'src/assets/styles/index.css',
   'src/hooks/useDialogFocus.ts',
   '.github/workflows/cleanup-tse-automation.yml',
 ];
+
+const duplicateRequiredFiles = requiredFiles.filter((file, index) => requiredFiles.indexOf(file) !== index);
+if (duplicateRequiredFiles.length === 0) pass('lista de artefatos obrigatórios não contém duplicatas.');
+else fail('lista de artefatos obrigatórios contém duplicatas: ' + [...new Set(duplicateRequiredFiles)].join(', '));
 
 for (const file of requiredFiles) {
   if (exists(file)) pass('artefato obrigatório presente: ' + file);
