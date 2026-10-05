@@ -34,6 +34,12 @@ function formatIndicatorValue(indicator: MunicipalIndicator & { readonly value: 
   }
 }
 
+const temporalSignature = (indicator: MunicipalIndicator): string | null => {
+  if (indicator.referenceDate) return `date:${indicator.referenceDate}`;
+  const yearBase = indicator.note?.match(/Ano-base\s+(\d{4})/i)?.[1];
+  return yearBase ? `year:${yearBase}` : null;
+};
+
 function IndicatorCard({ indicator, side }: { readonly indicator: MunicipalIndicator & { readonly value: number }; readonly side: 'A' | 'B' }) {
   const source = data.sources.find(item => item.id === indicator.sourceId);
   const sourceUrl = source?.resourceUrl ?? source?.url;
@@ -84,7 +90,7 @@ export function IndicatorComparator() {
     if (!left || !right) return null;
     return {
       unit: left.unit === right.unit,
-      date: Boolean(left.referenceDate && right.referenceDate && left.referenceDate === right.referenceDate),
+      date: Boolean(temporalSignature(left) && temporalSignature(left) === temporalSignature(right)),
       source: left.sourceId === right.sourceId,
     };
   }, [left, right]);
