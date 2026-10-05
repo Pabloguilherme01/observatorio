@@ -170,9 +170,11 @@ export function useResultsFeed(intervalMs = 300000) {
     };
 
     const fetchFeed = async () => {
+      if (!active) return;
+
       const now = Date.now();
       if (now < RESULTS_WINDOW_START || (now > RESULTS_WINDOW_END && endedFetchDone)) {
-        setChecking(false);
+        if (active) setChecking(false);
         return;
       }
 
