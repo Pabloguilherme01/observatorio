@@ -1231,7 +1231,7 @@ d,
   .candidate-card .grid-cols-2{grid-template-columns:1fr 1fr}
 }
 @media(max-width:390px){
-  .candidate-overview-grid{grid-template-columns:1fr!important}
+
   .candidate-overview-card{min-height:auto}
 }
 
