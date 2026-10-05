@@ -193,17 +193,6 @@ export function SanitationHealthSection() {
               ].map(([label, id]) => (
                 <SanitationGapCard key={id} label={label} indicatorId={id} />
               ))}
-                  >
-                    <strong className="block text-xl font-black text-white light:text-slate-900">{formatPercent(Number(indicator?.value ?? 0), 1)}</strong>
-                    <span className="mt-1 block text-xs text-slate-500">{label}</span>
-                    <div className="dashboard-card-meta mt-3">
-                      <span className="dashboard-meta-chip" data-kind={indicator?.status}>Derivado</span>
-                      {indicator?.referenceDate && <span className="dashboard-meta-chip">ref. {formatDate(indicator.referenceDate)}</span>}
-                    </div>
-                    <div className="dashboard-card-action mt-3">Ver fonte e fórmula</div>
-                  </button>
-                );
-              })}
             </div>
           </div>
 
@@ -216,7 +205,7 @@ export function SanitationHealthSection() {
             <p className="mt-2 text-[11px] leading-5 text-slate-500">Este indicador usa outra classificação e outro ano-base. Leia-o separadamente dos percentuais SINISA {sanitationReferenceYear}.</p>
           </div>
 
-<div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <StatTile value={formatPercent(d.sanitation.waterDistributionLossPct, 1)} label="perdas na distribuição de água" />
             <StatTile value={formatNumber(d.sanitation.waterConsumptionLitersPerPersonDay, 1) + ' L'} label="consumo por pessoa/dia" />
             <StatTile value={formatPercent(d.sanitation.householdWasteCollectionPct, 1)} label={'domicílios com coleta de resíduos · SINISA ' + wasteCollectionYear} />
@@ -240,9 +229,9 @@ export function SanitationHealthSection() {
           <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50">
             <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Como ler os números de leitos</div>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
-              <StatTile value={formatNumber(d.health.openingReportedBeds)} label="referência reportada na inauguração" valueClassName="text-sm" labelClassName="mt-1 block" />
-              <StatTile value={formatNumber(currentStatedBeds)} label={formatNumber(d.health.currentStatedWardBeds) + ' enfermaria + ' + formatNumber(d.health.currentStatedIcuBeds) + ' UTI, explicitados no portal atual'} valueClassName="text-sm" labelClassName="mt-1 block" />
-              <StatTile value={formatNumber(planningBeds)} label="planejamento registrado no dataset, não capacidade instalada" valueClassName="text-sm" labelClassName="mt-1 block" />
+              <StatTile value={formatNumber(d.health.openingReportedBeds)} label="referência reportada na inauguração" valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
+              <StatTile value={formatNumber(currentStatedBeds)} label={formatNumber(d.health.currentStatedWardBeds) + ' enfermaria + ' + formatNumber(d.health.currentStatedIcuBeds) + ' UTI, explicitados no portal atual'} valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
+              <StatTile value={formatNumber(planningBeds)} label="planejamento registrado no dataset, não capacidade instalada" valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
             </div>
             <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre {formatNumber(d.health.openingReportedBeds)} e {formatNumber(currentStatedBeds)}; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
           </div>
