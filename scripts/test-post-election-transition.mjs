@@ -22,7 +22,7 @@ const checks = [
   [config.includes('arquivo público, nunca como apuração ao vivo'), 'contrato de resultados distingue arquivo de apuração ao vivo'],
   [resultsHook.includes('let endedFetchDone = false;') && resultsHook.includes('stopPolling();') && resultsHook.includes('Date.now() > RESULTS_WINDOW_END'), 'polling de resultados termina após a última tentativa da janela histórica'],
   [!hero.includes('arquivo auditável') && !hero.includes('proveniência e integridade visíveis'), 'primeira tela evita jargão técnico de auditoria'],
-  [!results.includes('snapshot') && !results.includes('assinatura JWS'), 'resultado público evita jargão técnico desnecessário'],
+  [!results.includes('snapshot') && !results.includes('assinatura JWS') && !results.includes('assinatura digital conferidas'), 'resultado público evita jargão técnico desnecessário'],
   [resultsHook.includes('let requestInFlight = false;') && resultsHook.includes('if (requestInFlight) return;'), 'feed não sobrepõe requisições periódicas'],
   [resultsHook.includes('const controller = new AbortController();') || resultsHook.includes('controller = new AbortController();'), 'feed usa AbortController para o request ativo'],
   [resultsHook.includes('signal: controller.signal'), 'request do feed aceita cancelamento'],
