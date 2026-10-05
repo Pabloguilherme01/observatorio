@@ -118,6 +118,13 @@ must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline per
 must(vite.includes("globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}']") && vite.includes("navigateFallback: '/observatorio/index.html'") && !vite.includes('includeAssets:'), 'VitePWA usa um único caminho de precache para assets públicos e shell offline');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
 must(
+  vite.includes('const getSourcesPayload = () => ({')
+    && vite.includes('schemaVersion: 2')
+    && vite.includes('lastCheckedAt')
+    && vite.includes('note,'),
+  'API pública de fontes expõe verificação e nota metodológica junto à proveniência',
+);
+must(
   vite.includes("globIgnores: ['**/data/tse-results.json']")
     && vite.includes("url.pathname === '/observatorio/data/tse-results.json'")
     && vite.includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
