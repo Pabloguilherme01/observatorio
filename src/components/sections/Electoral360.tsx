@@ -4,6 +4,8 @@ import { electoral360Diff, electoral360Snapshot } from '../../data/electoral360'
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { ElectoralCandidateCard } from './electoral/ElectoralCandidateCard';
+import { ElectoralCandidateProfileDetails } from './electoral/ElectoralCandidateProfileDetails';
 
 const stateLabel: Record<string, string> = {
   first_capture: 'Primeiro snapshot',
@@ -226,41 +228,7 @@ export function Electoral360() {
               Selecione um nome acompanhado para abrir o perfil documental. Nenhum nome é pré-selecionado.
             </div>
           ) : hasLocalCandidateSnapshot && selectedLocalTseCandidate ? (
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Info label="Nome completo" value={selectedLocalTseCandidate.fullName || selectedLocalTseCandidate.name} />
-              <Info label="Nome de urna" value={selectedLocalTseCandidate.name} />
-              <Info label="Partido" value={selectedLocalTseCandidate.party || 'Não informado'} />
-              <Info label="Número" value={String(selectedLocalTseCandidate.ballotNumber || 'Não informado')} />
-              <Info label="Cargo" value={selectedLocalTseCandidate.office || 'Não informado'} />
-              <Info label="Ocupação" value={selectedLocalTseCandidate.occupation || 'Não informado'} />
-              <Info label="Escolaridade" value={selectedLocalTseCandidate.education || 'Não informado'} />
-              <Info label="Snapshot" value={selectedLocalTseCandidate.snapshotDate} />
-              <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3 sm:col-span-2">
-                <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Mídia oficial</div>
-                {selectedLocalTseCandidate.photoAvailableInTseArchive ? (
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-emerald-300/20 bg-emerald-300/5 px-2.5 py-1 text-[11px] font-semibold text-emerald-200">
-                      Foto presente no arquivo TSE validado
-                    </span>
-                    {selectedLocalTseCandidate.photoArchiveUrl && (
-                      <a
-                        href={selectedLocalTseCandidate.photoArchiveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:border-sky-300/30 hover:text-sky-200"
-                      >
-                        Abrir acervo oficial
-                        <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                      </a>
-                    )}
-                  </div>
-                ) : (
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
-                    Não há foto validada para este registro no snapshot atual. O observatório não substitui a mídia por imagem de terceiros.
-                  </p>
-                )}
-              </div>
-            </div>
+            <ElectoralCandidateProfileDetails candidate={selectedLocalTseCandidate} />
           ) : (
             <div className="mt-4 rounded-2xl border border-dashed border-white/10 p-5 text-sm text-slate-500">
               O recorte local ainda não possui um perfil disponível neste snapshot.
@@ -338,16 +306,11 @@ export function Electoral360() {
           localTseCandidates.length ? (
             <div className="mt-5 grid gap-3 md:grid-cols-2">
               {localTseCandidates.map(candidate => (
-                <article key={candidate.sqCandidate} className="rounded-2xl border border-white/8 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h4 className="font-black text-white light:text-slate-900 break-words">{candidate.name}</h4>
-                      <p className="mt-1 text-xs text-slate-500 break-words">{candidate.party} · {candidate.office} · nº {candidate.ballotNumber}</p>
-                      <span className="mt-2 inline-flex max-w-full items-center rounded-full border border-white/8 px-2 py-1 text-[10px] font-semibold text-slate-500 break-words">{candidate.status || 'situação não informada'}</span>
-                    </div>
-                  </div>
-                  <button type="button" onClick={() => setSelectedName(candidate.name)} className="electoral-action-button mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-black text-sky-100">Ver perfil</button>
-                </article>
+                <ElectoralCandidateCard
+                  key={candidate.sqCandidate}
+                  candidate={candidate}
+                  onSelect={setSelectedName}
+                />
               ))}
             </div>
           ) : (
@@ -381,11 +344,3 @@ export function Electoral360() {
   );
 }
 
-function Info({ label, value }: { readonly label: string; readonly value: string }) {
-  return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-3">
-      <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-600">{label}</div>
-      <div className="mt-1 break-words text-sm font-semibold text-white light:text-slate-900">{value}</div>
-    </div>
-  );
-}
