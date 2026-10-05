@@ -164,6 +164,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Instituto Água e Saneamento',
     url: 'https://www.aguaesaneamento.org.br/municipios-e-saneamento/go/aguas-lindas-de-goias',
     nature: 'secondary',
+    referenceDate: '2024-01-01',
     note: 'Painel secundário que reproduz indicadores do SINISA; interpretar o ano-base separadamente.',
     lastCheckedAt: '2026-10-05',
   },
