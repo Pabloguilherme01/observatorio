@@ -11,6 +11,61 @@ const selectorFiles = new Map();
 const exactDuplicateBlocks = new Map();
 const intraFileDuplicateBlocks = new Map();
 
+function normalizeCss(value) {
+  return value.trim().replace(/\s+/g, ' ');
+}
+
+function getAtRuleContext(css, position) {
+  const stack = [];
+  let segmentStart = 0;
+  let quote = null;
+  let comment = false;
+
+  for (let i = 0; i < position; i += 1) {
+    const char = css[i];
+    const next = css[i + 1];
+
+    if (comment) {
+      if (char === '*' && next === '/') {
+        comment = false;
+        i += 1;
+      }
+      continue;
+    }
+
+    if (!quote && char === '/' && next === '*') {
+      comment = true;
+      i += 1;
+      continue;
+    }
+
+    if (quote) {
+      if (char === '\\' && i + 1 < position) {
+        i += 1;
+        continue;
+      }
+      if (char === quote) quote = null;
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === '{') {
+      const header = css.slice(segmentStart, i).trim();
+      stack.push({ header, isAtRule: header.startsWith('@') });
+      segmentStart = i + 1;
+    } else if (char === '}') {
+      stack.pop();
+      segmentStart = i + 1;
+    }
+  }
+
+  return stack.filter(item => item.isAtRule).map(item => normalizeCss(item.header)).join(' > ');
+}
+
 for (const file of files) {
   const full = path.join(styleRoot, file);
   const css = fs.readFileSync(full, 'utf8');
@@ -19,14 +74,15 @@ for (const file of files) {
   console.log(JSON.stringify({ file, kb }));
   if (bytes > maxSourceKb * 1024) failures.push(file + ' excede o teto de fonte de ' + maxSourceKb + ' KB.');
   for (const match of css.matchAll(/(^|})\s*([^@}{][^{}]+)\{([^{}]*)\}/gm)) {
-    const selector = match[2].trim().replace(/\s+/g, ' ');
-    const normalizedBody = match[3].trim().replace(/\s+/g, ' ');
+    const selector = normalizeCss(match[2]);
+    const normalizedBody = normalizeCss(match[3]);
     if (!selector || selector.startsWith('--')) continue;
     const set = selectorFiles.get(selector) ?? new Set();
     set.add(file);
     selectorFiles.set(selector, set);
     if (normalizedBody) {
-      const exactKey = selector + '{' + normalizedBody + '}';
+      const context = getAtRuleContext(css, match.index + (match[1]?.length ?? 0));
+      const exactKey = context + '\n' + selector + '{' + normalizedBody + '}';
       const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
       blocks.push(file);
       exactDuplicateBlocks.set(exactKey, blocks);
@@ -42,7 +98,7 @@ const crossFileDuplicates = [...selectorFiles.entries()]
   .map(([selector, set]) => ({ selector, files: [...set] }));
 const repeatedExactBlocks = [...exactDuplicateBlocks.entries()]
   .filter(([, files]) => files.length >= 2)
-  .map(([block, files]) => ({ block: block.slice(0, 240), files }))
+  .map(([block, files]) => ({ block: block.split('\n').slice(-1)[0].slice(0, 240), files }))
   .sort((a, b) => b.files.length - a.files.length || b.block.length - a.block.length);
 const intraFileDuplicates = [...intraFileDuplicateBlocks.entries()]
   .flatMap(([file, blocks]) => [...blocks.entries()].filter(([, count]) => count > 1).map(([block, count]) => ({ file, count, block: block.slice(0, 240) })));
