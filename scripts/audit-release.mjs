@@ -114,6 +114,8 @@ if (
   && deploy.includes('Require all release gates for exact SHA')
   && deploy.includes('ci.yml quality.yml browser.yml codeql.yml')
   && deploy.includes('sort_by(.created_at) | reverse | .[0]')
+  && deploy.includes('Ensure main still points to validated SHA')
+  && deploy.includes('git/ref/heads/main')
 ) pass('Deploy preserva a cadeia completa CI + Quality + Browser + CodeQL -> SHA -> publicação.');
 else fail('Deploy não exige todos os gates de release no mesmo SHA.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
