@@ -6,12 +6,10 @@ test.describe('Acessibilidade real no navegador', () => {
     await page.goto('./');
     await expect(page.locator('#main-content')).toBeVisible();
 
-    const results = await new AxeBuilder({ page })
-      .disableRules(['color-contrast'])
-      .analyze();
+    const results = await new AxeBuilder({ page }).analyze();
 
-    const severe = results.violations.filter(item => item.impact === 'critical' || item.impact === 'serious');
-    expect(severe).toEqual([]);
+    const blocking = results.violations.filter(item => item.impact === 'critical' || item.impact === 'serious');
+    expect(blocking).toEqual([]);
   });
 
   test('fluxos principais continuam acessíveis por teclado', async ({ page }) => {
