@@ -4,6 +4,7 @@ const indicatorStatusLabels: Record<string, string> = {
   planned: 'Planejado',
   derived: 'Derivado',
   historical: 'Histórico',
+  legacy: 'Legado',
 };
 
 export function formatIndicatorStatus(status?: string, fallback?: string) {
