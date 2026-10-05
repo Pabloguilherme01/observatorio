@@ -24,12 +24,12 @@ export function ResultsLiveBanner() {
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" aria-hidden="true" />
             <div>
               <strong className="block text-sm text-slate-100 light:text-amber-900">
-                {ended ? 'Arquivo oficial de resultados não disponível neste snapshot' : 'Resultados oficiais · aguardando arquivo TSE'}
+                {ended ? 'Resultado oficial ainda não disponível' : 'Resultados oficiais · aguardando arquivo TSE'}
               </strong>
               <span className="text-xs leading-5 text-slate-500 light:text-slate-600">
                 {ended
-                  ? 'A janela de apuração terminou. O Observatório não inventa nem reconstrói resultados que não estejam em um arquivo oficial validado.'
-                  : 'Nenhum número é preenchido manualmente; o painel só exibe dados depois da validação do arquivo oficial.'}
+                  ? 'A janela de apuração terminou. O resultado só aparece aqui quando existe um arquivo oficial validado.'
+                  : 'Os números só aparecem depois que o arquivo oficial é validado.'}
               </span>
             </div>
           </div>
@@ -47,7 +47,6 @@ export function ResultsLiveBanner() {
         ? 'Resultado oficial · último registro preservado'
         : 'Resultado oficial · atualização';
 
-  const verified = data.integrity?.files.filter(file => file.signatureStatus === 'verified').length ?? 0;
   const integrity = data.integrity?.allVerified
     ? `Fonte oficial e assinatura digital conferidas pelo TSE`
     : 'verificação técnica incompleta; confira a fonte oficial';
@@ -73,7 +72,7 @@ export function ResultsLiveBanner() {
             </div>
           </div>
           <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">
-            {checking ? 'verificando' : archived ? 'arquivo verificável' : 'atualização periódica'}
+            {checking ? 'verificando' : archived ? 'resultado conferido' : 'atualização'}
           </span>
         </div>
 
