@@ -88,8 +88,14 @@ if (/jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae
 
 
 const quality = workflows['.github/workflows/quality.yml'];
-if (stepNames(quality, 'quality').includes('Audit workflow structure')) pass('Quality audita a estrutura dos workflows.');
-else fail('Quality não audita a estrutura dos workflows.');
+const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\\s]+)/g)].map(match => match[1]);
+const qualityRunCommands = [...quality.matchAll(/run:\s*npm run ([^\\s]+)/g)].map(match => match[1]);
+const duplicatedQualityCommands = qualityRunCommands.filter(command => ciRunCommands.includes(command));
+if (qualityRunCommands.length === 2 && qualityRunCommands.includes('audit:provenance') && qualityRunCommands.includes('audit:candidate-snapshot') && duplicatedQualityCommands.length === 0) {
+  pass('Quality mantém apenas gates independentes de proveniência e snapshot TSE, sem duplicar comandos do CI.');
+} else {
+  fail('Quality voltou a duplicar gates do CI ou perdeu seus dois contratos independentes.');
+}
 
 const deploy = workflows['.github/workflows/deploy-pages.yml'];
 if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /event.workflow_run.event == 'push'/.test(deploy) && /ref: \$\{\{ env.DEPLOY_SHA \}\}/.test(deploy)) {
