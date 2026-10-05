@@ -640,6 +640,8 @@ test('modos de leitura persistem e podem avançar por atalho', async ({ page }) 
 
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
+  await page.waitForSelector('#root');
+  await page.waitForFunction(() => Boolean(document.querySelector('[aria-label="Dados preparados para conferência"]')) || Boolean(document.querySelector('#root')));
   await page.evaluate(() => {
     const quizKey = Object.keys(localStorage).find(key => /quiz-best-scores$/.test(key));
     if (!quizKey) localStorage.setItem('observatorio-v45-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
