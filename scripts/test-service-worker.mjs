@@ -9,9 +9,11 @@ const cacheMajor = String(packageJson.version).split('.')[0];
 assert.match(sw, /createHandlerBoundToURL\(["']\/observatorio\/index\.html["']\)/);
 assert.match(sw, /\.pathname\.startsWith\(["']\/observatorio\/api\/v1\/["']\)/);
 assert.doesNotMatch(sw, /BASE_PATH\s*\+\s*API_ROOT/);
-for (const suffix of ['static', 'fonts', 'documents', 'api']) {
+for (const suffix of ['static', 'fonts', 'documents', 'results', 'api']) {
   assert.match(sw, new RegExp(`observatorio-${suffix}-v${cacheMajor}`));
 }
+assert.match(sw, /NetworkFirst/);
+assert.match(sw, /tse-results\.json/);
 assert.doesNotMatch(sw, /observatorio-(?:static|fonts|documents|api)-v13/);
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-192.png' && icon.purpose.includes('maskable')));
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-512.png' && icon.purpose.includes('maskable')));
