@@ -237,7 +237,7 @@ must(
     && browserWorkflow.includes('non_blocking: false')
     && browserWorkflow.includes('name: Browser · build production')
     && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
-    && browserWorkflow.includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')
+    && browserWorkflow.includes('actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131')
     && browserWorkflow.includes('needs: build')
     && read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
     && !read('playwright.config.mjs').includes("npm run build && npm run preview")
