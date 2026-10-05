@@ -9,7 +9,7 @@ const files = {
   main: read('src/main.tsx'),
   app: read('src/app/App.tsx'),
   experience: read('src/components/ExperienceShell.tsx'),
-  hero: read('src/components/sections/HeroCountdown.tsx'),
+  hero: read('src/components/sections/PostElectionHero.tsx'),
   css: read('src/assets/styles/globals.css'),
   finalUi: read('src/assets/styles/final-ui.css'),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
