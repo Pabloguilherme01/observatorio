@@ -61,7 +61,7 @@ const requiredFiles = [
   'tests/mobile-core.spec.mjs',
 
   '.github/workflows/ci.yml',
-  '.github/workflows/quality.yml',
+  '.github/workflows/ci.yml',
   '.github/workflows/codeql.yml',
   '.github/workflows/deploy-pages.yml',
   '.github/workflows/source-health.yml',
@@ -85,7 +85,7 @@ for (const file of requiredFiles) {
 }
 
 const ci = read('.github/workflows/ci.yml');
-const quality = read('.github/workflows/quality.yml');
+const quality = read('.github/workflows/ci.yml');
 const deploy = read('.github/workflows/deploy-pages.yml');
 const syncTse = read('.github/workflows/sync-tse-2026.yml');
 const syncResults = read('.github/workflows/sync-results-2026.yml');
