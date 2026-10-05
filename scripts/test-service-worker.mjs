@@ -3,6 +3,7 @@ import { strict as assert } from 'node:assert';
 
 const sw = readFileSync('dist/sw.js', 'utf8');
 const manifest = JSON.parse(readFileSync('dist/manifest.webmanifest', 'utf8'));
+const viteConfig = readFileSync('vite.config.ts', 'utf8');
 const packageJson = JSON.parse(readFileSync('package.json', 'utf8'));
 const cacheMajor = String(packageJson.version).split('.')[0];
 
