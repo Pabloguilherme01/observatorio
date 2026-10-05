@@ -20,7 +20,7 @@ export function PostElectionHero() {
             <Badge>{technical ? EDITION + ' · arquivo + método' : 'Dados públicos · fontes rastreáveis'}</Badge>
             {technical && <Badge>Resultados consolidados</Badge>}
           </div>
-          <span className="hero-updated"><Database aria-hidden="true" /> Painel atualizado em {updatedAt}</span>
+          <span className="hero-updated"><Database aria-hidden="true" /> Edição atualizada em {updatedAt}</span>
         </div>
         <div className="hero-layout">
           <div className="hero-copy">
