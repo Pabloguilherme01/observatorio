@@ -4,6 +4,7 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
 import { copyText } from '../../lib/clipboard';
 import { buildCanonicalUrl, getPublicServiceQuery, replaceCurrentUrl, urlParamKeys } from '../../lib/urlState';
+import { OfficialResourceCard } from './civic/OfficialResourceCard';
 
 const priorityPublicServices = [
   { icon: Pill, title: 'Medicamentos SUS', description: 'Consulte a lista oficial de medicamentos do município.', href: 'https://acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/outras_informacoes/medicamentos_sus' },
@@ -246,44 +247,17 @@ export function CivicActionHub() {
         )}
 
         <div className="official-resource-grid official-resource-grid-local">
-          {visibleMunicipalServices.map(service => {
-            const Icon = service.icon;
-            const cta = 'cta' in service && typeof service.cta === 'string' ? service.cta : null;
-            return (
-              <a
-                key={service.title}
-                href={service.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="official-resource-card"
-                aria-label={`${cta ?? 'Abrir serviço'}: ${service.title} — canal oficial em nova aba`}
-              >
-                <span className="official-resource-icon" aria-hidden="true"><Icon className="h-5 w-5" /></span>
-                <span className="min-w-0 flex-1">
-                  <strong>{service.title}</strong>
-                  <small>{service.description}</small>
-                  {cta && <em>{cta}</em>}
-                </span>
-                <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
-              </a>
-            );
-          })}
+          {visibleMunicipalServices.map(service => (
+            <OfficialResourceCard key={service.title} service={service} />
+          ))}
         </div>
 
         {technical && !serviceQuery && <details className="official-more">
           <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
           <div className="official-more-grid">
-            {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => {
-              const Icon = service.icon;
-              const cta = 'cta' in service && typeof service.cta === 'string' ? service.cta : null;
-              return (
-                <a key={service.title} href={service.href} target="_blank" rel="noopener noreferrer" className="official-resource-card compact">
-                  <span className="official-resource-icon small" aria-hidden="true"><Icon className="h-4 w-4" /></span>
-                  <span className="min-w-0 flex-1"><strong>{service.title}</strong><small>{service.description}</small>{cta && <em>{cta}</em>}</span>
-                  <ExternalLink className="official-resource-arrow h-3.5 w-3.5" aria-hidden="true" />
-                </a>
-              );
-            })}
+            {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => (
+              <OfficialResourceCard key={service.title} service={service} compact />
+            ))}
           </div>
         </details>}
       </div>
