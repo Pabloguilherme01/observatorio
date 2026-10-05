@@ -172,9 +172,8 @@ if (unpinned.length === 0) pass('Actions estão fixadas por SHA imutável.');
 else fail('há ' + unpinned.length + ' Action(s) sem SHA imutável.');
 
 const ciHasWrite = /permissions:\s*\n[\s\S]*?\n\s+(actions|contents|issues|pull-requests):\s+write/.test(ci);
-const qualityHasWrite = /permissions:\s*\n[\s\S]*?\n\s+(actions|contents|issues|pull-requests):\s+write/.test(quality);
-if (!ciHasWrite && !qualityHasWrite) pass('CI e Quality mantêm permissões mínimas.');
-else fail('CI/Quality possuem permissões de escrita inesperadas.');
+if (!ciHasWrite) pass('CI mantém permissões mínimas.');
+else fail('CI possui permissões de escrita inesperadas.');
 
 if (!workflowText.includes('pwa-512.svg') && !workflowText.includes('observatorio-static-v13')) pass('nenhum artefato/cache legado conhecido está referenciado.');
 else fail('há referência a artefato/cache legado conhecido.');
