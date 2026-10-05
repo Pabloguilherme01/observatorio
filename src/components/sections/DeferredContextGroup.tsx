@@ -1,7 +1,6 @@
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { FreshnessBanner } from './FreshnessBanner';
 import { SnapshotChanges } from './SnapshotChanges';
-import { ResultsLiveBanner } from './ResultsLiveBanner';
 import { ContextComparison } from './ContextComparison';
 import { ElectoralProfile } from './ElectoralProfile';
 import { DemographicDynamic } from './DemographicDynamic';
@@ -16,8 +15,6 @@ export default function DeferredContextGroup() {
 
   return <>
     <FreshnessBanner />
-    <ResultsLiveBanner />
-
     {!summary && <DemographicDynamic />}
     {!summary && <TransportCalculator />}
     {!summary && <SanitationHealthSection />}
