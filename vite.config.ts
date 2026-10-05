@@ -71,7 +71,17 @@ const getSourcesPayload = () => ({
   schemaVersion: 2,
   generatedAt: new Date().toISOString(),
   sources: sourceRegistry.map(({ id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, lastCheckedAt, nature, note }) => ({
-    id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, lastCheckedAt, nature, note,
+    id,
+    label,
+    institution,
+    url,
+    resourceUrl: resourceUrl ?? null,
+    updateFrequency: updateFrequency ?? null,
+    referenceDate: referenceDate ?? null,
+    publishedAt: publishedAt ?? null,
+    lastCheckedAt,
+    nature,
+    note: note ?? null,
   })),
 });
 
