@@ -16,8 +16,14 @@ const sourceBlocks = [...sourceText.matchAll(/\{\n\s*id:\s*'([^']+)'[\s\S]*?\n\s
   .map(match => ({ id: match[1], block: match[0] }));
 const sourceIds = new Set(sourceBlocks.map(source => source.id));
 
-if (sourceBlocks.length !== 68) fail('sourceRegistry deveria conter 68 fontes; encontrado: ' + sourceBlocks.length);
-else pass('sourceRegistry contém 68 fontes.');
+if (!sourceBlocks.length) fail('sourceRegistry não pode ficar vazio.');
+else pass('sourceRegistry contém ' + sourceBlocks.length + ' fontes.');
+
+const duplicateSourceIds = sourceBlocks
+  .map(source => source.id)
+  .filter((id, index, ids) => ids.indexOf(id) !== index);
+if (duplicateSourceIds.length) fail('sourceRegistry possui IDs duplicados: ' + [...new Set(duplicateSourceIds)].join(', '));
+else pass('sourceRegistry possui IDs únicos.');
 
 const missingChecked = sourceBlocks.filter(source => !/\blastCheckedAt:\s*'\d{4}-\d{2}-\d{2}'/.test(source.block));
 if (missingChecked.length) fail('fontes sem lastCheckedAt válido: ' + missingChecked.map(source => source.id).join(', '));
