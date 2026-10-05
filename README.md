@@ -82,9 +82,10 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-**V44.10.1 — Observatório de Dados Cívicos e Eleitorais.**
+**V45.0.0 — Observatório Cívico e Eleitoral.**
 
 - Quatro modos de leitura (Resumo, Explicado, Guiado, Detalhado) com preferência persistida e links compartilháveis.
+- Edição V45 pós-1º turno: a contagem regressiva foi retirada e a interface passou a priorizar resultados, histórico e fiscalização cívica.
 - Quiz com 200 perguntas em 5 fases de dificuldade (40 por fase), com desbloqueio progressivo, explicação e fonte por questão.
 - Aprendizado Guiado com trilha de 6 etapas, perguntas-guia, glossário de status e progresso local reiniciável.
 - Mapa de evidências reservado ao modo Detalhado, em mini cards de auditoria.
@@ -110,11 +111,11 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 - Cenários hipotéticos de tarifa sem confundir hipótese com dado oficial
 - PWA com cache local para recursos da aplicação
 
-### Estado da sincronização eleitoral
+### Estado da sincronização eleitoral e resultados
 
 A edição atual mantém uma captura de candidatos em escopo `watchlist`; quantidade de linhas de origem, correspondências, estado e horário ficam no metadado versionado do snapshot, evitando números fixos na documentação. O metadado preserva a URL de recurso oficial do TSE e também registra o método de transporte usado na captura histórica, por isso a interface não trata esse snapshot como uma consulta ao vivo. O workflow `.github/workflows/sync-tse-2026.yml` executa captura e validação automatizadas. O recorte atual é uma watchlist estadual com evidência documental de vínculo local, não uma lista municipal completa.
 
-A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
+A divulgação de resultados usa os arquivos oficiais JSON/JWS do TSE. Depois da votação de 4 de outubro, resultados completos passam a ser exibidos como snapshot histórico verificável; a arquitetura continua preparada para eventual segundo turno. O pipeline consulta a configuração `ele-c.json`, resolve o município `93343`, baixa os pares JSON/JWS por cargo, verifica a assinatura Ed25519 com a chave pública oficial fixada pelo TSE e só então publica o snapshot local.
 
 ### Limitações editoriais
 

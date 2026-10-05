@@ -4,7 +4,7 @@ export const RESULTS_FEED_SCHEMA_VERSION = 3;
 export const RESULTS_WINDOW = {
   start: '2026-10-04T17:00:00-03:00',
   end: '2026-10-26T23:59:59-03:00',
-  note: 'Janela pública de resultados; a preparação técnica do feed ocorre antes dela, sem exibir alerta de apuração ao visitante.',
+  note: 'Janela histórica de publicação da apuração. Após o encerramento, o snapshot validado permanece como arquivo público, nunca como apuração ao vivo.',
 } as const;
 
 export const RESULTS_LIVE_MAX_AGE_MS = 15 * 60 * 1000;
