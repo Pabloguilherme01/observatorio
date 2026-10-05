@@ -41,7 +41,6 @@ function stepNames(text, job) {
 const required = [
   '.github/workflows/ci.yml',
   '.github/workflows/browser.yml',
-  '.github/workflows/quality.yml',
   '.github/workflows/codeql.yml',
   '.github/workflows/deploy-pages.yml',
   '.github/workflows/source-health.yml',
@@ -87,14 +86,11 @@ if (/jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
 
-const quality = workflows['.github/workflows/quality.yml'];
 const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
-const qualityRunCommands = [...quality.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
-const duplicatedQualityCommands = qualityRunCommands.filter(command => ciRunCommands.includes(command));
-if (qualityRunCommands.length === 2 && qualityRunCommands.includes('audit:provenance') && qualityRunCommands.includes('audit:candidate-snapshot') && duplicatedQualityCommands.length === 0) {
-  pass('Quality mantém apenas gates independentes de proveniência e snapshot TSE, sem duplicar comandos do CI.');
+if (ciRunCommands.includes('audit:provenance') && ciRunCommands.includes('audit:candidate-snapshot')) {
+  pass('CI consolidado preserva os gates de proveniência e snapshot TSE sem workflow paralelo.');
 } else {
-  fail('Quality voltou a duplicar gates do CI ou perdeu seus dois contratos independentes.');
+  fail('CI consolidado perdeu os contratos de proveniência ou snapshot TSE.');
 }
 
 const deploy = workflows['.github/workflows/deploy-pages.yml'];
