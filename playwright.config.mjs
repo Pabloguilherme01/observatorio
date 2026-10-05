@@ -25,7 +25,7 @@ export default defineConfig({
     },
     {
       name: 'firefox-desktop',
-      testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['Desktop Firefox'] },
     },
     {
@@ -35,7 +35,7 @@ export default defineConfig({
     },
     {
       name: 'chrome-android',
-      testMatch: /(cross-browser-ui|mobile-repagination|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['Pixel 7'] },
     },
     {
