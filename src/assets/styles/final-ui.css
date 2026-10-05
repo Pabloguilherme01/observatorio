@@ -2584,8 +2584,6 @@ html {
   .today-rail,.topic-rail,.mobile-rail,.quiz-phase-grid {
     scrollbar-width: none; overscroll-behavior-x: contain;
   }
-  .today-rail::-webkit-scrollbar,.topic-rail::-webkit-scrollbar,
-  .mobile-rail::-webkit-scrollbar,.quiz-phase-grid::-webkit-scrollbar { display: none; }
 
   :where(button,a,[role="button"],summary) { -webkit-tap-highlight-color: transparent; }
   :where(button,a,[role="button"],summary):focus-visible {
