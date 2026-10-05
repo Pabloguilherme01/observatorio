@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { DashboardMetrics } from '../components/sections/DashboardMetrics';
+const DashboardMetrics = lazy(() => import('../components/sections/DashboardMetrics').then(module => ({ default: module.DashboardMetrics })));
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { PostElectionHero } from '../components/sections/PostElectionHero';
@@ -321,7 +321,7 @@ export function App() {
             <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
-            <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><DashboardMetrics /></SectionErrorBoundary></div>
+            <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><Deferred><DashboardMetrics /></Deferred></SectionErrorBoundary></div>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
