@@ -2,7 +2,7 @@ import { ArrowDown, ArrowRight, Wallet } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatDate, formatPercent } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
-import { dispatchInspect } from '../DataInspector';
+import { dispatchInspect } from '../../lib/dataInspectorEvents';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 
