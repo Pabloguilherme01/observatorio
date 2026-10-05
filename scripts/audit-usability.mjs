@@ -197,7 +197,10 @@ if (inspector.includes("url: canonicalUrl") && inspector.includes("copyText(cano
 else fail('ações de link do inspetor divergem entre si');
 
 const search = texts.find(item => item.file === 'src/components/layout/SearchModal.tsx')?.content ?? '';
-const searchQuickAnswer = texts.find(item => item.file === 'src/components/layout/searchQuickAnswer.ts')?.content ?? '';
+const searchQuickAnswer = texts
+  .filter(item => item.file === 'src/components/layout/searchQuickAnswer.ts' || item.file.startsWith('src/components/layout/searchQuickAnswer/'))
+  .map(item => item.content)
+  .join('\n');
 const searchCombined = search + '\n' + searchQuickAnswer;
 const dialogFocus = texts.find(item => item.file === 'src/hooks/useDialogFocus.ts')?.content ?? '';
 if (!search.includes('Resposta rápida') || !search.includes('ArrowDown')) fail('Busca não oferece resposta rápida e navegação por teclado');
