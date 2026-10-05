@@ -118,7 +118,6 @@ if (
   && read('playwright.config.mjs').includes('mobile-core')
 ) pass('browser gate executa build de produção, mantém Safari desktop bloqueante e cobre o mobile-core nos dispositivos móveis.');
 else fail('browser gate ainda não valida produção, Safari bloqueante ou cobertura mobile-core.');
-else fail('browser gate ainda não valida o artefato de produção ou mantém navegador crítico não bloqueante.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
 const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));
