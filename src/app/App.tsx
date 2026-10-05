@@ -12,7 +12,7 @@ const AudienceHub = lazy(() => import('../components/AudienceHub').then(module =
 const ExecutiveSummary = lazy(() => import('../components/sections/ExecutiveSummary').then(module => ({ default: module.ExecutiveSummary })));
 const GuidedLearningPanel = lazy(() => import('../components/sections/GuidedLearningPanel').then(module => ({ default: module.GuidedLearningPanel })));
 const PublicUtilityGuide = lazy(() => import('../components/sections/PublicUtilityGuide').then(module => ({ default: module.PublicUtilityGuide })));
-import { DataInspector } from '../components/DataInspector';
+const DataInspector = lazy(() => import('../components/DataInspector').then(module => ({ default: module.DataInspector })));
 import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
 import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
@@ -329,7 +329,7 @@ export function App() {
             <div className="mode-scope mode-scope-evidence"><SectionErrorBoundary label="Qualidade e evidências"><DeferredEvidenceGroup /></SectionErrorBoundary></div>
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
-          <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Inspetor de dados"><Deferred><DataInspector /></Deferred></SectionErrorBoundary>
           <Footer />
         </ExperienceShell>
         </ContrastProvider>
