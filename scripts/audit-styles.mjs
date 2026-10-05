@@ -96,6 +96,13 @@ for (const file of files) {
 const crossFileDuplicates = [...selectorFiles.entries()]
   .filter(([, set]) => set.size >= 2)
   .map(([selector, set]) => ({ selector, files: [...set] }));
+
+const sameContextExactDuplicates = [...exactDuplicateBlocks.entries()]
+  .filter(([, files]) => new Set(files).size >= 2)
+  .map(([block, files]) => ({
+    block: block.split('\n').slice(-1)[0].slice(0, 240),
+    files: [...new Set(files)],
+  }));
 const repeatedExactBlocks = [...exactDuplicateBlocks.entries()]
   .filter(([, files]) => files.length >= 2)
   .map(([block, files]) => ({ block: block.split('\n').slice(-1)[0].slice(0, 240), files }))
@@ -109,6 +116,7 @@ console.log(JSON.stringify({
   crossFileDuplicateSelectors: crossFileDuplicates.length,
   exactDuplicateBlocks: repeatedExactBlocks.length,
   intraFileExactDuplicateBlocks: intraFileDuplicates.length,
+  sameContextExactDuplicateBlocks: sameContextExactDuplicates.length,
   largestRepeatedSelectors: crossFileDuplicates.slice(0, 20),
 }, null, 2));
 
@@ -120,6 +128,11 @@ if (repeatedExactBlocks.length > 120) {
 }
 if (intraFileDuplicates.length) {
   intraFileDuplicates.forEach(({ file, count }) => failures.push(file + ' possui ' + count + ' bloco(s) CSS exatamente repetido(s) dentro do mesmo arquivo.'));
+}
+if (sameContextExactDuplicates.length) {
+  sameContextExactDuplicates.forEach(({ block, files }) =>
+    failures.push('bloco CSS exatamente duplicado no mesmo contexto entre arquivos: ' + files.join(', ') + ' :: ' + block),
+  );
 }
 warnings.forEach(message => console.log('WARN ' + message));
 if (failures.length) {
