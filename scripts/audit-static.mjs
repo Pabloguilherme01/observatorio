@@ -118,6 +118,20 @@ must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline per
 must(vite.includes("globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}']") && vite.includes("navigateFallback: '/observatorio/index.html'") && !vite.includes('includeAssets:'), 'VitePWA usa um único caminho de precache para assets públicos e shell offline');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
 must(
+  vite.includes("globIgnores: ['**/data/tse-results.json']")
+    && vite.includes("url.pathname === '/observatorio/data/tse-results.json'")
+    && vite.includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
+    && vite.includes("handler: 'NetworkFirst'"),
+  'feed oficial de resultados não entra no precache estático e possui cache dinâmico próprio',
+);
+must(
+  fs.existsSync(path.join(root, 'tests/a11y.spec.mjs'))
+    && read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
+    && read('.github/workflows/browser.yml').includes('a11y'),
+  'suíte de acessibilidade real usa Axe no navegador e entra no workflow cross-browser',
+);
+
+must(
   vite.includes("const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0]")
     && vite.includes('observatorio-static-v${RUNTIME_CACHE_VERSION}')
     && vite.includes('observatorio-fonts-v${RUNTIME_CACHE_VERSION}')
