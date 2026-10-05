@@ -117,7 +117,9 @@ test('healthcheck técnico usa base pública e permite tentar novamente', async 
   const retry = publicationCard.getByRole('button', { name: 'Atualizar status' });
   await retry.click();
   await expect(publicationCard.getByRole('status')).toContainText(/healthcheck informa estado operacional/i);
-  await expect(page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).getByText('abc1234', { exact: true })).toBeVisible();
+  const publicationParity = page.locator('.trust-card').filter({ hasText: 'Paridade de publicação' }).first();
+  await expect(publicationParity).toContainText('abc1234');
+  await expect(publicationParity).toContainText('health-v1');
 
   expect(calls).toBe(2);
   expect(requestedPaths.every(path => path.endsWith('/observatorio/api/v1/health.json'))).toBeTruthy();
