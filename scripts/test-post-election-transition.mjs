@@ -13,7 +13,7 @@ const checks = [
   [!hero.includes('useCountdown'), 'hero não depende mais de contagem regressiva'],
   [hero.includes('resultado do 1º turno') || hero.includes('pós-1º turno'), 'hero identifica explicitamente o estado pós-1º turno'],
   [results.includes('id="resultados"'), 'resultados possuem âncora pública'],
-  [results.includes('Resultado oficial') && results.includes('resultado histórico'), 'resultados completos são apresentados como registro histórico'],
+  [results.includes('Resultado oficial') && results.includes('registro histórico'), 'resultado completo é apresentado como registro histórico'],
   [results.includes('Fonte oficial e assinatura digital conferidas pelo TSE') || results.includes('verificação técnica incompleta'), 'status de verificação permanece compreensível ao público'],
   [packageJson.version === (version.match(/APP_VERSION = '([^']+)'/)?.[1] ?? ''), 'package.json e APP_VERSION estão sincronizados'],
   [version.includes("EDITION = 'V" + packageJson.version.split('.')[0] + "'"), 'EDITION acompanha o major da versão'],

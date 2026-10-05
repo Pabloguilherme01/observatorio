@@ -1,5 +1,9 @@
-import { test, expect } from 'playwright/test';
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { test, expect } from 'playwright/test';
+
+const navigationSource = readFileSync(resolve('src/config/navigation.ts'), 'utf8');
+const configuredMoreItems = (navigationSource.match(/group: 'more'/g) ?? []).length;
 
 async function openSection(page, id) {
   await page.evaluate(sectionId => {
@@ -257,7 +261,8 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
   const menu = page.getByRole('menu', { name: 'Mais áreas do observatório' });
   await expect(layer).toBeVisible();
   await expect(menu).toBeVisible();
-  await expect(menu.getByRole('menuitem')).toHaveCount(8);
+  expect(configuredMoreItems).toBeGreaterThan(0);
+  await expect(menu.getByRole('menuitem')).toHaveCount(configuredMoreItems + 1);
   await expect(menu.getByRole('menuitem').first()).toBeFocused();
 
   const menuBox = await menu.evaluate(node => {
