@@ -1211,8 +1211,8 @@ test('mostra resultado completo após o encerramento da janela', async ({ page }
   feed.state = 'complete';
   feed.capturedAt = '2026-10-26T22:00:00-03:00';
   feed.turn = 2;
-  feed.entries[0].electionCode = 6259;
-  feed.entries[0].sourceFile = 'go93343-c0003-e006259-u.json';
+  feed.entries[0].electionCode = 7001;
+  feed.entries[0].sourceFile = 'go93343-c0003-e007001-u.json';
   feed.integrity.files[0].sourceFile = feed.entries[0].sourceFile;
   await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
   await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
