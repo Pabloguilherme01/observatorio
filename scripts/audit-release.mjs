@@ -29,6 +29,7 @@ else fail('EDITION não corresponde ao major da versão.');
 
 const requiredFiles = [
   'tests/a11y.spec.mjs',
+  'tests/public-api-contract.spec.mjs',
 
   '.github/workflows/ci.yml',
   '.github/workflows/quality.yml',
@@ -97,8 +98,23 @@ if (
   && read('vite.config.ts').includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
 ) pass('feed de resultados permanece fora do precache e usa cache dinâmico.');
 else fail('feed de resultados pode ficar congelado no precache.');
-if (read('tests/a11y.spec.mjs').includes('@axe-core/playwright') && read('.github/workflows/browser.yml').includes('a11y')) pass('suíte Axe está integrada ao gate cross-browser.');
-else fail('suíte Axe não está integrada ao gate cross-browser.');
+if (
+  read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
+  && !read('tests/a11y.spec.mjs').includes("disableRules(['color-contrast'])")
+  && read('.github/workflows/browser.yml').includes('a11y')
+) pass('suíte Axe está integrada ao gate cross-browser com contraste habilitado.');
+else fail('suíte Axe não está integrada com o gate de contraste esperado.');
+if (
+  read('tests/public-api-contract.spec.mjs').includes('./api/v1/sources.json')
+  && read('tests/public-api-contract.spec.mjs').includes('lastCheckedAt')
+) pass('contrato da API pública possui cobertura automatizada.');
+else fail('contrato da API pública está sem cobertura automatizada.');
+if (
+  read('playwright.config.mjs').includes("npm run build && npm run preview -- --host 127.0.0.1 --port 4173")
+  && read('.github/workflows/browser.yml').includes('safari-desktop')
+  && read('.github/workflows/browser.yml').includes('non_blocking: false')
+) pass('browser gate executa build de produção e mantém Safari desktop bloqueante.');
+else fail('browser gate ainda não valida o artefato de produção ou mantém navegador crítico não bloqueante.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
 const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));
