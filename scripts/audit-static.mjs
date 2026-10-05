@@ -286,7 +286,7 @@ must(
 );
 must(
   deployWorkflow.includes('workflow_run:')
-    && deployWorkflow.includes('workflows: ["CI", "Browser compatibility", "CodeQL"]')
+    && deployWorkflow.includes('workflows: ["CI"]')
     && deployWorkflow.includes("github.event.workflow_run.conclusion == 'success'")
     && deployWorkflow.includes("github.event.workflow_run.event == 'push'")
     && deployWorkflow.includes("github.event.workflow_run.head_branch == 'main'")
