@@ -1,7 +1,6 @@
 /* Mobile final layer · consolidated breakpoints */
 
 @media (max-width:767px){
-:root{--mobile-nav-height:64px}
 html{scroll-padding-top:72px;scroll-padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px))}
 body{padding-bottom:calc(var(--mobile-nav-height) + env(safe-area-inset-bottom,0px));overflow-x:clip;-webkit-text-size-adjust:100%}
 #root,main,section{min-width:0;max-width:100%}
