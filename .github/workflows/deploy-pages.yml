@@ -82,6 +82,15 @@ jobs:
           echo "FAIL release gates did not converge for $DEPLOY_SHA."
           exit 1
 
+      - name: Ensure main still points to validated SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          main_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$main_sha" = "${DEPLOY_SHA}"
+          echo "Main head still matches validated SHA ${DEPLOY_SHA}."
       - name: Dependency vulnerability gate
         run: npm run audit:deps
 
