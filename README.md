@@ -61,7 +61,7 @@ npm run audit:bundle
 npm run audit:performance
 ```
 
-Os workflows **Quality** e **CI** executam em cada pull request e em pushes na `main`. O Quality mantém uma auditoria independente; o CI é o gate completo de publicação, reunindo contratos estáticos, dados, segurança, fontes e a matriz de navegadores. O deploy do GitHub Pages só inicia depois que o CI de um push na `main` termina com sucesso e publica exatamente o SHA validado.
+Os workflows **Quality** e **CI** executam em cada pull request e em pushes na `main`. O Quality mantém apenas os gates independentes de proveniência das fontes e do snapshot de candidatos TSE; o CI é o gate completo de publicação, reunindo contratos estáticos, dados, segurança, fontes e a matriz de navegadores. O deploy do GitHub Pages só inicia depois que o CI de um push na `main` termina com sucesso e publica exatamente o SHA validado.
 
 ## Princípios de dados
 
@@ -82,7 +82,7 @@ O build usa assets relativos para permanecer compatível com o caminho de projet
 
 ## Status
 
-**V45.0.0 — Observatório Cívico e Eleitoral.**
+**V45.0.5 — Observatório Cívico e Eleitoral.**
 
 - Quatro modos de leitura (Resumo, Explicado, Guiado, Detalhado) com preferência persistida e links compartilháveis.
 - Edição V45 pós-1º turno: a contagem regressiva foi retirada e a interface passou a priorizar resultados, histórico e fiscalização cívica.
@@ -132,7 +132,7 @@ MIT — veja [LICENSE](LICENSE).
 
 `npm run release:check` representa a validação consolidada de candidato a release. Ele executa o build, os contratos de qualidade e a auditoria final de consistência do pipeline.
 
-O CI e o Quality executam `npm run audit:release` em cada PR e push para `main`. O deploy também repete esse contrato no SHA exato que passou pelo CI.
+O CI executa `npm run audit:release` em cada PR e push para `main`. O deploy também repete esse contrato no SHA exato que passou pelo CI. O Quality permanece enxuto e cobre apenas proveniência de fontes e snapshot TSE, evitando repetir os gates completos do CI.
 
 A manutenção contínua também verifica a estrutura dos workflows, orçamento de estilos e orçamento de performance. A suíte Chrome desktop mede métricas de laboratório de carregamento e interação para detectar regressões grandes antes da publicação.
 
