@@ -1,12 +1,5 @@
-import { ExternalLink, type LucideIcon } from 'lucide-react';
-
-export interface PublicServiceResource {
-  readonly icon: LucideIcon;
-  readonly title: string;
-  readonly description: string;
-  readonly href: string;
-  readonly cta?: string;
-}
+import { ExternalLink } from 'lucide-react';
+import type { PublicServiceResource } from '../../../data/publicServices';
 
 interface OfficialResourceCardProps {
   readonly service: PublicServiceResource;
