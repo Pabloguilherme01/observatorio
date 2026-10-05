@@ -56,19 +56,19 @@ export function PostElectionHero() {
               <div className="hero-election-heading">
                 <div>
                   <span>Estado do ciclo</span>
-                  <strong>Eleição 2026 · pós-1º turno</strong>
+                  <strong>Eleição 2026 · Goiás definido no 1º turno</strong>
                 </div>
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                A contagem regressiva foi retirada da interface pública. A votação de 4 de outubro passa a ser tratada como registro histórico, mantendo a arquitetura preparada para um eventual segundo turno.
+                O 1º turno de 4 de outubro agora é tratado como registro histórico. Em Goiás, o governo estadual já foi definido no 1º turno; um eventual 2º turno de 25 de outubro permanece relevante apenas para cargos que não tenham sido definidos no 1º turno, como a disputa presidencial nacional.
               </p>
               <div className="mt-4 grid gap-2 text-xs text-slate-400">
                 <span>• Resultados oficiais versionados</span>
                 <span>• Proveniência e integridade visíveis</span>
                 <span>• Dados municipais separados da apuração</span>
               </div>
-              <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer" className="hero-official-link">
-                Página oficial das Eleições 2026 <ExternalLink aria-hidden="true" />
+              <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/daniel-vilela-mdb-e-eleito-governador-de-goias-no-1o-turno" target="_blank" rel="noopener noreferrer" className="hero-official-link">
+                TSE · resultado de Goiás no 1º turno <ExternalLink aria-hidden="true" />
               </a>
             </div>
           </div>
