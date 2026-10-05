@@ -11,8 +11,9 @@
 
 ## Publicação
 
-- O deploy deve ocorrer somente quando `CI`, `Quality`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA de push na `main`.
-- O deploy deve publicar exatamente o SHA validado pelos quatro gates.
+- O deploy deve ser iniciado por um `CI` de push concluído e só prossegue quando `CI`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA da `main`.
+- O `Quality` continua sendo gate de integridade do merge, mas não dispara uma segunda execução de Pages.
+- O deploy deve publicar exatamente o SHA validado pelos três gates de publicação.
 - Antes da publicação, `main` deve continuar apontando para esse mesmo SHA; se a branch avançar, o deploy antigo deve abortar.
 - O healthcheck pós-publicação deve confirmar paridade do SHA, estado do snapshot TSE, OpenAPI e assets PWA.
 
