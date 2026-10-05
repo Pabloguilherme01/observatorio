@@ -134,12 +134,15 @@ must(
     && vite.includes("handler: 'NetworkFirst'"),
   'feed oficial de resultados não entra no precache estático e possui cache dinâmico próprio',
 );
+const a11ySpec = read('tests/a11y.spec.mjs');
+const accessibilitySmokeSpec = read('tests/accessibility-smoke.spec.mjs');
 must(
-  fs.existsSync(path.join(root, 'tests/a11y.spec.mjs'))
-    && read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
-    && !read('tests/a11y.spec.mjs').includes("disableRules(['color-contrast'])")
-    && read('.github/workflows/browser.yml').includes('a11y'),
-  'suíte de acessibilidade real usa Axe com contraste e entra no workflow cross-browser',
+  fs.existsSync(path.join(root, 'tests/accessibility-smoke.spec.mjs'))
+    && accessibilitySmokeSpec.includes('@axe-core/playwright')
+    && a11ySpec.includes('fluxos principais continuam acessíveis por teclado')
+    && !accessibilitySmokeSpec.includes("disableRules(['color-contrast'])")
+    && read('.github/workflows/browser.yml').includes('chrome-a11y'),
+  'suíte de acessibilidade usa Axe com contraste e mantém fluxo dedicado de teclado no workflow cross-browser',
 );
 must(
   fs.existsSync(path.join(root, 'tests/public-api-contract.spec.mjs'))
