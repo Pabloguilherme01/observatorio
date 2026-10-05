@@ -274,6 +274,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
     resourceUrl: 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip',
     updateFrequency: '4x ao dia',
+    referenceDate: '2026-10-05',
     license: 'Creative Commons Atribuição',
     nature: 'official',
     note: 'Base com candidatos, informações complementares, bens, coligações, vagas, redes sociais, histórico e propostas. O catálogo informa atualização quatro vezes ao dia.',
