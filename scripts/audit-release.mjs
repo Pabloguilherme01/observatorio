@@ -91,13 +91,14 @@ const unsafePendingIssueTemplates = [syncTse, syncResults].some(workflow =>
 if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substituição de comando acidental do shell.');
 else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
+else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
 if (
   read('vite.config.ts').includes("globIgnores: ['**/data/tse-results.json']")
   && read('vite.config.ts').includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
-) pass('feed de resultados permanece fora do precache e usa cache dinâmico.'); else fail('feed de resultados pode ficar congelado no precache.');
-if (read('tests/a11y.spec.mjs').includes('@axe-core/playwright') && read('.github/workflows/browser.yml').includes('a11y')) pass('suíte Axe está integrada ao gate cross-browser.'); else fail('suíte Axe não está integrada ao gate cross-browser.');
-
-else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
+) pass('feed de resultados permanece fora do precache e usa cache dinâmico.');
+else fail('feed de resultados pode ficar congelado no precache.');
+if (read('tests/a11y.spec.mjs').includes('@axe-core/playwright') && read('.github/workflows/browser.yml').includes('a11y')) pass('suíte Axe está integrada ao gate cross-browser.');
+else fail('suíte Axe não está integrada ao gate cross-browser.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
 const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));
