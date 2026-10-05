@@ -257,7 +257,13 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
   const menu = page.getByRole('menu', { name: 'Mais áreas do observatório' });
   await expect(layer).toBeVisible();
   await expect(menu).toBeVisible();
-  await expect(menu.getByRole('menuitem')).toHaveCount(8);
+  const navigationSource = await page.evaluate(async () => {
+    const response = await fetch('/observatorio/src/config/navigation.ts');
+    return response.ok ? response.text() : '';
+  });
+  const configuredMoreItems = (navigationSource.match(/group: 'more'/g) ?? []).length;
+  expect(configuredMoreItems).toBeGreaterThan(0);
+  await expect(menu.getByRole('menuitem')).toHaveCount(configuredMoreItems + 1);
   await expect(menu.getByRole('menuitem').first()).toBeFocused();
 
   const menuBox = await menu.evaluate(node => {
