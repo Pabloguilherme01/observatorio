@@ -36,7 +36,7 @@ const hero = read('src/components/sections/PostElectionHero.tsx');
 const trust = read('src/components/ProjectTrustPanel.tsx');
 const civic = read('src/components/sections/CivicActionHub.tsx');
 const guided = read('src/components/sections/GuidedLearningPanel.tsx');
-const guidedCss = read('src/assets/styles/guided-mode.css');
+const guidedCss = readCssImportGraph('src/assets/styles/guided-mode.css', { root });
 
 must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'guided'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '4 modos neutros de leitura disponíveis');
 must(
