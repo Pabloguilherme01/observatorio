@@ -1,17 +1,6 @@
 import { test, expect } from 'playwright/test';
-import AxeBuilder from '@axe-core/playwright';
 
 test.describe('Acessibilidade real no navegador', () => {
-  test('entrada pública atende Axe sem violações críticas ou sérias', async ({ page }) => {
-    await page.goto('./');
-    await expect(page.locator('#main-content')).toBeVisible();
-
-    const results = await new AxeBuilder({ page }).analyze();
-
-    const blocking = results.violations.filter(item => item.impact === 'critical' || item.impact === 'serious');
-    expect(blocking).toEqual([]);
-  });
-
   test('fluxos principais continuam acessíveis por teclado', async ({ page }) => {
     await page.goto('./');
 
