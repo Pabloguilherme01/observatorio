@@ -23,16 +23,6 @@ export const OFFICIAL_RESULTS_CONTEXT = {
   officialKeyKid: 'sNbt9Q_fLS65zE1_ZLNV-XRRwPY',
 } as const;
 
-export const SIMULATION_CONTEXT = {
-  baseUrl: 'https://resultados-sim.tse.jus.br/simulado/simulado2026',
-  environment: 'simulado2026',
-  pleito: 17801,
-  electionCodes: [21270, 21272, 21274],
-  simulationDates: ['2026-09-22', '2026-09-23', '2026-09-24'],
-  windowsBrt: ['09:00–12:00', '14:00–17:00'],
-  docsUrl: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados',
-} as const;
-
 export type ResultsCargo =
   | 'Presidente'
   | 'Governador'
@@ -55,9 +45,3 @@ export function electionCodeMatchesCargo(electionCode: number, uf: string, cargo
   return false;
 }
 
-export function simulationElectionCodeMatches(cargo: string, electionCode: number): boolean {
-  if (electionCode === 21270) return cargo === 'Presidente' || cargo === 'Deputado Federal';
-  if (electionCode === 21272) return ['Governador', 'Senador', 'Deputado Estadual'].includes(cargo);
-  if (electionCode === 21274) return cargo === 'Conselheiro Distrital';
-  return false;
-}
