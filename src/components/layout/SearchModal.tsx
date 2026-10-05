@@ -49,8 +49,6 @@ const normalizeSearchQuery = (value: string) => {
   return normalized;
 };
 
-const hasTerm = (query: string, term: string) =>
-  query.split(/\s+/).includes(term);
 
 const sourceForId = (sourceId?: string) => sourceId ? d.sources.find(source => source.id === sourceId) : undefined;
 const sourceLabel = (sourceId?: string) => sourceId ? (sourceForId(sourceId)?.label ?? sourceId) : 'Conjunto publicado pelo Observatório';
