@@ -75,6 +75,19 @@ if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 
 else fail('sincronizações TSE usam Node divergente do CI.');
 if (syncTse.includes('gh pr list --state open --base main --head') && syncResults.includes('gh pr list --state open --base main --head')) pass('automação TSE evita PRs duplicadas para a mesma branch.');
 else fail('automação TSE não possui guarda idempotente de PR.');
+const syncNeedsReconcile = [syncTse, syncResults].every(workflow =>
+  workflow.includes('git fetch origin main')
+  && workflow.includes('git rebase origin/main')
+  && workflow.includes('git push --force-with-lease')
+  && workflow.includes('gh run watch "$run_id" --exit-status'),
+);
+if (syncNeedsReconcile) pass('sincronizações TSE reconciliam a branch com a main atual antes da PR.');
+else fail('alguma sincronização TSE pode abrir PR a partir de uma main desatualizada.');
+const unsafePendingIssueTemplates = [syncTse, syncResults].some(workflow =>
+  workflow.includes('`$branch`') || workflow.includes('`main`; revisão') || workflow.includes('`main`. A publicação'),
+);
+if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substituição de comando acidental do shell.');
+else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
 else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
 
