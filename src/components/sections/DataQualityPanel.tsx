@@ -33,7 +33,7 @@ export function DataQualityPanel() {
     missingDateIndicators,
     missingSourceIndicators,
     indicatorsNeedingDocumentation,
-    pollGapPct,
+    tseState,
     tseStatus,
     tseCapturedAt,
     resultsSource,
