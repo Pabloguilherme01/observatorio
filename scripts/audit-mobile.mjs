@@ -92,7 +92,8 @@ must(files.electoral.includes('min-h-11') && files.electoral.includes('type="sea
 must(files.quiz.includes('quiz-progress-track') && files.quizData.includes('QUIZ_TOTAL = 200') && files.quizData.includes('QUESTIONS_PER_LEVEL = 40') && files.quizData.includes('QUIZ_LEVELS'), 'quiz mantém 200 perguntas em cinco níveis e progresso visual');
 
 must(files.pkg.scripts?.['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra esta auditoria mobile');
-must(files.version.match(/APP_VERSION\s*=\s*['"]44\./), 'versão atual continua na linha 44 consolidada');
+const appVersion = files.version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/)?.[1] ?? '';
+must(appVersion === files.pkg.version && /^\d+\.\d+\.\d+$/.test(appVersion), 'versão do app e package.json permanecem sincronizadas e seguem SemVer');
 
 must(files.index.includes('maximum-scale=5') && files.index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
 must(files.index.includes('apple-mobile-web-app-capable') && files.index.includes('apple-mobile-web-app-title'), 'metadados de instalação iOS estão presentes');
