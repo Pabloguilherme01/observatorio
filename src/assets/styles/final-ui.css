@@ -4898,12 +4898,7 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     padding:14px!important;
     border-radius:18px!important;
   }
-  .official-resource-grid,
-  .official-resource-grid-local,
-  .official-more-grid{
-    grid-template-columns:1fr!important;
-    gap:8px!important;
-  }
+
   .official-resource-card{
     min-height:76px!important;
     padding:11px!important;
@@ -6166,9 +6161,7 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     padding:4px 6px;
     font-size:7px;
   }
-  .language-toggle-v3 .language-toggle-label{
-    min-width:0;
-  }
+
   .language-toggle-v3 .language-toggle-label>span{
     min-width:0;
   }
