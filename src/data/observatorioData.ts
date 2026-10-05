@@ -34,7 +34,7 @@ export const observatorioData: ObservatoryData = {
     edition: `${EDITION} • leitura pública + investigação + evidências`,
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
-    updatedAt: '2026-10-04',
+    updatedAt: '2026-10-05',
   },
   sources: sourceRegistry,
 
