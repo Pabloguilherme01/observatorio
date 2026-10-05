@@ -3,7 +3,7 @@
 ## Gate técnico
 
 - Pull request para `main` obrigatória.
-- Checks obrigatórios: `CI · quality gate`, sete jobs `Browser · ...` (Chrome desktop, Chrome a11y, Firefox desktop, Safari desktop, Chrome Android, Safari iPhone e Safari iPhone SE), `Quality · independent audit` e `CodeQL · javascript-typescript`.
+- Checks obrigatórios: `CI · quality gate`, sete jobs `Browser · ...` (Chrome desktop, Chrome a11y, Firefox desktop, Safari desktop, Chrome Android, Safari iPhone e Safari iPhone SE) e `CodeQL · javascript-typescript`. As auditorias que antes viviam em `Quality` foram consolidadas no CI principal.
 - Branch deve estar atualizada antes do merge.
 - Push direto em `main` deve ser bloqueado.
 - Administradores devem seguir as mesmas regras quando a operação do repositório permitir.
@@ -11,8 +11,8 @@
 
 ## Publicação
 
-- O deploy deve ocorrer somente quando `CI`, `Quality`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA de push na `main`.
-- O deploy deve publicar exatamente o SHA validado pelos quatro gates.
+- O deploy deve ser iniciado por um `CI` de push concluído e só prossegue quando `CI`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA da `main`.
+- O deploy deve publicar exatamente o SHA validado pelos três gates de publicação.
 - Antes da publicação, `main` deve continuar apontando para esse mesmo SHA; se a branch avançar, o deploy antigo deve abortar.
 - O healthcheck pós-publicação deve confirmar paridade do SHA, estado do snapshot TSE, OpenAPI e assets PWA.
 
