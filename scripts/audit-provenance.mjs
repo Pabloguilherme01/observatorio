@@ -11,7 +11,7 @@ const warnings = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 
-const sourceBlocks = [...sourceText.matchAll(/\n  \{[\s\S]*?\n  \},/g)].map(match => match[0]);
+const sourceBlocks = [...sourceText.matchAll(/\n  \{([\s\S]*?)\n  \},(?=\n  \{|\n\];)/g)].map(match => match[0]);
 const sources = sourceBlocks.filter(block => /\n    id:\s*'/.test(block));
 const sourceIds = new Set(sources.map(block => block.match(/\n    id:\s*'([^']+)'/)?.[1]).filter(Boolean));
 
@@ -32,7 +32,8 @@ const invalidChecked = sources
 if (invalidChecked.length) fail('lastCheckedAt inválido: ' + invalidChecked.join(', '));
 else pass('datas de verificação das fontes são ISO válidas.');
 
-if (/id:\s*'ibge-cidades-2026'[\s\S]*?referenceDate:/.test(sourceText)) {
+const ibgeCitiesBlock = sourceBlocks.find(block => /\bid:\s*'ibge-cidades-2026'/.test(block)) ?? '';
+if (/referenceDate:/.test(ibgeCitiesBlock)) {
   fail('ibge-cidades-2026 não pode impor uma data de referência global: seus indicadores possuem anos-base distintos.');
 } else {
   pass('fonte ampla do IBGE não impõe uma data de referência global.');
