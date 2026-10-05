@@ -134,8 +134,15 @@ must(
 must(
   fs.existsSync(path.join(root, 'tests/a11y.spec.mjs'))
     && read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
+    && !read('tests/a11y.spec.mjs').includes("disableRules(['color-contrast'])")
     && read('.github/workflows/browser.yml').includes('a11y'),
-  'suíte de acessibilidade real usa Axe no navegador e entra no workflow cross-browser',
+  'suíte de acessibilidade real usa Axe com contraste e entra no workflow cross-browser',
+);
+must(
+  fs.existsSync(path.join(root, 'tests/public-api-contract.spec.mjs'))
+    && read('tests/public-api-contract.spec.mjs').includes('./api/v1/sources.json')
+    && read('tests/public-api-contract.spec.mjs').includes('lastCheckedAt'),
+  'suíte de navegador valida o contrato da API pública e sua proveniência',
 );
 
 must(
@@ -182,12 +189,15 @@ must(
     && browserWorkflow.includes('project: safari-iphone-se')
     && browserWorkflow.includes('engine: webkit')
     && browserWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
+    && browserWorkflow.includes('safari-desktop')
+    && browserWorkflow.includes('non_blocking: false')
+    && read('playwright.config.mjs').includes("npm run build && npm run preview -- --host 127.0.0.1 --port 4173")
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
     && !deployWorkflow.includes('playwright install')
     && !deployWorkflow.includes('playwright test'),
-  'CI mantém sete perfis Playwright, incluindo o gate Axe, instalando apenas o motor necessário e o deploy não repete a suíte cross-browser',
+  'CI mantém sete perfis Playwright, incluindo o gate Axe, executando o artefato de produção, com Safari desktop bloqueante e sem repetir a suíte no deploy',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
 const playwrightConfig = read('playwright.config.mjs');
