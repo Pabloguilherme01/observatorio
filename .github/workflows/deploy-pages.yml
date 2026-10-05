@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
-# Publication starts only after CI, Browser compatibility and CodeQL are all green for the exact main SHA.
-# Manual dispatch is allowed only for a main commit whose three release gates are green.
+# Publication starts from CI completion; the build gate below still requires Browser compatibility and CodeQL for the exact main SHA.
+# Manual dispatch uses the same complete release-gate check.
 
 on:
   workflow_run:
-    workflows: ["CI", "Browser compatibility", "CodeQL"]
+    workflows: ["CI"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
