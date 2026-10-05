@@ -11,7 +11,7 @@ const files = {
   app: read('src/app/App.tsx'),
   experience: read('src/components/ExperienceShell.tsx'),
   hero: read('src/components/sections/PostElectionHero.tsx'),
-  css: read('src/assets/styles/globals.css'),
+  css: readCssImportGraph('src/assets/styles/globals.css', { root }),
   finalUi: readCssImportGraph('src/assets/styles/final-ui.css', { root }),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
   guidedCss: read('src/assets/styles/guided-mode.css'),
