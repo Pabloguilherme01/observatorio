@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { readCssImportGraph } from './lib/readCssImportGraph.mjs';
 
 const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
@@ -11,12 +12,7 @@ const files = {
   experience: read('src/components/ExperienceShell.tsx'),
   hero: read('src/components/sections/PostElectionHero.tsx'),
   css: read('src/assets/styles/globals.css'),
-  finalUi: [
-    read('src/assets/styles/final-ui.css'),
-    read('src/assets/styles/final-ui/premium-finish.css'),
-    read('src/assets/styles/final-ui/visual-final.css'),
-    read('src/assets/styles/final-ui/site-final.css'),
-  ].join('\n'),
+  finalUi: readCssImportGraph('src/assets/styles/final-ui.css', { root }),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
   guidedCss: read('src/assets/styles/guided-mode.css'),
   visualHardening: exists('src/assets/styles/visual-hardening.css') ? read('src/assets/styles/visual-hardening.css') : '',
