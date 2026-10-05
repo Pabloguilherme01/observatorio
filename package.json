@@ -43,7 +43,8 @@
     "audit:workflows": "node scripts/audit-workflows.mjs",
     "audit:styles": "node scripts/audit-styles.mjs",
     "audit:performance": "node scripts/audit-performance.mjs",
-    "cleanup:tse": "node scripts/cleanup-tse-automation.mjs"
+    "cleanup:tse": "node scripts/cleanup-tse-automation.mjs",
+    "test:post-election": "node scripts/test-post-election-transition.mjs"
   },
   "dependencies": {
     "@sentry/react": "11.1.0",
