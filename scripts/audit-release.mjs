@@ -93,14 +93,19 @@ const workflowText = [ci, quality, read('.github/workflows/codeql.yml'), deploy,
 
 if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
 else fail('CI não inclui o release gate consolidado.');
-if (quality.includes('npm run audit:release')) pass('Quality inclui o release gate consolidado.');
-else fail('Quality não inclui o release gate consolidado.');
+const qualityCommands = [...quality.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
+if (
+  !quality.includes('npm run audit:provenance')
+  || !quality.includes('npm run audit:candidate-snapshot')
+  || qualityCommands.includes('audit:release')
+) fail('Quality não está restrito aos gates independentes de proveniência e snapshot TSE.');
+else pass('Quality mantém apenas os gates independentes de proveniência e snapshot TSE.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
 if (ci.includes('npm run audit:workflows') && ci.includes('npm run audit:styles') && ci.includes('npm run audit:performance')) pass('CI executa os novos gates estruturais, de estilos e performance.');
 else fail('CI não executa todos os novos gates de manutenção.');
-if (quality.includes('npm run audit:workflows') && quality.includes('npm run audit:styles') && quality.includes('npm run audit:performance')) pass('Quality executa os novos gates estruturais, de estilos e performance.');
-else fail('Quality não executa todos os novos gates de manutenção.');
+if (qualityCommands.length === 2 && qualityCommands.includes('audit:provenance') && qualityCommands.includes('audit:candidate-snapshot')) pass('Quality permanece enxuto e cobre os dois contratos independentes de manutenção.');
+else fail('Quality perdeu ou duplicou gates independentes de manutenção.');
 if (deploy.includes('workflows: ["CI"]') && deploy.includes("github.event.workflow_run.conclusion == 'success'") && deploy.includes("github.event.workflow_run.event == 'push'") && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')) pass('Deploy preserva a cadeia CI -> SHA -> publicação.');
 else fail('Deploy perdeu a cadeia de paridade com o CI.');
 if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
@@ -128,11 +133,12 @@ if (
 ) pass('feed de resultados permanece fora do precache e usa cache dinâmico.');
 else fail('feed de resultados pode ficar congelado no precache.');
 if (
-  read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
-  && !read('tests/a11y.spec.mjs').includes("disableRules(['color-contrast'])")
-  && read('.github/workflows/browser.yml').includes('a11y')
-) pass('suíte Axe está integrada ao gate cross-browser com contraste habilitado.');
-else fail('suíte Axe não está integrada com o gate de contraste esperado.');
+  read('tests/accessibility-smoke.spec.mjs').includes('@axe-core/playwright')
+  && !read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
+  && read('tests/a11y.spec.mjs').includes('fluxos principais continuam acessíveis por teclado')
+  && read('.github/workflows/browser.yml').includes('chrome-a11y')
+) pass('suíte Axe está integrada ao gate cross-browser e a suíte separada mantém o fluxo de teclado.');
+else fail('contrato de acessibilidade cross-browser está inconsistente com a suíte deduplicada.');
 if (
   read('tests/public-api-contract.spec.mjs').includes('./api/v1/sources.json')
   && read('tests/public-api-contract.spec.mjs').includes('lastCheckedAt')
