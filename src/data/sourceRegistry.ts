@@ -129,7 +129,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-08',
     publishedAt: '2026-09-15',
-    note: 'Parcial: movimentação registrada até 8 de setembro de 2026 e disponibilizada para consulta a partir de 15 de setembro de 2026 no DivulgaCandContas.'
+    note: 'Parcial: movimentação registrada até 8 de setembro de 2026 e disponibilizada para consulta a partir de 15 de setembro de 2026 no DivulgaCandContas.',
     lastCheckedAt: '2026-10-05',
   },
   {
