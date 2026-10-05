@@ -3,7 +3,7 @@ import { DashboardMetrics } from '../components/sections/DashboardMetrics';
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { PostElectionHero } from '../components/sections/PostElectionHero';
-import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
+const ResultsLiveBanner = lazy(() => import('../components/sections/ResultsLiveBanner').then(module => ({ default: module.ResultsLiveBanner })));
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
@@ -316,7 +316,7 @@ export function App() {
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><PostElectionHero /></SectionErrorBoundary>
           <main id="main-content">
-            <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
+            <SectionErrorBoundary label="Resultados oficiais"><Deferred><ResultsLiveBanner /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo principal"><Deferred><ExecutiveSummary /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
