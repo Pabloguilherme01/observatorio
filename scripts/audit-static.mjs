@@ -14,8 +14,6 @@ const vite = read('vite.config.ts');
 const navigation = read('src/config/navigation.ts');
 const appSource = read('src/app/App.tsx');
 const deferredContextSource = read('src/components/sections/DeferredContextGroup.tsx');
-must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
-must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 const bootstrapSource = read('src/main.tsx');
 const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
 const robots = read('public/robots.txt');
@@ -35,6 +33,8 @@ const errors = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 const must = (condition, message) => condition ? pass(message) : fail(message);
+must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
+must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 
 const appVersion = versionSource.match(/APP_VERSION = '([^']+)'/)?.[1];
 const edition = versionSource.match(/EDITION = '([^']+)'/)?.[1];
