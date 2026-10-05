@@ -121,7 +121,7 @@ must(
   vite.includes('const getSourcesPayload = () => ({')
     && vite.includes('schemaVersion: 2')
     && vite.includes('lastCheckedAt')
-    && vite.includes('note,'),
+    && vite.includes('note: note ?? null'),
   'API pública de fontes expõe verificação e nota metodológica junto à proveniência',
 );
 must(
