@@ -10,7 +10,7 @@ import { ExperienceShell } from '../components/ExperienceShell';
 import { LanguageModeProvider, useLanguageMode } from '../context/LanguageModeContext';
 import { AudienceHub } from '../components/AudienceHub';
 import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
-import { GuidedLearningPanel } from '../components/sections/GuidedLearningPanel';
+const GuidedLearningPanel = lazy(() => import('../components/sections/GuidedLearningPanel').then(module => ({ default: module.GuidedLearningPanel })));
 import { PublicUtilityGuide } from '../components/sections/PublicUtilityGuide';
 import { DataInspector } from '../components/DataInspector';
 import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
@@ -318,7 +318,7 @@ export function App() {
           <main id="main-content">
             <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo principal"><ExecutiveSummary /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Aprendizado guiado"><GuidedLearningPanel /></SectionErrorBoundary>
+            <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><PublicUtilityGuide /></SectionErrorBoundary>
             <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><DashboardMetrics /></SectionErrorBoundary></div>
