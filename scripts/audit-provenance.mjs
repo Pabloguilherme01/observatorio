@@ -11,36 +11,34 @@ const warnings = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 
-const sourceBlocks = [...sourceText.matchAll(/\n  \{([\s\S]*?)\n  \},(?=\n  \{|\n\];)/g)].map(match => match[0]);
-const sources = sourceBlocks.filter(block => /\n    id:\s*'/.test(block));
-const sourceIds = new Set(sources.map(block => block.match(/\n    id:\s*'([^']+)'/)?.[1]).filter(Boolean));
+const sourceIdsList = [...sourceText.matchAll(/\bid:\s*'([^']+)'/g)].map(match => match[1]);
+const checkedDates = [...sourceText.matchAll(/\blastCheckedAt:\s*'([^']+)'/g)].map(match => match[1]);
+const sourceIds = new Set(sourceIdsList);
 
-if (sources.length !== 68) fail(`sourceRegistry deveria conter 68 fontes; encontrado: ${sources.length}`);
+if (sourceIdsList.length !== 68) fail('sourceRegistry deveria conter 68 fontes; encontrado: ' + sourceIdsList.length);
 else pass('sourceRegistry contém 68 fontes.');
 
-const missingChecked = sources
-  .filter(block => !/\blastCheckedAt:\s*'\d{4}-\d{2}-\d{2}'/.test(block))
-  .map(block => block.match(/\n    id:\s*'([^']+)'/)?.[1])
-  .filter(Boolean);
-if (missingChecked.length) fail('fontes sem lastCheckedAt: ' + missingChecked.join(', '));
-else pass('todas as fontes possuem data explícita de verificação.');
+if (checkedDates.length !== sourceIdsList.length) {
+  fail('fontes com lastCheckedAt incompleto: ' + checkedDates.length + '/' + sourceIdsList.length);
+} else {
+  pass('todas as fontes possuem data explícita de verificação.');
+}
 
-const invalidChecked = sources
-  .map(block => block.match(/lastCheckedAt:\s*'([^']+)'/)?.[1])
-  .filter(Boolean)
-  .filter(value => Number.isNaN(new Date(value + 'T00:00:00Z').getTime()) || new Date(value + 'T00:00:00Z').toISOString().slice(0, 10) !== value);
+const invalidChecked = checkedDates.filter(value => {
+  const date = new Date(value + 'T00:00:00Z');
+  return Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value;
+});
 if (invalidChecked.length) fail('lastCheckedAt inválido: ' + invalidChecked.join(', '));
 else pass('datas de verificação das fontes são ISO válidas.');
 
-const ibgeCitiesBlock = sourceBlocks.find(block => /\bid:\s*'ibge-cidades-2026'/.test(block)) ?? '';
-if (/referenceDate:/.test(ibgeCitiesBlock)) {
-  fail('ibge-cidades-2026 não pode impor uma data de referência global: seus indicadores possuem anos-base distintos.');
-} else {
-  pass('fonte ampla do IBGE não impõe uma data de referência global.');
-}
+const ibgeStart = sourceText.indexOf("id: 'ibge-cidades-2026'");
+const ibgeEnd = ibgeStart >= 0 ? sourceText.indexOf('\n  },', ibgeStart) : -1;
+const ibgeCitiesBlock = ibgeStart >= 0 && ibgeEnd > ibgeStart ? sourceText.slice(ibgeStart, ibgeEnd) : '';
+if (/referenceDate:/.test(ibgeCitiesBlock)) fail('ibge-cidades-2026 não pode impor uma data de referência global.');
+else pass('fonte ampla do IBGE não impõe uma data de referência global.');
 
 const used = [
-  ...dataText.matchAll(/(?:sourceId|consolidatedSourceId):\s*'([^']+)'/g)
+  ...dataText.matchAll(/(?:sourceId|consolidatedSourceId):\s*'([^']+)'/g),
 ].map(match => match[1]);
 for (const match of dataText.matchAll(/sourceIds:\s*\[([\s\S]*?)\]/g)) {
   for (const id of match[1].matchAll(/'([^']+)'/g)) used.push(id[1]);
@@ -51,37 +49,34 @@ else pass('todos os sourceId possuem registro de proveniência.');
 
 const indicatorSection = dataText.match(/indicators:\s*\[([\s\S]*?)\n  \],\n};/)?.[1] ?? '';
 const indicators = indicatorSection.split('\n').filter(line => line.trim().startsWith('{ id:') && line.includes('status:'));
-const ambiguous = indicators
+const withoutReference = indicators
   .filter(line => !line.includes('referenceDate:'))
-  .map(line => ({
-    id: line.match(/id:\s*'([^']+)'/)?.[1],
-    status: line.match(/status:\s*'([^']+)'/)?.[1],
-  }))
-  .filter(item => item.id);
+  .map(line => line.match(/id:\s*'([^']+)'/)?.[1])
+  .filter(Boolean);
 
-if (ambiguous.length) {
-  warnings.push(ambiguous.map(item => item.id).join(', '));
-  console.log('WARN indicadores sem data diária exata: ' + ambiguous.length + '. Isso é permitido quando a fonte só informa ano/período ou atualização.');
+if (withoutReference.length) {
+  warnings.push(...withoutReference);
+  console.log('WARN indicadores sem data diária exata: ' + withoutReference.length + '. Isso é permitido quando a fonte informa apenas ano, período ou atualização.');
 } else {
   pass('todos os indicadores possuem referência temporal estruturada.');
 }
 
 const suspiciousSyntheticDates = indicators
-  .filter(line => /referenceDate:\s*'\\d{4}-01-01'/.test(line))
+  .filter(line => /referenceDate:\s*'\d{4}-01-01'/.test(line))
   .map(line => line.match(/id:\s*'([^']+)'/)?.[1])
   .filter(Boolean);
 if (suspiciousSyntheticDates.length) {
-  warnings.push('datas em 01/01: ' + suspiciousSyntheticDates.join(', '));
-  console.log('WARN há referências em 01/01 que exigem revisão semântica: ' + suspiciousSyntheticDates.join(', '));
+  warnings.push(...suspiciousSyntheticDates);
+  console.log('WARN referências em 01/01 exigem revisão semântica: ' + suspiciousSyntheticDates.join(', '));
 } else {
   pass('nenhuma referência diária artificial em 01/01 foi detectada no dataset.');
 }
 
 console.log(JSON.stringify({
   valid: errors.length === 0,
-  sources: sources.length,
+  sources: sourceIdsList.length,
   indicators: indicators.length,
-  indicatorsWithoutExactReference: ambiguous.length,
+  indicatorsWithoutExactReference: withoutReference.length,
   warnings,
   errors,
 }, null, 2));
