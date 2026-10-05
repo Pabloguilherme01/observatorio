@@ -130,8 +130,10 @@ else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
 if (
   read('vite.config.ts').includes("globIgnores: ['**/data/tse-results.json']")
   && read('vite.config.ts').includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
-) pass('feed de resultados permanece fora do precache e usa cache dinâmico.');
-else fail('feed de resultados pode ficar congelado no precache.');
+  && read('vite.config.ts').includes("handler: 'NetworkOnly'")
+  && read('vite.config.ts').includes("url.pathname === '/observatorio/api/v1/health.json'")
+) pass('feed de resultados permanece dinâmico e o healthcheck público fica sempre em rede.');
+else fail('Service Worker pode congelar resultados públicos ou o healthcheck.');
 if (
   read('tests/accessibility-smoke.spec.mjs').includes('@axe-core/playwright')
   && !read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
