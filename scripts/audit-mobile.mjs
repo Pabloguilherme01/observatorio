@@ -79,8 +79,8 @@ must(files.finalUi.includes('.deferred-section{') && files.finalUi.includes('con
 must(files.finalUi.includes('.premium-info-card{') && files.finalUi.includes('.premium-info-grid{') && files.finalUi.includes('@media (max-width:767px)') && files.finalUi.includes('.premium-info-grid{grid-template-columns:1fr}'), 'cards premium possuem composição responsiva e colapsam para uma coluna no mobile');
 must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero-reference-card{'), 'referências técnicas do hero usam mini-cards em vez de texto solto');
 must(exists('src/assets/styles/visual-hardening.css'), 'camada visual V45 possui arquivo próprio e auditável');
-must(files.visualHardening.includes('min-width:0') && files.visualHardening.includes('overflow-wrap:anywhere') && files.visualHardening.includes('overflow-x:clip'), 'camada visual V45 contém contrato explícito contra overflow e encolhimento de layout');
-must(files.visualHardening.includes('.hero-layout') && files.visualHardening.includes('grid-template-columns:minmax(0,1fr)') && files.visualHardening.includes('@media (max-width: 767px)'), 'hero possui composição responsiva sem coluna mínima rígida no mobile');
+must(/min-width\s*:\s*0/.test(files.visualHardening) && /overflow-wrap\s*:\s*anywhere/.test(files.visualHardening) && /overflow-x\s*:\s*clip/.test(files.visualHardening), 'camada visual V45 contém contrato explícito contra overflow e encolhimento de layout');
+must(files.visualHardening.includes('.hero-layout') && /grid-template-columns\s*:\s*minmax\(0,\s*1fr\)/.test(files.visualHardening) && files.visualHardening.includes('@media (max-width: 767px)'), 'hero possui composição responsiva sem coluna mínima rígida no mobile');
 must(files.visualHardening.includes('.results-public-card') && files.visualHardening.includes('.audience-action-card') && files.visualHardening.includes('.audience-resource'), 'cards públicos compartilham regras de largura, texto e alinhamento');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
