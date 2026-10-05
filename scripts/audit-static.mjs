@@ -33,6 +33,17 @@ const errors = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 const must = (condition, message) => condition ? pass(message) : fail(message);
+
+const localScriptRefs = Object.entries(packageJson.scripts ?? {}).flatMap(([scriptName, command]) =>
+  [...String(command).matchAll(/(?:^|\s)(scripts\/[A-Za-z0-9_.-]+\.mjs)\b/g)].map(match => ({ scriptName, path: match[1] })),
+);
+const missingLocalScriptRefs = localScriptRefs.filter(ref => !fs.existsSync(path.join(root, ref.path)));
+must(
+  missingLocalScriptRefs.length === 0,
+  missingLocalScriptRefs.length
+    ? 'package.json referencia scripts inexistentes: ' + missingLocalScriptRefs.map(ref => ref.path + ' (' + ref.scriptName + ')').join(', ')
+    : 'package.json referencia somente scripts existentes.',
+);
 must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
 must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 
