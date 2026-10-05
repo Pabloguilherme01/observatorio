@@ -199,9 +199,8 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'INEP',
     url: 'https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025',
     nature: 'official',
-    referenceDate: '2025-12-31',
     publishedAt: '2026-08-05',
-    note: 'Página oficial dos resultados 2005–2025. A consulta confirma a publicação dos resultados municipais, mas o snapshot deste projeto ainda não materializa o ponto municipal de Águas Lindas de Goiás.',
+    note: 'Ano-base 2025. Página oficial dos resultados 2005–2025. A consulta confirma a publicação dos resultados municipais, mas o snapshot deste projeto ainda não materializa o ponto municipal de Águas Lindas de Goiás.',
     lastCheckedAt: '2026-10-05',
   },
   {
@@ -210,8 +209,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'QEdu',
     url: 'https://qedu.org.br/',
     nature: 'secondary',
-    referenceDate: '2025-12-31',
-    note: 'Referência secundária citada no levantamento de origem para uma faixa 2025. Não substitui a captura do valor municipal pontual na fonte oficial do INEP.',
+    note: 'Ano-base 2025. Referência secundária citada no levantamento de origem para uma faixa 2025. Não substitui a captura do valor municipal pontual na fonte oficial do INEP.',
     lastCheckedAt: '2026-10-05',
   },
   {
@@ -245,8 +243,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Governo de Goiás',
     url: 'https://pee.goias.gov.br/diagnostico/base-dados/?indicator=ED_BASICA_MATRICULAS&page=2',
     nature: 'official',
-    referenceDate: '2025-12-31',
-    note: 'Base oficial do Plano Estadual de Educação com recorte municipal de matrículas da educação básica.',
+    note: 'Ano-base 2025. Base oficial do Plano Estadual de Educação com recorte municipal de matrículas da educação básica.',
     lastCheckedAt: '2026-10-05',
   },
   {
@@ -255,8 +252,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Governo de Goiás',
     url: 'https://pee.goias.gov.br/diagnostico/base-dados/?indicator=EPT_TEC_ARTICULADA&page=2',
     nature: 'official',
-    referenceDate: '2025-12-31',
-    note: 'Base oficial com matrículas de educação profissional técnica articulada ao ensino médio.',
+    note: 'Ano-base 2025. Base oficial com matrículas de educação profissional técnica articulada ao ensino médio.',
     lastCheckedAt: '2026-10-05',
   },
   {
