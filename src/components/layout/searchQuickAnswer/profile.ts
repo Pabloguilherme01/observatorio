@@ -55,5 +55,4 @@ export function resolveProfileQuickAnswer(q: string): QuickAnswer | null {
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR') + ' leitos', id: 'saude', sourceId: indicator.sourceId, note: indicator.note } : null;
     }
     return null;
-    return null;
 }
