@@ -240,7 +240,6 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .quiz-option{min-height:48px!important;width:100%;padding:10px 12px!important;gap:9px}
   .quiz-option-key{min-width:30px;min-height:30px;display:grid;place-items:center}
   .candidate-card>div:first-child{padding:14px!important;gap:12px}
-  .candidate-card .flex.flex-wrap.gap-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .candidate-card .flex.flex-wrap.gap-2>a,.candidate-card .flex.flex-wrap.gap-2>button,.candidate-card .flex.flex-wrap.gap-2>span{width:100%;justify-content:center}
   .summary-public-copy h3{font-size:1.65rem!important;line-height:1.1}
   .summary-public-topics{gap:8px!important}
@@ -1231,7 +1230,7 @@ d,
   .candidate-card .grid-cols-2{grid-template-columns:1fr 1fr}
 }
 @media(max-width:390px){
-  .candidate-overview-grid{grid-template-columns:1fr!important}
+
   .candidate-overview-card{min-height:auto}
 }
 

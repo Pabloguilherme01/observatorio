@@ -10,6 +10,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     referenceDate: '2026-07-01',
     publishedAt: '2026-08-28',
     note: 'Estimativas municipais com referência em 1º de julho de 2026. O IBGE publica a estimativa municipal de 2026 e informa a metodologia e a base territorial utilizada.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'inss-salario-2026',
@@ -20,6 +21,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     referenceDate: '2026-01-01',
     publishedAt: '2026-01-13',
     note: 'Tabela oficial válida a partir da competência janeiro de 2026; registra R$ 1.621,00 como salário de contribuição mínimo e referência do salário mínimo nacional.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'ibge-cidades-2026',
@@ -27,8 +29,8 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'IBGE',
     url: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html',
     nature: 'official',
-    referenceDate: '2026-09-22',
     note: 'Painel municipal com área territorial, população estimada, escolarização, mortalidade infantil, receitas, despesas e PIB per capita, conforme os respectivos anos-base informados pelo IBGE.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'ibge-censo-2022',
@@ -37,6 +39,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://censo2022.ibge.gov.br/panorama/',
     nature: 'official',
     referenceDate: '2022-08-01',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-eleitorado-2018',
@@ -45,6 +48,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2018',
     nature: 'official',
     note: 'Conjunto oficial de eleitorado 2018 usado como origem do ponto histórico no gráfico do observatório.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-eleitorado-2022',
@@ -53,6 +57,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2022',
     nature: 'official',
     note: 'Conjunto oficial de eleitorado 2022 usado como origem do ponto histórico no gráfico do observatório.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-eleitorado-2024',
@@ -61,6 +66,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/eleitorado-2024',
     nature: 'official',
     note: 'Conjunto oficial de eleitorado 2024 usado como origem do ponto histórico no gráfico do observatório.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'reconciliacao-eleitorado-2026',
@@ -70,6 +76,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'secondary',
     referenceDate: '2026-07-15',
     note: 'Valor consolidado mantido como camada de reconciliação editorial até que os universos da 28ª Zona e do consolidado TSE sejam reconciliados documentalmente. Não deve ser tratado como nova captura oficial independente.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-eleitorado-2026',
@@ -78,6 +85,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/groups/eleitorado-2026',
     nature: 'official',
     note: 'Inclui perfil do eleitorado, seção, local de votação e bases associadas. Para 2026, a consulta individual ao local de votação está disponível desde 1º de setembro pelo e-Título e pelos portais da Justiça Eleitoral.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-eleicoes-2026',
@@ -86,6 +94,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://www.tse.jus.br/eleicoes/eleicoes-2026',
     nature: 'official',
     note: 'Hub oficial das Eleições 2026; reúne calendário, consulta de local de votação, serviços ao eleitor e orientações do pleito.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-resultados-2026',
@@ -94,6 +103,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados',
     nature: 'official',
     note: 'Documentação técnica para divulgação de resultados, arquivos de acompanhamento e ambiente oficial. A integração de produção deve seguir as URLs e códigos publicados pelo TSE.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-calendario-2026',
@@ -101,6 +111,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-760-de-2-de-marco-de-2026',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-ia-2026',
@@ -108,6 +119,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Tribunal Superior Eleitoral',
     url: 'https://www.tse.jus.br/legislacao/compilada/res/2026/resolucao-no-23-755-de-2-de-marco-de-2026',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-contas-2026',
@@ -117,7 +129,8 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-08',
     publishedAt: '2026-09-15',
-    note: 'Parcial: movimentação registrada até 8 de setembro de 2026 e disponibilizada para consulta a partir de 15 de setembro de 2026 no DivulgaCandContas.'
+    note: 'Parcial: movimentação registrada até 8 de setembro de 2026 e disponibilizada para consulta a partir de 15 de setembro de 2026 no DivulgaCandContas.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'utb-tarifas',
@@ -125,6 +138,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'União Transporte Brasília',
     url: 'https://www.utb.com.br/tarifas',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'antt-entorno-2026',
@@ -133,6 +147,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://www.gov.br/antt/pt-br/assuntos/ultimas-noticias/antt-aprova-reajuste-tarifario-do-transporte-semiurbano-do-df-e-entorno-com-efeitos-condicionados-a-formalizacao-de-acordo',
     nature: 'official',
     publishedAt: '2026-06-28',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'salario-minimo-2026',
@@ -141,6 +156,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://www.gov.br/planejamento/pt-br/acesso-a-informacao/institucional/atos-normativos/2025/decretos',
     nature: 'official',
     referenceDate: '2026-01-01',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'sinisa-2024',
@@ -148,7 +164,9 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Instituto Água e Saneamento',
     url: 'https://www.aguaesaneamento.org.br/municipios-e-saneamento/go/aguas-lindas-de-goias',
     nature: 'secondary',
+    referenceDate: '2024-01-01',
     note: 'Painel secundário que reproduz indicadores do SINISA; interpretar o ano-base separadamente.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'healgo',
@@ -156,6 +174,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Secretaria de Estado da Saúde de Goiás',
     url: 'https://goias.gov.br/saude/heal/',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'healgo-200k',
@@ -165,6 +184,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     publishedAt: '2025-06-17',
     note: 'Mais de 200 mil atendimentos no primeiro ano.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'loa-2026',
@@ -172,6 +192,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Prefeitura de Águas Lindas de Goiás',
     url: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'inep-ideb-2025',
@@ -179,9 +200,9 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'INEP',
     url: 'https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/ideb/resultados/2005-2025',
     nature: 'official',
-    referenceDate: '2025-12-31',
     publishedAt: '2026-08-05',
-    note: 'Página oficial dos resultados 2005–2025. A consulta confirma a publicação dos resultados municipais, mas o snapshot deste projeto ainda não materializa o ponto municipal de Águas Lindas de Goiás.',
+    note: 'Ano-base 2025. Página oficial dos resultados 2005–2025. A consulta confirma a publicação dos resultados municipais, mas o snapshot deste projeto ainda não materializa o ponto municipal de Águas Lindas de Goiás.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'qedu-ideb-2025',
@@ -189,8 +210,8 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'QEdu',
     url: 'https://qedu.org.br/',
     nature: 'secondary',
-    referenceDate: '2025-12-31',
-    note: 'Referência secundária citada no levantamento de origem para uma faixa 2025. Não substitui a captura do valor municipal pontual na fonte oficial do INEP.',
+    note: 'Ano-base 2025. Referência secundária citada no levantamento de origem para uma faixa 2025. Não substitui a captura do valor municipal pontual na fonte oficial do INEP.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'inep-2023',
@@ -198,6 +219,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'INEP',
     url: 'https://www.gov.br/inep/pt-br',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'caged-sebrae-2026',
@@ -206,6 +228,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://www.sebraego.com.br/',
     nature: 'secondary',
     note: 'Recorte consolidado no material de origem; manter separado de fontes primárias.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'atlas-violencia-2026',
@@ -213,6 +236,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'IPEA / FBSP',
     url: 'https://www.ipea.gov.br/atlasviolencia/',
     nature: 'official',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'pee-go-educacao-2025',
@@ -220,8 +244,8 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Governo de Goiás',
     url: 'https://pee.goias.gov.br/diagnostico/base-dados/?indicator=ED_BASICA_MATRICULAS&page=2',
     nature: 'official',
-    referenceDate: '2025-12-31',
-    note: 'Base oficial do Plano Estadual de Educação com recorte municipal de matrículas da educação básica.',
+    note: 'Ano-base 2025. Base oficial do Plano Estadual de Educação com recorte municipal de matrículas da educação básica.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'pee-go-ept-2025',
@@ -229,8 +253,8 @@ export const sourceRegistry: readonly SourceRef[] = [
     institution: 'Governo de Goiás',
     url: 'https://pee.goias.gov.br/diagnostico/base-dados/?indicator=EPT_TEC_ARTICULADA&page=2',
     nature: 'official',
-    referenceDate: '2025-12-31',
-    note: 'Base oficial com matrículas de educação profissional técnica articulada ao ensino médio.',
+    note: 'Ano-base 2025. Base oficial com matrículas de educação profissional técnica articulada ao ensino médio.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'lei-1900-2026',
@@ -241,6 +265,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     referenceDate: '2026-08-13',
     publishedAt: '2026-08-13',
     note: 'Crédito adicional especial de R$ 1.657.103,90 para criação do projeto atividade Escola em Tempo Integral.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-pesquisas-2026',
@@ -249,6 +274,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/pesquisas-eleitorais-2026',
     nature: 'official',
     note: 'Catálogo diário com pesquisas, contratantes, pagantes, questionários, notas fiscais e detalhamento de bairro/município.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-decisao-go04133-2026',
@@ -258,6 +284,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'secondary',
     referenceDate: '2026-09-17',
     note: 'Fonte secundária que reproduz decisão do TRE-GO datada de 17/09/2026 sobre publicações que divulgaram resultados da pesquisa. Usada apenas para sinalizar cautela editorial na divulgação.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-pardal-2026',
@@ -266,6 +293,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/denuncias-eleitorais',
     nature: 'official',
     note: 'Conjunto de denúncias registradas no Pardal, com frequência de atualização diária. Registro de denúncia não equivale a comprovação de irregularidade.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-candidatos-2026',
@@ -274,9 +302,11 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026',
     resourceUrl: 'https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip',
     updateFrequency: '4x ao dia',
+    referenceDate: '2026-10-05',
     license: 'Creative Commons Atribuição',
     nature: 'official',
     note: 'Base com candidatos, informações complementares, bens, coligações, vagas, redes sociais, histórico e propostas. O catálogo informa atualização quatro vezes ao dia.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'recorte-editorial-candidatos-2026',
@@ -286,6 +316,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'secondary',
     referenceDate: '2026-09-22',
     note: 'Recorte editorial local baseado em consulta pública ao catálogo oficial de Candidatos 2026. Não é snapshot automatizado, não representa o universo completo e não deve ser confundido com uma captura local validada do TSE.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-processual-2026',
@@ -294,6 +325,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     url: 'https://dadosabertos.tse.jus.br/dataset/processual-2026',
     nature: 'official',
     note: 'Processos eleitorais, assuntos, decisões e recursos referentes ao pleito de 2026.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -304,6 +336,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-25',
     note: 'Página municipal usada para verificar o contato da Defesa Civil.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'municipal-conselho-tutelar-2026',
@@ -313,6 +346,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-25',
     note: 'Página municipal usada para verificar telefone, endereço e horário do Conselho Tutelar.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'municipal-caps-2026',
@@ -322,6 +356,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-25',
     note: 'Página municipal usada para verificar o contato do CAPS.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'municipal-samu-2026',
@@ -331,6 +366,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-25',
     note: 'Página municipal usada para verificar o serviço SAMU e a orientação de emergência pelo 192.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'saneago-atendimento-2026',
@@ -340,6 +376,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-25',
     note: 'Canal oficial de atendimento ao cliente para água e esgotamento sanitário; a Saneago informa atendimento 24h pelo 0800 645 0115.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -351,6 +388,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-22',
     referenceDate: '2026-09-22',
     note: 'Atualização sobre carga e lacre das urnas eletrônicas para as Eleições 2026 em Goiás, incluindo preparação nas zonas eleitorais e etapas de auditoria.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-geracao-midias-2026',
@@ -361,6 +399,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-18',
     referenceDate: '2026-09-18',
     note: 'Registro da geração de mídias para as urnas, com Águas Lindas de Goiás entre as zonas contempladas.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-pardal-siade-2026',
@@ -371,6 +410,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-22',
     referenceDate: '2026-09-22',
     note: 'Orientações oficiais sobre os canais Pardal e SIADE para comunicações de irregularidades e desinformação eleitoral.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-libras-2026',
@@ -381,6 +421,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-21',
     referenceDate: '2026-10-04',
     note: 'Serviço de atendimento em Libras por videochamada via WhatsApp durante a votação, das 8h às 17h.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-justificativa-2026',
@@ -391,6 +432,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-21',
     referenceDate: '2026-09-21',
     note: 'Orientações sobre justificativa no dia da votação e nos 60 dias seguintes a cada turno.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -401,6 +443,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-10-05',
     note: 'Calendário da prestação de contas final: 5 de outubro a 3 de novembro de 2026; para participantes do segundo turno, 26 de outubro a 14 de novembro de 2026.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -412,6 +455,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-16',
     referenceDate: '2026-09-16',
     note: 'Atualização do e-Título com sincronização de dados, acompanhamento de requerimentos do Título Net, novas certidões, autenticação e outros serviços eleitorais.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-guia-ia-eleicoes-2026',
@@ -422,6 +466,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-23',
     referenceDate: '2026-09-23',
     note: 'Assistente virtual da Justiça Eleitoral para dúvidas sobre as Eleições 2026, disponível no e-Título e no Portal do TSE.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-canais-candidatos-2026',
@@ -432,6 +477,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-14',
     referenceDate: '2026-09-14',
     note: 'Orienta a consulta de candidaturas, partidos e prestação de contas por meio do DivulgaCandContas, Dados Abertos do TSE e Estatísticas Eleitorais.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-transporte-eleitores-2026',
@@ -442,6 +488,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-15',
     referenceDate: '2026-09-15',
     note: 'Orientações oficiais sobre regras para transporte de eleitoras e eleitores durante o período eleitoral.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-seguranca-eleicoes-2026',
@@ -451,6 +498,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-25',
     note: 'Página institucional atual da Comissão Permanente de Segurança, com atribuições e atuação nas Eleições 2026. Substitui a notícia de setembro que passou a retornar 404 no auditor do CI.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -462,6 +510,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-15',
     referenceDate: '2026-09-15',
     note: 'Dados de bens, arrecadação, despesas e movimentação financeira das campanhas de 2026 disponíveis no DivulgaCandContas.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-prestacao-contas-2026',
@@ -471,6 +520,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-24',
     note: 'Página oficial com Conta+JE, FEFC, CNPJ de campanha, limites de gastos, informações durante a campanha e demais sistemas de prestação de contas.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-dados-contas-abertos-2026',
@@ -480,6 +530,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-24',
     note: 'Conjunto oficial com dados de contas de candidatos e partidos, CNPJ de campanha, extratos bancários e documentos fiscais.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-sub-judice-2026',
@@ -490,6 +541,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-18',
     referenceDate: '2026-09-18',
     note: 'Explica como interpretar registros indeferidos em prazo recursal ou com recurso e por que “Concorrendo” não significa, isoladamente, registro deferido.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -501,6 +553,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-24',
     referenceDate: '2026-09-24',
     note: 'Atualização oficial sobre preparação e estabilidade do e-Título para o 1º e o 2º turno. O aplicativo oferece consulta ao local de votação, certidões e justificativa de ausência.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-sigilo-cabine-2026',
@@ -511,6 +564,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-24',
     referenceDate: '2026-10-04',
     note: 'Orientação oficial: celular e outros dispositivos que possam comprometer o sigilo não podem ser levados à cabine de votação; o aparelho deve ser desligado e deixado no local indicado pela mesa receptora.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-glossario-zeresima-bu-2026',
@@ -521,6 +575,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-23',
     referenceDate: '2026-09-23',
     note: 'Explicação oficial sobre a diferença entre zerésima e Boletim de Urna e o papel desses documentos no processo de votação e totalização.',
+    lastCheckedAt: '2026-10-05',
   },
 
   {
@@ -532,6 +587,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-24',
     referenceDate: '2026-09-24',
     note: 'Guia oficial com orientações de atendimento a pessoas com deficiência ou mobilidade reduzida e de atuação nos locais de votação.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-votacao-organizada-2026',
@@ -542,6 +598,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-24',
     referenceDate: '2026-09-24',
     note: 'Atualização oficial sobre preparação para o 1º turno, transparência, segurança e orientação ao eleitorado.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-simulados-resultados-2026',
@@ -552,6 +609,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-24',
     referenceDate: '2026-09-24',
     note: 'Página técnica com simulados para validação de soluções de divulgação de resultados; a segunda semana de testes ocorreu em 22, 23 e 24 de setembro de 2026.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tre-go-zona-28-contato-2026',
@@ -561,18 +619,9 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-24',
     note: 'Página oficial de contato das zonas eleitorais. A 28ª Zona Eleitoral corresponde a Águas Lindas de Goiás.',
+    lastCheckedAt: '2026-10-05',
   },
 
-  {
-    id: 'tse-chatvote-2026',
-    label: 'TSE — Assistente virtual ChatVote 2026',
-    institution: 'Tribunal Superior Eleitoral',
-    url: 'https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/tse-lanca-assistente-virtual-para-ampliar-acesso-a-informacoes-sobre-as-eleicoes-2026',
-    nature: 'official',
-    publishedAt: '2026-09-23',
-    referenceDate: '2026-09-23',
-    note: 'Assistente virtual com IA para dúvidas sobre as Eleições 2026, disponível no e-Título e no Portal do TSE.',
-  },
   {
     id: 'tse-whatsapp-2026',
     label: 'TSE — Canal oficial no WhatsApp 2026',
@@ -582,6 +631,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-21',
     referenceDate: '2026-09-21',
     note: 'Canal oficial para acompanhar alertas, informações sobre as eleições e conteúdos verificados diretamente pelo celular.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-simulador-urna-2026',
@@ -592,6 +642,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-22',
     referenceDate: '2026-09-22',
     note: 'Ferramenta oficial para treinar o voto e conhecer a experiência de votação nas Eleições 2026.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-regras-votacao-2026',
@@ -602,6 +653,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     publishedAt: '2026-09-24',
     referenceDate: '2026-09-24',
     note: 'Página oficial com regras práticas sobre o que é permitido e proibido nas seções eleitorais.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-estatisticas-eleitorado-2026',
@@ -611,6 +663,7 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-24',
     note: 'Base oficial de estatísticas do eleitorado, com consolidação mensal e informações sobre perfil e situação do eleitorado.',
+    lastCheckedAt: '2026-10-05',
   },
   {
     id: 'tse-estatisticas-gerais-2026',
@@ -620,5 +673,6 @@ export const sourceRegistry: readonly SourceRef[] = [
     nature: 'official',
     referenceDate: '2026-09-24',
     note: 'Hub oficial com estatísticas de candidaturas, eleitorado, resultados e prestação de contas.',
+    lastCheckedAt: '2026-10-05',
   },
 ];

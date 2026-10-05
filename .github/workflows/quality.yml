@@ -40,6 +40,9 @@ jobs:
         run: npm run audit:public-services
       - name: Validate data contracts
         run: npm run validate:observatorio
+
+      - name: Audit source provenance and temporal metadata
+        run: npm run audit:provenance
       - name: Validate TSE architecture isolation
         run: npm run audit:tse-architecture
       - name: Static consistency audit
@@ -56,6 +59,8 @@ jobs:
         run: npm run validate:tse
       - name: Validate candidate source guard
         run: node scripts/test-candidate-source-guard.mjs
+      - name: Audit TSE candidate snapshot provenance
+        run: npm run audit:candidate-snapshot
       - name: Dependency vulnerability gate
         run: npm run audit:deps
 

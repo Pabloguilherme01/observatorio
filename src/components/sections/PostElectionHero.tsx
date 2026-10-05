@@ -20,20 +20,20 @@ export function PostElectionHero() {
             <Badge>{technical ? EDITION + ' · arquivo + método' : 'Dados públicos · fontes rastreáveis'}</Badge>
             {technical && <Badge>Resultados consolidados</Badge>}
           </div>
-          <span className="hero-updated"><Database aria-hidden="true" /> Painel atualizado em {updatedAt}</span>
+          <span className="hero-updated"><Database aria-hidden="true" /> Edição atualizada em {updatedAt}</span>
         </div>
         <div className="hero-layout">
           <div className="hero-copy">
-            <span className="hero-kicker">Observatório cívico e eleitoral</span>
+            <span className="hero-kicker">Dados da cidade, serviços e eleições</span>
             <h1 id="hero-title">Águas Lindas de Goiás <em>2026</em></h1>
             <p>
               {summary
-                ? 'Uma visão rápida da cidade e do ciclo eleitoral de 2026, com números centrais e fontes rastreáveis.'
+                ? 'Veja os principais números de Águas Lindas, os resultados de 2026 e os serviços públicos em poucos passos.'
                 : technical
-                  ? 'Um arquivo auditável do ciclo eleitoral: resultados, fontes, método, recortes e limitações ficam separados e verificáveis.'
+                  ? 'Uma visão completa do ciclo eleitoral, com resultados oficiais e fontes para quem quiser conferir cada detalhe.'
                   : guided
-                    ? 'Aprenda a ler os resultados e os indicadores sem misturar apuração, contexto municipal, estimativa e dado derivado.'
-                    : 'Dados públicos de Águas Lindas organizados para consulta, conferência e fiscalização cívica depois da eleição.'}
+                    ? 'Entenda os resultados e os números da cidade passo a passo, sem precisar conhecer termos técnicos.'
+                    : 'Dados públicos de Águas Lindas organizados para você consultar, entender e conferir depois da eleição.'}
             </p>
             <div className="hero-actions">
               <a href="#resultados" className="hero-action primary">Ver resultados <ArrowRight aria-hidden="true" /></a>
@@ -56,16 +56,16 @@ export function PostElectionHero() {
               <div className="hero-election-heading">
                 <div>
                   <span>Estado do ciclo</span>
-                  <strong>Eleição 2026 · Goiás definido no 1º turno</strong>
+                  <strong>Eleição 2026 · resultado de Goiás definido no 1º turno</strong>
                 </div>
               </div>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                O 1º turno de 4 de outubro agora é tratado como registro histórico. Em Goiás, o governo estadual já foi definido no 1º turno; um eventual 2º turno de 25 de outubro permanece relevante apenas para cargos que não tenham sido definidos no 1º turno, como a disputa presidencial nacional.
+                O resultado do 1º turno de 4 de outubro já faz parte do histórico. Em Goiás, o governo estadual foi definido no 1º turno. Se houver 2º turno para outros cargos, o Observatório tratará essa nova apuração separadamente.
               </p>
               <div className="mt-4 grid gap-2 text-xs text-slate-400">
-                <span>• Resultados oficiais versionados</span>
-                <span>• Proveniência e integridade visíveis</span>
-                <span>• Dados municipais separados da apuração</span>
+                <span>• Resultado oficial conferido</span>
+                <span>• Fonte oficial identificada</span>
+                <span>• Dados da cidade separados do resultado eleitoral</span>
               </div>
               <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/daniel-vilela-mdb-e-eleito-governador-de-goias-no-1o-turno" target="_blank" rel="noopener noreferrer" className="hero-official-link">
                 TSE · resultado de Goiás no 1º turno <ExternalLink aria-hidden="true" />

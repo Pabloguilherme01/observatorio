@@ -28,6 +28,11 @@ if (edition === 'V' + major) pass('EDITION está alinhada ao major da versão.')
 else fail('EDITION não corresponde ao major da versão.');
 
 const requiredFiles = [
+  'tests/a11y.spec.mjs',
+  'tests/public-api-contract.spec.mjs',
+  'tests/public-entry-flows.spec.mjs',
+  'tests/mobile-core.spec.mjs',
+
   '.github/workflows/ci.yml',
   '.github/workflows/quality.yml',
   '.github/workflows/codeql.yml',
@@ -90,6 +95,34 @@ if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substit
 else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
 else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
+if (
+  read('vite.config.ts').includes("globIgnores: ['**/data/tse-results.json']")
+  && read('vite.config.ts').includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
+) pass('feed de resultados permanece fora do precache e usa cache dinâmico.');
+else fail('feed de resultados pode ficar congelado no precache.');
+if (
+  read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
+  && !read('tests/a11y.spec.mjs').includes("disableRules(['color-contrast'])")
+  && read('.github/workflows/browser.yml').includes('a11y')
+) pass('suíte Axe está integrada ao gate cross-browser com contraste habilitado.');
+else fail('suíte Axe não está integrada com o gate de contraste esperado.');
+if (
+  read('tests/public-api-contract.spec.mjs').includes('./api/v1/sources.json')
+  && read('tests/public-api-contract.spec.mjs').includes('lastCheckedAt')
+) pass('contrato da API pública possui cobertura automatizada.');
+else fail('contrato da API pública está sem cobertura automatizada.');
+if (
+  read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
+  && !read('playwright.config.mjs').includes("npm run build && npm run preview")
+  && read('.github/workflows/browser.yml').includes('name: Browser · build production')
+  && read('.github/workflows/browser.yml').includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
+  && read('.github/workflows/browser.yml').includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')
+  && read('.github/workflows/browser.yml').includes('needs: build')
+  && read('.github/workflows/browser.yml').includes('safari-desktop')
+  && read('.github/workflows/browser.yml').includes('non_blocking: false')
+  && read('playwright.config.mjs').includes('mobile-core')
+) pass('browser gate usa um único build de produção compartilhado, mantém Safari desktop bloqueante e cobre o mobile-core nos dispositivos móveis.');
+else fail('browser gate ainda não compartilha um artefato de produção ou perdeu cobertura crítica.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
 const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));

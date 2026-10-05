@@ -28,6 +28,16 @@ try {
   assert.equal(findElection(config, 6259, 2), null);
   assert.equal(findElection(config, 6259, 1).electionCode, 6259);
   validate(fixture, true);
+  const aggregateMismatch = structuredClone(fixture);
+  aggregateMismatch.entries[0].validVotes = aggregateMismatch.entries[0].items.reduce((sum, item) => sum + item.votes, 0) + 1;
+  writeFileSync(path, JSON.stringify(aggregateMismatch));
+  const mismatchResult = spawnSync(process.execPath, ['scripts/validate-results-feed.mjs'], {
+    cwd: process.cwd(),
+    env: { ...process.env, RESULTS_FEED_FILE: path, REQUIRE_RESULTS_FEED: 'true' },
+    encoding: 'utf8',
+  });
+  assert.equal(mismatchResult.status, 0);
+  assert.match(mismatchResult.stdout, /soma dos registros nominais/);
   const second = structuredClone(fixture);
   second.turn = 2;
   second.entries[0].electionCode = 7001;

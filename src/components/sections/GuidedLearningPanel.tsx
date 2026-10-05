@@ -1,3 +1,4 @@
+import '../../assets/styles/guided-mode.css';
 import { ArrowRight, BookOpen, BookOpenCheck, Compass, GraduationCap, Lightbulb, RotateCcw } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { STORAGE_NAMESPACE } from '../../config/version';

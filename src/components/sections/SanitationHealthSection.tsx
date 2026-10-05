@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { healthCapacity } from '../../lib/calculations';
 import { formatDate, formatNumber, formatPercent } from '../../utils/formatters';
-import { dispatchInspect, inspectDataId } from '../DataInspector';
+import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 

@@ -7,7 +7,7 @@ const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 const css = read('src/assets/styles/globals.css');
 const index = read('index.html');
 const app = read('src/app/App.tsx');
-const hero = read('src/components/sections/HeroCountdown.tsx');
+const hero = read('src/components/sections/PostElectionHero.tsx');
 const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const comparison = read('src/components/sections/ContextComparison.tsx');

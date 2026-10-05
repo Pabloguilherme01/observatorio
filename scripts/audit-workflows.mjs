@@ -78,8 +78,14 @@ for (const name of browserNames) {
   if (browser.includes('project: ' + name)) pass('matriz de navegador contém ' + name);
   else fail('matriz de navegador perdeu ' + name);
 }
-if (/project: safari-desktop[\s\S]*?non_blocking:\s*true/.test(browser)) pass('Safari desktop não bloqueia o gate principal quando o runner WebKit trava.');
-else fail('Safari desktop não possui isolamento não bloqueante.');
+if (/project: safari-desktop[\s\S]*?non_blocking:\s*false/.test(browser)) pass('Safari desktop é um gate bloqueante para regressões reais no WebKit.');
+else fail('Safari desktop não está protegido como gate bloqueante.');
+if (/jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a/.test(browser)
+  && /jobs:[\s\S]*?browser:\s*\n[\s\S]*?needs:\s*build/.test(browser)
+  && browser.includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')) {
+  pass('Browser constrói uma única vez e compartilha o artefato de produção entre os perfis.');
+} else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
+
 
 const quality = workflows['.github/workflows/quality.yml'];
 if (stepNames(quality, 'quality').includes('Audit workflow structure')) pass('Quality audita a estrutura dos workflows.');

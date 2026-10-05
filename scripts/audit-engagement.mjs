@@ -31,7 +31,7 @@ const experienceShell = read('src/components/ExperienceShell.tsx');
 const sentry = read('src/lib/sentry.ts');
 const leaderboard = read('src/lib/quizLeaderboard.ts');
 const readingModes = read('src/config/readingModes.ts');
-const hero = read('src/components/sections/HeroCountdown.tsx');
+const hero = read('src/components/sections/PostElectionHero.tsx');
 const trust = read('src/components/ProjectTrustPanel.tsx');
 const civic = read('src/components/sections/CivicActionHub.tsx');
 const guided = read('src/components/sections/GuidedLearningPanel.tsx');
@@ -43,7 +43,7 @@ must(
   modeToggle.includes('Leitura explicada') &&
   modeToggle.includes('Aprendizado guiado') &&
   modeToggle.includes('Leitura detalhada') &&
-  (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade')) &&
+  (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade') || hero.includes('Veja os principais números de Águas Lindas')) &&
   audience.includes('Comece pelo que você precisa saber.') &&
   executive.includes('Resumo principal') &&
   (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
@@ -109,8 +109,8 @@ must(electoral360Ui.includes('Nomes acompanhados no recorte') && electoral360Ui.
 must(electoral360Ui.includes('Captura com mais de 24h') && electoral360Ui.includes('A captura ultrapassou 24 horas'), 'Eleitoral 360 sinaliza snapshots potencialmente desatualizados');
 must(electoral360Ui.includes('className={`mb-4 rounded-2xl border ${snapshotWarning ?') && !electoral360Ui.includes('className=\"mb-4 rounded-2xl border ${snapshotWarning'), 'alerta de frescor do Eleitoral 360 usa interpolação JSX real');
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
-must(!(read('src/components/sections/HeroCountdown.tsx')).includes('Modo Eleição') && !(read('src/components/sections/HeroCountdown.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
-must((read('src/components/sections/HeroCountdown.tsx')).includes('hero-reference-card') && (read('src/components/sections/HeroCountdown.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/HeroCountdown.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
+must(!(read('src/components/sections/PostElectionHero.tsx')).includes('Modo Eleição') && !(read('src/components/sections/PostElectionHero.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
+must((read('src/components/sections/PostElectionHero.tsx')).includes('hero-reference-card') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
 must(executive.includes('Orçamento planejado por habitante') && executive.includes('budgetPerCapita') && executive.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
 must(
   executive.includes('budgetPerCapitaIndicator') &&
@@ -118,7 +118,7 @@ must(
   executive.includes("note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.'"),
   'indicador per capita explicita fórmula e natureza'
 );
-must(read('src/components/sections/HeroCountdown.tsx').includes('<small>Transporte</small>') && read('src/components/sections/HeroCountdown.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
+must(read('src/components/sections/PostElectionHero.tsx').includes('<small>Transporte</small>') && read('src/components/sections/PostElectionHero.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
 must((dashboard.includes('HistoricalTrendChart') && dashboardChart.includes('População e eleitorado')) || (dashboard.includes('Crescimento populacional · 2022–2026') && dashboard.includes('Eleitorado · 2018–2026')), 'dashboard mantém tendências históricas');
 const transport = read('src/components/TransportCalculator.tsx');
 const transportLib = read('src/lib/transport.ts');

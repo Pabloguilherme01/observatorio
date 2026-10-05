@@ -18,7 +18,6 @@ function formatPublicationTimestamp(value: string) {
 }
 
 export function ProjectTrustPanel() {
-  const official = d.sources.filter(source => source.nature === 'official').length;
   const { mode } = useLanguageMode();
   const [publication, setPublication] = useState({ status: 'loading', commitShort: '', buildGeneratedAt: '', contract: '', capturedAt: '', ageHours: null as number | null });
   const [healthRevision, setHealthRevision] = useState(0);

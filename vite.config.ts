@@ -68,10 +68,20 @@ const getHealthPayload = () => {
 };
 
 const getSourcesPayload = () => ({
-  schemaVersion: 1,
+  schemaVersion: 2,
   generatedAt: new Date().toISOString(),
-  sources: sourceRegistry.map(({ id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, nature }) => ({
-    id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, nature,
+  sources: sourceRegistry.map(({ id, label, institution, url, resourceUrl, updateFrequency, referenceDate, publishedAt, lastCheckedAt, nature, note }) => ({
+    id,
+    label,
+    institution,
+    url,
+    resourceUrl: resourceUrl ?? null,
+    updateFrequency: updateFrequency ?? null,
+    referenceDate: referenceDate ?? null,
+    publishedAt: publishedAt ?? null,
+    lastCheckedAt,
+    nature,
+    note: note ?? null,
   })),
 });
 
@@ -182,6 +192,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
+        globIgnores: ['**/data/tse-results.json'],
         navigateFallback: '/observatorio/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/observatorio\/api\//],
         runtimeCaching: [
@@ -209,6 +220,16 @@ export default defineConfig({
             options: {
               cacheName: `observatorio-documents-v${RUNTIME_CACHE_VERSION}`,
               expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname === '/observatorio/data/tse-results.json' || url.pathname === '/data/tse-results.json',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`,
+              networkTimeoutSeconds: 3,
+              expiration: { maxEntries: 2, maxAgeSeconds: 60 * 60 * 24 * 14, purgeOnQuotaError: true },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

@@ -845,7 +845,6 @@
 
   /* formulários e filtros: toque confortável sem ocupar a tela inteira */
   input, select, textarea, button { touch-action: manipulation; }
-  button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 430px) {
@@ -1336,7 +1335,7 @@
   [data-language-mode="technical"] .audience-home .audience-section-heading{padding-left:10px}
 }
 @media(prefers-reduced-motion:reduce){
-  .language-toggle-v3 .language-toggle-label{box-shadow:inset 3px 0 0 var(--mode-accent,#7dd3fc)}
+
 }
 
 /* Interaction polish V44.9.4 · stronger affordances without visual noise */

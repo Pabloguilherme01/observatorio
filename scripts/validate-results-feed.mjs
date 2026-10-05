@@ -80,6 +80,13 @@ for (const [index, entry] of (payload.entries ?? []).entries()) {
   if (typeof entry.sectionsTotal === 'number' && typeof entry.sectionsCounted === 'number' && entry.sectionsCounted > entry.sectionsTotal) fail(`entry ${index}: sectionsCounted não pode exceder sectionsTotal.`);
   if (!Array.isArray(entry.items)) fail(`entry ${index}: items deve ser array.`);
 
+  const listedVotes = Array.isArray(entry.items)
+    ? entry.items.reduce((sum, item) => sum + (typeof item?.votes === 'number' ? item.votes : 0), 0)
+    : 0;
+  if (typeof entry.validVotes === 'number' && listedVotes !== entry.validVotes) {
+    warnings.push(`entry ${index} (${entry.cargo}): soma dos registros nominais (${listedVotes}) difere de validVotes oficial (${entry.validVotes}); preservar os dois valores e não recomputar o agregado a partir da lista nominal.`);
+  }
+
   for (const [itemIndex, item] of (entry.items ?? []).entries()) {
     if (!item || typeof item !== 'object') {
       fail(`entry ${index} item ${itemIndex}: inválido.`);

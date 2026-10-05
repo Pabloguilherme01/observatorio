@@ -14,7 +14,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    name: Browser · build production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build production artifact
+        run: npm run build
+
+      - name: Upload production artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: observatorio-browser-dist
+          path: dist
+
   browser:
+    needs: build
     name: Browser · ${{ matrix.project }}
     runs-on: ubuntu-latest
     timeout-minutes: ${{ matrix.timeout }}
@@ -27,14 +54,18 @@ jobs:
             engine: chromium
             timeout: 30
             non_blocking: false
+          - project: chrome-a11y
+            engine: chromium
+            timeout: 30
+            non_blocking: false
           - project: firefox-desktop
             engine: firefox
             timeout: 30
             non_blocking: false
           - project: safari-desktop
             engine: webkit
-            timeout: 15
-            non_blocking: true
+            timeout: 30
+            non_blocking: false
           - project: chrome-android
             engine: chromium
             timeout: 30
@@ -59,6 +90,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
+
+      - name: Download production artifact
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        with:
+          name: observatorio-browser-dist
+          path: dist
 
       - name: Install browser engine
         run: npm exec -- playwright install --with-deps "${{ matrix.engine }}"

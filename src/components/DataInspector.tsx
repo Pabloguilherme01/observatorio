@@ -1,4 +1,5 @@
 import { formatIndicatorStatus } from '../utils/dataLabels';
+import { inspectDataId, type InspectorDetail } from '../lib/dataInspectorEvents';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Bookmark, BookmarkCheck, Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
@@ -6,43 +7,6 @@ import { copyText } from '../lib/clipboard';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { buildCanonicalUrl, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../lib/urlState';
 import { isIndicatorSaved, toggleSavedIndicator } from '../lib/savedIndicators';
-
-type InspectorDetail = {
-  label: string;
-  value: string;
-  sourceId?: string;
-  status?: string;
-  referenceDate?: string;
-  note?: string;
-  method?: string;
-  inspectId?: string;
-  sectionId?: string;
-};
-
-declare global {
-  interface WindowEventMap {
-    'observatorio:inspect-data': CustomEvent<InspectorDetail>;
-  }
-}
-
-export function inspectDataId(detail: Pick<InspectorDetail, 'label' | 'sourceId'>) {
-  const slug = detail.label
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase('pt-BR')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80);
-  return (detail.sourceId ?? 'observatorio') + '--' + (slug || 'dado');
-}
-
-function dispatchInspect(detail: InspectorDetail) {
-  window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
-    detail: { ...detail, inspectId: detail.inspectId ?? inspectDataId(detail) },
-  }));
-}
-
-export { dispatchInspect };
 
 function publicDate(value?: string) {
   if (!value) return undefined;
@@ -127,6 +91,7 @@ export function DataInspector() {
   const statusLabel = formatIndicatorStatus(data?.status);
   const referenceLabel = publicDate(effectiveReferenceDate);
   const sourcePublishedLabel = publicDate(source?.publishedAt);
+  const sourceCheckedLabel = publicDate(source?.lastCheckedAt);
 
   if (!data) return null;
 
@@ -137,6 +102,7 @@ export function DataInspector() {
     statusLabel ? `Natureza/status: ${statusLabel}` : '',
     referenceLabel ? `Referência: ${referenceLabel}` : 'Referência: não informada',
     sourcePublishedLabel ? `Publicação da fonte: ${sourcePublishedLabel}` : '',
+    sourceCheckedLabel ? `Fonte verificada em: ${sourceCheckedLabel}` : '',
     data.method ? `Método: ${data.method}` : '',
     effectiveNote ?? '',
   ].filter(Boolean).join('\n');
@@ -267,6 +233,7 @@ export function DataInspector() {
             <Info label="Ano-base / referência" value={referenceLabel ?? 'Não informado'} />
             <Info label="Publicação da fonte" value={sourcePublishedLabel ?? 'Não informada'} />
             <Info label="Atualização da fonte" value={source?.updateFrequency ?? 'Não informada'} />
+            <Info label="Fonte verificada em" value={sourceCheckedLabel ?? 'Não informada'} />
           </div>
 
           {!effectiveReferenceDate && (

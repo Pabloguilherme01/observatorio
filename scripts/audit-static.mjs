@@ -118,6 +118,34 @@ must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline per
 must(vite.includes("globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}']") && vite.includes("navigateFallback: '/observatorio/index.html'") && !vite.includes('includeAssets:'), 'VitePWA usa um único caminho de precache para assets públicos e shell offline');
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
 must(
+  vite.includes('const getSourcesPayload = () => ({')
+    && vite.includes('schemaVersion: 2')
+    && vite.includes('lastCheckedAt')
+    && vite.includes('note: note ?? null'),
+  'API pública de fontes expõe verificação e nota metodológica junto à proveniência',
+);
+must(
+  vite.includes("globIgnores: ['**/data/tse-results.json']")
+    && vite.includes("url.pathname === '/observatorio/data/tse-results.json'")
+    && vite.includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
+    && vite.includes("handler: 'NetworkFirst'"),
+  'feed oficial de resultados não entra no precache estático e possui cache dinâmico próprio',
+);
+must(
+  fs.existsSync(path.join(root, 'tests/a11y.spec.mjs'))
+    && read('tests/a11y.spec.mjs').includes('@axe-core/playwright')
+    && !read('tests/a11y.spec.mjs').includes("disableRules(['color-contrast'])")
+    && read('.github/workflows/browser.yml').includes('a11y'),
+  'suíte de acessibilidade real usa Axe com contraste e entra no workflow cross-browser',
+);
+must(
+  fs.existsSync(path.join(root, 'tests/public-api-contract.spec.mjs'))
+    && read('tests/public-api-contract.spec.mjs').includes('./api/v1/sources.json')
+    && read('tests/public-api-contract.spec.mjs').includes('lastCheckedAt'),
+  'suíte de navegador valida o contrato da API pública e sua proveniência',
+);
+
+must(
   vite.includes("const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0]")
     && vite.includes('observatorio-static-v${RUNTIME_CACHE_VERSION}')
     && vite.includes('observatorio-fonts-v${RUNTIME_CACHE_VERSION}')
@@ -126,8 +154,8 @@ must(
     && !vite.includes('-v13'),
   'caches runtime do PWA acompanham automaticamente o major da aplicação',
 );
-must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/HeroCountdown.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
-must(!read('src/components/sections/HeroCountdown.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
+must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/PostElectionHero.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
+must(!read('src/components/sections/PostElectionHero.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 
 const pkgScripts = packageJson.scripts ?? {};
 const workflowsDir = path.join(root, '.github/workflows');
@@ -151,6 +179,7 @@ must(
   !pkgScripts['audit:browser']?.includes('playwright install')
     && browserWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
     && browserWorkflow.includes('project: chrome-desktop')
+    && browserWorkflow.includes('project: chrome-a11y')
     && browserWorkflow.includes('engine: chromium')
     && browserWorkflow.includes('project: firefox-desktop')
     && browserWorkflow.includes('engine: firefox')
@@ -160,12 +189,21 @@ must(
     && browserWorkflow.includes('project: safari-iphone-se')
     && browserWorkflow.includes('engine: webkit')
     && browserWorkflow.includes('playwright test --config=playwright.config.mjs --project=')
+    && browserWorkflow.includes('safari-desktop')
+    && browserWorkflow.includes('non_blocking: false')
+    && browserWorkflow.includes('name: Browser · build production')
+    && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
+    && browserWorkflow.includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')
+    && browserWorkflow.includes('needs: build')
+    && read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
+    && !read('playwright.config.mjs').includes("npm run build && npm run preview")
+    && read('playwright.config.mjs').includes('mobile-core')
     && !ciWorkflow.includes('npm install playwright')
     && !ciWorkflow.includes('npx playwright')
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
     && !deployWorkflow.includes('playwright install')
     && !deployWorkflow.includes('playwright test'),
-  'CI mantém seis perfis Playwright instalando apenas o motor necessário e o deploy não repete a suíte cross-browser',
+  'CI mantém sete perfis Playwright, compartilha um único artefato de produção, inclui o gate Axe, Safari desktop bloqueante e não repete a suíte no deploy',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
 const playwrightConfig = read('playwright.config.mjs');
@@ -295,7 +333,7 @@ must(candidates.meta.state === 'local_filter_pending' || ['official_tse_zip_csv'
 const runtimeFiles = [
   'src/app/App.tsx',
   'src/components/ExperienceShell.tsx',
-  'src/components/sections/HeroCountdown.tsx',
+  'src/components/sections/PostElectionHero.tsx',
   'src/components/sections/ContextComparison.tsx',
   'src/components/sections/CivicActionHub.tsx',
   'src/context/LanguageModeContext.tsx',

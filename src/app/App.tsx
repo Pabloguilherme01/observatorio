@@ -1,17 +1,17 @@
 import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { DashboardMetrics } from '../components/sections/DashboardMetrics';
+const DashboardMetrics = lazy(() => import('../components/sections/DashboardMetrics').then(module => ({ default: module.DashboardMetrics })));
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
-import { PostElectionHero } from '../components/sections/HeroCountdown';
-import { ResultsLiveBanner } from '../components/sections/ResultsLiveBanner';
+import { PostElectionHero } from '../components/sections/PostElectionHero';
+const ResultsLiveBanner = lazy(() => import('../components/sections/ResultsLiveBanner').then(module => ({ default: module.ResultsLiveBanner })));
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
 import { LanguageModeProvider, useLanguageMode } from '../context/LanguageModeContext';
-import { AudienceHub } from '../components/AudienceHub';
-import { ExecutiveSummary } from '../components/sections/ExecutiveSummary';
-import { GuidedLearningPanel } from '../components/sections/GuidedLearningPanel';
-import { PublicUtilityGuide } from '../components/sections/PublicUtilityGuide';
+const AudienceHub = lazy(() => import('../components/AudienceHub').then(module => ({ default: module.AudienceHub })));
+const ExecutiveSummary = lazy(() => import('../components/sections/ExecutiveSummary').then(module => ({ default: module.ExecutiveSummary })));
+const GuidedLearningPanel = lazy(() => import('../components/sections/GuidedLearningPanel').then(module => ({ default: module.GuidedLearningPanel })));
+const PublicUtilityGuide = lazy(() => import('../components/sections/PublicUtilityGuide').then(module => ({ default: module.PublicUtilityGuide })));
 import { DataInspector } from '../components/DataInspector';
 import DeferredEvidenceGroup from '../components/sections/DeferredEvidenceGroup';
 import { Footer } from '../components/layout/Footer';
@@ -316,12 +316,12 @@ export function App() {
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><PostElectionHero /></SectionErrorBoundary>
           <main id="main-content">
-            <SectionErrorBoundary label="Resultados oficiais"><ResultsLiveBanner /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Resumo principal"><ExecutiveSummary /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Aprendizado guiado"><GuidedLearningPanel /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Guia de utilidade pública"><PublicUtilityGuide /></SectionErrorBoundary>
-            <SectionErrorBoundary label="Exploração"><AudienceHub /></SectionErrorBoundary>
-            <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><DashboardMetrics /></SectionErrorBoundary></div>
+            <SectionErrorBoundary label="Resultados oficiais"><Deferred><ResultsLiveBanner /></Deferred></SectionErrorBoundary>
+            <SectionErrorBoundary label="Resumo principal"><Deferred><ExecutiveSummary /></Deferred></SectionErrorBoundary>
+            <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
+            <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
+            <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
+            <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><Deferred><DashboardMetrics /></Deferred></SectionErrorBoundary></div>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
@@ -329,7 +329,7 @@ export function App() {
             <div className="mode-scope mode-scope-evidence"><SectionErrorBoundary label="Qualidade e evidências"><DeferredEvidenceGroup /></SectionErrorBoundary></div>
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
-          <SectionErrorBoundary label="Inspetor de dados"><DataInspector /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Inspetor de dados"><Deferred><DataInspector /></Deferred></SectionErrorBoundary>
           <Footer />
         </ExperienceShell>
         </ContrastProvider>

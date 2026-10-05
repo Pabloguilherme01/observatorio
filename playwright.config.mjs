@@ -19,6 +19,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'chrome-a11y',
+      testMatch: /a11y\.spec\.mjs/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       name: 'firefox-desktop',
       testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['Desktop Firefox'] },
@@ -30,24 +35,24 @@ export default defineConfig({
     },
     {
       name: 'chrome-android',
-      testMatch: /(cross-browser-ui|mobile-repagination|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['Pixel 7'] },
     },
     {
       name: 'safari-iphone',
-      testMatch: /(cross-browser-ui|mobile-repagination|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['iPhone 14'] },
     },
     {
       name: 'safari-iphone-se',
-      testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-core|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['iPhone SE'] },
     },
   ],
   webServer: {
-    command: 'vite --host 127.0.0.1 --port 4173',
+    command: 'npm run preview -- --host 127.0.0.1 --port 4173',
     url: 'http://127.0.0.1:4173/observatorio/',
     reuseExistingServer: false,
-    timeout: 30_000,
+    timeout: 120_000,
   },
 });

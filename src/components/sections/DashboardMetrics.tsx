@@ -4,7 +4,7 @@ const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(mo
 import { observatorioData as d } from '../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
-import { dispatchInspect, inspectDataId } from '../DataInspector';
+import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { IndicatorComparator } from './IndicatorComparator';
@@ -31,6 +31,8 @@ export function DashboardMetrics() {
   const formatReference = (date?: string, fallback = 'referência não informada') =>
     date ? date.split('-').reverse().join('/') : fallback;
   const statusLabel = (status?: string) => formatIndicatorStatus(status, 'Dado público') ?? 'Dado público';
+  const sourceMeta = (id: string) => d.sources.find(source => source.id === id);
+  const sourceReferenceDate = (id: string) => sourceMeta(id)?.referenceDate;
   const budgetFunctionAmount = (id: string) => d.budget.functions.find(item => item.id === id)?.amountBrl ?? 0;
   const budgetTotal = d.budget.totalBrl;
   const comparisonDetails = [
@@ -77,11 +79,11 @@ export function DashboardMetrics() {
   ] as const;
   const visibleComparisons = isSummary ? comparisonDetails.slice(0, 2) : comparisonDetails;
   const metricDetails: readonly MetricDetail[] = [
-    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: formatNumber(population2022) + ' → ' + formatNumber(population2026), simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
+    { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: formatNumber(population2022) + ' → ' + formatNumber(population2026), simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: sourceReferenceDate('ibge-estimativas-2026'), nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
     { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: formatNumber(electorate2022) + ' → ' + formatNumber(electorate2026), simpleExplanation: 'Mudança percentual do eleitorado entre os registros disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
     { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado registrado e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
-    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: '2026-07-01', nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
-    { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: '2025-01-01', nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
+    { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: sourceReferenceDate('ibge-estimativas-2026'), nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
+    { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: indicatorMeta('area')?.referenceDate ?? sourceReferenceDate('ibge-cidades-2026'), nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];
   const thematicIndicators = [
     { id: 'companies', label: 'Empresas ativas', value: formatNumber(Number(municipalIndicator('companies'))), fallbackReference: 'registro 2026', fallbackSourceId: 'caged-sebrae-2026' },
@@ -185,6 +187,61 @@ export function DashboardMetrics() {
         <div className="technical-detail mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">
           <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> população e eleitorado são universos diferentes e podem ter datas de referência diferentes. A razão eleitorado/população é um cálculo estatístico; não mede comparecimento às urnas.
         </div>
+      )}
+
+      {consolidatedElectorate && (
+        <section
+          id="eleitorado-reconciliacao"
+          className="mt-5 rounded-3xl border border-amber-300/15 bg-amber-300/[0.035] p-4 light:border-amber-200 light:bg-amber-50/70 sm:p-5"
+          aria-labelledby="electorate-reconciliation-title"
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-300/80 light:text-amber-700">
+                Reconciliação do eleitorado
+              </div>
+              <h3 id="electorate-reconciliation-title" className="mt-1 text-base font-black text-white light:text-slate-900">
+                Dois cortes de eleitorado, não dois resultados concorrentes
+              </h3>
+              <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">
+                O Observatório preserva o registro local da 28ª Zona e o consolidado TSE separadamente porque os universos administrativos ainda não estão documentalmente reconciliados.
+              </p>
+            </div>
+            <button
+              type="button"
+              data-inspect-id={inspectDataId({ label: 'Reconciliação do eleitorado', sourceId: d.electoral.consolidatedSourceId ?? d.electoral.sourceId })}
+              onClick={() => dispatchInspect({
+                label: 'Reconciliação do eleitorado 2026',
+                value: formatNumber(d.electoral.electorate) + ' na 28ª Zona · ' + formatNumber(consolidatedElectorate) + ' no consolidado TSE',
+                sourceId: d.electoral.consolidatedSourceId ?? d.electoral.sourceId,
+                referenceDate: d.electoral.snapshotDate,
+                status: 'snapshot',
+                note: d.sources.find(source => source.id === d.electoral.consolidatedSourceId)?.note,
+                method: 'Comparação editorial entre dois cortes de eleitorado preservados separadamente; não é uma nova base oficial.',
+              })}
+              className="shrink-0 rounded-xl border border-amber-300/15 px-3 py-2 text-xs font-bold text-amber-200 transition hover:border-amber-300/35 light:border-amber-300 light:text-amber-800"
+            >
+              Ver proveniência
+            </button>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/8 bg-black/10 p-4 light:border-slate-200 light:bg-white">
+              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">28ª Zona · snapshot local</div>
+              <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{formatNumber(d.electoral.electorate)}</div>
+              <div className="mt-1 text-[11px] text-slate-500">referência {formatReference(d.electoral.snapshotDate)}</div>
+            </div>
+            <div className="rounded-2xl border border-white/8 bg-black/10 p-4 light:border-slate-200 light:bg-white">
+              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">Consolidado TSE</div>
+              <div className="mt-1 text-2xl font-black text-white light:text-slate-900">{formatNumber(consolidatedElectorate)}</div>
+              <div className="mt-1 text-[11px] text-slate-500">camada editorial de reconciliação</div>
+            </div>
+            <div className="rounded-2xl border border-amber-300/10 bg-amber-300/[0.025] p-4 light:border-amber-200 light:bg-amber-50/70">
+              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-amber-700/80">Diferença preservada</div>
+              <div className="mt-1 text-2xl font-black text-amber-100 light:text-amber-900">{formatNumber(Math.abs(consolidatedElectorate - d.electoral.electorate))}</div>
+              <div className="mt-1 text-[11px] leading-4 text-slate-500">não é erro automaticamente; os cortes ainda precisam ser conciliados documentalmente.</div>
+            </div>
+          </div>
+        </section>
       )}
 
       <IndicatorComparator />

@@ -8,7 +8,7 @@ const files = [
   'src/main.tsx',
   'src/app/App.tsx',
   'src/components/sections/ExecutiveSummary.tsx',
-  'src/components/sections/HeroCountdown.tsx',
+  'src/components/sections/PostElectionHero.tsx',
   'src/components/layout/MobileBottomNav.tsx',
   'src/components/ExperienceShell.tsx',
   'src/components/DataExportActions.tsx',
