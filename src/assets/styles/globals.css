@@ -2476,7 +2476,7 @@ d,
   .candidate-card p,.candidate-summary-body p,.technical-detail,.source-card p{overflow-wrap:anywhere}
   .search-modal-backdrop{align-items:flex-start;padding:env(safe-area-inset-top,8px) var(--mobile-page-gutter) 16px}
   .search-modal-panel{width:100%;margin-top:4vh;max-height:88dvh;border-radius:20px}
-  .search-modal-head{padding:10px}
+  
   .mobile-bottom-nav{
     min-height:var(--mobile-nav-height);
     padding:6px var(--mobile-page-gutter) env(safe-area-inset-bottom,0px);
