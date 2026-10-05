@@ -162,8 +162,13 @@ else fail('estado do healthcheck não possui anúncio acessível');
 const mobileNav = texts.find(item => item.file === 'src/components/layout/MobileBottomNav.tsx')?.content ?? '';
 if (!mobileNav.includes('Navegação principal no celular')) fail('Navegação mobile rotulada ausente');
 else pass('navegação mobile rotulada e integrada ao fluxo principal');
-if (!mobileNav.includes("item.group === 'more' && item.id !== 'quiz'")) fail('Quiz duplicado no menu Mais da navegação mobile');
-else pass('Quiz aparece uma única vez na navegação inferior mobile');
+const quizMenuOnly =
+  mobileNav.includes("const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more')];") &&
+  !mobileNav.includes('quizItem') &&
+  !mobileNav.includes("id === 'quiz'") &&
+  !mobileNav.includes("label: 'Quiz'");
+if (!quizMenuOnly) fail('Quiz deve possuir uma única entrada no menu Mais da navegação mobile');
+else pass('Quiz aparece uma única vez no menu Mais da navegação inferior mobile');
 
 const experience = texts.find(item => item.file === 'src/components/ExperienceShell.tsx')?.content ?? '';
 if (experience.includes('shortcutMap') && experience.includes('navigationSequence') && experience.includes('navigateToSection(destination)') && sectionNavigation.includes('window.history.pushState')) pass('atalhos configurados usam navegação central com histórico restaurável');
