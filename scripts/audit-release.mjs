@@ -89,7 +89,7 @@ const quality = read('.github/workflows/quality.yml');
 const deploy = read('.github/workflows/deploy-pages.yml');
 const syncTse = read('.github/workflows/sync-tse-2026.yml');
 const syncResults = read('.github/workflows/sync-results-2026.yml');
-const workflowText = [ci, quality, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults, exists('.github/workflows/verify-tse-simulation.yml') ? read('.github/workflows/verify-tse-simulation.yml') : ''].join('\n');
+const workflowText = [ci, quality, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
 
 if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
 else fail('CI não inclui o release gate consolidado.');
