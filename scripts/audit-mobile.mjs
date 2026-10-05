@@ -54,8 +54,8 @@ must(!files.experience.includes('market') && !files.experience.includes('hype'),
 
 must(files.header.includes('IntersectionObserver') && files.header.includes('observatorio:navigate'), 'cabeçalho acompanha seções carregadas tardiamente');
 must(files.header.includes('mobile-tools-actions') && files.header.includes('desktop-theme-toggle'), 'controles secundários permanecem fora da linha principal mobile');
-must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("id === 'quiz'"), 'navegação inferior usa o evento central, mantém Explorar e ativa corretamente o Quiz');
-must(files.mobileNav.includes("item.group === 'more' && item.id !== 'quiz'"), 'Quiz possui um único ponto de entrada na navegação inferior mobile');
+must(files.mobileNav.includes('observatorio:navigate') && files.mobileNav.includes("label: 'Explorar'") && files.mobileNav.includes("label: 'Resultados'") && files.mobileNav.includes("id === 'resultados'"), 'navegação inferior mantém Explorar, expõe Resultados e atualiza a aba ativa por evento/hash');
+must(files.mobileNav.includes("item.group === 'more'") && files.mobileNav.includes('const moreItems = [guidedItem,'), 'áreas secundárias, incluindo o Quiz, ficam concentradas no menu Mais');
 must(files.mobileNav.includes("createPortal") && files.mobileNav.includes("data-mobile-more-layer") && files.mobileNav.includes("closeMore") && files.mobileNav.includes("toggleMore"), 'menu Mais usa camada portal estável com estado centralizado');
 must(files.mobileNav.includes('if (!moreOpen) return;') && files.mobileNav.includes("querySelector<HTMLButtonElement>('[role=\"menuitem\"]')?.focus()") && files.mobileNav.includes('window.cancelAnimationFrame(frame)'), 'menu Mais move foco somente após o portal renderizar e limpa RAF pendente');
 must(files.mobileNav.includes("window.addEventListener('resize', onResize)") && files.mobileNav.includes("window.innerWidth >= 768"), 'menu Mais fecha ao sair do breakpoint mobile');
