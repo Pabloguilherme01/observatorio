@@ -14,6 +14,7 @@ const files = {
   finalUi: read('src/assets/styles/final-ui.css'),
   mobileFinal: read('src/assets/styles/mobile-final.css'),
   guidedCss: read('src/assets/styles/guided-mode.css'),
+  visualHardening: exists('src/assets/styles/visual-hardening.css') ? read('src/assets/styles/visual-hardening.css') : '',
   header: read('src/components/layout/Header.tsx'),
   mobileNav: read('src/components/layout/MobileBottomNav.tsx'),
   language: read('src/components/layout/LanguageModeToggle.tsx'),
@@ -77,6 +78,10 @@ must(files.css.includes('.mobile-bottom-nav') && files.css.includes('.search-mod
 must(files.finalUi.includes('.deferred-section{') && files.finalUi.includes('content-visibility:visible!important') && !files.mobileFinal.includes('content-visibility:auto'), 'seções lazy montadas permanecem renderizáveis para gráficos e deep links');
 must(files.finalUi.includes('.premium-info-card{') && files.finalUi.includes('.premium-info-grid{') && files.finalUi.includes('@media (max-width:767px)') && files.finalUi.includes('.premium-info-grid{grid-template-columns:1fr}'), 'cards premium possuem composição responsiva e colapsam para uma coluna no mobile');
 must(files.hero.includes('hero-reference-card') && files.finalUi.includes('.hero-reference-card{'), 'referências técnicas do hero usam mini-cards em vez de texto solto');
+must(exists('src/assets/styles/visual-hardening.css'), 'camada visual V45 possui arquivo próprio e auditável');
+must(files.visualHardening.includes('min-width:0') && files.visualHardening.includes('overflow-wrap:anywhere') && files.visualHardening.includes('overflow-x:clip'), 'camada visual V45 contém contrato explícito contra overflow e encolhimento de layout');
+must(files.visualHardening.includes('.hero-layout') && files.visualHardening.includes('grid-template-columns:minmax(0,1fr)') && files.visualHardening.includes('@media (max-width: 767px)'), 'hero possui composição responsiva sem coluna mínima rígida no mobile');
+must(files.visualHardening.includes('.results-public-card') && files.visualHardening.includes('.audience-action-card') && files.visualHardening.includes('.audience-resource'), 'cards públicos compartilham regras de largura, texto e alinhamento');
 
 must(files.hero.includes('href="#descubra"') && files.hero.includes('href="#fontes"'), 'hero mantém ações principais acessíveis sem forçar modo técnico');
 must(files.language.includes("id: 'summary'") && files.language.includes("id: 'simple'") && files.language.includes("id: 'guided'") && files.language.includes("id: 'technical'") && files.language.includes('aria-pressed') && files.language.includes('cycleMode') && files.language.includes('Avançar para aprendizado guiado'), 'os quatro modos e a progressão explícita de leitura continuam disponíveis');
