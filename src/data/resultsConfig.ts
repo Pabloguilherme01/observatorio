@@ -1,4 +1,5 @@
 export const RESULTS_FEED_URL = `${import.meta.env.BASE_URL}data/tse-results.json`;
+export const RESULTS_DOCS_URL = 'https://www.tse.jus.br/eleicoes/informacoes-tecnicas-sobre-a-divulgacao-de-resultados';
 export const RESULTS_FEED_SCHEMA_VERSION = 3;
 
 export const RESULTS_WINDOW = {

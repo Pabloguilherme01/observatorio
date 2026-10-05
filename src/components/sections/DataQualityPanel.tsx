@@ -3,7 +3,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { formatDate } from '../../utils/formatters';
-import { SIMULATION_CONTEXT } from '../../data/resultsConfig';
+import { RESULTS_DOCS_URL } from '../../data/resultsConfig';
 import generated from '../../data/generated/tse2026-candidates.json';
 
 function formatCapture(value: string | undefined) {
@@ -232,7 +232,7 @@ export function DataQualityPanel() {
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Simulado oficial TSE</div>
           <div className="mt-2 text-base font-black text-white light:text-slate-900">22–24/09 · 9h–12h e 14h–17h</div>
           <p className="mt-1 text-xs leading-5 text-slate-500">Validação técnica isolada da produção. O ambiente de simulado usa pleito 17801 e códigos próprios; nenhum dado simulado entra no feed oficial.</p>
-          <a href={SIMULATION_CONTEXT.docsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Ver documentação dos simulados TSE</a>
+          <a href={RESULTS_DOCS_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Ver documentação dos simulados TSE</a>
         </Card>
         <Card className="p-4">
           <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Regra editorial</div>
