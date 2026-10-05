@@ -8,6 +8,7 @@ const maxSourceKb = Number(process.env.STYLE_MAX_SOURCE_KB || 210);
 const warnings = [];
 const failures = [];
 const selectorFiles = new Map();
+const exactDuplicateBlocks = new Map();
 
 for (const file of files) {
   const full = path.join(styleRoot, file);
@@ -22,22 +23,34 @@ for (const file of files) {
     const set = selectorFiles.get(selector) ?? new Set();
     set.add(file);
     selectorFiles.set(selector, set);
+    const normalizedBody = match[0].slice(match[0].indexOf('{') + 1, match[0].lastIndexOf('}')).trim().replace(/\s+/g, ' ');
+    const exactKey = selector + '{' + normalizedBody + '}';
+    const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
+    blocks.push(file);
+    exactDuplicateBlocks.set(exactKey, blocks);
   }
 }
 
 const crossFileDuplicates = [...selectorFiles.entries()]
   .filter(([, set]) => set.size >= 2)
-  .map(([selector, set]) => ({ selector, files: [...set] }))
+  .map(([selector, set]) => ({ selector, files: [...set] }));
+const repeatedExactBlocks = [...exactDuplicateBlocks.entries()]
+  .filter(([, files]) => files.length >= 2)
+  .map(([block, files]) => ({ block: block.slice(0, 240), files }));
   .sort((a, b) => b.files.length - a.files.length || b.selector.length - a.selector.length);
 
 console.log(JSON.stringify({
   cssFiles: files.length,
   crossFileDuplicateSelectors: crossFileDuplicates.length,
+  exactDuplicateBlocks: repeatedExactBlocks.length,
   largestRepeatedSelectors: crossFileDuplicates.slice(0, 20),
 }, null, 2));
 
 if (crossFileDuplicates.length > 80) {
   warnings.push('Há ' + crossFileDuplicates.length + ' seletores repetidos entre arquivos; consolidação incremental recomendada.');
+}
+if (repeatedExactBlocks.length > 120) {
+  warnings.push('Há ' + repeatedExactBlocks.length + ' blocos CSS exatamente repetidos; consolidar em rodadas pequenas e verificadas.');
 }
 warnings.forEach(message => console.log('WARN ' + message));
 if (failures.length) {
