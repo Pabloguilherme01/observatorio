@@ -66,7 +66,7 @@ export function buildDataQualityModel() {
     missingDateIndicators,
     missingSourceIndicators,
     indicatorsNeedingDocumentation,
-    pollGapPct,
+    tseState,
     tseStatus,
     tseCapturedAt,
     resultsSource,
