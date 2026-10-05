@@ -13,6 +13,8 @@ for (const suffix of ['static', 'fonts', 'documents', 'results', 'api']) {
   assert.match(sw, new RegExp(`observatorio-${suffix}-v${cacheMajor}`));
 }
 assert.match(sw, /NetworkFirst/);
+assert.match(sw, /NetworkOnly/);
+assert.match(sw, /health\.json/);
 assert.match(sw, /tse-results\.json/);
 assert.doesNotMatch(sw, /observatorio-(?:static|fonts|documents|api)-v13/);
 assert.ok(manifest.icons.some(icon => icon.src === '/observatorio/pwa-192.png' && icon.purpose.includes('maskable')));
