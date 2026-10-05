@@ -3227,7 +3227,6 @@ main summary:focus-visible{
     scroll-snap-type:x proximity;
     scrollbar-width:none;
   }
-  .today-rail::-webkit-scrollbar,.topic-rail::-webkit-scrollbar,.mobile-rail::-webkit-scrollbar{display:none}
   .today-card{
     flex:0 0 min(82vw,320px)!important;
     min-width:0!important;
