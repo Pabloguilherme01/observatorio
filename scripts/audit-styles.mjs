@@ -3,8 +3,19 @@ import path from 'node:path';
 
 const root = process.cwd();
 const styleRoot = path.join(root, 'src', 'assets', 'styles');
-const files = fs.readdirSync(styleRoot).filter(file => file.endsWith('.css'));
-const maxSourceKb = Number(process.env.STYLE_MAX_SOURCE_KB || 210);
+
+function listCssFiles(directory, base = directory) {
+  const files = [];
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const full = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...listCssFiles(full, base));
+    else if (entry.name.endsWith('.css')) files.push(path.relative(base, full).split(path.sep).join('/'));
+  }
+  return files;
+}
+
+const files = listCssFiles(styleRoot).sort();
+const maxSourceKb = Number(process.env.STYLE_MAX_SOURCE_KB || 120);
 const warnings = [];
 const failures = [];
 const selectorFiles = new Map();
