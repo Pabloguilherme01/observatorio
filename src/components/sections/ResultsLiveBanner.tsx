@@ -86,6 +86,8 @@ export function ResultsLiveBanner() {
                 : Math.min(99.9, Math.floor((counted / total * 100) * 10) / 10)
               : null;
             const sorted = [...entry.items].sort((a, b) => b.votes - a.votes);
+            const listedVotes = entry.items.reduce((sum, item) => sum + item.votes, 0);
+            const hasNominalAggregateDifference = entry.validVotes != null && listedVotes !== entry.validVotes;
             return (
               <div key={entry.sourceFile} className="results-public-card rounded-xl border border-white/10 p-3 light:border-slate-200 light:bg-white">
                 <h3 className="text-sm font-bold text-slate-100 light:text-slate-900">{entry.cargo}</h3>
@@ -104,6 +106,11 @@ export function ResultsLiveBanner() {
                   </ol>
                 ) : <p className="mt-2 text-xs text-slate-500">Sem candidatos no arquivo recebido.</p>}
                 {sorted.length > 5 && <p className="mt-2 text-[10px] text-slate-500">Exibindo 5 de {sorted.length} registros.</p>}
+                {hasNominalAggregateDifference && (
+                  <p className="mt-2 text-[10px] leading-4 text-amber-300 light:text-amber-800">
+                    O total de votos válidos é o agregado oficial do TSE. Os registros nominais recebidos neste cargo não devem ser somados para recomputar esse total.
+                  </p>
+                )}
               </div>
             );
           })}
