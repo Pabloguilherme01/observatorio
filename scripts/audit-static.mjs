@@ -172,6 +172,7 @@ must(
   !pkgScripts['audit:browser']?.includes('playwright install')
     && browserWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
     && browserWorkflow.includes('project: chrome-desktop')
+    && browserWorkflow.includes('project: chrome-a11y')
     && browserWorkflow.includes('engine: chromium')
     && browserWorkflow.includes('project: firefox-desktop')
     && browserWorkflow.includes('engine: firefox')
@@ -186,7 +187,7 @@ must(
     && !ciWorkflow.includes('playwright install --with-deps chromium firefox webkit')
     && !deployWorkflow.includes('playwright install')
     && !deployWorkflow.includes('playwright test'),
-  'CI mantém seis perfis Playwright instalando apenas o motor necessário e o deploy não repete a suíte cross-browser',
+  'CI mantém sete perfis Playwright, incluindo o gate Axe, instalando apenas o motor necessário e o deploy não repete a suíte cross-browser',
 );
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
 const playwrightConfig = read('playwright.config.mjs');
