@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
-# Publication starts only after the complete CI for main succeeds.
-# Manual dispatch is allowed only for a main commit that already has a successful push CI run.
+# Publication starts only after CI, Quality, Browser compatibility and CodeQL are all green for the exact main SHA.
+# Manual dispatch is allowed only for a main commit whose four release gates are green.
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI", "Quality", "Browser compatibility", "CodeQL"]
     types: [completed]
     branches: [main]
   workflow_dispatch:
@@ -50,16 +50,37 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Require successful push CI for manual deploys
-        if: ${{ github.event_name == 'workflow_dispatch' }}
+      - name: Require all release gates for exact SHA
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          successful_runs="$(gh api             "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${DEPLOY_SHA}&event=push&status=success&per_page=1"             --jq '.total_count')"
-          test "$successful_runs" -ge 1
-          echo "Validated CI gate found for ${DEPLOY_SHA}."
+          workflows=(ci.yml quality.yml browser.yml codeql.yml)
+          for attempt in $(seq 1 30); do
+            ready=true
+            for workflow in "${workflows[@]}"; do
+              latest="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow}/runs?head_sha=${DEPLOY_SHA}&event=push&per_page=10" --jq '.workflow_runs | sort_by(.created_at) | reverse | .[0] | [.status, .conclusion] | @tsv')"
+              status="$(printf '%s\n' "$latest" | cut -f1)"
+              conclusion="$(printf '%s\n' "$latest" | cut -f2)"
+              if [[ "$status" == "completed" && "$conclusion" == "success" ]]; then
+                echo "PASS $workflow $DEPLOY_SHA"
+              elif [[ "$status" == "completed" ]]; then
+                echo "FAIL $workflow status=$status conclusion=$conclusion for $DEPLOY_SHA"
+                exit 1
+              else
+                echo "WAIT $workflow status=${status:-not-found} conclusion=${conclusion:-pending} attempt=$attempt/30"
+                ready=false
+              fi
+            done
+            if [[ "$ready" == true ]]; then
+              echo "All release gates passed for $DEPLOY_SHA."
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "FAIL release gates did not converge for $DEPLOY_SHA."
+          exit 1
 
       - name: Dependency vulnerability gate
         run: npm run audit:deps
