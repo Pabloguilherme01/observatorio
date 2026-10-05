@@ -36,8 +36,8 @@ const crossFileDuplicates = [...selectorFiles.entries()]
   .map(([selector, set]) => ({ selector, files: [...set] }));
 const repeatedExactBlocks = [...exactDuplicateBlocks.entries()]
   .filter(([, files]) => files.length >= 2)
-  .map(([block, files]) => ({ block: block.slice(0, 240), files }));
-  .sort((a, b) => b.files.length - a.files.length || b.selector.length - a.selector.length);
+  .map(([block, files]) => ({ block: block.slice(0, 240), files }))
+  .sort((a, b) => b.files.length - a.files.length || b.block.length - a.block.length);
 
 console.log(JSON.stringify({
   cssFiles: files.length,
