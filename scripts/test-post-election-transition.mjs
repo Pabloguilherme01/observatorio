@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const read = file => fs.readFileSync(file, 'utf8');
 const hero = read('src/components/sections/HeroCountdown.tsx');
 const results = read('src/components/sections/ResultsLiveBanner.tsx');
+const resultsHook = read('src/hooks/useResultsFeed.ts');
 const version = read('src/config/version.ts');
 const data = read('src/data/observatorioData.ts');
 const config = read('src/data/resultsConfig.ts');
@@ -19,6 +20,7 @@ const checks = [
   [version.includes("STORAGE_NAMESPACE = 'observatorio-v45'"), 'namespace V45 presente'],
   [data.includes("updatedAt: '2026-10-04'"), 'dataset local marcado com a data da edição'],
   [config.includes('arquivo público, nunca como apuração ao vivo'), 'contrato de resultados distingue arquivo de apuração ao vivo'],
+  [resultsHook.includes('let endedFetchDone = false;') && resultsHook.includes('stopPolling();') && resultsHook.includes('Date.now() > RESULTS_WINDOW_END'), 'polling de resultados termina após a última tentativa da janela histórica'],
 ];
 
 const failures = checks.filter(([, ok]) => !ok).map(([, message]) => message);
