@@ -1,10 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { readCssImportGraph } from './lib/readCssImportGraph.mjs';
 
 const root = process.cwd();
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 
-const css = read('src/assets/styles/globals.css');
+const css = readCssImportGraph('src/assets/styles/globals.css', { root });
 const index = read('index.html');
 const app = read('src/app/App.tsx');
 const hero = read('src/components/sections/PostElectionHero.tsx');
