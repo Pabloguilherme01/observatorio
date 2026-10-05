@@ -1,4 +1,5 @@
 import { formatIndicatorStatus } from '../utils/dataLabels';
+import { dispatchInspect, inspectDataId, type InspectorDetail } from '../lib/dataInspectorEvents';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Bookmark, BookmarkCheck, Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
 import { observatorioData as d } from '../data/observatorioData';
@@ -6,43 +7,6 @@ import { copyText } from '../lib/clipboard';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { buildCanonicalUrl, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../lib/urlState';
 import { isIndicatorSaved, toggleSavedIndicator } from '../lib/savedIndicators';
-
-type InspectorDetail = {
-  label: string;
-  value: string;
-  sourceId?: string;
-  status?: string;
-  referenceDate?: string;
-  note?: string;
-  method?: string;
-  inspectId?: string;
-  sectionId?: string;
-};
-
-declare global {
-  interface WindowEventMap {
-    'observatorio:inspect-data': CustomEvent<InspectorDetail>;
-  }
-}
-
-export function inspectDataId(detail: Pick<InspectorDetail, 'label' | 'sourceId'>) {
-  const slug = detail.label
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase('pt-BR')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80);
-  return (detail.sourceId ?? 'observatorio') + '--' + (slug || 'dado');
-}
-
-function dispatchInspect(detail: InspectorDetail) {
-  window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
-    detail: { ...detail, inspectId: detail.inspectId ?? inspectDataId(detail) },
-  }));
-}
-
-export { dispatchInspect };
 
 function publicDate(value?: string) {
   if (!value) return undefined;
