@@ -127,6 +127,7 @@ export function DataInspector() {
   const statusLabel = formatIndicatorStatus(data?.status);
   const referenceLabel = publicDate(effectiveReferenceDate);
   const sourcePublishedLabel = publicDate(source?.publishedAt);
+  const sourceCheckedLabel = publicDate(source?.lastCheckedAt);
 
   if (!data) return null;
 
@@ -137,6 +138,7 @@ export function DataInspector() {
     statusLabel ? `Natureza/status: ${statusLabel}` : '',
     referenceLabel ? `Referência: ${referenceLabel}` : 'Referência: não informada',
     sourcePublishedLabel ? `Publicação da fonte: ${sourcePublishedLabel}` : '',
+    sourceCheckedLabel ? `Fonte verificada em: ${sourceCheckedLabel}` : '',
     data.method ? `Método: ${data.method}` : '',
     effectiveNote ?? '',
   ].filter(Boolean).join('\n');
@@ -267,6 +269,7 @@ export function DataInspector() {
             <Info label="Ano-base / referência" value={referenceLabel ?? 'Não informado'} />
             <Info label="Publicação da fonte" value={sourcePublishedLabel ?? 'Não informada'} />
             <Info label="Atualização da fonte" value={source?.updateFrequency ?? 'Não informada'} />
+            <Info label="Fonte verificada em" value={sourceCheckedLabel ?? 'Não informada'} />
           </div>
 
           {!effectiveReferenceDate && (
