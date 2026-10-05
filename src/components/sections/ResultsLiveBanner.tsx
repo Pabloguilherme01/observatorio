@@ -87,7 +87,7 @@ export function ResultsLiveBanner() {
               : null;
             const sorted = [...entry.items].sort((a, b) => b.votes - a.votes);
             return (
-              <div key={entry.sourceFile} className="rounded-xl border border-white/10 p-3 light:border-slate-200 light:bg-white">
+              <div key={entry.sourceFile} className="results-public-card rounded-xl border border-white/10 p-3 light:border-slate-200 light:bg-white">
                 <h3 className="text-sm font-bold text-slate-100 light:text-slate-900">{entry.cargo}</h3>
                 <p className="mt-1 text-xs text-slate-400 light:text-slate-500">
                   {percentage == null ? 'Seções apuradas não informadas' : `${formatVotes(counted!)} de ${formatVotes(total!)} seções · ${percentage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`}
