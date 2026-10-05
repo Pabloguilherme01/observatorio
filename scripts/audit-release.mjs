@@ -112,12 +112,17 @@ if (
 ) pass('contrato da API pública possui cobertura automatizada.');
 else fail('contrato da API pública está sem cobertura automatizada.');
 if (
-  read('playwright.config.mjs').includes("npm run build && npm run preview -- --host 127.0.0.1 --port 4173")
+  read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
+  && !read('playwright.config.mjs').includes("npm run build && npm run preview")
+  && read('.github/workflows/browser.yml').includes('name: Browser · build production')
+  && read('.github/workflows/browser.yml').includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
+  && read('.github/workflows/browser.yml').includes('actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53')
+  && read('.github/workflows/browser.yml').includes('needs: build')
   && read('.github/workflows/browser.yml').includes('safari-desktop')
   && read('.github/workflows/browser.yml').includes('non_blocking: false')
   && read('playwright.config.mjs').includes('mobile-core')
-) pass('browser gate executa build de produção, mantém Safari desktop bloqueante e cobre o mobile-core nos dispositivos móveis.');
-else fail('browser gate ainda não valida produção, Safari bloqueante ou cobertura mobile-core.');
+) pass('browser gate usa um único build de produção compartilhado, mantém Safari desktop bloqueante e cobre o mobile-core nos dispositivos móveis.');
+else fail('browser gate ainda não compartilha um artefato de produção ou perdeu cobertura crítica.');
 
 const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
 const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));
