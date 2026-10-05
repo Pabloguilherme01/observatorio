@@ -234,7 +234,12 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'),
+            urlPattern: ({ url }) => url.pathname === '/observatorio/api/v1/health.json' || url.pathname === '/api/v1/health.json',
+            handler: 'NetworkOnly',
+          },
+          {
+            urlPattern: ({ url }) => (url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'))
+              && !url.pathname.endsWith('/health.json'),
             handler: 'NetworkFirst',
             options: {
               cacheName: `observatorio-api-v${RUNTIME_CACHE_VERSION}`,
