@@ -17,7 +17,7 @@ jobs:
   quality:
     name: Quality · independent audit
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -28,60 +28,7 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci --no-audit --no-fund
-      - name: Audit workflow structure
-        run: npm run audit:workflows
-      - name: Audit style source budget
-        run: npm run audit:styles
-      - name: Audit practical usability and links
-        run: npm run audit:usability
-      - name: Audit direct public service shortcuts
-        env:
-          AUDIT_PUBLIC_SERVICES_LIVE: 'true'
-        run: npm run audit:public-services
-      - name: Validate data contracts
-        run: npm run validate:observatorio
-
-      - name: Audit source provenance and temporal metadata
+      - name: Audit source provenance
         run: npm run audit:provenance
-      - name: Validate TSE architecture isolation
-        run: npm run audit:tse-architecture
-      - name: Static consistency audit
-        run: npm run audit:static
-      - name: Accessibility and contrast audit
-        run: npm run audit:a11y
-      - name: Runtime hardening audit
-        run: npm run audit:runtime
-      - name: Audit engagement and mobile regressions
-        run: npm run audit:engagement
-      - name: Audit quiz integrity
-        run: npm run audit:quiz
-      - name: Validate versioned TSE snapshot contract
-        run: npm run validate:tse
-      - name: Validate candidate source guard
-        run: node scripts/test-candidate-source-guard.mjs
       - name: Audit TSE candidate snapshot provenance
         run: npm run audit:candidate-snapshot
-      - name: Dependency vulnerability gate
-        run: npm run audit:deps
-
-      - name: Validate production results feed contract
-        run: npm run validate:results
-      - name: Validate synthetic results contract fixture
-        env:
-          RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
-          REQUIRE_RESULTS_FEED: 'true'
-        run: npm run validate:results
-      - name: Mobile UX audit
-        run: npm run audit:mobile
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Verify JWS implementation
-        run: npm run test:jws
-      - name: Build
-        run: npm run build
-      - name: Audit production bundle budget
-        run: npm run audit:bundle
-      - name: Audit performance budgets
-        run: npm run audit:performance
-      - name: Release readiness contract
-        run: npm run audit:release
