@@ -19,6 +19,11 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'chrome-a11y',
+      testMatch: /a11y\.spec\.mjs/,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       name: 'firefox-desktop',
       testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
       use: { ...devices['Desktop Firefox'] },
