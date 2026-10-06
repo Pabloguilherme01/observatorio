@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = process.cwd();
-const workflowDir = path.join(root, '.github', 'workflows');
 const failures = [];
 const pass = message => console.log('PASS', message);
 const fail = message => failures.push(message);
