@@ -40,6 +40,7 @@ export function Electoral360() {
     ? 'Captura com mais de 24h'
     : (stateLabel[String(electoral360Diff.state)] ?? 'Atualização em acompanhamento');
   const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
+  const electorate = d.electoral;
   const normalizedQuery = query.trim().toLocaleLowerCase('pt-BR');
 
   const localTseCandidates = useMemo(() => {
