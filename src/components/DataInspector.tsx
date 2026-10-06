@@ -1,4 +1,3 @@
-import { formatIndicatorStatus } from '../utils/dataLabels';
 import { inspectDataId, type InspectorDetail } from '../lib/dataInspectorEvents';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Bookmark, BookmarkCheck, Check, Clipboard, ExternalLink, Link2, Quote, Share2, X } from 'lucide-react';
@@ -7,13 +6,7 @@ import { copyText } from '../lib/clipboard';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { buildCanonicalUrl, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../lib/urlState';
 import { isIndicatorSaved, toggleSavedIndicator } from '../lib/savedIndicators';
-
-function publicDate(value?: string) {
-  if (!value) return undefined;
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
-  if (!match) return value;
-  return `${match[3]}/${match[2]}/${match[1]}`;
-}
+import { buildDataInspectorModel } from './data-inspector/dataInspectorModel';
 
 export function DataInspector() {
   const { mode: languageMode } = useLanguageMode();
@@ -86,33 +79,7 @@ export function DataInspector() {
     () => d.sources.find(item => item.id === data?.sourceId),
     [data?.sourceId],
   );
-  const effectiveReferenceDate = data?.referenceDate ?? source?.referenceDate;
-  const effectiveNote = data?.note ?? source?.note;
-  const statusLabel = formatIndicatorStatus(data?.status);
-  const referenceLabel = publicDate(effectiveReferenceDate);
-  const sourcePublishedLabel = publicDate(source?.publishedAt);
-  const sourceCheckedLabel = publicDate(source?.lastCheckedAt);
-
   if (!data) return null;
-
-  const text = [
-    data.label,
-    data.value,
-    source ? `Fonte: ${source.institution} — ${source.label}` : '',
-    statusLabel ? `Natureza/status: ${statusLabel}` : '',
-    referenceLabel ? `Referência: ${referenceLabel}` : 'Referência: não informada',
-    sourcePublishedLabel ? `Publicação da fonte: ${sourcePublishedLabel}` : '',
-    sourceCheckedLabel ? `Fonte verificada em: ${sourceCheckedLabel}` : '',
-    data.method ? `Método: ${data.method}` : '',
-    effectiveNote ?? '',
-  ].filter(Boolean).join('\n');
-
-  const citation = [
-    `${data.label}: ${data.value}.`,
-    source ? `Fonte: ${source.institution} — ${source.label}.` : '',
-    referenceLabel ? `Referência: ${referenceLabel}.` : '',
-    source?.url ? `URL: ${source.url}` : '',
-  ].filter(Boolean).join(' ');
 
   const markCopied = (kind: 'details' | 'citation' | 'link') => {
     setCopied(kind === 'details');
@@ -155,21 +122,16 @@ export function DataInspector() {
       : {},
     data.sectionId ? data.sectionId : (window.location.hash || 'dashboard'),
   );
-  const correctionBody = [
-    '## Dado a verificar',
-    `- Indicador: ${data.label}`,
-    `- Valor exibido: ${data.value}`,
-    `- Fonte: ${source ? `${source.institution} — ${source.label}` : 'não informada'}`,
-    `- Referência: ${referenceLabel ?? 'não informada'}`,
-    `- Link para o contexto: ${canonicalUrl}`,
-    '',
-    '## O que deve ser conferido?',
-    'Descreva a correção, atualização ou evidência sugerida. Não inclua dados pessoais.',
-  ].join('\n');
-  const correctionUrl = new URL('https://github.com/Pabloguilherme01/observatorio/issues/new');
-  correctionUrl.searchParams.set('title', `Revisar dado: ${data.label}`);
-  correctionUrl.searchParams.set('labels', 'correcao');
-  correctionUrl.searchParams.set('body', correctionBody);
+  const {
+    effectiveNote,
+    statusLabel,
+    referenceLabel,
+    sourcePublishedLabel,
+    sourceCheckedLabel,
+    text,
+    citation,
+    correctionUrl,
+  } = buildDataInspectorModel(data, source, canonicalUrl);
 
   const toggleSaved = () => {
     const next = toggleSavedIndicator({ id: data.inspectId ?? inspectDataId(data), title: data.label, url: canonicalUrl });
@@ -265,7 +227,7 @@ export function DataInspector() {
                 <ExternalLink className="h-3.5 w-3.5" /> Ver fonte
               </a>
             )}
-            <a href={correctionUrl.toString()} target="_blank" rel="noopener noreferrer" aria-label={`Sugerir correção para ${data.label}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-3 py-2 text-xs font-bold text-amber-100 light:border-amber-200 light:bg-amber-50 light:text-amber-800">
+            <a href={correctionUrl} target="_blank" rel="noopener noreferrer" aria-label={`Sugerir correção para ${data.label}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-3 py-2 text-xs font-bold text-amber-100 light:border-amber-200 light:bg-amber-50 light:text-amber-800">
               <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> Sugerir correção
             </a>
             <button type="button" onClick={copy} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-50">
