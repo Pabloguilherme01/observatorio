@@ -112,7 +112,7 @@ if (
   && cleanupWorkflow.includes('contents: write')
   && cleanupWorkflow.includes('pull-requests: read')
   && cleanupWorkflow.includes('CLEANUP_DRY_RUN')
-  && cleanupWorkflow.includes('CLEANUP_MAX_DELETIONS: '25'')
+  && cleanupWorkflow.includes("CLEANUP_MAX_DELETIONS: '25'")
   && cleanupScript.includes(".filter(name => !branchByName.get(name)?.protected)")
   && cleanupScript.includes("record.branchTipSha !== record.mergeHeadSha")
 ) pass('limpeza destrutiva está restrita à main e protege branches protegidas e branches alterados após o merge.');
