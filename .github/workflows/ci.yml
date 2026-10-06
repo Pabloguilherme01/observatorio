@@ -67,6 +67,9 @@ jobs:
       - name: Validate TSE architecture isolation
         run: npm run audit:tse-architecture
 
+      - name: Test TSE diff regression contract
+        run: npm run test:tse-diff
+
       - name: Test first and second turn results contracts
         run: npm run test:results
 
