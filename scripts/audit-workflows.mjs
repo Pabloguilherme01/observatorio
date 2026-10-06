@@ -46,7 +46,7 @@ const required = [
   '.github/workflows/source-health.yml',
   '.github/workflows/sync-tse-2026.yml',
   '.github/workflows/sync-results-2026.yml',
-  '.github/workflows/cleanup-tse-automation.yml',
+  '.github/workflows/cleanup-branches.yml',
 ];
 
 for (const file of required) {
