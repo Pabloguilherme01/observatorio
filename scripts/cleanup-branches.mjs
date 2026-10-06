@@ -23,15 +23,19 @@ async function api(url, options = {}) {
 
 async function listAll(pathname) {
   const out = [];
-  for (let page = 1; page <= 10; page++) {
+  for (let page = 1; page <= 100; page++) {
     const data = await api('https://api.github.com/repos/' + repository + pathname + (pathname.includes('?') ? '&' : '?') + 'per_page=100&page=' + page);
     out.push(...data);
-    if (data.length < 100) break;
+    if (data.length < 100) return out;
   }
-  return out;
+  throw new Error('GitHub API excedeu o limite de paginação de 100 páginas.');
 }
 
+const repoInfo = await api('https://api.github.com/repos/' + repository);
+const defaultBranch = repoInfo.default_branch || 'main';
+
 const branches = await listAll('/branches');
+const branchByName = new Map(branches.map(item => [item.name, item]));
 const openPrs = await listAll('/pulls?state=open');
 const active = new Set(openPrs.map(pr => pr.head?.ref).filter(Boolean));
 const mergedBranchPrefixes = [
@@ -95,47 +99,68 @@ for (const [prefix, names] of grouped) {
   }
 }
 
-
 let mergedDeleted = 0;
 if (cleanupMergedBranches) {
+  const closedPrs = await listAll('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
+  const mergedByHead = new Map();
+
+  for (const pr of closedPrs) {
+    if (
+      !pr.merged_at
+      || pr.base?.ref !== defaultBranch
+      || pr.head?.ref == null
+      || pr.head?.repo?.full_name !== repository
+      || pr.merge_commit_sha == null
+    ) {
+      continue;
+    }
+
+    const previous = mergedByHead.get(pr.head.ref);
+    if (!previous || Date.parse(pr.merged_at) > Date.parse(previous.merged_at)) {
+      mergedByHead.set(pr.head.ref, pr);
+    }
+  }
+
   const mergedCandidates = branches
     .map(item => item.name)
+    .filter(name => name !== defaultBranch)
     .filter(name => name !== 'main')
     .filter(name => mergedBranchPrefixes.some(prefix => name.startsWith(prefix)))
     .filter(name => !active.has(name))
-    .filter(name => !candidates.includes(name));
+    .filter(name => !candidates.includes(name))
+    .filter(name => mergedByHead.has(name));
 
-  const mergedRecords = [];
-  for (const name of mergedCandidates) {
-    const prs = await api(
-      'https://api.github.com/repos/' + repository + '/pulls?state=closed&head='
-        + encodeURIComponent(repository.split('/')[0] + ':' + name) + '&per_page=100',
-    );
-    const merged = prs
-      .filter(pr => pr.merged_at)
-      .sort((a, b) => Date.parse(b.merged_at) - Date.parse(a.merged_at))[0];
-    if (!merged) continue;
-    mergedRecords.push({
+  const mergedRecords = mergedCandidates.map(name => {
+    const pr = mergedByHead.get(name);
+    return {
       name,
-      mergedAt: Date.parse(merged.merged_at),
-      prNumber: merged.number,
-    });
-  }
+      mergedAt: Date.parse(pr.merged_at),
+      prNumber: pr.number,
+      mergeCommitSha: pr.merge_commit_sha,
+      branchTipSha: branchByName.get(name)?.commit?.sha ?? null,
+    };
+  }).sort((a, b) => a.mergedAt - b.mergedAt);
 
-  const nowMs = Date.now();
-  mergedRecords.sort((a, b) => a.mergedAt - b.mergedAt);
   for (const record of mergedRecords) {
     if (mergedDeleted >= mergedMaxDeletions) break;
-    const ageDays = (nowMs - record.mergedAt) / 86400000;
+
+    const ageDays = (Date.now() - record.mergedAt) / 86400000;
     if (!Number.isFinite(ageDays) || ageDays < mergedMaxAgeDays) {
       console.log('KEEP ' + record.name + ' (merged ' + ageDays.toFixed(1) + 'd ago)');
       continue;
     }
-    const ref = record.name.split('/').map(encodeURIComponent).join('/');
-    if (dryRun) {
-      console.log('DRY-RUN DELETE MERGED ' + record.name + ' pr=#' + record.prNumber);
+
+    if (!record.branchTipSha || record.branchTipSha !== record.mergeCommitSha) {
+      console.log('KEEP ' + record.name + ' (branch tip diverged from merge commit)');
       continue;
     }
+
+    const ref = record.name.split('/').map(encodeURIComponent).join('/');
+    if (dryRun) {
+      console.log('DRY-RUN DELETE MERGED ' + record.name + ' pr=#' + record.prNumber + ' age=' + ageDays.toFixed(1) + 'd');
+      continue;
+    }
+
     await api('https://api.github.com/repos/' + repository + '/git/refs/heads/' + ref, { method: 'DELETE' });
     console.log('DELETE MERGED ' + record.name + ' pr=#' + record.prNumber + ' age=' + ageDays.toFixed(1) + 'd');
     mergedDeleted++;
@@ -144,6 +169,7 @@ if (cleanupMergedBranches) {
 
 console.log(JSON.stringify({
   repository,
+  defaultBranch,
   candidates: candidates.length,
   deleted,
   mergedDeleted,
