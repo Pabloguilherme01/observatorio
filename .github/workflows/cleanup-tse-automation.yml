@@ -1,4 +1,4 @@
-name: Cleanup TSE automation branches
+name: Cleanup stale merged branches
 
 on:
   workflow_dispatch:
@@ -34,4 +34,7 @@ jobs:
           CLEANUP_DRY_RUN: 'false'
           CLEANUP_MAX_AGE_DAYS: '7'
           CLEANUP_KEEP_PER_PREFIX: '2'
+          CLEANUP_MERGED_BRANCHES: 'true'
+          CLEANUP_MERGED_MAX_AGE_DAYS: '14'
+          CLEANUP_MERGED_MAX_DELETIONS: '25'
         run: npm run cleanup:tse
