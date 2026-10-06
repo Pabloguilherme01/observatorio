@@ -323,7 +323,14 @@ must(
 must(sourceHealthWorkflow.includes("SOURCE_AUDIT_STRICT: 'true'") && sourceHealthWorkflow.includes("AUDIT_PUBLIC_SERVICES_LIVE: 'true'"), 'monitor agendado de fontes usa modo estrito e verifica atalhos públicos ao vivo');
 must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
 must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
-must(syncWorkflow.includes('npm run validate:observatorio') && syncWorkflow.includes('npm run typecheck') && syncWorkflow.includes('npm run build'), 'workflow TSE só publica snapshot após validação, typecheck e build');
+must(
+  syncWorkflow.includes('npm run validate:observatorio')
+    && syncWorkflow.includes('npm run audit:static')
+    && !syncWorkflow.includes('run: npm run typecheck')
+    && !syncWorkflow.includes('run: npm run build')
+    && !syncWorkflow.includes('run: npm run audit:deps'),
+  'workflow TSE valida dados e consistência antes do commit e deixa typecheck, dependências e build para o CI pós-commit',
+);
 must(syncWorkflow.includes('actions: write') && syncWorkflow.includes('issues: write') && syncWorkflow.includes('pull-requests: write') && syncWorkflow.includes('gh workflow run ci.yml') && syncWorkflow.includes('gh pr create') && syncWorkflow.includes('Automação TSE 2026: PR pendente') && syncWorkflow.includes('gh issue create') && syncWorkflow.includes('gh issue edit') && !/^\\s*git push\\s*$/m.test(syncWorkflow), 'workflow TSE valida a branch no CI, tenta criar PR e registra fallback acionável quando a permissão administrativa bloqueia a PR');
 must(resultsWorkflow.includes('actions: write') && resultsWorkflow.includes('issues: write') && resultsWorkflow.includes('pull-requests: write') && resultsWorkflow.includes('gh workflow run ci.yml') && resultsWorkflow.includes('gh pr create') && resultsWorkflow.includes('Resultados TSE 2026: PR pendente') && resultsWorkflow.includes('gh issue create') && resultsWorkflow.includes('gh issue edit') && !resultsWorkflow.includes('gh pr merge') && !/^\\s*git push\\s*$/m.test(resultsWorkflow), 'workflow de resultados valida a branch no CI, exige PR revisada e usa issue de fallback sem merge direto');
 must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')), 'não existem dois workflows concorrentes para a mesma captura TSE');
