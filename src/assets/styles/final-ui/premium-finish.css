@@ -33,6 +33,7 @@
   background:transparent;
   color:inherit;
   text-align:left;
+  cursor:pointer;
 }
 
 .metric-interactive:focus-visible{
@@ -65,19 +66,16 @@
 }
 
 .dashboard-kpi-card{
+  display:block;
+  width:100%;
   height:100%;
   min-height:208px;
   padding:18px!important;
-  border-radius:18px!important;
-  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
-}
-
-.dashboard-kpi-card{
-  display:block;
-  width:100%;
   border:1px solid var(--pf-border);
+  border-radius:18px!important;
   background:linear-gradient(180deg,rgba(255,255,255,.042),rgba(255,255,255,.018));
   color:inherit;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
 }
 .technical-mini-kpi{
   min-height:118px;
@@ -96,9 +94,6 @@
   box-shadow:0 16px 36px rgba(0,0,0,.16);
 }
 
-.metric-interactive{
-  cursor:pointer;
-}
 
 .dashboard-kpi-card:hover,
 .metric-interactive:hover.dashboard-kpi-card{

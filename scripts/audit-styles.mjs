@@ -21,6 +21,7 @@ const failures = [];
 const selectorFiles = new Map();
 const exactDuplicateBlocks = new Map();
 const intraFileDuplicateBlocks = new Map();
+const adjacentSelectorDuplicates = new Map();
 
 function normalizeCss(value) {
   return value.trim().replace(/\s+/g, ' ');
@@ -84,6 +85,7 @@ for (const file of files) {
   const kb = Math.round(bytes / 1024 * 10) / 10;
   console.log(JSON.stringify({ file, kb }));
   if (bytes > maxSourceKb * 1024) failures.push(file + ' excede o teto de fonte de ' + maxSourceKb + ' KB.');
+  let previousBlock = null;
   for (const match of css.matchAll(/(^|})\s*([^@}{][^{}]+)\{([^{}]*)\}/gm)) {
     const selector = normalizeCss(match[2]);
     const normalizedBody = normalizeCss(match[3]);
@@ -93,6 +95,11 @@ for (const file of files) {
     selectorFiles.set(selector, set);
     if (normalizedBody) {
       const context = getAtRuleContext(css, match.index + (match[1]?.length ?? 0));
+      if (previousBlock && previousBlock.context === context && previousBlock.selector === selector) {
+        const key = file + '\n' + context + '\n' + selector;
+        adjacentSelectorDuplicates.set(key, (adjacentSelectorDuplicates.get(key) ?? 1) + 1);
+      }
+      previousBlock = { context, selector };
       const exactKey = context + '\n' + selector + '{' + normalizedBody + '}';
       const blocks = exactDuplicateBlocks.get(exactKey) ?? [];
       blocks.push(file);
@@ -128,6 +135,7 @@ console.log(JSON.stringify({
   exactDuplicateBlocks: repeatedExactBlocks.length,
   intraFileExactDuplicateBlocks: intraFileDuplicates.length,
   sameContextExactDuplicateBlocks: sameContextExactDuplicates.length,
+  adjacentSelectorDuplicates: adjacentSelectorDuplicates.size,
   largestRepeatedSelectors: crossFileDuplicates.slice(0, 20),
 }, null, 2));
 
@@ -139,6 +147,12 @@ if (repeatedExactBlocks.length > 120) {
 }
 if (intraFileDuplicates.length) {
   intraFileDuplicates.forEach(({ file, count }) => failures.push(file + ' possui ' + count + ' bloco(s) CSS exatamente repetido(s) dentro do mesmo arquivo.'));
+}
+if (adjacentSelectorDuplicates.size) {
+  for (const [key, count] of adjacentSelectorDuplicates.entries()) {
+    const [file, context, selector] = key.split('\n');
+    failures.push(file + ' possui regra CSS adjacente repetida no mesmo contexto (' + context + '): ' + selector + ' (' + count + ' ocorrências).');
+  }
 }
 if (sameContextExactDuplicates.length) {
   sameContextExactDuplicates.forEach(({ block, files }) =>

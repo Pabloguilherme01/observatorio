@@ -287,8 +287,6 @@
     }
     .mobile-tools-sheet{
       max-height:calc(100dvh - 58px - var(--ios-header-safe-top))!important;
-    }
-    .mobile-tools-sheet{
       position:relative;
       z-index:1;
       overflow-y:auto;

@@ -276,8 +276,6 @@
 :where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   border-radius:var(--card-radius);
   overflow:hidden;
-}
-:where(.topic-card,.today-card,.summary-stat,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link){
   position:relative;
 }
 :where(.topic-card,.today-card,.summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link)::before{
