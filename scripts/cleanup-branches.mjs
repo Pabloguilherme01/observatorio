@@ -58,7 +58,8 @@ const mergedBranchPrefixes = [
 const candidates = branches
   .map(item => item.name)
   .filter(name => /^automation\/(?:tse-2026-|results-2026-)/.test(name))
-  .filter(name => !active.has(name));
+  .filter(name => !active.has(name))
+  .filter(name => !branchByName.get(name)?.protected);
 
 const grouped = new Map();
 for (const name of candidates) {
@@ -131,6 +132,7 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
     .filter(name => mergedBranchPrefixes.some(prefix => name.startsWith(prefix)))
     .filter(name => !active.has(name))
     .filter(name => !candidates.includes(name))
+    .filter(name => !branchByName.get(name)?.protected)
     .filter(name => mergedByHead.has(name));
 
   const mergedRecords = mergedCandidates.map(name => {

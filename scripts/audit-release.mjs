@@ -73,6 +73,7 @@ const requiredFiles = [
   'scripts/audit-performance.mjs',
   'scripts/lib/readCssImportGraph.mjs',
   'scripts/cleanup-branches.mjs',
+  'scripts/test-branch-cleanup.mjs',
   'scripts/test-post-election-transition.mjs',
   'src/assets/styles/index.css',
   'src/hooks/useDialogFocus.ts',
@@ -100,10 +101,22 @@ const deploy = read('.github/workflows/deploy-pages.yml');
 const browser = read('.github/workflows/browser.yml');
 const syncTse = read('.github/workflows/sync-tse-2026.yml');
 const syncResults = read('.github/workflows/sync-results-2026.yml');
+const cleanupWorkflow = read('.github/workflows/cleanup-branches.yml');
+const cleanupScript = read('scripts/cleanup-branches.mjs');
 const workflowText = [ci, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
 
 if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
 else fail('CI não inclui o release gate consolidado.');
+if (
+  cleanupWorkflow.includes("if: github.ref == 'refs/heads/main'")
+  && cleanupWorkflow.includes('contents: write')
+  && cleanupWorkflow.includes('pull-requests: read')
+  && cleanupWorkflow.includes('CLEANUP_DRY_RUN')
+  && cleanupWorkflow.includes("CLEANUP_MAX_DELETIONS: '25'")
+  && cleanupScript.includes(".filter(name => !branchByName.get(name)?.protected)")
+  && cleanupScript.includes("record.branchTipSha !== record.mergeHeadSha")
+) pass('limpeza destrutiva está restrita à main e protege branches protegidas e branches alterados após o merge.');
+else fail('limpeza destrutiva perdeu alguma trava de segurança estrutural.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
 if (
