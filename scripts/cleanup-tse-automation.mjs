@@ -3,6 +3,9 @@ const repository = process.env.GITHUB_REPOSITORY;
 const dryRun = process.env.CLEANUP_DRY_RUN !== 'false';
 const maxAgeDays = Number(process.env.CLEANUP_MAX_AGE_DAYS || 7);
 const keepPerPrefix = Number(process.env.CLEANUP_KEEP_PER_PREFIX || 2);
+const cleanupMergedBranches = process.env.CLEANUP_MERGED_BRANCHES === 'true';
+const mergedMaxAgeDays = Number(process.env.CLEANUP_MERGED_MAX_AGE_DAYS || 14);
+const mergedMaxDeletions = Number(process.env.CLEANUP_MERGED_MAX_DELETIONS || 25);
 
 if (!token || !repository) throw new Error('GITHUB_TOKEN/GH_TOKEN e GITHUB_REPOSITORY são obrigatórios.');
 
@@ -31,6 +34,22 @@ async function listAll(pathname) {
 const branches = await listAll('/branches');
 const openPrs = await listAll('/pulls?state=open');
 const active = new Set(openPrs.map(pr => pr.head?.ref).filter(Boolean));
+const mergedBranchPrefixes = [
+  'audit/',
+  'audit-v',
+  'chore/',
+  'code-failure-analysis-',
+  'codex/',
+  'correcoes-',
+  'design/',
+  'docs/',
+  'feat/',
+  'feature/',
+  'fix/',
+  'perf/',
+  'refactor/',
+];
+
 const candidates = branches
   .map(item => item.name)
   .filter(name => /^automation\/(?:tse-2026-|results-2026-)/.test(name))
@@ -76,4 +95,63 @@ for (const [prefix, names] of grouped) {
   }
 }
 
-console.log(JSON.stringify({ repository, candidates: candidates.length, deleted, dryRun, maxAgeDays, keepPerPrefix }, null, 2));
+
+let mergedDeleted = 0;
+if (cleanupMergedBranches) {
+  const mergedCandidates = branches
+    .map(item => item.name)
+    .filter(name => name !== 'main')
+    .filter(name => mergedBranchPrefixes.some(prefix => name.startsWith(prefix)))
+    .filter(name => !active.has(name))
+    .filter(name => !candidates.includes(name));
+
+  const mergedRecords = [];
+  for (const name of mergedCandidates) {
+    const encodedHead = encodeURIComponent(name);
+    const prs = await api(
+      'https://api.github.com/repos/' + repository + '/pulls?state=closed&head='
+        + encodeURIComponent(repository.split('/')[0] + ':' + name) + '&per_page=100',
+    );
+    const merged = prs
+      .filter(pr => pr.merged_at)
+      .sort((a, b) => Date.parse(b.merged_at) - Date.parse(a.merged_at))[0];
+    if (!merged) continue;
+    mergedRecords.push({
+      name,
+      mergedAt: Date.parse(merged.merged_at),
+      prNumber: merged.number,
+    });
+  }
+
+  const nowMs = Date.now();
+  mergedRecords.sort((a, b) => a.mergedAt - b.mergedAt);
+  for (const record of mergedRecords) {
+    if (mergedDeleted >= mergedMaxDeletions) break;
+    const ageDays = (nowMs - record.mergedAt) / 86400000;
+    if (!Number.isFinite(ageDays) || ageDays < mergedMaxAgeDays) {
+      console.log('KEEP ' + record.name + ' (merged ' + ageDays.toFixed(1) + 'd ago)');
+      continue;
+    }
+    const ref = record.name.split('/').map(encodeURIComponent).join('/');
+    if (dryRun) {
+      console.log('DRY-RUN DELETE MERGED ' + record.name + ' pr=#' + record.prNumber);
+      continue;
+    }
+    await api('https://api.github.com/repos/' + repository + '/git/refs/heads/' + ref, { method: 'DELETE' });
+    console.log('DELETE MERGED ' + record.name + ' pr=#' + record.prNumber + ' age=' + ageDays.toFixed(1) + 'd');
+    mergedDeleted++;
+  }
+}
+
+console.log(JSON.stringify({
+  repository,
+  candidates: candidates.length,
+  deleted,
+  mergedDeleted,
+  cleanupMergedBranches,
+  dryRun,
+  maxAgeDays,
+  keepPerPrefix,
+  mergedMaxAgeDays,
+  mergedMaxDeletions,
+}, null, 2));
