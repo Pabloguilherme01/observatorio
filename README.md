@@ -130,7 +130,7 @@ MIT — veja [LICENSE](LICENSE).
 
 ## Release readiness
 
-`npm run release:check` representa a validação consolidada de candidato a release. Ele executa o build, os contratos de qualidade e a auditoria final de consistência do pipeline.
+`npm run audit:release` representa a validação estática consolidada do candidato a release. O build de produção, o bundle, a performance e a PWA são validados pelo workflow Browser a partir de uma única construção compartilhada.
 
 O CI executa `npm run audit:release` em cada PR e push para `main`. O deploy também repete esse contrato no SHA exato que passou pelo CI. O Browser concentra o único build de produção compartilhado, junto dos gates de bundle, performance e PWA, evitando recompilações concorrentes do mesmo `dist`.
 
