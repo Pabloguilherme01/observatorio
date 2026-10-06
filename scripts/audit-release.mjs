@@ -99,6 +99,8 @@ const browser = read('.github/workflows/browser.yml');
 const syncTse = read('.github/workflows/sync-tse-2026.yml');
 const syncResults = read('.github/workflows/sync-results-2026.yml');
 const workflowText = [ci, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
+if (syncTse.includes('timeout-minutes: 20') && syncResults.includes('timeout-minutes: 15')) pass('sincronizações TSE possuem limite operacional de duração.');
+else fail('sincronização TSE sem timeout operacional explícito.');
 
 if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
 else fail('CI não inclui o release gate consolidado.');
