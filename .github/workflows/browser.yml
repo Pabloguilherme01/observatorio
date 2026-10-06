@@ -32,7 +32,16 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Build production artifact
-        run: npm run build
+        run: npm exec vite -- build
+
+      - name: Audit production bundle budget
+        run: npm run audit:bundle
+
+      - name: Audit performance budgets
+        run: npm run audit:performance
+
+      - name: Verify production PWA artifact
+        run: npm run test:pwa
 
       - name: Upload production artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

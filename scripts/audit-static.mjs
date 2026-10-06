@@ -42,6 +42,12 @@ must(duplicateSourceIds.length === 0, duplicateSourceIds.length
   : 'sourceRegistry possui IDs únicos.',
 );
 
+const obsoleteReleaseScripts = ['audit:all', 'check:deploy', 'release:check', 'build:bundle'];
+must(
+  obsoleteReleaseScripts.every(scriptName => !(scriptName in (packageJson.scripts ?? {}))),
+  'aliases de release obsoletos não retornaram ao package.json',
+);
+
 const localScriptRefs = Object.entries(packageJson.scripts ?? {}).flatMap(([scriptName, command]) =>
   [...String(command).matchAll(/(?:^|\s)(scripts\/[A-Za-z0-9_.-]+\.mjs)\b/g)].map(match => ({ scriptName, path: match[1] })),
 );
@@ -279,10 +285,18 @@ must(
     'npm run audit:deps',
     'npm run validate:results',
     'npm run test:jws',
-    'npm run audit:bundle',
-    'npm run test:pwa',
   ].every(command => ciWorkflow.includes(command)),
-  'CI principal reúne todos os gates essenciais antes da publicação',
+  'CI principal reúne os contratos essenciais de qualidade, dados e segurança antes da publicação',
+);
+must(
+  browserWorkflow.includes('name: Browser · build production')
+    && browserWorkflow.includes('run: npm exec vite -- build')
+    && !browserWorkflow.includes('run: npm run build')
+    && browserWorkflow.includes('run: npm run audit:bundle')
+    && browserWorkflow.includes('run: npm run audit:performance')
+    && browserWorkflow.includes('run: npm run test:pwa')
+    && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'),
+  'Browser é o único proprietário do build de produção e publica o artefato somente depois dos gates de bundle, performance e PWA',
 );
 must(
   deployWorkflow.includes('workflow_run:')

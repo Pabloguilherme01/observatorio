@@ -90,6 +90,7 @@ for (const file of requiredFiles) {
 
 const ci = read('.github/workflows/ci.yml');
 const deploy = read('.github/workflows/deploy-pages.yml');
+const browser = read('.github/workflows/browser.yml');
 const syncTse = read('.github/workflows/sync-tse-2026.yml');
 const syncResults = read('.github/workflows/sync-results-2026.yml');
 const workflowText = [ci, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
@@ -98,8 +99,16 @@ if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consoli
 else fail('CI não inclui o release gate consolidado.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
-if (ci.includes('npm run audit:workflows') && ci.includes('npm run audit:styles') && ci.includes('npm run audit:performance')) pass('CI executa os novos gates estruturais, de estilos e performance.');
-else fail('CI não executa todos os novos gates de manutenção.');
+if (
+  ci.includes('npm run audit:workflows')
+  && ci.includes('npm run audit:styles')
+  && browser.includes('npm exec vite -- build')
+  && !browser.includes('run: npm run build')
+  && browser.includes('npm run audit:bundle')
+  && browser.includes('npm run audit:performance')
+  && browser.includes('npm run test:pwa')
+) pass('CI mantém os contratos estruturais e o Browser concentra o único build de produção e seus gates de bundle, performance e PWA.');
+else fail('pipeline de qualidade perdeu algum gate de manutenção ou voltou a duplicar o build de produção.');
 if (ci.includes('npm run audit:provenance') && ci.includes('npm run audit:candidate-snapshot')) pass('CI consolidado cobre proveniência e snapshot TSE.');
 else fail('CI consolidado não cobre proveniência e snapshot TSE.');
 if (
