@@ -1,0 +1,145 @@
+/* Final visual pass · published-flow audit 2026-09-25 */
+.hero-shell{
+  background:
+    radial-gradient(circle at 88% 8%,rgba(56,189,248,.075),transparent 28%),
+    radial-gradient(circle at 8% 0%,rgba(14,165,233,.045),transparent 34%);
+}
+.hero-shell h1{
+  text-wrap:balance;
+  line-height:.98!important;
+}
+.hero-shell .hero-reading-guide{
+  overflow:hidden;
+  border-color:rgba(148,163,184,.14)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018))!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.07);
+}
+.hero-shell .hero-reading-guide summary{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.hero-reference-strip{
+  padding-top:7px;
+  border-top:1px solid rgba(148,163,184,.10);
+}
+.hero-shell [role="timer"]>div{
+  border-color:rgba(148,163,184,.12);
+  background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+.hero-shell [role="timer"]>div:first-child .text-xl{
+  letter-spacing:-.035em;
+}
+.hero-shell .hero-secondary-round{
+  border-color:rgba(148,163,184,.12)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.012))!important;
+}
+.light .hero-shell{
+  background:
+    radial-gradient(circle at 88% 8%,rgba(14,165,233,.075),transparent 28%),
+    linear-gradient(180deg,#ffffff,#f7fbff);
+}
+.light .hero-shell .hero-reading-guide{
+  border-color:#dbeafe!important;
+  background:#ffffff!important;
+  box-shadow:0 8px 22px rgba(15,23,42,.04);
+}
+.light .hero-shell .hero-secondary-round{
+  border-color:#e2e8f0!important;
+  background:#f8fafc!important;
+}
+@media (max-width:767px){
+  .hero-shell{
+    padding-top:24px!important;
+    padding-bottom:24px!important;
+  }
+  .hero-shell h1{
+    font-size:clamp(2rem,10.5vw,3.15rem)!important;
+    letter-spacing:-.045em!important;
+  }
+  .hero-shell .hero-reading-guide summary{
+    font-size:11px;
+  }
+  .hero-shell [role="timer"]{
+    gap:6px!important;
+  }
+  .hero-shell [role="timer"]>div{
+    padding:10px 5px!important;
+    border-radius:13px!important;
+  }
+  .hero-shell [role="timer"] .text-xl{
+    font-size:1.15rem!important;
+  }
+  .hero-shell [role="timer"] .text-\[10px\]{
+    font-size:8px!important;
+  }
+  .hero-reference-strip{
+    margin-top:10px!important;
+    row-gap:4px!important;
+  }
+}
+@media (max-width:390px){
+  .hero-shell h1{
+    font-size:clamp(1.9rem,10.8vw,2.55rem)!important;
+  }
+  .hero-shell [role="timer"]>div{
+    padding:9px 4px!important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-shell .hero-reading-guide,
+  .hero-shell [role="timer"]>div{
+    transition:none!important;
+  }
+}
+
+
+/* Dashboard summary density pass */
+[data-language-mode="summary"] #dashboard .dashboard-heading-card{
+  margin-bottom:14px!important;
+}
+[data-language-mode="summary"] #dashboard .dashboard-kpi-card{
+  min-height:164px;
+  padding:16px!important;
+  border-radius:17px!important;
+}
+[data-language-mode="summary"] #dashboard .dashboard-kpi-card .text-3xl{
+  font-size:clamp(1.55rem,2.6vw,2.15rem);
+}
+[data-language-mode="summary"] #dashboard .dashboard-kpi-card .text-\[10px\]{
+  font-size:9px;
+  line-height:1.35;
+}
+[data-language-mode="summary"] #dashboard .dashboard-kpi-card .kpi-source-pill{
+  min-height:26px;
+  padding:5px 8px;
+}
+[data-language-mode="summary"] #dashboard .dashboard-kpi-card .technical-detail{
+  display:none;
+}
+.dashboard-summary-note{
+  border-color:rgba(125,211,252,.13)!important;
+  background:rgba(56,189,248,.025);
+}
+@media (max-width:767px){
+  [data-language-mode="summary"] #dashboard .dashboard-kpi-card{
+    min-height:136px;
+    padding:14px!important;
+  }
+  [data-language-mode="summary"] #dashboard .dashboard-kpi-card .text-3xl{
+    font-size:clamp(1.45rem,7vw,1.9rem);
+  }
+  [data-language-mode="summary"] #dashboard .dashboard-kpi-card .mt-3{
+    margin-top:8px!important;
+  }
+}
+@media (max-width:390px){
+  [data-language-mode="summary"] #dashboard .dashboard-kpi-card{
+    min-height:128px;
+    padding:13px!important;
+  }
+}
+
