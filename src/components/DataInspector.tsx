@@ -123,6 +123,7 @@ export function DataInspector() {
     data.sectionId ? data.sectionId : (window.location.hash || 'dashboard'),
   );
   const {
+    effectiveReferenceDate,
     effectiveNote,
     statusLabel,
     referenceLabel,
