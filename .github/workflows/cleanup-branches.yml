@@ -9,7 +9,7 @@ on:
         default: true
         type: boolean
   schedule:
-    - cron: '23 7 * * 0'
+    - cron: '23 7 * * *'
 
 permissions:
   contents: write
@@ -42,5 +42,5 @@ jobs:
           CLEANUP_KEEP_PER_PREFIX: '2'
           CLEANUP_MERGED_BRANCHES: 'true'
           CLEANUP_MERGED_MAX_AGE_DAYS: '14'
-          CLEANUP_MAX_DELETIONS: '25'
+          CLEANUP_MAX_DELETIONS: '50'
         run: npm run cleanup:branches
