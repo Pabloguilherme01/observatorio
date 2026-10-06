@@ -105,7 +105,7 @@ if (
   cleanup?.includes("if: github.ref == 'refs/heads/main'")
   && cleanup?.includes('contents: write')
   && cleanup?.includes('pull-requests: read')
-  && cleanup?.includes("CLEANUP_MAX_DELETIONS: '25'")
+  && cleanup?.includes("CLEANUP_MAX_DELETIONS: '50'")
   && cleanup?.includes("CLEANUP_MERGED_BRANCHES: 'true'")
   && cleanup?.includes("CLEANUP_MERGED_MAX_AGE_DAYS: '14'")
   && cleanup?.includes('CLEANUP_DRY_RUN')
