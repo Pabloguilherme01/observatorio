@@ -107,7 +107,6 @@ if (cleanupMergedBranches) {
 
   const mergedRecords = [];
   for (const name of mergedCandidates) {
-    const encodedHead = encodeURIComponent(name);
     const prs = await api(
       'https://api.github.com/repos/' + repository + '/pulls?state=closed&head='
         + encodeURIComponent(repository.split('/')[0] + ':' + name) + '&per_page=100',
