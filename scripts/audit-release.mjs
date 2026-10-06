@@ -72,7 +72,7 @@ const requiredFiles = [
   'scripts/audit-styles.mjs',
   'scripts/audit-performance.mjs',
   'scripts/lib/readCssImportGraph.mjs',
-  'scripts/cleanup-tse-automation.mjs',
+  'scripts/cleanup-branches.mjs',
   'scripts/test-post-election-transition.mjs',
   'src/assets/styles/index.css',
   'src/hooks/useDialogFocus.ts',
