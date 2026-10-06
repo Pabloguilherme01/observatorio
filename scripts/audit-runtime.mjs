@@ -154,10 +154,13 @@ if (!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts'))) p
 else fail('pipeline municipal legado ainda está presente.');
 
 const summary = read('src/components/sections/ExecutiveSummary.tsx');
+const summaryModel = read('src/components/sections/summary/executiveSummaryModel.ts');
+const summarySurface = summary + '\n' + summaryModel;
 if (
-  summary.includes('populationPoint?.referenceDate')
-  && summary.includes('sanitationSource?.label')
-  && summary.includes('budgetSource?.referenceDate')
+  summary.includes('buildExecutiveSummaryModel')
+  && summarySurface.includes('populationPoint?.referenceDate')
+  && summarySurface.includes('sanitationSource?.label')
+  && summarySurface.includes('budgetSource?.referenceDate')
 ) pass('Resumo executivo protege referências opcionais com optional chaining.');
 else fail('Resumo executivo possui referência opcional sem proteção.');
 
