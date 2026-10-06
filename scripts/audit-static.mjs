@@ -284,7 +284,8 @@ must(
 );
 must(
   browserWorkflow.includes('name: Browser · build production')
-    && browserWorkflow.includes('run: npm run build')
+    && browserWorkflow.includes('run: npm exec vite -- build')
+    && !browserWorkflow.includes('run: npm run build')
     && browserWorkflow.includes('run: npm run audit:bundle')
     && browserWorkflow.includes('run: npm run audit:performance')
     && browserWorkflow.includes('run: npm run test:pwa')
