@@ -73,6 +73,19 @@ for (const step of ['Guard main provenance', 'Release readiness contract', 'Audi
   else fail('CI não possui etapa esperada: ' + step);
 }
 
+const cleanup = workflows['.github/workflows/cleanup-branches.yml'];
+if (
+  cleanup?.includes("if: github.ref == 'refs/heads/main'")
+  && cleanup?.includes('contents: write')
+  && cleanup?.includes('pull-requests: read')
+  && cleanup?.includes("CLEANUP_MAX_DELETIONS: '25'")
+  && cleanup?.includes('CLEANUP_DRY_RUN')
+) {
+  pass('cleanup destrutivo roda somente na main e mantém limite/dry-run explícitos.');
+} else {
+  fail('cleanup destrutivo perdeu guard de main ou limites operacionais.');
+}
+
 const browser = workflows['.github/workflows/browser.yml'];
 const browserNames = ['chrome-desktop', 'firefox-desktop', 'safari-desktop', 'chrome-android', 'safari-iphone', 'safari-iphone-se'];
 for (const name of browserNames) {
