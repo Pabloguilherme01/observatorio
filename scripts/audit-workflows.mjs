@@ -1,9 +1,17 @@
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
 const root = process.cwd();
 const workflowDir = path.join(root, '.github', 'workflows');
 const failures = [];
+
+try {
+  execFileSync(process.execPath, ['--check', path.join(root, 'scripts', 'audit-release.mjs')], { stdio: 'ignore' });
+  pass('audit-release.mjs possui sintaxe JavaScript válida.');
+} catch {
+  fail('audit-release.mjs possui erro de sintaxe.');
+}
 const pass = message => console.log('PASS', message);
 const fail = message => failures.push(message);
 
