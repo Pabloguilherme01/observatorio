@@ -139,6 +139,7 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
       name,
       mergedAt: Date.parse(pr.merged_at),
       prNumber: pr.number,
+      mergeHeadSha: pr.head.sha,
       mergeCommitSha: pr.merge_commit_sha,
       branchTipSha: branchByName.get(name)?.commit?.sha ?? null,
     };
@@ -153,8 +154,8 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
       continue;
     }
 
-    if (!record.branchTipSha || record.branchTipSha !== record.mergeCommitSha) {
-      console.log('KEEP ' + record.name + ' (branch tip diverged from merge commit)');
+    if (!record.branchTipSha || !record.mergeHeadSha || record.branchTipSha !== record.mergeHeadSha) {
+      console.log('KEEP ' + record.name + ' (branch tip diverged from merged PR head)');
       continue;
     }
 
