@@ -60,6 +60,7 @@ export function buildDataInspectorModel(
   correctionUrl.searchParams.set('body', correctionBody);
 
   return {
+    effectiveReferenceDate,
     effectiveNote,
     statusLabel,
     referenceLabel,
