@@ -29,7 +29,6 @@ const files = {
   pkg: JSON.parse(read('package.json')),
   version: read('src/config/version.ts'),
   index: read('index.html'),
-  main: read('src/main.tsx'),
 };
 
 const errors = [];
