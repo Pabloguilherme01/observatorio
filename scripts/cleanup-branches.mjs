@@ -34,6 +34,10 @@ async function listAll(pathname) {
 
 const repoInfo = await api('https://api.github.com/repos/' + repository);
 const defaultBranch = repoInfo.default_branch || 'main';
+const expectedRef = 'refs/heads/' + defaultBranch;
+if (!dryRun && (process.env.GITHUB_ACTIONS !== 'true' || process.env.GITHUB_REF !== expectedRef)) {
+  throw new Error('A limpeza destrutiva só pode executar dentro do GitHub Actions e na branch padrão (' + expectedRef + ').');
+}
 
 const branches = await listAll('/branches');
 const branchByName = new Map(branches.map(item => [item.name, item]));
@@ -142,7 +146,6 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
       mergedAt: Date.parse(pr.merged_at),
       prNumber: pr.number,
       mergeHeadSha: pr.head.sha,
-      mergeCommitSha: pr.merge_commit_sha,
       branchTipSha: branchByName.get(name)?.commit?.sha ?? null,
     };
   }).sort((a, b) => a.mergedAt - b.mergedAt);
