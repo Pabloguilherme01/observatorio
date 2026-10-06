@@ -5,6 +5,8 @@ import path from 'node:path';
 const root = process.cwd();
 const workflowDir = path.join(root, '.github', 'workflows');
 const failures = [];
+const pass = message => console.log('PASS', message);
+const fail = message => failures.push(message);
 
 try {
   execFileSync(process.execPath, ['--check', path.join(root, 'scripts', 'audit-release.mjs')], { stdio: 'ignore' });
@@ -12,8 +14,6 @@ try {
 } catch {
   fail('audit-release.mjs possui erro de sintaxe.');
 }
-const pass = message => console.log('PASS', message);
-const fail = message => failures.push(message);
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
