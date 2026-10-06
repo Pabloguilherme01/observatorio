@@ -13,6 +13,7 @@
 
 - O deploy deve ser iniciado por um `CI` de push concluído e só prossegue quando `CI`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA da `main`.
 - O deploy deve publicar exatamente o SHA validado pelos três gates de publicação.
+- O deploy manual também executa `audit:workflows` antes do restante do release gate, mantendo os contratos de workflow centralizados.
 - Antes da publicação, `main` deve continuar apontando para esse mesmo SHA; se a branch avançar, o deploy antigo deve abortar.
 - O healthcheck pós-publicação deve confirmar paridade do SHA, estado do snapshot TSE, OpenAPI e assets PWA.
 
