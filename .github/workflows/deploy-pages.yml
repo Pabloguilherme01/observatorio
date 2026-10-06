@@ -90,6 +90,9 @@ jobs:
           main_sha="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
           test "$main_sha" = "${DEPLOY_SHA}"
           echo "Main head still matches validated SHA ${DEPLOY_SHA}."
+      - name: Audit workflow structure
+        run: npm run audit:workflows
+
       - name: Dependency vulnerability gate
         run: npm run audit:deps
 
