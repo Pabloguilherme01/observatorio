@@ -86,6 +86,14 @@ if (
   fail('cleanup destrutivo perdeu guard de main ou limites operacionais.');
 }
 
+const cleanupScript = read('scripts/cleanup-branches.mjs');
+if (
+  cleanupScript.includes("const expectedRef = 'refs/heads/' + defaultBranch")
+  && cleanupScript.includes("process.env.GITHUB_ACTIONS !== 'true'")
+  && cleanupScript.includes("process.env.GITHUB_REF !== expectedRef")
+) pass('script de cleanup também recusa execução destrutiva fora do GitHub Actions e da branch padrão.');
+else fail('script de cleanup não possui defesa em profundidade contra execução destrutiva fora da branch padrão.');
+
 const browser = workflows['.github/workflows/browser.yml'];
 const browserNames = ['chrome-desktop', 'firefox-desktop', 'safari-desktop', 'chrome-android', 'safari-iphone', 'safari-iphone-se'];
 for (const name of browserNames) {

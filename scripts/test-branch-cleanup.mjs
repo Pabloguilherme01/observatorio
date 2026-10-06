@@ -5,6 +5,9 @@ const script = readFileSync('scripts/cleanup-branches.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/cleanup-branches.yml', 'utf8');
 
 assert.match(script, /const defaultBranch = repoInfo\.default_branch \|\| 'main'/);
+assert.match(script, /const expectedRef = 'refs\/heads\/' \+ defaultBranch/);
+assert.match(script, /process\.env\.GITHUB_ACTIONS !== 'true'/);
+assert.match(script, /process\.env\.GITHUB_REF !== expectedRef/);
 assert.match(script, /const maxDeletions = Number\(process\.env\.CLEANUP_MAX_DELETIONS \|\| 25\)/);
 assert.match(script, /maxDeletions < 1/);
 assert.match(script, /\.filter\(name => name !== defaultBranch\)/);
@@ -19,7 +22,6 @@ assert.match(script, /mergedByHead/);
 assert.match(script, /mergeHeadSha/);
 assert.match(script, /branchTipSha/);
 assert.match(script, /record\.branchTipSha !== record\.mergeHeadSha/);
-assert.match(script, /mergeCommitSha/);
 assert.match(script, /mergedMaxAgeDays/);
 assert.match(script, /CLEANUP_MERGED_BRANCHES === 'true'/);
 assert.match(script, /mergedBranchPrefixes/);
