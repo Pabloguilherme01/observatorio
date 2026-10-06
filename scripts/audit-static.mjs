@@ -42,6 +42,9 @@ must(duplicateSourceIds.length === 0, duplicateSourceIds.length
   : 'sourceRegistry possui IDs únicos.',
 );
 
+must(!fs.existsSync(path.join(root, 'scripts/cleanup-tse-automation.mjs')), 'script legado de limpeza não existe');
+must(!fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml')), 'workflow legado de limpeza não existe');
+
 const obsoleteReleaseScripts = ['audit:all', 'check:deploy', 'release:check', 'build:bundle'];
 must(
   obsoleteReleaseScripts.every(scriptName => !(scriptName in (packageJson.scripts ?? {}))),
@@ -326,7 +329,7 @@ must(
     && !syncWorkflow.includes('run: npm run typecheck')
     && !syncWorkflow.includes('run: npm run build')
     && !syncWorkflow.includes('run: npm run audit:deps'),
-  'workflow TSE valida dados e consistência antes do commit e deixa typecheck, dependências e build para o CI pós-commit'
+  'workflow TSE valida dados e consistência antes do commit e deixa typecheck, dependências e build para o CI pós-commit',
 );
 must(syncWorkflow.includes('actions: write') && syncWorkflow.includes('issues: write') && syncWorkflow.includes('pull-requests: write') && syncWorkflow.includes('gh workflow run ci.yml') && syncWorkflow.includes('gh pr create') && syncWorkflow.includes('Automação TSE 2026: PR pendente') && syncWorkflow.includes('gh issue create') && syncWorkflow.includes('gh issue edit') && !/^\\s*git push\\s*$/m.test(syncWorkflow), 'workflow TSE valida a branch no CI, tenta criar PR e registra fallback acionável quando a permissão administrativa bloqueia a PR');
 must(resultsWorkflow.includes('actions: write') && resultsWorkflow.includes('issues: write') && resultsWorkflow.includes('pull-requests: write') && resultsWorkflow.includes('gh workflow run ci.yml') && resultsWorkflow.includes('gh pr create') && resultsWorkflow.includes('Resultados TSE 2026: PR pendente') && resultsWorkflow.includes('gh issue create') && resultsWorkflow.includes('gh issue edit') && !resultsWorkflow.includes('gh pr merge') && !/^\\s*git push\\s*$/m.test(resultsWorkflow), 'workflow de resultados valida a branch no CI, exige PR revisada e usa issue de fallback sem merge direto');

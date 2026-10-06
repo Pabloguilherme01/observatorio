@@ -72,11 +72,11 @@ const requiredFiles = [
   'scripts/audit-styles.mjs',
   'scripts/audit-performance.mjs',
   'scripts/lib/readCssImportGraph.mjs',
-  'scripts/cleanup-tse-automation.mjs',
+  'scripts/cleanup-branches.mjs',
   'scripts/test-post-election-transition.mjs',
   'src/assets/styles/index.css',
   'src/hooks/useDialogFocus.ts',
-  '.github/workflows/cleanup-tse-automation.yml',
+  '.github/workflows/cleanup-branches.yml',
 ];
 
 const duplicateRequiredFiles = requiredFiles.filter((file, index) => requiredFiles.indexOf(file) !== index);
@@ -86,6 +86,13 @@ else fail('lista de artefatos obrigatórios contém duplicatas: ' + [...new Set(
 for (const file of requiredFiles) {
   if (exists(file)) pass('artefato obrigatório presente: ' + file);
   else fail('artefato obrigatório ausente: ' + file);
+}
+
+
+if (exists('scripts/cleanup-tse-automation.mjs') || exists('.github/workflows/cleanup-tse-automation.yml')) {
+  fail('artefatos legados de limpeza ainda existem.');
+} else {
+  pass('artefatos legados de limpeza não existem.');
 }
 
 const ci = read('.github/workflows/ci.yml');

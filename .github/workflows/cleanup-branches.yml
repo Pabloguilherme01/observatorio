@@ -1,17 +1,22 @@
-name: Cleanup TSE automation branches
+name: Cleanup stale merged branches
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Executar sem excluir branches'
+        required: false
+        default: true
+        type: boolean
   schedule:
     - cron: '23 7 * * 0'
 
 permissions:
   contents: write
-  issues: write
   pull-requests: read
 
 concurrency:
-  group: cleanup-tse-automation
+  group: cleanup-branches
   cancel-in-progress: true
 
 jobs:
@@ -28,10 +33,13 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Cleanup stale automation branches
+      - name: Cleanup stale branches
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          CLEANUP_DRY_RUN: 'false'
+          CLEANUP_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
           CLEANUP_MAX_AGE_DAYS: '7'
           CLEANUP_KEEP_PER_PREFIX: '2'
-        run: npm run cleanup:tse
+          CLEANUP_MERGED_BRANCHES: 'true'
+          CLEANUP_MERGED_MAX_AGE_DAYS: '14'
+          CLEANUP_MAX_DELETIONS: '25'
+        run: npm run cleanup:branches
