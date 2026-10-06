@@ -36,7 +36,7 @@ jobs:
       - name: Cleanup stale branches
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          CLEANUP_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && (inputs.dry_run || true) || false }}
+          CLEANUP_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
           CLEANUP_MAX_AGE_DAYS: '7'
           CLEANUP_KEEP_PER_PREFIX: '2'
           CLEANUP_MERGED_BRANCHES: 'true'
