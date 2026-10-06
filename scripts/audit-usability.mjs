@@ -85,13 +85,16 @@ if (
 ) pass('deep links, navegação e redução de modo compartilham a mesma política de visibilidade');
 else fail('navegação por hash pode abrir uma seção escondida no modo de leitura atual');
 const header = texts.find(item => item.file === 'src/components/layout/Header.tsx')?.content ?? '';
+const desktopHeaderNavigation = texts.find(item => item.file === 'src/components/layout/DesktopHeaderNavigation.tsx')?.content ?? '';
+const desktopHeaderSurface = header + '\n' + desktopHeaderNavigation;
 if (
-  header.includes('aria-haspopup="menu"') &&
-  header.includes("ArrowDown") &&
-  header.includes("ArrowUp") &&
-  header.includes("event.key === 'Home'") &&
-  header.includes("event.key === 'End'") &&
-  (header.includes("items[0]?.focus()") || header.includes("items.at(-1)") && header.includes("items[0]"))
+  header.includes('<DesktopHeaderNavigation') &&
+  desktopHeaderSurface.includes('aria-haspopup="menu"') &&
+  desktopHeaderSurface.includes("ArrowDown") &&
+  desktopHeaderSurface.includes("ArrowUp") &&
+  desktopHeaderSurface.includes("event.key === 'Home'") &&
+  desktopHeaderSurface.includes("event.key === 'End'") &&
+  (desktopHeaderSurface.includes("items[0]?.focus()") || desktopHeaderSurface.includes("items.at(-1)") && desktopHeaderSurface.includes("items[0]"))
 ) pass('menu desktop Mais possui navegação por teclado e foco previsível');
 else fail('menu desktop Mais não possui navegação de teclado completa');
 if (app.includes('onSameHashAnchor') && app.includes("window.location.hash !== '#' + target") && app.includes('navigateToHash(target)')) pass('navegação central trata também o clique repetido na mesma âncora');
