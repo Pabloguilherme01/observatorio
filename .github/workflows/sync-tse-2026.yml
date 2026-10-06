@@ -118,6 +118,8 @@ jobs:
             if [ -n "$pending_issue" ]; then
               gh issue close "$pending_issue" --comment "PR já existente: $existing_pr"
             fi
+          # A criação da PR depende da permissão pull-requests:write disponível para o token desta execução.
+          # Quando o repositório/política de Actions bloquear essa permissão, mantemos a branch validada e registramos a pendência.
           elif pr_url="$(gh pr create \
             --base main \
             --head "$branch" \
