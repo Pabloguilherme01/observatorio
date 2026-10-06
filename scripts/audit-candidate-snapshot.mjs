@@ -26,6 +26,25 @@ if (!Array.isArray(data.watchlist) || data.watchlist.length !== meta.matchedRows
 if (!Array.isArray(data.matched) || data.matched.length !== meta.matchedRows) fail('matchedRows não coincide com matched[].length.');
 if (meta.sourceRows < meta.matchedRows) fail('matchedRows não pode superar sourceRows.');
 
+const diff = data?.diff;
+const volatileCandidateFields = new Set(['generationDate', 'generationTime']);
+if (!diff || typeof diff !== 'object') {
+  fail('diff do snapshot ausente.');
+} else {
+  const records = Array.isArray(diff.records) ? diff.records : [];
+  const forbidden = records.flatMap(record =>
+    Array.isArray(record?.changedFields)
+      ? record.changedFields.filter(field => volatileCandidateFields.has(field))
+      : [],
+  );
+  if (forbidden.length) fail('diff contém mudanças voláteis que não podem ser apresentadas como alteração eleitoral: ' + [...new Set(forbidden)].join(', '));
+  if (diff.added !== records.filter(record => record.type === 'added').length) fail('contador added divergente do diff.');
+  if (diff.removed !== records.filter(record => record.type === 'removed').length) fail('contador removed divergente do diff.');
+  if (diff.changed !== records.filter(record => record.type === 'changed').length) fail('contador changed divergente do diff.');
+  if (diff.state !== (diff.records.length ? 'changed' : 'unchanged')) fail('estado do diff não corresponde aos registros persistidos.');
+  if (meta.state !== diff.state) fail('estado do snapshot diverge do estado do diff.');
+}
+
 for (const candidate of data.matched ?? []) {
   if (!candidate?.sqCandidate) fail('candidato sem sqCandidate.');
   if (!candidate?.name) fail('candidato sem nome oficial.');
