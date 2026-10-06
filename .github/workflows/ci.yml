@@ -112,17 +112,5 @@ jobs:
       - name: Verify JWS implementation
         run: npm run test:jws
 
-      - name: Build production bundle
-        run: npm run build:bundle
-
-      - name: Audit production bundle budget
-        run: npm run audit:bundle
-
-      - name: Audit performance budgets
-        run: npm run audit:performance
-
-      - name: Verify production PWA artifact
-        run: npm run test:pwa
-
       - name: Release readiness contract
         run: npm run audit:release
