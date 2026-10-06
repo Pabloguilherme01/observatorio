@@ -67,6 +67,8 @@ for (const [file, text] of Object.entries(workflows)) {
 }
 
 const ci = workflows['.github/workflows/ci.yml'];
+if (ci.includes("      - main") && ci.includes("      - 'automation/**'")) pass('CI valida automaticamente branches de automação antes da abertura das PRs.');
+else fail('CI não possui gatilho de push para branches de automação.');
 const ciSteps = stepNames(ci, 'quality');
 for (const step of ['Guard main provenance', 'Release readiness contract', 'Audit workflow structure', 'Audit style source budget']) {
   if (ciSteps.includes(step)) pass('CI mantém etapa estrutural: ' + step);
