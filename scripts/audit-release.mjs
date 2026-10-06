@@ -80,6 +80,9 @@ for (const file of requiredFiles) {
   else fail('artefato obrigatório ausente: ' + file);
 }
 
+if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
+else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
+
 const viteConfig = read('vite.config.ts');
 
 const healthRouteIndex = viteConfig.indexOf("url.pathname === '/observatorio/api/v1/health.json'");
