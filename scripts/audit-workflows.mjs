@@ -68,6 +68,11 @@ if (
 else pass('artefatos legados de limpeza não existem.');
 
 const workflows = Object.fromEntries(required.filter(file => fs.existsSync(path.join(root, file))).map(file => [file, read(file)]));
+if (Object.values(workflows).some(text => text.includes('pwa-512.svg') || text.includes('observatorio-static-v13'))) {
+  fail('há referência a artefato/cache legado conhecido nos workflows.');
+} else {
+  pass('nenhum artefato/cache legado conhecido está referenciado nos workflows.');
+}
 for (const [file, text] of Object.entries(workflows)) {
   if (file === '.github/workflows/sync-tse-2026.yml' && !text.includes('timeout-minutes: 20')) fail('sync-tse-2026.yml precisa de timeout-minutes: 20.');
   if (file === '.github/workflows/sync-results-2026.yml' && !text.includes('timeout-minutes: 15')) fail('sync-results-2026.yml precisa de timeout-minutes: 15.');
