@@ -109,7 +109,7 @@ if (
   fail('cleanup destrutivo perdeu guard de main ou limites operacionais.');
 }
 
-const cleanupScript = read('scripts/cleanup-branches.mjs');
+const cleanupScript = exists('scripts/cleanup-branches.mjs') ? read('scripts/cleanup-branches.mjs') : '';
 if (
   cleanupScript.includes("const expectedRef = 'refs/heads/' + defaultBranch")
   && cleanupScript.includes("process.env.GITHUB_ACTIONS !== 'true'")
@@ -180,7 +180,7 @@ if (deploy.includes('gh run download "$BROWSER_RUN_ID" --name observatorio-brows
   pass('Deploy reutiliza o artefato Browser validado do SHA exato em vez de recompilar a aplicação.');
 } else fail('Deploy voltou a recompilar a aplicação ou deixou de reutilizar o artefato Browser validado.');
 
-const tseRefreshDoc = read('docs/TSE-DATA-REFRESH.md');
+const tseRefreshDoc = exists('docs/TSE-DATA-REFRESH.md') ? read('docs/TSE-DATA-REFRESH.md') : '';
 if (tseRefreshDoc.includes('sync-tse-2026.yml') && !tseRefreshDoc.includes('sync-tse-candidates.yml') && tseRefreshDoc.includes('branch -> CI -> PR -> merge revisado')) {
   pass('documentação TSE acompanha o workflow atual e o fluxo branch -> CI -> PR.');
 } else {
