@@ -9,8 +9,8 @@ assert.match(script, /const maxDeletions = Number\(process\.env\.CLEANUP_MAX_DEL
 assert.match(script, /maxDeletions < 1/);
 assert.match(script, /\.filter\(name => name !== defaultBranch\)/);
 assert.match(script, /\.filter\(name => name !== 'main'\)/);
-assert.match(script, /\.filter\(name => !active\.has\(name\)/);
-assert.match(script, /\.filter\(name => !candidates\.includes\(name\)/);
+assert.match(script, /\.filter\(name => !active\.has\(name\)\)/);
+assert.match(script, /\.filter\(name => !candidates\.includes\(name\)\)/);
 assert.match(script, /\.filter\(name => !branchByName\.get\(name\)\?\.protected\)/);
 assert.match(script, /pr\.base\?\.ref !== defaultBranch/);
 assert.match(script, /pr\.head\?\.repo\?\.full_name !== repository/);
