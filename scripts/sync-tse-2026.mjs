@@ -317,14 +317,14 @@ async function updateFromApiFallback(previous, watchlist, work) {
   const records = findCandidateArray(parsedApi);
   if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
 
-  const normalizedPrevious = new Map(previous.matched.map(candidate => [normalize(candidate.name), candidate]));
+  const previousByWatchlistName = new Map(
+    previous.matched.map(candidate => [normalize(candidate.watchlistName ?? candidate.name), candidate]),
+  );
   const matched = [];
   const missingWatchlist = [];
 
   for (const expectedName of watchlist) {
-    const previousRecord = previous.matched.find(candidate =>
-      normalize(candidate.watchlistName ?? candidate.name) === normalize(expectedName),
-    );
+    const previousRecord = previousByWatchlistName.get(normalize(expectedName));
     const candidate = records.find(item => {
       const apiName = firstString(item, ['nomeUrna', 'nome_urna', 'NM_URNA_CANDIDATO', 'nomeCandidato', 'nomeCompleto', 'NM_CANDIDATO', 'nome']);
       return tokenPhraseIncluded(apiName ?? '', expectedName)
