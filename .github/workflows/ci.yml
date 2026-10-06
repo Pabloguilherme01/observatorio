@@ -39,6 +39,9 @@ jobs:
       - name: Audit workflow structure
         run: npm run audit:workflows
 
+      - name: Test branch cleanup safety
+        run: npm run test:branch-cleanup
+
       - name: Audit style source budget
         run: npm run audit:styles
 
