@@ -42,6 +42,12 @@ must(duplicateSourceIds.length === 0, duplicateSourceIds.length
   : 'sourceRegistry possui IDs únicos.',
 );
 
+const obsoleteReleaseScripts = ['audit:all', 'check:deploy', 'release:check', 'build:bundle'];
+must(
+  obsoleteReleaseScripts.every(scriptName => !(scriptName in (packageJson.scripts ?? {}))),
+  'aliases de release obsoletos não retornaram ao package.json',
+);
+
 const localScriptRefs = Object.entries(packageJson.scripts ?? {}).flatMap(([scriptName, command]) =>
   [...String(command).matchAll(/(?:^|\s)(scripts\/[A-Za-z0-9_.-]+\.mjs)\b/g)].map(match => ({ scriptName, path: match[1] })),
 );
