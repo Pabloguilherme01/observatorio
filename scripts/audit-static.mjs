@@ -42,6 +42,9 @@ must(duplicateSourceIds.length === 0, duplicateSourceIds.length
   : 'sourceRegistry possui IDs únicos.',
 );
 
+must(!fs.existsSync(path.join(root, 'scripts/cleanup-tse-automation.mjs')), 'script legado de limpeza não existe');
+must(!fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml')), 'workflow legado de limpeza não existe');
+
 const obsoleteReleaseScripts = ['audit:all', 'check:deploy', 'release:check', 'build:bundle'];
 must(
   obsoleteReleaseScripts.every(scriptName => !(scriptName in (packageJson.scripts ?? {}))),
