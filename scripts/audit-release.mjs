@@ -60,12 +60,6 @@ const requiredFiles = [
   'tests/public-entry-flows.spec.mjs',
   'tests/mobile-core.spec.mjs',
 
-  '.github/workflows/ci.yml',
-  '.github/workflows/codeql.yml',
-  '.github/workflows/deploy-pages.yml',
-  '.github/workflows/source-health.yml',
-  '.github/workflows/sync-tse-2026.yml',
-  '.github/workflows/sync-results-2026.yml',
   'scripts/audit-release.mjs',
   'scripts/assert-main-provenance.mjs',
   'scripts/audit-workflows.mjs',
@@ -86,95 +80,11 @@ for (const file of requiredFiles) {
   else fail('artefato obrigatório ausente: ' + file);
 }
 
-
-if (exists('scripts/cleanup-tse-automation.mjs') || exists('.github/workflows/cleanup-tse-automation.yml')) {
-  fail('artefatos legados de limpeza ainda existem.');
-} else {
-  pass('artefatos legados de limpeza não existem.');
-}
-
-const ci = read('.github/workflows/ci.yml');
-const deploy = read('.github/workflows/deploy-pages.yml');
-const browser = read('.github/workflows/browser.yml');
-const syncTse = read('.github/workflows/sync-tse-2026.yml');
-const syncResults = read('.github/workflows/sync-results-2026.yml');
-const workflowText = [ci, read('.github/workflows/codeql.yml'), deploy, read('.github/workflows/source-health.yml'), syncTse, syncResults].join('\n');
-if (syncTse.includes('timeout-minutes: 20') && syncResults.includes('timeout-minutes: 15')) pass('sincronizações TSE possuem limite operacional de duração.');
-else fail('sincronização TSE sem timeout operacional explícito.');
-
-if (ci.includes('npm run audit:release')) pass('CI inclui o release gate consolidado.');
-else fail('CI não inclui o release gate consolidado.');
-if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
-else fail('CI não possui guard de proveniência para commits em main.');
-if (
-  ci.includes('npm run audit:workflows')
-  && ci.includes('npm run audit:styles')
-  && browser.includes('npm exec vite -- build')
-  && !browser.includes('run: npm run build')
-  && browser.includes('npm run audit:bundle')
-  && browser.includes('npm run audit:performance')
-  && browser.includes('npm run test:pwa')
-) pass('CI mantém os contratos estruturais e o Browser concentra o único build de produção e seus gates de bundle, performance e PWA.');
-else fail('pipeline de qualidade perdeu algum gate de manutenção ou voltou a duplicar o build de produção.');
-if (ci.includes('npm run audit:provenance') && ci.includes('npm run audit:candidate-snapshot')) pass('CI consolidado cobre proveniência e snapshot TSE.');
-else fail('CI consolidado não cobre proveniência e snapshot TSE.');
-if (
-  deploy.includes('workflows: ["CI"]')
-  && deploy.includes("github.event.workflow_run.conclusion == 'success'")
-  && deploy.includes("github.event.workflow_run.event == 'push'")
-  && deploy.includes('ref: ${{ env.DEPLOY_SHA }}')
-  && deploy.includes('Require all release gates for exact SHA')
-  && deploy.includes('ci.yml browser.yml codeql.yml')
-  && deploy.includes('sort_by(.created_at) | reverse | .[0]')
-  && deploy.includes('Ensure main still points to validated SHA')
-  && deploy.includes('git/ref/heads/main')
-) pass('Deploy preserva a cadeia completa CI + Browser + CodeQL -> SHA -> publicação.');
-else fail('Deploy não exige todos os gates de release no mesmo SHA.');
-if (
-  syncTse.includes('node-version: 24')
-  && syncResults.includes('node-version: 24')
-  && !syncTse.includes('run: npm run build')
-  && !syncResults.includes('run: npm run build')
-  && !syncTse.includes('run: npm run audit:deps')
-  && !syncResults.includes('run: npm run audit:deps')
-) pass('sincronizações TSE usam Node 24 e deixam build/auditoria de dependências para o CI único pós-commit.');
-else fail('sincronizações TSE repetem gates que já pertencem ao CI completo.');
-if (
-  syncTse.includes('gh pr list --state open --base main --head')
-  && syncResults.includes('gh pr list --state open --base main --head')
-) pass('automação TSE evita PRs duplicadas para a mesma branch.');
-else fail('automação TSE não possui guarda idempotente de PR.');
-
-if (
-  ci.includes("      - main")
-  && ci.includes("      - 'automation/**'")
-  && [syncTse, syncResults].every(workflow =>
-    workflow.includes('actions: read')
-    && !workflow.includes('actions: write')
-    && !workflow.includes('gh workflow run ci.yml')
-    && workflow.includes('--event push')
-  )
-) {
-  pass('automação de snapshots usa CI acionado pelo push e não precisa de actions:write.');
-} else {
-  fail('automação de snapshots ainda depende de actions:write ou disparo manual do CI.');
-}
-const syncNeedsReconcile = [syncTse, syncResults].every(workflow =>
-  workflow.includes('git fetch origin main')
-  && workflow.includes('git rebase origin/main')
-  && workflow.includes('git push --force-with-lease')
-  && workflow.includes('gh run watch "$run_id" --exit-status'),
-);
-if (syncNeedsReconcile) pass('sincronizações TSE reconciliam a branch com a main atual antes da PR.');
-else fail('alguma sincronização TSE pode abrir PR a partir de uma main desatualizada.');
-const unsafePendingIssueTemplates = [syncTse, syncResults].some(workflow =>
-  workflow.includes('`$branch`') || workflow.includes('`main`; revisão') || workflow.includes('`main`. A publicação'),
-);
-if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substituição de comando acidental do shell.');
-else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (exists('src/assets/styles/index.css') && read('src/main.tsx').includes("./assets/styles/index.css")) pass('aplicação usa um entrypoint canônico de estilos compartilhados.');
 else fail('entrypoint canônico de estilos não está integrado ao bootstrap.');
+
 const viteConfig = read('vite.config.ts');
+
 const healthRouteIndex = viteConfig.indexOf("url.pathname === '/observatorio/api/v1/health.json'");
 const genericApiRouteIndex = viteConfig.indexOf("url.pathname.startsWith('/observatorio/api/v1/')");
 if (

@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const root = process.cwd();
-const workflowDir = path.join(root, '.github', 'workflows');
 const failures = [];
 const pass = message => console.log('PASS', message);
 const fail = message => failures.push(message);
@@ -61,8 +60,11 @@ for (const file of required) {
   if (fs.existsSync(path.join(root, file))) pass('workflow presente: ' + file);
   else fail('workflow ausente: ' + file);
 }
-if (fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))) fail('workflow legado cleanup-tse-automation.yml ainda existe.');
-else pass('workflow legado de limpeza não existe.');
+if (
+  fs.existsSync(path.join(root, 'scripts/cleanup-tse-automation.mjs'))
+  || fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))
+) fail('artefatos legados de limpeza ainda existem.');
+else pass('artefatos legados de limpeza não existem.');
 
 const workflows = Object.fromEntries(required.filter(file => fs.existsSync(path.join(root, file))).map(file => [file, read(file)]));
 for (const [file, text] of Object.entries(workflows)) {
@@ -78,7 +80,13 @@ for (const [file, text] of Object.entries(workflows)) {
   if (unpinned.length) fail(file + ' possui ' + unpinned.length + ' Action(s) sem SHA imutável.');
 }
 
-const ci = workflows['.github/workflows/ci.yml'];
+const ci = workflows['.github/workflows/ci.yml'] ?? '';
+const cleanup = workflows['.github/workflows/cleanup-branches.yml'] ?? '';
+const browser = workflows['.github/workflows/browser.yml'] ?? '';
+const deploy = workflows['.github/workflows/deploy-pages.yml'] ?? '';
+const syncTse = workflows['.github/workflows/sync-tse-2026.yml'] ?? '';
+const syncResults = workflows['.github/workflows/sync-results-2026.yml'] ?? '';
+
 if (ci.includes("      - main") && ci.includes("      - 'automation/**'")) pass('CI valida automaticamente branches de automação antes da abertura das PRs.');
 else fail('CI não possui gatilho de push para branches de automação.');
 const ciSteps = stepNames(ci, 'quality');
@@ -87,7 +95,6 @@ for (const step of ['Guard main provenance', 'Release readiness contract', 'Audi
   else fail('CI não possui etapa esperada: ' + step);
 }
 
-const cleanup = workflows['.github/workflows/cleanup-branches.yml'];
 if (
   cleanup?.includes("if: github.ref == 'refs/heads/main'")
   && cleanup?.includes('contents: write')
@@ -102,7 +109,7 @@ if (
   fail('cleanup destrutivo perdeu guard de main ou limites operacionais.');
 }
 
-const cleanupScript = read('scripts/cleanup-branches.mjs');
+const cleanupScript = exists('scripts/cleanup-branches.mjs') ? read('scripts/cleanup-branches.mjs') : '';
 if (
   cleanupScript.includes("const expectedRef = 'refs/heads/' + defaultBranch")
   && cleanupScript.includes("process.env.GITHUB_ACTIONS !== 'true'")
@@ -110,7 +117,6 @@ if (
 ) pass('script de cleanup também recusa execução destrutiva fora do GitHub Actions e da branch padrão.');
 else fail('script de cleanup não possui defesa em profundidade contra execução destrutiva fora da branch padrão.');
 
-const browser = workflows['.github/workflows/browser.yml'];
 const browserNames = [
   'chrome-desktop',
   'chrome-a11y',
@@ -147,7 +153,12 @@ if (
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
 
-const syncWorkflowList = [workflows['.github/workflows/sync-tse-2026.yml'], workflows['.github/workflows/sync-results-2026.yml']];
+const syncWorkflowList = [syncTse, syncResults];
+const unsafePendingIssueTemplates = syncWorkflowList.some(workflow =>
+  workflow.includes('`$branch`') || workflow.includes('`main`; revisão') || workflow.includes('`main`. A publicação'),
+);
+if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substituição de comando acidental do shell.');
+else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (syncWorkflowList.every(text => text.includes('actions: read') && !text.includes('actions: write') && !text.includes('gh workflow run ci.yml') && text.includes('--event push') && text.includes('wait_for_ci'))) {
   pass('sincronizações TSE usam apenas actions:read e deixam o CI ser acionado pelo push normal da branch.');
 } else {
@@ -161,7 +172,6 @@ if (ciRunCommands.includes('audit:provenance') && ciRunCommands.includes('audit:
   fail('CI consolidado perdeu os contratos de proveniência ou snapshot TSE.');
 }
 
-const deploy = workflows['.github/workflows/deploy-pages.yml'];
 if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /event.workflow_run.event == 'push'/.test(deploy) && /ref: \$\{\{ env.DEPLOY_SHA \}\}/.test(deploy)) {
   pass('Deploy preserva workflow_run sucesso + push + SHA exato.');
 } else fail('Deploy não preserva integralmente a cadeia de proveniência.');
@@ -170,7 +180,7 @@ if (deploy.includes('gh run download "$BROWSER_RUN_ID" --name observatorio-brows
   pass('Deploy reutiliza o artefato Browser validado do SHA exato em vez de recompilar a aplicação.');
 } else fail('Deploy voltou a recompilar a aplicação ou deixou de reutilizar o artefato Browser validado.');
 
-const tseRefreshDoc = read('docs/TSE-DATA-REFRESH.md');
+const tseRefreshDoc = exists('docs/TSE-DATA-REFRESH.md') ? read('docs/TSE-DATA-REFRESH.md') : '';
 if (tseRefreshDoc.includes('sync-tse-2026.yml') && !tseRefreshDoc.includes('sync-tse-candidates.yml') && tseRefreshDoc.includes('branch -> CI -> PR -> merge revisado')) {
   pass('documentação TSE acompanha o workflow atual e o fluxo branch -> CI -> PR.');
 } else {
