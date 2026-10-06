@@ -19,5 +19,7 @@ assert.match(workflow, /pull-requests:\s+read/);
 assert.match(workflow, /CLEANUP_MERGED_BRANCHES: 'true'/);
 assert.match(workflow, /CLEANUP_MERGED_MAX_AGE_DAYS: '14'/);
 assert.match(workflow, /CLEANUP_MERGED_MAX_DELETIONS: '25'/);
+assert.match(workflow, /inputs:\s*\n\s+dry_run:/);
+assert.match(workflow, /CLEANUP_DRY_RUN:/);
 
 console.log('Branch cleanup safety contract: PASS');
