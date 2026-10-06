@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { workDaysPerMonthFromWeeks } from '../../lib/transport';
+import { workDaysPerMonthFromWeeks } from '../lib/transport';
 
 const STORAGE_KEY = 'observatorio:transport-preferences:v1';
 
