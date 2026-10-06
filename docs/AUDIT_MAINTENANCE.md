@@ -58,6 +58,10 @@ Mudanças relacionadas a eleições, candidaturas, resultados, denúncias, proce
 - distinguir dado oficial, captura local, dado derivado e hipótese;
 - exigir revisão humana antes de publicar novos snapshots quando o pipeline assim determina.
 
+## Workflows destrutivos
+
+Workflows que recebem `contents: write` e podem excluir ou alterar referências devem executar exclusivamente a partir da branch padrão protegida. O contrato deve cobrir também branches protegidas além de `main`, execução manual em ref não confiável e limites explícitos de operação.
+
 ## Critério de saúde
 
 A suíte está saudável quando um teste falha por uma regressão do produto/contrato — não porque uma frase, nome de arquivo ou estrutura interna sem impacto real mudou.
