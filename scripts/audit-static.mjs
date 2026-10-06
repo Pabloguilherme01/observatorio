@@ -324,10 +324,12 @@ must(
 must(
   deployWorkflow.includes('npm run audit:deps')
     && deployWorkflow.includes('npm run validate:tse')
-    && deployWorkflow.includes('npm run build')
+    && deployWorkflow.includes('npm run audit:release')
+    && deployWorkflow.includes('gh run download "$BROWSER_RUN_ID" --name observatorio-browser-dist --dir dist')
     && deployWorkflow.includes('npm run audit:bundle')
-    && deployWorkflow.includes('npm run test:pwa'),
-  'deploy reconstrói e valida o artefato após o CI sem repetir a suíte de navegadores',
+    && deployWorkflow.includes('npm run test:pwa')
+    && !deployWorkflow.includes('npm run build:bundle'),
+  'deploy reutiliza e valida o artefato Browser do SHA exato sem recompilar nem repetir a suíte de navegadores',
 );
 must(deployWorkflow.includes('test "$public_commit" = "${DEPLOY_SHA}"'), 'verificação publicada exige paridade com o SHA aprovado pelo CI');
 must(deployWorkflow.includes('test "$count" = "1"'), 'verificação publicada impede regressão de duplicação no precache PWA');

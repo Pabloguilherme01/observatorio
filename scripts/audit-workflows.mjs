@@ -98,6 +98,10 @@ if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /ev
   pass('Deploy preserva workflow_run sucesso + push + SHA exato.');
 } else fail('Deploy não preserva integralmente a cadeia de proveniência.');
 
+if (deploy.includes('gh run download "$BROWSER_RUN_ID" --name observatorio-browser-dist --dir dist') && !deploy.includes('run: npm run build:bundle')) {
+  pass('Deploy reutiliza o artefato Browser validado do SHA exato em vez de recompilar a aplicação.');
+} else fail('Deploy voltou a recompilar a aplicação ou deixou de reutilizar o artefato Browser validado.');
+
 const tseRefreshDoc = read('docs/TSE-DATA-REFRESH.md');
 if (tseRefreshDoc.includes('sync-tse-2026.yml') && !tseRefreshDoc.includes('sync-tse-candidates.yml') && tseRefreshDoc.includes('branch -> CI -> PR -> merge revisado')) {
   pass('documentação TSE acompanha o workflow atual e o fluxo branch -> CI -> PR.');
