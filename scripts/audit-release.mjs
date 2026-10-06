@@ -146,6 +146,14 @@ if (exists('tests')) walk(path.join(root, 'tests'));
 if (testFiles.length >= 10) pass('suíte possui ' + testFiles.length + ' arquivos de teste.');
 else warn('suíte possui apenas ' + testFiles.length + ' arquivos de teste.');
 
+const workflowDir = path.join(root, '.github', 'workflows');
+const workflowText = fs.existsSync(workflowDir)
+  ? fs.readdirSync(workflowDir)
+    .filter(file => /\.ya?ml$/.test(file))
+    .map(file => fs.readFileSync(path.join(workflowDir, file), 'utf8'))
+    .join('\n')
+  : '';
+
 const largestTest = [...testFiles].map(file => ({ file, bytes: fs.statSync(file).size })).sort((a, b) => b.bytes - a.bytes)[0];
 if (largestTest && largestTest.bytes <= 140 * 1024) pass('maior arquivo de teste está abaixo de 140 KB.');
 else if (largestTest) fail('maior arquivo de teste excede 140 KB: ' + path.relative(root, largestTest.file) + '.');
