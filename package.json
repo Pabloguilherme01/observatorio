@@ -38,7 +38,7 @@
     "audit:workflows": "node scripts/audit-workflows.mjs",
     "audit:styles": "node scripts/audit-styles.mjs",
     "audit:performance": "node scripts/audit-performance.mjs",
-    "cleanup:tse": "node scripts/cleanup-tse-automation.mjs",
+    "cleanup:branches": "node scripts/cleanup-branches.mjs",
     "test:post-election": "node scripts/test-post-election-transition.mjs",
     "audit:provenance": "node scripts/audit-provenance.mjs",
     "audit:candidate-snapshot": "node scripts/audit-candidate-snapshot.mjs",
