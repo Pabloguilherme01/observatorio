@@ -53,10 +53,7 @@ for (const file of required) {
   if (fs.existsSync(path.join(root, file))) pass('workflow presente: ' + file);
   else fail('workflow ausente: ' + file);
 }
-
-if (fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))) fail('workflow legado cleanup-tse-automation.yml ainda existe.');
-else pass('workflow legado de limpeza não existe.');
-
+\nif (fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))) fail('workflow legado cleanup-tse-automation.yml ainda existe.');\nelse pass('workflow legado de limpeza não existe.');\n
 const workflows = Object.fromEntries(required.filter(file => fs.existsSync(path.join(root, file))).map(file => [file, read(file)]));
 for (const [file, text] of Object.entries(workflows)) {
   for (const key of ['on', 'permissions', 'jobs']) {
