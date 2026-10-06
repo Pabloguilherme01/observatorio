@@ -43,6 +43,7 @@
     "audit:provenance": "node scripts/audit-provenance.mjs",
     "audit:candidate-snapshot": "node scripts/audit-candidate-snapshot.mjs",
     "test:candidate-source-guard": "node scripts/test-candidate-source-guard.mjs",
+    "test:branch-cleanup": "node scripts/test-branch-cleanup.mjs",
     "test:tse-diff": "node scripts/test-tse-diff.mjs"
   },
   "dependencies": {
