@@ -35,6 +35,7 @@ O CI também executa `npm run check:main-provenance` em pushes para `main`. O gu
 Isso não substitui a proteção nativa da branch. Porém, evita que um push direto em `main` seja considerado um release válido pelo pipeline e, portanto, impede que esse caminho alcance o deploy de Pages.
 
 A proteção nativa de branch/ruleset continua recomendada para bloquear o push na origem, antes mesmo da execução do CI.
+
 ## Operação idempotente das sincronizações
 
 - Os workflows TSE verificam se já existe uma PR aberta para a branch de automação antes de chamar `gh pr create`.
@@ -48,4 +49,4 @@ A proteção nativa de branch/ruleset continua recomendada para bloquear o push 
 - O workflow Browser protege o build único compartilhado com `audit:bundle`, `audit:performance` e `test:pwa`; a suíte Chrome mede LCP, FCP, CLS, tarefas longas e latência de interação em laboratório.
 - O entrypoint compartilhado `src/assets/styles/index.css` centraliza as camadas globais; estilos específicos de componentes continuam locais.
 - O hook `useDialogFocus` centraliza foco, Escape, Tab e bloqueio de rolagem dos diálogos.
-- O workflow de limpeza remove branches de automação antigas e, com regras de segurança, branches de trabalho antigas já associadas a PR mesclada, sem PR aberta; exclusões têm idade mínima e limite por execução.
+- O workflow de limpeza remove branches de automação antigas e, com regras de segurança, branches de trabalho antigas já associadas a PR mesclada na branch padrão, sem PR aberta; a exclusão de um branch mesclado só é permitida quando sua ponta ainda coincide exatamente com o commit da mesclagem, há idade mínima e existe limite por execução.
