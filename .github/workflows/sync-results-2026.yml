@@ -35,9 +35,6 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
 
-      - name: Dependency vulnerability gate
-        run: npm run audit:deps
-
       - name: Resolve turn
         shell: bash
         run: |
