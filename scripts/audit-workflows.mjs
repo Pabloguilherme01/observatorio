@@ -80,7 +80,13 @@ for (const [file, text] of Object.entries(workflows)) {
   if (unpinned.length) fail(file + ' possui ' + unpinned.length + ' Action(s) sem SHA imutável.');
 }
 
-const ci = workflows['.github/workflows/ci.yml'];
+const ci = workflows['.github/workflows/ci.yml'] ?? '';
+const cleanup = workflows['.github/workflows/cleanup-branches.yml'] ?? '';
+const browser = workflows['.github/workflows/browser.yml'] ?? '';
+const deploy = workflows['.github/workflows/deploy-pages.yml'] ?? '';
+const syncTse = workflows['.github/workflows/sync-tse-2026.yml'] ?? '';
+const syncResults = workflows['.github/workflows/sync-results-2026.yml'] ?? '';
+
 if (ci.includes("      - main") && ci.includes("      - 'automation/**'")) pass('CI valida automaticamente branches de automação antes da abertura das PRs.');
 else fail('CI não possui gatilho de push para branches de automação.');
 const ciSteps = stepNames(ci, 'quality');
@@ -89,7 +95,6 @@ for (const step of ['Guard main provenance', 'Release readiness contract', 'Audi
   else fail('CI não possui etapa esperada: ' + step);
 }
 
-const cleanup = workflows['.github/workflows/cleanup-branches.yml'];
 if (
   cleanup?.includes("if: github.ref == 'refs/heads/main'")
   && cleanup?.includes('contents: write')
@@ -112,7 +117,6 @@ if (
 ) pass('script de cleanup também recusa execução destrutiva fora do GitHub Actions e da branch padrão.');
 else fail('script de cleanup não possui defesa em profundidade contra execução destrutiva fora da branch padrão.');
 
-const browser = workflows['.github/workflows/browser.yml'];
 const browserNames = [
   'chrome-desktop',
   'chrome-a11y',
@@ -149,7 +153,7 @@ if (
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
 
-const syncWorkflowList = [workflows['.github/workflows/sync-tse-2026.yml'], workflows['.github/workflows/sync-results-2026.yml']];
+const syncWorkflowList = [syncTse, syncResults];
 const unsafePendingIssueTemplates = syncWorkflowList.some(workflow =>
   workflow.includes('`$branch`') || workflow.includes('`main`; revisão') || workflow.includes('`main`. A publicação'),
 );
@@ -168,7 +172,6 @@ if (ciRunCommands.includes('audit:provenance') && ciRunCommands.includes('audit:
   fail('CI consolidado perdeu os contratos de proveniência ou snapshot TSE.');
 }
 
-const deploy = workflows['.github/workflows/deploy-pages.yml'];
 if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /event.workflow_run.event == 'push'/.test(deploy) && /ref: \$\{\{ env.DEPLOY_SHA \}\}/.test(deploy)) {
   pass('Deploy preserva workflow_run sucesso + push + SHA exato.');
 } else fail('Deploy não preserva integralmente a cadeia de proveniência.');
