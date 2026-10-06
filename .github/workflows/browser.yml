@@ -32,7 +32,7 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Build production artifact
-        run: npm run build
+        run: npm exec vite -- build
 
       - name: Audit production bundle budget
         run: npm run audit:bundle
