@@ -9,6 +9,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { IndicatorComparator } from './IndicatorComparator';
 import { DashboardSecondaryIndicatorCard } from './dashboard/DashboardSecondaryIndicatorCard';
+import { DashboardPrimaryMetricCard } from './dashboard/DashboardPrimaryMetricCard';
 import { buildDashboardMetricsModel } from './dashboard/dashboardMetricsModel';
 
 export function DashboardMetrics() {
@@ -78,33 +79,12 @@ export function DashboardMetrics() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature, sourceLabel }) => (
-          <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
-
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">{label}</div>
-                  <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{value}</div>
-                  <div className="mt-1 text-[10px] font-semibold text-sky-300/80 light:text-sky-700">{sourceLabel}</div>
-                  {isSummary ? (
-                    <div className="mt-1 text-[11px] leading-4 text-slate-500 light:text-slate-600">{caption}</div>
-                  ) : isExplained ? (
-                    <div className="simple-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">{simpleExplanation}</div>
-                  ) : (
-                    <>
-                      <div className="mt-1 text-xs text-slate-500">{caption}</div>
-                      <div className="technical-detail mt-2 text-[11px] leading-5 text-slate-400 light:text-slate-600">Fonte, data e método no inspetor.</div>
-                    </>
-                  )}
-                  <div className="dashboard-card-meta mt-3">
-                    <span className="dashboard-meta-chip" data-kind={nature === 'Derivado' ? 'derived' : 'observed'}>{nature}</span>
-                    {referenceDate && <span className="dashboard-meta-chip">ref. {formatReference(referenceDate)}</span>}
-                    <span className="dashboard-card-action">{isSummary ? 'Ver fonte' : isGuided ? 'Ver contexto e conferir fonte' : languageMode === 'simple' ? 'Conferir contexto' : 'Abrir método'}</span>
-                  </div>
-                </div>
-                <Icon className="h-5 w-5 shrink-0 text-sky-300" aria-hidden="true" />
-              </div>
-          </button>
+        {metricDetails.map(item => (
+          <DashboardPrimaryMetricCard
+            key={item.label}
+            {...item}
+            mode={languageMode}
+          />
         ))}
       </div>
 
