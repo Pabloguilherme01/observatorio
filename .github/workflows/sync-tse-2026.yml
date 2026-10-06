@@ -33,9 +33,6 @@ jobs:
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Dependency vulnerability gate
-        run: npm run audit:deps
-
       - name: Capture official TSE candidate snapshot
         env:
           # Execuções agendadas preservam o último snapshot válido quando a origem oficial
@@ -62,12 +59,6 @@ jobs:
 
       - name: Audit static consistency
         run: npm run audit:static
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Production build
-        run: npm run build
 
       - name: Validate generated snapshot branch with CI
         env:
