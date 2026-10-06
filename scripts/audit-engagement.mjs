@@ -26,6 +26,8 @@ const index = read('index.html');
 const audience = read('src/components/AudienceHub.tsx');
 const dashboard = read('src/components/sections/DashboardMetrics.tsx');
 const executive = read('src/components/sections/ExecutiveSummary.tsx');
+const executiveModel = read('src/components/sections/summary/executiveSummaryModel.ts');
+const executiveSurface = executive + '\n' + executiveModel;
 const formatters = read('src/utils/formatters.ts');
 const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
 const experienceShell = read('src/components/ExperienceShell.tsx');
@@ -118,11 +120,11 @@ must(electoral360Ui.includes('className={`mb-4 rounded-2xl border ${snapshotWarn
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
 must(!(read('src/components/sections/PostElectionHero.tsx')).includes('Modo Eleição') && !(read('src/components/sections/PostElectionHero.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
 must((read('src/components/sections/PostElectionHero.tsx')).includes('hero-reference-card') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
-must(executive.includes('Orçamento planejado por habitante') && executive.includes('budgetPerCapita') && executive.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
+must(executiveSurface.includes('Orçamento planejado por habitante') && executiveSurface.includes('budgetPerCapita') && executiveSurface.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
 must(
-  executive.includes('budgetPerCapitaIndicator') &&
-  executive.includes("status: budgetPerCapitaIndicator?.status ?? 'derived'") &&
-  executive.includes("note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.'"),
+  executiveSurface.includes('budgetPerCapitaIndicator') &&
+  executiveSurface.includes("status: budgetPerCapitaIndicator?.status ?? 'derived'") &&
+  executiveSurface.includes("note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.'"),
   'indicador per capita explicita fórmula e natureza'
 );
 must(read('src/components/sections/PostElectionHero.tsx').includes('<small>Transporte</small>') && read('src/components/sections/PostElectionHero.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
@@ -152,7 +154,7 @@ must(
   publicSanitation.includes('formatDate'),
   'saneamento deriva anos e referências dos indicadores'
 );
-const executiveSummary = read('src/components/sections/ExecutiveSummary.tsx');
+const executiveSummary = executiveSurface;
 must(
   executiveSummary.includes("filter(point => point.kind === 'estimate')") &&
   executiveSummary.includes('budgetPerCapitaIndicator') &&
@@ -189,9 +191,11 @@ if (errors.length) {
 }
 
 const transportSource = read('src/components/TransportCalculator.tsx');
+const transportScenario = read('src/hooks/useTransportScenario.ts');
+const transportSurface = transportSource + '\n' + transportScenario;
 const transportDomain = read('src/lib/transport.ts');
-must(transportSource.includes('observatorio:transport-preferences:v1') && transportSource.includes('JSON.parse'), 'simulador persiste preferências com cache local opcional');
+must(transportSurface.includes('observatorio:transport-preferences:v1') && transportSurface.includes('JSON.parse'), 'simulador persiste preferências com cache local opcional');
 must(transportDomain.includes('Number.isFinite') && transportDomain.includes('clamp('), 'simulador valida números finitos e limites lógicos');
 must(read('src/components/ProjectTrustPanel.tsx').includes('dadosabertos.tse.jus.br') && read('src/components/ProjectTrustPanel.tsx').includes('Nota de neutralidade'), 'painel oferece validação oficial e nota de neutralidade');
-must(read('src/components/sections/ExecutiveSummary.tsx').includes('Fonte pública') && read('src/components/sections/ExecutiveSummary.tsx').includes('Derivado'), 'resumo exibe badges de proveniência');
+must(executiveSurface.includes('Fonte pública') && executiveSurface.includes('Derivado'), 'resumo exibe badges de proveniência');
 must(read('public/404.html').includes('data-obs-spa-fallback') && read('public/404.html').includes('encodeURIComponent') && read('public/404.html').includes("relative.indexOf('api/')") && read('index.html').includes('obsSpaRestored'), 'fallback SPA preserva rota virtual sem capturar APIs ou assets');
