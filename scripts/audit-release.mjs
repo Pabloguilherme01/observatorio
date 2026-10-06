@@ -76,7 +76,7 @@ const requiredFiles = [
   'scripts/test-post-election-transition.mjs',
   'src/assets/styles/index.css',
   'src/hooks/useDialogFocus.ts',
-  '.github/workflows/cleanup-tse-automation.yml',
+  '.github/workflows/cleanup-branches.yml',
 ];
 
 const duplicateRequiredFiles = requiredFiles.filter((file, index) => requiredFiles.indexOf(file) !== index);
