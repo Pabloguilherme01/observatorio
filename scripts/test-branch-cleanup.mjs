@@ -5,6 +5,8 @@ const script = readFileSync('scripts/cleanup-branches.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/cleanup-branches.yml', 'utf8');
 
 assert.match(script, /const defaultBranch = repoInfo\.default_branch \|\| 'main'/);
+assert.match(script, /const maxDeletions = Number\(process\.env\.CLEANUP_MAX_DELETIONS \|\| 25\)/);
+assert.match(script, /maxDeletions < 1/);
 assert.match(script, /\.filter\(name => name !== defaultBranch\)/);
 assert.match(script, /\.filter\(name => name !== 'main'\)/);
 assert.match(script, /\.filter\(name => !active\.has\(name\)\)/);
@@ -16,16 +18,16 @@ assert.match(script, /mergedByHead/);
 assert.match(script, /branchTipSha/);
 assert.match(script, /record\.branchTipSha !== record\.mergeCommitSha/);
 assert.match(script, /mergedMaxAgeDays/);
-assert.match(script, /mergedMaxDeletions/);
 assert.match(script, /CLEANUP_MERGED_BRANCHES === 'true'/);
 assert.match(script, /mergedBranchPrefixes/);
 assert.match(script, /if \(dryRun\)/);
 assert.match(script, /method: 'DELETE'/);
+assert.match(script, /deleted \+ mergedDeleted >= maxDeletions/);
 assert.match(workflow, /contents: write/);
 assert.match(workflow, /pull-requests:\s+read/);
 assert.match(workflow, /CLEANUP_MERGED_BRANCHES: 'true'/);
 assert.match(workflow, /CLEANUP_MERGED_MAX_AGE_DAYS: '14'/);
-assert.match(workflow, /CLEANUP_MERGED_MAX_DELETIONS: '25'/);
+assert.match(workflow, /CLEANUP_MAX_DELETIONS: '25'/);
 assert.match(workflow, /inputs:\s*\n\s+dry_run:/);
 assert.match(workflow, /CLEANUP_DRY_RUN:/);
 
