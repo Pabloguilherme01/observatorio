@@ -61,7 +61,7 @@ npm run audit:bundle
 npm run audit:performance
 ```
 
-Os workflows **CI** e **Browser compatibility** executam em cada pull request e em pushes na `main`. O CI concentra os contratos estáticos, dados, segurança e proveniência; o Browser é o único dono do build de produção e valida bundle, performance e PWA antes de compartilhar o artefato com todos os navegadores e com o deploy. O deploy do GitHub Pages só inicia depois que o CI de um push na `main` termina com sucesso e confirma também Browser e CodeQL para o mesmo SHA.
+Os workflows **CI** e **Browser compatibility** executam em cada pull request; o CI também executa automaticamente no push das branches de automação `automation/**` para validar snapshots antes da PR. O Browser continua reservado à `main` e às pull requests. O CI concentra os contratos estáticos, dados, segurança e proveniência; o Browser é o único dono do build de produção e valida bundle, performance e PWA antes de compartilhar o artefato com todos os navegadores e com o deploy. O deploy do GitHub Pages só inicia depois que o CI de um push na `main` termina com sucesso e confirma também Browser e CodeQL para o mesmo SHA.
 
 ## Princípios de dados
 
@@ -132,7 +132,7 @@ MIT — veja [LICENSE](LICENSE).
 
 `npm run audit:release` representa a validação estática consolidada do candidato a release. O build de produção, o bundle, a performance e a PWA são validados pelo workflow Browser a partir de uma única construção compartilhada.
 
-O CI executa `npm run audit:release` em cada PR e push para `main`. O deploy também repete esse contrato no SHA exato que passou pelo CI. O Browser concentra o único build de produção compartilhado, junto dos gates de bundle, performance e PWA, evitando recompilações concorrentes do mesmo `dist`.
+O CI executa `npm run audit:release` em cada PR, em pushes para `main` e nas branches de automação `automation/**`. O deploy também repete esse contrato no SHA exato que passou pelo CI. O Browser concentra o único build de produção compartilhado, junto dos gates de bundle, performance e PWA, evitando recompilações concorrentes do mesmo `dist`.
 
 A manutenção contínua também verifica a estrutura dos workflows, orçamento de estilos e orçamento de performance. A suíte Chrome desktop mede métricas de laboratório de carregamento e interação para detectar regressões grandes antes da publicação.
 
