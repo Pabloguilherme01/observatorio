@@ -48,4 +48,4 @@ A proteção nativa de branch/ruleset continua recomendada para bloquear o push 
 - O workflow Browser protege o build único compartilhado com `audit:bundle`, `audit:performance` e `test:pwa`; a suíte Chrome mede LCP, FCP, CLS, tarefas longas e latência de interação em laboratório.
 - O entrypoint compartilhado `src/assets/styles/index.css` centraliza as camadas globais; estilos específicos de componentes continuam locais.
 - O hook `useDialogFocus` centraliza foco, Escape, Tab e bloqueio de rolagem dos diálogos.
-- O workflow de limpeza remove branches de automação TSE antigas, sem PR aberta, preservando as mais recentes para auditoria.
+- O workflow de limpeza remove branches de automação antigas e, com regras de segurança, branches de trabalho antigas já associadas a PR mesclada, sem PR aberta; exclusões têm idade mínima e limite por execução.
