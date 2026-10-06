@@ -62,6 +62,8 @@ Mudanças relacionadas a eleições, candidaturas, resultados, denúncias, proce
 
 Workflows que recebem `contents: write` e podem excluir ou alterar referências devem executar exclusivamente a partir da branch padrão protegida. O contrato deve cobrir também branches protegidas além de `main`, execução manual em ref não confiável e limites explícitos de operação.
 
+A rotina de cleanup deve repetir essa proteção no próprio script: execução destrutiva exige GitHub Actions e `GITHUB_REF` da branch padrão. O workflow não pode ser a única barreira.
+
 ## Critério de saúde
 
 A suíte está saudável quando um teste falha por uma regressão do produto/contrato — não porque uma frase, nome de arquivo ou estrutura interna sem impacto real mudou.
