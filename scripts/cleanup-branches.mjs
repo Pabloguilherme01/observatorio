@@ -5,9 +5,10 @@ const maxAgeDays = Number(process.env.CLEANUP_MAX_AGE_DAYS || 7);
 const keepPerPrefix = Number(process.env.CLEANUP_KEEP_PER_PREFIX || 2);
 const cleanupMergedBranches = process.env.CLEANUP_MERGED_BRANCHES === 'true';
 const mergedMaxAgeDays = Number(process.env.CLEANUP_MERGED_MAX_AGE_DAYS || 14);
-const mergedMaxDeletions = Number(process.env.CLEANUP_MERGED_MAX_DELETIONS || 25);
+const maxDeletions = Number(process.env.CLEANUP_MAX_DELETIONS || 25);
 
 if (!token || !repository) throw new Error('GITHUB_TOKEN/GH_TOKEN e GITHUB_REPOSITORY são obrigatórios.');
+if (!Number.isInteger(maxDeletions) || maxDeletions < 1) throw new Error('CLEANUP_MAX_DELETIONS deve ser inteiro positivo.');
 
 const headers = {
   Accept: 'application/vnd.github+json',
@@ -72,6 +73,7 @@ let deleted = 0;
 for (const [prefix, names] of grouped) {
   const records = [];
   for (const name of names) {
+    if (deleted >= maxDeletions) break;
     const branch = await api('https://api.github.com/repos/' + repository + '/branches/' + name.split('/').map(encodeURIComponent).join('/'));
     const sha = branch.commit?.sha;
     if (!sha) continue;
@@ -81,8 +83,9 @@ for (const [prefix, names] of grouped) {
   }
   records.sort((a, b) => b.date - a.date);
   for (let index = 0; index < records.length; index++) {
+    if (deleted >= maxDeletions) break;
     const record = records[index];
-    const ageDays = Number.isFinite(record.date) ? (now - record.date) / 86400000 : Infinity;
+    const ageDays = Number.isFinite(record.date) ? (now - record.date) / 86400000;
     const protectedByRecency = index < keepPerPrefix;
     if (protectedByRecency || ageDays < maxAgeDays) {
       console.log('KEEP ' + record.name + (protectedByRecency ? ' (recent)' : ' (young)'));
@@ -100,7 +103,7 @@ for (const [prefix, names] of grouped) {
 }
 
 let mergedDeleted = 0;
-if (cleanupMergedBranches) {
+if (cleanupMergedBranches && deleted < maxDeletions) {
   const closedPrs = await listAll('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
   const mergedByHead = new Map();
 
@@ -142,7 +145,7 @@ if (cleanupMergedBranches) {
   }).sort((a, b) => a.mergedAt - b.mergedAt);
 
   for (const record of mergedRecords) {
-    if (mergedDeleted >= mergedMaxDeletions) break;
+    if (deleted + mergedDeleted >= maxDeletions) break;
 
     const ageDays = (Date.now() - record.mergedAt) / 86400000;
     if (!Number.isFinite(ageDays) || ageDays < mergedMaxAgeDays) {
@@ -173,10 +176,11 @@ console.log(JSON.stringify({
   candidates: candidates.length,
   deleted,
   mergedDeleted,
+  totalDeleted: deleted + mergedDeleted,
   cleanupMergedBranches,
   dryRun,
   maxAgeDays,
   keepPerPrefix,
   mergedMaxAgeDays,
-  mergedMaxDeletions,
+  maxDeletions,
 }, null, 2));
