@@ -15,7 +15,7 @@ assert.match(script, /mergedBranchPrefixes/);
 assert.match(script, /if \(dryRun\)/);
 assert.match(script, /method: 'DELETE'/);
 assert.match(workflow, /contents: write/);
-assert.match(workflow, /pull-requests: read/);
+assert.match(workflow, /pull-requests:\s+read/);
 assert.match(workflow, /CLEANUP_MERGED_BRANCHES: 'true'/);
 assert.match(workflow, /CLEANUP_MERGED_MAX_AGE_DAYS: '14'/);
 assert.match(workflow, /CLEANUP_MERGED_MAX_DELETIONS: '25'/);
