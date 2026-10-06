@@ -79,6 +79,8 @@ if (
   && cleanup?.includes('contents: write')
   && cleanup?.includes('pull-requests: read')
   && cleanup?.includes("CLEANUP_MAX_DELETIONS: '25'")
+  && cleanup?.includes("CLEANUP_MERGED_BRANCHES: 'true'")
+  && cleanup?.includes("CLEANUP_MERGED_MAX_AGE_DAYS: '14'")
   && cleanup?.includes('CLEANUP_DRY_RUN')
 ) {
   pass('cleanup destrutivo roda somente na main e mantém limite/dry-run explícitos.');
@@ -95,10 +97,25 @@ if (
 else fail('script de cleanup não possui defesa em profundidade contra execução destrutiva fora da branch padrão.');
 
 const browser = workflows['.github/workflows/browser.yml'];
-const browserNames = ['chrome-desktop', 'firefox-desktop', 'safari-desktop', 'chrome-android', 'safari-iphone', 'safari-iphone-se'];
+const browserNames = [
+  'chrome-desktop',
+  'chrome-a11y',
+  'firefox-desktop',
+  'safari-desktop',
+  'chrome-android',
+  'safari-iphone',
+  'safari-iphone-se',
+];
 for (const name of browserNames) {
   if (browser.includes('project: ' + name)) pass('matriz de navegador contém ' + name);
   else fail('matriz de navegador perdeu ' + name);
+}
+const browserProjectMatches = [...browser.matchAll(/project:\s*([a-z0-9-]+)/g)].map(match => match[1]);
+const duplicateBrowserProjects = browserProjectMatches.filter((name, index) => browserProjectMatches.indexOf(name) !== index);
+if (browserProjectMatches.length === browserNames.length && duplicateBrowserProjects.length === 0) {
+  pass('matriz Browser possui exatamente os 7 perfis canônicos, sem projetos duplicados.');
+} else {
+  fail('matriz Browser está divergente: esperados 7 perfis únicos, encontrados ' + browserProjectMatches.length + '.');
 }
 if (/project: safari-desktop[\s\S]*?non_blocking:\s*false/.test(browser)) pass('Safari desktop é um gate bloqueante para regressões reais no WebKit.');
 else fail('Safari desktop não está protegido como gate bloqueante.');
