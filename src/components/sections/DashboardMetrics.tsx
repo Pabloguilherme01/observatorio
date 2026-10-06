@@ -10,6 +10,7 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 import { IndicatorComparator } from './IndicatorComparator';
 import { DashboardSecondaryIndicatorCard } from './dashboard/DashboardSecondaryIndicatorCard';
 import { buildDashboardMetricsModel } from './dashboard/dashboardMetricsModel';
+import { ElectorateReconciliationPanel } from './dashboard/ElectorateReconciliationPanel';
 
 export function DashboardMetrics() {
   const { mode: languageMode } = useLanguageMode();
