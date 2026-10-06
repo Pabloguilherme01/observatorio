@@ -25,7 +25,7 @@
 ## Evidência
 
 - Antes de uma release, registrar o resultado real das Actions para o SHA publicado.
-- O comando local `npm run release:check` deve terminar sem `FAIL`.
+- O comando local `npm run audit:release` deve terminar sem `FAIL`; a validação do bundle, performance e PWA deve ser feita a partir do build produzido pelo Browser.
 - Assinatura/verificação de commits deve ser mantida de forma consistente quando a conta e a política do repositório suportarem isso.
 
 ## Mitigação técnica quando a proteção administrativa não estiver disponível
@@ -45,7 +45,7 @@ A proteção nativa de branch/ruleset continua recomendada para bloquear o push 
 
 - `audit:workflows` valida a estrutura dos workflows, matriz de navegadores, permissões relevantes, proveniência e cadeia de deploy.
 - `audit:styles` mede a dívida de CSS e registra seletores compartilhados entre arquivos para evitar novas camadas redundantes.
-- `audit:performance` protege o orçamento dos assets inicialmente carregados; a suíte Chrome mede LCP, FCP, CLS, tarefas longas e latência de interação em laboratório.
+- O workflow Browser protege o build único compartilhado com `audit:bundle`, `audit:performance` e `test:pwa`; a suíte Chrome mede LCP, FCP, CLS, tarefas longas e latência de interação em laboratório.
 - O entrypoint compartilhado `src/assets/styles/index.css` centraliza as camadas globais; estilos específicos de componentes continuam locais.
 - O hook `useDialogFocus` centraliza foco, Escape, Tab e bloqueio de rolagem dos diálogos.
 - O workflow de limpeza remove branches de automação TSE antigas, sem PR aberta, preservando as mais recentes para auditoria.
