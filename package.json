@@ -46,7 +46,8 @@
     "audit:provenance": "node scripts/audit-provenance.mjs",
     "audit:candidate-snapshot": "node scripts/audit-candidate-snapshot.mjs",
     "test:candidate-source-guard": "node scripts/test-candidate-source-guard.mjs",
-    "build:bundle": "vite build"
+    "build:bundle": "vite build",
+    "test:tse-diff": "node scripts/test-tse-diff.mjs"
   },
   "dependencies": {
     "@sentry/react": "11.1.0",
