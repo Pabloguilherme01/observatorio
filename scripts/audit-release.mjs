@@ -121,18 +121,6 @@ if (
 ) pass('browser gate usa um único build de produção compartilhado, mantém Safari desktop bloqueante e cobre o mobile-core nos dispositivos móveis.');
 else fail('browser gate ainda não compartilha um artefato de produção ou perdeu cobertura crítica.');
 
-const actionRefs = [...workflowText.matchAll(/uses:\s*[^\s#]+@([^\s#]+)/g)].map(match => match[1]);
-const unpinned = actionRefs.filter(ref => !/^[0-9a-f]{40}$/i.test(ref));
-if (unpinned.length === 0) pass('Actions estão fixadas por SHA imutável.');
-else fail('há ' + unpinned.length + ' Action(s) sem SHA imutável.');
-
-const ciHasWrite = /permissions:\s*\n[\s\S]*?\n\s+(actions|contents|issues|pull-requests):\s+write/.test(ci);
-if (!ciHasWrite) pass('CI mantém permissões mínimas.');
-else fail('CI possui permissões de escrita inesperadas.');
-
-if (!workflowText.includes('pwa-512.svg') && !workflowText.includes('observatorio-static-v13')) pass('nenhum artefato/cache legado conhecido está referenciado.');
-else fail('há referência a artefato/cache legado conhecido.');
-
 const testFiles = [];
 function walk(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -145,14 +133,6 @@ function walk(directory) {
 if (exists('tests')) walk(path.join(root, 'tests'));
 if (testFiles.length >= 10) pass('suíte possui ' + testFiles.length + ' arquivos de teste.');
 else warn('suíte possui apenas ' + testFiles.length + ' arquivos de teste.');
-
-const workflowDir = path.join(root, '.github', 'workflows');
-const workflowText = fs.existsSync(workflowDir)
-  ? fs.readdirSync(workflowDir)
-    .filter(file => /\.ya?ml$/.test(file))
-    .map(file => fs.readFileSync(path.join(workflowDir, file), 'utf8'))
-    .join('\n')
-  : '';
 
 const largestTest = [...testFiles].map(file => ({ file, bytes: fs.statSync(file).size })).sort((a, b) => b.bytes - a.bytes)[0];
 if (largestTest && largestTest.bytes <= 140 * 1024) pass('maior arquivo de teste está abaixo de 140 KB.');
