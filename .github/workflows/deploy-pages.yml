@@ -45,10 +45,6 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci --no-audit --no-fund
 
       - name: Require all release gates for exact SHA
         env:
@@ -74,7 +70,10 @@ jobs:
               fi
             done
             if [[ "$ready" == true ]]; then
-              echo "All release gates passed for $DEPLOY_SHA."
+              browser_run_id="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/browser.yml/runs?head_sha=${DEPLOY_SHA}&event=push&per_page=10" --jq '.workflow_runs | sort_by(.created_at) | reverse | .[0].id')"
+              test -n "$browser_run_id"
+              echo "BROWSER_RUN_ID=$browser_run_id" >> "$GITHUB_ENV"
+              echo "All release gates passed for $DEPLOY_SHA. Browser artifact run: $browser_run_id"
               exit 0
             fi
             sleep 20
@@ -106,8 +105,17 @@ jobs:
           TSE_MAX_AGE_HOURS: '24'
         run: npm run validate:tse
 
-      - name: Build production artifact
-        run: npm run build:bundle
+      - name: Download exact Browser production artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          gh run download "$BROWSER_RUN_ID" --name observatorio-browser-dist --dir dist
+          test -f dist/index.html
+          test -d dist/assets
+          echo "Reused Browser artifact from run $BROWSER_RUN_ID for SHA ${DEPLOY_SHA}."
 
       - name: Audit production bundle budget
         run: npm run audit:bundle
