@@ -58,6 +58,10 @@ else pass('workflow legado de limpeza não existe.');
 
 const workflows = Object.fromEntries(required.filter(file => fs.existsSync(path.join(root, file))).map(file => [file, read(file)]));
 for (const [file, text] of Object.entries(workflows)) {
+  if (file === '.github/workflows/sync-tse-2026.yml' && !text.includes('timeout-minutes: 20')) fail('sync-tse-2026.yml precisa de timeout-minutes: 20.');
+  if (file === '.github/workflows/sync-results-2026.yml' && !text.includes('timeout-minutes: 15')) fail('sync-results-2026.yml precisa de timeout-minutes: 15.');
+}
+for (const [file, text] of Object.entries(workflows)) {
   for (const key of ['on', 'permissions', 'jobs']) {
     if (hasTopLevel(text, key)) pass(file + ' possui bloco estrutural ' + key + '.');
     else fail(file + ' não possui bloco estrutural ' + key + '.');
