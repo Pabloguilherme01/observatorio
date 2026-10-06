@@ -50,3 +50,4 @@ A proteção nativa de branch/ruleset continua recomendada para bloquear o push 
 - O entrypoint compartilhado `src/assets/styles/index.css` centraliza as camadas globais; estilos específicos de componentes continuam locais.
 - O hook `useDialogFocus` centraliza foco, Escape, Tab e bloqueio de rolagem dos diálogos.
 - O workflow de limpeza só executa a parte destrutiva a partir da `main`; a exclusão de qualquer branch protegida é recusada, branches de trabalho exigem PR mesclada na branch padrão sem PR aberta, a ponta ainda deve coincidir com o `head.sha` registrado pela PR no fechamento, há idade mínima e existe limite global de 25 branches por execução; isso preserva compatibilidade com squash/rebase merge e protege branches alterados posteriormente.
+- O próprio script de limpeza recusa execução destrutiva fora do GitHub Actions ou fora da branch padrão, mantendo uma segunda barreira além do `if` do workflow.
