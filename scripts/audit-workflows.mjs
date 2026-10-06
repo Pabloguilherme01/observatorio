@@ -60,8 +60,11 @@ for (const file of required) {
   if (fs.existsSync(path.join(root, file))) pass('workflow presente: ' + file);
   else fail('workflow ausente: ' + file);
 }
-if (fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))) fail('workflow legado cleanup-tse-automation.yml ainda existe.');
-else pass('workflow legado de limpeza não existe.');
+if (
+  fs.existsSync(path.join(root, 'scripts/cleanup-tse-automation.mjs'))
+  || fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))
+) fail('artefatos legados de limpeza ainda existem.');
+else pass('artefatos legados de limpeza não existem.');
 
 const workflows = Object.fromEntries(required.filter(file => fs.existsSync(path.join(root, file))).map(file => [file, read(file)]));
 for (const [file, text] of Object.entries(workflows)) {
@@ -147,6 +150,11 @@ if (
 
 
 const syncWorkflowList = [workflows['.github/workflows/sync-tse-2026.yml'], workflows['.github/workflows/sync-results-2026.yml']];
+const unsafePendingIssueTemplates = syncWorkflowList.some(workflow =>
+  workflow.includes('`$branch`') || workflow.includes('`main`; revisão') || workflow.includes('`main`. A publicação'),
+);
+if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substituição de comando acidental do shell.');
+else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
 if (syncWorkflowList.every(text => text.includes('actions: read') && !text.includes('actions: write') && !text.includes('gh workflow run ci.yml') && text.includes('--event push') && text.includes('wait_for_ci'))) {
   pass('sincronizações TSE usam apenas actions:read e deixam o CI ser acionado pelo push normal da branch.');
 } else {
