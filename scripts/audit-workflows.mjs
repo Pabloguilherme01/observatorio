@@ -4,6 +4,7 @@ import path from 'node:path';
 
 const root = process.cwd();
 const failures = [];
+const exists = file => fs.existsSync(path.join(root, file));
 const pass = message => console.log('PASS', message);
 const fail = message => failures.push(message);
 
