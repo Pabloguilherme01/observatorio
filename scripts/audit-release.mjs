@@ -102,6 +102,8 @@ else fail('CI não possui guard de proveniência para commits em main.');
 if (
   ci.includes('npm run audit:workflows')
   && ci.includes('npm run audit:styles')
+  && browser.includes('npm exec vite -- build')
+  && !browser.includes('run: npm run build')
   && browser.includes('npm run audit:bundle')
   && browser.includes('npm run audit:performance')
   && browser.includes('npm run test:pwa')
