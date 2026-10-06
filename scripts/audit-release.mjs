@@ -115,7 +115,10 @@ if (
   && cleanupWorkflow.includes("CLEANUP_MAX_DELETIONS: '25'")
   && cleanupScript.includes(".filter(name => !branchByName.get(name)?.protected)")
   && cleanupScript.includes("record.branchTipSha !== record.mergeHeadSha")
-) pass('limpeza destrutiva está restrita à main e protege branches protegidas e branches alterados após o merge.');
+  && cleanupScript.includes("process.env.GITHUB_ACTIONS !== 'true'")
+  && cleanupScript.includes("process.env.GITHUB_REF !== expectedRef")
+  && cleanupScript.includes("const expectedRef = 'refs/heads/' + defaultBranch")
+) pass('limpeza destrutiva está restrita à main, protegida contra branches protegidas, divergência pós-merge e execução fora do GitHub Actions.');
 else fail('limpeza destrutiva perdeu alguma trava de segurança estrutural.');
 if (ci.includes('npm run check:main-provenance') && ci.includes("github.event_name == 'push'") && ci.includes("github.ref == 'refs/heads/main'")) pass('CI bloqueia publicação de commits diretos em main.');
 else fail('CI não possui guard de proveniência para commits em main.');
