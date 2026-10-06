@@ -1,54 +1,36 @@
 import { BusFront, Coins, ExternalLink, RotateCcw, Share2, Users } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
-import { calculateTransportCost, formatBRL, workDaysPerMonthFromWeeks } from '../lib/transport';
+import { calculateTransportCost, formatBRL } from '../lib/transport';
 import { copyText } from '../lib/clipboard';
 import { Card } from './ui/Card';
 import { SectionHeader } from './ui/SectionHeader';
+import { useTransportScenario } from '../hooks/useTransportScenario';
+import { TransportRouteComparisonGrid } from './transport/TransportRouteComparisonGrid';
 
 export function TransportCalculator() {
   const routes = d.transport.routes;
   const defaultSalary = d.transport.minimumWageBrl;
   const minimumWageYear = d.transport.minimumWageYear;
-  const [routeId, setRouteId] = useState('brasilia');
-  const [daysPerWeek, setDaysPerWeek] = useState(5);
-  const days = workDaysPerMonthFromWeeks(daysPerWeek);
-  const [trips, setTrips] = useState(d.transport.defaultTripsPerDay);
-  const [people, setPeople] = useState(1);
-  const [salary, setSalary] = useState(defaultSalary);
-  const [preferencesLoaded, setPreferencesLoaded] = useState(false);
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem('observatorio:transport-preferences:v1');
-      if (raw) {
-        const saved = JSON.parse(raw) as Partial<{ routeId: string; daysPerWeek: number; trips: number; people: number; salary: number }>;
-        if (typeof saved.routeId === 'string' && routes.some(item => item.id === saved.routeId)) setRouteId(saved.routeId);
-        const savedDaysPerWeek = typeof saved.daysPerWeek === 'number' && Number.isFinite(saved.daysPerWeek) ? saved.daysPerWeek : null;
-        const savedTrips = typeof saved.trips === 'number' && Number.isFinite(saved.trips) ? saved.trips : null;
-        const savedPeople = typeof saved.people === 'number' && Number.isFinite(saved.people) ? saved.people : null;
-        const savedSalary = typeof saved.salary === 'number' && Number.isFinite(saved.salary) ? saved.salary : null;
-
-        if (savedDaysPerWeek !== null) setDaysPerWeek(Math.min(7, Math.max(1, Math.trunc(savedDaysPerWeek))));
-        if (savedTrips !== null) setTrips(Math.min(8, Math.max(1, Math.trunc(savedTrips))));
-        if (savedPeople !== null) setPeople(Math.min(20, Math.max(1, Math.trunc(savedPeople))));
-        if (savedSalary !== null) setSalary(Math.min(1_000_000, Math.max(1, savedSalary)));
-      }
-    } catch {
-      // Preferências locais são opcionais; um cache inválido não impede a calculadora.
-    } finally {
-      setPreferencesLoaded(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!preferencesLoaded) return;
-    try {
-      localStorage.setItem('observatorio:transport-preferences:v1', JSON.stringify({ routeId, daysPerWeek, trips, people, salary }));
-    } catch {
-      // Armazenamento local pode estar indisponível em navegação privada ou políticas restritivas.
-    }
-  }, [preferencesLoaded, routeId, daysPerWeek, trips, people, salary]);
+  const {
+    routeId,
+    setRouteId,
+    daysPerWeek,
+    setDaysPerWeek,
+    days,
+    trips,
+    setTrips,
+    people,
+    setPeople,
+    salary,
+    setSalary,
+    resetScenario,
+  } = useTransportScenario({
+    routeIds: routes.map(item => item.id),
+    defaultRouteId: 'brasilia',
+    defaultTrips: d.transport.defaultTripsPerDay,
+    defaultSalary,
+  });
   const [shareStatus, setShareStatus] = useState('');
   const shareTimerRef = useRef<number | null>(null);
   useEffect(() => () => {
@@ -90,14 +72,6 @@ export function TransportCalculator() {
     })),
     [routes, trips, days, salary],
   );
-
-  const resetScenario = () => {
-    setRouteId('brasilia');
-    setDaysPerWeek(5);
-    setTrips(d.transport.defaultTripsPerDay);
-    setPeople(1);
-    setSalary(defaultSalary);
-  };
 
   const source = d.sources.find(sourceItem => sourceItem.id === route.sourceId);
   const salaryShare = result.monthlyPctOfSalaryPerPerson ?? 0;
@@ -200,43 +174,13 @@ export function TransportCalculator() {
           </div>
         </div>
 
-        <div className="mt-6 rounded-3xl border border-white/8 bg-white/[0.018] p-4 light:border-slate-200 light:bg-slate-50/70">
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80 light:text-sky-700">Comparação de rotas</div>
-              <h3 className="mt-1 text-base font-black text-white light:text-slate-900">Mesmo cenário, destinos diferentes</h3>
-              <p className="mt-1 text-xs leading-5 text-slate-500">Os três cartões usam os mesmos trechos por dia, dias por semana e renda de referência. A comparação é descritiva e não inclui integrações, gratuidades ou vale-transporte.</p>
-            </div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{trips} trechos/dia · {daysPerWeek} dias/semana</span>
-          </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-3" aria-label="Comparação de custo mensal entre rotas">
-            {routeComparisons.map(({ route: comparedRoute, result: comparedResult }) => {
-              const isActive = comparedRoute.id === route.id;
-              return (
-                <button
-                  key={comparedRoute.id}
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setRouteId(comparedRoute.id)}
-                  className={"metric-interactive rounded-2xl border p-4 text-left " + (isActive ? "border-sky-300/30 bg-sky-300/[0.055]" : "border-white/8 bg-black/10 hover:border-sky-300/20 light:bg-white")}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-xs font-bold text-slate-300 light:text-slate-700">{comparedRoute.label}</div>
-                      <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatBRL(comparedResult.monthlyPerPersonBrl)}</div>
-                      <div className="mt-1 text-[11px] text-slate-500">por pessoa/mês · tarifa {formatBRL(comparedRoute.fareBrl)}</div>
-                    </div>
-                    {isActive && <span className="rounded-full border border-sky-300/20 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-sky-300">Em uso</span>}
-                  </div>
-                  <div className="mt-3 text-[11px] text-slate-500">
-                    {(comparedResult.monthlyPctOfSalaryPerPerson ?? 0).toFixed(1).replace('.', ',')}% da renda de referência
-                  </div>
-                  <span className="mt-3 inline-flex text-[10px] font-bold uppercase tracking-wide text-sky-300/80">{isActive ? 'Rota selecionada' : 'Usar esta rota'}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <TransportRouteComparisonGrid
+          comparisons={routeComparisons}
+          activeRouteId={route.id}
+          trips={trips}
+          daysPerWeek={daysPerWeek}
+          onSelectRoute={setRouteId}
+        />
 
         <details className="mt-6 rounded-2xl border border-white/8 bg-black/10 p-4 light:bg-slate-50">
           <summary className="cursor-pointer list-none text-sm font-bold text-slate-300 light:text-slate-700">
