@@ -28,7 +28,7 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Cleanup stale automation branches
+      - name: Cleanup stale branches
         env:
           GITHUB_TOKEN: ${{ github.token }}
           CLEANUP_DRY_RUN: 'false'
