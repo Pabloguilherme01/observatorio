@@ -1,0 +1,98 @@
+/* Structural spacing: keep adjacent deferred sections readable without turning
+   every paragraph/link into another heavy card. */
+.deferred-section>section{
+  border-top:1px solid rgba(148,163,184,.08);
+}
+.deferred-section>section:first-child{border-top:0}
+.deferred-section>section+section{margin-top:0}
+@media(max-width:767px){
+  .deferred-section>section{
+    scroll-margin-top:76px;
+  }
+  .deferred-section .mx-auto.max-w-7xl{
+    padding-inline:var(--mobile-page-gutter,14px)!important;
+  }
+  .deferred-section .mx-auto.max-w-6xl,
+  .deferred-section .mx-auto.max-w-5xl{
+    padding-inline:var(--mobile-page-gutter,14px)!important;
+  }
+  .deferred-section .grid{
+    min-width:0;
+  }
+  .deferred-section .flex{
+    min-width:0;
+  }
+  .deferred-section .flex>*,.deferred-section .grid>*{
+    min-width:0;
+    max-width:100%;
+  }
+  .deferred-section [class*="overflow-x-"]{
+    max-width:100%;
+    -webkit-overflow-scrolling:touch;
+  }
+  .deferred-section button,
+  .deferred-section a{
+    max-width:100%;
+  }
+}
+
+.light .trust-shell a.font-bold.text-sky-200,
+.light .trust-shell a.font-bold.text-sky-300,
+.light .trust-shell a.text-sky-300{
+  color:#075985!important;
+}
+
+/* WCAG AA: all blue text used as readable copy in light theme must clear 4.5:1. */
+html.light a[class*="text-sky-300"],
+html.light a[class*="text-sky-200"],
+html.light .text-sky-300,
+html.light .text-sky-200{
+  color:#075985!important;
+}
+html.light .hero-kicker,
+html.light .audience-kicker,
+html.light .audience-block-head>div>span{
+  color:#075985!important;
+}
+
+/* Final AA link normalization and narrow viewport safeguards. */
+html.light a[class*="text-sky-700"],
+html.light a[class*="text-sky-600"],
+html.light .text-sky-700,
+html.light .text-sky-600{color:#075985!important}
+@media(max-width:767px){
+  .hero-shell,.audience-home,.deferred-section,main>section{overflow-x:clip!important}
+  .hero-copy h1,.audience-intro-copy h2,.section-header h2,.section-header h3{hyphens:none;overflow-wrap:anywhere}
+  .hero-copy>p,.audience-intro-copy p,.audience-topic-copy small,.audience-action-card small,.audience-resource-copy small{overflow-wrap:anywhere}
+  .audience-page-card,.hero-election-card,.official-hub,.obs-card,.summary-shell,.trust-shell,.quiz-shell{overflow:hidden!important}
+}
+
+/* Component-isolation hardening: lazy quiz CSS must not undo the mobile grid. */
+.quiz-phase-grid{
+  min-width:0!important;
+}
+.quiz-phase-card{
+  min-width:0!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+}
+@media(max-width:767px){
+  .quiz-phase-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    width:100%!important;
+  }
+}
+@media(max-width:390px){
+  .quiz-phase-grid{
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+  .quiz-phase-card{
+    padding:11px!important;
+  }
+  .quiz-phase-card .quiz-phase-best{
+    display:none!important;
+  }
+}
+
