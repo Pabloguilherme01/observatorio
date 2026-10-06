@@ -4,6 +4,7 @@ import { appendFileSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readF
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { diffRecords, hasMeaningfulProvenanceChange } from './lib/tseDiff.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const OUTPUT_DIR = join(ROOT, 'src', 'data', 'generated');
@@ -351,6 +352,23 @@ async function updateFromApiFallback(previous, watchlist, work) {
   }
 
   const diff = diffRecords(previous.matched, matched);
+  const provenanceChanged = hasMeaningfulProvenanceChange(previous.meta, {
+    sourceRows: records.length,
+    retrievalMethod: 'official_tse_divulgacandcontas_api',
+    resourceUrl: API_URL,
+  });
+  if (!diff.length && !provenanceChanged) {
+    markWorkflowStatus('ok');
+    console.log(JSON.stringify({
+      valid: true,
+      state: 'unchanged',
+      changed: false,
+      matched: matched.length,
+      watchlist: watchlist.length,
+      retrievalMethod: 'official_tse_divulgacandcontas_api',
+    }, null, 2));
+    return;
+  }
   const now = new Date();
   const snapshotId = 'tse-candidatos-2026-local-mapeado-' + now.toISOString().slice(0, 10);
   const payload = {
@@ -414,26 +432,6 @@ function loadPrevious() {
   } catch {
     return null;
   }
-}
-
-function diffRecords(before, after) {
-  const key = candidate => candidate.sqCandidate || String(candidate.ballotNumber ?? candidate.name);
-  const previous = new Map(before.map(candidate => [key(candidate), candidate]));
-  const current = new Map(after.map(candidate => [key(candidate), candidate]));
-  const records = [];
-
-  for (const [id, candidate] of current) {
-    const old = previous.get(id);
-    if (!old) records.push({ key: id, type: 'added', after: candidate });
-    else {
-      const changedFields = Object.keys(candidate).filter(field => JSON.stringify(candidate[field]) !== JSON.stringify(old[field]));
-      if (changedFields.length) records.push({ key: id, type: 'changed', before: old, after: candidate, changedFields });
-    }
-  }
-  for (const [id, candidate] of previous) {
-    if (!current.has(id)) records.push({ key: id, type: 'removed', before: candidate });
-  }
-  return records;
 }
 
 let selectedSourceUrl = ZIP_URLS[0];
@@ -542,11 +540,14 @@ async function main() {
 
     const diff = diffRecords(previous.matched, matched);
     const sourceFileSha256 = sha256(zip);
-    const sourceChanged = previous.meta?.sourceFileSha256 !== sourceFileSha256
-      || previous.meta?.sourceRows !== sourceRows
-      || previous.meta?.resourceUrl !== selectedSourceUrl;
+    const provenanceChanged = hasMeaningfulProvenanceChange(previous.meta, {
+      sourceRows,
+      retrievalMethod: 'official_tse_zip_csv',
+      resourceUrl: selectedSourceUrl,
+    });
 
-    if (!diff.length && !sourceChanged) {
+    if (!diff.length && !provenanceChanged) {
+
       markWorkflowStatus('ok');
       console.log(JSON.stringify({
         valid: true,
@@ -556,7 +557,7 @@ async function main() {
         watchlist: watchlist.length,
         retrievalMethod: 'official_tse_zip_csv',
         changed: false,
-        sourceChanged: false,
+        provenanceChanged: false,
       }, null, 2));
       return;
     }
