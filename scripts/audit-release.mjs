@@ -123,8 +123,15 @@ if (
   && deploy.includes('git/ref/heads/main')
 ) pass('Deploy preserva a cadeia completa CI + Browser + CodeQL -> SHA -> publicação.');
 else fail('Deploy não exige todos os gates de release no mesmo SHA.');
-if (syncTse.includes('node-version: 24') && syncResults.includes('node-version: 24')) pass('sincronizações TSE usam Node 24.');
-else fail('sincronizações TSE usam Node divergente do CI.');
+if (
+  syncTse.includes('node-version: 24')
+  && syncResults.includes('node-version: 24')
+  && !syncTse.includes('run: npm run build')
+  && !syncResults.includes('run: npm run build')
+  && !syncTse.includes('run: npm run audit:deps')
+  && !syncResults.includes('run: npm run audit:deps')
+) pass('sincronizações TSE usam Node 24 e deixam build/auditoria de dependências para o CI único pós-commit.');
+else fail('sincronizações TSE repetem gates que já pertencem ao CI completo.');
 if (syncTse.includes('gh pr list --state open --base main --head') && syncResults.includes('gh pr list --state open --base main --head')) pass('automação TSE evita PRs duplicadas para a mesma branch.');
 else fail('automação TSE não possui guarda idempotente de PR.');
 const syncNeedsReconcile = [syncTse, syncResults].every(workflow =>
