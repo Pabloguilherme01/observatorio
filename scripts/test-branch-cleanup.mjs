@@ -4,10 +4,17 @@ import assert from 'node:assert/strict';
 const script = readFileSync('scripts/cleanup-branches.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/cleanup-branches.yml', 'utf8');
 
+assert.match(script, /const defaultBranch = repoInfo\.default_branch \|\| 'main'/);
+assert.match(script, /\.filter\(name => name !== defaultBranch\)/);
 assert.match(script, /\.filter\(name => name !== 'main'\)/);
 assert.match(script, /\.filter\(name => !active\.has\(name\)\)/);
 assert.match(script, /\.filter\(name => !candidates\.includes\(name\)\)/);
-assert.match(script, /\.filter\(pr => pr\.merged_at\)/);
+assert.match(script, /pr\.base\?\.ref !== defaultBranch/);
+assert.match(script, /pr\.head\?\.repo\?\.full_name !== repository/);
+assert.match(script, /pr\.merge_commit_sha == null/);
+assert.match(script, /mergedByHead/);
+assert.match(script, /branchTipSha/);
+assert.match(script, /record\.branchTipSha !== record\.mergeCommitSha/);
 assert.match(script, /mergedMaxAgeDays/);
 assert.match(script, /mergedMaxDeletions/);
 assert.match(script, /CLEANUP_MERGED_BRANCHES === 'true'/);
