@@ -67,6 +67,8 @@ for (const [file, text] of Object.entries(workflows)) {
 }
 
 const ci = workflows['.github/workflows/ci.yml'];
+if (ci.includes("      - main") && ci.includes("      - 'automation/**'")) pass('CI valida automaticamente branches de automação antes da abertura das PRs.');
+else fail('CI não possui gatilho de push para branches de automação.');
 const ciSteps = stepNames(ci, 'quality');
 for (const step of ['Guard main provenance', 'Release readiness contract', 'Audit workflow structure', 'Audit style source budget']) {
   if (ciSteps.includes(step)) pass('CI mantém etapa estrutural: ' + step);
@@ -132,6 +134,13 @@ if (
   pass('Browser constrói uma única vez, valida o artefato de produção e o compartilha entre os perfis.');
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
+
+const syncWorkflowList = [workflows['.github/workflows/sync-tse-2026.yml'], workflows['.github/workflows/sync-results-2026.yml']];
+if (syncWorkflowList.every(text => text.includes('actions: read') && !text.includes('actions: write') && !text.includes('gh workflow run ci.yml') && text.includes('--event push') && text.includes('wait_for_ci'))) {
+  pass('sincronizações TSE usam apenas actions:read e deixam o CI ser acionado pelo push normal da branch.');
+} else {
+  fail('sincronização TSE ainda depende de actions:write ou disparo manual redundante do CI.');
+}
 
 const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
 if (ciRunCommands.includes('audit:provenance') && ciRunCommands.includes('audit:candidate-snapshot')) {

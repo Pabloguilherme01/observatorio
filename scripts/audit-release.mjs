@@ -138,6 +138,11 @@ if (
 ) pass('sincronizações TSE usam Node 24 e deixam build/auditoria de dependências para o CI único pós-commit.');
 else fail('sincronizações TSE repetem gates que já pertencem ao CI completo.');
 if (syncTse.includes('gh pr list --state open --base main --head') && syncResults.includes('gh pr list --state open --base main --head')) pass('automação TSE evita PRs duplicadas para a mesma branch.');
+if (ci.includes("      - main") && ci.includes("      - 'automation/**'") && [syncTse, syncResults].every(workflow => workflow.includes('actions: read') && !workflow.includes('actions: write') && !workflow.includes('gh workflow run ci.yml') && workflow.includes('--event push'))) {
+  pass('automação de snapshots usa CI acionado pelo push e não precisa de actions:write.');
+} else {
+  fail('automação de snapshots ainda depende de actions:write ou disparo manual do CI.');
+}
 else fail('automação TSE não possui guarda idempotente de PR.');
 const syncNeedsReconcile = [syncTse, syncResults].every(workflow =>
   workflow.includes('git fetch origin main')

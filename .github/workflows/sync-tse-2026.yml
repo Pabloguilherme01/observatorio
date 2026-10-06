@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  actions: write
+  actions: read
   contents: write
   issues: write
   pull-requests: write
@@ -75,15 +75,20 @@ jobs:
           git commit -m "data: sync TSE 2026 candidates"
           git push --set-upstream origin "$branch"
 
-          gh workflow run ci.yml --ref "$branch"
-          run_id=""
-          for attempt in {1..30}; do
-            run_id="$(gh run list --workflow ci.yml --branch "$branch" --limit 1 --json databaseId --jq '.[0].databaseId')"
-            if [ -n "$run_id" ]; then break; fi
-            sleep 2
-          done
-          test -n "$run_id"
-          gh run watch "$run_id" --exit-status
+          wait_for_ci() {
+            local expected_sha="$1"
+            CI_RUN_ID=""
+            for attempt in {1..60}; do
+              CI_RUN_ID="$(gh run list --workflow ci.yml --branch "$branch" --event push --limit 20 --json databaseId,headSha --jq '.[] | select(.headSha == "'"$expected_sha"'") | .databaseId' | head -n 1)"
+              if [ -n "$CI_RUN_ID" ]; then break; fi
+              sleep 2
+            done
+            test -n "$CI_RUN_ID"
+            gh run watch "$CI_RUN_ID" --exit-status
+          }
+
+          branch_sha="$(git rev-parse HEAD)"
+          wait_for_ci "$branch_sha"
 
           # A main pode avançar enquanto o snapshot é validado. Reconcile o
           # commit de dados sobre a main atual e reexecute o CI sobre o SHA final.
@@ -91,15 +96,8 @@ jobs:
           if ! git merge-base --is-ancestor origin/main HEAD; then
             git rebase origin/main
             git push --force-with-lease
-            gh workflow run ci.yml --ref "$branch"
-            run_id=""
-            for attempt in {1..30}; do
-              run_id="$(gh run list --workflow ci.yml --branch "$branch" --limit 1 --json databaseId --jq '.[0].databaseId')"
-              if [ -n "$run_id" ]; then break; fi
-              sleep 2
-            done
-            test -n "$run_id"
-            gh run watch "$run_id" --exit-status
+            branch_sha="$(git rev-parse HEAD)"
+            wait_for_ci "$branch_sha"
           fi
 
           existing_pr="$(gh pr list --state open --base main --head "$branch" --json number,url --jq '.[0].url // empty')"
@@ -130,7 +128,7 @@ jobs:
               "A captura TSE foi concluída e a branch passou pelo CI completo, mas o token do GitHub Actions não pôde criar a pull request." \
               "" \
               "- Branch validada: $branch" \
-              "- CI: https://github.com/${GITHUB_REPOSITORY}/actions/runs/$run_id" \
+              "- CI: https://github.com/${GITHUB_REPOSITORY}/actions/runs/$CI_RUN_ID" \
               "- Abrir PR manualmente: $compare_url" \
               "- Workflow de origem: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
               "" \

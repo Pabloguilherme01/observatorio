@@ -18,7 +18,7 @@
 
 ## Automação eleitoral
 
-- Capturas TSE devem gerar branch automática, passar pelo CI e seguir para PR revisada.
+- Capturas TSE devem gerar branch automática em `automation/**`; o push dessa branch aciona o CI automaticamente antes da abertura da PR.
 - Falha administrativa na criação da PR deve gerar uma única issue operacional com link de comparação.
 - Nenhum snapshot eleitoral deve ser mesclado diretamente na `main` pela automação.
 
@@ -39,6 +39,7 @@ A proteção nativa de branch/ruleset continua recomendada para bloquear o push 
 ## Operação idempotente das sincronizações
 
 - Os workflows TSE verificam se já existe uma PR aberta para a branch de automação antes de chamar `gh pr create`.
+- As sincronizações usam somente `actions: read` para acompanhar o CI; não precisam disparar outro workflow por API.
 - Reexecuções do mesmo ciclo não devem criar PRs duplicadas.
 - Se a criação de PR continuar bloqueada por permissão do GitHub, a issue operacional permanece como fallback único e não autoriza merge automático.
 
