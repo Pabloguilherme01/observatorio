@@ -115,9 +115,12 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
 
     const headRepoId = pr.head?.repo?.id ?? null;
     const headLabel = pr.head?.label ?? null;
+    const localTipSha = branchByName.get(pr.head.ref)?.commit?.sha ?? null;
     const sameRepositoryHead = headRepoId != null
       ? headRepoId === repoInfo.id
-      : headLabel === repositoryOwnerLogin + ':' + pr.head.ref;
+      : headLabel != null
+        ? headLabel === repositoryOwnerLogin + ':' + pr.head.ref
+        : localTipSha === pr.head.sha;
 
     if (!sameRepositoryHead) {
       continue;
