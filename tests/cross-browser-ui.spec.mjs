@@ -55,8 +55,14 @@ test.describe('bancada cross-browser de interface', () => {
       await navigate(page, 'dashboard');
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
 
-      const shortcut = page.locator('.site-mode-shortcut');
       const root = page.locator('html');
+      const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
+      await mobileMenu.click();
+      const readingModes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+      await readingModes.getByRole('button', { name: /^Resumo ·/ }).click();
+      await expect(root).toHaveAttribute('data-language-mode', 'summary');
+      await page.getByRole('button', { name: 'Fechar menu' }).click();
+      const shortcut = page.locator('.site-mode-shortcut');
       await expect(shortcut).toBeVisible();
       for (let step = 0; step < 4; step += 1) {
         const current = await root.getAttribute('data-language-mode');
