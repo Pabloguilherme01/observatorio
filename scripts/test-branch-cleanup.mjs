@@ -21,7 +21,9 @@ assert.match(script, /\.filter\(name => !branchByName\.get\(name\)\?\.protected\
 assert.match(script, /pr\.base\?\.ref !== defaultBranch/);
 assert.match(script, /pr\.head\?\.repo\?\.full_name !== repository/);
 assert.match(script, /pr\.merge_commit_sha == null/);
-assert.match(script, /mergedByHead/);
+assert.match(script, /const mergedRecords = \[\.\.\.mergedByHead\.values\(\)\]/);
+assert.match(script, /mergedEligible: mergedRecords\.length/);
+assert.match(script, /Merged PR cleanup candidates before age\/SHA checks/);
 assert.match(script, /mergeHeadSha/);
 assert.match(script, /branchTipSha/);
 assert.match(script, /record\.branchTipSha !== record\.mergeHeadSha/);
