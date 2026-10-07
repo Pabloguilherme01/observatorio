@@ -100,15 +100,31 @@ let mergedDeleted = 0;
 if (cleanupMergedBranches && deleted < maxDeletions) {
   const closedPrs = await listAll('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
   const mergedByHead = new Map();
+  const repositoryOwnerLogin = repoInfo.owner?.login ?? repository.split('/')[0];
+  const repositoryOwnerId = repoInfo.owner?.id ?? null;
 
   for (const pr of closedPrs) {
     if (
       !pr.merged_at
       || pr.base?.ref !== defaultBranch
       || pr.head?.ref == null
-      || pr.head?.repo?.full_name !== repository
       || pr.merge_commit_sha == null
     ) {
+      continue;
+    }
+
+    const headRepoId = pr.head?.repo?.id ?? null;
+    const headOwnerId = pr.head?.user?.id ?? null;
+    const headOwnerLogin = pr.head?.user?.login ?? null;
+    const sameRepositoryHead = headRepoId != null
+      ? headRepoId === repoInfo.id
+      : (
+        headOwnerId === repositoryOwnerId
+        && headOwnerLogin === repositoryOwnerLogin
+        && pr.head?.label === repositoryOwnerLogin + ':' + pr.head.ref
+      );
+
+    if (!sameRepositoryHead) {
       continue;
     }
 
