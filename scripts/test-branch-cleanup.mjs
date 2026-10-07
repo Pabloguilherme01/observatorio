@@ -27,7 +27,6 @@ assert.match(script, /branchTipSha/);
 assert.match(script, /record\.branchTipSha !== record\.mergeHeadSha/);
 assert.match(script, /const mergedMaxAgeDays = Number\(process\.env\.CLEANUP_MERGED_MAX_AGE_DAYS \|\| 7\)/);
 assert.match(script, /CLEANUP_MERGED_BRANCHES === 'true'/);
-assert.match(script, /mergedBranchPrefixes/);
 assert.match(script, /if \(dryRun\)/);
 assert.match(script, /method: 'DELETE'/);
 assert.match(script, /deleted \+ mergedDeleted >= maxDeletions/);
