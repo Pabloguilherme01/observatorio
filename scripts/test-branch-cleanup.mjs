@@ -23,6 +23,8 @@ assert.match(script, /pr\.merge_commit_sha == null/);
 assert.match(script, /const repositoryOwnerLogin = repoInfo\.owner\?\.login \?\? repository\.split\('\/'\)\[0\]/);
 assert.match(script, /const headRepoId = pr\.head\?\.repo\?\.id \?\? null/);
 assert.match(script, /const sameRepositoryHead = headRepoId != null/);
+assert.match(script, /console\.log\('Closed PRs fetched: ' \+ closedPrs\.length\)/);
+assert.match(script, /console\.log\('Merged PR source records: ' \+ mergedByHead\.size\)/);
 assert.match(script, /pr\.head\?\.label === repositoryOwnerLogin \+ ':' \+ pr\.head\.ref/);
 assert.match(script, /record\.branchTipSha !== record\.mergeHeadSha/);
 assert.match(script, /const mergedRecords = \[\.\.\.mergedByHead\.values\(\)\]/);
