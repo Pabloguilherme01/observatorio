@@ -37,7 +37,8 @@ test.describe('mobile layout and interaction', () => {
     });
 
     await page.goto('./?utm_source=teste#transporte');
-    const menuButton = page.getByRole('button', { name: 'Abrir menu' });
+    const menuButton = page.locator('button[aria-controls="mobile-tools"]');
+    await expect(menuButton).toBeVisible();
     await menuButton.click();
     await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
     const mobileTools = page.locator('#mobile-tools');
