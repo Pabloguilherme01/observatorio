@@ -15,7 +15,6 @@ writeFileSync(fakeCurl, '#!/bin/sh\nexit 22\n');
 chmodSync(fakeCurl, 0o755);
 
 for (const [event, expectedStatus] of [['schedule', 0], ['workflow_dispatch', 1]]) {
-  const envFile = join(fixture, `${event}.env`);
   const result = spawnSync(process.execPath, ['scripts/sync-tse-2026.mjs'], {
     cwd: root,
     encoding: 'utf8',
@@ -23,14 +22,12 @@ for (const [event, expectedStatus] of [['schedule', 0], ['workflow_dispatch', 1]
     env: {
       ...process.env,
       PATH: fixture + delimiter + process.env.PATH,
-      GITHUB_ENV: envFile,
       GITHUB_EVENT_NAME: event,
       REQUIRE_TSE_FRESH: event === 'workflow_dispatch' ? 'true' : 'false',
     },
   });
   assert.equal(result.status, expectedStatus, `${event}: ${result.stderr}`);
   assert.match(result.stdout + result.stderr, /"state": "upstream_unavailable"/);
-  assert.match(readFileSync(envFile, 'utf8'), /TSE_UPSTREAM_STATUS=unavailable/);
   assert.equal(hash(), before, `${event}: o snapshot anterior deve ser preservado`);
 }
 

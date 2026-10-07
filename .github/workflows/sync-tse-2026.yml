@@ -42,11 +42,6 @@ jobs:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
         run: npm run sync:tse
 
-      - name: Mark successful TSE freshness check
-        if: env.TSE_UPSTREAM_STATUS == 'ok'
-        shell: bash
-        run: echo "TSE_FRESHNESS_CHECKED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
-
       - name: Validate TSE candidate snapshot
         env:
           REQUIRE_TSE_SYNC: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}

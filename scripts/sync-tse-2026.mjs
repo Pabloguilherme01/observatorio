@@ -1,6 +1,6 @@
 // Mantém este arquivo como gatilho operacional da captura oficial em recuperações de frescor.
 import { createHash } from 'node:crypto';
-import { appendFileSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -171,11 +171,6 @@ function sha256(filePath) {
   return createHash('sha256').update(readFileSync(filePath)).digest('hex');
 }
 
-function markWorkflowStatus(status) {
-  const envFile = process.env.GITHUB_ENV;
-  if (!envFile) return;
-  appendFileSync(envFile, `TSE_UPSTREAM_STATUS=${status}\n`, 'utf8');
-}
 
 function download(url, destination) {
   try {
@@ -317,14 +312,14 @@ async function updateFromApiFallback(previous, watchlist, work) {
   const records = findCandidateArray(parsedApi);
   if (!records?.length) throw new Error('API oficial respondeu sem uma lista reconhecível de candidaturas.');
 
-  const normalizedPrevious = new Map(previous.matched.map(candidate => [normalize(candidate.name), candidate]));
+  const previousByWatchlistName = new Map(
+    previous.matched.map(candidate => [normalize(candidate.watchlistName ?? candidate.name), candidate]),
+  );
   const matched = [];
   const missingWatchlist = [];
 
   for (const expectedName of watchlist) {
-    const previousRecord = previous.matched.find(candidate =>
-      normalize(candidate.watchlistName ?? candidate.name) === normalize(expectedName),
-    );
+    const previousRecord = previousByWatchlistName.get(normalize(expectedName));
     const candidate = records.find(item => {
       const apiName = firstString(item, ['nomeUrna', 'nome_urna', 'NM_URNA_CANDIDATO', 'nomeCandidato', 'nomeCompleto', 'NM_CANDIDATO', 'nome']);
       return tokenPhraseIncluded(apiName ?? '', expectedName)
@@ -358,7 +353,6 @@ async function updateFromApiFallback(previous, watchlist, work) {
     resourceUrl: API_URL,
   });
   if (!diff.length && !provenanceChanged) {
-    markWorkflowStatus('ok');
     console.log(JSON.stringify({
       valid: true,
       state: 'unchanged',
@@ -403,7 +397,6 @@ async function updateFromApiFallback(previous, watchlist, work) {
   writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
   writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '\n', 'utf8');
   writeFileSync(join(HISTORY_DIR, snapshotId + '.json'), JSON.stringify(payload, null, 2) + '\n', 'utf8');
-  markWorkflowStatus('ok');
   console.log(JSON.stringify({
     valid: true,
     state: payload.meta.state,
@@ -437,7 +430,6 @@ function loadPrevious() {
 let selectedSourceUrl = ZIP_URLS[0];
 
 async function main() {
-  markWorkflowStatus('starting');
   mkdirSync(OUTPUT_DIR, { recursive: true });
   mkdirSync(HISTORY_DIR, { recursive: true });
 
@@ -547,8 +539,6 @@ async function main() {
     });
 
     if (!diff.length && !provenanceChanged) {
-
-      markWorkflowStatus('ok');
       console.log(JSON.stringify({
         valid: true,
         state: 'unchanged',
@@ -609,8 +599,6 @@ async function main() {
     writeFileSync(OUTPUT, JSON.stringify(payload, null, 2) + '\n', 'utf8');
     writeFileSync(DIFF_OUTPUT, JSON.stringify(payload.diff, null, 2) + '\n', 'utf8');
     writeFileSync(join(HISTORY_DIR, snapshotId + '.json'), JSON.stringify(payload, null, 2) + '\n', 'utf8');
-
-    markWorkflowStatus('ok');
     console.log(JSON.stringify({
       valid: true,
       state,
@@ -628,7 +616,6 @@ async function main() {
 main().catch(error => {
   const previous = loadPrevious();
   if (previous?.meta?.snapshotId && Array.isArray(previous?.matched)) {
-    markWorkflowStatus('unavailable');
     const upstreamMessage = JSON.stringify({
     valid: false,
     state: 'upstream_unavailable',
@@ -653,7 +640,6 @@ main().catch(error => {
   process.exitCode = 0;
   return;
   }
-  markWorkflowStatus('failed');
   console.error(error);
   process.exitCode = 1;
 });
