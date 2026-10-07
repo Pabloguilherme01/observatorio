@@ -37,8 +37,12 @@ test.describe('mobile layout and interaction', () => {
     });
 
     await page.goto('./?utm_source=teste#transporte');
-    await page.getByRole('button', { name: 'Abrir menu' }).click();
-    await page.getByRole('button', { name: 'Buscar áreas' }).click();
+    const menuButton = page.getByRole('button', { name: 'Abrir menu' });
+    await menuButton.click();
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+    const mobileTools = page.locator('#mobile-tools');
+    await expect(mobileTools).toBeVisible();
+    await mobileTools.getByRole('button', { name: 'Buscar áreas' }).click();
 
     const panel = page.locator('.search-modal-panel');
     const close = page.getByRole('button', { name: /fechar busca/i });
