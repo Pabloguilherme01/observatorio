@@ -26,6 +26,7 @@ assert.match(script, /mergedEligible: mergedRecords\.length/);
 assert.match(script, /Merged PR cleanup candidates before age\/SHA checks/);
 assert.match(script, /mergeHeadSha/);
 assert.match(script, /branchTipSha/);
+assert.match(script, /.filter\(record => record\.branchTipSha != null\)/);
 assert.match(script, /record\.branchTipSha !== record\.mergeHeadSha/);
 assert.match(script, /const mergedMaxAgeDays = Number\(process\.env\.CLEANUP_MERGED_MAX_AGE_DAYS \|\| 7\)/);
 assert.match(script, /CLEANUP_MERGED_BRANCHES === 'true'/);
