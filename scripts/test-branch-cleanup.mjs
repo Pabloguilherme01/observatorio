@@ -1,8 +1,10 @@
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 
 const script = readFileSync('scripts/cleanup-branches.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/cleanup-branches.yml', 'utf8');
+execFileSync(process.execPath, ['--check', 'scripts/cleanup-branches.mjs'], { stdio: 'ignore' });
 
 assert.match(script, /const defaultBranch = repoInfo\.default_branch \|\| 'main'/);
 assert.match(script, /const expectedRef = 'refs\/heads\/' \+ defaultBranch/);
