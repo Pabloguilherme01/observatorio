@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import process from 'node:process';
 import { execFileSync } from 'node:child_process';
@@ -34,6 +35,41 @@ const errors = [];
 const pass = message => console.log('PASS', message);
 const fail = message => errors.push(message);
 const must = (condition, message) => condition ? pass(message) : fail(message);
+
+const allowedExactDuplicateGroups = [
+  [
+    'src/data/generated/history/tse-candidatos-2026-local-mapeado-2026-10-06.json',
+    'src/data/generated/tse2026-candidates.json',
+  ],
+].map(group => [...group].sort());
+
+const trackedFiles = execFileSync('git', ['ls-files', '-z'], { encoding: 'buffer' })
+  .toString('utf8')
+  .split('\0')
+  .filter(Boolean);
+
+const duplicateFilesByHash = new Map();
+for (const relativePath of trackedFiles) {
+  const digest = createHash('sha256').update(fs.readFileSync(path.join(root, relativePath))).digest('hex');
+  const group = duplicateFilesByHash.get(digest) ?? [];
+  group.push(relativePath);
+  duplicateFilesByHash.set(digest, group);
+}
+
+const duplicateGroups = [...duplicateFilesByHash.values()]
+  .filter(group => group.length > 1)
+  .map(group => [...group].sort());
+
+const unauthorizedDuplicateGroups = duplicateGroups.filter(group =>
+  !allowedExactDuplicateGroups.some(allowed => allowed.length === group.length && allowed.every((file, index) => file === group[index])),
+);
+
+must(
+  unauthorizedDuplicateGroups.length === 0,
+  unauthorizedDuplicateGroups.length
+    ? 'há arquivos byte a byte duplicados sem autorização explícita: ' + unauthorizedDuplicateGroups.map(group => group.join(' ↔ ')).join('; ')
+    : 'não há duplicações byte a byte fora da allowlist de snapshots históricos.',
+);
 
 const sourceIds = [...sourceRegistry.matchAll(/id:\s*'([^']+)'/g)].map(match => match[1]);
 const duplicateSourceIds = sourceIds.filter((id, index) => sourceIds.indexOf(id) !== index);
