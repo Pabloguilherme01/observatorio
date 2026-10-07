@@ -99,6 +99,7 @@ for (const [prefix, names] of grouped) {
 let mergedDeleted = 0;
 if (cleanupMergedBranches && deleted < maxDeletions) {
   const closedPrs = await listAll('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
+  console.log('Closed PRs fetched: ' + closedPrs.length);
   const mergedByHead = new Map();
   const repositoryOwnerLogin = repoInfo.owner?.login ?? repository.split('/')[0];
   const repositoryOwnerId = repoInfo.owner?.id ?? null;
@@ -114,15 +115,9 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
     }
 
     const headRepoId = pr.head?.repo?.id ?? null;
-    const headOwnerId = pr.head?.user?.id ?? null;
-    const headOwnerLogin = pr.head?.user?.login ?? null;
     const sameRepositoryHead = headRepoId != null
       ? headRepoId === repoInfo.id
-      : (
-        headOwnerId === repositoryOwnerId
-        && headOwnerLogin === repositoryOwnerLogin
-        && pr.head?.label === repositoryOwnerLogin + ':' + pr.head.ref
-      );
+      : pr.head?.label === repositoryOwnerLogin + ':' + pr.head.ref;
 
     if (!sameRepositoryHead) {
       continue;
@@ -133,6 +128,8 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
       mergedByHead.set(pr.head.ref, pr);
     }
   }
+
+  console.log('Merged PR source records: ' + mergedByHead.size);
 
   const mergedRecords = [...mergedByHead.values()]
     .map(pr => {
