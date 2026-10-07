@@ -28,6 +28,7 @@ assert.match(script, /mergedBranchPrefixes/);
 assert.match(script, /if \(dryRun\)/);
 assert.match(script, /method: 'DELETE'/);
 assert.match(script, /deleted \+ mergedDeleted >= maxDeletions/);
+assert.match(workflow, /push:\s*\n\s+branches:\s*\n\s+- main/);
 assert.match(workflow, /if: github\.ref == 'refs\/heads\/main'/);
 assert.match(workflow, /contents: write/);
 assert.match(workflow, /pull-requests:\s+read/);
