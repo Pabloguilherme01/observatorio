@@ -114,15 +114,10 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
     }
 
     const headRepoId = pr.head?.repo?.id ?? null;
-    const headOwnerId = pr.head?.user?.id ?? null;
-    const headOwnerLogin = pr.head?.user?.login ?? null;
+    const headLabel = pr.head?.label ?? null;
     const sameRepositoryHead = headRepoId != null
       ? headRepoId === repoInfo.id
-      : (
-        headOwnerId === repositoryOwnerId
-        && headOwnerLogin === repositoryOwnerLogin
-        && pr.head?.label === repositoryOwnerLogin + ':' + pr.head.ref
-      );
+      : headLabel === repositoryOwnerLogin + ':' + pr.head.ref;
 
     if (!sameRepositoryHead) {
       continue;
