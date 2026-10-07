@@ -12,6 +12,7 @@ assert.match(script, /process\.env\.GITHUB_ACTIONS !== 'true'/);
 assert.match(script, /process\.env\.GITHUB_REF !== expectedRef/);
 assert.match(script, /const maxDeletions = Number\(process\.env\.CLEANUP_MAX_DELETIONS \|\| 25\)/);
 assert.match(script, /maxDeletions < 1/);
+assert.match(script, /if \(!Number\.isFinite\(record\.date\)\)/);
 assert.match(script, /\.filter\(name => name !== defaultBranch\)/);
 assert.match(script, /\.filter\(name => name !== 'main'\)/);
 assert.match(script, /\.filter\(name => !active\.has\(name\)\)/);
