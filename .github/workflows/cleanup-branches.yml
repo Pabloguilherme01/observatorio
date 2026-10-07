@@ -44,6 +44,6 @@ jobs:
           CLEANUP_MAX_AGE_DAYS: '7'
           CLEANUP_KEEP_PER_PREFIX: '2'
           CLEANUP_MERGED_BRANCHES: 'true'
-          CLEANUP_MERGED_MAX_AGE_DAYS: '14'
+          CLEANUP_MERGED_MAX_AGE_DAYS: '7'
           CLEANUP_MAX_DELETIONS: '50'
         run: npm run cleanup:branches
