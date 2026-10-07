@@ -118,25 +118,27 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
     }
   }
 
-  const mergedCandidates = branches
-    .map(item => item.name)
-    .filter(name => name !== defaultBranch)
-    .filter(name => name !== 'main')
-    .filter(name => !active.has(name))
-    .filter(name => !candidates.includes(name))
-    .filter(name => !branchByName.get(name)?.protected)
-    .filter(name => mergedByHead.has(name));
+  const mergedRecords = [...mergedByHead.values()]
+    .map(pr => {
+      const name = pr.head.ref;
+      return {
+        name,
+        mergedAt: Date.parse(pr.merged_at),
+        prNumber: pr.number,
+        mergeHeadSha: pr.head.sha,
+        branchTipSha: branchByName.get(name)?.commit?.sha ?? null,
+        branchProtected: branchByName.get(name)?.protected === true,
+      };
+    })
+    .filter(record => record.name !== defaultBranch)
+    .filter(record => record.name !== 'main')
+    .filter(record => !active.has(record.name))
+    .filter(record => !candidates.includes(record.name))
+    .filter(record => !record.branchProtected)
+    .filter(record => record.branchTipSha != null)
+    .sort((a, b) => a.mergedAt - b.mergedAt);
 
-  const mergedRecords = mergedCandidates.map(name => {
-    const pr = mergedByHead.get(name);
-    return {
-      name,
-      mergedAt: Date.parse(pr.merged_at),
-      prNumber: pr.number,
-      mergeHeadSha: pr.head.sha,
-      branchTipSha: branchByName.get(name)?.commit?.sha ?? null,
-    };
-  }).sort((a, b) => a.mergedAt - b.mergedAt);
+  console.log('Merged PR cleanup candidates before age/SHA checks: ' + mergedRecords.length);
 
   for (const record of mergedRecords) {
     if (deleted + mergedDeleted >= maxDeletions) break;
