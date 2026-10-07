@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { STORAGE_NAMESPACE } from '../config/version';
 import { fallbackDestinationForMode, type ReadingMode } from '../config/readingModes';
 import { replaceCurrentUrl } from '../lib/urlState';
@@ -29,7 +29,10 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
     try { localStorage.setItem(STORAGE_KEY, mode); } catch {}
   }, [mode]);
 
+  const modeRef = useRef<LanguageMode>(mode);
+
   const setMode = useCallback((nextMode: LanguageMode) => {
+    modeRef.current = nextMode;
     setModeState(nextMode);
     if (typeof document !== 'undefined') {
       document.documentElement.dataset.languageMode = nextMode;
@@ -47,9 +50,10 @@ export function LanguageModeProvider({ children }: { readonly children: ReactNod
   }, []);
 
   const cycleMode = useCallback(() => {
-    const nextMode = mode === 'summary' ? 'simple' : mode === 'simple' ? 'guided' : mode === 'guided' ? 'technical' : 'summary';
+    const current = modeRef.current;
+    const nextMode = current === 'summary' ? 'simple' : current === 'simple' ? 'guided' : current === 'guided' ? 'technical' : 'summary';
     setMode(nextMode);
-  }, [mode, setMode]);
+  }, [setMode]);
 
   const value = useMemo(() => ({ mode, setMode, cycleMode }), [mode, setMode, cycleMode]);
   return <LanguageModeContext.Provider value={value}>{children}</LanguageModeContext.Provider>;
