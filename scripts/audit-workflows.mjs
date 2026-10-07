@@ -107,7 +107,7 @@ if (
   && cleanup?.includes('pull-requests: read')
   && cleanup?.includes("CLEANUP_MAX_DELETIONS: '50'")
   && cleanup?.includes("CLEANUP_MERGED_BRANCHES: 'true'")
-  && cleanup?.includes("CLEANUP_MERGED_MAX_AGE_DAYS: '14'")
+  && cleanup?.includes("CLEANUP_MERGED_MAX_AGE_DAYS: '7'")
   && cleanup?.includes('CLEANUP_DRY_RUN')
 ) {
   pass('cleanup destrutivo roda somente na main e mantém limite/dry-run explícitos.');
