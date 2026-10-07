@@ -4,7 +4,7 @@ const dryRun = process.env.CLEANUP_DRY_RUN !== 'false';
 const maxAgeDays = Number(process.env.CLEANUP_MAX_AGE_DAYS || 7);
 const keepPerPrefix = Number(process.env.CLEANUP_KEEP_PER_PREFIX || 2);
 const cleanupMergedBranches = process.env.CLEANUP_MERGED_BRANCHES === 'true';
-const mergedMaxAgeDays = Number(process.env.CLEANUP_MERGED_MAX_AGE_DAYS || 14);
+const mergedMaxAgeDays = Number(process.env.CLEANUP_MERGED_MAX_AGE_DAYS || 7);
 const maxDeletions = Number(process.env.CLEANUP_MAX_DELETIONS || 25);
 
 if (!token || !repository) throw new Error('GITHUB_TOKEN/GH_TOKEN e GITHUB_REPOSITORY são obrigatórios.');
@@ -43,22 +43,6 @@ const branches = await listAll('/branches');
 const branchByName = new Map(branches.map(item => [item.name, item]));
 const openPrs = await listAll('/pulls?state=open');
 const active = new Set(openPrs.map(pr => pr.head?.ref).filter(Boolean));
-const mergedBranchPrefixes = [
-  'audit/',
-  'audit-v',
-  'chore/',
-  'code-failure-analysis-',
-  'codex/',
-  'correcoes-',
-  'design/',
-  'docs/',
-  'feat/',
-  'test/',
-  'feature/',
-  'fix/',
-  'perf/',
-  'refactor/',
-];
 
 const candidates = branches
   .map(item => item.name)
@@ -138,7 +122,6 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
     .map(item => item.name)
     .filter(name => name !== defaultBranch)
     .filter(name => name !== 'main')
-    .filter(name => mergedBranchPrefixes.some(prefix => name.startsWith(prefix)))
     .filter(name => !active.has(name))
     .filter(name => !candidates.includes(name))
     .filter(name => !branchByName.get(name)?.protected)
