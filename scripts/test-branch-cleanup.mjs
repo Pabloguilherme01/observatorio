@@ -1,8 +1,10 @@
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 
 const script = readFileSync('scripts/cleanup-branches.mjs', 'utf8');
 const workflow = readFileSync('.github/workflows/cleanup-branches.yml', 'utf8');
+execFileSync(process.execPath, ['--check', 'scripts/cleanup-branches.mjs'], { stdio: 'ignore' });
 
 assert.match(script, /const defaultBranch = repoInfo\.default_branch \|\| 'main'/);
 assert.match(script, /const expectedRef = 'refs\/heads\/' \+ defaultBranch/);
@@ -10,6 +12,7 @@ assert.match(script, /process\.env\.GITHUB_ACTIONS !== 'true'/);
 assert.match(script, /process\.env\.GITHUB_REF !== expectedRef/);
 assert.match(script, /const maxDeletions = Number\(process\.env\.CLEANUP_MAX_DELETIONS \|\| 25\)/);
 assert.match(script, /maxDeletions < 1/);
+assert.match(script, /if \(!Number\.isFinite\(record\.date\)\)/);
 assert.match(script, /\.filter\(name => name !== defaultBranch\)/);
 assert.match(script, /\.filter\(name => name !== 'main'\)/);
 assert.match(script, /\.filter\(name => !active\.has\(name\)\)/);

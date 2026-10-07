@@ -90,7 +90,11 @@ for (const [prefix, names] of grouped) {
   for (let index = 0; index < records.length; index++) {
     if (deleted >= maxDeletions) break;
     const record = records[index];
-    const ageDays = Number.isFinite(record.date) ? (now - record.date) / 86400000;
+    if (!Number.isFinite(record.date)) {
+      console.log('KEEP ' + record.name + ' (invalid date)');
+      continue;
+    }
+    const ageDays = (now - record.date) / 86400000;
     const protectedByRecency = index < keepPerPrefix;
     if (protectedByRecency || ageDays < maxAgeDays) {
       console.log('KEEP ' + record.name + (protectedByRecency ? ' (recent)' : ' (young)'));
