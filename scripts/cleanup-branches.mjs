@@ -16,13 +16,11 @@ const headers = {
   'X-GitHub-Api-Version': '2026-03-10',
 };
 
-
 async function api(url, options = {}) {
   const response = await fetch(url, { ...options, headers: { ...headers, ...(options.headers || {}) } });
   if (!response.ok) throw new Error('GitHub API ' + response.status + ' em ' + url);
   return response.status === 204 ? null : response.json();
 }
-
 
 async function listAll(pathname) {
   const out = [];
@@ -33,7 +31,6 @@ async function listAll(pathname) {
   }
   throw new Error('GitHub API excedeu o limite de paginação de 100 páginas.');
 }
-
 
 const repoInfo = await api('https://api.github.com/repos/' + repository);
 const defaultBranch = repoInfo.default_branch || 'main';
@@ -63,7 +60,7 @@ for (const name of candidates) {
 
 const now = Date.now();
 let deleted = 0;
-for (const [prefix, names] of grouped) {
+for (const names of grouped.values()) {
   const records = [];
   for (const name of names) {
     if (deleted >= maxDeletions) break;
@@ -105,7 +102,6 @@ if (cleanupMergedBranches && deleted < maxDeletions) {
   console.log('Closed PRs fetched: ' + closedPrs.length);
   const mergedByHead = new Map();
   const repositoryOwnerLogin = repoInfo.owner?.login ?? repository.split('/')[0];
-  const repositoryOwnerId = repoInfo.owner?.id ?? null;
 
   for (const pr of closedPrs) {
     if (
