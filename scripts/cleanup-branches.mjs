@@ -16,9 +16,20 @@ const headers = {
   'X-GitHub-Api-Version': '2026-03-10',
 };
 
+const publicHeaders = {
+  Accept: 'application/vnd.github+json',
+  'X-GitHub-Api-Version': '2026-03-10',
+};
+
 async function api(url, options = {}) {
   const response = await fetch(url, { ...options, headers: { ...headers, ...(options.headers || {}) } });
   if (!response.ok) throw new Error('GitHub API ' + response.status + ' em ' + url);
+  return response.status === 204 ? null : response.json();
+}
+
+async function publicApi(url) {
+  const response = await fetch(url, { headers: publicHeaders });
+  if (!response.ok) throw new Error('GitHub API pública ' + response.status + ' em ' + url);
   return response.status === 204 ? null : response.json();
 }
 
@@ -30,6 +41,16 @@ async function listAll(pathname) {
     if (data.length < 100) return out;
   }
   throw new Error('GitHub API excedeu o limite de paginação de 100 páginas.');
+}
+
+async function listAllPublic(pathname) {
+  const out = [];
+  for (let page = 1; page <= 100; page++) {
+    const data = await publicApi('https://api.github.com/repos/' + repository + pathname + (pathname.includes('?') ? '&' : '?') + 'per_page=100&page=' + page);
+    out.push(...data);
+    if (data.length < 100) return out;
+  }
+  throw new Error('GitHub API pública excedeu o limite de paginação de 100 páginas.');
 }
 
 const repoInfo = await api('https://api.github.com/repos/' + repository);
@@ -98,7 +119,7 @@ for (const [prefix, names] of grouped) {
 
 let mergedDeleted = 0;
 if (cleanupMergedBranches && deleted < maxDeletions) {
-  const closedPrs = await listAll('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
+  const closedPrs = await listAllPublic('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
   const mergedByHead = new Map();
   const repositoryOwnerLogin = repoInfo.owner?.login ?? repository.split('/')[0];
   const repositoryOwnerId = repoInfo.owner?.id ?? null;
