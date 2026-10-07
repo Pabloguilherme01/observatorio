@@ -53,6 +53,7 @@ const mergedBranchPrefixes = [
   'design/',
   'docs/',
   'feat/',
+  'test/',
   'feature/',
   'fix/',
   'perf/',
