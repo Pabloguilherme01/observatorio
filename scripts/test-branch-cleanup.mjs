@@ -24,7 +24,9 @@ assert.match(script, /const repositoryOwnerLogin = repoInfo\.owner\?\.login \?\?
 assert.match(script, /const headRepoId = pr\.head\?\.repo\?\.id \?\? null/);
 assert.match(script, /const sameRepositoryHead = headRepoId != null/);
 assert.match(script, /const headLabel = pr\.head\?\.label \?\? null/);
+assert.match(script, /const localTipSha = branchByName\.get\(pr\.head\.ref\)\?\.commit\?\.sha \?\? null/);
 assert.match(script, /headLabel === repositoryOwnerLogin \+ ':' \+ pr\.head\.ref/);
+assert.match(script, /localTipSha === pr\.head\.sha/);
 assert.match(script, /record\.branchTipSha !== record\.mergeHeadSha/);
 assert.match(script, /const mergedRecords = \[\.\.\.mergedByHead\.values\(\)\]/);
 assert.match(script, /Merged PR cleanup candidates before age\/SHA checks/);
