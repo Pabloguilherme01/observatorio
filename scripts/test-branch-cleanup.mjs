@@ -10,6 +10,12 @@ assert.match(script, /const defaultBranch = repoInfo\.default_branch \|\| 'main'
 assert.match(script, /const expectedRef = 'refs\/heads\/' \+ defaultBranch/);
 assert.match(script, /process\.env\.GITHUB_ACTIONS !== 'true'/);
 assert.match(script, /process\.env\.GITHUB_REF !== expectedRef/);
+assert.match(script, /const maxAgeDays = Number\(process\.env\.CLEANUP_MAX_AGE_DAYS \|\| 7\)/);
+assert.match(script, /maxAgeDays < 1/);
+assert.match(script, /const keepPerPrefix = Number\(process\.env\.CLEANUP_KEEP_PER_PREFIX \|\| 2\)/);
+assert.match(script, /keepPerPrefix < 0/);
+assert.match(script, /const mergedMaxAgeDays = Number\(process\.env\.CLEANUP_MERGED_MAX_AGE_DAYS \|\| 7\)/);
+assert.match(script, /mergedMaxAgeDays < 1/);
 assert.match(script, /const maxDeletions = Number\(process\.env\.CLEANUP_MAX_DELETIONS \|\| 25\)/);
 assert.match(script, /maxDeletions < 1/);
 assert.match(script, /if \(!Number\.isFinite\(record\.date\)\)/);
