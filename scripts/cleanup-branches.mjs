@@ -42,6 +42,63 @@ if (!dryRun && (process.env.GITHUB_ACTIONS !== 'true' || process.env.GITHUB_REF 
   throw new Error('A limpeza destrutiva só pode executar dentro do GitHub Actions e na branch padrão (' + expectedRef + ').');
 }
 
+async function listMergedPullRequests() {
+  const [owner, name] = repository.split('/');
+  const query = `query($owner:String!,$name:String!,$base:String!,$cursor:String) {
+    repository(owner:$owner,name:$name) {
+      pullRequests(first:100,states:MERGED,baseRefName:$base,after:$cursor) {
+        nodes {
+          number
+          mergedAt
+          baseRefName
+          headRefName
+          headRefOid
+          headRepository { nameWithOwner }
+        }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+  }`;
+
+  const out = [];
+  let cursor = null;
+
+  for (let page = 0; page < 100; page += 1) {
+    const response = await fetch('https://api.github.com/graphql', {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: {
+          owner,
+          name,
+          base: defaultBranch,
+          cursor,
+        },
+      }),
+    });
+
+    if (!response.ok) throw new Error('GitHub GraphQL API ' + response.status + ' em pull requests mescladas.');
+    const payload = await response.json();
+    if (payload.errors?.length) {
+      throw new Error('GitHub GraphQL retornou erro em pull requests mescladas: ' + payload.errors.map(item => item.message).join('; '));
+    }
+
+    const connection = payload.data?.repository?.pullRequests;
+    if (!connection) throw new Error('GitHub GraphQL não retornou a conexão de pull requests mescladas.');
+
+    out.push(...(connection.nodes ?? []).filter(Boolean));
+    if (!connection.pageInfo?.hasNextPage) return out;
+    cursor = connection.pageInfo.endCursor;
+    if (!cursor) throw new Error('GitHub GraphQL indicou próxima página sem cursor.');
+  }
+
+  throw new Error('GitHub GraphQL excedeu o limite de paginação de pull requests mescladas.');
+}
+
 const branches = await listAll('/branches');
 const branchByName = new Map(branches.map(item => [item.name, item]));
 const openPrs = await listAll('/pulls?state=open');
@@ -101,48 +158,42 @@ for (const names of grouped.values()) {
 
 let mergedDeleted = 0;
 if (cleanupMergedBranches && deleted < maxDeletions) {
-  const closedPrs = await listAll('/pulls?state=closed&base=' + encodeURIComponent(defaultBranch));
-  console.log('Closed PRs fetched: ' + closedPrs.length);
+  const mergedPrs = await listMergedPullRequests();
+  console.log('Merged PRs fetched: ' + mergedPrs.length);
   const mergedByHead = new Map();
-  const repositoryOwnerLogin = repoInfo.owner?.login ?? repository.split('/')[0];
 
-  for (const pr of closedPrs) {
+  for (const pr of mergedPrs) {
     if (
-      !pr.merged_at
-      || pr.base?.ref !== defaultBranch
-      || pr.head?.ref == null
-      || pr.merge_commit_sha == null
+      !pr.mergedAt
+      || pr.baseRefName !== defaultBranch
+      || !pr.headRefName
+      || !pr.headRefOid
     ) {
       continue;
     }
 
-    const headRepoId = pr.head?.repo?.id ?? null;
-    const headLabel = pr.head?.label ?? null;
-    const localTipSha = branchByName.get(pr.head.ref)?.commit?.sha ?? null;
-    const sameRepositoryHead = headRepoId != null
-      ? headRepoId === repoInfo.id
-      : headLabel != null
-        ? headLabel === repositoryOwnerLogin + ':' + pr.head.ref
-        : localTipSha === pr.head.sha;
+    const localTipSha = branchByName.get(pr.headRefName)?.commit?.sha ?? null;
+    const sameRepositoryHead = pr.headRepository?.nameWithOwner === repository
+      || (pr.headRepository == null && localTipSha === pr.headRefOid);
 
     if (!sameRepositoryHead) {
       continue;
     }
 
-    const previous = mergedByHead.get(pr.head.ref);
-    if (!previous || Date.parse(pr.merged_at) > Date.parse(previous.merged_at)) {
-      mergedByHead.set(pr.head.ref, pr);
+    const previous = mergedByHead.get(pr.headRefName);
+    if (!previous || Date.parse(pr.mergedAt) > Date.parse(previous.mergedAt)) {
+      mergedByHead.set(pr.headRefName, pr);
     }
   }
 
   const mergedRecords = [...mergedByHead.values()]
     .map(pr => {
-      const name = pr.head.ref;
+      const name = pr.headRefName;
       return {
         name,
-        mergedAt: Date.parse(pr.merged_at),
+        mergedAt: Date.parse(pr.mergedAt),
         prNumber: pr.number,
-        mergeHeadSha: pr.head.sha,
+        mergeHeadSha: pr.headRefOid,
         branchTipSha: branchByName.get(name)?.commit?.sha ?? null,
         branchProtected: branchByName.get(name)?.protected === true,
       };
