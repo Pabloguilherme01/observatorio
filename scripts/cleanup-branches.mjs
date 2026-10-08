@@ -8,6 +8,9 @@ const mergedMaxAgeDays = Number(process.env.CLEANUP_MERGED_MAX_AGE_DAYS || 7);
 const maxDeletions = Number(process.env.CLEANUP_MAX_DELETIONS || 25);
 
 if (!token || !repository) throw new Error('GITHUB_TOKEN/GH_TOKEN e GITHUB_REPOSITORY são obrigatórios.');
+if (!Number.isInteger(maxAgeDays) || maxAgeDays < 1) throw new Error('CLEANUP_MAX_AGE_DAYS deve ser inteiro positivo.');
+if (!Number.isInteger(keepPerPrefix) || keepPerPrefix < 0) throw new Error('CLEANUP_KEEP_PER_PREFIX deve ser inteiro não negativo.');
+if (!Number.isInteger(mergedMaxAgeDays) || mergedMaxAgeDays < 1) throw new Error('CLEANUP_MERGED_MAX_AGE_DAYS deve ser inteiro positivo.');
 if (!Number.isInteger(maxDeletions) || maxDeletions < 1) throw new Error('CLEANUP_MAX_DELETIONS deve ser inteiro positivo.');
 
 const headers = {
