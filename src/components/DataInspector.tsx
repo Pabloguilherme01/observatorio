@@ -7,6 +7,7 @@ import { useLanguageMode } from '../context/LanguageModeContext';
 import { buildCanonicalUrl, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../lib/urlState';
 import { isIndicatorSaved, toggleSavedIndicator } from '../lib/savedIndicators';
 import { buildDataInspectorModel } from './data-inspector/dataInspectorModel';
+import { DataCorrectionPanel } from './data-inspector/DataCorrectionPanel';
 
 export function DataInspector() {
   const { mode: languageMode } = useLanguageMode();
@@ -59,7 +60,7 @@ export function DataInspector() {
       openerRef.current?.focus?.();
       return;
     }
-    const focusables = () => Array.from(modalRef.current?.querySelectorAll<HTMLElement>('button,input,[href],[tabindex]:not([tabindex="-1"])') ?? []).filter(node => !node.hasAttribute('disabled'));
+    const focusables = () => Array.from(modalRef.current?.querySelectorAll<HTMLElement>('button,input,textarea,select,summary,[href],[tabindex]:not([tabindex="-1"])') ?? []).filter(node => !node.hasAttribute('disabled') && node.getClientRects().length > 0);
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') { event.preventDefault(); closeInspector(); return; }
       if (event.key !== 'Tab') return;
@@ -71,8 +72,13 @@ export function DataInspector() {
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     };
     window.addEventListener('keydown', onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     closeRef.current?.focus();
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [data]);
 
   const source = useMemo(
@@ -165,7 +171,7 @@ export function DataInspector() {
   };
 
   return (
-    <div className="command-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
+    <div className="command-overlay data-inspector-overlay" role="dialog" aria-modal="true" aria-labelledby="data-inspector-title">
       <button className="command-backdrop" type="button" aria-label="Fechar inspetor de dados" onClick={closeInspector} />
       <article ref={modalRef} className="command-panel data-inspector-panel max-w-xl light:bg-white light:text-slate-900" aria-describedby="data-inspector-context">
         <div className="flex items-start justify-between gap-4 border-b border-white/10 px-5 py-4 light:border-slate-200">
@@ -179,6 +185,7 @@ export function DataInspector() {
         </div>
 
         <div className="space-y-4 p-5">
+          <DataCorrectionPanel key={data.inspectId ?? data.label} correctionUrl={correctionUrl} />
           <p id="data-inspector-context" className="sr-only">Detalhes de origem, referência temporal, natureza e método do dado selecionado.</p>
           <div className="rounded-2xl border border-sky-300/15 bg-sky-300/5 p-4 light:border-sky-200 light:bg-sky-50">
             <div className="text-3xl font-black text-white light:text-slate-900">{data.value}</div>

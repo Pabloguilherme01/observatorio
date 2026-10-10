@@ -1,4 +1,17 @@
 /* Indicator comparator */
+.indicator-scale { margin-top:16px; padding:16px; border:1px solid #64748b; border-radius:14px; color:#e2e8f0; }
+.indicator-scale figcaption { font-weight:800; font-size:15px; }
+.indicator-scale p { margin-top:8px; color:#cbd5e1; font-size:13px; line-height:1.6; }
+.indicator-scale-row { margin-top:16px; }
+.indicator-scale-row > div:first-child { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; font-size:14px; }
+.indicator-scale-row small { display:block; margin-top:5px; color:#cbd5e1; font-size:12px; }
+.indicator-scale-track { height:12px; margin-top:8px; border:1px solid #64748b; border-radius:6px; overflow:hidden; background:#172b40; }
+.indicator-scale-track span { display:block; height:100%; background:#7dd3fc; }
+.indicator-scale-axis { display:flex; justify-content:space-between; margin-top:8px; font-size:12px; color:#cbd5e1; }
+html.light .indicator-scale { color:#172b40; }
+html.light .indicator-scale :is(p,small,.indicator-scale-axis) { color:#334155; }
+html.light .indicator-scale-track { background:#e2e8f0; }
+html.light .indicator-scale-track span { background:#0369a1; }
 .indicator-comparator{
   margin-top:18px;
   padding:clamp(15px,2vw,22px);

@@ -95,6 +95,7 @@ export function IndicatorComparator() {
   if (!left || !right || !alignment) return null;
 
   const matchedCount = Number(alignment.unit) + Number(alignment.date) + Number(alignment.source);
+  const percentageScale = [left, right].every(item => item.unit === '%' && item.value >= 0 && item.value <= 100);
   const relation = matchedCount === 3
     ? 'Unidade, referência temporal e fonte coincidem. Isso não garante equivalência: confira a definição e o denominador de cada indicador.'
     : 'Há diferenças de unidade, data ou fonte. Use a comparação para entender o contexto; não subtraia nem ordene os valores como se fossem equivalentes.';
@@ -138,6 +139,19 @@ export function IndicatorComparator() {
           </select>
         </label>
       </div>
+
+      <figure className="indicator-scale" aria-labelledby="indicator-scale-title">
+        <figcaption id="indicator-scale-title">{percentageScale ? 'Cada percentual na escala de 0 a 100%' : 'Leitura visual indisponível para esta seleção'}</figcaption>
+        {percentageScale ? <>
+          <p>As barras mostram cada percentual. Os universos podem ser diferentes; a distância entre as barras não representa melhora, piora ou diferença comparável.</p>
+          {[left, right].map((item, index) => <div className="indicator-scale-row" key={item.id}>
+            <div><span>{index === 0 ? 'A' : 'B'} · {item.label}</span><strong>{formatIndicatorValue(item)}</strong></div>
+            <div className="indicator-scale-track" aria-hidden="true"><span style={{ width: `${item.value}%` }} /></div>
+            <small>{indicatorReference(item, data.sources.find(source => source.id === item.sourceId)).label}</small>
+          </div>)}
+          <div className="indicator-scale-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+        </> : <p>Use os valores e referências abaixo. Uma escala comum para unidades diferentes ou valores fora de 0 a 100% poderia sugerir uma comparação inválida.</p>}
+      </figure>
 
       <div className="indicator-compare-results" aria-live="polite">
         <IndicatorCard indicator={left} side="A" />
