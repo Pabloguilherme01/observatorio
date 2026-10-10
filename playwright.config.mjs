@@ -35,7 +35,7 @@ export default defineConfig({
     },
     {
       name: 'chrome-android',
-      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows|municipal-purpose)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows|municipal-purpose|municipal-v46)\.spec\.mjs/,
       use: { ...devices['Pixel 7'] },
     },
     {

@@ -17,24 +17,10 @@
   max-width: 100%;
 }
 
-:where(.hero-shell, .hero-inner, .hero-layout, .hero-copy, .hero-election-panel,
-  .hero-election-card, .audience-home, .audience-block, .audience-topic,
-  .audience-action-card, .audience-resource, .results-public-card) {
-  min-width: 0;
-  max-width: 100%;
-}
-
 .hero-layout {
   grid-template-columns: minmax(0, 1fr) minmax(0, .82fr);
   align-items: stretch;
   gap: clamp(16px, 2.5vw, 28px);
-}
-
-:where(.hero-copy > p, .hero-election-card p, .hero-election-heading strong,
-  .hero-action, .hero-reference-card, .audience-topic-copy,
-  .audience-action-card > span:nth-child(2), .audience-resource-copy) {
-  min-width: 0;
-  overflow-wrap: anywhere;
 }
 
 :where(.hero-action, .audience-topic, .audience-action-card, .audience-resource) {
@@ -54,29 +40,6 @@
 :where(.audience-topic-copy small, .audience-action-card small,
   .audience-resource-copy small) {
   overflow-wrap: anywhere;
-}
-
-.results-public-card {
-  display: flex;
-  min-height: 100%;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.results-public-card ol,
-.results-public-card li {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.results-public-card li > span:first-child {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.results-public-card li > strong {
-  flex: 0 0 auto;
-  white-space: nowrap;
 }
 
 :where(.overflow-x-auto, .table-scroll, .data-table-wrap, .recharts-responsive-container) {
@@ -124,10 +87,6 @@
     min-width: 0;
   }
 
-  .hero-election-card {
-    padding: 14px;
-  }
-
   .audience-block {
     padding-inline: 14px;
   }
@@ -145,11 +104,6 @@
 
   :where(.audience-topic-grid, .audience-action-grid, .audience-resource-grid) {
     grid-template-columns: minmax(0, 1fr) !important;
-  }
-
-  .results-public-card li {
-    align-items: flex-start;
-    flex-wrap: wrap;
   }
 
   .mobile-bottom-nav {

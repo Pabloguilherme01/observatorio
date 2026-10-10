@@ -2,7 +2,6 @@ import { Database, Info, AlertCircle } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatNumber } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -10,7 +9,6 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 import { IndicatorComparator } from './IndicatorComparator';
 import { DashboardSecondaryIndicatorCard } from './dashboard/DashboardSecondaryIndicatorCard';
 import { buildDashboardMetricsModel } from './dashboard/dashboardMetricsModel';
-import { ElectorateReconciliationPanel } from './dashboard/ElectorateReconciliationPanel';
 
 export function DashboardMetrics() {
   const { mode: languageMode } = useLanguageMode();
@@ -18,8 +16,6 @@ export function DashboardMetrics() {
   const isGuided = languageMode === 'guided';
   const isExplained = languageMode === 'simple' || isGuided;
   const {
-    electorate2026,
-    consolidatedElectorate,
     comparisonDetails,
     metricDetails,
     thematicIndicators,
@@ -121,13 +117,11 @@ export function DashboardMetrics() {
         </div>
       ) : (
         <div className="technical-detail mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">
-          <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> população e eleitorado são universos diferentes e podem ter datas de referência diferentes. A razão eleitorado/população é um cálculo estatístico; não mede comparecimento às urnas.
+          <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> confira período, unidade e definição. Indicadores com nomes próximos podem medir universos diferentes.
         </div>
       )}
 
-      {languageMode === 'technical' && consolidatedElectorate && (
-        <ElectorateReconciliationPanel consolidatedElectorate={consolidatedElectorate} />
-      )}
+
 
       <IndicatorComparator />
 
@@ -250,10 +244,7 @@ export function DashboardMetrics() {
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80">Leitura metodológica</div>
               <p className="mt-2 text-xs leading-5 text-slate-400 light:text-slate-600">Os valores podem vir de censo, estimativa, registro de uma data específica ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400 light:text-slate-600">{consolidatedElectorate === null ? <>O recorte local registra {formatNumber(electorate2026)} eleitores. Não há consolidado adicional registrado nesta versão do dataset; por isso nenhuma diferença entre recortes é inferida.</> : <ElectorateReconciliation local={electorate2026} consolidated={consolidatedElectorate} />}</p>
-            </div>
+
           </div>
         </>
       )}
@@ -290,10 +281,4 @@ export function DashboardMetrics() {
       )}
     </section>
   );
-}
-
-
-function ElectorateReconciliation({ local, consolidated }: { readonly local: number; readonly consolidated: number }) {
-  const difference = consolidated - local;
-  return <>O recorte local registra {formatNumber(local)} eleitores e o consolidado disponível registra {formatNumber(consolidated)}. A diferença de {formatNumber(Math.abs(difference))} registros é mantida visível para reconciliação entre recortes, sem tratar bases de referência distintas como erro automático.</>;
 }

@@ -69,18 +69,6 @@ jobs:
       - name: Audit quiz integrity
         run: npm run audit:quiz
 
-      - name: Validate TSE architecture isolation
-        run: npm run audit:tse-architecture
-
-      - name: Test TSE diff regression contract
-        run: npm run test:tse-diff
-
-      - name: Test first and second turn results contracts
-        run: npm run test:results
-
-      - name: Test post-election transition contract
-        run: npm run test:post-election
-
       - name: Test audit guards against regressions
         run: npm run test:audit-guards
 
@@ -93,32 +81,8 @@ jobs:
       - name: Audit source provenance
         run: npm run audit:provenance
 
-      - name: Audit TSE candidate snapshot provenance
-        run: npm run audit:candidate-snapshot
-
-      - name: Test unavailable TSE source handling
-        run: npm run test:tse-unavailable
-
-      - name: Validate TSE candidate snapshot contract
-        run: npm run validate:tse
-
-      - name: Validate candidate source guard
-        run: npm run test:candidate-source-guard
-
       - name: Dependency vulnerability gate
         run: npm run audit:deps
-
-      - name: Validate production results feed contract
-        run: npm run validate:results
-
-      - name: Validate synthetic results contract fixture
-        env:
-          RESULTS_FEED_FILE: scripts/fixtures/tse-results.valid.synthetic.json
-          REQUIRE_RESULTS_FEED: 'true'
-        run: npm run validate:results
-
-      - name: Verify JWS implementation
-        run: npm run test:jws
 
       - name: Release readiness contract
         run: npm run audit:release

@@ -1,6 +1,6 @@
 import { test, expect } from 'playwright/test';
 
-const sections = ['dashboard', 'eleitoral360', 'transporte', 'acao', 'quiz'];
+const sections = ['dashboard', 'orcamento', 'transporte', 'acao', 'quiz'];
 
 async function navigate(page, id) {
   await page.evaluate(sectionId => {

@@ -1,55 +1,15 @@
-# Release checklist
+# Release checklist — versão 46
 
-## Gate técnico
+- PR para main obrigatória; esta etapa termina com código e PR validados, sem merge nem publicação.
+- Build, TypeScript, auditorias municipais, quiz, fontes, segurança, acessibilidade, bundle e PWA aprovados.
+- CI · quality gate, sete perfis Browser e CodeQL para o mesmo SHA.
+- Nenhum módulo, arquivo público, requisição, automação ou campo de dataset do escopo retirado.
+- 200 questões únicas, 40 por fase, quatro alternativas, resposta válida, explicação e fonte existente.
+- Migração preserva tema, contraste e leitura; reinicia aprendizado anterior sem apagar o novo progresso.
+- Links antigos voltam ao início com aviso e parâmetros limpos; endpoints v1 ausentes.
+- SW conectado remove caches antigos; dataset municipal funciona offline sem afirmar atualização em tempo real.
+- Serviços, busca, orçamento, simulador, comparação, CSV e compartilhamento funcionam no desktop e celular.
+- Teclado, foco, contraste e largura de 320 a 1920 px verificados; capturas e relatório registrados.
+- Valores preservados com seus períodos; planejamento nunca rotulado como gasto pago.
 
-- Pull request para `main` obrigatória.
-- Checks obrigatórios: `CI · quality gate`, sete jobs `Browser · ...` (Chrome desktop, Chrome a11y, Firefox desktop, Safari desktop, Chrome Android, Safari iPhone e Safari iPhone SE) e `CodeQL · javascript-typescript`. Os contratos de qualidade que antes ficavam separados estão consolidados no CI principal.
-- Branch deve estar atualizada antes do merge.
-- Push direto em `main` deve ser bloqueado.
-- Administradores devem seguir as mesmas regras quando a operação do repositório permitir.
-- Preferir squash merge para manter o histórico de mudanças fácil de auditar.
-
-## Publicação
-
-- O deploy deve ser iniciado por um `CI` de push concluído e só prossegue quando `CI`, `Browser compatibility` e `CodeQL` estiverem verdes para o mesmo SHA da `main`.
-- O deploy deve publicar exatamente o SHA validado pelos três gates de publicação.
-- O deploy manual também executa `audit:workflows` antes do restante do release gate, mantendo os contratos de workflow centralizados.
-- Antes da publicação, `main` deve continuar apontando para esse mesmo SHA; se a branch avançar, o deploy antigo deve abortar.
-- O healthcheck pós-publicação deve confirmar paridade do SHA, estado do snapshot TSE, OpenAPI e assets PWA.
-
-## Automação eleitoral
-
-- Capturas TSE devem gerar branch automática em `automation/**`; o push dessa branch aciona o CI automaticamente antes da abertura da PR.
-- Falha administrativa na criação da PR deve gerar uma única issue operacional com link de comparação.
-- Nenhum snapshot eleitoral deve ser mesclado diretamente na `main` pela automação.
-
-## Evidência
-
-- Antes de uma release, registrar o resultado real das Actions para o SHA publicado.
-- O comando local `npm run audit:release` deve terminar sem `FAIL`; a validação do bundle, performance e PWA deve ser feita a partir do build produzido pelo Browser.
-- Assinatura/verificação de commits deve ser mantida de forma consistente quando a conta e a política do repositório suportarem isso.
-
-## Mitigação técnica quando a proteção administrativa não estiver disponível
-
-O CI também executa `npm run check:main-provenance` em pushes para `main`. O guard consulta as PRs associadas ao SHA e só permite que o pipeline prossiga quando o commit estiver associado a uma PR já mesclada para `main`.
-
-Isso não substitui a proteção nativa da branch. Porém, evita que um push direto em `main` seja considerado um release válido pelo pipeline e, portanto, impede que esse caminho alcance o deploy de Pages.
-
-A proteção nativa de branch/ruleset continua recomendada para bloquear o push na origem, antes mesmo da execução do CI.
-
-## Operação idempotente das sincronizações
-
-- Os workflows TSE possuem timeout operacional explícito e verificam se já existe uma PR aberta para a branch de automação antes de chamar `gh pr create`.
-- As sincronizações usam somente `actions: read` para acompanhar o CI; não precisam disparar outro workflow por API.
-- Reexecuções do mesmo ciclo não devem criar PRs duplicadas.
-- Se a criação de PR continuar bloqueada por permissão do GitHub, a issue operacional permanece como fallback único e não autoriza merge automático.
-
-## Manutenção contínua
-
-- `audit:workflows` valida a estrutura dos workflows, matriz de navegadores, permissões relevantes, proveniência e cadeia de deploy.
-- `audit:styles` mede a dívida de CSS e registra seletores compartilhados entre arquivos para evitar novas camadas redundantes.
-- O workflow Browser protege o build único compartilhado com `audit:bundle`, `audit:performance` e `test:pwa`; a suíte Chrome mede LCP, FCP, CLS, tarefas longas e latência de interação em laboratório.
-- O entrypoint compartilhado `src/assets/styles/index.css` centraliza as camadas globais; estilos específicos de componentes continuam locais.
-- O hook `useDialogFocus` centraliza foco, Escape, Tab e bloqueio de rolagem dos diálogos.
-- O workflow de limpeza só executa a parte destrutiva a partir da `main`; a exclusão de qualquer branch protegida é recusada, qualquer branch de trabalho só pode ser excluída após PR mesclada na branch padrão, sem PR aberta, a ponta ainda deve coincidir com o `head.sha` registrado pela PR no fechamento, há retenção mínima de 7 dias após o merge e existe limite global de 50 branches por execução; isso preserva uma janela curta de recuperação, reduz acúmulo e protege branches alterados posteriormente.
-- O próprio script de limpeza recusa execução destrutiva fora do GitHub Actions ou fora da branch padrão, mantendo uma segunda barreira além do `if` do workflow.
+Quando uma publicação for autorizada, usar somente o artefato Browser aprovado para o SHA validado por CI, Browser e CodeQL. Revalidar main antes de publicar e conferir publication.commitSha, API v2, assets e PWA pela rede pública. Proteção nativa de branch complementa o guard de proveniência; nenhum push direto deve ser considerado release válido.

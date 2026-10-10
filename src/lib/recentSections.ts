@@ -9,14 +9,10 @@ const sectionAliases: Readonly<Record<string, string>> = {
   contexto: 'dashboard',
   demografia: 'dashboard',
   dados: 'dashboard',
-  politica: 'eleitoral360',
-  candidaturas: 'eleitoral360',
-  'linha-do-tempo': 'eleitoral360',
   'orcamento-impacto': 'orcamento',
   qualidade: 'fontes',
   evidencias: 'fontes',
   'mapa-evidencias': 'fontes',
-  'mudancas-snapshot': 'fontes',
 };
 
 const navigationIds = new Set(navigation.map(item => item.id as string));

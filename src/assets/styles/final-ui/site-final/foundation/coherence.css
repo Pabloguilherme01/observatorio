@@ -23,41 +23,6 @@
 
 /* Never let a content card become a clipping mask for readable text. */
 :where(
-  .obs-card,
-  .candidate-card,
-  .quiz-card,
-  .civic-service-card,
-  .official-hub,
-  .summary-shell,
-  .trust-shell,
-  .audience-page-card,
-  .audience-topic,
-  .audience-action-card,
-  .audience-resource,
-  .audience-link,
-  .official-resource-card
-){
-  min-width:0!important;
-  max-width:100%!important;
-}
-:where(.obs-card,.candidate-card,.quiz-card,.civic-service-card,.audience-page-card){
-  overflow:visible!important;
-}
-:where(
-  .obs-card > *,
-  .candidate-card > *,
-  .quiz-card > *,
-  .civic-service-card > *,
-  .official-resource-card > *,
-  .audience-topic > *,
-  .audience-action-card > *,
-  .audience-resource > *,
-  .audience-link > *
-){
-  min-width:0!important;
-  max-width:100%;
-}
-:where(
   .audience-topic-copy,
   .audience-action-card > span:nth-child(2),
   .audience-resource-copy,
@@ -346,12 +311,6 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
   .hero-shell .hero-action.primary{
     grid-column:1/-1;
   }
-  .hero-election-panel{
-    width:100%!important;
-  }
-  .hero-election-card{
-    min-width:0!important;
-  }
 
   .audience-home{
     padding:10px 10px 18px!important;
@@ -596,5 +555,3 @@ main p a:not(.hero-action):not(.official-resource-card):not(.audience-resource):
     scroll-behavior:auto!important;
   }
 }
-
-

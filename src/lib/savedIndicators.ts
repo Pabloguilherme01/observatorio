@@ -1,4 +1,5 @@
 import { STORAGE_NAMESPACE } from '../config/version';
+import { isRetiredSavedIndicator } from './retiredDestinations';
 
 const STORAGE_KEY = `${STORAGE_NAMESPACE}-saved-indicators`;
 const MAX_SAVED_INDICATORS = 12;
@@ -21,6 +22,7 @@ export function getSavedIndicators(): SavedIndicator[] {
       let url: URL;
       try { url = new URL(candidate.url, window.location.origin); } catch { return false; }
       if (url.origin !== window.location.origin) return false;
+      if (isRetiredSavedIndicator(candidate as SavedIndicator)) return false;
       if (seen.has(candidate.id)) return false;
       seen.add(candidate.id);
       return true;

@@ -24,8 +24,6 @@ export function buildDashboardMetricsModel() {
   const population2022 = d.populationSeries.find(p => p.year === 2022)?.value ?? 0;
   const population2026 = d.populationSeries.find(p => p.year === 2026)?.value ?? 0;
   const populationGrowthPct = population2022 ? ((population2026 - population2022) / population2022) * 100 : 0;
-  const electorate2026 = d.electoral.electorate;
-  const consolidatedElectorate = d.electoral.tseConsolidated ?? null;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
   const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
   const sourceMeta = (id: string) => d.sources.find(source => source.id === id);
@@ -119,8 +117,6 @@ export function buildDashboardMetricsModel() {
   ] as const;
 
   return {
-    electorate2026,
-    consolidatedElectorate,
     comparisonDetails,
     metricDetails,
     thematicIndicators,

@@ -1,6 +1,5 @@
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { FreshnessBanner } from './FreshnessBanner';
-import { SnapshotChanges } from './SnapshotChanges';
 import { ContextComparison } from './ContextComparison';
 import { DemographicDynamic } from './DemographicDynamic';
 import { TransportCalculator } from '../TransportCalculator';
@@ -17,7 +16,6 @@ export default function DeferredContextGroup() {
     {!summary && <TransportCalculator />}
     {!summary && <SanitationHealthSection />}
 
-    {technical && <SnapshotChanges />}
     {technical && <ContextComparison />}
   </>;
 }

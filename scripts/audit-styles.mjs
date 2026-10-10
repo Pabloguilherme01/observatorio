@@ -1,7 +1,9 @@
 import fs from 'node:fs';
+
 import path from 'node:path';
 
 const root = process.cwd();
+
 const styleRoot = path.join(root, 'src', 'assets', 'styles');
 
 function listCssFiles(directory, base = directory) {
@@ -15,12 +17,19 @@ function listCssFiles(directory, base = directory) {
 }
 
 const files = listCssFiles(styleRoot).sort();
+
 const maxSourceKb = Number(process.env.STYLE_MAX_SOURCE_KB || 120);
+
 const warnings = [];
+
 const failures = [];
+
 const selectorFiles = new Map();
+
 const exactDuplicateBlocks = new Map();
+
 const intraFileDuplicateBlocks = new Map();
+
 const adjacentSelectorDuplicates = new Map();
 
 function normalizeCss(value) {
@@ -121,13 +130,14 @@ const sameContextExactDuplicates = [...exactDuplicateBlocks.entries()]
     block: block.split('\n').slice(-1)[0].slice(0, 240),
     files: [...new Set(files)],
   }));
+
 const repeatedExactBlocks = [...exactDuplicateBlocks.entries()]
   .filter(([, files]) => files.length >= 2)
   .map(([block, files]) => ({ block: block.split('\n').slice(-1)[0].slice(0, 240), files }))
   .sort((a, b) => b.files.length - a.files.length || b.block.length - a.block.length);
+
 const intraFileDuplicates = [...intraFileDuplicateBlocks.entries()]
   .flatMap(([file, blocks]) => [...blocks.entries()].filter(([, count]) => count > 1).map(([block, count]) => ({ file, count, block: block.slice(0, 240) })));
-
 
 console.log(JSON.stringify({
   cssFiles: files.length,
@@ -142,26 +152,33 @@ console.log(JSON.stringify({
 if (crossFileDuplicates.length > 80) {
   warnings.push('Há ' + crossFileDuplicates.length + ' seletores repetidos entre arquivos; consolidação incremental recomendada.');
 }
+
 if (repeatedExactBlocks.length > 120) {
   warnings.push('Há ' + repeatedExactBlocks.length + ' blocos CSS exatamente repetidos; consolidar em rodadas pequenas e verificadas.');
 }
+
 if (intraFileDuplicates.length) {
   intraFileDuplicates.forEach(({ file, count }) => failures.push(file + ' possui ' + count + ' bloco(s) CSS exatamente repetido(s) dentro do mesmo arquivo.'));
 }
+
 if (adjacentSelectorDuplicates.size) {
   for (const [key, count] of adjacentSelectorDuplicates.entries()) {
     const [file, context, selector] = key.split('\n');
     failures.push(file + ' possui regra CSS adjacente repetida no mesmo contexto (' + context + '): ' + selector + ' (' + count + ' ocorrências).');
   }
 }
+
 if (sameContextExactDuplicates.length) {
   sameContextExactDuplicates.forEach(({ block, files }) =>
     failures.push('bloco CSS exatamente duplicado no mesmo contexto entre arquivos: ' + files.join(', ') + ' :: ' + block),
   );
 }
+
 warnings.forEach(message => console.log('WARN ' + message));
+
 if (failures.length) {
   failures.forEach(message => console.error('FAIL ' + message));
   process.exit(1);
 }
+
 console.log('PASS orçamento e inventário de estilos concluídos');

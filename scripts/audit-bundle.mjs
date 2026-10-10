@@ -1,9 +1,13 @@
 import fs from 'node:fs';
+
 import path from 'node:path';
+
 import { gzipSync } from 'node:zlib';
 
 const distDir = path.join(process.cwd(), 'dist');
+
 const assetsDir = path.join(distDir, 'assets');
+
 const indexPath = path.join(distDir, 'index.html');
 
 const fail = message => {
@@ -30,13 +34,19 @@ const files = fs.readdirSync(assetsDir)
   });
 
 const js = files.filter(file => file.type === 'js');
+
 const css = files.filter(file => file.type === 'css');
+
 const largestJs = [...js].sort((a, b) => b.raw - a.raw)[0];
+
 const largestCss = [...css].sort((a, b) => b.raw - a.raw)[0];
+
 const totalJsRaw = js.reduce((sum, file) => sum + file.raw, 0);
+
 const totalCssRaw = css.reduce((sum, file) => sum + file.raw, 0);
 
 const kb = value => Math.round(value / 1024 * 10) / 10;
+
 const envLimit = (name, fallbackKb) => {
   const value = Number(process.env[name]);
   return Number.isFinite(value) && value > 0 ? value * 1024 : fallbackKb * 1024;
@@ -63,13 +73,19 @@ console.log(JSON.stringify({
 }, null, 2));
 
 if (!largestJs) fail('nenhum bundle JavaScript de produção foi gerado');
+
 if (!largestCss) fail('nenhum bundle CSS de produção foi gerado');
 
 if (largestJs?.raw > limits.largestJsRaw) fail(`maior JS excede orçamento: ${largestJs.name} = ${kb(largestJs.raw)} KB > ${kb(limits.largestJsRaw)} KB`);
+
 if (largestJs?.gzip > limits.largestJsGzip) fail(`maior JS gzip excede orçamento: ${largestJs.name} = ${kb(largestJs.gzip)} KB > ${kb(limits.largestJsGzip)} KB`);
+
 if (largestCss?.raw > limits.largestCssRaw) fail(`maior CSS excede orçamento: ${largestCss.name} = ${kb(largestCss.raw)} KB > ${kb(limits.largestCssRaw)} KB`);
+
 if (largestCss?.gzip > limits.largestCssGzip) fail(`maior CSS gzip excede orçamento: ${largestCss.name} = ${kb(largestCss.gzip)} KB > ${kb(limits.largestCssGzip)} KB`);
+
 if (totalJsRaw > limits.totalJsRaw) fail(`JavaScript total excede orçamento: ${kb(totalJsRaw)} KB > ${kb(limits.totalJsRaw)} KB`);
+
 if (totalCssRaw > limits.totalCssRaw) fail(`CSS total excede orçamento: ${kb(totalCssRaw)} KB > ${kb(limits.totalCssRaw)} KB`);
 
 if (!process.exitCode) console.log('PASS orçamento de bundle de produção');

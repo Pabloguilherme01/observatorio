@@ -1,5 +1,14 @@
 /* Guided reading mode: pedagogical layer over the explained data view. */
 
+/* Keep small instructional labels readable in both themes. */
+:root.light[data-language-mode="guided"] .guided-learning-progress span{color:#475569}
+:root.light[data-language-mode="guided"] .guided-learning-copy em{color:#92400e}
+:root.light[data-language-mode="guided"] #dashboard [class~="text-emerald-300/80"]{color:#047857!important}
+:root.light[data-language-mode="guided"] #dashboard-history-title{color:#0f172a!important}
+:root:not(.light)[data-language-mode="guided"] [class~="text-slate-500"],
+:root:not(.light)[data-language-mode="guided"] [class~="text-slate-600"],
+:root:not(.light)[data-language-mode="guided"] .site-footer-brand>small{color:#94a3b8!important}
+
 [data-language-mode="guided"] .technical-detail,
 [data-language-mode="guided"] .technical-only{
   display:none!important;

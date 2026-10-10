@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ClipboardCheck, ExternalLink, Landmark, Link2, SearchCheck, ShieldCheck, Smartphone } from 'lucide-react';
+import { Link2, SearchCheck, ShieldCheck } from 'lucide-react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { SectionHeader } from '../ui/SectionHeader';
 import { copyText } from '../../lib/clipboard';
@@ -16,16 +16,6 @@ export function CivicActionHub() {
   const [serviceQuery, setServiceQuery] = useState(getPublicServiceQuery);
   const [queryLinkCopied, setQueryLinkCopied] = useState(false);
   const [showAllServices, setShowAllServices] = useState(false);
-  const tesser = [
-    ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
-    ['candidaturas','Candidaturas e contas','Consulte registros, bens, receitas e despesas no DivulgaCandContas.','https://divulgacandcontas.tse.jus.br/divulga/#/','search'],
-    ['resultados','Resultados oficiais','Acompanhe a divulgação oficial quando houver dados publicados.','https://resultados.tse.jus.br/','results'],
-    ['eleicoes2026','Portal Eleições 2026','Calendário, orientações, estatísticas e serviços da Justiça Eleitoral.','https://www.tse.jus.br/eleicoes/eleicoes-2026','rules'],
-    ['justificativa','Justificar ausência','Consulte as formas e os prazos oficiais para justificativa eleitoral.','https://www.tse.jus.br/servicos-eleitorais/justificativa-eleitoral','rules'],
-    ['certidoes','Emitir certidões eleitorais','Acesse certidões e validações disponibilizadas pela Justiça Eleitoral.','https://www.tse.jus.br/servicos-eleitorais/certidoes','service'],
-    ['multas','Quitar débitos eleitorais','Consulte orientações oficiais para débitos e multas eleitorais.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/quitacao-de-multas','service'],
-    ['dadosabertos','Dados abertos do TSE','Bases públicas para conferência e análise técnica.','https://dadosabertos.tse.jus.br/','data'],
-  ];
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
   const normalizedServiceQuery = normalizePublicServiceQuery(serviceQuery);
   const serviceTerms = normalizedServiceQuery.split(/\s+/).filter(Boolean);
@@ -155,38 +145,6 @@ export function CivicActionHub() {
         {!serviceQuery && <button type="button" onClick={() => setShowAllServices(value => !value)} aria-expanded={showAllServices} className="mt-4 min-h-11 rounded-xl border border-sky-300/30 px-4 text-sm font-bold text-sky-200 light:border-sky-700 light:text-sky-800">
           {showAllServices ? 'Mostrar serviços principais' : `Ver todos os ${allMunicipalServices.length} serviços municipais`}
         </button>}
-      </div>
-
-      <div className="official-hub">
-        <div className="official-hub-head">
-          <div>
-            <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
-            <h3 className="official-hub-title">Recursos oficiais</h3>
-            <p className="official-hub-subtitle">{technical ? 'Bases e serviços oficiais para conferência detalhada.' : summary ? 'Serviços essenciais para consultar rapidamente.' : 'Serviços e consultas oficiais para continuar a leitura com segurança.'}</p>
-          </div>
-          <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
-            Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
-        </div>
-
-        <div className="official-resource-grid">
-          {tesser.slice(0, technical ? tesser.length : 4).map(([id,title,description,href,icon]) => (
-            <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
-              <span className="official-resource-icon" aria-hidden="true">
-                {icon === 'search' ? <SearchCheck className="h-5 w-5" /> :
-                 icon === 'results' ? <Landmark className="h-5 w-5" /> :
-                 icon === 'service' ? <Smartphone className="h-5 w-5" /> :
-                 icon === 'rules' ? <ClipboardCheck className="h-5 w-5" /> :
-                 <ShieldCheck className="h-5 w-5" />}
-              </span>
-              <span className="min-w-0 flex-1">
-                <strong>{title}</strong>
-                <small>{description}</small>
-              </span>
-              <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
-            </a>
-          ))}
-        </div>
       </div>
 
       <div className="official-source-note">

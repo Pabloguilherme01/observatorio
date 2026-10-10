@@ -1,6 +1,6 @@
 /** Contratos de domínio do Observatório. Dados e UI permanecem desacoplados. */
 export type DataNature = 'official' | 'secondary' | 'derived' | 'legacy';
-export type DataStatus = 'current' | 'snapshot' | 'historical' | 'planned' | 'derived';
+export type DataStatus = 'published' | 'snapshot' | 'historical' | 'planned' | 'derived';
 export type ISODate = `${number}-${number}-${number}`;
 
 export interface SourceRef {
@@ -24,84 +24,6 @@ export interface PopulationPoint {
   readonly kind: 'census' | 'estimate';
   readonly referenceDate: ISODate;
   readonly sourceId: string;
-}
-
-export interface AgeGroup {
-  readonly id: 'under24' | '25to59' | '60plus';
-  readonly label: string;
-  readonly voters: number;
-  readonly sharePct: number;
-}
-
-export interface ElectoralSnapshot {
-  readonly zone: string;
-  readonly electorate: number;
-  readonly snapshotDate: ISODate;
-  readonly tseConsolidated?: number;
-  readonly consolidatedSourceId?: string;
-  readonly ageGroups: readonly AgeGroup[];
-  readonly womenPct?: number;
-  readonly menPct?: number;
-  readonly socialNameCount?: number;
-  readonly indigenousPopulation?: number;
-  readonly indigenousElectorate?: number;
-  readonly electorate2018?: number;
-  readonly electorate2018SourceId?: string;
-  readonly electorate2022?: number;
-  readonly electorate2022SourceId?: string;
-  readonly electorate2024?: number;
-  readonly electorate2024SourceId?: string;
-  readonly zoneVsTseDifference?: number;
-  readonly turnout2024Pct: number;
-  readonly abstention2024Pct: number;
-  readonly abstention2024Count: number;
-  readonly blankVotes2024Count: number;
-  readonly nullVotes2024Count: number;
-  readonly validVotes2024Count: number;
-  readonly sourceId: string;
-}
-
-export interface PollResult {
-  readonly label: string;
-  readonly percentage: number;
-}
-
-export interface ElectionPoll {
-  readonly registrationNumber: string;
-  readonly pollster: string;
-  readonly contractor?: string;
-  readonly collectionDate: ISODate;
-  readonly interviews: number;
-  readonly method: 'spontaneous' | 'stimulated' | 'unknown';
-  readonly results: readonly PollResult[];
-  readonly nonePct?: number;
-  readonly notSurePct?: number;
-  readonly unclassifiedPct?: number;
-  readonly officialMarginErrorPct?: number;
-  /** Margem registrada na documentação da pesquisa; não é calculada pelo Observatório. */
-  readonly theoreticalMarginErrorPct?: number;
-  readonly confidenceLevelPct?: number;
-  readonly sourceId: string;
-  readonly judicialContext?: {
-    readonly status: 'decision_related';
-    readonly referenceDate: ISODate;
-    readonly sourceId: string;
-    readonly scope: 'specific_disclosures';
-    readonly summary: string;
-  };
-  readonly note?: string;
-}
-
-export interface CandidateSnapshot {
-  readonly name: string;
-  readonly party?: string;
-  readonly ballotNumber?: number;
-  readonly status: string;
-  readonly occupation?: string;
-  readonly education?: string;
-  readonly declaredAssetsBrl?: number;
-  readonly sourceId: string;
-  readonly snapshotDate: ISODate;
 }
 
 export interface BudgetAllocation {
@@ -183,9 +105,6 @@ export interface ObservatoryData {
   };
   readonly sources: readonly SourceRef[];
   readonly populationSeries: readonly PopulationPoint[];
-  readonly electoral: ElectoralSnapshot;
-  readonly polls: readonly ElectionPoll[];
-  readonly candidates: readonly CandidateSnapshot[];
   readonly transport: TransportProfile;
   readonly sanitation: SanitationSnapshot;
   readonly health: HealthProfile;

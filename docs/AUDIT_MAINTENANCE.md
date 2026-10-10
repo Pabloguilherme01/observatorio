@@ -11,7 +11,7 @@ Têm prioridade máxima e devem testar comportamento observável:
 - build e typecheck;
 - navegador e acessibilidade;
 - PWA/offline;
-- contratos de dados e resultados;
+- contratos de dados municipais;
 - integridade de fontes;
 - segurança;
 - publicação do SHA validado.
@@ -23,7 +23,7 @@ Podem inspecionar arquivos/configuração quando protegem uma regra concreta, po
 - Actions pinadas;
 - workflow obrigatório;
 - versão sincronizada;
-- proibição de merge automático de snapshots eleitorais;
+- ausência de domínios e campos retirados no conjunto ativo;
 - proveniência da `main`.
 
 ### 3. Meta-auditorias
@@ -46,17 +46,17 @@ Se o script só validar que outro script, texto ou nome existe, prefira remover 
 
 Quando duas auditorias passam a validar o mesmo contrato, consolidar a regra no check de nível mais baixo que ainda represente o comportamento real.
 
-Não remover cobertura de segurança, fontes, acessibilidade, resultados ou proveniência apenas para reduzir quantidade de scripts.
+Não remover cobertura de segurança, fontes, acessibilidade, dados municipais ou proveniência apenas para reduzir quantidade de scripts.
 
-## Dados cívicos e eleitorais
+## Dados municipais
 
-Mudanças relacionadas a eleições, candidaturas, resultados, denúncias, processos ou agentes públicos devem:
+Mudanças nos indicadores, serviços, orçamento e aprendizado devem:
 
 - manter descrição factual e linguagem neutra;
 - preservar fonte, data, recorte e limitações;
-- não produzir ranking, recomendação ou previsão eleitoral;
+- não apresentar planejamento como execução ou ausência de data como atualidade;
 - distinguir dado oficial, captura local, dado derivado e hipótese;
-- exigir revisão humana antes de publicar novos snapshots quando o pipeline assim determina.
+- validar origem, recorte e integridade antes de incorporar novos valores.
 
 ## Workflows destrutivos
 

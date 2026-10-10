@@ -5,7 +5,7 @@ import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
-export function PostElectionHero() {
+export function MunicipalHero() {
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';

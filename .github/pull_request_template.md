@@ -10,7 +10,7 @@
 
 - [ ] Fontes, datas, recortes e limitações foram preservados/atualizados quando aplicável
 - [ ] Cálculo derivado não foi apresentado como dado observado
-- [ ] Conteúdo cívico/eleitoral permanece factual e neutro
+- [ ] Conteúdo municipal preserva fonte, período, significado e limites
 
 ## Auditorias
 

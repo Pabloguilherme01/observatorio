@@ -1,30 +1,15 @@
-import { CheckCircle2, Database, Link2, TriangleAlert } from 'lucide-react';
+import { indicatorReference } from '../../lib/indicatorReference';
+import { CheckCircle2, Database, TriangleAlert } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
-import { formatDate } from '../../utils/formatters';
-import { RESULTS_DOCS_URL } from '../../data/resultsConfig';
-import generated from '../../data/generated/tse2026-candidates.json';
 import { buildDataQualityModel } from './quality/dataQualityModel';
-
-function formatCapture(value: string | undefined) {
-  if (!value) return 'não registrada';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString('pt-BR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-    timeZone: 'America/Sao_Paulo',
-  });
-}
 
 export function DataQualityPanel() {
   const {
     derived,
     current,
     historical,
-    officialSources,
-    secondarySources,
     snapshot,
     planned,
     datedIndicators,
@@ -33,11 +18,6 @@ export function DataQualityPanel() {
     missingDateIndicators,
     missingSourceIndicators,
     indicatorsNeedingDocumentation,
-    tseState,
-    tseStatus,
-    tseCapturedAt,
-    resultsSource,
-    unresolved,
     warnings,
   } = buildDataQualityModel();
 
@@ -47,11 +27,11 @@ export function DataQualityPanel() {
         titleId="quality-title"
         eyebrow="Como sabemos"
         title="Veja de onde vêm os dados e quais são os limites"
-        description="O Observatório diferencia dado atual, registro de uma data específica, histórico e cálculo feito a partir das fontes. Aqui você pode conferir atualização, método e limitações."
+        description="O Observatório diferencia dado publicado, registro de uma data específica, histórico e cálculo feito a partir das fontes. Aqui você pode conferir atualização, método e limitações."
       />
       <div className="quality-overview mb-4 rounded-3xl border border-white/8 bg-white/[0.02] p-4 light:border-slate-200 light:bg-slate-50/70">
         <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-          <div><div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Cobertura documental</div><p className="mt-1 text-xs leading-5 text-slate-500">{datedIndicators} de {d.indicators.length} indicadores têm data própria ou referência temporal herdada da fonte.</p><p className="mt-1 text-[11px] leading-5 text-slate-500">Fonte com link: {sourceLinkedIndicators} de {d.indicators.length}. Para completar: {missingDateIndicators} sem referência temporal e {missingSourceIndicators} sem link de fonte.</p></div>
+          <div><div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Cobertura documental</div><p className="mt-1 text-xs leading-5 text-slate-500">{datedIndicators} de {d.indicators.length} indicadores têm data própria ou período anual ou referência temporal da fonte.</p><p className="mt-1 text-[11px] leading-5 text-slate-500">Fonte com link: {sourceLinkedIndicators} de {d.indicators.length}. Para completar: {missingDateIndicators} sem referência temporal e {missingSourceIndicators} sem link de fonte.</p></div>
           <strong className="text-2xl font-black text-white light:text-slate-900">{datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</strong>
         </div>
         <div className="quality-progress mt-3" aria-label={`Cobertura temporal ${datedCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`}><span style={{ width: `${Math.min(100, datedCoverage)}%` }} /></div>
@@ -66,7 +46,7 @@ export function DataQualityPanel() {
             <ul className="mt-3 space-y-2">
               {indicatorsNeedingDocumentation.map(indicator => {
                 const source = d.sources.find(item => item.id === indicator.sourceId);
-                const hasDate = Boolean(indicator.referenceDate || source?.referenceDate);
+                const hasDate = Boolean(indicatorReference(indicator, source).key);
                 const hasSourceLink = Boolean(source?.resourceUrl || source?.url);
                 const missingFields = [!hasDate ? 'referência temporal' : null, !hasSourceLink ? 'link da fonte' : null].filter(Boolean).join(' e ');
                 return (
@@ -90,7 +70,7 @@ export function DataQualityPanel() {
         <Card>
           <CheckCircle2 className="h-5 w-5 text-emerald-300" aria-hidden="true" />
           <div className="mt-3 text-3xl font-black text-white light:text-slate-900">{current}</div>
-          <div className="text-xs text-slate-500">indicadores atuais</div>
+          <div className="text-xs text-slate-500">referências publicadas</div>
         </Card>
         <Card>
           <Database className="h-5 w-5 text-sky-300" aria-hidden="true" />
@@ -124,104 +104,6 @@ export function DataQualityPanel() {
         </div>
       </div>
 
-      <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Registro oficial do TSE</div>
-        <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h3 className="text-lg font-black text-white light:text-slate-900">Situação da captura</h3>
-            <p className="mt-1 text-xs leading-5 text-slate-500">O arquivo atual é estadual. O recorte de Águas Lindas é documental e separado do campo municipal do TSE; ele não representa, por si só, o universo completo de candidaturas do município.</p>
-          </div>
-          <div className={'text-sm font-black ' + tseStatus.tone}>{tseStatus.label}</div>
-        </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <SnapshotInfo label="Captura local" value={formatCapture(generated.meta.downloadedAt)} />
-          <SnapshotInfo label="Registros lidos" value={generated.meta.sourceRows.toLocaleString('pt-BR')} />
-          <SnapshotInfo label="Encontrados no recorte estadual" value={(generated.meta.originalMatchedRows ?? 0).toLocaleString('pt-BR')} />
-          <SnapshotInfo label="Mapeados por evidência local" value={generated.meta.matchedRows.toLocaleString('pt-BR')} />
-          <SnapshotInfo label="Pendentes de validação" value={unresolved.toLocaleString('pt-BR')} />
-          <SnapshotInfo label="Método" value={generated.meta.retrievalMethod.replaceAll('_', ' ')} />
-          <SnapshotInfo label="SHA-256" value={generated.meta.sourceFileSha256 ?? 'não disponível nesta captura'} mono />
-          <SnapshotInfo label="Comparação" value={generated.diff?.comparison?.replaceAll('_', ' ') ?? 'não informada'} />
-        </div>
-        <div className="mt-3 rounded-2xl border border-white/8 bg-black/10 p-3 text-[11px] leading-5 text-slate-500 light:bg-white light:text-slate-600">
-          <strong className="text-slate-300 light:text-slate-800">Limitação atual:</strong> {generated.meta.filterNote}
-        </div>
-      </div>
-
-      <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.02] p-5 light:border-slate-200 light:bg-slate-50/70">
-        <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-sky-300/80">Datas e atualização das fontes</div>
-        <h3 className="mt-1 text-lg font-black text-white light:text-slate-900">Quando o dado foi publicado e quando foi capturado</h3>
-        <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">A data da fonte é diferente da última captura local. Quando a captura não é registrada por esta camada, isso aparece explicitamente em vez de sugerir atualização em tempo real.</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            ['Eleitorado 2026', 'tse-eleitorado-2026'],
-            ['Candidaturas', 'tse-candidatos-2026'],
-            ['Pesquisas', 'tse-pesquisas-2026'],
-            ['Orçamento', 'loa-2026'],
-            ['Saúde / HEAL', 'healgo'],
-            ['População', 'ibge-estimativas-2026'],
-          ].map(([label, sourceId]) => {
-            const source = d.sources.find(item => item.id === sourceId);
-            const date = source?.referenceDate ?? source?.publishedAt;
-            const localCapture = sourceId === 'tse-candidatos-2026' && generated.meta.downloadedAt ? formatCapture(generated.meta.downloadedAt) : 'não registrada nesta camada';
-            return (
-              <a key={sourceId} href={source?.url} target="_blank" rel="noopener noreferrer" className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 transition hover:border-sky-300/20 light:border-slate-200 light:bg-white">
-                <div className="text-xs font-bold text-slate-400">{label}</div>
-                <div className="mt-2 text-sm font-black text-white light:text-slate-900">{date ? formatDate(date) : 'sem data registrada'}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-wide text-slate-600">{source?.nature ?? 'fonte não encontrada'}</div>
-                <div className="mt-2 text-[10px] font-semibold text-slate-500">Captura local: {localCapture}</div>
-              </a>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-slate-500"><Link2 className="h-4 w-4 text-sky-300" aria-hidden="true" /> Fontes</div>
-          <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{d.sources.length}</div>
-          <p className="mt-1 text-xs text-slate-500">{officialSources} oficiais · {secondarySources} secundárias</p>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Última atualização do dataset</div>
-          <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatDate(d.meta.updatedAt)}</div>
-          <p className="mt-1 text-xs text-slate-500">Verifique a ficha de cada fonte para o respectivo ano-base.</p>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Captura do TSE</div>
-          <div className={'mt-2 text-base font-black ' + tseStatus.tone}>{tseStatus.label}</div>
-          <p className="mt-1 text-xs text-slate-500">Estado local: {tseState}. Não confundir registros estaduais com candidaturas municipais validadas.</p>
-          <div className="mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-600">
-            {tseCapturedAt ? formatCapture(tseCapturedAt.toISOString()) : 'sem horário de captura'}
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Validação dos resultados</div>
-          <div className="mt-2 text-base font-black text-white light:text-slate-900">Integridade dos resultados</div>
-          <p className="mt-1 text-xs leading-5 text-slate-500">A ingestão verifica o arquivo oficial antes de publicá-lo. JSON/JWS, contexto municipal e assinatura são tratados separadamente; a prova criptográfica só aparece como verificada quando todos os arquivos passam.</p>
-          {resultsSource?.url && <a href={resultsSource.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Documentação técnica do TSE</a>}
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Simulado oficial TSE</div>
-          <div className="mt-2 text-base font-black text-white light:text-slate-900">22–24/09 · 9h–12h e 14h–17h</div>
-          <p className="mt-1 text-xs leading-5 text-slate-500">Validação técnica isolada da produção. O ambiente de simulado usa pleito 17801 e códigos próprios; nenhum dado simulado entra no feed oficial.</p>
-          <a href={RESULTS_DOCS_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-300 hover:text-sky-200">Ver documentação dos simulados TSE</a>
-        </Card>
-        <Card className="p-4">
-          <div className="text-xs font-bold uppercase tracking-wide text-slate-500">Regra editorial</div>
-          <div className="mt-2 text-base font-black text-white light:text-slate-900">Sem ranking automático</div>
-          <p className="mt-1 text-xs text-slate-500">Comparações documentais não são convertidas em recomendação eleitoral.</p>
-        </Card>
-      </div>
-    </section>
-  );
-}
-
-function SnapshotInfo({ label, value, mono = false }: { readonly label: string; readonly value: string; readonly mono?: boolean }) {
-  return (
-    <div className="min-w-0 rounded-2xl border border-white/8 bg-white/[0.02] p-3 light:border-slate-200 light:bg-white">
-      <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">{label}</div>
-      <div className={'mt-1 break-words text-xs font-bold text-white light:text-slate-900' + (mono ? ' font-mono' : '')}>{value}</div>
-    </div>
+      </section>
   );
 }

@@ -1,11 +1,8 @@
 export const navigation = [
   { id: 'descubra', label: 'Começar', shortLabel: 'Começar', description: 'Escolha o que você quer consultar', shortcut: 'G C', group: 'primary' },
   { id: 'dashboard', label: 'Indicadores', shortLabel: 'Indicadores', description: 'Dados da cidade organizados por tema', shortcut: 'G D', group: 'primary' },
-  { id: 'eleitorado', label: 'Eleitorado', shortLabel: 'Eleitorado', description: 'Tamanho, evolução e referências do eleitorado', shortcut: 'G E', group: 'more' },
   { id: 'transporte', label: 'Transporte', shortLabel: 'Transporte', description: 'Tarifas, custos mensais e comparação de rotas', shortcut: 'G T', group: 'more' },
   { id: 'saude', label: 'Saúde e saneamento', shortLabel: 'Saúde', description: 'Saúde, água, esgoto, resíduos e capacidade', shortcut: 'G S', group: 'more' },
-  { id: 'eleitoral360', label: 'Registros eleitorais 2026', shortLabel: 'Registros eleitorais', description: 'Eleitorado e recorte de candidaturas para consulta', shortcut: 'G X', group: 'more' },
-  { id: 'resultados', label: 'Resultados 2026', shortLabel: 'Resultados', description: 'Resultados por turno e registro verificado', shortcut: 'G R', group: 'more' },
   { id: 'quiz', label: 'Teste seus conhecimentos', shortLabel: 'Quiz', description: 'Perguntas de educação cívica', shortcut: 'G QZ', group: 'more' },
   { id: 'orcamento', label: 'Orçamento', shortLabel: 'Orçamento', description: 'Receitas, despesas e valores por habitante', shortcut: 'G O', group: 'more' },
   { id: 'acao', label: 'Serviços públicos', shortLabel: 'Serviços', description: 'Encontre canais e serviços oficiais', shortcut: 'G U', group: 'more' },

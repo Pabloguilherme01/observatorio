@@ -1,25 +1,6 @@
-import type { CandidateSnapshot, ISODate, ObservatoryData } from '../types/observatorio.js';
+import type { ObservatoryData } from '../types/observatorio.js';
 import { sourceRegistry } from './sourceRegistry.js';
 import { EDITION } from '../config/version.js';
-import generatedCandidates from './generated/tse2026-candidates.json' with { type: 'json' };
-
-const rawGeneratedCandidateSnapshotDate = generatedCandidates.meta.downloadedAt?.slice(0, 10);
-if (!rawGeneratedCandidateSnapshotDate || !/^\d{4}-\d{2}-\d{2}$/.test(rawGeneratedCandidateSnapshotDate)) {
-  throw new Error('Snapshot de candidatos TSE sem downloadedAt válido.');
-}
-const generatedCandidateSnapshotDate = rawGeneratedCandidateSnapshotDate as ISODate;
-
-const generatedMatched: CandidateSnapshot[] = generatedCandidates.matched.map(candidate => ({
-  name: candidate.name,
-  party: candidate.party ?? undefined,
-  ballotNumber: candidate.ballotNumber ?? undefined,
-  status: candidate.status ?? 'Não informado',
-  sourceId: 'tse-candidatos-2026',
-  snapshotDate: generatedCandidateSnapshotDate,
-}));
-
-const candidateSnapshots: ObservatoryData['candidates'] = generatedMatched;
-
 const TRANSPORT_FARES_BRL = {
   brasilia: 11.45,
   taguatinga: 7.65,
@@ -29,16 +10,14 @@ const TRANSPORT_FARES_BRL = {
 const MINIMUM_WAGE_2026_BRL = 1621;
 
 /**
- * Dataset V45, normalizado para o domínio React.
+ * Dataset municipal V46, normalizado para o domínio React.
  * Correções metodológicas aplicadas na migração:
  * - densidade 2026 é derivada de 249.978 / 191,817 km²;
  * - tarifa Brasília usa a tarifa atual publicada pela UTB (R$ 11,45);
- * - abstenção de 2024 fica separada de votos brancos e nulos;
- * - margem de erro não é calculada pelo observatório; a interface só exibe valor oficial quando disponível na fonte registrada.
  */
 export const observatorioData: ObservatoryData = {
   meta: {
-    name: 'Observatório Cívico e Eleitoral Águas Lindas de Goiás 2026',
+    name: 'Observatório Público de Águas Lindas de Goiás',
     edition: `${EDITION} • leitura pública + investigação + evidências`,
     municipality: 'Águas Lindas de Goiás',
     timezone: 'America/Sao_Paulo',
@@ -52,71 +31,6 @@ export const observatorioData: ObservatoryData = {
     { year: 2025, value: 245352, kind: 'estimate', referenceDate: '2025-07-01', sourceId: 'ibge-estimativas-2026' },
     { year: 2026, value: 249978, kind: 'estimate', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026' },
   ],
-
-  electoral: {
-    zone: '28ª Zona Eleitoral',
-    electorate: 125062,
-    snapshotDate: '2026-07-15',
-    tseConsolidated: 125501,
-    consolidatedSourceId: 'reconciliacao-eleitorado-2026',
-    ageGroups: [
-      { id: 'under24', label: 'Até 24 anos', voters: 24265, sharePct: 19.4 },
-      { id: '25to59', label: '25–59 anos', voters: 86928, sharePct: 69.5 },
-      { id: '60plus', label: '60 anos ou mais', voters: 13869, sharePct: 11.1 },
-    ],
-    womenPct: 52.98,
-    menPct: 47.02,
-    socialNameCount: 891,
-    indigenousPopulation: 941,
-    indigenousElectorate: 33,
-    electorate2018: 95200,
-    electorate2018SourceId: 'tse-eleitorado-2018',
-    electorate2022: 107255,
-    electorate2022SourceId: 'tse-eleitorado-2022',
-    electorate2024: 121788,
-    electorate2024SourceId: 'tse-eleitorado-2024',
-    zoneVsTseDifference: 125501 - 125062,
-    turnout2024Pct: 78.17,
-    abstention2024Pct: 21.83,
-    abstention2024Count: 26585,
-    blankVotes2024Count: 3230,
-    nullVotes2024Count: 2934,
-    validVotes2024Count: 89039,
-    sourceId: 'tse-eleitorado-2026',
-  },
-
-  polls: [
-    {
-      registrationNumber: 'GO-04133/2026',
-      pollster: 'EXATA.GO Pesquisa Ltda.',
-      contractor: 'HERZ Locadora de Motos Ltda.',
-      collectionDate: '2026-08-25',
-      interviews: 400,
-      theoreticalMarginErrorPct: 4.9,
-      method: 'spontaneous',
-      results: [
-        { label: 'Keké', percentage: 35.25 },
-        { label: 'Anderson Teodoro', percentage: 14.5 },
-        { label: 'Zé da Imperial', percentage: 8.25 },
-        { label: 'Baiano dos Cocos', percentage: 5.5 },
-        { label: 'Cambão', percentage: 3.0 },
-      ],
-      nonePct: 15.5,
-      notSurePct: 10.25,
-      unclassifiedPct: 7.75,
-      sourceId: 'tse-pesquisas-2026',
-      judicialContext: {
-        status: 'decision_related',
-        referenceDate: '2026-09-17',
-        sourceId: 'tre-go-decisao-go04133-2026',
-        scope: 'specific_disclosures',
-        summary: 'Decisão judicial reconheceu irregularidade formal na divulgação de publicações específicas da pesquisa e admitiu nova divulgação com as informações exigidas. O contexto não deve ser apresentado como anulação automática do levantamento.',
-      },
-      note: 'A margem de erro não é calculada pelo observatório. O painel só deve exibir esse campo quando a ficha técnica oficial registrada estiver materializada no snapshot.'
-    },
-  ],
-
-  candidates: candidateSnapshots,
 
   transport: {
     routes: [
@@ -202,15 +116,13 @@ export const observatorioData: ObservatoryData = {
   },
 
   indicators: [
-    { id: 'population-2026', label: 'População 2026', value: 249978, unit: 'habitantes', status: 'current', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026' },
+    { id: 'population-2026', label: 'População 2026', value: 249978, unit: 'habitantes', status: 'published', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026' },
     { id: 'population-change-2022-2026', label: 'Variação absoluta da população 2022–2026', value: 249978 - 225693, unit: 'habitantes', status: 'derived', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026', note: 'Estimativa de 2026 menos população do Censo 2022. O resultado combina censo e estimativa e deve ser lido como mudança de referência, não como contagem direta de entradas no município.' },
     { id: 'population-growth-2022-2026', label: 'Variação percentual da população 2022–2026', value: ((249978 - 225693) / 225693) * 100, unit: '%', status: 'derived', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026', note: 'Variação percentual entre o Censo 2022 e a estimativa de 2026. Censo e estimativa têm naturezas estatísticas diferentes.' },
-    { id: 'area', label: 'Área territorial', value: 191.817, unit: 'km²', status: 'current', sourceId: 'ibge-cidades-2026', referenceDate: '2025-04-30' },
+    { id: 'area', label: 'Área territorial', value: 191.817, unit: 'km²', status: 'published', sourceId: 'ibge-cidades-2026', referenceDate: '2025-04-30' },
     { id: 'density-2022', label: 'Densidade demográfica oficial', value: 1176.61, unit: 'hab/km²', status: 'historical', referenceDate: '2022-08-01', sourceId: 'ibge-censo-2022', note: 'Valor informado pelo IBGE para o Censo 2022.' },
     { id: 'density', label: 'Densidade 2026 (derivada)', value: 249978 / 191.817, unit: 'hab/km²', status: 'derived', referenceDate: '2026-07-01', sourceId: 'ibge-estimativas-2026', note: 'Estimativa de 2026 ÷ área territorial de 191,817 km²; não é o indicador oficial do Censo.' },
-    { id: 'electorate', label: 'Eleitorado 2026', value: 125062, unit: 'eleitores', status: 'snapshot', referenceDate: '2026-07-15', sourceId: 'tse-eleitorado-2026' },
-    { id: 'electorateShare', label: 'Razão eleitorado/população', value: (125062 / 249978) * 100, unit: '%', status: 'derived', sourceId: 'tse-eleitorado-2026', note: 'Razão estatística entre universos distintos; não é comparecimento.' },
-    { id: 'fare', label: 'Tarifa Brasília', value: 11.45, unit: 'BRL/trecho', status: 'current', sourceId: 'utb-tarifas' },
+    { id: 'fare', label: 'Tarifa Brasília', value: 11.45, unit: 'BRL/trecho', status: 'published', sourceId: 'utb-tarifas' },
     { id: 'transport-monthly-brasilia-default', label: 'Transporte mensal por pessoa · Brasília · cenário padrão', value: TRANSPORT_FARES_BRL.brasilia * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'utb-tarifas', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
     { id: 'transport-monthly-taguatinga-default', label: 'Transporte mensal por pessoa · Taguatinga · cenário padrão', value: TRANSPORT_FARES_BRL.taguatinga * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'antt-entorno-2026', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
     { id: 'transport-monthly-ceilandia-default', label: 'Transporte mensal por pessoa · Ceilândia · cenário padrão', value: TRANSPORT_FARES_BRL.ceilandia * 2 * 22, unit: 'BRL/mês', status: 'derived', sourceId: 'antt-entorno-2026', note: 'Tarifa × 2 trechos por dia × 22 dias por mês. Cenário de referência; não considera integrações, gratuidades, vale-transporte, faltas ou feriados.' },
@@ -229,7 +141,7 @@ export const observatorioData: ObservatoryData = {
     { id: 'public-sewer-service-gap-2024', label: 'Parcela fora do serviço público de esgoto', value: 100 - 84.8, unit: '%', status: 'derived', sourceId: 'sinisa-2024', note: 'Ano-base 2024. Complemento de 100% menos o indicador de acesso ao serviço público de esgoto do SINISA 2024. Não equivale a esgoto sem tratamento.' },
     { id: 'sewer-collection-gap-2024', label: 'Esgoto gerado sem coleta', value: 100 - 60.1, unit: '%', status: 'derived', sourceId: 'sinisa-2024', note: 'Ano-base 2024. Complemento de 100% menos o percentual de coleta do esgoto gerado. O denominador é o esgoto gerado.' },
     { id: 'sewer-treatment-gap-2024', label: 'Esgoto gerado sem tratamento', value: 100 - 60.1, unit: '%', status: 'derived', sourceId: 'sinisa-2024', note: 'Ano-base 2024. Complemento de 100% menos o percentual de tratamento do esgoto gerado. Não confundir com o percentual do esgoto coletado que recebe tratamento.' },
-    { id: 'budget', label: 'LOA 2026', value: 771255334.51, unit: 'BRL', status: 'current', sourceId: 'loa-2026' },
+    { id: 'budget', label: 'LOA 2026', value: 771255334.51, unit: 'BRL', status: 'planned', sourceId: 'loa-2026', note: 'Ano-base 2026. Orçamento autorizado para o exercício; não representa gasto executado ou pago.' },
     { id: 'budget-per-capita-2026', label: 'LOA 2026 por habitante', value: 771255334.51 / 249978, unit: 'BRL/habitante', status: 'derived', referenceDate: '2026-07-01', sourceId: 'loa-2026', note: 'LOA 2026 ÷ população estimada de 2026. É uma razão de planejamento e não representa gasto executado por pessoa.' },
     { id: 'budget-education-per-capita-2026', label: 'Educação na LOA 2026 por habitante', value: 245469752.28 / 249978, unit: 'BRL/habitante', status: 'derived', referenceDate: '2026-07-01', sourceId: 'loa-2026', note: 'Função Educação na LOA 2026 ÷ população estimada de 2026. É uma razão de planejamento, não execução por pessoa.' },
     { id: 'budget-health-per-capita-2026', label: 'Saúde na LOA 2026 por habitante', value: 138093749.09 / 249978, unit: 'BRL/habitante', status: 'derived', referenceDate: '2026-07-01', sourceId: 'loa-2026', note: 'Função Saúde na LOA 2026 ÷ população estimada de 2026. É uma razão de planejamento, não execução por pessoa.' },
@@ -248,9 +160,9 @@ export const observatorioData: ObservatoryData = {
     { id: 'formal-workers', label: 'Pessoal ocupado', value: 22005, unit: 'pessoas', status: 'historical', note: 'Ano-base 2024.', sourceId: 'ibge-cidades-2026' },
     { id: 'homicideRate', label: 'Homicídios', value: 18.7, unit: 'por 100 mil', status: 'historical', sourceId: 'atlas-violencia-2026' },
     { id: 'schooling-6-14', label: 'Escolarização 6–14 anos', value: 98.1, unit: '%', status: 'historical', referenceDate: '2022-08-01', sourceId: 'ibge-cidades-2026' },
-    { id: 'infant-mortality', label: 'Mortalidade infantil', value: 11.23, unit: 'óbitos por mil', status: 'current', sourceId: 'ibge-cidades-2026', note: 'Ano-base 2025. A fonte municipal informa o ano do indicador, mas não sustenta uma data diária específica; por isso o campo de referência exata permanece vazio.' },
+    { id: 'infant-mortality', label: 'Mortalidade infantil', value: 11.23, unit: 'óbitos por mil', status: 'published', sourceId: 'ibge-cidades-2026', note: 'Ano-base 2025. A fonte municipal informa o ano do indicador, mas não sustenta uma data diária específica; por isso o campo de referência exata permanece vazio.' },
     { id: 'heal-opening-beds', label: 'HEAL · leitos reportados na inauguração', value: 164, unit: 'leitos', status: 'historical', sourceId: 'healgo', note: 'Referência reportada na inauguração; não deve ser tratada automaticamente como capacidade atual.' },
-    { id: 'heal-current-stated-beds', label: 'HEAL · leitos explicitados no portal atual', value: 85, unit: 'leitos', status: 'current', sourceId: 'healgo', note: 'Soma dos 32 leitos de enfermaria e 53 de UTI explicitados no portal atual. O conjunto não documenta, por si só, a causa da diferença para a referência de inauguração.' },
+    { id: 'heal-current-stated-beds', label: 'HEAL · leitos explicitados no portal institucional', value: 85, unit: 'leitos', status: 'published', sourceId: 'healgo', note: 'Soma dos 32 leitos de enfermaria e 53 de UTI explicitados no portal institucional. Data da capacidade não informada; consulte a fonte antes de tratar como disponibilidade atual. O conjunto não documenta, por si só, a causa da diferença para a referência de inauguração.' },
     { id: 'heal-planned-beds', label: 'HEAL · leitos no planejamento registrado', value: 298, unit: 'leitos', status: 'planned', sourceId: 'healgo', note: 'Número de planejamento registrado no dataset; não representa capacidade já instalada.' },
     { id: 'heal-first-year-attendances', label: 'HEAL · atendimentos no primeiro ano', value: 200000, unit: 'atendimentos', status: 'historical', referenceDate: '2025-06-17', sourceId: 'healgo-200k', note: 'A fonte informa mais de 200 mil atendimentos; o valor 200.000 é usado como piso para cálculos derivados.' },
     { id: 'heal-opening-investment', label: 'HEAL · investimento reportado na inauguração', value: 157000000, unit: 'BRL', status: 'historical', sourceId: 'healgo' },

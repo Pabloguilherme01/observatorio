@@ -8,10 +8,11 @@ import { EDITION } from '../config/version';
 import { useLanguageMode } from '../context/LanguageModeContext';
 import { copyText } from '../lib/clipboard';
 import { formatIndicatorStatus } from '../utils/dataLabels';
+import { indicatorReference } from '../lib/indicatorReference';
 
 const categoryFor = (id: string) => {
   if (id === 'budget' || id.startsWith('budget-') || id.includes('revenue') || id.includes('expense')) return 'Orcamento';
-  if (id.includes('population') || id.includes('density') || id.includes('electorate')) return 'Demografia';
+  if (id.includes('population') || id.includes('density')) return 'Demografia';
   if (id.includes('fare') || id.includes('transport')) return 'Mobilidade';
   if (id.startsWith('heal-') || id.includes('homicide') || id.includes('infant') || id.includes('health')) return 'Saude';
   if (id.includes('sewer') || id.includes('water') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer')) return 'Saneamento';
@@ -21,10 +22,11 @@ const categoryFor = (id: string) => {
 };
 
 const rows: readonly (readonly ExportCell[])[] = [
-  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza', 'status_rotulo'],
+  ['categoria', 'indicador', 'valor', 'unidade', 'status', 'fonte_id', 'fonte_instituicao', 'data_referencia', 'observacao', 'indicador_id', 'fonte_natureza', 'status_rotulo', 'periodo_referencia', 'precisao_referencia'],
   ...d.indicators.map(item => {
     const source = d.sources.find(source => source.id === item.sourceId);
-    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', formatIndicatorStatus(item.status, item.status) ?? item.status];
+    const reference = indicatorReference(item, source);
+    return [categoryFor(item.id), item.label, item.value, item.unit, item.status, item.sourceId, source?.institution ?? '', item.referenceDate ?? source?.referenceDate ?? '', item.note ?? '', item.id, source?.nature ?? '', formatIndicatorStatus(item.status, item.status) ?? item.status, reference.label, reference.precision];
   }),
 ];
 
@@ -122,7 +124,7 @@ export function DataExportActions() {
           <button type="button" onClick={exportSourcesCsv} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Download className="h-4 w-4" aria-hidden="true" />Fontes CSV</button>
           <button type="button" onClick={exportContextComparisonCsv} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Download className="h-4 w-4" aria-hidden="true" />Comparativo CSV</button>
           <button type="button" onClick={copyMetadata} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs font-bold text-slate-200 transition hover:bg-white/5 light:border-slate-200 light:bg-white light:text-slate-700 light:hover:bg-slate-100"><Copy className="h-4 w-4" aria-hidden="true" />Metadados</button>
-          <a href={import.meta.env.BASE_URL + "api/v1/observatorio.json"} target="_blank" rel="noopener noreferrer" aria-label="Abrir API pública do Observatório em nova aba" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 transition hover:bg-sky-300/10 light:border-sky-200 light:bg-sky-50 light:text-sky-800 light:hover:bg-sky-100"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
+          <a href={import.meta.env.BASE_URL + "api/v2/observatorio.json"} target="_blank" rel="noopener noreferrer" aria-label="Abrir API pública do Observatório em nova aba" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-sky-300/15 bg-sky-300/[0.04] px-3 py-2 text-xs font-bold text-sky-200 transition hover:bg-sky-300/10 light:border-sky-200 light:bg-sky-50 light:text-sky-800 light:hover:bg-sky-100"><ExternalLink className="h-4 w-4" aria-hidden="true" />API pública</a>
         </div>
       </div>
       {status && <div className="mt-4 text-xs font-semibold text-emerald-300" role="status" aria-live="polite">{status}</div>}

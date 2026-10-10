@@ -106,13 +106,13 @@ const active = new Set(openPrs.map(pr => pr.head?.ref).filter(Boolean));
 
 const candidates = branches
   .map(item => item.name)
-  .filter(name => /^automation\/(?:tse-2026-|results-2026-)/.test(name))
+  .filter(name => /^automation\/(?:sources-2026-|results-2026-)/.test(name))
   .filter(name => !active.has(name))
   .filter(name => !branchByName.get(name)?.protected);
 
 const grouped = new Map();
 for (const name of candidates) {
-  const prefix = name.startsWith('automation/tse-2026-') ? 'automation/tse-2026-' : 'automation/results-2026-';
+  const prefix = name.startsWith('automation/sources-2026-') ? 'automation/sources-2026-' : 'automation/results-2026-';
   const list = grouped.get(prefix) ?? [];
   list.push(name);
   grouped.set(prefix, list);

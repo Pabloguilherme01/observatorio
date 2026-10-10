@@ -49,7 +49,7 @@ export function IndicatorCatalog() {
       <div className="catalog-filters">
         <label><span>Assunto ou fonte</span><div className="catalog-search"><Search aria-hidden="true" /><input type="search" value={query} onChange={event => { setQuery(event.target.value); setLimit(12); }} placeholder="Ex.: água, educação, IBGE" aria-label="Pesquisar indicadores" /></div></label>
         <label><span>Natureza do indicador</span><select value={status} onChange={event => { setStatus(event.target.value); setLimit(12); }}>
-          <option value="all">Todos os tipos</option><option value="current">Atual no conjunto</option><option value="historical">Histórico</option><option value="snapshot">Registro datado</option><option value="planned">Planejado</option><option value="derived">Calculado</option>
+          <option value="all">Todos os tipos</option><option value="published">Publicado no conjunto</option><option value="historical">Histórico</option><option value="snapshot">Registro datado</option><option value="planned">Planejado</option><option value="derived">Calculado</option>
         </select></label>
         <label className="catalog-missing"><input type="checkbox" checked={missingReference} onChange={event => { setMissingReference(event.target.checked); setLimit(12); }} /> Apenas sem referência temporal</label>
       </div>

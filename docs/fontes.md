@@ -2,13 +2,13 @@
 
 O catálogo operacional está em `src/data/sourceRegistry.ts`. Fontes primárias e secundárias são explicitamente diferenciadas.
 
-Principais fontes: IBGE, TSE, UTB, ANTT, Governo de Goiás/SES-GO, INEP, IPEA/FBSP, legislação municipal e bases oficiais do PEE Goiás.
+Principais fontes: IBGE, UTB, ANTT, Governo de Goiás/SES-GO, INEP, IPEA/FBSP, legislação municipal, serviços municipais e bases do PEE Goiás.
 
 ## Atualização
-- TSE Candidatos: 4x ao dia no catálogo da fonte.
-- Pesquisas TSE: atualização conforme publicação da base.
 - Demografia IBGE: ciclos oficiais de estimativas/censos.
 - Tarifas: conforme publicação do regulador/operador.
-- Orçamento: conforme leis e execução disponibilizadas.
+- Orçamento: conforme leis publicadas. A LOA do conjunto é planejamento; execução exige registro próprio.
+
+O conjunto contém 24 fontes. A verificação de integridade resolve os vínculos; disponibilidade externa é verificada separadamente. Consulta recente de uma página não muda o período estatístico do indicador. Referência ausente é uma limitação explícita.
 
 Cada link deve ser tratado como evidência, não como garantia de que todos os campos do painel estejam cobertos pela mesma publicação.

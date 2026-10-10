@@ -6,6 +6,9 @@ import { ErrorBoundary } from './components/system/ErrorBoundary';
 import { captureObservatorioException } from './lib/sentry';
 import { Download, MoreVertical, Share2, X } from 'lucide-react';
 import { useDialogFocus } from './hooks/useDialogFocus';
+import { migrateMunicipalStorage } from './lib/storageMigration';
+
+migrateMunicipalStorage();
 
 const BOOT_ERROR_KEY = 'observatorio:last-boot-error';
 const RUNTIME_ERROR_KEY = 'observatorio:last-runtime-error';

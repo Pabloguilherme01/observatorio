@@ -1,5 +1,5 @@
-import type { MunicipalIndicator, SourceRef } from '../types/observatorio';
-import { formatDate } from '../utils/formatters';
+import type { MunicipalIndicator, SourceRef } from '../types/observatorio.js';
+import { formatDate } from '../utils/formatters.js';
 
 /** A year base is a period, never an invented January 1 capture date. */
 export function indicatorReference(indicator: MunicipalIndicator, source?: SourceRef) {

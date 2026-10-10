@@ -216,112 +216,6 @@
   background:rgba(255,255,255,.022);
 }
 
-#candidaturas .candidate-overview-grid{
-  align-items:stretch;
-}
-
-#candidaturas .candidate-overview-card{
-  min-height:116px;
-  border-radius:17px;
-  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));
-}
-
-#candidaturas .candidate-summary-wrap{
-  min-width:0;
-}
-
-#candidaturas .candidate-summary-grid{
-  align-items:stretch;
-}
-
-#candidaturas .candidate-summary-card{
-  min-height:100%;
-}
-
-#candidaturas .candidate-card{
-  height:100%;
-  border-radius:18px!important;
-  border-color:var(--pf-border)!important;
-  box-shadow:var(--pf-shadow-soft)!important;
-}
-
-#candidaturas .candidate-card:hover{
-  transform:translateY(-2px);
-  border-color:rgba(125,211,252,.24)!important;
-  box-shadow:0 18px 44px rgba(0,0,0,.18)!important;
-}
-
-#candidaturas .candidate-card .candidate-data-card{
-  border-color:rgba(148,163,184,.11);
-  background:rgba(0,0,0,.12);
-}
-
-#candidaturas .candidate-card .flex.flex-wrap.gap-2{
-  align-items:stretch;
-}
-
-#candidaturas .candidate-card .flex.flex-wrap.gap-2>a,
-#candidaturas .candidate-card .flex.flex-wrap.gap-2>button{
-  min-width:0;
-  overflow-wrap:anywhere;
-}
-
-.candidate-summary-detail-button{
-  min-height:34px;
-}
-
-.candidate-summary-links{
-  flex-wrap:wrap;
-}
-
-.candidate-summary-links a,
-.candidate-summary-links button{
-  min-height:34px;
-}
-
-#politica .obs-card{
-  border-radius:20px!important;
-}
-
-#politica select{
-  min-height:48px;
-  border-color:rgba(148,163,184,.16);
-  background:#0d151e;
-  border-radius:14px;
-}
-
-#politica select:focus-visible{
-  outline:2px solid rgba(125,211,252,.8);
-  outline-offset:2px;
-}
-
-#politica .grid.min-w-0.grid-cols-\[minmax\(0\,7\.5rem\)_minmax\(0\,1fr\)_3\.75rem\]{
-  min-height:42px;
-}
-
-#politica .mt-5.grid.gap-3.sm\:grid-cols-4 > div{
-  min-height:76px;
-}
-
-#eleitoral360 .electoral-action-button{
-  border-radius:13px;
-  transition:transform .16s ease,border-color .16s ease,background .16s ease;
-}
-
-#eleitoral360 .electoral-action-button:hover{
-  transform:translateY(-1px);
-}
-
-#eleitoral360 .min-h-11.max-w-full.rounded-xl{
-  min-height:44px;
-  border-radius:12px;
-}
-
-#eleitoral360 input,
-#eleitoral360 select{
-  border-radius:13px;
-}
-
 #acao .civic-primary-card,
 #acao .civic-contact-card,
 #acao .civic-category-card,
@@ -597,9 +491,6 @@
   }
 
   #resumo,
-  #candidaturas,
-  #politica,
-  #eleitoral360,
   #acao{
     scroll-margin-top:76px;
   }
@@ -609,9 +500,6 @@
     padding-bottom:28px!important;
   }
 
-  #candidaturas,
-  #politica,
-  #eleitoral360,
   #acao{
     padding-top:30px!important;
     padding-bottom:30px!important;
@@ -650,80 +538,6 @@
     min-height:136px;
     padding:14px;
     border-radius:15px!important;
-  }
-
-  #candidaturas .candidate-overview-grid{
-    grid-template-columns:1fr 1fr!important;
-    gap:8px!important;
-  }
-
-  #candidaturas .candidate-summary-grid{
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-  }
-
-  #candidaturas .candidate-summary-card{
-    min-width:0;
-    border-radius:15px;
-  }
-
-  #candidaturas .candidate-summary-media{
-    min-height:86px;
-  }
-
-  #candidaturas .candidate-summary-body{
-    padding:10px;
-  }
-
-  #candidaturas .candidate-summary-body h3{
-    font-size:12px;
-    line-height:1.18;
-  }
-
-  #candidaturas .candidate-summary-number{
-    font-size:16px;
-  }
-
-  #candidaturas .candidate-card{
-    border-radius:16px!important;
-  }
-
-  #candidaturas .candidate-card .flex.flex-wrap.gap-2{
-    grid-template-columns:1fr 1fr;
-  }
-
-  #candidaturas .candidate-card .flex.flex-wrap.gap-2>a,
-  #candidaturas .candidate-card .flex.flex-wrap.gap-2>button{
-    min-height:44px;
-    padding:8px 9px!important;
-    font-size:9px;
-    line-height:1.15;
-  }
-
-  #politica .obs-card{
-    padding:15px!important;
-    border-radius:17px!important;
-  }
-  #politica .grid.min-w-0.grid-cols-\[minmax\(0\,7\.5rem\)_minmax\(0\,1fr\)_3\.75rem\]{
-    grid-template-columns:minmax(0,6.25rem) minmax(0,1fr) 3.5rem;
-    gap:7px;
-  }
-
-  #politica select{
-    min-height:48px;
-    font-size:16px;
-  }
-
-  #politica .mt-5.grid.gap-3.sm\:grid-cols-4{
-    grid-template-columns:1fr 1fr;
-  }
-
-  #politica .mt-5.grid.gap-3.sm\:grid-cols-4 > div{
-    min-height:70px;
-  }
-
-  #eleitoral360 .electoral-action-button{
-    min-height:46px;
   }
 
   #acao .civic-service-card{
@@ -820,18 +634,6 @@
 }
 
 @media (max-width:390px){
-  #candidaturas .candidate-overview-grid,
-  #candidaturas .candidate-summary-grid{
-    grid-template-columns:1fr;
-  }
-
-  #candidaturas .candidate-card .flex.flex-wrap.gap-2{
-    grid-template-columns:1fr;
-  }
-
-  #politica .mt-5.grid.gap-3.sm\:grid-cols-4{
-    grid-template-columns:1fr;
-  }
 
   .quiz-phase-grid{
     grid-template-columns:1fr;
@@ -845,8 +647,6 @@
 .light .dashboard-heading-card,
 .light .dashboard-status-chip,
 .light #resumo .summary-public-hero,
-.light #candidaturas .candidate-card,
-.light #politica select,
 .light .quiz-shell,
 .light .quiz-phase-card,
 .light .quiz-card,
@@ -878,18 +678,6 @@
 .light .quiz-phase-lock,
 .light .quiz-progress-label{
   color:#475569!important;
-}
-.light #eleitoral360 .text-white{
-  color:#0f172a!important;
-}
-.light #eleitoral360 .text-sky-100,
-.light #eleitoral360 .text-sky-200,
-.light #eleitoral360 .text-sky-300{
-  color:#0369a1!important;
-}
-.light #eleitoral360 .text-amber-100,
-.light #eleitoral360 .text-amber-200{
-  color:#92400e!important;
 }
 
 .light .dashboard-kpi-card,
@@ -929,11 +717,6 @@
   color:#334155;
 }
 
-.light #politica select{
-  background:#fff;
-  color:#0f172a;
-}
-
 @media (prefers-reduced-motion:reduce){
   .dashboard-kpi-card,
   #resumo .summary-public-topic,
@@ -941,7 +724,6 @@
   #resumo .summary-public-fact,
   #resumo .summary-simple-card,
   #resumo .summary-evidence,
-  #candidaturas .candidate-card,
   #acao .civic-service-card,
   .quiz-phase-card,
   .quiz-action,
@@ -949,4 +731,3 @@
     transition:none!important;
   }
 }
-

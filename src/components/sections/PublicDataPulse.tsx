@@ -19,7 +19,7 @@ export function PublicDataPulse() {
     return acc;
   }, {});
   const statusSummary = [
-    ['Atual', indicatorStatus.current ?? 0],
+    ['Publicado', indicatorStatus.published ?? 0],
     ['Histórico', indicatorStatus.historical ?? 0],
     ['Derivado', indicatorStatus.derived ?? 0],
     ['Registro datado', indicatorStatus.snapshot ?? 0],

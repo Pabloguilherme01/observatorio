@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 const routes = [
   { hash: '', marker: '#main-content' },
   { hash: '#quiz', marker: '#quiz' },
-  { hash: '#eleitoral360', marker: '#eleitoral360' },
+  { hash: '#orcamento', marker: '#orcamento' },
   { hash: '#acao', marker: '#acao' },
   { hash: '#transporte', marker: '#transporte' },
   { hash: '#exportacao', marker: '#exportacao' },

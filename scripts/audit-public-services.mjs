@@ -1,10 +1,15 @@
 import fs from 'node:fs';
+
 import path from 'node:path';
 
 const root = process.cwd();
+
 const hubFile = path.join(root, 'src/components/sections/CivicActionHub.tsx');
+
 const catalogFile = path.join(root, 'src/data/publicServices.ts');
+
 const hubSource = fs.readFileSync(hubFile, 'utf8');
+
 const catalogSource = fs.readFileSync(catalogFile, 'utf8');
 
 const municipalRequired = [
@@ -27,13 +32,6 @@ const municipalRequired = [
   ['Portal SEI · Proteção e bem-estar animal', 'portalsei.aguaslindasdegoias.go.gov.br'],
   ['Trânsito e mobilidade urbana', 'secretaria-de-transito-e-mobilidade-urbana'],
 ];
-const tseRequired = [
-  ['Consultar situação eleitoral', 'titulo-eleitoral/autoatendimento-eleitoral'],
-  ['Candidaturas e contas', 'divulgacandcontas.tse.jus.br'],
-  ['Resultados oficiais', 'resultados.tse.jus.br'],
-  ['Portal Eleições 2026', 'tse.jus.br/eleicoes/eleicoes-2026'],
-  ['Dados abertos do TSE', 'dadosabertos.tse.jus.br'],
-];
 
 async function checkLive(url) {
   try {
@@ -49,43 +47,46 @@ async function checkLive(url) {
 }
 
 const fail = [];
+
 const pass = message => console.log('PASS', message);
 
 for (const [label, pathFragment] of municipalRequired) {
   if (!catalogSource.includes(label) || !catalogSource.includes(pathFragment)) fail.push(label);
   else pass(label + ' possui atalho direto no catálogo de dados');
 }
-for (const [label, pathFragment] of tseRequired) {
-  if (!hubSource.includes(label) || !hubSource.includes(pathFragment)) fail.push(label);
-  else pass(label + ' possui atalho direto no hub TSE');
-}
 
 const priorityBlock = catalogSource.slice(catalogSource.indexOf('const priorityPublicServices'), catalogSource.indexOf('export const additionalPublicServices'));
+
 const additionalBlock = catalogSource.slice(catalogSource.indexOf('export const additionalPublicServices'), catalogSource.indexOf('export const allMunicipalServices'));
-const tseBlock = hubSource.slice(hubSource.indexOf('const tesser = ['), hubSource.indexOf('const visiblePriority'));
 
 const objectUrls = block => [...block.matchAll(/href:\s*'([^']+)'/g)].map(match => match[1]);
-const tupleUrls = [...tseBlock.matchAll(/'(https:\/\/[^']+)'/g)].map(match => match[1]);
-const serviceUrls = [...objectUrls(priorityBlock), ...objectUrls(additionalBlock), ...tupleUrls];
+
+const serviceUrls = [...objectUrls(priorityBlock), ...objectUrls(additionalBlock)];
+
 const urls = [...new Set(serviceUrls)];
 
 const renderedLinks = [...hubSource.matchAll(/<a\b[^>]*href="(?:https?:\/\/)[^"]+"[^>]*>/g)].map(match => match[0]);
+
 const insecureLinks = renderedLinks.filter(link => /target="_blank"/.test(link) && !/rel="[^"]*noopener[^"]*"/.test(link));
+
 if (insecureLinks.length) fail.push(`links públicos com target=_blank sem noopener: ${insecureLinks.length}`);
 else pass('links públicos externos preservam noopener em target=_blank');
 
-if (serviceUrls.length < 53) fail.push(`catálogo útil abaixo do esperado: ${serviceUrls.length} atalhos`);
+if (serviceUrls.length < 46) fail.push(`catálogo útil abaixo do esperado: ${serviceUrls.length} atalhos`);
 else pass(`${serviceUrls.length} atalhos públicos úteis cadastrados (${urls.length} URLs únicas)`);
 
 const serviceTitles = [
   ...[...priorityBlock.matchAll(/title:\s*'([^']+)'/g)].map(match => match[1]),
   ...[...additionalBlock.matchAll(/title:\s*'([^']+)'/g)].map(match => match[1]),
 ];
+
 const duplicateTitles = serviceTitles.filter((title, index) => serviceTitles.indexOf(title) !== index);
+
 if (duplicateTitles.length) fail.push('serviços municipais duplicados: ' + [...new Set(duplicateTitles)].join(', '));
 else pass('catálogo municipal não repete o mesmo serviço por título');
 
 const additionalUrls = objectUrls(additionalBlock);
+
 if (additionalUrls.length !== 28) fail.push(`catálogo técnico adicional esperado=28 atual=${additionalUrls.length}`);
 else pass('28 serviços oficiais adicionais permanecem disponíveis no aprofundamento técnico');
 
@@ -98,15 +99,12 @@ if (!hubSource.includes("const visiblePriority = technical ? priorityPublicServi
 for (const staleMarker of ['const actions = [', 'function PublicServiceLink', 'function shareWhatsApp', 'immediatePublicContacts']) {
   if (hubSource.includes(staleMarker)) fail.push('código morto reintroduzido: ' + staleMarker);
 }
+
 if (!fail.some(item => item.startsWith('código morto reintroduzido'))) pass('hub não mantém ações órfãs sem interface');
 
 const allowedHosts = new Set([
   'acessoainformacao.aguaslindasdegoias.go.gov.br',
   'aguaslindasdegoias.go.gov.br',
-  'www.tse.jus.br',
-  'divulgacandcontas.tse.jus.br',
-  'resultados.tse.jus.br',
-  'dadosabertos.tse.jus.br',
   'portalsei.aguaslindasdegoias.go.gov.br',
   'www.saneago.com.br',
 ]);

@@ -1,11 +1,17 @@
 import { execFileSync } from 'node:child_process';
+
 import fs from 'node:fs';
+
 import path from 'node:path';
 
 const root = process.cwd();
+
 const failures = [];
+
 const exists = file => fs.existsSync(path.join(root, file));
+
 const pass = message => console.log('PASS', message);
+
 const fail = message => failures.push(message);
 
 try {
@@ -52,8 +58,6 @@ const required = [
   '.github/workflows/codeql.yml',
   '.github/workflows/deploy-pages.yml',
   '.github/workflows/source-health.yml',
-  '.github/workflows/sync-tse-2026.yml',
-  '.github/workflows/sync-results-2026.yml',
   '.github/workflows/cleanup-branches.yml',
 ];
 
@@ -61,22 +65,15 @@ for (const file of required) {
   if (fs.existsSync(path.join(root, file))) pass('workflow presente: ' + file);
   else fail('workflow ausente: ' + file);
 }
-if (
-  fs.existsSync(path.join(root, 'scripts/cleanup-tse-automation.mjs'))
-  || fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml'))
-) fail('artefatos legados de limpeza ainda existem.');
-else pass('artefatos legados de limpeza não existem.');
 
 const workflows = Object.fromEntries(required.filter(file => fs.existsSync(path.join(root, file))).map(file => [file, read(file)]));
+
 if (Object.values(workflows).some(text => text.includes('pwa-512.svg') || text.includes('observatorio-static-v13'))) {
   fail('há referência a artefato/cache legado conhecido nos workflows.');
 } else {
   pass('nenhum artefato/cache legado conhecido está referenciado nos workflows.');
 }
-for (const [file, text] of Object.entries(workflows)) {
-  if (file === '.github/workflows/sync-tse-2026.yml' && !text.includes('timeout-minutes: 20')) fail('sync-tse-2026.yml precisa de timeout-minutes: 20.');
-  if (file === '.github/workflows/sync-results-2026.yml' && !text.includes('timeout-minutes: 15')) fail('sync-results-2026.yml precisa de timeout-minutes: 15.');
-}
+
 for (const [file, text] of Object.entries(workflows)) {
   for (const key of ['on', 'permissions', 'jobs']) {
     if (hasTopLevel(text, key)) pass(file + ' possui bloco estrutural ' + key + '.');
@@ -87,15 +84,18 @@ for (const [file, text] of Object.entries(workflows)) {
 }
 
 const ci = workflows['.github/workflows/ci.yml'] ?? '';
+
 const cleanup = workflows['.github/workflows/cleanup-branches.yml'] ?? '';
+
 const browser = workflows['.github/workflows/browser.yml'] ?? '';
+
 const deploy = workflows['.github/workflows/deploy-pages.yml'] ?? '';
-const syncTse = workflows['.github/workflows/sync-tse-2026.yml'] ?? '';
-const syncResults = workflows['.github/workflows/sync-results-2026.yml'] ?? '';
 
 if (ci.includes("      - main") && ci.includes("      - 'automation/**'")) pass('CI valida automaticamente branches de automação antes da abertura das PRs.');
 else fail('CI não possui gatilho de push para branches de automação.');
+
 const ciSteps = stepNames(ci, 'quality');
+
 for (const step of ['Guard main provenance', 'Release readiness contract', 'Audit workflow structure', 'Audit style source budget', 'Test branch cleanup safety']) {
   if (ciSteps.includes(step)) pass('CI mantém etapa estrutural: ' + step);
   else fail('CI não possui etapa esperada: ' + step);
@@ -116,6 +116,7 @@ if (
 }
 
 const cleanupScript = exists('scripts/cleanup-branches.mjs') ? read('scripts/cleanup-branches.mjs') : '';
+
 if (
   cleanupScript.includes("const expectedRef = 'refs/heads/' + defaultBranch")
   && cleanupScript.includes("process.env.GITHUB_ACTIONS !== 'true'")
@@ -132,19 +133,25 @@ const browserNames = [
   'safari-iphone',
   'safari-iphone-se',
 ];
+
 for (const name of browserNames) {
   if (browser.includes('project: ' + name)) pass('matriz de navegador contém ' + name);
   else fail('matriz de navegador perdeu ' + name);
 }
+
 const browserProjectMatches = [...browser.matchAll(/project:\s*([a-z0-9-]+)/g)].map(match => match[1]);
+
 const duplicateBrowserProjects = browserProjectMatches.filter((name, index) => browserProjectMatches.indexOf(name) !== index);
+
 if (browserProjectMatches.length === browserNames.length && duplicateBrowserProjects.length === 0) {
   pass('matriz Browser possui exatamente os 7 perfis canônicos, sem projetos duplicados.');
 } else {
   fail('matriz Browser está divergente: esperados 7 perfis únicos, encontrados ' + browserProjectMatches.length + '.');
 }
+
 if (/project: safari-desktop[\s\S]*?non_blocking:\s*false/.test(browser)) pass('Safari desktop é um gate bloqueante para regressões reais no WebKit.');
 else fail('Safari desktop não está protegido como gate bloqueante.');
+
 if (
   /jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a/.test(browser)
   && /jobs:[\s\S]*?browser:\s*\n[\s\S]*?needs:\s*build/.test(browser)
@@ -158,25 +165,7 @@ if (
   pass('Browser constrói uma única vez, valida o artefato de produção e o compartilha entre os perfis.');
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
-
-const syncWorkflowList = [syncTse, syncResults];
-const unsafePendingIssueTemplates = syncWorkflowList.some(workflow =>
-  workflow.includes('`$branch`') || workflow.includes('`main`; revisão') || workflow.includes('`main`. A publicação'),
-);
-if (!unsafePendingIssueTemplates) pass('fallbacks de issue TSE não usam substituição de comando acidental do shell.');
-else fail('fallback de issue TSE contém sintaxe de shell perigosa nos dados da branch/main.');
-if (syncWorkflowList.every(text => text.includes('actions: read') && !text.includes('actions: write') && !text.includes('gh workflow run ci.yml') && text.includes('--event push') && text.includes('wait_for_ci'))) {
-  pass('sincronizações TSE usam apenas actions:read e deixam o CI ser acionado pelo push normal da branch.');
-} else {
-  fail('sincronização TSE ainda depende de actions:write ou disparo manual redundante do CI.');
-}
-
 const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
-if (ciRunCommands.includes('audit:provenance') && ciRunCommands.includes('audit:candidate-snapshot')) {
-  pass('CI consolidado preserva os gates de proveniência e snapshot TSE sem workflow paralelo.');
-} else {
-  fail('CI consolidado perdeu os contratos de proveniência ou snapshot TSE.');
-}
 
 if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /event.workflow_run.event == 'push'/.test(deploy) && /ref: \$\{\{ env.DEPLOY_SHA \}\}/.test(deploy)) {
   pass('Deploy preserva workflow_run sucesso + push + SHA exato.');
@@ -186,24 +175,10 @@ if (deploy.includes('gh run download "$BROWSER_RUN_ID" --name observatorio-brows
   pass('Deploy reutiliza o artefato Browser validado do SHA exato em vez de recompilar a aplicação.');
 } else fail('Deploy voltou a recompilar a aplicação ou deixou de reutilizar o artefato Browser validado.');
 
-const tseRefreshDoc = exists('docs/TSE-DATA-REFRESH.md') ? read('docs/TSE-DATA-REFRESH.md') : '';
-if (tseRefreshDoc.includes('sync-tse-2026.yml') && !tseRefreshDoc.includes('sync-tse-candidates.yml') && tseRefreshDoc.includes('branch -> CI -> PR -> merge revisado')) {
-  pass('documentação TSE acompanha o workflow atual e o fluxo branch -> CI -> PR.');
-} else {
-  fail('documentação TSE está divergente do workflow atual ou ainda cita o fluxo legado.');
-}
-
-for (const file of ['.github/workflows/sync-tse-2026.yml', '.github/workflows/sync-results-2026.yml']) {
-  const text = workflows[file];
-  if (/node-version:\s*24/.test(text)) pass(file + ' usa Node 24.');
-  else fail(file + ' não usa Node 24.');
-  if (/gh pr list --state open --base main --head/.test(text)) pass(file + ' evita PR duplicada.');
-  else fail(file + ' não possui guarda idempotente de PR.');
-}
-
 if (failures.length) {
   console.error('FAIL ' + failures.length + ' regra(s) estruturais');
   failures.forEach(message => console.error(' - ' + message));
   process.exit(1);
 }
+
 console.log('PASS auditoria estrutural dos workflows concluída');

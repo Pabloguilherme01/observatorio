@@ -3,7 +3,6 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
 
-const results = JSON.parse(readFileSync(new URL('../public/data/tse-results.json', import.meta.url), 'utf8'));
 
 test('entrada oferece seis destinos reais e cabeçalho não comprime a marca', async ({ page }) => {
   await page.setViewportSize({ width: 991, height: 800 });
@@ -50,23 +49,9 @@ test('comparador apresenta a mesma referência temporal usada no alinhamento', a
   await expect(page.locator('.indicator-compare-guidance')).toContainText('Confira antes de comparar');
 });
 
-test('resultados permitem consultar um nome fora dos cinco iniciais', async ({ page }) => {
-  const entry = results.entries.find(item => item.items.length > 5);
-  const sorted = [...entry.items].sort((a, b) => b.votes - a.votes);
-  const candidate = sorted[5];
-  await page.goto('./#resultados');
-  await expect(page.getByRole('searchbox', { name: 'Buscar nos resultados eleitorais' })).toBeVisible();
-  await page.getByLabel('Filtrar resultados por cargo').selectOption(entry.cargo);
-  await expect(page.locator('.results-public-card')).toHaveCount(1);
-  await expect(page.getByRole('list', { name: 'Resultados de ' + entry.cargo }).getByText(candidate.candidate, { exact: false })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Ver mais resultados de ' + entry.cargo }).click();
-  await expect(page.getByRole('list', { name: 'Resultados de ' + entry.cargo }).getByText(candidate.candidate, { exact: false })).toBeVisible();
-  await page.getByRole('searchbox', { name: 'Buscar nos resultados eleitorais' }).fill(candidate.candidate);
-  await expect(page.getByRole('list', { name: 'Resultados de ' + entry.cargo }).getByText(candidate.candidate, { exact: false })).toBeVisible();
-  await expect(page.locator('#resultados')).toContainText('pelo Observatório com a chave pública do TSE');
-});
 
-for (const route of ['#dados', '#resultados']) test('novos fluxos não introduzem violações graves de acessibilidade em ' + route, async ({ page }) => {
+
+for (const route of ['#dados', '#aprendizado-guiado']) test('novos fluxos não introduzem violações graves de acessibilidade em ' + route, async ({ page }) => {
   await page.goto('./' + route);
   await expect(page.locator(route)).toBeVisible();
   const audit = await new AxeBuilder({ page }).analyze();
