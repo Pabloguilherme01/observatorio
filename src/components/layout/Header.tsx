@@ -170,8 +170,8 @@ export function Header() {
     <>
       <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95" data-theme={theme}>
         <div className="site-header-inner mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:px-6">
-          <a href="#dashboard" className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
-            <span className="block truncate text-[9px] font-black uppercase tracking-[0.22em] text-slate-500">Águas Lindas · 2026</span>
+          <a href="#descubra" className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
+            <span className="block truncate text-[9px] font-black uppercase tracking-[0.22em] text-slate-500">Águas Lindas de Goiás</span>
             <span className="my-1 block h-px w-8 bg-slate-600/70" aria-hidden="true" />
             <span className="block truncate text-[15px] font-black tracking-tight text-white light:text-slate-900">Observatório</span>
           </a>
@@ -202,7 +202,6 @@ export function Header() {
             <button type="button" onClick={() => { setShortcutGuideOpen(false); setSearchOpen(true); }} className="site-icon-button min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label="Buscar no observatório" aria-keyshortcuts="/ Control+K" data-search-trigger="primary">
               <Search className="h-4 w-4" aria-hidden="true" />
             </button>
-            <div className="header-reading-mode hidden md:block"><LanguageModeToggle /></div>
             <div className="hidden xl:block"><ContrastModeToggle /></div>
             <button type="button" onClick={toggle} className="site-icon-button desktop-theme-toggle min-h-11 min-w-11 rounded-xl p-2 text-slate-400 hover:bg-white/5 hover:text-white light:text-slate-600 light:hover:bg-slate-900/5 light:hover:text-slate-900" aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}>
               {theme === 'dark' ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
@@ -212,6 +211,7 @@ export function Header() {
             </button>
           </div>
         </div>
+        <div className="header-reading-mode civic-reading-row hidden md:block"><span className="civic-reading-caption">Como você quer ler?</span><LanguageModeToggle /></div>
 
         {toolsOpen && (
           <div ref={toolsPanelRef} id="mobile-tools" className="mobile-tools-sheet border-t border-white/10 px-4 py-3 md:hidden" role="dialog" aria-modal="false" aria-label="Menu e ferramentas">

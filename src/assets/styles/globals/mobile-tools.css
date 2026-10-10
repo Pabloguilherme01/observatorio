@@ -603,19 +603,18 @@
   border-color:#fff!important;
 }
 .high-contrast .site-brand>span:first-child,
-.high-contrast h1,.high-contrast h2,.high-contrast h3,.high-contrast h4,
-.high-contrast strong,.high-contrast .summary-stat-value,
-.high-contrast .today-card strong,
-.high-contrast .candidate-card h3,
-.high-contrast .candidate-summary-body h3,
-.high-contrast .candidate-summary-number{
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast strong,
+.high-contrast .summary-stat-value,
+.high-contrast .today-card strong{
   color:#fff!important;
 }
 .high-contrast p,
 .high-contrast small,
 .high-contrast .site-brand>span:last-child,
-.high-contrast .candidate-card p,
-.high-contrast .candidate-summary-body p,
 .high-contrast .summary-stat-label,
 .high-contrast .today-card span,
 .high-contrast .technical-detail{
@@ -634,8 +633,6 @@
   outline-offset:3px;
 }
 .high-contrast .topic-card,
-.high-contrast .candidate-card,
-.high-contrast .candidate-summary-card,
 .high-contrast .summary-simple-card,
 .high-contrast .summary-stat,
 .high-contrast .today-card,
@@ -724,4 +721,3 @@
   *,*::before,*::after{forced-color-adjust:auto}
   button,a{outline-offset:2px}
 }
-

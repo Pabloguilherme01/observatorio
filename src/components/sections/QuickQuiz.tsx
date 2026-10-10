@@ -76,7 +76,7 @@ export function QuickQuiz() {
   const restart = () => startPhase(activePhase);
 
   const share = async () => {
-    const text = 'Observatório Eleitoral Águas Lindas 2026 — quiz: ' + displayedScore + ' de ' + QUESTIONS_PER_LEVEL + ' acertos na fase ' + (activePhase + 1) + ' (' + (phaseData?.level ?? '') + ').';
+    const text = 'Observatório Público de Águas Lindas de Goiás — quiz: ' + displayedScore + ' de ' + QUESTIONS_PER_LEVEL + ' acertos na fase ' + (activePhase + 1) + ' (' + (phaseData?.level ?? '') + ').';
     try {
       if (navigator.share) {
         await navigator.share({ text });
@@ -94,7 +94,7 @@ export function QuickQuiz() {
     <section id="quiz" className="quiz-shell" aria-labelledby="quiz-title">
       <header className="quiz-head">
         <p className="quiz-kicker">Aprenda conferindo as fontes</p>
-        <h2 id="quiz-title">Quiz de dados · 2026</h2>
+        <h2 id="quiz-title">Quiz da cidade</h2>
         <p className="quiz-subtitle">{QUIZ_TOTAL} perguntas · {QUIZ_LEVELS.length} fases · 40 por fase. Cada resposta informa a fonte usada.</p>
       </header>
 

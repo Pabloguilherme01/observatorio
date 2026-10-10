@@ -1,0 +1,21 @@
+.data-inspector-overlay { position:fixed; inset:0; z-index:80; display:grid; place-items:center; padding:10px; }
+.data-inspector-overlay .command-backdrop { position:absolute; inset:0; width:100%; height:100%; border:0; background:rgba(5,10,20,.72); }
+.data-inspector-overlay .data-inspector-panel { position:relative; z-index:1; width:100%; max-width:680px!important; max-height:calc(100dvh - 20px)!important; margin:0!important; overflow-y:auto!important; background:#101820; border:1px solid #64748b; border-radius:18px; }
+.data-inspector-overlay .data-inspector-panel > div { min-width:0; }
+html.light .data-inspector-overlay .data-inspector-panel { background:#fff; }
+.data-inspector-overlay .data-inspector-panel :is(.text-slate-400,.text-slate-500,.text-slate-600) { color:#cbd5e1!important; }
+html.light .data-inspector-overlay .data-inspector-panel :is(h2,.text-white,.text-slate-300,.text-amber-200) { color:#172b40!important; }
+html.light .data-inspector-overlay .data-inspector-panel :is(.text-slate-400,.text-slate-500,.text-slate-600) { color:#475569!important; }
+html.light .data-inspector-overlay .data-inspector-panel a,html.light .data-inspector-overlay .data-inspector-panel > div:first-child > div > div { color:#075985!important; }
+.data-correction { padding:14px; border:1px solid #64748b; border-radius:14px; color:#e2e8f0; }
+.data-correction summary { min-height:44px; cursor:pointer; font-weight:700; display:list-item; align-content:center; }
+.data-correction-fields { display:grid; gap:10px; padding-top:10px; }
+.data-correction-fields p { font-size:13px; line-height:1.6; color:#cbd5e1; }
+.data-correction-fields label { font-size:14px; font-weight:700; }
+.data-correction-fields textarea { width:100%; resize:vertical; min-height:70px; border:1px solid #94a3b8; border-radius:9px; padding:10px; background:#101820; color:#f8fafc; font-size:16px; }
+.data-correction-fields a { display:flex; align-items:center; min-height:44px; font-weight:700; text-decoration:underline; color:#bae6fd; }
+.data-correction :is(summary,textarea,a):focus-visible { outline:3px solid #38bdf8; outline-offset:3px; }
+html.light .data-correction { border-color:#64748b; color:#172b40; }
+html.light .data-correction-fields p { color:#334155; }
+html.light .data-correction-fields textarea { background:#fff; color:#172b40; }
+html.light .data-correction-fields a { color:#075985; }

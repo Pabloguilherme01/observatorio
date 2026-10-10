@@ -39,8 +39,6 @@ section{scroll-margin-top:72px}
 .summary-simple-card>strong{font-size:1.2rem;line-height:1.08}
 .summary-public-topic{min-height:58px!important;padding:9px!important}
 .summary-public-fact{min-height:128px!important;padding:10px!important}
-.candidate-card .flex.flex-wrap.gap-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.candidate-card .flex.flex-wrap.gap-2>*{min-width:0;width:100%;min-height:46px;justify-content:center}
 .quiz-card{padding:14px!important;gap:11px!important;border-radius:16px}
 .quiz-phase-grid{gap:6px}
 .quiz-phase-card{min-height:48px;padding:9px;border-radius:12px}
@@ -78,10 +76,8 @@ main{padding-bottom:0}
   .hero-shell .hero-reading-guide a{min-height:40px}
   .today-rail,.topic-rail,.mobile-rail{padding-inline:2px 14px}
   .today-card,.topic-card{overflow:hidden}
-  .summary-simple-card,.summary-public-topic,.summary-public-fact,.candidate-card,.quiz-card{overflow:hidden}
-  .summary-simple-card strong,.summary-public-fact strong,.candidate-card h3,.quiz-prompt{overflow-wrap:anywhere}
-  .candidate-card{padding:13px!important;border-radius:16px!important}
-  .candidate-card .flex.flex-wrap.gap-2>*{font-size:12px}
+  .summary-simple-card,.summary-public-topic,.summary-public-fact,.quiz-card{overflow:hidden}
+  .summary-simple-card strong,.summary-public-fact strong,.quiz-prompt{overflow-wrap:anywhere}
   .quiz-card{padding:13px!important}
   .quiz-option{width:100%;text-align:left;line-height:1.35;overflow-wrap:anywhere}
   .quiz-phase-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
@@ -282,7 +278,7 @@ main{padding-bottom:0}
   .hero-shell .mt-4.flex.flex-wrap>*,.hero-shell .mt-5.flex.flex-wrap>*{font-size:12px;min-height:48px}
   .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4>div{min-height:56px;padding:7px 3px!important}
   .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:7.5px}
-  
+
   .deferred-section{padding-inline:0!important}
   .deferred-section .mx-auto{padding-inline:var(--mobile-page-gutter)!important}
   .deferred-section .mx-auto.max-w-7xl{max-width:100%!important}
@@ -474,9 +470,7 @@ main{padding-bottom:0}
   }
 
   /* Keep card rendering predictable on narrow screens. */
-  .today-card,.topic-card,.summary-simple-card,.summary-public-fact,
-  .candidate-card,.quiz-card,.audience-topic,.audience-action-card,
-  .audience-resource,.audience-link{
+  .today-card,.topic-card,.summary-simple-card,.summary-public-fact,.quiz-card,.audience-topic,.audience-action-card,.audience-resource,.audience-link{
     min-width:0;
     overflow-wrap:anywhere;
   }
@@ -493,7 +487,7 @@ main{padding-bottom:0}
 .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-xl{font-size:.9rem}
 .hero-shell>.mx-auto>.grid>div:last-child .grid.grid-cols-4 .text-\[10px\]{font-size:7px}
 .today-card{flex-basis:82vw}
-.summary-simple-grid,.summary-public-topics,.summary-public-facts,.candidate-card .flex.flex-wrap.gap-2{grid-template-columns:1fr!important}
+.summary-simple-grid,.summary-public-topics,.summary-public-facts{grid-template-columns:1fr!important}
 .quiz-phase-card{padding:8px 6px}
 .quiz-phase-name{font-size:.9rem}
 .mobile-bottom-nav button{min-height:46px!important;font-size:8.5px!important}
@@ -619,4 +613,3 @@ main h2{font-size:1.12rem}
     padding:10px !important;
   }
 }
-

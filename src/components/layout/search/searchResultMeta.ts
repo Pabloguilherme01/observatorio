@@ -1,8 +1,8 @@
-import { BarChart3, BookOpen, BusFront, Database, Droplets, FileCheck2, Landmark, ShieldCheck, Users, Vote, WalletCards } from 'lucide-react';
+import { BarChart3, BookOpen, BusFront, Database, Droplets, Landmark, ShieldCheck, WalletCards } from 'lucide-react';
 import { observatorioData as d } from '../../../data/observatorioData';
 import { navigation } from '../../../config/navigation';
 
-export type ResultKind = 'primary' | 'data' | 'source' | 'candidate' | 'transport' | 'public';
+export type ResultKind = 'primary' | 'data' | 'source' | 'transport' | 'public';
 
 export interface SearchResultItem {
   readonly label: string;
@@ -24,7 +24,6 @@ export const destinationLabel = (id: string) =>
     resumo: 'Resumo',
     'aprendizado-guiado': 'Aprendizado guiado',
     saude: 'Saúde e serviços',
-    candidaturas: 'Candidaturas',
     exportacao: 'Baixar dados',
     acao: 'Serviços públicos',
     contexto: 'Comparação municipal',
@@ -32,11 +31,8 @@ export const destinationLabel = (id: string) =>
   }[id] ?? 'Seção do observatório');
 
 export const resultIcon = (id: string) => {
-  if (id === 'eleitorado') return Users;
   if (id === 'transporte') return BusFront;
   if (id === 'saude') return Droplets;
-  if (id === 'politica') return Vote;
-  if (id === 'candidaturas') return FileCheck2;
   if (id === 'orcamento') return WalletCards;
   if (id === 'fontes') return Database;
   if (id === 'qualidade') return ShieldCheck;

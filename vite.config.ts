@@ -2,13 +2,14 @@ import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import tseCandidates from './src/data/generated/tse2026-candidates.json' with { type: 'json' };
+import { municipalIntegrity } from './src/lib/municipalIntegrity.js';
+import { indicatorReference } from './src/lib/indicatorReference.js';
 import { APP_VERSION } from './src/config/version.js';
 import { observatorioData } from './src/data/observatorioData.js';
 import { sourceRegistry } from './src/data/sourceRegistry.js';
 
 const BASE_PATH = '/observatorio/';
-const API_ROOT = '/api/v1/';
+const API_ROOT = '/api/v2/';
 const PUBLIC_COMMIT_SHA = process.env.OBSERVATORIO_COMMIT_SHA ?? process.env.GITHUB_SHA ?? 'local-development';
 const PUBLIC_BUILD_ENV = process.env.GITHUB_ACTIONS === 'true' ? 'github-actions' : 'local';
 const RUNTIME_CACHE_VERSION = APP_VERSION.split('.')[0];
@@ -19,8 +20,8 @@ const getApiRequestPath = (value: string) => {
 };
 
 const getObservatorioPayload = () => ({
-  schemaVersion: 1,
-  apiVersion: '1.0',
+  schemaVersion: 2,
+  apiVersion: '2.0',
   edition: observatorioData.meta.edition,
   municipality: observatorioData.meta.municipality,
   datasetUpdatedAt: observatorioData.meta.updatedAt,
@@ -28,44 +29,15 @@ const getObservatorioPayload = () => ({
   data: observatorioData,
 });
 
-const getHealthPayload = () => {
-  const capturedAt = tseCandidates.meta.downloadedAt ?? null;
-  const capturedAtMs = capturedAt ? Date.parse(capturedAt) : NaN;
-  const ageHours = Number.isFinite(capturedAtMs)
-    ? Math.max(0, (Date.now() - capturedAtMs) / 3_600_000)
-    : null;
-  const maxAgeHours = 24;
-  const tseFreshness = ageHours !== null && ageHours <= maxAgeHours ? 'fresh' : 'stale';
-
-  return {
-    schemaVersion: 2,
-    status: tseFreshness === 'fresh' ? 'ok' : 'degraded',
-    appVersion: APP_VERSION,
-    edition: observatorioData.meta.edition,
-    datasetUpdatedAt: observatorioData.meta.updatedAt,
-    buildGeneratedAt: new Date().toISOString(),
-    publicPath: BASE_PATH,
-    publication: {
-      commitSha: PUBLIC_COMMIT_SHA,
-      commitShort: PUBLIC_COMMIT_SHA !== 'local-development' ? PUBLIC_COMMIT_SHA.slice(0, 12) : PUBLIC_COMMIT_SHA,
-      environment: PUBLIC_BUILD_ENV,
-      contract: 'publication-parity-v1',
-    },
-    freshness: {
-      maxAgeHours,
-      tseCandidates: {
-        status: tseFreshness,
-        capturedAt,
-        ageHours: ageHours === null ? null : Number(ageHours.toFixed(2)),
-        snapshotId: tseCandidates.meta.snapshotId,
-        state: tseCandidates.meta.state,
-        matchedRows: tseCandidates.meta.matchedRows,
-        coverage: tseCandidates.coverage,
-        universeScope: tseCandidates.meta.candidateUniverseScope,
-      },
-    },
-  };
-};
+const getHealthPayload = () => ({
+  schemaVersion: 2, apiVersion: '2.0',
+  status: municipalIntegrity(observatorioData).valid ? 'ok' : 'degraded',
+  integrity: municipalIntegrity(observatorioData),
+  appVersion: APP_VERSION, edition: observatorioData.meta.edition,
+  datasetUpdatedAt: observatorioData.meta.updatedAt, buildGeneratedAt: new Date().toISOString(), publicPath: BASE_PATH,
+  publication: { commitSha: PUBLIC_COMMIT_SHA, commitShort: PUBLIC_COMMIT_SHA === 'local-development' ? PUBLIC_COMMIT_SHA : PUBLIC_COMMIT_SHA.slice(0,12), environment: PUBLIC_BUILD_ENV, contract: 'municipal-publication-v2' },
+  references: observatorioData.indicators.map(item => ({ id:item.id, ...indicatorReference(item, sourceRegistry.find(source => source.id === item.sourceId)), freshness:'not-assessed' })),
+});
 
 const getSourcesPayload = () => ({
   schemaVersion: 2,
@@ -94,16 +66,16 @@ const getOpenApiPayload = () => ({
   },
   servers: [{ url: BASE_PATH }],
   paths: {
-    '/api/v1/observatorio.json': {
+    '/api/v2/observatorio.json': {
       get: { summary: 'Dataset consolidado da edição publicada', responses: { '200': { description: 'JSON do observatório' } } },
     },
-    '/api/v1/openapi.json': {
+    '/api/v2/openapi.json': {
       get: { summary: 'Especificação OpenAPI', responses: { '200': { description: 'OpenAPI JSON' } } },
     },
-    '/api/v1/health.json': {
+    '/api/v2/health.json': {
       get: { summary: 'Estado do build publicado e paridade de publicação', responses: { '200': { description: 'Metadados do build, dataset, snapshot e commit publicado' } } },
     },
-    '/api/v1/sources.json': {
+    '/api/v2/sources.json': {
       get: { summary: 'Registro de fontes do observatório', responses: { '200': { description: 'Fontes e metadados de referência' } } },
     },
   },
@@ -111,9 +83,16 @@ const getOpenApiPayload = () => ({
 
 const publicApiPlugin = (): Plugin => ({
   name: 'observatorio-public-api',
+  configurePreviewServer(server) {
+    server.middlewares.use((req,res,next) => {
+      if (getApiRequestPath(req.url ?? '').startsWith('/api/v1/')) { res.statusCode = 404; res.end('API v1 retired; see API v2 migration documentation.'); return; }
+      next();
+    });
+  },
   configureServer(server) {
     server.middlewares.use((req, res, next) => {
       const apiPath = getApiRequestPath(req.url ?? '');
+      if (apiPath.startsWith('/api/v1/')) { res.statusCode = 404; res.end('API v1 retired; see API v2 migration documentation.'); return; }
       if (apiPath === API_ROOT + 'observatorio.json') {
         res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify(getObservatorioPayload(), null, 2));
@@ -136,22 +115,22 @@ const publicApiPlugin = (): Plugin => ({
   generateBundle() {
     this.emitFile({
       type: 'asset',
-      fileName: 'api/v1/observatorio.json',
+      fileName: 'api/v2/observatorio.json',
       source: JSON.stringify(getObservatorioPayload(), null, 2),
     });
     this.emitFile({
       type: 'asset',
-      fileName: 'api/v1/health.json',
+      fileName: 'api/v2/health.json',
       source: JSON.stringify(getHealthPayload(), null, 2),
     });
     this.emitFile({
       type: 'asset',
-      fileName: 'api/v1/sources.json',
+      fileName: 'api/v2/sources.json',
       source: JSON.stringify(getSourcesPayload(), null, 2),
     });
     this.emitFile({
       type: 'asset',
-      fileName: 'api/v1/openapi.json',
+      fileName: 'api/v2/openapi.json',
       source: JSON.stringify(getOpenApiPayload(), null, 2),
     });
   },
@@ -171,9 +150,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Observatório Águas Lindas 2026',
-        short_name: 'Observatório 2026',
-        description: 'Dados públicos eleitorais e municipais de Águas Lindas de Goiás, com fontes rastreáveis.',
+        name: 'Observatório Águas Lindas',
+        short_name: 'Observatório',
+        description: 'Dados municipais e serviços públicos de Águas Lindas de Goiás, com fontes rastreáveis.',
         lang: 'pt-BR',
         dir: 'ltr',
         id: BASE_PATH,
@@ -192,7 +171,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}'],
-        globIgnores: ['**/data/tse-results.json'],
+        globIgnores: ['api/v2/health.json'],
+        importScripts: ['cache-cleanup.js'],
         navigateFallback: '/observatorio/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/observatorio\/api\//],
         runtimeCaching: [
@@ -224,21 +204,11 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: ({ url }) => url.pathname === '/observatorio/data/tse-results.json' || url.pathname === '/data/tse-results.json',
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`,
-              networkTimeoutSeconds: 3,
-              expiration: { maxEntries: 2, maxAgeSeconds: 60 * 60 * 24 * 14, purgeOnQuotaError: true },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            urlPattern: ({ url }) => url.pathname === '/observatorio/api/v1/health.json' || url.pathname === '/api/v1/health.json',
+            urlPattern: ({ url }) => url.pathname === '/observatorio/api/v2/health.json' || url.pathname === '/api/v2/health.json',
             handler: 'NetworkOnly',
           },
           {
-            urlPattern: ({ url }) => (url.pathname.startsWith('/observatorio/api/v1/') || url.pathname.startsWith('/api/v1/'))
+            urlPattern: ({ url }) => (url.pathname.startsWith('/observatorio/api/v2/') || url.pathname.startsWith('/api/v2/'))
               && !url.pathname.endsWith('/health.json'),
             handler: 'NetworkFirst',
             options: {

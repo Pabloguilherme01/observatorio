@@ -12,12 +12,6 @@ html {
 .hero-shell { position: relative; }
 
 :where(
-  .dashboard-kpi-card,.technical-mini-kpi,.summary-public-fact,
-  .summary-simple-card,.candidate-card,.quiz-card,.quiz-phase-card,
-  .civic-service-card,.obs-card
-) { text-wrap: pretty; }
-
-:where(
   .dashboard-kpi-card strong,.technical-mini-kpi strong,
   .summary-public-fact strong,.summary-simple-card strong
 ) { font-variant-numeric: tabular-nums; }
@@ -32,29 +26,6 @@ html {
   box-shadow: 0 8px 24px rgba(56,189,248,.12);
 }
 
-:where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card) {
-  border-color: rgba(148,163,184,.14);
-}
-:where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card) h2,
-:where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card) h3 {
-  text-wrap: balance;
-}
-:where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card) p {
-  line-height: 1.52;
-}
-
-:where(
-  .quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
-  .civic-share-button,.summary-public-action,.mobile-tool-action
-) {
-  transition: transform .14s ease, background-color .14s ease,
-    border-color .14s ease, box-shadow .14s ease;
-}
-:where(
-  .quiz-option,.quiz-next,.quiz-action,.electoral-action-button,
-  .civic-share-button,.summary-public-action,.mobile-tool-action
-):active { transform: translateY(1px); }
-
 :root {
   --vf-page-gutter: clamp(14px, 3vw, 28px);
   --vf-card-border: rgba(148,163,184,.16);
@@ -63,13 +34,6 @@ html {
 
 :where(.section-shell,.content-shell,.dashboard-section,.observatory-section) {
   scroll-margin-top: 88px;
-}
-:where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card,.civic-service-card) {
-  border: 1px solid var(--vf-card-border);
-  box-shadow: var(--vf-card-shadow);
-}
-:where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card,.civic-service-card):focus-within {
-  border-color: rgba(125,211,252,.28);
 }
 
 .language-toggle-v3 {
@@ -83,11 +47,6 @@ html {
 .language-toggle-v3 .language-toggle-options > button[aria-pressed="true"] {
   border-color: rgba(125,211,252,.34);
   box-shadow: 0 8px 24px rgba(2,6,23,.16), inset 0 0 0 1px rgba(125,211,252,.08);
-}
-
-:where(.quiz-next,.quiz-action,.electoral-action-button,.civic-share-button,.summary-public-action,.audience-primary-action,.mobile-tool-action) {
-  min-height: 48px;
-  border-radius: 12px;
 }
 
 @media (max-width: 767px) {
@@ -116,10 +75,6 @@ html {
     scroll-margin-top: 78px;
   }
   :where(.section-header,.section-heading) { padding-inline: var(--vf-page-gutter); }
-
-  :where(.obs-card,.summary-shell,.trust-shell,.quiz-shell,.candidate-card,.civic-service-card) {
-    box-shadow: 0 10px 26px rgba(2,6,23,.14);
-  }
 
   .language-toggle-v3 {
     width: 100%;
@@ -181,11 +136,7 @@ html {
   }
 
   .today-card, .topic-card { scroll-snap-stop: normal; }
-  :where(.summary-public-fact,.summary-simple-card,.candidate-card,.quiz-card) {
-    content-visibility: visible;
-    contain-intrinsic-size: auto;
-  }
-  .candidate-card h3,.quiz-prompt,.summary-public-fact strong,.summary-simple-card strong {
+  .quiz-prompt,.summary-public-fact strong,.summary-simple-card strong {
     overflow-wrap: normal; word-break: normal; hyphens: auto;
   }
   .today-rail,.topic-rail,.mobile-rail,.quiz-phase-grid {
@@ -232,7 +183,11 @@ html {
     animation-duration: .01ms !important;
   }
   .language-toggle-v3 .language-toggle-options > button,
-  .mobile-bottom-nav button,.hero-shell a,.quiz-option,.quiz-action,.quiz-next {
+  .mobile-bottom-nav button,
+  .hero-shell a,
+  .quiz-option,
+  .quiz-action,
+  .quiz-next {
     transition: none !important;
   }
 }

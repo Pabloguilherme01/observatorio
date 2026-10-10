@@ -7,7 +7,6 @@ const resultGroups: readonly { key: ResultKind; label: string }[] = [
   { key: 'primary', label: 'Resultados principais' },
   { key: 'data', label: 'Estatísticas e dados' },
   { key: 'source', label: 'Fontes oficiais' },
-  { key: 'candidate', label: 'Candidaturas' },
   { key: 'transport', label: 'Transporte' },
   { key: 'public', label: 'Serviços públicos' },
 ];

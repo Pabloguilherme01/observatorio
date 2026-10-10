@@ -1,109 +1,19 @@
-import { Database, FileCheck2, Fingerprint, Link2, ShieldCheck } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ExternalLink, Link2 } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
-import generated from '../../data/generated/tse2026-candidates.json';
-import { RESULTS_WINDOW } from '../../data/resultsConfig';
-import { Card } from '../ui/Card';
+import { indicatorReference } from '../../lib/indicatorReference';
 import { SectionHeader } from '../ui/SectionHeader';
 
-function captureLabel(value: string | undefined) {
-  if (!value) return 'não registrada';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' });
-}
-
 export function EvidenceChain() {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 60000);
-    return () => window.clearInterval(timer);
-  }, []);
-  const resultsPhase = now < new Date(RESULTS_WINDOW.start).getTime()
-    ? 'pre_open'
-    : now > new Date(RESULTS_WINDOW.end).getTime()
-      ? 'ended_unavailable'
-      : 'open_waiting';
-  const candidateSource = d.sources.find(source => source.id === 'tse-candidatos-2026');
-  const editorialSource = d.sources.find(source => source.id === 'recorte-editorial-candidatos-2026');
-  const candidateState = generated.meta.state;
-  const candidateCaptured = Boolean(generated.meta.downloadedAt);
-  const candidateHash = generated.meta.sourceFileSha256;
-  const resultSource = d.sources.find(source => source.id === 'tse-resultados-2026');
-  const resultPhase = {
-    pre_open: { label: 'Pré-eleição', detail: 'A janela de resultados ainda não abriu.' },
-    open_waiting: { label: 'Janela aberta', detail: 'O estado detalhado do feed oficial aparece no painel de resultados; esta camada não faz uma segunda consulta à rede.' },
-    ended_unavailable: { label: 'Janela encerrada', detail: 'A janela operacional terminou; o estado do último feed continua indicado no painel de resultados.' },
-  } as const;
-  const currentResultPhase = resultPhase[resultsPhase as keyof typeof resultPhase];
-  const unresolved = generated.diff?.unresolved ?? 0;
-
-  return (
-    <section id="evidencias" className="mx-auto max-w-7xl px-4 py-14 sm:px-6" aria-labelledby="evidence-title">
-      <SectionHeader
-        titleId="evidence-title"
-        eyebrow="Evidências"
-        title="Como conferir a origem de um dado"
-        description="Confira quatro pontos: fonte original, data da captura, verificação de integridade e limites do recorte apresentado."
-      />
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <Card>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-            <Database className="h-4 w-4 text-sky-300" aria-hidden="true" /> Candidatos
-          </div>
-          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Fonte oficial e recorte local são coisas diferentes</h3>
-          <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
-            <div><strong className="text-slate-200 light:text-slate-800">Fonte:</strong> {candidateSource?.label ?? 'TSE — Candidatos 2026'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Captura local:</strong> {candidateCaptured ? captureLabel(generated.meta.downloadedAt) : 'ainda não realizada'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Estado:</strong> {candidateState}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Registros lidos:</strong> {generated.meta.sourceRows.toLocaleString('pt-BR')} · encontrados no recorte estadual: {(generated.meta.originalMatchedRows ?? 0).toLocaleString('pt-BR')}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Mapeados por evidência local:</strong> {generated.meta.matchedRows.toLocaleString('pt-BR')} · pendentes: {unresolved.toLocaleString('pt-BR')}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Cobertura:</strong> recorte acompanhado de {generated.watchlist.length} nomes, não universo completo.</div>
-          </div>
-          <a href={editorialSource?.url ?? candidateSource?.url} target="_blank" rel="noopener noreferrer" className="evidence-source-card mt-4" aria-label="Abrir a fonte de referência dos dados de candidatos">
-            <span className="evidence-source-card-icon"><Link2 className="h-4 w-4" aria-hidden="true" /></span>
-            <span><strong>Abrir fonte de referência</strong><small>Ver o registro original e conferir a origem.</small></span>
-            <span className="evidence-source-card-arrow" aria-hidden="true">↗</span>
-          </a>
-        </Card>
-
-        <Card>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-            <Fingerprint className="h-4 w-4 text-sky-300" aria-hidden="true" /> Integridade
-          </div>
-          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Como verificamos o arquivo capturado</h3>
-          <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
-            <div><strong className="text-slate-200 light:text-slate-800">SHA-256 da fonte:</strong> {candidateHash ? <code className="break-all">{candidateHash}</code> : 'não registrado nesta captura'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Método:</strong> {generated.meta.retrievalMethod.replaceAll('_', ' ')}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Transporte:</strong> {generated.meta.captureTransport?.replaceAll('_', ' ') ?? 'não informado'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Workflow:</strong> {generated.meta.workflowRunId ?? 'não capturado'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Commit:</strong> {'gitCommit' in (generated.meta as unknown as Record<string, unknown>) && typeof (generated.meta as unknown as Record<string, unknown>).gitCommit === 'string' ? String((generated.meta as unknown as Record<string, unknown>).gitCommit) : 'não capturado'}</div>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-            <ShieldCheck className="h-4 w-4 text-sky-300" aria-hidden="true" /> Resultados
-          </div>
-          <h3 className="mt-3 text-lg font-black text-white light:text-slate-900">Resultados só aparecem depois da validação</h3>
-          <div className="mt-4 space-y-2 text-xs leading-5 text-slate-400 light:text-slate-600">
-            <div><strong className="text-slate-200 light:text-slate-800">Fonte:</strong> {resultSource?.institution ?? 'Tribunal Superior Eleitoral'}</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Município:</strong> Águas Lindas de Goiás · código 93343</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Integridade:</strong> JSON/JWS e contexto municipal são validados antes da publicação.</div>
-            <div><strong className="text-slate-200 light:text-slate-800">Estado atual:</strong> {currentResultPhase.label} — {currentResultPhase.detail}</div>
-          </div>
-          <a href={resultSource?.url} target="_blank" rel="noopener noreferrer" className="evidence-source-card mt-4" aria-label="Abrir a documentação técnica do TSE sobre resultados">
-            <span className="evidence-source-card-icon"><FileCheck2 className="h-4 w-4" aria-hidden="true" /></span>
-            <span><strong>Documentação técnica TSE</strong><small>Consultar método, contexto e validação dos resultados.</small></span>
-            <span className="evidence-source-card-arrow" aria-hidden="true">↗</span>
-          </a>
-        </Card>
-      </div>
-
-      <div className="mt-4 rounded-2xl border border-amber-400/15 bg-amber-400/[0.035] p-4 text-xs leading-5 text-slate-400 light:border-amber-300/50 light:bg-amber-50 light:text-slate-600">
-        <strong className="text-amber-200 light:text-amber-800">Importante:</strong> uma fonte oficial não transforma automaticamente um recorte local em registro municipal. A etiqueta “oficial” descreve a origem da fonte; “captura local validada” exige município comprovado no registro e evidência verificável da captura.
-      </div>
-    </section>
-  );
+  return <section id="evidencias" className="mx-auto max-w-7xl px-4 py-12 sm:px-6" aria-labelledby="evidence-title">
+    <SectionHeader titleId="evidence-title" eyebrow="Confira a informação" title="Do indicador à fonte original" description="Confira o significado, o período e a instituição responsável. A publicação do site não atualiza automaticamente os dados." />
+    <div className="grid gap-4 sm:grid-cols-2">{d.indicators.slice(0,4).map(item => {
+      const source=d.sources.find(source => source.id===item.sourceId);
+      return <article key={item.id} className="rounded-2xl border border-slate-500 p-5 text-slate-300 light:text-slate-800">
+        <Link2 aria-hidden="true" className="h-5 w-5" /><h3 className="mt-3 font-bold">{item.label}</h3>
+        <p className="mt-2 text-sm">{indicatorReference(item,source).label} · {source?.institution ?? 'Instituição não informada'}</p>
+        <p className="mt-2 text-sm">{item.note ?? 'Leia a definição e o método na fonte.'}</p>
+        {source && <a className="mt-4 inline-flex min-h-11 items-center gap-2 font-bold text-sky-200 light:text-sky-800" href={source.resourceUrl ?? source.url} target="_blank" rel="noopener noreferrer">Conferir fonte <ExternalLink className="h-4 w-4" aria-hidden="true" /></a>}
+      </article>;
+    })}</div>
+  </section>;
 }

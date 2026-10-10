@@ -31,84 +31,11 @@ const invalidDates = dateStrings.filter(value => {
 if (invalidDates.length) fail('datas ISO inválidas no dataset: ' + [...new Set(invalidDates)].join(', '));
 else pass('datas ISO do dataset possuem formato e calendário válidos.');
 
-const pollBlock = text.match(/polls:\s*\[([\s\S]*?)\],\n\n  candidates:/)?.[1] ?? '';
-const pollParts = [...pollBlock.matchAll(/percentage:\s*([0-9]+(?:\.[0-9]+)?)/g)].map(match => Number(match[1]));
-for (const key of ['nonePct', 'notSurePct', 'unclassifiedPct']) {
-  const value = pollBlock.match(new RegExp(key + ':\\s*([0-9]+(?:\\.[0-9]+)?)'));
-  if (value) pollParts.push(Number(value[1]));
-}
-if (pollParts.length) {
-  const sum = pollParts.reduce((a, b) => a + b, 0);
-  if (sum > 100.001) fail('categorias da pesquisa ultrapassam 100%: ' + sum.toFixed(3));
-  else if (Math.abs(sum - 100) > 0.05) fail('categorias da pesquisa não fecham 100%: ' + sum.toFixed(3));
-  else pass('categorias publicadas da pesquisa fecham 100% dentro da tolerância.');
-}
-
-const ageBlock = text.match(/ageGroups:\s*\[([\s\S]*?)\],\n\s+womenPct:/)?.[1] ?? '';
-const ageVoters = [...ageBlock.matchAll(/voters:\s*([0-9]+)/g)].map(match => Number(match[1]));
-const ageShares = [...ageBlock.matchAll(/sharePct:\s*([0-9]+(?:\.[0-9]+)?)/g)].map(match => Number(match[1]));
-const electorate = Number(text.match(/electorate:\s*([0-9]+)/)?.[1] ?? 0);
-if (ageVoters.length && ageShares.length && electorate) {
-  const voterSum = ageVoters.reduce((a, b) => a + b, 0);
-  const shareSum = ageShares.reduce((a, b) => a + b, 0);
-  if (voterSum !== electorate) fail('grupos etários não fecham o eleitorado: ' + voterSum + ' != ' + electorate);
-  else pass('grupos etários fecham exatamente o eleitorado do snapshot.');
-  if (Math.abs(shareSum - 100) > 0.2) fail('percentuais etários não fecham 100%: ' + shareSum.toFixed(2));
-  else pass('percentuais etários fecham aproximadamente 100%.');
-}
-
-const electorate2024Snapshot = Number(text.match(/electorate2024:\s*([0-9]+)/)?.[1] ?? 0);
-const turnout2024Pct = Number(text.match(/turnout2024Pct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
-const abstention2024Pct = Number(text.match(/abstention2024Pct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
-const abstention2024Count = Number(text.match(/abstention2024Count:\s*([0-9]+)/)?.[1] ?? 0);
-const blankVotes2024Count = Number(text.match(/blankVotes2024Count:\s*([0-9]+)/)?.[1] ?? 0);
-const nullVotes2024Count = Number(text.match(/nullVotes2024Count:\s*([0-9]+)/)?.[1] ?? 0);
-const validVotes2024Count = Number(text.match(/validVotes2024Count:\s*([0-9]+)/)?.[1] ?? 0);
-
-if (electorate2024Snapshot && turnout2024Pct && abstention2024Pct) {
-  const rateSum = turnout2024Pct + abstention2024Pct;
-  if (Math.abs(rateSum - 100) > 0.05) fail('comparecimento + abstenção 2024 não fecham 100%: ' + rateSum.toFixed(2));
-  else pass('comparecimento + abstenção 2024 fecham 100%.');
-
-  const turnoutCountDerived = electorate2024Snapshot * turnout2024Pct / 100;
-  const turnoutCountActual = validVotes2024Count + blankVotes2024Count + nullVotes2024Count;
-  if (Math.abs(turnoutCountDerived - turnoutCountActual) > 3) {
-    fail('comparecimento 2024 diverge dos votos observados além da tolerância: ' + turnoutCountDerived.toFixed(2) + ' vs ' + turnoutCountActual);
-  } else {
-    pass('comparecimento 2024 é coerente com válidos + brancos + nulos.');
-  }
-
-  if (turnoutCountActual + abstention2024Count !== electorate2024Snapshot) {
-    fail('votos observados + abstenções não fecham o eleitorado 2024.');
-  } else {
-    pass('votos observados + abstenções fecham exatamente o eleitorado 2024.');
-  }
-}
-
-const womenPct = Number(text.match(/(?:^|[\s,])womenPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
-const menPct = Number(text.match(/(?:^|[\s,])menPct:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
-if (womenPct || menPct) {
-  const genderSum = womenPct + menPct;
-  if (Math.abs(genderSum - 100) > 0.05) fail('percentuais de gênero não fecham 100%: ' + genderSum.toFixed(2));
-  else pass('percentuais de gênero fecham 100%.');
-}
-
-if (text.includes("interviews: 400") && text.includes("theoreticalMarginErrorPct: 4.9")) {
-  pass('Pesquisa mantém margem teórica explicitamente marcada.');
-} else {
-  fail('Pesquisa perdeu a marcação de margem teórica.');
-}
-
 const brasiliaFare = Number(text.match(/brasilia:\s*([0-9]+(?:\.[0-9]+)?)/)?.[1] ?? 0);
 if (brasiliaFare === 11.45 && text.includes("fareBrl: TRANSPORT_FARES_BRL.brasilia")) pass('Tarifa Brasília está em R$ 11,45 e usa premissa centralizada.');
 else fail('Tarifa Brasília não está em R$ 11,45 ou não usa a premissa centralizada.');
 
-if (text.includes("state: 'not_synced'")) pass('Snapshot TSE local continua explícito como não sincronizado.');
-else pass('Snapshot TSE local já não está em placeholder.');
-
-
 const numericChecks = [
-  ['eleitorado atual', electorate],
   ['população 2026', Number(text.match(/year:\s*2026,\s*value:\s*([0-9]+)/)?.[1] ?? 0)],
   ['orçamento total 2026', Number(text.match(/totalBrl:\s*([0-9_\.]+)/)?.[1]?.replaceAll('_', '') ?? 0)],
   ['tarifa Brasília', brasiliaFare],
@@ -116,14 +43,6 @@ const numericChecks = [
 for (const [label, value] of numericChecks) {
   if (!Number.isFinite(value) || value <= 0) fail(label + ' possui valor numérico inválido: ' + value);
   else pass(label + ' possui valor numérico positivo.');
-}
-
-const electorate2024 = Number(text.match(/electorate2024:\s*([0-9]+)/)?.[1] ?? 0);
-const electorate2026 = electorate;
-if (electorate2024 && electorate2026 && electorate2026 < electorate2024) {
-  fail('eleitorado 2026 ficou abaixo do snapshot 2024 sem justificativa no contrato.');
-} else if (electorate2024 && electorate2026) {
-  pass('evolução do eleitorado 2024 → 2026 não apresenta regressão estrutural.');
 }
 
 const healthBeds = [

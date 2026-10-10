@@ -122,10 +122,10 @@ export function SanitationHealthSection() {
             <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Como ler os números de leitos</div>
             <div className="mt-3 grid gap-2 sm:grid-cols-3">
               <StatTile value={formatNumber(d.health.openingReportedBeds)} label="referência reportada na inauguração" valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
-              <StatTile value={formatNumber(currentStatedBeds)} label={formatNumber(d.health.currentStatedWardBeds) + ' enfermaria + ' + formatNumber(d.health.currentStatedIcuBeds) + ' UTI, explicitados no portal atual'} valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
+              <StatTile value={formatNumber(currentStatedBeds)} label={formatNumber(d.health.currentStatedWardBeds) + ' enfermaria + ' + formatNumber(d.health.currentStatedIcuBeds) + ' UTI, explicitados no portal institucional'} valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
               <StatTile value={formatNumber(planningBeds)} label="planejamento registrado no dataset, não capacidade instalada" valueClassName="text-sm" labelClassName="mt-1 block" borderTone="subtle" />
             </div>
-            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal atual e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre {formatNumber(d.health.openingReportedBeds)} e {formatNumber(currentStatedBeds)}; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
+            <p className="mt-3 text-[11px] leading-5 text-slate-500">As três referências têm naturezas diferentes: inauguração, capacidade explicitada no portal institucional e planejamento. O conjunto publicado não documenta, por si só, a causa da diferença entre {formatNumber(d.health.openingReportedBeds)} e {formatNumber(currentStatedBeds)}; não inferimos desativação, reclassificação ou redução de leitos sem fonte específica.</p>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -135,7 +135,7 @@ export function SanitationHealthSection() {
               <div className="text-xs text-slate-500">leitos</div>
             </div>
             <div className="rounded-2xl border border-white/10 p-4 light:border-slate-200">
-              <div className="text-xs text-slate-500">Capacidade explicitada no portal atual</div>
+              <div className="text-xs text-slate-500">Capacidade explicitada no portal institucional</div>
               <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatNumber(currentStatedBeds)}</div>
               <div className="text-xs text-slate-500">{formatNumber(d.health.currentStatedWardBeds)} enfermaria + {formatNumber(d.health.currentStatedIcuBeds)} UTI</div>
             </div>
@@ -169,7 +169,7 @@ export function SanitationHealthSection() {
                   aria-label="Selecionar referência de leitos"
                 >
                   <option value="opening">{formatNumber(d.health.openingReportedBeds)} · inauguração</option>
-                  <option value="current">{formatNumber(currentStatedBeds)} · portal atual</option>
+                  <option value="current">{formatNumber(currentStatedBeds)} · portal institucional</option>
                   <option value="planning">{formatNumber(planningBeds)} · planejamento publicado</option>
                   {bedReference === 'custom' && <option value="custom">{formatNumber(plannedBeds)} · cenário personalizado</option>}
                 </select>
@@ -181,7 +181,7 @@ export function SanitationHealthSection() {
                 <strong className="mt-1 block text-3xl font-black text-white light:text-slate-900">{formatNumber(plannedBeds)} leitos</strong>
               </div>
               <span className="text-right text-[11px] leading-5 text-slate-500">
-                {formatNumber(d.health.openingReportedBeds)} = inauguração · {formatNumber(currentStatedBeds)} = capacidade explicitada no portal atual · {formatNumber(planningBeds)} = planejamento registrado
+                {formatNumber(d.health.openingReportedBeds)} = inauguração · {formatNumber(currentStatedBeds)} = capacidade explicitada no portal institucional · {formatNumber(planningBeds)} = planejamento registrado
               </span>
             </div>
             <input
@@ -210,7 +210,7 @@ export function SanitationHealthSection() {
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             <StatTile value={formatNumber(plannedBeds)} label={bedReference === 'custom' ? 'leitos no cenário simulado' : bedReference === 'planning' ? 'leitos no planejamento publicado' : 'leitos na referência selecionada'} />
             <StatTile value={formatSigned(plannedBeds - d.health.openingReportedBeds)} label="leitos vs. referência de inauguração" />
-            <StatTile value={formatSigned(scenarioVsCurrent)} label="leitos vs. capacidade explicitada no portal atual" />
+            <StatTile value={formatSigned(scenarioVsCurrent)} label="leitos vs. capacidade explicitada no portal institucional" />
           </div>
 
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50">

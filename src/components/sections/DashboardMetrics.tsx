@@ -2,7 +2,6 @@ import { Database, Info, AlertCircle } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 const HistoricalTrendChart = lazy(() => import('./HistoricalTrendChart').then(module => ({ default: module.HistoricalTrendChart })));
 import { observatorioData as d } from '../../data/observatorioData';
-import { formatNumber } from '../../utils/formatters';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
 import { dispatchInspect, inspectDataId } from '../../lib/dataInspectorEvents';
 import { SectionHeader } from '../ui/SectionHeader';
@@ -10,7 +9,6 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 import { IndicatorComparator } from './IndicatorComparator';
 import { DashboardSecondaryIndicatorCard } from './dashboard/DashboardSecondaryIndicatorCard';
 import { buildDashboardMetricsModel } from './dashboard/dashboardMetricsModel';
-import { ElectorateReconciliationPanel } from './dashboard/ElectorateReconciliationPanel';
 
 export function DashboardMetrics() {
   const { mode: languageMode } = useLanguageMode();
@@ -18,8 +16,6 @@ export function DashboardMetrics() {
   const isGuided = languageMode === 'guided';
   const isExplained = languageMode === 'simple' || isGuided;
   const {
-    electorate2026,
-    consolidatedElectorate,
     comparisonDetails,
     metricDetails,
     thematicIndicators,
@@ -63,7 +59,7 @@ export function DashboardMetrics() {
               <div className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-200/80 light:text-amber-700">O que merece atenção</div>
               <div className="mt-2 grid gap-2 text-xs leading-5 text-slate-400 sm:grid-cols-3 light:text-slate-600">
                 <p>População: 2022 é Censo; 2025 e 2026 são estimativas do IBGE.</p>
-                <p>Eleitorado: o valor de 2026 é um registro com data própria de referência.</p>
+                <p>Saneamento: acesso ao serviço e tratamento de esgoto são medidas diferentes.</p>
                 <p>Indicadores do painel podem usar anos-base diferentes; compare sempre a referência.</p>
               </div>
             </div>
@@ -79,7 +75,7 @@ export function DashboardMetrics() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, status, note, nature, sourceLabel }) => (
+        {metricDetails.map(({ label, value, caption, simpleExplanation, icon: Icon, sourceId, referenceDate, referenceLabel, status, note, nature, sourceLabel }) => (
           <button key={label} type="button" data-inspect-id={inspectDataId({ label, sourceId })} onClick={() => dispatchInspect({ label, value, sourceId, referenceDate, status, note, method: nature === 'Derivado' ? 'Cálculo derivado a partir das fontes e premissas exibidas.' : undefined })} className="metric-interactive dashboard-kpi-card text-left">
 
               <div className="flex items-start justify-between gap-4">
@@ -99,7 +95,7 @@ export function DashboardMetrics() {
                   )}
                   <div className="dashboard-card-meta mt-3">
                     <span className="dashboard-meta-chip" data-kind={nature === 'Derivado' ? 'derived' : 'observed'}>{nature}</span>
-                    {referenceDate && <span className="dashboard-meta-chip">ref. {formatReference(referenceDate)}</span>}
+                    {(referenceLabel || referenceDate) && <span className="dashboard-meta-chip">{referenceLabel ?? ('ref. ' + formatReference(referenceDate))}</span>}
                     <span className="dashboard-card-action">{isSummary ? 'Ver fonte' : isGuided ? 'Ver contexto e conferir fonte' : languageMode === 'simple' ? 'Conferir contexto' : 'Abrir método'}</span>
                   </div>
                 </div>
@@ -121,13 +117,11 @@ export function DashboardMetrics() {
         </div>
       ) : (
         <div className="technical-detail mt-3 rounded-2xl border border-white/8 bg-white/[0.02] px-4 py-3 text-xs leading-5 text-slate-500 light:border-slate-200 light:bg-slate-50/70">
-          <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> população e eleitorado são universos diferentes e podem ter datas de referência diferentes. A razão eleitorado/população é um cálculo estatístico; não mede comparecimento às urnas.
+          <strong className="text-slate-300 light:text-slate-700">Antes de comparar:</strong> confira período, unidade e definição. Indicadores com nomes próximos podem medir universos diferentes.
         </div>
       )}
 
-      {consolidatedElectorate && (
-        <ElectorateReconciliationPanel consolidatedElectorate={consolidatedElectorate} />
-      )}
+
 
       <IndicatorComparator />
 
@@ -250,10 +244,7 @@ export function DashboardMetrics() {
               <div className="text-[10px] font-black uppercase tracking-[0.16em] text-sky-300/80">Leitura metodológica</div>
               <p className="mt-2 text-xs leading-5 text-slate-400 light:text-slate-600">Os valores podem vir de censo, estimativa, registro de uma data específica ou cálculo derivado. O inspetor informa a natureza de cada número para evitar comparações indevidas.</p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4 light:border-slate-200 light:bg-white">
-              <div className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-500">Eleitorado</div>
-              <p className="mt-2 text-xs leading-5 text-slate-400 light:text-slate-600">{consolidatedElectorate === null ? <>O recorte local registra {formatNumber(electorate2026)} eleitores. Não há consolidado adicional registrado nesta versão do dataset; por isso nenhuma diferença entre recortes é inferida.</> : <ElectorateReconciliation local={electorate2026} consolidated={consolidatedElectorate} />}</p>
-            </div>
+
           </div>
         </>
       )}
@@ -290,10 +281,4 @@ export function DashboardMetrics() {
       )}
     </section>
   );
-}
-
-
-function ElectorateReconciliation({ local, consolidated }: { readonly local: number; readonly consolidated: number }) {
-  const difference = consolidated - local;
-  return <>O recorte local registra {formatNumber(local)} eleitores e o consolidado disponível registra {formatNumber(consolidated)}. A diferença de {formatNumber(Math.abs(difference))} registros é mantida visível para reconciliação entre recortes, sem tratar bases de referência distintas como erro automático.</>;
 }

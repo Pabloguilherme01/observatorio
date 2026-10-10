@@ -179,53 +179,6 @@ main p a:not(.official-resource-card):not(.hero-action){
   font-size:10px;
   font-weight:700;
 }
-.hero-election-panel{
-  display:grid;
-  gap:10px;
-  min-width:0;
-}
-.hero-election-card{
-  min-width:0;
-  padding:16px;
-  border:1px solid var(--ui-line);
-  border-radius:20px;
-  background:rgba(255,255,255,.025);
-  box-shadow:var(--ui-shadow);
-}
-.hero-election-card.secondary{
-  background:rgba(255,255,255,.018);
-  box-shadow:none;
-}
-.hero-election-heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:12px;
-}
-.hero-election-heading>div{
-  min-width:0;
-  display:grid;
-  gap:3px;
-}
-.hero-election-heading span{
-  color:#64748b;
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-.hero-election-heading strong{
-  color:#f8fafc;
-  font-size:15px;
-  line-height:1.2;
-}
-.hero-election-heading svg{
-  width:18px;
-  height:18px;
-  flex:0 0 auto;
-  color:#7dd3fc;
-}
 .hero-timer-grid{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -549,9 +502,8 @@ main p a:not(.official-resource-card):not(.hero-action){
 .light .hero-action.secondary{color:#075985!important;background:#eff6ff!important;border-color:#bae6fd!important}
 .light .hero-action.ghost{color:#334155!important;background:#ffffff!important;border-color:#dbe5ec!important}
 .light .hero-updated,.light .hero-reference-strip{color:#475569!important}
-.light .hero-election-card{background:#ffffff!important;border-color:#dbe5ec!important;box-shadow:0 12px 30px rgba(15,23,42,.06)!important}
-.light .hero-election-heading span,.light .hero-timer-cell span{color:#475569!important}
-.light .hero-election-heading strong,.light .hero-timer-cell strong{color:#0f172a!important}
+.light .hero-timer-cell span{color:#475569!important}
+.light .hero-timer-cell strong{color:#0f172a!important}
 .light .hero-timer-cell,.light .hero-timer-status{background:#f8fafc!important;border-color:#dbe5ec!important}
 .light .hero-timer-status{color:#334155!important}
 .light .hero-official-link{color:#075985!important}
@@ -572,7 +524,6 @@ main p a:not(.official-resource-card):not(.hero-action){
 
 @media(max-width:900px){
   .hero-layout{grid-template-columns:1fr}
-  .hero-election-panel{grid-template-columns:1fr 1fr}
   .audience-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .audience-resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .audience-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -587,9 +538,6 @@ main p a:not(.official-resource-card):not(.hero-action){
   .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:16px}
   .hero-action{min-width:0;min-height:46px;padding:10px 9px;font-size:11px}
   .hero-action.ghost{grid-column:1/-1}
-  .hero-election-panel{grid-template-columns:1fr}
-  .hero-election-card.secondary{display:none}
-  .hero-election-card{padding:13px;border-radius:17px}
   .hero-timer-cell strong{font-size:19px}
   .hero-timer-cell span{font-size:8px}
   .audience-page-card{border-radius:20px}
@@ -624,8 +572,8 @@ main p a:not(.official-resource-card):not(.hero-action){
   .hero-action,.audience-topic,.audience-action-card,.audience-resource,.audience-search-card,.audience-primary-card{transition:none!important}
 }
 .high-contrast .hero-shell{background:#05090d!important}
-.high-contrast .hero-copy h1,.high-contrast .hero-election-heading strong,.high-contrast .hero-timer-cell strong,.high-contrast .audience-intro-copy h2,.high-contrast .audience-block-head h3,.high-contrast .audience-topic-copy strong,.high-contrast .audience-action-card strong,.high-contrast .audience-resource-copy strong{color:#fff!important}
-.high-contrast .audience-page-card,.high-contrast .hero-election-card,.high-contrast .audience-topic,.high-contrast .audience-action-card,.high-contrast .audience-resource{background:#0c141c!important;border-color:#fff!important}
+.high-contrast .hero-copy h1,.high-contrast .hero-timer-cell strong,.high-contrast .audience-intro-copy h2,.high-contrast .audience-block-head h3,.high-contrast .audience-topic-copy strong,.high-contrast .audience-action-card strong,.high-contrast .audience-resource-copy strong{color:#fff!important}
+.high-contrast .audience-page-card,.high-contrast .audience-topic,.high-contrast .audience-action-card,.high-contrast .audience-resource{background:#0c141c!important;border-color:#fff!important}
 
 .light .audience-block-head>div>span{
   color:#0369a1!important;
@@ -633,4 +581,3 @@ main p a:not(.official-resource-card):not(.hero-action){
 .light .audience-kicker{
   color:#075985!important;
 }
-

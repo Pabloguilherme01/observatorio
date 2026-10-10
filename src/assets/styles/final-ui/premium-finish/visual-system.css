@@ -277,7 +277,6 @@
 }
 
 #dashboard .dashboard-kpi-card,
-#candidaturas .candidate-card,
 #acao .civic-service-card,
 .quiz-card{
   background:
@@ -285,7 +284,6 @@
     rgba(10,17,24,.58);
 }
 #dashboard .dashboard-kpi-card::after,
-#candidaturas .candidate-card::after,
 #acao .civic-service-card::after,
 .quiz-card::after{
   content:"";
@@ -513,4 +511,3 @@
 .high-contrast .language-toggle-v3 .language-toggle-options > button.is-active{
   transform:none!important;
 }
-

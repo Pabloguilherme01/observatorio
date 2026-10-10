@@ -1,9 +1,9 @@
 # Princípios editoriais
 
-1. Dados públicos não são argumentos eleitorais por si só.
-2. Nenhum candidato recebe ranking, nota ou recomendação.
-3. Toda métrica deve preservar fonte, data, unidade e denominador.
-4. Ausência de captura local não deve ser apresentada como ausência na fonte.
-5. Registros de denúncia, pesquisa, processo ou situação cadastral são descritos com o status documental correspondente.
-6. Dados observados, snapshots, históricos, cálculos e projeções devem permanecer distinguíveis.
-7. Correlações não devem ser apresentadas como causalidade.
+1. A informação deve ajudar uma pessoa a entender a cidade ou encontrar um canal público útil.
+2. Toda métrica preserva fonte, período, unidade e denominador.
+3. Planejamento, estimativa, medição e execução permanecem distinguíveis.
+4. Ausência de data não permite declarar atualidade.
+5. Comparações preservam recortes compatíveis e limitações; correlação não é causalidade.
+6. O catálogo encaminha ao responsável; não garante disponibilidade, prazo ou atendimento individual.
+7. Valores só são atualizados com evidência rastreável.

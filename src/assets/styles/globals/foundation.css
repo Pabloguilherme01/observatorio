@@ -72,11 +72,9 @@ small{color:var(--text-secondary)}
 .light .site-brand>span:first-child{color:#0f172a}
 .light .site-brand>span:last-child{color:#64748b}
 .light .topic-card,
-.light .candidate-card,
 .light .summary-stat,
 .light .summary-evidence,
 .light .today-card,
-.light .candidate-data-card,
 .light .summary-public-topic,
 .light .summary-public-fact,
 .light .summary-public-stat,
@@ -87,12 +85,10 @@ small{color:var(--text-secondary)}
   box-shadow:0 8px 24px rgba(15,23,42,.06);
 }
 .light .today-card strong,
-.light .candidate-card h3,
 .light .summary-public-stat-main strong,
 .light .summary-public-fact-body strong,
 .light .summary-stat-value{color:#0f172a!important}
 .light .today-card span,
-.light .candidate-card p,
 .light .summary-public-topic span,
 .light .summary-public-stat>small,
 .light .summary-stat-label{color:#64748b}
@@ -140,13 +136,6 @@ small{color:var(--text-secondary)}
 .light .summary-more-toggle{background:#f8fafc;border-color:#dbe5ec;color:#475569}
 .light .summary-public-topic strong,
 .light .summary-public-discovery-head strong{color:#0f172a}
-
-.candidate-card{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
-.candidate-card:hover{transform:translateY(-2px);border-color:rgba(140,200,242,.22)!important;box-shadow:0 18px 50px rgba(0,0,0,.12)}
-.candidate-data-card{min-width:0;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;background:rgba(255,255,255,.02)}
-.candidate-data-card span{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
-.candidate-data-card strong{display:block;margin-top:5px;font-size:12px;line-height:1.35;color:#e6edf3}
-.candidate-card button,.candidate-card a,.candidate-card [role=button]{min-height:var(--mobile-touch);min-width:var(--mobile-touch)}
 
 .today-rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .today-card{min-width:0;border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018));overflow:hidden}
@@ -202,9 +191,6 @@ border-radius:18px;padding:12px;background:rgba(255,255,255,.025)}
   .grid>*{min-width:0}
   .search-modal-panel{width:100%;max-width:100%;margin-top:2vh;border-radius:22px;max-height:calc(100dvh - 24px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow:auto}
   .search-results{max-height:52dvh}
-  .candidate-data-card{padding:10px}
-  .candidate-data-card strong{font-size:11px}
-  .candidate-overview-grid{grid-template-columns:1fr!important}
   .summary-public-topics,.summary-public-facts,.summary-public-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .summary-simple-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .summary-simple-card{min-height:132px;padding:13px}
@@ -237,8 +223,6 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .quiz-stage-node span:last-child{display:block;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}
   .quiz-option{min-height:48px!important;width:100%;padding:10px 12px!important;gap:9px}
   .quiz-option-key{min-width:30px;min-height:30px;display:grid;place-items:center}
-  .candidate-card>div:first-child{padding:14px!important;gap:12px}
-  .candidate-card .flex.flex-wrap.gap-2>a,.candidate-card .flex.flex-wrap.gap-2>button,.candidate-card .flex.flex-wrap.gap-2>span{width:100%;justify-content:center}
   .summary-public-copy h3{font-size:1.65rem!important;line-height:1.1}
   .summary-public-topics{gap:8px!important}
   .summary-public-topic{min-height:64px!important;padding:10px!important}
@@ -252,7 +236,6 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
   .mobile-bottom-nav button span{font-size:10px;line-height:1}
 }
 @media (max-width:390px){
-  .candidate-card .flex.flex-wrap.gap-2{grid-template-columns:1fr}
   .quiz-phase-roadmap{gap:4px}
   .quiz-stage-node{padding-inline:2px}
   .quiz-stage-node span:last-child{font-size:8px}
@@ -471,40 +454,6 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
     min-height: 46px !important;
   }
 
-  .candidate-card {
-    min-width: 0;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .candidate-card > div:first-child {
-    padding: 12px !important;
-    gap: 10px;
-  }
-
-  .candidate-card .flex.flex-wrap.gap-2 {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .candidate-card .flex.flex-wrap.gap-2 > a,
-  .candidate-card .flex.flex-wrap.gap-2 > button,
-  .candidate-card .flex.flex-wrap.gap-2 > span {
-    width: 100%;
-    min-width: 0;
-    justify-content: center;
-  }
-
-  .candidate-data-card {
-    min-width: 0;
-    padding: 10px;
-  }
-
-  .candidate-data-card strong {
-    font-size: 11px;
-  }
-
   .mobile-bottom-nav {
     position: fixed !important;
     left: 0;
@@ -685,10 +634,6 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
     grid-template-columns: 1fr !important;
   }
 
-  .candidate-card .flex.flex-wrap.gap-2 {
-    grid-template-columns: 1fr;
-  }
-
   .quiz-phase-roadmap {
     gap: 3px;
   }
@@ -731,7 +676,6 @@ html,body,#root{font-family:var(--obs-font-sans);font-synthesis:none}
 
   #resumo,
   #dashboard,
-  #eleitorado,
   #orcamento,
   #transporte,
   #dados,
@@ -789,18 +733,6 @@ pic-card {
     line-height: 1.25;
   }
 
-  .candidate-card > div:first-child {
-    padding: 11px !important;
-  }
-
-  .candidate-card h3 {
-    font-size: 14px;
-  }
-
-  .candidate-card .grid.grid-cols-2 {
-    gap: 6px;
-  }
-
   .mobile-bottom-nav button {
     border-radius: 11px;
   }
@@ -844,4 +776,3 @@ pic-card {
     padding-inline: 7px;
   }
 }
-

@@ -69,12 +69,6 @@
 .light .contrast-toggle-options button small,
 .light .language-toggle-options button small { color: #475569 !important; }
 
-.light .electoral-action-button {
-  color: #0369a1 !important;
-  background: #eff6ff !important;
-  border-color: #bfdbfe !important;
-}
-
 /* V44.9.4 · Contraste real do tema claro. */
 :root.light[data-language-mode="summary"] #resumo .summary-public-discovery-head span{color:#0f172a!important}
 :root.light[data-language-mode="summary"] #resumo .summary-public-discovery-head small{color:#475569!important}

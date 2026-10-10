@@ -1,95 +1,137 @@
 import fs from 'node:fs';
+
 import path from 'node:path';
+
 import { readCssImportGraph } from './lib/readCssImportGraph.mjs';
 
 const root = process.cwd();
+
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
+
 const errors = [];
+
 const pass = message => console.log('PASS', message);
+
 const must = (condition, message) => condition ? pass(message) : errors.push(message);
 
 const app = read('src/app/App.tsx');
+
 const search = read('src/components/layout/SearchModal.tsx');
+
 const dialogFocus = read('src/hooks/useDialogFocus.ts');
+
 const modeToggle = read('src/components/layout/LanguageModeToggle.tsx');
+
 const quiz = read('src/components/sections/QuickQuiz.tsx');
+
 const quizData = read('src/data/quiz/questionBank.ts');
-const electoral360 = read('src/data/electoral360.ts');
-const electoral360Ui = read('src/components/sections/Electoral360.tsx');
+
 const main = read('src/main.tsx');
+
 const css = readCssImportGraph('src/assets/styles/globals.css', { root });
+
 const pwaConfig = read('vite.config.ts');
+
 const packageJson = JSON.parse(read('package.json'));
-const sync = read('.github/workflows/sync-tse-2026.yml');
+
 const version = read('src/config/version.ts');
+
 const index = read('index.html');
+
 const audience = read('src/components/AudienceHub.tsx');
+
 const dashboard = read('src/components/sections/DashboardMetrics.tsx');
+
 const executive = read('src/components/sections/ExecutiveSummary.tsx');
+
 const executiveModel = read('src/components/sections/summary/executiveSummaryModel.ts');
+
 const executiveSurface = executive + '\n' + executiveModel;
+
 const formatters = read('src/utils/formatters.ts');
+
 const dashboardChart = read('src/components/sections/HistoricalTrendChart.tsx');
+
 const experienceShell = read('src/components/ExperienceShell.tsx');
+
 const sentry = read('src/lib/sentry.ts');
+
 const leaderboard = read('src/lib/quizLeaderboard.ts');
+
 const readingModes = read('src/config/readingModes.ts');
-const hero = read('src/components/sections/PostElectionHero.tsx');
+
+const hero = read('src/components/sections/MunicipalHero.tsx');
+
 const trust = read('src/components/ProjectTrustPanel.tsx');
+
 const civic = read('src/components/sections/CivicActionHub.tsx');
+
 const guided = read('src/components/sections/GuidedLearningPanel.tsx');
+
 const guidedCss = readCssImportGraph('src/assets/styles/guided-mode.css', { root });
 
 must(modeToggle.includes("id: 'summary'") && modeToggle.includes("id: 'simple'") && modeToggle.includes("id: 'guided'") && modeToggle.includes("id: 'technical'") && modeToggle.includes('aria-pressed'), '4 modos neutros de leitura disponíveis');
-must(
-  modeToggle.includes('Leitura rápida') &&
-  modeToggle.includes('Leitura explicada') &&
-  modeToggle.includes('Aprendizado guiado') &&
-  modeToggle.includes('Leitura detalhada') &&
-  (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade') || hero.includes('Veja os principais números de Águas Lindas')) &&
-  audience.includes('Comece pelo que você precisa saber.') &&
-  executive.includes('Resumo principal') &&
-  (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
-  trust.includes('Confiança começa pela origem') &&
-  civic.includes('Da evidência à fonte') &&
-  guided.includes('Expedição pelos dados públicos') &&
-  guided.includes('Rota de investigação') &&
-  guided.includes('Abrir uma pista') &&
-  guided.includes('não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais'),
-  'cada modo possui narrativa editorial própria sem alterar a neutralidade'
-);
+
 must(app.includes('modeForDestination') && readingModes.includes('return current;') && readingModes.includes("'guided'"), 'navegação preserva o modo atual quando o destino não exige elevação de leitura');
+
 must(guidedCss.includes('[data-language-mode="guided"] .technical-detail') && guidedCss.includes('grid-template-columns:repeat(2,minmax(0,1fr))'), 'modo guiado preserva separação técnica e responsividade mobile');
+
 must(search.includes("Resumo principal") && search.includes("'resumo'"), 'busca expõe a seção de resumo sem confundir destino com modo de leitura');
-must(!modeToggle.includes("'market'") && !modeToggle.includes('Hype'), 'modo eleitoral agressivo não foi introduzido');
+
 const quizPromptCount = (quizData.match(/prompt:/g) || []).length;
+
 const quizPromptLines = [...quizData.matchAll(/prompt:\s*([\"'`])([\s\S]*?)\1,/g)].map(match => match[2]);
+
 const uniqueQuizPrompts = new Set(quizPromptLines);
+
 const quizDifficultyLines = [...quizData.matchAll(/difficulty:\s*['\"]([^'\"]+)['\"]/g)].map(match => match[1]);
+
 const quizDifficultyCount = new Map(quizDifficultyLines.map(level => [level, quizDifficultyLines.filter(value => value === level).length]));
+
 must(quizData.includes('QUIZ_TOTAL = 200') && quizData.includes('QUESTIONS_PER_LEVEL = 40') && quizData.includes('QUIZ_LEVELS'), 'quiz possui contrato explícito de 200 perguntas em 5 níveis');
+
 must(quiz.includes('readQuizBestScores') && !quiz.includes('readQuizHighScores') && !quiz.includes('recordQuizHighScore') && leaderboard.includes('BEST_KEY'), 'quiz mantém apenas melhor marca pessoal persistida');
+
 must(!experienceShell.includes('framer-motion') && !experienceShell.includes('rotateY') && !experienceShell.includes('AnimatePresence'), 'navegação não depende de page-flip decorativo');
+
 must(!packageJson.dependencies?.['framer-motion'] && !packageJson.devDependencies?.['framer-motion'], 'framer-motion foi removido por não possuir uso ativo');
-must(dashboardChart.includes("from 'recharts'") && dashboardChart.includes('<LineChart') && dashboardChart.includes('2022') && dashboardChart.includes('2026'), 'dashboard possui série histórica Recharts de cinco anos');
+
+must(dashboardChart.includes("from 'recharts'") && dashboardChart.includes('<LineChart') && dashboardChart.includes('d.populationSeries') && dashboardChart.includes("point.kind==='census'"), 'dashboard possui série de população publicada, distinguindo Censo e estimativa');
+
 must(sentry.includes("import('@sentry/react')") && sentry.includes('browserTracingIntegration') && sentry.includes('tracesSampleRate') && !sentry.match(/^import \* as Sentry/m), 'Sentry é carregado condicionalmente e mantém captura configurável');
+
 must(quiz.includes('QUESTION_BANK.length !== QUIZ_TOTAL') && quiz.includes('QUESTION_BANK.filter(q => q.difficulty === level)'), 'quiz valida o total e a distribuição por nível em runtime');
-must(['Fácil', 'Médio', 'Difícil', 'Avançado', 'Expert'].every(level => quizData.includes(`difficulty:'${level}'`)), 'quiz possui os 5 níveis de dificuldade');
+
+must(['Começar', 'Entender', 'Comparar', 'Conferir', 'Aplicar'].every(level => quizData.includes(JSON.stringify(level))), 'quiz possui os 5 níveis de dificuldade');
+
 must(quiz.includes('unlockedPhase') && quiz.includes('setUnlockedPhase') && quiz.includes('nextIndex'), 'quiz possui progressão obrigatória por fases');
+
 must(quiz.includes('QUIZ_TOTAL') && quiz.includes('QUESTIONS_PER_LEVEL') && quiz.includes('quiz-phase-grid'), 'quiz possui meta e mapa visual de fases');
+
 must(quiz.includes('disabled={locked}') && quiz.includes('aria-disabled={locked}'), 'quiz bloqueia fases ainda não liberadas');
+
 must(quiz.includes('quiz-progress-track') && quiz.includes('questions.length'), 'quiz possui progresso visual');
+
 must(!search.includes('autoFocus'), 'busca não usa autoFocus');
+
 must(search.includes('const getInitialFocus') && search.includes('closeButtonRef') && dialogFocus.includes('getInitialFocus?.()') && dialogFocus.includes('target?.focus()'), 'busca foca o campo no desktop e um controle seguro no mobile');
+
 must(app.includes("window.location.hash") && app.includes("hashchange") && app.includes('observatorio:navigate'), 'links com UTM + âncora recebem navegação resiliente');
+
 must(css.includes('overflow-wrap:anywhere') && css.includes('.mobile-safe-wrap'), 'contenção de overflow textual está ativa');
-must(electoral360.includes('photoUrl: candidate.photoUrl ?? null') && electoral360.includes('instagramUrl: candidate.instagramUrl ?? null'), 'metadados de mídia do candidato são preservados quando validados');
+
 must(pwaConfig.includes('VitePWA') && pwaConfig.includes("registerType: 'autoUpdate'"), 'PWA usa autoUpdate');
+
 must(main.includes('beforeinstallprompt') && main.includes('PwaInstallPrompt'), 'PWA possui prompt de instalação quando o navegador oferece suporte');
+
 must(index.includes('manifest.webmanifest') && index.includes('apple-mobile-web-app-capable'), 'metadados de instalação estão publicados');
+
 must(css.includes('--obs-font-sans') && css.includes('font-synthesis:none'), 'tipografia usa stack estável e síntese desativada');
+
 must(css.includes('.obs-card') && css.includes('.source-card') && css.includes('.search-empty-action'), 'cards, fontes e estado vazio da busca possuem tratamento visual dedicado');
+
 must(css.includes('summary-public-facts') && css.includes('summary-public-fact'), 'Resumo público possui cartões de contexto rápido');
+
 must(
   search.includes('const target =')
     && search.includes('navigateToSection(target)')
@@ -97,16 +139,23 @@ must(
     && !search.includes('document.getElementById(id)?.scrollIntoView'),
   'busca navega por hash pelo controlador central sem scroll duplicado'
 );
+
 must(search.includes('search-empty-action') && !search.includes('document.getElementById(id)?.scrollIntoView'), 'seleção de busca não dispara scroll direto e infinito');
-must(sync.includes("cron: '0 */4 * * *'"), 'sincronização TSE está programada a cada 4 horas');
+
 const versionMatch = version.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/);
+
 must(versionMatch?.[1] === packageJson.version, `versão marcada como ${packageJson.version}`);
+
 must(quiz.includes('className="quiz-phase-grid"') && quiz.includes('Fase {index + 1}') && quiz.includes('Bloqueada'), 'quiz possui roadmap visual de fases');
+
 must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
+
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
-must(read('src/components/sections/PoliticalResearch.tsx').includes('Pesquisas registradas') && read('src/components/sections/PoliticalResearch.tsx').includes('registrationNumber') && read('src/components/sections/PoliticalResearch.tsx').includes('Conferir fonte oficial'), 'pesquisas registradas exibem identificação, contexto e fonte');
-must(audience.includes('<strong>Serviços públicos</strong>') && audience.includes("jump('acao')"), 'Home oferece atalho direto para serviços públicos');
+
+must(audience.includes("id: 'acao'") && audience.includes('Encontrar um serviço') && audience.includes('navigateToCleanSection(id)'), 'Home oferece atalho direto para serviços públicos');
+
 must(!audience.includes("document.getElementById(id)?.scrollIntoView"), 'Home delega o scroll de navegação ao controlador central');
+
 must(
   audience.includes('navigateToCleanSection') &&
   executive.includes('navigateToCleanSection') &&
@@ -114,73 +163,76 @@ must(
   !executive.includes('window.history.replaceState'),
   'Resumo e Explorar usam navegação central com limpeza de URL'
 );
-must(electoral360Ui.includes('Nomes acompanhados no recorte') && electoral360Ui.includes('recorte editorial acompanhado') && electoral360Ui.includes('este recorte não representa uma lista completa de candidaturas') && electoral360.includes('Este snapshot não representa o universo completo'), 'Eleitoral 360 deixa explícito o caráter editorial e não exaustivo do recorte');
-must(electoral360Ui.includes('Captura com mais de 24h') && electoral360Ui.includes('A captura ultrapassou 24 horas'), 'Eleitoral 360 sinaliza snapshots potencialmente desatualizados');
-must(electoral360Ui.includes('className={`mb-4 rounded-2xl border ${snapshotWarning ?') && !electoral360Ui.includes('className=\"mb-4 rounded-2xl border ${snapshotWarning'), 'alerta de frescor do Eleitoral 360 usa interpolação JSX real');
+
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
-must(!(read('src/components/sections/PostElectionHero.tsx')).includes('Modo Eleição') && !(read('src/components/sections/PostElectionHero.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
-must((read('src/components/sections/PostElectionHero.tsx')).includes('hero-reference-card') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
-must(executiveSurface.includes('Orçamento planejado por habitante') && executiveSurface.includes('budgetPerCapita') && executiveSurface.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
+
+must(!(read('src/components/sections/MunicipalHero.tsx')).includes('Modo Eleição') && !(read('src/components/sections/MunicipalHero.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
+
+must((read('src/components/sections/MunicipalHero.tsx')).includes('hero-reference-card') && (read('src/components/sections/MunicipalHero.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/MunicipalHero.tsx')).includes('<small>Orçamento</small><strong>LOA municipal</strong>'), 'cards hero exibem fonte diretamente');
+
+must(executiveSurface.includes('Orçamento planejado por habitante') && executiveSurface.includes('budget-per-capita-') && executiveSurface.includes('item.value'), 'Resumo usa orçamento planejado por habitante do registro estruturado');
+
 must(
-  executiveSurface.includes('budgetPerCapitaIndicator') &&
-  executiveSurface.includes("status: budgetPerCapitaIndicator?.status ?? 'derived'") &&
-  executiveSurface.includes("note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.'"),
+  executiveSurface.includes('budget-per-capita-') &&
+  executiveSurface.includes('formatIndicatorStatus(item.status)') &&
+  executiveSurface.includes('note:item.note'),
   'indicador per capita explicita fórmula e natureza'
 );
-must(read('src/components/sections/PostElectionHero.tsx').includes('<small>Transporte</small>') && read('src/components/sections/PostElectionHero.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
-must((dashboard.includes('HistoricalTrendChart') && dashboardChart.includes('População e eleitorado')) || (dashboard.includes('Crescimento populacional · 2022–2026') && dashboard.includes('Eleitorado · 2018–2026')), 'dashboard mantém tendências históricas');
+
+must(read('src/components/sections/MunicipalHero.tsx').includes('<small>Transporte</small>') && read('src/components/sections/MunicipalHero.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
+
 const transport = read('src/components/TransportCalculator.tsx');
+
 const transportLib = read('src/lib/transport.ts');
+
 must(transport.includes('Dias por semana'), 'simulador permite informar dias de trabalho por semana');
+
 must(transportLib.includes('4.4') || transportLib.includes('daysPerWeek'), 'cálculo do transporte suporta conversão semanal para mensal');
+
 const publicDataSource = read('src/data/observatorioData.ts');
+
 const publicBudget = read('src/components/sections/BudgetSection.tsx');
+
 const publicSanitation = read('src/components/sections/SanitationHealthSection.tsx');
+
 must(
   publicDataSource.includes('minimumWageYear') &&
   transport.includes('minimumWageYear') &&
   transport.includes('salaryIsDefault'),
   'simulador distingue renda padrão de valor ajustado com ano estruturado'
 );
+
 must(
   publicBudget.includes('fiscalReferenceYear') &&
   publicBudget.includes('dashboard-meta-chip') &&
   publicBudget.includes('formatDate'),
   'orçamento deriva ano-base e exibe metadados estruturados'
 );
+
 must(
   publicSanitation.includes('sanitationReferenceYear') &&
   publicSanitation.includes('adequateSewerageYear') &&
   publicSanitation.includes('formatDate'),
   'saneamento deriva anos e referências dos indicadores'
 );
+
 const executiveSummary = executiveSurface;
+
 must(
-  executiveSummary.includes("filter(point => point.kind === 'estimate')") &&
-  executiveSummary.includes('budgetPerCapitaIndicator') &&
-  executiveSummary.includes('sanitationIndicator') &&
-  executiveSummary.includes('dashboard-meta-chip') &&
+  executiveSummary.includes('d.populationSeries') &&
+  executiveSummary.includes('budget-per-capita-') &&
+  executiveSummary.includes('public-sewer-service-') &&
+  executiveSummary.includes('indicatorReference(item,source)') &&
   !executiveSummary.includes('find(point => point.year === 2026)') &&
   !executiveSummary.includes("'Cálculo · LOA 2026 ÷ IBGE 2026'"),
   'resumo executivo deriva anos e metadados do dataset estruturado'
 );
+
 must(transport.includes('minimumWageBrl'), 'simulador usa salário mínimo do dataset como referência');
+
 must(transport.includes('bilhetagem') && transport.includes('terminal'), 'simulador contextualiza integração de transporte');
-const electoralProfile = read('src/components/sections/ElectoralProfile.tsx');
-must(electoralProfile.includes('4.063') && electoralProfile.includes('2024') && electoralProfile.includes('DF'), 'perfil eleitoral registra migração de títulos do DF com ano e quantidade');
+
 must(index.includes('og:image') && index.includes('twitter:card') && index.includes('canonical'), 'SEO e compartilhamento social possuem metadados completos');
-const candidateData = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
-const candidateNames = candidateData.matched.map(candidate => candidate.name);
-const candidateIds = candidateData.matched.map(candidate => candidate.sqCandidate);
-must(candidateData.matched.length === 7, 'recorte público de candidatos possui 7 nomes mapeados');
-must(new Set(candidateIds).size === candidateIds.length, 'candidatos não possuem SQ_CANDIDATO duplicado');
-must(['KEKE DA VULKANIC','RIBEIRO DO TÚLLIO','FELIPE GALDINO'].every(name => candidateNames.includes(name)), 'candidatos locais adicionados ao recorte');
-must(candidateData.matched.every(candidate => candidate.status === null || (typeof candidate.status === 'string' && !/^#(?:NE|NULO)$/i.test(candidate.status))), 'situação cadastral não apresenta marcadores de ausência como status');
-must(candidateData.matched.every(candidate => candidate.localEvidence && Array.isArray(candidate.evidenceSourceUrls) && candidate.evidenceSourceUrls.length > 0), 'cada candidato possui evidência documental de vínculo local');
-must(read('src/components/sections/Electoral360.tsx').includes('Ver catálogo oficial do TSE') && read('src/components/sections/Electoral360.tsx').includes('Fonte'), 'painel de candidaturas mantém proveniência oficial');
-must(!candidateData.meta.selection.includes('watchlist_only') || candidateData.matched.length === candidateData.watchlist.length, 'seleção do recorte não fica menor que a watchlist publicada');
-
-
 
 if (errors.length) {
   console.error('FAIL ' + errors.length + ' regra(s)');
@@ -191,11 +243,17 @@ if (errors.length) {
 }
 
 const transportSource = read('src/components/TransportCalculator.tsx');
+
 const transportScenario = read('src/hooks/useTransportScenario.ts');
+
 const transportSurface = transportSource + '\n' + transportScenario;
+
 const transportDomain = read('src/lib/transport.ts');
+
 must(transportSurface.includes('observatorio:transport-preferences:v1') && transportSurface.includes('JSON.parse'), 'simulador persiste preferências com cache local opcional');
+
 must(transportDomain.includes('Number.isFinite') && transportDomain.includes('clamp('), 'simulador valida números finitos e limites lógicos');
-must(read('src/components/ProjectTrustPanel.tsx').includes('dadosabertos.tse.jus.br') && read('src/components/ProjectTrustPanel.tsx').includes('Nota de neutralidade'), 'painel oferece validação oficial e nota de neutralidade');
-must(executiveSurface.includes('Fonte pública') && executiveSurface.includes('Derivado'), 'resumo exibe badges de proveniência');
+
+must(executiveSurface.includes('formatIndicatorStatus(item.status)') && executiveSurface.includes('fact.badge'), 'resumo exibe badges de proveniência');
+
 must(read('public/404.html').includes('data-obs-spa-fallback') && read('public/404.html').includes('encodeURIComponent') && read('public/404.html').includes("relative.indexOf('api/')") && read('index.html').includes('obsSpaRestored'), 'fallback SPA preserva rota virtual sem capturar APIs ou assets');

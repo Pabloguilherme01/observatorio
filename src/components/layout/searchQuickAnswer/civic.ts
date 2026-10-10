@@ -3,7 +3,6 @@ import { formatBudgetCurrency } from '../../../utils/formatters';
 import type { QuickAnswer } from './types';
 
 export function resolveCivicQuickAnswer(q: string): QuickAnswer | null {
-    if (q.includes('eleitorado') || q.includes('eleitores')) return { title: 'Eleitorado 2026', value: d.electoral.electorate.toLocaleString('pt-BR') + ' eleitores', id: 'eleitoral360', sourceId: 'tse-eleitorado-2026' };
     if ((q.includes('orcamento') || q.includes('loa')) && (q.includes('habitante') || q.includes('per capita')) && q.includes('educacao')) {
       const indicator = d.indicators.find(item => item.id === 'budget-education-per-capita-2026');
       return indicator ? { title: indicator.label, value: Number(indicator.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) + ' por habitante', id: 'orcamento', sourceId: indicator.sourceId, note: indicator.note } : null;

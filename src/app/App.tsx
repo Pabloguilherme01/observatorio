@@ -2,8 +2,9 @@ import { lazy, Suspense, type ComponentType, type ReactNode, useEffect, useMemo,
 const DashboardMetrics = lazy(() => import('../components/sections/DashboardMetrics').then(module => ({ default: module.DashboardMetrics })));
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
-import { PostElectionHero } from '../components/sections/PostElectionHero';
-const ResultsLiveBanner = lazy(() => import('../components/sections/ResultsLiveBanner').then(module => ({ default: module.ResultsLiveBanner })));
+import { MunicipalHero } from '../components/sections/MunicipalHero';
+import { SupplementaryHub } from '../components/sections/SupplementaryHub';
+import '../assets/styles/city-purpose.css';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
@@ -18,11 +19,13 @@ import { Footer } from '../components/layout/Footer';
 import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary';
 import { modeForDestination } from '../config/readingModes';
 import { getReadingModeParam, getSearchParam, urlParamKeys } from '../lib/urlState';
+import { redirectRetiredDestination } from '../lib/retiredDestinations';
 
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
-const loadElectionGroup = () => import('../components/sections/DeferredElectionGroup');
+const loadBudgetGroup = () => import('../components/sections/DeferredBudgetGroup');
 const loadPublicDataGroup = () => import('../components/sections/DeferredPublicDataGroup');
+const loadLearningGroup = () => import('../components/sections/DeferredLearningGroup');
 
 function Deferred({ children }: { readonly children: ReactNode }) {
   return (
@@ -205,10 +208,12 @@ function DeferredBlock({
   loader,
   anchorIds,
   errorLabel,
+  activateOnScroll = true,
 }: {
   readonly loader: () => Promise<{ default: ComponentType }>;
   readonly anchorIds: readonly string[];
   readonly errorLabel: string;
+  readonly activateOnScroll?: boolean;
 }) {
   const [ready, setReady] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -240,7 +245,7 @@ function DeferredBlock({
 
     if (anchorIds.includes(initialHash)) {
       activate();
-    } else {
+    } else if (activateOnScroll) {
       const node = ref.current;
       if (!node || typeof IntersectionObserver === 'undefined') {
         activate();
@@ -256,11 +261,11 @@ function DeferredBlock({
     }
 
     return cleanup;
-  }, [anchorIds]);
+  }, [anchorIds, activateOnScroll]);
 
   const Component = useMemo(() => lazy(loader), [loader]);
 
-  if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
+  if (!ready) return activateOnScroll ? <div ref={ref} className="min-h-24" aria-hidden="true" /> : null;
 
   return (
     <div ref={ref} className="deferred-section">
@@ -272,8 +277,10 @@ function DeferredBlock({
 }
 
 export function App() {
+  const [retiredNotice, setRetiredNotice] = useState(false);
   useEffect(() => {
     const navigateFromLocation = () => {
+      if (redirectRetiredDestination()) setRetiredNotice(true);
       const hash = window.location.hash.slice(1);
       if (hash) navigateToHash(hash);
     };
@@ -314,19 +321,21 @@ export function App() {
         <ExperienceShell>
           <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
-          <SectionErrorBoundary label="Resumo inicial"><PostElectionHero /></SectionErrorBoundary>
+          <SectionErrorBoundary label="Resumo inicial"><MunicipalHero /></SectionErrorBoundary>
           <main id="main-content">
-            <SectionErrorBoundary label="Resultados oficiais"><Deferred><ResultsLiveBanner /></Deferred></SectionErrorBoundary>
+            {retiredNotice && <p role="status" className="mx-auto max-w-7xl px-4 py-4 text-slate-200 light:text-slate-800">Esta área foi retirada. Agora o Observatório reúne dados municipais e serviços públicos.</p>}
+            <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo principal"><Deferred><ExecutiveSummary /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
-            <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><Deferred><DashboardMetrics /></Deferred></SectionErrorBoundary></div>
-            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
-            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
-            <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
+            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto municipal e ferramentas" anchorIds={['contexto', 'demografia', 'transporte', 'saude']} /></div>
+            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Serviços públicos" anchorIds={['acao']} /></div>
+            <div className="mode-scope mode-scope-budget"><DeferredBlock loader={loadBudgetGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
             <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados']} /></div>
             <div className="mode-scope mode-scope-evidence"><SectionErrorBoundary label="Qualidade e evidências"><DeferredEvidenceGroup /></SectionErrorBoundary></div>
+            <SupplementaryHub />
+            <DeferredBlock loader={loadLearningGroup} errorLabel="Quiz educativo" anchorIds={['quiz']} activateOnScroll={false} />
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><Deferred><DataInspector /></Deferred></SectionErrorBoundary>

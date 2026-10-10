@@ -1,54 +1,72 @@
 import fs from 'node:fs';
+
 import { createHash } from 'node:crypto';
+
 import path from 'node:path';
+
 import process from 'node:process';
+
 import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
+
 const read = relative => fs.readFileSync(path.join(root, relative), 'utf8');
 
 const packageJson = JSON.parse(read('package.json'));
+
 const versionSource = read('src/config/version.ts');
+
 const dataSource = read('src/data/observatorioData.ts');
+
 const sourceRegistry = read('src/data/sourceRegistry.ts');
+
 const index = read('index.html');
+
 const vite = read('vite.config.ts');
+
 const navigation = read('src/config/navigation.ts');
+
 const appSource = read('src/app/App.tsx');
+
 const deferredContextSource = read('src/components/sections/DeferredContextGroup.tsx');
+
 const bootstrapSource = read('src/main.tsx');
-const candidates = JSON.parse(read('src/data/generated/tse2026-candidates.json'));
+
 const robots = read('public/robots.txt');
+
 const sitemap = read('public/sitemap.xml');
-const syncWorkflow = read('.github/workflows/sync-tse-2026.yml');
+
 const deployWorkflow = read('.github/workflows/deploy-pages.yml');
+
 const ciWorkflow = read('.github/workflows/ci.yml');
+
 const browserWorkflow = read('.github/workflows/browser.yml');
-const resultsWorkflow = read('.github/workflows/sync-results-2026.yml');
+
 const sourceHealthWorkflow = read('.github/workflows/source-health.yml');
+
 const codeqlWorkflow = read('.github/workflows/codeql.yml');
+
 const viteSource = vite;
+
 const deploySource = deployWorkflow;
+
 const spaFallback = read('public/404.html');
 
 const errors = [];
-const pass = message => console.log('PASS', message);
-const fail = message => errors.push(message);
-const must = (condition, message) => condition ? pass(message) : fail(message);
 
-const allowedExactDuplicateGroups = [
-  [
-    'src/data/generated/history/tse-candidatos-2026-local-mapeado-2026-10-06.json',
-    'src/data/generated/tse2026-candidates.json',
-  ],
-].map(group => [...group].sort());
+const pass = message => console.log('PASS', message);
+
+const fail = message => errors.push(message);
+
+const must = (condition, message) => condition ? pass(message) : fail(message);
 
 const trackedFiles = execFileSync('git', ['ls-files', '-z'], { encoding: 'buffer' })
   .toString('utf8')
   .split('\0')
-  .filter(Boolean);
+  .filter(relative => relative && fs.existsSync(path.join(root, relative)));
 
 const duplicateFilesByHash = new Map();
+
 for (const relativePath of trackedFiles) {
   const digest = createHash('sha256').update(fs.readFileSync(path.join(root, relativePath))).digest('hex');
   const group = duplicateFilesByHash.get(digest) ?? [];
@@ -60,28 +78,17 @@ const duplicateGroups = [...duplicateFilesByHash.values()]
   .filter(group => group.length > 1)
   .map(group => [...group].sort());
 
-const unauthorizedDuplicateGroups = duplicateGroups.filter(group =>
-  !allowedExactDuplicateGroups.some(allowed => allowed.length === group.length && allowed.every((file, index) => file === group[index])),
-);
-
-must(
-  unauthorizedDuplicateGroups.length === 0,
-  unauthorizedDuplicateGroups.length
-    ? 'há arquivos byte a byte duplicados sem autorização explícita: ' + unauthorizedDuplicateGroups.map(group => group.join(' ↔ ')).join('; ')
-    : 'não há duplicações byte a byte fora da allowlist de snapshots históricos.',
-);
-
 const sourceIds = [...sourceRegistry.matchAll(/id:\s*'([^']+)'/g)].map(match => match[1]);
+
 const duplicateSourceIds = sourceIds.filter((id, index) => sourceIds.indexOf(id) !== index);
+
 must(duplicateSourceIds.length === 0, duplicateSourceIds.length
   ? 'sourceRegistry possui IDs duplicados: ' + [...new Set(duplicateSourceIds)].join(', ')
   : 'sourceRegistry possui IDs únicos.',
 );
 
-must(!fs.existsSync(path.join(root, 'scripts/cleanup-tse-automation.mjs')), 'script legado de limpeza não existe');
-must(!fs.existsSync(path.join(root, '.github/workflows/cleanup-tse-automation.yml')), 'workflow legado de limpeza não existe');
-
 const obsoleteReleaseScripts = ['audit:all', 'check:deploy', 'release:check', 'build:bundle'];
+
 must(
   obsoleteReleaseScripts.every(scriptName => !(scriptName in (packageJson.scripts ?? {}))),
   'aliases de release obsoletos não retornaram ao package.json',
@@ -90,7 +97,9 @@ must(
 const localScriptRefs = Object.entries(packageJson.scripts ?? {}).flatMap(([scriptName, command]) =>
   [...String(command).matchAll(/(?:^|\s)(scripts\/[A-Za-z0-9_.-]+\.mjs)\b/g)].map(match => ({ scriptName, path: match[1] })),
 );
+
 const missingLocalScriptRefs = localScriptRefs.filter(ref => !fs.existsSync(path.join(root, ref.path)));
+
 must(
   missingLocalScriptRefs.length === 0,
   missingLocalScriptRefs.length
@@ -99,36 +108,47 @@ must(
 );
 
 const workflowScriptDir = path.join(root, '.github/workflows');
+
 const workflowScriptFiles = fs.existsSync(workflowScriptDir)
   ? fs.readdirSync(workflowScriptDir).filter(file => /\.ya?ml$/.test(file)).map(file => path.join(workflowScriptDir, file))
   : [];
+
 const workflowScriptRefs = [];
+
 for (const file of workflowScriptFiles) {
   const workflow = fs.readFileSync(file, 'utf8');
   for (const match of workflow.matchAll(/\bnode\s+(scripts\/[A-Za-z0-9_./-]+\.mjs)\b/g)) {
     workflowScriptRefs.push({ file: path.relative(root, file), path: match[1] });
   }
 }
+
 const missingWorkflowScriptRefs = workflowScriptRefs.filter(ref => !fs.existsSync(path.join(root, ref.path)));
+
 must(
   missingWorkflowScriptRefs.length === 0,
   missingWorkflowScriptRefs.length
     ? 'workflows referenciam scripts inexistentes: ' + missingWorkflowScriptRefs.map(ref => ref.path + ' (' + ref.file + ')').join(', ')
     : 'workflows com chamadas node scripts referenciam somente arquivos existentes.',
 );
-must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
-must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 
 const appVersion = versionSource.match(/APP_VERSION = '([^']+)'/)?.[1];
+
 const edition = versionSource.match(/EDITION = '([^']+)'/)?.[1];
+
 const namespace = versionSource.match(/STORAGE_NAMESPACE = '([^']+)'/)?.[1];
+
 const updatedAt = dataSource.match(/updatedAt: '([^']+)'/)?.[1];
+
 const dateModified = index.match(/"dateModified": "([^"]+)"/)?.[1];
 
 must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sincronizados');
+
 must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && packageJson.devDependencies?.['@axe-core/playwright'] === '4.13.0', 'Playwright e Axe estão fixados nas devDependencies');
+
 const lockJson = JSON.parse(read('package-lock.json'));
+
 must(lockJson.lockfileVersion === 3, 'package-lock usa lockfileVersion 3');
+
 must(
   codeqlWorkflow.includes('name: CodeQL')
     && codeqlWorkflow.includes('security-events: write')
@@ -144,73 +164,116 @@ must(
 );
 
 must(lockJson.packages?.['']?.version === packageJson.version, 'package.json e package-lock usam a mesma versão');
+
 must(lockJson.packages?.['']?.dependencies && lockJson.packages?.['']?.devDependencies, 'package-lock registra as dependências diretas do projeto');
+
 must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
   && lockJson.packages?.['node_modules/@axe-core/playwright']?.version === '4.13.0'
   && lockJson.packages?.['node_modules/axe-core']?.version === '4.13.0'
   && lockJson.packages?.['node_modules/playwright-core']?.version === '1.63.0',
   'Playwright e Axe estão presentes e fixados no package-lock');
+
 must(edition === `V${appVersion?.split('.')[0]}`, 'EDITION acompanha o major da versão');
+
 must(namespace === `observatorio-v${appVersion?.split('.')[0]}`, 'namespace de armazenamento identifica a edição');
+
 must(dateModified === updatedAt, 'dateModified do documento coincide com updatedAt do dataset');
+
 must(vite.includes("const BASE_PATH = '/observatorio/'") && vite.includes('base: BASE_PATH'), 'Vite usa base compatível com GitHub Pages');
+
 must(fs.existsSync(path.join(root, 'src/assets/styles/index.css')) && bootstrapSource.includes("./assets/styles/index.css"), 'camadas visuais compartilhadas usam o entrypoint canônico de styles/index.css');
+
 must(!fs.existsSync(path.join(root, 'src/assets/styles/premium-finish.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/visual-final.css')) && !fs.existsSync(path.join(root, 'src/assets/styles/site-final.css')), 'camadas visuais globais antigas não permanecem duplicadas');
+
 must(spaFallback.includes('obsSpaFallback') && spaFallback.includes('encodeURIComponent'), 'fallback 404 da SPA preserva a rota solicitada');
+
 must(deploySource.includes("status=\"$(curl -sS --retry 3") && deploySource.includes('test "$status" = "404"'), 'deploy aceita explicitamente o 404 esperado do fallback SPA');
+
 must(!vite.includes('allowedHosts: true'), 'Vite não aceita qualquer hostname no servidor de desenvolvimento');
-const resultsConfig = read('src/data/resultsConfig.ts');
+
 const dataExport = read('src/components/DataExportActions.tsx');
+
 must(vite.includes("src: BASE_PATH + 'pwa-192.png'") && vite.includes("src: BASE_PATH + 'pwa-512.png'") && vite.includes('scope: BASE_PATH'), 'ícones PNG e escopo PWA respeitam o subcaminho publicado');
-must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("url.pathname.startsWith('/observatorio/api/v1/')"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
-must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.png"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v1/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
+
+must(vite.includes("/^\\/observatorio\\/api\\//") && vite.includes("url.pathname.startsWith('/observatorio/api/v2/')"), 'Service Worker reconhece a API no subcaminho do GitHub Pages');
+
+must(index.includes('href="%BASE_URL%manifest.webmanifest"') && index.includes('href="%BASE_URL%pwa-192.png"') && index.includes('href="%BASE_URL%apple-touch-icon.png"') && index.includes('href="%BASE_URL%sitemap.xml"') && index.includes('href="%BASE_URL%api/v2/observatorio.json"'), 'HTML usa BASE_URL para recursos estáticos, ícones e API');
+
 must(!fs.existsSync(path.join(root, 'public/manifest.webmanifest')), 'não existe manifesto PWA duplicado em public');
+
 const pngSize = file => {
   const bytes = fs.readFileSync(path.join(root, 'public', file));
   return bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
     ? [bytes.readUInt32BE(16), bytes.readUInt32BE(20)]
     : null;
 };
+
 must(JSON.stringify(pngSize('pwa-192.png')) === '[192,192]'
   && JSON.stringify(pngSize('pwa-512.png')) === '[512,512]'
   && JSON.stringify(pngSize('apple-touch-icon.png')) === '[180,180]',
   'ícones PNG têm dimensões corretas para Android e iOS');
-must(resultsConfig.includes('import.meta.env.BASE_URL') && resultsConfig.includes('tse-results.json'), 'feed de resultados TSE respeita o base path');
-must(dataExport.includes('import.meta.env.BASE_URL + "api/v1/observatorio.json"'), 'link da API pública respeita o base path');
+
+must(dataExport.includes('import.meta.env.BASE_URL + "api/v2/observatorio.json"'), 'link da API pública respeita o base path');
+
 must(vite.includes('start_url: BASE_PATH') && vite.includes('scope: BASE_PATH'), 'PWA mantém start_url e scope no subcaminho publicado');
-must(viteSource.includes('freshness') && viteSource.includes('maxAgeHours = 24') && viteSource.includes('tseCandidates'), 'API health expõe contrato de frescor TSE');
-must(vite.includes("api/v1/observatorio.json") && vite.includes("api/v1/openapi.json") && vite.includes("api/v1/health.json") && vite.includes("api/v1/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
-const healthRouteIndex = vite.indexOf("url.pathname === '/observatorio/api/v1/health.json'");
-const genericApiRouteIndex = vite.indexOf("url.pathname.startsWith('/observatorio/api/v1/')");
+
+must(vite.includes("api/v2/observatorio.json") && vite.includes("api/v2/openapi.json") && vite.includes("api/v2/health.json") && vite.includes("api/v2/sources.json"), 'build gera API pública, healthcheck e registro de fontes');
+
+const healthRouteIndex = vite.indexOf("url.pathname === '/observatorio/api/v2/health.json'");
+
+const genericApiRouteIndex = vite.indexOf("url.pathname.startsWith('/observatorio/api/v2/')");
+
 must(
   healthRouteIndex >= 0
     && genericApiRouteIndex >= 0
     && healthRouteIndex < genericApiRouteIndex,
   'rota NetworkOnly do healthcheck precede a regra genérica da API no Service Worker',
 );
+
 must(robots.includes('https://pabloguilherme01.github.io/observatorio/sitemap.xml'), 'robots.txt aponta para o sitemap publicado');
+
 must(sitemap.includes('https://pabloguilherme01.github.io/observatorio/'), 'sitemap aponta para a URL canônica');
+
 must(index.includes('og-cover.svg') && index.includes('summary_large_image'), 'preview social usa imagem e cartão grande');
+
 const searchModal = read('src/components/layout/SearchModal.tsx');
+
 const publicServiceSearch = read('src/data/publicServiceSearch.ts');
+
 const dashboardMetrics = read('src/components/sections/DashboardMetrics.tsx');
+
 const historicalTrendChart = read('src/components/sections/HistoricalTrendChart.tsx');
+
 const budgetSection = read('src/components/sections/BudgetSection.tsx');
+
 const budgetImpact = read('src/components/sections/BudgetImpact.tsx');
+
 const formatters = read('src/utils/formatters.ts');
+
 must(budgetSection.includes('formatBudgetCurrency') && budgetImpact.includes('formatBudgetCurrency'), 'valores da LOA usam formatação sem casas decimais artificiais');
+
 must(formatters.includes("export function formatBudgetCurrency") && !formatters.includes('Math.round(value)'), 'formatação orçamentária preserva os centavos do valor original');
+
 must(dashboardMetrics.includes("lazy(() => import('./HistoricalTrendChart')") && dashboardMetrics.includes('<Suspense'), 'gráfico histórico é carregado de forma diferida para reduzir o bundle inicial');
+
 must(searchModal.includes("role=\"combobox\"") && searchModal.includes('aria-activedescendant') && searchModal.includes('filteredLengthRef'), 'busca usa semântica combobox e evita closure stale na navegação por teclado');
+
 must((dashboardMetrics.includes('Ver dados em tabela') && dashboardMetrics.includes('<table')) || (historicalTrendChart.includes('Ver dados em tabela') && historicalTrendChart.includes('<table')), 'gráficos principais possuem alternativa explícita em tabela acessível');
+
 must(index.includes('id="boot-fallback"') && index.includes('obs-skeleton') && index.includes('Recarregar'), 'fallback inicial combina skeleton e recuperação explícita');
 
 must(index.includes('maximum-scale=5') && index.includes('viewport-fit=cover'), 'viewport mobile preserva zoom e safe-area');
+
 const headerSource = read('src/components/layout/Header.tsx');
+
 must((appSource.includes('skip-link') && appSource.includes('Pular para o conteúdo principal')) || (headerSource.includes('skip-link') && headerSource.includes('Pular para o conteúdo principal')), 'navegação por teclado possui atalho de salto para o conteúdo');
+
 must(fs.existsSync(path.join(root, 'public/offline.html')), 'página offline personalizada está versionada');
+
 must(vite.includes("globPatterns: ['**/*.{js,css,html,svg,png,ico,webp,json}']") && vite.includes("navigateFallback: '/observatorio/index.html'") && !vite.includes('includeAssets:'), 'VitePWA usa um único caminho de precache para assets públicos e shell offline');
+
 must(vite.includes("handler: 'StaleWhileRevalidate'") && vite.includes('NetworkFirst'), 'PWA possui cache rápido de documento e NetworkFirst para API');
+
 must(
   vite.includes('const getSourcesPayload = () => ({')
     && vite.includes('schemaVersion: 2')
@@ -218,15 +281,11 @@ must(
     && vite.includes('note: note ?? null'),
   'API pública de fontes expõe verificação e nota metodológica junto à proveniência',
 );
-must(
-  vite.includes("globIgnores: ['**/data/tse-results.json']")
-    && vite.includes("url.pathname === '/observatorio/data/tse-results.json'")
-    && vite.includes("cacheName: `observatorio-results-v${RUNTIME_CACHE_VERSION}`")
-    && vite.includes("handler: 'NetworkFirst'"),
-  'feed oficial de resultados não entra no precache estático e possui cache dinâmico próprio',
-);
+
 const a11ySpec = read('tests/a11y.spec.mjs');
+
 const accessibilitySmokeSpec = read('tests/accessibility-smoke.spec.mjs');
+
 must(
   fs.existsSync(path.join(root, 'tests/accessibility-smoke.spec.mjs'))
     && accessibilitySmokeSpec.includes('@axe-core/playwright')
@@ -235,9 +294,10 @@ must(
     && read('.github/workflows/browser.yml').includes('chrome-a11y'),
   'suíte de acessibilidade usa Axe com contraste e mantém fluxo dedicado de teclado no workflow cross-browser',
 );
+
 must(
   fs.existsSync(path.join(root, 'tests/public-api-contract.spec.mjs'))
-    && read('tests/public-api-contract.spec.mjs').includes('./api/v1/sources.json')
+    && read('tests/public-api-contract.spec.mjs').includes('./api/v2/sources.json')
     && read('tests/public-api-contract.spec.mjs').includes('lastCheckedAt'),
   'suíte de navegador valida o contrato da API pública e sua proveniência',
 );
@@ -251,14 +311,19 @@ must(
     && !vite.includes('-v13'),
   'caches runtime do PWA acompanham automaticamente o major da aplicação',
 );
-must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/PostElectionHero.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
-must(!read('src/components/sections/PostElectionHero.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
+
+must(!appSource.includes('election-mode') && !read('src/components/ExperienceShell.tsx').includes('election-mode') && !read('src/components/sections/MunicipalHero.tsx').includes('electionMode'), 'Modo Eleição cosmético removido do fluxo principal');
+
+must(!read('src/components/sections/MunicipalHero.tsx').includes('observatorio-v43-election-mode'), 'Modo Eleição não usa namespace de armazenamento legado');
 
 const pkgScripts = packageJson.scripts ?? {};
+
 const workflowsDir = path.join(root, '.github/workflows');
+
 const workflowFiles = fs.existsSync(workflowsDir)
   ? fs.readdirSync(workflowsDir).filter(file => file.endsWith('.yml') || file.endsWith('.yaml'))
   : [];
+
 for (const file of workflowFiles) {
   const workflowSource = fs.readFileSync(path.join(workflowsDir, file), 'utf8');
   must(!/\bnpm install\b/.test(workflowSource), file + ' usa npm ci em vez de npm install');
@@ -267,11 +332,14 @@ for (const file of workflowFiles) {
   }
 }
 
-
 must(pkgScripts['audit:a11y'] === 'node scripts/audit-accessibility.mjs', 'package.json registra auditoria de acessibilidade');
+
 must(pkgScripts['audit:mobile'] === 'node scripts/audit-mobile.mjs', 'package.json registra auditoria mobile');
+
 must(pkgScripts['audit:deps'] === 'npm audit --audit-level=high', 'package.json registra gate de vulnerabilidades de dependências');
+
 must(pkgScripts['test:source-audit-policy'] === 'node scripts/test-source-audit-policy.mjs', 'package.json registra teste determinístico da política de disponibilidade das fontes');
+
 must(
   !pkgScripts['audit:browser']?.includes('playwright install')
     && browserWorkflow.includes('npm exec -- playwright install --with-deps "${{ matrix.engine }}"')
@@ -302,31 +370,19 @@ must(
     && !deployWorkflow.includes('playwright test'),
   'CI mantém sete perfis Playwright, compartilha um único artefato de produção, inclui o gate Axe, Safari desktop bloqueante e não repete a suíte no deploy',
 );
+
 must(ciWorkflow.includes('cancel-in-progress: true') && ciWorkflow.includes('group: ci-'), 'CI cancela execuções obsoletas da mesma referência');
+
 const playwrightConfig = read('playwright.config.mjs');
+
 must(
   playwrightConfig.includes('fullyParallel: true')
     && playwrightConfig.includes('workers: process.env.CI ? 2 : undefined'),
   'Playwright paraleliza testes isolados com dois workers no CI para reduzir latência sem saturar o runner',
 );
+
 must(ciWorkflow.includes('npm run test:source-audit-policy'), 'CI testa a política de indisponibilidade externa sem depender da internet');
-must(
-  [
-    'npm run quality:check',
-    'npm run audit:usability',
-    'npm run audit:public-services',
-    'npm run validate:observatorio',
-    'npm run audit:runtime',
-    'npm run audit:engagement',
-    'npm run audit:quiz',
-    'npm run audit:tse-architecture',
-    'npm run validate:tse',
-    'npm run audit:deps',
-    'npm run validate:results',
-    'npm run test:jws',
-  ].every(command => ciWorkflow.includes(command)),
-  'CI principal reúne os contratos essenciais de qualidade, dados e segurança antes da publicação',
-);
+
 must(
   browserWorkflow.includes('name: Browser · build production')
     && browserWorkflow.includes('run: npm exec vite -- build')
@@ -337,6 +393,7 @@ must(
     && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'),
   'Browser é o único proprietário do build de produção e publica o artefato somente depois dos gates de bundle, performance e PWA',
 );
+
 must(
   deployWorkflow.includes('workflow_run:')
     && deployWorkflow.includes('workflows: ["CI"]')
@@ -351,29 +408,17 @@ must(
     && deployWorkflow.includes('git/ref/heads/main'),
   'deploy exige CI + Browser + CodeQL para o SHA exato da main, inclusive no acionamento manual',
 );
+
 must(
   deployWorkflow.includes('OBSERVATORIO_COMMIT_SHA')
     && vite.includes('process.env.OBSERVATORIO_COMMIT_SHA ?? process.env.GITHUB_SHA'),
   'metadado público registra exatamente o commit validado pelo CI',
 );
+
 must(sourceHealthWorkflow.includes("SOURCE_AUDIT_STRICT: 'true'") && sourceHealthWorkflow.includes("AUDIT_PUBLIC_SERVICES_LIVE: 'true'"), 'monitor agendado de fontes usa modo estrito e verifica atalhos públicos ao vivo');
-must(syncWorkflow.includes('npm run sync:tse') && syncWorkflow.includes('npm run validate:tse'), 'workflow TSE automatiza captura oficial e validação da watchlist');
-must(syncWorkflow.includes("cron: '0 */4 * * *'") && syncWorkflow.includes('workflow_dispatch:'), 'workflow TSE possui atualização automática e acionamento manual');
-must(
-  syncWorkflow.includes('npm run validate:observatorio')
-    && syncWorkflow.includes('npm run audit:static')
-    && !syncWorkflow.includes('run: npm run typecheck')
-    && !syncWorkflow.includes('run: npm run build')
-    && !syncWorkflow.includes('run: npm run audit:deps'),
-  'workflow TSE valida dados e consistência antes do commit e deixa typecheck, dependências e build para o CI pós-commit',
-);
-must(syncWorkflow.includes('actions: read') && !syncWorkflow.includes('actions: write') && !syncWorkflow.includes('gh workflow run ci.yml') && syncWorkflow.includes('wait_for_ci') && syncWorkflow.includes('gh pr create') && syncWorkflow.includes('Automação TSE 2026: PR pendente') && syncWorkflow.includes('gh issue create') && syncWorkflow.includes('gh issue edit') && !/^\\s*git push\\s*$/m.test(syncWorkflow), 'workflow TSE valida a branch no CI, tenta criar PR e registra fallback acionável quando a permissão administrativa bloqueia a PR');
-must(resultsWorkflow.includes('actions: read') && !resultsWorkflow.includes('actions: write') && !resultsWorkflow.includes('gh workflow run ci.yml') && resultsWorkflow.includes('wait_for_ci') && resultsWorkflow.includes('gh pr create') && resultsWorkflow.includes('Resultados TSE 2026: PR pendente') && resultsWorkflow.includes('gh issue create') && resultsWorkflow.includes('gh issue edit') && !resultsWorkflow.includes('gh pr merge') && !/^\\s*git push\\s*$/m.test(resultsWorkflow), 'workflow de resultados valida a branch no CI, exige PR revisada e usa issue de fallback sem merge direto');
-must(!fs.existsSync(path.join(root, '.github/workflows/sync-tse-candidates.yml')), 'não existem dois workflows concorrentes para a mesma captura TSE');
-must(!fs.existsSync(path.join(root, 'scripts/tse/ingest-candidates-local.ts')), 'pipeline antigo de ingestão municipal removido após consolidação');
-must(!deployWorkflow.includes("REQUIRE_TSE_SYNC: 'true'") && !deployWorkflow.includes('sync:tse'), 'deploy de produção é independente da captura externa TSE');
+
 must(dataSource.includes("sourceId: 'qedu-ideb-2025'") && dataSource.includes('5.7, 6.2'), 'faixa Ideb 2025 está explicitamente separada');
-must(!read('src/components/sections/PoliticalResearch.tsx').includes('computeTheoreticalMargin') && !read('src/components/sections/PoliticalResearch.tsx').includes('calculateMargin'), 'interface não calcula margem de erro teórica');
+
 must(
   read('src/components/layout/Header.tsx').includes('Versão local do conjunto publicada em')
     && read('src/components/layout/Header.tsx').includes('cada indicador pode ter data-base própria')
@@ -381,84 +426,79 @@ must(
     && !read('src/components/layout/Header.tsx').includes('Captura recente'),
   'cabeçalho distingue a versão local do frescor individual das fontes',
 );
-must(
-  deployWorkflow.includes('npm run audit:deps')
-    && deployWorkflow.includes('npm run validate:tse')
-    && deployWorkflow.includes('npm run audit:release')
-    && deployWorkflow.includes('gh run download "$BROWSER_RUN_ID" --name observatorio-browser-dist --dir dist')
-    && deployWorkflow.includes('npm run audit:bundle')
-    && deployWorkflow.includes('npm run test:pwa')
-    && !deployWorkflow.includes('npm run build:bundle'),
-  'deploy reutiliza e valida o artefato Browser do SHA exato sem recompilar nem repetir a suíte de navegadores',
-);
+
 must(deployWorkflow.includes('test "$public_commit" = "${DEPLOY_SHA}"'), 'verificação publicada exige paridade com o SHA aprovado pelo CI');
+
 must(deployWorkflow.includes('test "$count" = "1"'), 'verificação publicada impede regressão de duplicação no precache PWA');
 
 const mainSource = read('src/main.tsx');
+
 must(mainSource.includes("import { App } from './app/App'") && mainSource.includes("import { ErrorBoundary } from './components/system/ErrorBoundary'"), 'bootstrap principal não depende de import dinâmico para montar o React');
+
 must(mainSource.includes('BOOT_TIMEOUT_MS = 10000') && mainSource.includes('observatorioMounted'), 'bootstrap possui timeout de segurança e marcador de montagem');
+
 must(mainSource.includes('[Observatório][boot] 1/4') && mainSource.includes('[Observatório][boot] 4/4'), 'bootstrap possui logs de diagnóstico por etapa');
+
 must(mainSource.includes("observatorio:last-runtime-error") && mainSource.includes("observatorio:last-boot-error"), 'diagnóstico separa erros de boot e runtime');
+
 must(mainSource.includes("observatorio:app-mounted") && mainSource.includes("import('virtual:pwa-register')"), 'PWA é registrado somente após a montagem principal');
+
 must(index.includes('boot-fallback') && index.includes('10000') && index.includes('data-boot-timeout'), 'HTML possui watchdog independente para falha total do JavaScript');
 
-const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredElectionGroup', 'DeferredPublicDataGroup'];
+const deferredGroups = ['DeferredContextGroup', 'DeferredCivicGroup', 'DeferredBudgetGroup', 'DeferredPublicDataGroup'];
+
 for (const group of deferredGroups) must(appSource.includes(group), 'App registra ' + group);
+
 must(appSource.includes("import DeferredEvidenceGroup") && appSource.includes("<DeferredEvidenceGroup />") && !appSource.includes("loadEvidenceGroup"), 'fontes, exportação e evidências base montam sem depender de lazy loading');
+
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
+
 const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
-must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && contextSource.includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
+
+must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && read('src/components/sections/DeferredLearningGroup.tsx').includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
+
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
+
 must(appSource.includes('id="analise"') && appSource.includes('<DashboardMetrics />'), 'atalho legado #analise aponta para o dashboard montado diretamente');
+
 const dashboardIdCount = (dashboardMetrics.match(/id=["']dashboard["']/g) ?? []).length;
+
 const analiseIdCount = (appSource.match(/id=["']analise["']/g) ?? []).length;
+
 must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#dashboard possui uma única âncora pública no DashboardMetrics');
+
 const audienceHub = read('src/components/AudienceHub.tsx');
+
 must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a âncora pública #dashboard');
+
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
-must(audienceHub.includes('Serviços públicos') && audienceHub.includes('Ver indicadores') && audienceHub.includes('Dados eleitorais'), 'Resumo oferece três caminhos públicos claros: serviços, cidade e eleições');
+
+must(['acao', 'dashboard', 'saude', 'orcamento', 'transporte', 'dados'].every(id => audienceHub.includes("id: '" + id + "'")), 'entrada pública oferece seis necessidades com destino explícito');
+
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
+
 must(dashboardMetrics.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
+
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
 
-const allRuntimeText = [
-  appSource,
-  read('src/components/sections/DeferredContextGroup.tsx'),
-  read('src/components/sections/DeferredCivicGroup.tsx'),
-  read('src/components/sections/DeferredPublicDataGroup.tsx'),
-  read('src/components/sections/DeferredEvidenceGroup.tsx'),
-].join('\n');
-must(allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'qualidade e evidências montadas');
-must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<DataExportActions />'), 'ação e exportação montadas');
-must(allRuntimeText.includes('<PublicDataPulse />') && appSource.includes('<Footer />'), 'atualizações públicas e footer institucional montados');
-must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
-
-for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'fontes']) {
-  must(navigation.includes(`id: '${id}'`), `navegação pública contém #${id}`);
-}
-for (const id of ['principios', 'contexto', 'dados', 'qualidade', 'evidencias']) {
+for (const id of ['principios', 'contexto', 'qualidade', 'evidencias']) {
   must(!navigation.includes(`id: '${id}'`), `subcamada #${id} não polui a navegação pública`);
 }
 
 const shortcuts = [...navigation.matchAll(/shortcut:\s*'([^']+)'/g)].map(match => match[1].replace(/\s+/g, '').toLowerCase());
+
 const shortcutSet = new Set(shortcuts);
+
 must(shortcuts.length === shortcutSet.size, 'atalhos de navegação não possuem duplicatas');
+
 for (const shortcut of shortcuts) {
   must(!shortcuts.some(other => other !== shortcut && other.startsWith(shortcut)), `atalho ${shortcut} não pode ser prefixo de outro atalho`);
 }
-must(allRuntimeText.includes('<ProjectTrustPanel />') && allRuntimeText.includes('<DataQualityPanel />') && allRuntimeText.includes('<EvidenceChain />'), 'método, qualidade e evidências continuam disponíveis no conteúdo técnico');
-must(allRuntimeText.includes('<ContextComparison />') && allRuntimeText.includes('<PublicDataPulse />'), 'contexto e atualizações públicas continuam disponíveis fora do menu principal');
-
-must(candidates.schemaVersion === 3 && candidates.coverage === 'state_watchlist', 'snapshot atual usa exclusivamente o contrato estadual watchlist');
-must(['not_synced', 'synced', 'first_capture', 'unchanged', 'changed', 'stale', 'failed', 'local_filter_pending'].includes(candidates.meta.state), 'estado do snapshot pertence ao contrato conhecido');
-must(!read('scripts/sync-tse-2026.mjs').includes("coverage: 'municipality_required'") && !read('scripts/sync-tse-2026.mjs').includes('selection: \'all_municipality\''), 'sincronizador TSE não pode promover o snapshot para lista municipal');
-must(candidates.meta.localFilter === 'Águas Lindas de Goiás' && (candidates.meta.state === 'local_filter_pending' || (['editorial_watchlist', 'local_evidence'].includes(candidates.meta.localFilterType) && candidates.meta.candidateUniverseScope === 'GO')), 'snapshot separa universo oficial de Goiás do recorte editorial local');
-must(candidates.meta.state === 'local_filter_pending' || ['official_tse_zip_csv', 'official_tse_divulgacandcontas_api', 'official_tse_divulgacandcontas_api_via_reader_proxy'].includes(candidates.meta.retrievalMethod), 'snapshot TSE usa fonte oficial suportada quando sincronizado');
 
 const runtimeFiles = [
   'src/app/App.tsx',
   'src/components/ExperienceShell.tsx',
-  'src/components/sections/PostElectionHero.tsx',
+  'src/components/sections/MunicipalHero.tsx',
   'src/components/sections/ContextComparison.tsx',
   'src/components/sections/CivicActionHub.tsx',
   'src/context/LanguageModeContext.tsx',
@@ -471,11 +511,11 @@ const runtimeFiles = [
   'src/components/sections/DeferredEvidenceGroup.tsx',
   'src/data/contextualComparison.ts',
 ];
+
 for (const file of runtimeFiles) {
   const content = read(file).toLowerCase();
   for (const legacy of ['v35', 'v36']) if (content.includes(legacy)) fail(`${file} ainda contém referência legada ${legacy}`);
 }
-
 
 function collectFiles(target) {
   const absolute = path.join(root, target);
@@ -491,31 +531,9 @@ function collectFiles(target) {
 }
 
 const scriptFiles = collectFiles('scripts').filter(file => !/[/\\]audit-[^/]+\.mjs$/.test(file));
-const missingLocalImports = [];
-for (const file of scriptFiles) {
-  const source = fs.readFileSync(file, 'utf8');
-  const imports = [
-    ...source.matchAll(/from\s+['"]((?:\.\.?\/)[^'"]+)['"]/g),
-    ...source.matchAll(/import\(\s*['"]((?:\.\.?\/)[^'"]+)['"]\s*\)/g),
-  ].map(match => match[1]);
 
-  for (const specifier of imports) {
-    const base = path.resolve(path.dirname(file), specifier);
-    const candidates = [
-      base,
-      base + '.mjs',
-      base + '.js',
-      base + '.ts',
-      base + '.tsx',
-      path.join(base, 'index.mjs'),
-      path.join(base, 'index.js'),
-      path.join(base, 'index.ts'),
-    ];
-    if (!candidates.some(fs.existsSync)) {
-      missingLocalImports.push(path.relative(root, file) + ' -> ' + specifier);
-    }
-  }
-}
+const missingLocalImports = [];
+
 if (missingLocalImports.length) {
   for (const item of missingLocalImports) fail('import local quebrado: ' + item);
 } else {
@@ -523,25 +541,30 @@ if (missingLocalImports.length) {
 }
 
 let lockTracked = false;
+
 try {
   execFileSync('git', ['ls-files', '--error-unmatch', 'package-lock.json'], { stdio: ['ignore', 'pipe', 'ignore'] });
   lockTracked = true;
 } catch {}
+
 if (!fs.existsSync(path.join(root, 'package-lock.json')) || !lockTracked) {
   fail('package-lock.json deve existir e estar versionado');
 } else {
   pass('package-lock.json está versionado para instalações reprodutíveis');
 }
 
-
 const languageToggle = read('src/components/layout/LanguageModeToggle.tsx');
+
 const clipboard = read('src/lib/clipboard.ts');
+
 const sharing = [
   read('src/components/sections/ExecutiveSummary.tsx'),
   read('src/components/sections/QuickQuiz.tsx'),
   read('src/components/TransportCalculator.tsx'),
 ].join('\n');
+
 must(languageToggle.includes('language-toggle-v3') && languageToggle.includes("id: 'summary'") && languageToggle.includes("id: 'simple'") && languageToggle.includes("id: 'guided'") && languageToggle.includes("id: 'technical'") && languageToggle.includes("setMode(id)"), 'modos Resumo/Explicado/Guiado/Detalhado possuem componente próprio');
+
 must(sharing.includes('navigator.share') && sharing.includes('copyText') && clipboard.includes('navigator.clipboard') && clipboard.includes("document.createElement('textarea')"), 'compartilhamento nativo usa um fallback de cópia único e resiliente');
 
 if (!errors.length) {

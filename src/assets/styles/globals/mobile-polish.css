@@ -6,15 +6,15 @@
   #root{overflow-x:clip}
   main>section,main>div>section{min-width:0;max-width:100%}
   main a:not(.site-brand),main button{-webkit-tap-highlight-color:transparent}
-  
+
   .today-rail,.summary-simple-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
   .today-card{min-height:112px;padding:12px;border-radius:16px}
   .summary-simple-card{min-height:118px;padding:12px;border-radius:15px}
-  .candidate-card,.candidate-summary-card,.obs-card,.source-card,.topic-card,.summary-stat,.summary-simple-card,.today-card{min-width:0;overflow:hidden}
-  .candidate-card p,.candidate-summary-body p,.technical-detail,.source-card p{overflow-wrap:anywhere}
+  .obs-card,.source-card,.topic-card,.summary-stat,.summary-simple-card,.today-card{min-width:0;overflow:hidden}
+  .technical-detail,.source-card p{overflow-wrap:anywhere}
   .search-modal-backdrop{align-items:flex-start;padding:env(safe-area-inset-top,8px) var(--mobile-page-gutter) 16px}
   .search-modal-panel{width:100%;margin-top:4vh;max-height:88dvh;border-radius:20px}
-  
+
   .mobile-bottom-nav{
     min-height:var(--mobile-nav-height);
     padding:6px var(--mobile-page-gutter) env(safe-area-inset-bottom,0px);
@@ -236,16 +236,10 @@
   }
 
   .topic-card,
-  .candidate-card,
   .source-card,
   .obs-card {
     min-width: 0;
     max-width: 100%;
-  }
-
-
-  .candidate-card .flex.flex-wrap.gap-2 > * {
-    min-width: 0;
   }
 
 
@@ -294,15 +288,13 @@
 
   .summary-simple-grid,
   .summary-public-topics,
-  .summary-public-facts,
-  .candidate-card .flex.flex-wrap.gap-2 {
+  .summary-public-facts {
     grid-template-columns: 1fr !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .mobile-bottom-nav button,
-  .candidate-card,
   .summary-simple-card {
     transition: none !important;
   }
@@ -369,11 +361,6 @@
     line-height: 1.08;
   }
 
-  .candidate-card .flex.flex-wrap.gap-2 > a,
-  .candidate-card .flex.flex-wrap.gap-2 > button {
-    min-height: 46px;
-  }
-
   #linha-do-tempo .overflow-x-auto {
     overscroll-behavior-x: contain;
     scroll-padding-inline: 12px;
@@ -425,4 +412,3 @@
     padding: 10px !important;
   }
 }
-

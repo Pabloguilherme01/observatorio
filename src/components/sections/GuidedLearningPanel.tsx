@@ -8,7 +8,7 @@ import { navigateToCleanSection } from '../../lib/sectionNavigation';
 const STORAGE_KEY = `${STORAGE_NAMESPACE}-guided-learning-visited`;
 
 const dataTerms = [
-  { label: 'Atual', description: 'Referência corrente no conjunto; a data ainda precisa ser conferida.' },
+  { label: 'Publicado', description: 'Valor incluído no conjunto; confira sua referência, sem presumir atualidade.' },
   { label: 'Histórico', description: 'Registro de período anterior, preservado para contexto ou comparação.' },
   { label: 'Recorte datado', description: 'Captura válida para uma data específica; não significa atualização em tempo real.' },
   { label: 'Derivado', description: 'Cálculo produzido a partir de valores e premissas identificadas.' },
@@ -17,65 +17,75 @@ const dataTerms = [
 
 const steps = [
   {
-    id: 'valor',
-    target: 'resumo',
-    action: 'Ir ao resumo',
-    skill: 'Leitura',
-    question: 'O que este número mede — e em qual unidade?',
-    title: '1. Identifique o que o número mede',
-    description: 'Comece pelo valor e pela unidade. Evite comparar antes de saber exatamente o que está sendo contado.',
-    hint: 'Procure o nome completo do indicador, a unidade — como habitantes, eleitores ou reais — e o valor mostrado.',
+    "id": "valor",
+    "target": "resumo",
+    "action": "Ir ao resumo",
+    "skill": "Leitura",
+    "question": "O que este número mede?",
+    "title": "1. Identifique o indicador",
+    "description": "Leia nome, valor e unidade antes de tirar conclusões.",
+    "hint": "Habitantes, reais, quilômetros quadrados e porcentagens representam medidas diferentes."
   },
   {
-    id: 'referencia',
-    target: 'dashboard',
-    action: 'Ir aos indicadores',
-    skill: 'Tempo',
-    question: 'De quando é o dado e qual é a sua natureza?',
-    title: '2. Confira período e natureza',
-    description: 'Veja a data de referência e se o indicador é publicado, histórico, planejado, recorte datado ou derivado.',
-    hint: 'Localize o mês, ano ou data exata. “Atual” ainda precisa ser lido junto da referência indicada no cartão.',
+    "id": "referencia",
+    "target": "dashboard",
+    "action": "Ver indicadores",
+    "skill": "Tempo",
+    "question": "De quando é o dado?",
+    "title": "2. Confira o período",
+    "description": "Procure data de referência ou ano-base. A publicação pode ocorrer depois do período medido.",
+    "hint": "Sem referência informada, não trate o valor como retrato atual."
   },
   {
-    id: 'contexto',
-    target: 'eleitorado',
-    action: 'Ver eleitorado',
-    skill: 'Recorte',
-    question: 'Estou comparando universos e bases equivalentes?',
-    title: '3. Separe universos e recortes',
-    description: 'Observe população, eleitorado e outros universos separadamente. Diferenças de base não são erro automático.',
-    hint: 'Confira território, período e grupo contado. População e eleitorado são bases diferentes e não medem comparecimento.',
+    "id": "significado",
+    "target": "orcamento",
+    "action": "Ver orçamento",
+    "skill": "Significado",
+    "question": "O que o valor permite concluir?",
+    "title": "3. Entenda o significado",
+    "description": "Separe contagem, estimativa, planejamento e execução. A LOA autoriza recursos; não comprova pagamento.",
+    "hint": "Leia as notas do indicador e não transforme previsão em resultado realizado."
   },
   {
-    id: 'utilidade',
-    target: 'acao',
-    action: 'Abrir serviços',
-    skill: 'Utilidade',
-    question: 'Qual canal oficial atende a necessidade prática?',
-    title: '4. Leve a informação ao serviço certo',
-    description: 'Use os canais oficiais quando a necessidade for prática: atendimento, documentos, saúde, assistência ou transparência.',
-    hint: 'Leia o que o serviço resolve e confirme se o link leva ao órgão municipal, estadual ou federal responsável.',
+    "id": "comparacao",
+    "target": "dashboard",
+    "action": "Comparar indicadores",
+    "skill": "Comparação",
+    "question": "As medidas são compatíveis?",
+    "title": "4. Compare medidas compatíveis",
+    "description": "Confira unidade, território, período, universo e método. Censo e estimativa têm naturezas diferentes.",
+    "hint": "Totais, taxas e percentuais respondem a perguntas diferentes; mantenha as bases explícitas."
   },
   {
-    id: 'fonte',
-    target: 'fontes',
-    action: 'Conferir fontes',
-    skill: 'Verificação',
-    question: 'Quem publicou, quando e com quais limitações?',
-    title: '5. Confira a origem',
-    description: 'Abra a fonte, confirme instituição e data e leia as limitações antes de usar o número em uma conclusão.',
-    hint: 'Procure instituição, data de publicação, método e limitações. A data da publicação pode ser diferente do período medido.',
+    "id": "utilidade",
+    "target": "acao",
+    "action": "Encontrar serviços",
+    "skill": "Utilidade",
+    "question": "Qual canal atende esta necessidade?",
+    "title": "5. Encontre o serviço",
+    "description": "Leia a descrição e abra o canal institucional responsável por atendimento e orientações.",
+    "hint": "O catálogo encaminha à fonte oficial; não garante disponibilidade ou prazo individual."
   },
   {
-    id: 'quiz',
-    target: 'quiz',
-    action: 'Fazer o quiz',
-    skill: 'Revisão',
-    question: 'Consigo reconhecer valor, período, natureza e fonte?',
-    title: '6. Teste a compreensão',
-    description: 'Use o quiz de educação cívica para revisar conceitos. A pontuação é pessoal e não indica preferência política.',
-    hint: 'Tente responder com base no cartão e depois leia a explicação. O quiz revisa conceitos; não mede preferência política.',
+    "id": "fonte",
+    "target": "fontes",
+    "action": "Conferir fontes",
+    "skill": "Verificação",
+    "question": "Quem publicou e com quais limites?",
+    "title": "6. Confira a fonte",
+    "description": "Abra a origem, confira instituição, referência e método antes de compartilhar uma conclusão.",
+    "hint": "A data de consulta da página não altera o período do indicador."
   },
+  {
+    "id": "quiz",
+    "target": "quiz",
+    "action": "Praticar no quiz",
+    "skill": "Prática",
+    "question": "Consigo explicar valor, período, natureza e fonte?",
+    "title": "7. Pratique a leitura",
+    "description": "As cinco fases ajudam a começar, entender, comparar, conferir e aplicar a leitura dos dados.",
+    "hint": "Depois de responder, leia a explicação e consulte a fonte."
+  }
 ] as const;
 
 type GuidedStepId = typeof steps[number]['id'];
@@ -145,7 +155,7 @@ export function GuidedLearningPanel() {
 
         <div className="guided-learning-next-card" aria-live="polite">
           <span><Compass aria-hidden="true" /> {allVisited ? 'Rota percorrida' : hasProgress ? 'Continue sua expedição' : 'Próxima parada'}</span>
-          <strong>{allVisited ? 'Você abriu as seis paradas' : continueStep.title}</strong>
+          <strong>{allVisited ? 'Você abriu as sete paradas' : continueStep.title}</strong>
           <small>{allVisited ? 'Isso registra as paradas abertas, não uma nota nem uma avaliação de conhecimento. Você pode voltar a qualquer ponto.' : continueStep.question}</small>
         </div>
 
@@ -164,12 +174,12 @@ export function GuidedLearningPanel() {
         <div className="guided-learning-route-heading">
           <div>
             <span><Compass aria-hidden="true" /> Rota de investigação</span>
-            <p>Seis paradas curtas para observar, conferir e usar dados com cuidado.</p>
+            <p>Sete paradas curtas para observar, conferir e usar dados com cuidado.</p>
           </div>
           <small>Sem corrida. Avance no seu ritmo.</small>
         </div>
 
-        <ol className="guided-learning-grid" aria-label="Seis paradas da rota de investigação">
+        <ol className="guided-learning-grid" aria-label="Sete paradas da rota de investigação">
           {steps.map((step, index) => {
             const done = visitedSet.has(step.id);
             const isNext = !allVisited && nextUnvisitedStep?.id === step.id;
@@ -204,7 +214,7 @@ export function GuidedLearningPanel() {
         </ol>
 
         <div className="guided-learning-footer">
-          <p><strong>Jogo limpo:</strong> a rota ensina a ler e verificar dados públicos. O progresso registra apenas as paradas abertas; não confirma a leitura nem avalia o que você aprendeu. O modo não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais.</p>
+          <p><strong>Jogo limpo:</strong> a rota ensina a ler e verificar dados públicos. O progresso registra apenas as paradas abertas; não confirma a leitura nem avalia o que você aprendeu.</p>
           <div>
             <button type="button" className="guided-learning-reset" onClick={reset} disabled={visited.length === 0}>
               <RotateCcw aria-hidden="true" /> Reiniciar trilha

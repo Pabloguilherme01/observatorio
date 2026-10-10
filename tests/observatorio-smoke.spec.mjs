@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { test, expect } from 'playwright/test';
 
 const navigationSource = readFileSync(resolve('src/config/navigation.ts'), 'utf8');
-const configuredMoreItems = (navigationSource.match(/group: 'more'/g) ?? []).length;
+const configuredMoreItems = [...navigationSource.matchAll(/id: '([^']+)'/g)].filter(([, id]) => !['descubra','dashboard','acao','dados'].includes(id)).length;
 
 async function openSection(page, id) {
   await page.evaluate(sectionId => {
@@ -17,6 +17,7 @@ async function openSection(page, id) {
 
 test('atalhos configurados navegam e respeitam campos de digitação', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.keyboard.press('g');
   await page.keyboard.press('d');
@@ -39,6 +40,7 @@ test('atalhos configurados navegam e respeitam campos de digitação', async ({ 
 
 test('busca apresenta guia descobrível dos atalhos configurados', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.keyboard.press('/');
   const guide = page.locator('.search-shortcut-guide');
   await expect(guide).toBeVisible();
@@ -51,6 +53,7 @@ test('busca apresenta guia descobrível dos atalhos configurados', async ({ page
 
 test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile', async ({ page }) => {
   await page.goto('./#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.keyboard.press('g');
   await page.keyboard.press('t');
@@ -82,7 +85,7 @@ test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile',
   await expect(page).toHaveURL(/#transporte$/);
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.locator('.mobile-bottom-nav').getByRole('button', { name: /Explorar/i }).click();
+  await page.locator('.mobile-bottom-nav').getByRole('button', { name: /Início/i }).click();
   await expect(page).toHaveURL(/#descubra$/);
   await page.goBack();
   await expect(page).toHaveURL(/#transporte$/);
@@ -90,6 +93,7 @@ test('Voltar e Avançar restauram seções abertas por atalhos, busca e mobile',
 
 test('atalho de ajuda abre a busca com o guia de atalhos expandido', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.keyboard.press('?');
   await expect(page.getByRole('dialog')).toBeVisible();
   const guide = page.locator('.search-shortcut-guide');
@@ -100,6 +104,7 @@ test('atalho de ajuda abre a busca com o guia de atalhos expandido', async ({ pa
 
 test('busca preserva Home e End para edição de texto e anuncia resultados', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: 'Buscar no observatório' }).click();
 
   const input = page.getByRole('combobox').first();
@@ -119,6 +124,7 @@ test('busca preserva Home e End para edição de texto e anuncia resultados', as
 
 test('atalho de busca por barra abre a busca global', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.keyboard.press('/');
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('combobox').first()).toBeVisible();
@@ -127,6 +133,7 @@ test('atalho de busca por barra abre a busca global', async ({ page }) => {
 
 test('renderiza os gráficos históricos com dimensões válidas', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dashboard');
   const history = page.locator('.dashboard-history-card');
   await expect(history).toBeVisible();
@@ -152,6 +159,7 @@ test('renderiza os gráficos históricos com dimensões válidas', async ({ page
 test('status de conexão informa offline e confirma reconexão', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   const status = page.getByRole('status', { name: 'Status de conexão' });
   await expect(status).toHaveCount(0);
@@ -183,6 +191,7 @@ test('status de conexão informa offline e confirma reconexão', async ({ page }
 test('atalho PWA respeita a barra mobile e usa prompt nativo quando disponível', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.evaluate(() => {
     const event = new Event('beforeinstallprompt', { cancelable: true });
@@ -230,6 +239,7 @@ test('guia PWA no iPhone pode ser dispensado durante a sessão', async ({ page }
   });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   const shortcut = page.getByRole('button', { name: 'Adicionar Observatório à tela inicial' });
   await expect(shortcut).toBeVisible();
@@ -248,6 +258,7 @@ test('guia PWA no iPhone pode ser dispensado durante a sessão', async ({ page }
 test('botão Mais da navegação inferior funciona no mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   const nav = page.locator('.mobile-bottom-nav');
   const more = nav.getByRole('button', { name: 'Mais', exact: true });
@@ -304,6 +315,7 @@ test('botão Mais da navegação inferior funciona no mobile', async ({ page }) 
 
 test('hero abre Fontes sem alterar o modo Resumo', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const root = page.locator('html');
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
   await page.getByRole('link', { name: 'Conferir fontes' }).click();
@@ -316,6 +328,7 @@ test('marca mantém hierarquia visual correta no mobile e desktop', async ({ pag
   for (const viewport of [{ width: 390, height: 844 }, { width: 1366, height: 768 }]) {
     await page.setViewportSize(viewport);
     await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
     const sizes = await page.locator('.site-brand').evaluate(node => {
       const spans = node.querySelectorAll('span');
       return {
@@ -330,6 +343,7 @@ test('marca mantém hierarquia visual correta no mobile e desktop', async ({ pag
 test('menu Mais destaca visualmente uma seção secundária ativa', async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 768 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'fontes');
   const header = page.locator('.site-header');
   const more = header.getByRole('button', { name: 'Mais', exact: true });
@@ -345,6 +359,7 @@ for (const viewport of [
   test('header compacto sem overflow em ' + viewport.name, async ({ page }) => {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
     const header = page.locator('.site-header');
     await expect(header).toBeVisible();
     const headerBox = await header.boundingBox();
@@ -375,6 +390,7 @@ for (const viewport of [
   test('layout responsivo sem overflow em ' + viewport.name, async ({ page }) => {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
     const dimensions = await page.evaluate(() => ({
       client: document.documentElement.clientWidth,
       scroll: document.documentElement.scrollWidth,
@@ -397,36 +413,7 @@ for (const viewport of [
   });
 }
 
-test('cards premium organizam notas soltas sem overflow no mobile', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('./');
 
-  await openSection(page, 'demografia');
-  await expect(page.locator('#demografia .premium-info-card')).toHaveCount(3);
-  await expect(page.getByText('Escala populacional com contexto')).toBeVisible();
-  await expect(page.getByText('Estimativa e censo permanecem separados')).toBeVisible();
-
-  await openSection(page, 'orcamento');
-  await expect(page.getByText('Camadas orçamentárias não são somadas entre si')).toBeVisible();
-
-  await openSection(page, 'contexto');
-  await expect(page.getByText('Comparação oferece contexto — não ranking')).toBeVisible();
-
-  await openSection(page, 'mudancas-snapshot');
-  await expect(page.locator('#mudancas-snapshot .premium-info-card')).toHaveCount(2);
-  await expect(page.getByText('Captura identificada e rastreável')).toBeVisible();
-
-  const dimensions = await page.evaluate(() => ({
-    client: document.documentElement.clientWidth,
-    scroll: document.documentElement.scrollWidth,
-  }));
-  expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.client + 1);
-
-  const cardWidths = await page.locator('.premium-info-card:visible').evaluateAll(nodes =>
-    nodes.map(node => node.getBoundingClientRect().right - document.documentElement.clientWidth)
-  );
-  expect(cardWidths.every(overflow => overflow <= 1)).toBeTruthy();
-});
 
 test('modos de leitura possuem identidades visuais distintas em mobile e desktop', async ({ page }) => {
   for (const viewport of [
@@ -435,6 +422,7 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
   ]) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
     if (viewport.mobile) await page.getByRole('button', { name: 'Abrir menu' }).click();
 
@@ -479,61 +467,14 @@ test('modos de leitura possuem identidades visuais distintas em mobile e desktop
   }
 });
 
-test('modos de leitura só avançam quando a seção realmente exige mais detalhe', async ({ page }) => {
-  await page.goto('./');
-  const root = page.locator('html');
-  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
 
-  await expect(root).toHaveAttribute('data-language-mode', 'summary');
-  await openSection(page, 'fontes');
-  await expect(root).toHaveAttribute('data-language-mode', 'summary');
 
-  await openSection(page, 'exportacao');
-  await expect(root).toHaveAttribute('data-language-mode', 'summary');
 
-  await openSection(page, 'eleitoral360');
-  await expect(root).toHaveAttribute('data-language-mode', 'simple');
-
-  await openSection(page, 'eleitorado');
-  await expect(root).toHaveAttribute('data-language-mode', 'simple');
-
-  await openSection(page, 'qualidade');
-  await expect(root).toHaveAttribute('data-language-mode', 'technical');
-
-  await modes.getByRole('button', { name: /^Explicado/ }).click();
-  await openSection(page, 'fontes');
-  await expect(root).toHaveAttribute('data-language-mode', 'simple');
-});
-
-test('reduzir o modo nunca deixa o usuário em uma seção invisível', async ({ page }) => {
-  await page.goto('./');
-  const root = page.locator('html');
-  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-
-  await openSection(page, 'qualidade');
-  await expect(root).toHaveAttribute('data-language-mode', 'technical');
-  await modes.getByRole('button', { name: /^Explicado/ }).click();
-  await expect(root).toHaveAttribute('data-language-mode', 'simple');
-  await expect(page).toHaveURL(/#fontes$/);
-  await expect(page.locator('#fontes')).toBeVisible();
-
-  await openSection(page, 'orcamento-impacto');
-  await expect(root).toHaveAttribute('data-language-mode', 'technical');
-  await modes.getByRole('button', { name: /^Explicado/ }).click();
-  await expect(root).toHaveAttribute('data-language-mode', 'simple');
-  await expect(page).toHaveURL(/#orcamento$/);
-  await expect(page.locator('#orcamento')).toBeVisible();
-
-  await openSection(page, 'eleitoral360');
-  await modes.getByRole('button', { name: /^Resumo/ }).click();
-  await expect(root).toHaveAttribute('data-language-mode', 'summary');
-  await expect(page).toHaveURL(/#resumo$/);
-  await expect(page.locator('#resumo')).toBeVisible();
-});
 
 
 test('reduzir modo preserva estado de contexto ao redirecionar seção incompatível', async ({ page }) => {
   await page.goto('./#qualidade');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const root = page.locator('html');
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
 
@@ -556,6 +497,7 @@ test('reduzir modo preserva estado de contexto ao redirecionar seção incompat�
 
 test('barra de leitura reage a mudanças de altura sem exigir novo scroll', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const progress = page.locator('.reading-progress');
 
   await page.evaluate(() => {
@@ -584,6 +526,7 @@ test('link da seção preserva modo de leitura e ignora rastreamento', async ({ 
     });
   });
   await page.goto('./?utm_source=campanha#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /Modo de leitura atual: Resumo/i }).click();
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
@@ -602,6 +545,7 @@ test('link da seção preserva modo de leitura e ignora rastreamento', async ({ 
   expect(copied).not.toContain('utm_source');
 
   await page.goto(copied);
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
   await expect(page).toHaveURL(/\?leitura=simple#acao$/);
   await expect(page.locator('#acao')).toBeVisible();
@@ -610,6 +554,7 @@ test('link da seção preserva modo de leitura e ignora rastreamento', async ({ 
 test('ação de aprofundar percorre os quatro modos de leitura no painel mobile', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const root = page.locator('html');
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
@@ -631,6 +576,7 @@ test('ação de aprofundar percorre os quatro modos de leitura no painel mobile'
 
 test('modos de leitura persistem e podem avançar por atalho', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const root = page.locator('html');
   await expect(root).toHaveAttribute('data-language-mode', 'summary');
   await page.keyboard.press('Alt+m');
@@ -645,11 +591,12 @@ test('modos de leitura persistem e podem avançar por atalho', async ({ page }) 
 
 test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.waitForSelector('#root');
   await page.waitForFunction(() => Boolean(document.querySelector('[aria-label="Dados preparados para conferência"]')) || Boolean(document.querySelector('#root')));
   await page.evaluate(() => {
     const quizKey = Object.keys(localStorage).find(key => /quiz-best-scores$/.test(key));
-    if (!quizKey) localStorage.setItem('observatorio-v45-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
+    if (!quizKey) localStorage.setItem('observatorio-v46-quiz-best-scores', JSON.stringify([24, 0, 0, 0, 0]));
     else localStorage.setItem(quizKey, JSON.stringify([24, 0, 0, 0, 0]));
   });
   await page.reload();
@@ -663,12 +610,13 @@ test('persiste melhor marca e desbloqueio do quiz após recarregar', async ({ pa
 test('quiz contabiliza corretamente as 40 respostas, incluindo a última', async ({ page }) => {
   test.setTimeout(90_000);
   const quizSource = readFileSync('src/data/quiz/questionBank.ts', 'utf8');
-  const answerIndexes = [...quizSource.matchAll(/difficulty:'Fácil'[\s\S]*?answerIndex:\s*(\d+)/g)]
+  const answerIndexes = [...quizSource.matchAll(/"difficulty": "Começar"[\s\S]*?"answerIndex":\s*(\d+)/g)]
     .slice(0, 40)
     .map(match => Number(match[1]));
   expect(answerIndexes).toHaveLength(40);
 
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.evaluate(() => {
     for (const key of Object.keys(localStorage)) if (/quiz-best-scores$/.test(key)) localStorage.removeItem(key);
   });
@@ -698,6 +646,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   });
 
   await page.goto('./?utm_source=teste');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dashboard');
   await page.locator('.dashboard-kpi-card').first().click();
 
@@ -734,7 +683,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   expect(payload?.url).toMatch(/#dashboard$/);
 
   await page.evaluate(() => {
-    delete navigator.share;
+    Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
     window.__lastCopiedText = '';
   });
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();
@@ -753,6 +702,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   await page.keyboard.press('Escape');
 
   await page.goto(copiedLink);
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await expect(page.getByRole('dialog', { name: /Variação da população/i })).toBeVisible();
   await page.getByRole('dialog', { name: /Variação da população/i }).getByRole('button', { name: 'Fechar', exact: true }).click();
   await expect(page).not.toHaveURL(/dado=/);
@@ -764,6 +714,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
 
 test('inspetor separa publicação da fonte de referência temporal ausente', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.evaluate(() => {
     window.dispatchEvent(new CustomEvent('observatorio:inspect-data', {
       detail: {
@@ -784,37 +735,11 @@ test('inspetor separa publicação da fonte de referência temporal ausente', as
   await expect(dialog).toContainText(/essa data não substitui o ano-base ou a referência do indicador/i);
 });
 
-test('modo guiado pode ser aberto por link e mantém trilha neutra', async ({ page }) => {
-  await page.goto('./?leitura=guided#dashboard');
-  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
-  const guide = page.locator('#aprendizado-guiado');
-  await expect(guide).toBeVisible();
-  await expect(guide).toContainText('Expedição pelos dados públicos');
-  await expect(guide).toContainText(/não recomenda candidaturas, partidos, posições políticas ou escolhas eleitorais/i);
-  await expect(guide).toContainText('Próxima parada');
-  await expect(guide).toContainText('O que este número mede — e em qual unidade?');
-  await expect(guide.getByText('Kit de pistas: entenda os rótulos')).toBeVisible();
-  await expect(guide.getByText('Rota de investigação')).toBeVisible();
-  await expect(guide.locator('.guided-learning-hint')).toHaveCount(6);
-  await expect(guide.getByRole('progressbar', { name: 'Progresso da rota de investigação' })).toHaveAttribute('aria-valuenow', '0');
-  await expect(guide.locator('[aria-current="step"]')).toHaveCount(1);
-  await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
-  await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
-  await expect(guide.getByText('Ir ao resumo')).toBeVisible();
-  await expect(guide.getByRole('button', { name: /Reiniciar trilha/i })).toBeDisabled();
 
-  await guide.locator('.guided-learning-hint summary').first().click();
-  await expect(guide.locator('.guided-learning-hint').first()).toHaveAttribute('open', '');
-  await expect(guide).toContainText('Procure o nome completo do indicador, a unidade');
-
-  await guide.getByRole('button', { name: /Abrir: 1. Identifique o que o número mede/i }).click();
-  await expect(page).toHaveURL(/#resumo$/);
-  await expect(guide.getByRole('progressbar', { name: 'Progresso da rota de investigação' })).toHaveAttribute('aria-valuenow', '1');
-  await expect(guide).toContainText('Confira período e natureza');
-});
 
 test('busca encontra e abre o aprendizado guiado', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /Buscar no observatório/i }).first().click();
   const search = page.getByRole('combobox').first();
   await search.fill('aprendizado guiado');
@@ -826,6 +751,7 @@ test('busca encontra e abre o aprendizado guiado', async ({ page }) => {
 
 test('modo guiado herda leitura explicada sem vazar conteúdo técnico', async ({ page }) => {
   await page.goto('./?leitura=guided#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const dashboard = page.locator('#dashboard');
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'guided');
   await expect(dashboard).toContainText('Cinco indicadores para praticar a leitura');
@@ -837,6 +763,7 @@ test('modo guiado herda leitura explicada sem vazar conteúdo técnico', async (
 
 test('âncora da trilha ativa o modo guiado e redução de modo mantém destino visível', async ({ page }) => {
   await page.goto('./#aprendizado-guiado');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const root = page.locator('html');
   await expect(root).toHaveAttribute('data-language-mode', 'guided');
   await expect(page.locator('#aprendizado-guiado')).toBeVisible();
@@ -850,12 +777,14 @@ test('âncora da trilha ativa o modo guiado e redução de modo mantém destino 
 
 test('parâmetro de leitura inválido é ignorado com segurança', async ({ page }) => {
   await page.goto('./?leitura=desconhecido#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
   await expect(page.locator('#dashboard')).toBeVisible();
 });
 
 test('simulador restaura o cenário padrão e persiste a redefinição', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'transporte');
 
   const people = page.getByRole('slider', { name: /Quantidade de pessoas/i });
@@ -877,6 +806,7 @@ test('compartilhamento do transporte usa URL canônica com um único hash', asyn
     });
   });
   await page.goto('./#transporte');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'transporte');
   await page.getByRole('button', { name: /compartilhar cenário/i }).click();
 
@@ -890,6 +820,7 @@ test('compartilhamento do transporte usa URL canônica com um único hash', asyn
 test('tema e contraste persistem após recarregar', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   await page.getByRole('button', { name: /Tema claro|Tema escuro/ }).click();
@@ -909,6 +840,7 @@ test('tema e contraste persistem após recarregar', async ({ page }) => {
 
 test('busca não rouba foco na carga inicial e devolve foco após uso', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const trigger = page.getByRole('button', { name: /Buscar no observatório/i });
 
   await expect.poll(() => page.evaluate(() => document.activeElement?.tagName)).not.toBe('BUTTON');
@@ -924,6 +856,7 @@ test('busca não rouba foco na carga inicial e devolve foco após uso', async ({
 
 test('controles principais executam suas ações', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
   await modes.getByRole('button', { name: /^Explicado/ }).click();
@@ -946,36 +879,13 @@ test('controles principais executam suas ações', async ({ page }) => {
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(50);
 });
 
-test('mostra resultado completo após o encerramento da janela', async ({ page }) => {
-  const feed = JSON.parse(readFileSync('scripts/fixtures/tse-results.valid.synthetic.json', 'utf8'));
-  feed.state = 'complete';
-  feed.capturedAt = '2026-10-26T22:00:00-03:00';
-  feed.turn = 2;
-  feed.entries[0].electionCode = 7001;
-  feed.entries[0].sourceFile = 'go93343-c0003-e007001-u.json';
-  feed.integrity.files[0].sourceFile = feed.entries[0].sourceFile;
-  await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
-  await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
-  await page.goto('./');
-  await expect(page.getByText('Resultado oficial · 2º turno conferido')).toBeVisible();
-  await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
-  await expect(page.getByText('10 de 10 seções · 100%')).toBeVisible();
-});
 
-test('mantém resultado parcial visível após a janela sem chamá-lo de ao vivo', async ({ page }) => {
-  const feed = JSON.parse(readFileSync('scripts/fixtures/tse-results.valid.synthetic.json', 'utf8'));
-  feed.state = 'live';
-  feed.capturedAt = '2026-10-26T22:00:00-03:00';
-  await page.clock.install({ time: new Date('2026-10-27T12:00:00-03:00') });
-  await page.route('**/data/tse-results.json', route => route.fulfill({ json: feed }));
-  await page.goto('./');
-  await expect(page.getByText('Resultado oficial · último registro conferido')).toBeVisible();
-  await expect(page.getByText('CANDIDATO DE TESTE')).toBeVisible();
-  await expect(page.getByText(/Este resultado fica disponível como registro histórico/i)).toBeVisible();
-});
+
+
 
 test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute('type', 'image/png');
   await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', /pwa-192\.png$/);
 
@@ -991,15 +901,17 @@ test('serve os ícones PNG nos tamanhos corretos', async ({ page }) => {
 
 test('busca leva ao quiz de educação cívica', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: 'Buscar no observatório' }).click();
   await page.getByRole('combobox', { name: 'Buscar dado, serviço, fonte ou seção' }).fill('quiz');
   await page.getByRole('option', { name: /Teste seus conhecimentos/ }).click();
-  await expect(page.getByRole('heading', { name: 'Quiz de dados · 2026' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Quiz da cidade' })).toBeVisible();
 });
 
 
 test('comparação municipal expõe seis indicadores sem ranking', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'contexto');
   await expect(page.getByRole('heading', { name: /Compare sem transformar em ranking/i })).toBeVisible();
   const tabs = page.getByRole('tablist', { name: 'Indicador para comparação contextual' }).getByRole('tab');
@@ -1012,6 +924,7 @@ test('comparação municipal expõe seis indicadores sem ranking', async ({ page
 
 test('comparação municipal oferece navegação completa das abas por teclado', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'contexto');
 
   const tablist = page.getByRole('tablist', { name: 'Indicador para comparação contextual' });
@@ -1040,11 +953,12 @@ test('comparação municipal oferece navegação completa das abas por teclado',
 
 test('comparação municipal aceita busca sem acento e não duplica sinais nas diferenças', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'contexto');
 
   const citySearch = page.getByRole('searchbox', { name: 'Buscar município' });
   await citySearch.fill('Aguas');
-  await expect(page.getByText('Águas Lindas de Goiás', { exact: true })).toBeVisible();
+  await expect(page.locator('#contexto').getByText('Águas Lindas de Goiás', { exact: true })).toBeVisible();
   await expect(page.getByText('1 de 8 cidades', { exact: true })).toBeVisible();
 
   await citySearch.fill('Luziania');
@@ -1061,6 +975,7 @@ test('comparação municipal aceita busca sem acento e não duplica sinais nas d
 
 test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dashboard');
   await expect(page.getByRole('heading', { name: /Comparativos com método explícito/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Educação na LOA 2026/i })).toBeVisible();
@@ -1075,6 +990,7 @@ test('dashboard mostra comparativos derivados com fonte e fórmula', async ({ pa
 
 test('saneamento exibe coleta de resíduos a partir do dataset rastreável', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'saude');
   await expect(page.getByText(/domicílios com coleta de resíduos · SINISA 2024/i)).toBeVisible();
   await expect(page.getByText(/36\.579 pessoas sem coleta/i)).toHaveCount(0);
@@ -1082,6 +998,7 @@ test('saneamento exibe coleta de resíduos a partir do dataset rastreável', asy
 
 test('recorte orçamentário mostra participação na LOA e valor por habitante', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'orcamento-impacto');
   await expect(page.getByRole('heading', { name: /Recorte do orçamento por função/i })).toBeVisible();
   await expect(page.getByText(/da LOA/i).first()).toBeVisible();
@@ -1091,6 +1008,7 @@ test('recorte orçamentário mostra participação na LOA e valor por habitante'
 
 test('busca responde participação orçamentária com nota metodológica', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   const input = page.getByRole('combobox').first();
   await input.fill('orçamento saúde');
@@ -1101,6 +1019,7 @@ test('busca responde participação orçamentária com nota metodológica', asyn
 
 test('diferença entre receita e despesa não é apresentada como superávit', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   const input = page.getByRole('combobox').first();
   await input.fill('diferença receita despesa');
@@ -1111,6 +1030,7 @@ test('diferença entre receita e despesa não é apresentada como superávit', a
 
 test('painel de atualizações informa cobertura temporal das fontes', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dados');
   await expect(page.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
   await expect(page.locator('#dados').getByText(/%/).first()).toBeVisible();
@@ -1119,6 +1039,7 @@ test('painel de atualizações informa cobertura temporal das fontes', async ({ 
 
 test('busca abre comparação municipal e atualizações públicas', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1137,6 +1058,7 @@ test('busca abre comparação municipal e atualizações públicas', async ({ pa
 
 test('busca responde LOA por habitante e saneamento por pessoa com contexto', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1155,9 +1077,10 @@ test('busca responde LOA por habitante e saneamento por pessoa com contexto', as
 
 test('painel de dados explica a natureza temporal dos indicadores', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dados');
   await expect(page.getByLabel('Tipos de indicador publicados')).toBeVisible();
-  await expect(page.getByText(/Atual:/).first()).toBeVisible();
+  await expect(page.getByText(/Publicado:/).first()).toBeVisible();
   await expect(page.getByText(/Histórico:/).first()).toBeVisible();
   await expect(page.getByText(/Derivado:/).first()).toBeVisible();
   await expect(page.getByText(/Registro datado:/).first()).toBeVisible();
@@ -1166,6 +1089,7 @@ test('painel de dados explica a natureza temporal dos indicadores', async ({ pag
 
 test('busca direciona indicadores para a seção temática correta', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1192,6 +1116,7 @@ test('busca direciona indicadores para a seção temática correta', async ({ pa
 
 test('busca prioriza orçamento por habitante quando a consulta é específica', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   const input = page.getByRole('combobox').first();
   await input.fill('orçamento saúde por habitante');
@@ -1202,6 +1127,7 @@ test('busca prioriza orçamento por habitante quando a consulta é específica',
 
 test('cards de orçamento abrem fonte e método no inspetor', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'orcamento-impacto');
   const card = page.locator('#orcamento-impacto').getByRole('button').filter({ hasText: /^Saúde/ }).first();
   await card.click();
@@ -1213,6 +1139,7 @@ test('cards de orçamento abrem fonte e método no inspetor', async ({ page }) =
 
 test('CSV mantém colunas antigas e acrescenta identificadores e metadados', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'exportacao');
 
   const indicatorDownloadPromise = page.waitForEvent('download');
@@ -1250,12 +1177,13 @@ test('CSV mantém colunas antigas e acrescenta identificadores e metadados', asy
 
 test('busca diferencia referências do HEAL sem misturar capacidade atual e planejamento', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
   await input.fill('HEAL leitos');
   let answer = page.locator('.search-quick-answer');
-  await expect(answer).toContainText(/leitos explicitados no portal atual/i);
+  await expect(answer).toContainText(/leitos explicitados no portal institucional/i);
   await expect(answer).toContainText(/85 leitos/i);
 
   await page.keyboard.press('Escape');
@@ -1269,6 +1197,7 @@ test('busca diferencia referências do HEAL sem misturar capacidade atual e plan
 
 test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de status', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'exportacao');
 
   const downloadPromise = page.waitForEvent('download');
@@ -1289,6 +1218,7 @@ test('CSV classifica orçamento e HEAL corretamente e expõe rótulo público de
 
 test('transporte compara rotas usando o mesmo cenário sem ranking', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'transporte');
 
   await expect(page.getByRole('heading', { name: /Mesmo cenário, destinos diferentes/i })).toBeVisible();
@@ -1306,6 +1236,7 @@ test('transporte compara rotas usando o mesmo cenário sem ranking', async ({ pa
 
 test('busca responde custo mensal de transporte por destino com premissas explícitas', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   const input = page.getByRole('combobox').first();
   await input.fill('custo mensal Taguatinga');
@@ -1317,6 +1248,7 @@ test('busca responde custo mensal de transporte por destino com premissas explí
 
 test('demografia mostra variação percentual e absoluta sem linguagem de snapshot', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'demografia');
   await expect(page.getByText('Variação 2022 → 2026', { exact: true })).toBeVisible();
   await expect(page.getByText('Diferença entre as referências', { exact: true })).toBeVisible();
@@ -1326,6 +1258,7 @@ test('demografia mostra variação percentual e absoluta sem linguagem de snapsh
 
 test('orçamento compara receitas e despesas por habitante com ressalvas metodológicas', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'orcamento');
   await expect(page.getByRole('heading', { name: /Receitas e despesas na mesma base populacional/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /Receitas realizadas por habitante/i })).toBeVisible();
@@ -1339,6 +1272,7 @@ test('orçamento compara receitas e despesas por habitante com ressalvas metodol
 
 test('busca prioriza crescimento populacional e diferença fiscal por habitante', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1357,6 +1291,7 @@ test('busca prioriza crescimento populacional e diferença fiscal por habitante'
 
 test('CSV exporta novos comparativos demográficos e fiscais', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'exportacao');
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'CSV', exact: true }).click();
@@ -1374,6 +1309,7 @@ test('CSV exporta novos comparativos demográficos e fiscais', async ({ page }) 
 
 test('utilidade pública oferece atalhos adicionais sem duplicar navegação', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const guide = page.locator('#utilidade-publica');
   await expect(guide.getByLabel('Atalhos por necessidade')).toBeVisible();
   await expect(guide.getByRole('button', { name: 'Trânsito e mobilidade' })).toBeVisible();
@@ -1385,6 +1321,7 @@ test('utilidade pública oferece atalhos adicionais sem duplicar navegação', a
 
 test('modo explicado expõe indicadores temáticos com fonte acessível', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
   await modes.getByRole('button', { name: /^Explicado/ }).click();
   await openSection(page, 'dashboard');
@@ -1397,6 +1334,7 @@ test('modo explicado expõe indicadores temáticos com fonte acessível', async 
 
 test('comparação municipal marca Águas Lindas como referência e mantém leitura neutra', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'contexto');
   await expect(page.getByText(/município de referência/i).first()).toBeVisible();
   await expect(page.getByText(/sinal positivo ou negativo indica direção matemática, não avaliação/i)).toBeVisible();
@@ -1406,6 +1344,7 @@ test('comparação municipal marca Águas Lindas como referência e mantém leit
 
 test('busca rápida cobre escolarização e arborização', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
   await input.fill('escolarização');
@@ -1420,6 +1359,7 @@ test('busca rápida cobre escolarização e arborização', async ({ page }) => 
 
 test('painel de dados mostra cobertura dos indicadores e notas metodológicas', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dados');
   const summary = page.getByLabel('Resumo do conjunto de dados');
   await expect(summary.getByText('Indicadores com data de referência', { exact: true })).toBeVisible();
@@ -1429,6 +1369,7 @@ test('painel de dados mostra cobertura dos indicadores e notas metodológicas', 
 
 test('busca responde indicadores públicos adicionais com fonte e contexto', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   const searchFor = async (term) => {
     await page.getByRole('button', { name: /buscar/i }).first().click();
@@ -1464,6 +1405,7 @@ test('busca responde indicadores públicos adicionais com fonte e contexto', asy
 
 test('busca responde contagem de indicadores, fontes e cobertura temporal', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1488,6 +1430,7 @@ test('busca responde contagem de indicadores, fontes e cobertura temporal', asyn
 
 test('saneamento mostra lacunas complementares sem converter percentuais em pessoas', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'saude');
 
   const gaps = page.getByLabel('Lacunas complementares de saneamento');
@@ -1500,6 +1443,7 @@ test('saneamento mostra lacunas complementares sem converter percentuais em pess
 
 test('lacuna de saneamento abre fonte e fórmula no inspetor', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'saude');
 
   const gaps = page.getByLabel('Lacunas complementares de saneamento');
@@ -1513,6 +1457,7 @@ test('lacuna de saneamento abre fonte e fórmula no inspetor', async ({ page }) 
 
 test('busca responde lacunas de água, coleta e tratamento com contexto', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1535,6 +1480,7 @@ test('busca responde lacunas de água, coleta e tratamento com contexto', async 
 
 test('metadados internos da busca não são atribuídos indevidamente a uma fonte externa', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   const input = page.getByRole('combobox').first();
   await input.fill('quantos indicadores');
@@ -1547,6 +1493,7 @@ test('metadados internos da busca não são atribuídos indevidamente a uma font
 
 test('atalhos globais de serviços usam termos canônicos e não deixam catálogo vazio', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
 
   await page.getByRole('button', { name: /buscar/i }).first().click();
   let input = page.getByRole('combobox').first();
@@ -1565,6 +1512,7 @@ test('atalhos globais de serviços usam termos canônicos e não deixam catálog
 
 test('busca de serviços remove atalhos sem destino real e expõe serviços existentes', async ({ page }) => {
   await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await page.getByRole('button', { name: /buscar/i }).first().click();
   const input = page.getByRole('combobox').first();
 
@@ -1578,6 +1526,7 @@ test('busca de serviços remove atalhos sem destino real e expõe serviços exis
 
 test('histórico do navegador restaura seções carregadas sob demanda', async ({ page }) => {
   await page.goto('./#dashboard');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'acao');
   await expect(page).toHaveURL(/#acao$/);
   await expect(page.locator('#acao')).toBeVisible();

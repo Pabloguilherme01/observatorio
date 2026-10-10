@@ -144,7 +144,6 @@ img,svg,video,canvas{max-width:100%}
 .summary-shell,
 .trust-shell,
 .quiz-shell,
-.candidate-card,
 .civic-service-card,
 .official-hub{
   min-width:0;
@@ -327,7 +326,6 @@ main summary:focus-visible{
 .light .summary-shell,
 .light .trust-shell,
 .light .quiz-shell,
-.light .candidate-card,
 .light .civic-service-card,
 .light .official-hub{
   background:#fff!important;
@@ -603,7 +601,6 @@ main summary:focus-visible{
     min-width:160px!important;
   }
 
-  .candidate-card,
   .quiz-card,
   .summary-evidence,
   .trust-card,
@@ -684,4 +681,3 @@ main summary:focus-visible{
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.001ms!important;animation-duration:.001ms!important}
 }
-

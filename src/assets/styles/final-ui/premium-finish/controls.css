@@ -6,8 +6,7 @@
 :where(.obs-card,.summary-shell,.trust-shell,.quiz-shell) :where(p){
   text-wrap:pretty;
 }
-.obs-card :where(p.text-xs,p.text-sm,.technical-detail),
-.mode-scope-evidence :where(.text-xs,.text-sm){
+.obs-card :where(p.text-xs,p.text-sm,.technical-detail),.mode-scope-evidence :where(.text-xs,.text-sm){
   line-height:1.62;
 }
 .obs-card :where(h3){
@@ -148,4 +147,3 @@
     transition:none!important;
   }
 }
-

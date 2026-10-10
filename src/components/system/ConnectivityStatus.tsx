@@ -36,7 +36,7 @@ export function ConnectivityStatus() {
     setState('checking');
 
     try {
-      const response = await fetch(import.meta.env.BASE_URL + 'api/v1/health.json', {
+      const response = await fetch(import.meta.env.BASE_URL + 'api/v2/health.json', {
         cache: 'no-store',
         signal: controller.signal,
       });

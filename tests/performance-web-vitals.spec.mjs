@@ -2,7 +2,7 @@ import { test, expect } from 'playwright/test';
 
 test.describe('performance budgets · Chrome desktop', () => {
   test('mede LCP, CLS, FCP e latência de interação em laboratório', async ({ page }) => {
-    const metrics = await page.evaluate(() => {
+    await page.addInitScript(() => {
       window.__obsPerf = { lcp: 0, cls: 0, fcp: 0, longTasks: 0 };
       try {
         new PerformanceObserver(list => {
@@ -18,8 +18,9 @@ test.describe('performance budgets · Chrome desktop', () => {
       } catch {}
       try {
         new PerformanceObserver(list => {
-          const first = list.getEntries()[0];
-          if (first) window.__obsPerf.fcp = first.startTime;
+
+          const paint = list.getEntries().find(entry => entry.name === 'first-contentful-paint');
+          if (paint) window.__obsPerf.fcp = paint.startTime;
         }).observe({ type: 'paint', buffered: true });
         const paints = performance.getEntriesByName('first-contentful-paint');
         if (paints[0]) window.__obsPerf.fcp = paints[0].startTime;
@@ -61,11 +62,11 @@ test.describe('performance budgets · Chrome desktop', () => {
     });
 
     console.log(JSON.stringify({ ...vitals, interactionMs }, null, 2));
+    expect(vitals.fcp).toBeGreaterThan(0);
+    expect(vitals.lcp).toBeGreaterThan(0);
+    expect(vitals.cls).toBeLessThan(0.1);
     expect(vitals.fcp).toBeLessThan(5000);
-    if (vitals.fcpSupported) expect(vitals.fcp).toBeGreaterThan(0);
-    else console.warn('FCP não exposto pelo ambiente de laboratório; mantendo os gates de interação e layout.');
-    if (vitals.lcpSupported) expect(vitals.lcp).toBeLessThan(8000);
-    else console.warn('LCP não exposto pelo ambiente de laboratório; mantendo os gates de FCP/CLS/interação.');
+    expect(vitals.lcp).toBeLessThan(8000);
     expect(interactionMs).toBeLessThan(1000);
     expect(vitals.longTasks).toBeLessThan(80);
   });

@@ -1,5 +1,5 @@
 const indicatorStatusLabels: Record<string, string> = {
-  current: 'Atual',
+  published: 'Publicado',
   snapshot: 'Recorte datado',
   planned: 'Planejado',
   derived: 'Derivado',

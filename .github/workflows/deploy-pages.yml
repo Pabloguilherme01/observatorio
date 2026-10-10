@@ -101,13 +101,6 @@ jobs:
           RELEASE_EXPECTED_SHA: ${{ env.DEPLOY_SHA }}
         run: npm run audit:release
 
-      - name: Validate versioned TSE snapshot contract
-        env:
-          REQUIRE_TSE_SYNC: 'false'
-          REQUIRE_TSE_FRESH: 'false'
-          TSE_MAX_AGE_HOURS: '24'
-        run: npm run validate:tse
-
       - name: Download exact Browser production artifact
         env:
           GH_TOKEN: ${{ github.token }}
@@ -157,22 +150,22 @@ jobs:
           set -euo pipefail
           for attempt in 1 2 3 4 5 6 7 8; do
             page="$(curl -fsSL --max-time 20 https://pabloguilherme01.github.io/observatorio/ || true)"
-            if printf '%s' "$page" | grep -Fq "Observatório Eleitoral — Águas Lindas de Goiás 2026"; then break; fi
+            if printf '%s' "$page" | grep -Fq "Observatório Público — Águas Lindas de Goiás"; then break; fi
             sleep 3
           done
-          printf '%s' "$page" | grep -F "Observatório Eleitoral — Águas Lindas de Goiás 2026"
-          health="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/health.json)"
+          printf '%s' "$page" | grep -F "Observatório Público — Águas Lindas de Goiás"
+          health="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v2/health.json)"
           printf '%s' "$health" | grep -E '"status": "(ok|degraded)"'
           printf '%s' "$health" | grep -F '"publication"'
-          printf '%s' "$health" | grep -F '"tseCandidates"'
-          printf '%s' "$health" | grep -F '"maxAgeHours": 24'
-          printf '%s' "$health" | grep -F '"contract": "publication-parity-v1"'
+          printf '%s' "$health" | grep -F '"integrity"'
+          printf '%s' "$health" | grep -F '"contract": "municipal-publication-v2"'
           public_commit="$(printf '%s' "$health" | grep -oE '"commitSha": "[^"]+"' | head -n 1 | cut -d'"' -f4)"
           test "$public_commit" = "${DEPLOY_SHA}"
           if printf '%s' "$health" | grep -Fq '"status": "degraded"'; then
-            echo "TSE upstream stale/unavailable; published site is intentionally degraded, previous validated snapshot preserved."
+            echo "Municipal dataset integrity is degraded; inspect the health diagnostics."
+            exit 1
           fi
-          openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v1/openapi.json)"
+          openapi="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/api/v2/openapi.json)"
           printf '%s' "$openapi" | grep -F '"openapi": "3.0.3"'
 
       - name: Verify SPA deep-link fallback asset
@@ -191,7 +184,7 @@ jobs:
         run: |
           set -euo pipefail
           page="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/)"
-          printf '%s' "$page" | grep -F 'Observatório Eleitoral — Águas Lindas de Goiás 2026'
+          printf '%s' "$page" | grep -F 'Observatório Público — Águas Lindas de Goiás'
           printf '%s' "$page" | grep -F 'id="root"'
           manifest="$(curl -fsSL --retry 3 --max-time 20 https://pabloguilherme01.github.io/observatorio/manifest.webmanifest)"
           printf '%s' "$manifest" | grep -F 'Observatório Águas Lindas 2026'

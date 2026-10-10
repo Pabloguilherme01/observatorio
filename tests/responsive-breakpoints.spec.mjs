@@ -163,7 +163,7 @@ test.describe('aprendizado guiado no mobile', () => {
       const guide = page.locator('#aprendizado-guiado');
       await expect(root).toHaveAttribute('data-language-mode', 'guided');
       await expect(guide).toBeVisible();
-      await expect(guide.locator('.guided-learning-step')).toHaveCount(6);
+      await expect(guide.locator('.guided-learning-step')).toHaveCount(7);
 
       const layout = await guide.evaluate(section => {
         const rect = section.getBoundingClientRect();
@@ -227,7 +227,7 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
   await page.goto('./?leitura=guided#aprendizado-guiado');
 
   const guide = page.locator('#aprendizado-guiado');
-  await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Começar · Identifique o indicador/i })).toBeVisible();
   await guide.locator('.guided-learning-step').first().click();
 
   const storageKey = await page.evaluate(() => Object.keys(localStorage).find(key => key.endsWith('-guided-learning-visited')) ?? null);
@@ -235,22 +235,22 @@ test('aprendizado guiado retoma progresso persistido e diferencia conclusão de 
 
   await page.goto('./?leitura=guided#aprendizado-guiado');
 
-  await expect(guide.getByText(/Sua rota: 1 de 6 paradas já abertas/i)).toBeVisible();
-  await expect(guide.getByRole('button', { name: /Retomar · Confira período e natureza/i })).toBeVisible();
+  await expect(guide.getByText(/Sua rota: 1 de 7 paradas já abertas/i)).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Retomar · Confira o período/i })).toBeVisible();
 
   await page.evaluate(key => {
     if (!key) throw new Error('storage key do aprendizado guiado não encontrado');
-    localStorage.setItem(key, JSON.stringify(['valor', 'referencia', 'contexto', 'utilidade', 'fonte', 'quiz']));
+    localStorage.setItem(key, JSON.stringify(['valor', 'referencia', 'significado', 'comparacao', 'utilidade', 'fonte', 'quiz']));
   }, storageKey);
   await page.reload();
 
   await expect(guide.getByText('Rota percorrida')).toBeVisible();
-  await expect(guide.getByText('Você abriu as seis paradas')).toBeVisible();
+  await expect(guide.getByText('Você abriu as sete paradas')).toBeVisible();
   await expect(guide.getByText(/não uma nota nem uma avaliação de conhecimento/i)).toBeVisible();
   await expect(guide.getByRole('button', { name: /Revisar rota · parada 1/i })).toBeVisible();
 
   await guide.getByRole('button', { name: /Reiniciar trilha/i }).click();
-  await expect(guide.getByRole('button', { name: /Começar · Identifique o que o número mede/i })).toBeVisible();
+  await expect(guide.getByRole('button', { name: /Começar · Identifique o indicador/i })).toBeVisible();
 });
 
 

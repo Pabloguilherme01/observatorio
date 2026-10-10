@@ -20,19 +20,15 @@ const entries: readonly SearchEntry[] = [
   ['Indicadores', 'dashboard', 'primary'],
   ['Comparar municípios', 'contexto', 'primary'],
   ['Atualizações públicas', 'dados', 'primary'],
-  ['Perfil eleitoral', 'eleitorado', 'primary'],
   ['Transporte', 'transporte', 'primary'],
   ['Simulador de bolso · Transporte', 'transporte', 'transport'],
   ['Teste seus conhecimentos', 'quiz', 'primary'],
   ['Aprendizado guiado · passo a passo', 'aprendizado-guiado', 'primary'],
   ['Saneamento e saúde', 'saude', 'primary'],
-  ['Pesquisas', 'politica', 'primary'],
-  ['Candidaturas', 'candidaturas', 'primary'],
   ['Orçamento', 'orcamento', 'primary'],
   ['Qualidade dos dados', 'qualidade', 'primary'],
   ['Como sabemos · fontes e método', 'fontes', 'primary'],
   ['Baixar dados', 'exportacao', 'primary'],
-  ['Pesquisa registrada', 'politica', 'primary'],
   ['HEALGO', 'saude', 'primary'],
   ['Resumo principal', 'resumo', 'primary'],
   ...publicServiceSearchEntries,
@@ -55,7 +51,6 @@ const indicatorDestination = (id: string) => {
   if (id === 'fare' || id.includes('transport')) return 'transporte';
   if (id.includes('water') || id.includes('sewer') || id.includes('sanitation') || id.includes('waste') || id.includes('hydrometer') || id.includes('infant-mortality')) return 'saude';
   if (id.includes('budget') || id.includes('revenue') || id.includes('expense')) return 'orcamento';
-  if (id.includes('electorate')) return 'eleitorado';
   return 'dashboard';
 };
 
@@ -152,14 +147,11 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
   const filtered = useMemo(() => {
     const queryNormalized = normalizeSearchQuery(query);
     const population = d.populationSeries.find(point => point.year === 2026)?.value ?? 0;
-    const electorate = d.electoral.electorate;
     const all: SearchEntry[] = [
       ...entries,
       ['População 2026: ' + population.toLocaleString('pt-BR'), 'dashboard', 'data'],
-      ['Eleitorado 2026: ' + electorate.toLocaleString('pt-BR'), 'eleitorado', 'data'],
       ['LOA 2026: R$ ' + brlMillions(d.budget.totalBrl), 'orcamento', 'data'],
       ...d.sources.map(source => [source.label, 'fontes', 'source'] as SearchEntry),
-      ...d.candidates.map(candidate => [candidate.name, 'candidaturas', 'candidate'] as SearchEntry),
       ...d.transport.routes.map(route => [route.label, 'transporte', 'transport'] as SearchEntry),
       ...d.indicators.map(indicator => [indicator.label, indicatorDestination(indicator.id), 'data', indicator.id] as SearchEntry),
     ];
@@ -190,7 +182,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
 
   const selectResult = (id: string, label?: string, kind?: ResultKind, serviceQuery?: string) => {
     onClose();
-    const knownDestination = ['resumo', 'aprendizado-guiado', 'contexto', 'dados', 'saude', 'candidaturas', 'politica', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
+    const knownDestination = ['resumo', 'aprendizado-guiado', 'contexto', 'dados', 'saude', 'qualidade', 'exportacao', 'acao'].includes(id) || navigation.some(item => item.id === id);
     const target = knownDestination ? id : (document.getElementById(id) ? id : 'dashboard');
     const publicServiceQuery = kind === 'public' && label ? (serviceQuery ?? label) : null;
     if (publicServiceQuery) {
@@ -228,7 +220,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
                   selectResult(filtered[activeIndex].id, filtered[activeIndex].label, filtered[activeIndex].kind, filtered[activeIndex].serviceQuery);
                 }
               }}
-              placeholder="Ex.: medicamentos, orçamento, transporte, eleitorado…"
+              placeholder="Ex.: medicamentos, orçamento, transporte, dados da cidade…"
               className="search-modal-input"
               aria-label="Buscar dado, serviço, fonte ou seção"
               role="combobox"
@@ -366,7 +358,7 @@ export function SearchModal({ open, onClose, initialShortcutGuideOpen = false }:
             onActiveIndexChange={setActiveIndex}
             onSelect={selectResult}
           />
-          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente medicamentos, orçamento, eleitorado, transporte, saneamento ou saúde.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
+          {!filtered.length && <div className="search-empty"><p>Nenhum resultado encontrado.</p><p className="mt-1 text-[11px] text-slate-600">Tente medicamentos, orçamento, população, transporte, saneamento ou saúde.</p><button type="button" className="search-empty-action" onClick={() => setQuery('')}>Limpar busca</button></div>}
         </div>
       </div>
     </div>

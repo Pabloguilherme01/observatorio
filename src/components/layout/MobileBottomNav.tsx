@@ -1,23 +1,22 @@
-import { Compass, History, Home, Landmark, MoreHorizontal } from 'lucide-react';
+import { Database, BarChart3, Home, HeartHandshake, MoreHorizontal } from 'lucide-react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { navigation } from '../../config/navigation';
 import { navigateToSection } from '../../lib/sectionNavigation';
 
 const primaryItems = [
-  { id: 'dashboard', label: 'Início', icon: Home },
-  { id: 'descubra', label: 'Explorar', icon: Compass },
-  { id: 'eleitoral360', label: 'Eleições', icon: Landmark },
-  { id: 'resultados', label: 'Resultados', icon: History },
+  { id: 'descubra', label: 'Início', icon: Home },
+  { id: 'dashboard', label: 'Cidade', icon: BarChart3 },
+  { id: 'acao', label: 'Serviços', icon: HeartHandshake },
+  { id: 'dados', label: 'Dados', icon: Database },
 ] as const;
 
 const sectionToTab = (id: string) => {
-  if (!id) return 'dashboard';
+  if (!id) return 'descubra';
   if (id === 'resumo' || id === 'dashboard' || id === 'analise') return 'dashboard';
   if (id === 'descubra') return 'descubra';
-  if (id === 'eleitoral360' || id === 'candidaturas' || id === 'politica' || id === 'eleitorado') return 'eleitoral360';
-  if (id === 'resultados') return 'resultados';
-  if (id === 'quiz') return 'quiz';
+  if (id === 'acao' || id === 'utilidade-publica') return 'acao';
+  if (id === 'dados') return 'dados';
   return 'more';
 };
 
@@ -170,7 +169,7 @@ export function MobileBottomNav() {
     shortLabel: 'Aprendizado guiado',
     description: 'Trilha passo a passo para ler e verificar os dados.',
   } as const;
-  const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more')];
+  const moreItems = [guidedItem, ...navigation.filter(item => !primaryItems.some(primary => primary.id === item.id))];
 
   return (
     <nav className="mobile-bottom-nav" aria-label="Navegação principal no celular">

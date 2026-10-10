@@ -1,15 +1,23 @@
 import fs from 'node:fs';
+
 import path from 'node:path';
 
 const registryPath = path.join(process.cwd(), 'src/data/sourceRegistry.ts');
+
 const sourceText = fs.readFileSync(registryPath, 'utf8');
+
 const registryUrls = [...new Set([...sourceText.matchAll(/url:\s*'(https?:\/\/[^']+)'/g)].map(match => match[1]))];
+
 const testUrls = process.env.SOURCE_AUDIT_URLS?.split(',').map(url => url.trim()).filter(Boolean);
+
 const urls = testUrls?.length ? [...new Set(testUrls)] : registryUrls;
 
 const results = [];
+
 const concurrency = Number(process.env.SOURCE_AUDIT_CONCURRENCY || 4);
+
 const attempts = Number(process.env.SOURCE_AUDIT_ATTEMPTS || 2);
+
 const timeoutMs = Number(process.env.SOURCE_AUDIT_TIMEOUT_MS || 8000);
 
 async function checkOnce(url) {
@@ -46,14 +54,16 @@ for (let index = 0; index < urls.length; index += concurrency) {
   await Promise.all(urls.slice(index, index + concurrency).map(check));
 }
 
-// A auditoria de PR/deploy valida contratos e links inexistentes sem deixar
-// a indisponibilidade momentânea de terceiros bloquear uma entrega segura.
-// O monitor agendado usa SOURCE_AUDIT_STRICT=true para detectar 5xx ou falhas de rede persistentes.
 const strictAvailability = process.env.SOURCE_AUDIT_STRICT === 'true';
+
 const serverWarnings = results.filter(item => item.status !== null && item.status >= 500);
+
 const networkWarnings = results.filter(item => item.status === null);
+
 const errors = strictAvailability ? [...serverWarnings, ...networkWarnings] : [];
+
 const clientWarnings = results.filter(item => item.status >= 400 && item.status < 500);
+
 const missingSources = results.filter(item => item.status === 404 || item.status === 410);
 
 for (const item of results.sort((a, b) => a.url.localeCompare(b.url))) {

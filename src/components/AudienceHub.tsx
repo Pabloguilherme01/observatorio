@@ -1,231 +1,36 @@
-import { ArrowRight, BarChart3, BookOpen, BusFront, ExternalLink, HeartHandshake, Landmark, Search, Share2, ShieldCheck, Users, Vote, WalletCards } from 'lucide-react';
-import { useLanguageMode } from '../context/LanguageModeContext';
-import { useState } from 'react';
-import { copyText } from '../lib/clipboard';
+import { ArrowRight, BarChart3, BusFront, HeartHandshake, Droplets, Search, ShieldCheck, WalletCards } from 'lucide-react';
 import { navigateToCleanSection } from '../lib/sectionNavigation';
 
-type Topic = {
-  id: string;
-  label: string;
-  description: string;
-  icon: typeof BarChart3;
-};
-
-const topics: readonly Topic[] = [
-  { id: 'dashboard', label: 'Cidade', description: 'População, território e indicadores.', icon: BarChart3 },
-  { id: 'eleitorado', label: 'Eleitorado', description: 'Perfil e dados eleitorais.', icon: Users },
-  { id: 'orcamento', label: 'Orçamento', description: 'Planejamento, funções e valores públicos.', icon: WalletCards },
-  { id: 'transporte', label: 'Transporte', description: 'Tarifa, renda e custo do deslocamento.', icon: BusFront },
-  { id: 'acao', label: 'Serviços', description: 'Canais oficiais e atendimento público.', icon: HeartHandshake },
-  { id: 'eleitoral360', label: 'Eleições', description: 'Candidaturas, pesquisas e registros.', icon: Landmark },
-];
-
-const officialResources = [
-  { label: 'Autoatendimento eleitoral', href: 'https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral', note: 'Título, situação e local de votação', icon: Vote },
-  { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores oficiais', icon: BarChart3 },
-  { label: 'LOA 2026', href: 'https://legislacao.aguaslindasdegoias.go.gov.br/leis/1654', note: 'Planejamento orçamentário aprovado para 2026', icon: WalletCards },
-  { label: 'Resultados 2026', href: 'https://resultados.tse.jus.br/', note: 'Resultados oficiais quando publicados', icon: ShieldCheck },
-] as const;
-
-const technicalLinks = [
-  { label: 'TSE · Candidatos 2026', href: 'https://dadosabertos.tse.jus.br/dataset/candidatos-2026', note: 'Base pública', icon: ShieldCheck },
-  { label: 'DivulgaCandContas', href: 'https://divulgacandcontas.tse.jus.br/divulga/#/', note: 'Candidaturas e contas', icon: Search },
-  { label: 'IBGE · Águas Lindas', href: 'https://www.ibge.gov.br/cidades-e-estados/go/aguas-lindas-de-goias.html', note: 'População e indicadores', icon: BarChart3 },
-  { label: 'Portal municipal', href: 'https://aguaslindasdegoias.go.gov.br/', note: 'Serviços municipais', icon: BookOpen },
+const topics = [
+  { id: 'dashboard', label: 'Entender a cidade', description: 'População, território e mudanças nos indicadores.', icon: BarChart3 },
+  { id: 'acao', label: 'Encontrar um serviço', description: 'Medicamentos, creches, assistência e canais oficiais.', icon: HeartHandshake },
+  { id: 'orcamento', label: 'Acompanhar o dinheiro público', description: 'O que foi planejado e onde consultar os gastos.', icon: WalletCards },
+  { id: 'transporte', label: 'Calcular meu transporte', description: 'Simule o custo mensal por rota, viagens e pessoas.', icon: BusFront },
+  { id: 'saude', label: 'Entender saúde e saneamento', description: 'Água, esgoto, resíduos e capacidade de atendimento.', icon: Droplets },
+  { id: 'dados', label: 'Pesquisar e conferir dados', description: 'Catálogo de indicadores com referência e fonte.', icon: ShieldCheck },
 ] as const;
 
 export function AudienceHub() {
-  const { mode } = useLanguageMode();
-  const [shareStatus, setShareStatus] = useState('');
-  const isTechnical = mode === 'technical';
-  const isSummary = mode === 'summary';
-
-  const jump = (id: string) => {
-    navigateToCleanSection(id);
-  };
-
-  const shareProject = async () => {
-    const shareData = {
-      title: 'Observatório de Águas Lindas',
-      text: 'Dados, indicadores, serviços e fontes públicas de Águas Lindas de Goiás.',
-      url: window.location.href,
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-        setShareStatus('Compartilhamento aberto.');
-        return;
-      }
-
-      const copied = await copyText(window.location.href);
-      setShareStatus(copied ? 'Link copiado para compartilhar.' : 'Não foi possível copiar o link.');
-    } catch {
-      // Cancelamento do compartilhamento nativo não precisa gerar erro de interface.
-    }
-  };
-
   return (
-    <section id="descubra" className="audience-home mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12" aria-labelledby="audience-title">
-      <div className="audience-page-card">
-        <header className="audience-intro">
-          <div className="audience-intro-copy">
-            <span className="audience-kicker">Seu ponto de partida</span>
-            <h2 id="audience-title">
-              {isSummary ? 'Comece pelo que você precisa saber.' : isTechnical ? 'Confira cada número até a fonte.' : 'Entenda os dados da cidade com contexto.'}
-            </h2>
-            <p>
-              {isSummary
-                ? 'Uma entrada rápida para os principais números, serviços e fontes. Você decide quando aprofundar.'
-                : isTechnical
-                  ? 'Percorra o caminho completo do dado: valor, origem, referência, método e limitações em uma mesma jornada.'
-                  : 'Escolha um tema e transforme números isolados em uma leitura conectada, clara e comparável.'}
-            </p>
-          </div>
-
-          <div className="audience-intro-actions">
-            {shareStatus && <span className="sr-only" role="status" aria-live="polite">{shareStatus}</span>}
-            <button type="button" className="audience-search-card" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
-              <Search aria-hidden="true" />
-              <span>
-                <strong>Buscar</strong>
-                <small>um dado ou assunto</small>
-              </span>
-              <kbd>Ctrl/⌘ K</kbd>
-            </button>
-            <button type="button" className="audience-primary-card" onClick={() => jump(isSummary ? 'resumo' : 'dashboard')}>
-              <span>{isSummary ? 'Ver resumo' : isTechnical ? 'Ver fontes e métodos' : 'Ver indicadores explicados'}</span>
-              <ArrowRight aria-hidden="true" />
-            </button>
-            <button type="button" className="audience-search-card" onClick={shareProject} aria-label="Compartilhar o Observatório">
-              <Share2 aria-hidden="true" />
-              <span>
-                <strong>Compartilhar</strong>
-                <small>enviar este projeto</small>
-              </span>
-            </button>
-          </div>
-        </header>
-
-        {!isSummary && (
-          <section className="audience-block" aria-labelledby="topics-title">
-            <div className="audience-block-head">
-              <div>
-                <span>01</span>
-                <h3 id="topics-title">Escolha um assunto</h3>
-              </div>
-              <p>Caminhos principais para acessar os temas do observatório.</p>
-            </div>
-            <div className="audience-topic-grid">
-              {(isTechnical ? topics : topics.slice(0, 5)).map(({ id, label, description, icon: Icon }) => (
-                <button key={id} type="button" onClick={() => jump(id)} className="audience-topic">
-                  <span className="audience-topic-icon"><Icon aria-hidden="true" /></span>
-                  <span className="audience-topic-copy">
-                    <strong>{label}</strong>
-                    <small>{description}</small>
-                  </span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <section className="audience-block audience-actions-block" aria-labelledby="actions-title">
-          <div className="audience-block-head">
-            <div>
-              <span>02</span>
-              <h3 id="actions-title">{isSummary ? 'Próximos passos' : isTechnical ? 'Ferramentas de verificação' : 'Continue a leitura'}</h3>
-            </div>
-            <p>{isSummary ? 'Do resumo à consulta em poucos toques.' : isTechnical ? 'Atalhos para conferir, cruzar e rastrear informações.' : 'Consulte, compare e avance sem perder o contexto.'}</p>
-          </div>
-
-          <div className="audience-action-grid">
-            {isSummary ? (
-              <>
-                <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('acao')}>
-                  <span className="audience-action-icon"><BookOpen aria-hidden="true" /></span>
-                  <span><strong>Serviços públicos</strong><small>Canais oficiais, saúde e atendimento.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-                <button type="button" className="audience-action-card" onClick={() => jump('dashboard')}>
-                  <span className="audience-action-icon"><BarChart3 aria-hidden="true" /></span>
-                  <span><strong>Ver indicadores</strong><small>Entenda a cidade pelos principais números.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-                <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
-                  <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
-                  <span><strong>Dados eleitorais</strong><small>Consulte o recorte e siga para as fontes oficiais.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-              </>
-            ) : (
-              <>
-                <button type="button" className="audience-action-card audience-action-featured" onClick={() => jump('quiz')}>
-                  <span className="audience-action-icon">?</span>
-                  <span><strong>Teste seus conhecimentos</strong><small>Perguntas com explicação e fonte para aprender conferindo.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-                <button type="button" className="audience-action-card" onClick={() => jump('eleitoral360')}>
-                  <span className="audience-action-icon"><Landmark aria-hidden="true" /></span>
-                  <span><strong>Dados eleitorais</strong><small>Consulte registros, candidaturas e informações oficiais.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-                <button type="button" className="audience-action-card" onClick={() => jump('transporte')}>
-                  <span className="audience-action-icon">R$</span>
-                  <span><strong>Simulador de transporte</strong><small>Teste o impacto da tarifa.</small></span>
-                  <ArrowRight aria-hidden="true" />
-                </button>
-              </>
-            )}
-          </div>
-        </section>
-
-        {!isTechnical && (
-          <section className="audience-block audience-resource-block" aria-labelledby="official-title">
-            <div className="audience-block-head">
-              <div>
-                <span>03</span>
-                <h3 id="official-title">Fontes e serviços oficiais</h3>
-              </div>
-              <button type="button" onClick={() => jump('fontes')}>
-                Conferir origem <ArrowRight aria-hidden="true" />
-              </button>
-            </div>
-            <div className="audience-resource-grid">
-              {officialResources.slice(0, isSummary ? 3 : officialResources.length).map(({ label, href, note, icon: Icon }) => (
-                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource" aria-label={`Abrir ${label} em nova aba`}>
-                  <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
-                  <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
-                  <ExternalLink aria-hidden="true" />
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {isTechnical && (
-          <section className="audience-block audience-resource-block" aria-labelledby="technical-title">
-            <div className="audience-block-head">
-              <div>
-                <span>03</span>
-                <h3 id="technical-title">Fontes para conferência</h3>
-              </div>
-              <button type="button" onClick={() => jump('fontes')}>
-                Ver fontes e evidências <ArrowRight aria-hidden="true" />
-              </button>
-            </div>
-            <div className="audience-resource-grid">
-              {technicalLinks.map(({ label, href, note, icon: Icon }) => (
-                <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="audience-resource">
-                  <span className="audience-link-icon"><Icon aria-hidden="true" /></span>
-                  <span className="audience-resource-copy"><strong>{label}</strong><small>{note}</small></span>
-                  <ExternalLink aria-hidden="true" />
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+    <section id="descubra" className="civic-topic-hub mx-auto max-w-7xl px-4 py-8 sm:px-6" aria-labelledby="audience-title">
+      <div className="civic-section-heading">
+        <div>
+          <span className="civic-eyebrow">Seu ponto de partida</span>
+          <h2 id="audience-title">O que você precisa saber?</h2>
+          <p>Escolha uma necessidade. Os dados e os canais oficiais ficam no mesmo caminho.</p>
+        </div>
+        <button type="button" className="civic-search-button" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
+          <Search aria-hidden="true" /> Buscar um dado ou assunto <kbd>Ctrl/⌘ K</kbd>
+        </button>
+      </div>
+      <div className="civic-topic-grid">
+        {topics.map(({ id, label, description, icon: Icon }) => (
+          <a key={id} href={'#' + id} className="civic-topic-card" onClick={event => { event.preventDefault(); navigateToCleanSection(id); }}>
+            <Icon className="civic-topic-icon" aria-hidden="true" />
+            <div><h3>{label}</h3><p>{description}</p></div>
+            <ArrowRight aria-hidden="true" />
+          </a>
+        ))}
       </div>
     </section>
   );

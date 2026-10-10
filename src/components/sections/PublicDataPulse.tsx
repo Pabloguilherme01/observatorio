@@ -2,6 +2,7 @@ import { CalendarClock, Database, ExternalLink, RefreshCw } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
+import { IndicatorCatalog } from './IndicatorCatalog';
 
 export function PublicDataPulse() {
   const updates = [...d.budgetUpdates].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
@@ -18,7 +19,7 @@ export function PublicDataPulse() {
     return acc;
   }, {});
   const statusSummary = [
-    ['Atual', indicatorStatus.current ?? 0],
+    ['Publicado', indicatorStatus.published ?? 0],
     ['Histórico', indicatorStatus.historical ?? 0],
     ['Derivado', indicatorStatus.derived ?? 0],
     ['Registro datado', indicatorStatus.snapshot ?? 0],
@@ -29,9 +30,10 @@ export function PublicDataPulse() {
       <SectionHeader
         titleId="dados-title"
         eyebrow="Atualizações públicas"
-        title="Pulso do conjunto publicado"
-        description="Um retrato da documentação disponível e das atualizações recentes. A qualidade detalhada fica concentrada no painel de rastreabilidade."
+        title="Pesquise os dados da cidade"
+        description="Encontre indicadores, confira as referências e baixe sua seleção com fontes e contexto."
       />
+      <IndicatorCatalog />
       <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Resumo do conjunto de dados">
         <DataStat label="Indicadores publicados" value={indicatorCount} hint="itens rastreáveis no catálogo" />
         <DataStat label="Fontes registradas" value={sourceCount} hint={datedSources + ' com data registrada'} />

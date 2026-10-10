@@ -4,22 +4,16 @@ const GUIDED_ONLY_DESTINATIONS = new Set(['aprendizado-guiado']);
 
 const TECHNICAL_ONLY_DESTINATIONS = new Set([
   'contexto',
-  'politica',
-  'linha-do-tempo',
   'orcamento-impacto',
   'qualidade',
   'evidencias',
   'mapa-evidencias',
-  'mudancas-snapshot',
 ]);
 
 const SUMMARY_HIDDEN_DESTINATIONS = new Set([
-  'eleitorado',
   'demografia',
   'transporte',
   'saude',
-  'candidaturas',
-  'eleitoral360',
   'quiz',
 ]);
 
@@ -44,7 +38,6 @@ export function fallbackDestinationForMode(target: string, mode: ReadingMode): s
 
   if (!TECHNICAL_ONLY_DESTINATIONS.has(target)) return null;
   if (target === 'contexto') return 'dashboard';
-  if (target === 'politica' || target === 'linha-do-tempo') return 'eleitoral360';
   if (target === 'orcamento-impacto') return 'orcamento';
   return 'fontes';
 }

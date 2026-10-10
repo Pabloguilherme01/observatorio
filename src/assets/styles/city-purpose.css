@@ -1,0 +1,26 @@
+.city-purpose { padding:28px; border:1px solid #475569; border-radius:24px; background:#101820; color:#f8fafc; align-self:start; }
+.city-purpose h2 { margin-top:10px; font-size:clamp(22px,2.2vw,30px); font-weight:850; line-height:1.25; }
+.city-purpose > p,.city-purpose li span { color:#cbd5e1; font-size:14px; line-height:1.6; }
+.city-purpose > p { margin-top:12px; }
+.city-purpose ol { display:grid; gap:16px; margin:22px 0; padding-left:22px; list-style:decimal; }
+.city-purpose li strong,.city-purpose li span { display:block; }
+.city-purpose li strong { font-size:15px; margin-bottom:4px; }
+.city-purpose > a { display:inline-flex; align-items:center; gap:10px; min-height:44px; color:#7dd3fc; font-weight:750; text-decoration:underline; }
+.city-purpose > a svg { width:18px; height:18px; }
+.city-supplementary { padding-block:32px; }
+.city-supplementary h2 { margin-top:8px; color:#f8fafc; font-size:26px; font-weight:800; }
+.city-supplementary > p { margin:10px 0 20px; color:#cbd5e1; font-size:14px; }
+.city-supplementary-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.city-supplementary-grid a { display:grid; gap:8px; min-width:0; padding:18px; border:1px solid #64748b; border-radius:16px; background:#101820; color:#f8fafc; }
+.city-supplementary-grid a span { color:#cbd5e1; font-size:14px; line-height:1.6; }
+.city-supplementary-grid a:focus-visible,.city-purpose > a:focus-visible { outline:3px solid #38bdf8; outline-offset:3px; }
+html.light .city-purpose,html.light .city-supplementary-grid a { background:#fff; border-color:#cbd5e1; color:#172b40; }
+html.light .city-purpose :is(p,li span),html.light .city-supplementary > p,html.light .city-supplementary-grid a span { color:#475569; }
+html.light .city-purpose > a { color:#075985; }
+html.light .city-supplementary h2 { color:#172b40; }
+@media(max-width:767px) { .city-purpose { padding:20px; } .city-supplementary-grid { grid-template-columns:minmax(0,1fr); } }
+.skip-link { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+.skip-link:focus { position:fixed; top:14px; left:14px; z-index:9999; width:auto; height:auto; margin:0; padding:12px 18px; overflow:visible; clip:auto; border-radius:12px; background:#075985; color:#fff; outline:3px solid #38bdf8; outline-offset:3px; }
+html.light .language-toggle-v3 .language-toggle-options button[aria-pressed="true"] :is(strong,small) { color:#075985 !important; }
+html.light .language-toggle-v3 .language-toggle-label { color:#075985 !important; }
+html.light .site-mode-shortcut { color:#075985 !important; }

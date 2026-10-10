@@ -45,7 +45,7 @@ export function DemographicDynamic() {
         </Card>
         <div className="premium-info-stack">
           <PremiumInfoCard tone="violet" icon={TrendingUp} eyebrow="Leitura rápida" title="Escala populacional com contexto">
-            A série mostra mudança de escala populacional sem misturar natureza estatística. Para comparações com eleitorado, use o universo eleitoral do TSE separadamente.
+            A série mostra mudança de escala populacional sem misturar natureza estatística. Confira o método e o período antes de comparar os pontos da série.
           </PremiumInfoCard>
           <PremiumInfoCard tone="slate" icon={Database} eyebrow="Contrato do painel" title="Dados locais, estrutura preservada">
             O painel usa o conjunto de dados publicado pelo projeto. Uma integração automatizada pode atualizar os pontos sem alterar a separação entre fonte, referência e interpretação.
