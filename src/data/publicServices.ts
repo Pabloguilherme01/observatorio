@@ -85,6 +85,12 @@ export const normalizePublicServiceQuery = (value: string) =>
   value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
 
 export const publicServiceSearchAliases: Record<string, string> = {
+  'Medicamentos SUS': 'remedio remedios medicamento medicamentos farmacia sus',
+  'Estoque de medicamentos': 'remedio remedios medicamento medicamentos farmacia disponibilidade falta',
+  'Lista de espera em creches': 'vaga vagas creche creches matricula matriculas educacao infantil',
+  'Regulação municipal': 'consulta consultas exame exames especialista especialistas fila espera regulacao',
+  'Água e esgoto — atendimento': 'agua esgoto saneamento falta vazamento conta saneago abastecimento',
+  'CAPS': 'saude mental psicologico psicologia atendimento caps',
   'Processos seletivos': 'emprego trabalho vaga vagas oportunidade oportunidades concurso concursos selecao qualificacao',
   'Lista de estagiários': 'emprego trabalho vaga vagas estagio estagios estudante',
   'Padrão remuneratório': 'salario salarios remuneracao servidor servidores',
@@ -97,3 +103,24 @@ export const publicServiceSearchAliases: Record<string, string> = {
   'CRAS e assistência social': 'beneficio beneficios cadastro unico cadunico bolsa familia vulnerabilidade',
   'Trânsito e mobilidade urbana': 'transito transporte mobilidade rua sinalizacao',
 };
+
+export const publicServiceTopics = ['Todos', 'Saúde', 'Educação', 'Assistência e proteção', 'Cidade e transporte', 'Trabalho e documentos', 'Dinheiro público'] as const;
+export type PublicServiceTopic = typeof publicServiceTopics[number];
+
+export function publicServiceTopic(service: PublicServiceResource): PublicServiceTopic {
+  const title = normalizePublicServiceQuery(service.title);
+  if (/medicamento|regulacao|saude|caps|samu/.test(title)) return 'Saúde';
+  if (/creche|educacao/.test(title)) return 'Educação';
+  if (/cras|creas|assistencia|defesa civil|tutelar|deficiencia|animal/.test(title)) return 'Assistência e proteção';
+  if (/obras|agua|esgoto|transito|mobilidade/.test(title)) return 'Cidade e transporte';
+  if (/seletivo|estagiario|sei|sic direto|lgpd|ouvidoria/.test(title)) return 'Trabalho e documentos';
+  if (/despesa|licitac|contrato|diaria|emenda|contas|tribunal|fiscal|orcament|lgf|rgf|rreo|divida|terceirizado|remuneratorio|sancoes|balanco|renuncia/.test(title)) return 'Dinheiro público';
+  return 'Trabalho e documentos';
+}
+
+export function matchesPublicService(service: PublicServiceResource, query: string): boolean {
+  const ignored = new Set(['a', 'o', 'as', 'os', 'de', 'da', 'do', 'das', 'dos', 'em', 'na', 'no', 'para', 'por', 'com', 'e', 'meu', 'minha', 'um', 'uma', 'eu', 'preciso', 'quero', 'como', 'onde', 'buscar', 'encontrar']);
+  const terms = normalizePublicServiceQuery(query).split(/[^a-z0-9]+/).filter(term => term && !ignored.has(term));
+  const searchable = normalizePublicServiceQuery(`${service.title} ${service.description} ${service.cta ?? ''} ${publicServiceSearchAliases[service.title] ?? ''}`);
+  return terms.every(term => searchable.includes(term));
+}

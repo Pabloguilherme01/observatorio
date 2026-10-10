@@ -11,8 +11,8 @@ const primaryQuickNeeds = [
 ] as const;
 
 const secondaryQuickNeeds = [
-  { icon: BriefcaseBusiness, label: 'Emprego e renda', hint: 'Buscar trabalho e qualificação', query: 'emprego' },
-  { icon: FileText, label: 'Documentos e tributos', hint: 'Localizar serviços e orientações', query: 'documentos' },
+  { icon: BriefcaseBusiness, label: 'Trabalho e estágios', hint: 'Consultar seleções e estágios', query: 'emprego' },
+  { icon: FileText, label: 'Documentos e processos', hint: 'Acesso à informação e ao SEI', query: 'documentos' },
 ] as const;
 
 export function PublicUtilityGuide() {

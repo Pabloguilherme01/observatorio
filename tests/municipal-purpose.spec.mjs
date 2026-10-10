@@ -1,4 +1,67 @@
 import { test, expect } from 'playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+
+test('serviços e seletor móvel mantêm acessibilidade nos dois temas', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  for (const theme of ['light', 'dark']) {
+    await page.addInitScript(value => localStorage.setItem('observatorio-theme', value), theme);
+    await page.goto('./#acao');
+    await page.locator('#service-topic').selectOption('Saúde');
+    const results = await new AxeBuilder({ page }).include('#acao').analyze();
+    expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact))).toEqual([]);
+  }
+});
+
+test('serviços entendem necessidades comuns e combinam assunto sem perder o link', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async text => { window.__serviceLink = text; } } });
+  });
+  await page.goto('./#acao');
+  const hub = page.locator('#acao');
+  const chooseTopic = async value => {
+    const select = hub.getByRole('combobox', { name: 'Assunto dos serviços' });
+    if (await select.isVisible()) await select.selectOption(value);
+    else await hub.getByRole('button', { name: value, exact: true }).click();
+  };
+  const search = hub.getByRole('searchbox', { name: 'Buscar serviço municipal por necessidade' });
+  await search.fill('preciso de remédio');
+  await expect(hub.locator('.official-resource-card')).toHaveCount(2);
+  await chooseTopic('Educação');
+  await expect(hub.getByRole('note').filter({ hasText: 'Nenhum serviço corresponde' })).toBeVisible();
+  await hub.getByRole('button', { name: 'Ver serviços principais', exact: true }).click();
+  await search.fill('vaga na creche');
+  await expect(hub.locator('.official-resource-card')).toHaveCount(1);
+  await expect(hub.locator('.official-resource-card')).toContainText('Lista de espera em creches');
+  await chooseTopic('Educação');
+  await hub.getByRole('button', { name: 'Copiar link desta busca de serviços' }).click();
+  await expect.poll(() => page.evaluate(() => window.__serviceLink)).toBeTruthy();
+  const shared = await page.evaluate(() => window.__serviceLink);
+  const url = new URL(shared);
+  expect(url.searchParams.get('assunto')).toBe('Educação');
+  expect(url.searchParams.get('servico')).toBe('vaga na creche');
+  await page.goto(shared);
+  const restoredTopic = hub.getByRole('combobox', { name: 'Assunto dos serviços' });
+  if (await restoredTopic.isVisible()) await expect(restoredTopic).toHaveValue('Educação');
+  else await expect(hub.getByRole('button', { name: 'Educação', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(hub.locator('.official-resource-card')).toHaveCount(1);
+});
+
+test('filtros de serviços são utilizáveis a 320 px e não escondem canais de atendimento', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto('./#acao');
+  const hub = page.locator('#acao');
+  const filter = hub.getByRole('combobox', { name: 'Assunto dos serviços' });
+  await filter.focus();
+  await expect(filter).toBeFocused();
+  await filter.selectOption('Saúde');
+  await expect(filter).toHaveValue('Saúde');
+  await expect(hub.locator('.official-resource-grid')).toContainText('CAPS');
+  await expect(hub.locator('.official-resource-grid')).toContainText('SAMU');
+  await expect(hub.locator('.official-resource-grid')).not.toContainText('Contratos');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  await filter.selectOption('Todos');
+  await expect(hub.locator('.official-resource-card')).toHaveCount(6);
+});
 
 
 

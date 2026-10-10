@@ -23,6 +23,12 @@ Chrome com emulação Android: 27 casos aprovados e duas exclusões condicionais
 
 ## Capturas e limites
 
+### Continuação: serviços por necessidade
+
+O catálogo ganhou seis assuntos municipais, além de Todos. Busca e assunto são combinados; expressões como “preciso de remédio” e “vaga na creche” usam sinônimos e ignoram palavras de ligação. Nenhum endereço, horário ou requisito foi inventado. O link canônico conserva `servico` e `assunto`, restaura o filtro ao abrir e remove rastreamento. Atalhos externos ao catálogo foram descritos com precisão: seleções/estágios e acesso à informação/SEI.
+
+No celular, o assunto usa um seletor nativo rotulado, com alvo de 44 px e foco visível; no desktop, botões com estado `aria-pressed`. A validação local desta continuação passou: build/TypeScript, 17 auditorias, 23 verificações de serviços/acessibilidade e 14 casos finais da suíte municipal nos perfis desktop e Android. Axe verificou os serviços a 320 px nos temas claro e escuro. Capturas de serviços em 320 e 1366 px registradas nos entregáveis. Os checks do novo commit devem ser conferidos na PR.
+
 Capturas registradas nos arquivos observatorio-v46-entrada-desktop.png (1366 px), entrada-mobile.png (390 px), trilha-mobile.png (390 px), dados-desktop.png (1920 px) e orcamento-mobile.png (320 px), disponíveis nos entregáveis da tarefa.
 
 O registro de publicação e o período de cada indicador são separados. Referência ausente continua explícita; published não certifica atualidade. Quatro fontes recusaram a consulta automatizada com 403. A API v1 é uma remoção incompatível, documentada em [migração](api-v2-migracao.md). Um dispositivo offline só recebe a limpeza da nova versão após carregar conectado.

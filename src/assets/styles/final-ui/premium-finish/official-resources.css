@@ -143,6 +143,9 @@
   margin-top:10px;
 }
 .official-resource-card.compact{min-height:94px;padding:11px}
+.service-topic-select{background:#0f172a;color:#e2e8f0;border-color:#475569}
+.light .service-topic-select{background:#fff!important;color:#0f172a!important;border-color:#94a3b8}
+.service-topic-select:focus-visible{outline:3px solid #0284c7;outline-offset:3px}
 .official-source-note{
   display:flex;
   align-items:flex-start;

@@ -1,5 +1,6 @@
 export const urlParamKeys = {
   publicService: 'servico',
+  publicServiceTopic: 'assunto',
   inspector: 'dado',
   readingMode: 'leitura',
 } as const;
