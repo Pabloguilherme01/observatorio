@@ -4,9 +4,10 @@ import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync,
 import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { diffRecords, hasMeaningfulProvenanceChange } from './lib/tseDiff.mjs';
 
-const ROOT = new URL('..', import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const OUTPUT_DIR = join(ROOT, 'src', 'data', 'generated');
 const OUTPUT = join(OUTPUT_DIR, 'tse2026-candidates.json');
 const DIFF_OUTPUT = join(OUTPUT_DIR, 'tse2026-diff.json');

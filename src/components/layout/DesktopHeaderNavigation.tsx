@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { navigation } from '../../config/navigation';
 
-const primaryNavigationIds = ['descubra', 'dashboard', 'eleitoral360'] as const;
+const primaryNavigationIds = ['descubra', 'dashboard', 'acao'] as const;
 const primaryNavigation = navigation.filter(item => primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
 const moreNavigation = navigation.filter(item => !primaryNavigationIds.includes(item.id as typeof primaryNavigationIds[number]));
 

@@ -19,7 +19,7 @@ const edition = versionSource.match(/EDITION = '([^']+)'/)?.[1] ?? null;
 const major = packageJson.version?.split('.')[0] ?? null;
 
 function parseMajorMinorPatch(value) {
-  const match = /^([0-9]+)\\.([0-9]+)\\.([0-9]+)/.exec(String(value ?? ''));
+  const match = /^([0-9]+)\.([0-9]+)\.([0-9]+)/.exec(String(value ?? ''));
   return match ? match.slice(1).map(Number) : null;
 }
 

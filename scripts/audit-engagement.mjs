@@ -46,8 +46,8 @@ must(
   modeToggle.includes('Leitura explicada') &&
   modeToggle.includes('Aprendizado guiado') &&
   modeToggle.includes('Leitura detalhada') &&
-  (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade') || hero.includes('Veja os principais números de Águas Lindas')) &&
-  audience.includes('Comece pelo que você precisa saber.') &&
+  (hero.includes('Uma visão executiva da cidade') || hero.includes('Uma visão rápida da cidade') || hero.includes('Entenda Águas Lindas de Goiás')) &&
+  audience.includes('O que você precisa saber?') &&
   executive.includes('Resumo principal') &&
   (dashboard.includes('Indicadores com fonte, data e método') || dashboard.includes('Indicadores com fonte e método')) &&
   trust.includes('Confiança começa pela origem') &&
@@ -105,7 +105,7 @@ must(quiz.includes('className="quiz-phase-grid"') && quiz.includes('Fase {index 
 must(formatters.includes('minimumFractionDigits: 2') && formatters.includes('maximumFractionDigits: 2'), 'valores monetários usam duas casas decimais');
 must(!audience.includes('<SummaryTodayCard') && !audience.includes("import { SummaryTodayCard }"), 'Resumo não duplica o rail de indicadores na seção Explorar');
 must(read('src/components/sections/PoliticalResearch.tsx').includes('Pesquisas registradas') && read('src/components/sections/PoliticalResearch.tsx').includes('registrationNumber') && read('src/components/sections/PoliticalResearch.tsx').includes('Conferir fonte oficial'), 'pesquisas registradas exibem identificação, contexto e fonte');
-must(audience.includes('<strong>Serviços públicos</strong>') && audience.includes("jump('acao')"), 'Home oferece atalho direto para serviços públicos');
+must(audience.includes("id: 'acao'") && audience.includes('Encontrar um serviço') && audience.includes('navigateToCleanSection(id)'), 'Home oferece atalho direto para serviços públicos');
 must(!audience.includes("document.getElementById(id)?.scrollIntoView"), 'Home delega o scroll de navegação ao controlador central');
 must(
   audience.includes('navigateToCleanSection') &&

@@ -20,15 +20,15 @@ export function PostElectionHero() {
             <Badge>{technical ? EDITION + ' · arquivo + método' : 'Dados públicos · fontes rastreáveis'}</Badge>
             {technical && <Badge>Resultados consolidados</Badge>}
           </div>
-          <span className="hero-updated"><Database aria-hidden="true" /> Edição atualizada em {updatedAt}</span>
+          <span className="hero-updated"><Database aria-hidden="true" /> Conjunto publicado em {updatedAt}</span>
         </div>
         <div className="hero-layout">
           <div className="hero-copy">
-            <span className="hero-kicker">Dados da cidade, serviços e eleições</span>
-            <h1 id="hero-title">Águas Lindas de Goiás <em>2026</em></h1>
+            <span className="hero-kicker">Observatório de Águas Lindas de Goiás</span>
+            <h1 id="hero-title">Sua cidade.<br />Dados para <em>participar.</em></h1>
             <p>
               {summary
-                ? 'Veja os principais números de Águas Lindas, os resultados de 2026 e os serviços públicos em poucos passos.'
+                ? 'Entenda Águas Lindas de Goiás, encontre serviços e acompanhe o uso do dinheiro público. Cada número traz sua origem e seu período.'
                 : technical
                   ? 'Uma visão completa do ciclo eleitoral, com resultados oficiais e fontes para quem quiser conferir cada detalhe.'
                   : guided
@@ -36,8 +36,8 @@ export function PostElectionHero() {
                     : 'Dados públicos de Águas Lindas organizados para você consultar, entender e conferir depois da eleição.'}
             </p>
             <div className="hero-actions">
-              <a href="#resultados" className="hero-action primary">Ver resultados <ArrowRight aria-hidden="true" /></a>
-              <a href="#descubra" className="hero-action secondary">Explorar temas</a>
+              <a href="#descubra" className="hero-action primary">Explorar a cidade <ArrowRight aria-hidden="true" /></a>
+              <a href="#acao" className="hero-action secondary">Encontrar serviços</a>
               <a href="#fontes" className="hero-action secondary">Conferir fontes</a>
               <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
                 <Search aria-hidden="true" /> Buscar
@@ -63,7 +63,7 @@ export function PostElectionHero() {
                 O resultado do 1º turno de 4 de outubro já faz parte do histórico. Em Goiás, o governo estadual foi definido no 1º turno. Se houver 2º turno para outros cargos, o Observatório tratará essa nova apuração separadamente.
               </p>
               <div className="mt-4 grid gap-2 text-xs text-slate-400">
-                <span>• Resultado oficial conferido</span>
+                <span>• Registro histórico do 1º turno</span>
                 <span>• Fonte oficial identificada</span>
                 <span>• Dados da cidade separados do resultado eleitoral</span>
               </div>

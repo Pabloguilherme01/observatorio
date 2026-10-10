@@ -1,5 +1,4 @@
-import { BookOpenCheck, SearchCheck, ShieldCheck, Stethoscope, GraduationCap, WalletCards, MessageCircle, BusFront, HeartHandshake, BriefcaseBusiness, FileText, ArrowRight } from 'lucide-react';
-import { PremiumInfoCard } from '../ui/PremiumInfoCard';
+import { Stethoscope, GraduationCap, WalletCards, MessageCircle, BusFront, HeartHandshake, BriefcaseBusiness, FileText, ArrowRight } from 'lucide-react';
 import { navigateToSection } from '../../lib/sectionNavigation';
 
 const primaryQuickNeeds = [
@@ -14,30 +13,6 @@ const primaryQuickNeeds = [
 const secondaryQuickNeeds = [
   { icon: BriefcaseBusiness, label: 'Emprego e renda', hint: 'Buscar trabalho e qualificação', query: 'emprego' },
   { icon: FileText, label: 'Documentos e tributos', hint: 'Localizar serviços e orientações', query: 'documentos' },
-] as const;
-
-const steps = [
-  {
-    icon: BookOpenCheck,
-    eyebrow: '1 · Entenda',
-    title: 'Entenda o que o número mede',
-    body: 'Veja o indicador, o período de referência e se o valor é observação, estimativa, registro ou cálculo derivado.',
-    tone: 'sky' as const,
-  },
-  {
-    icon: SearchCheck,
-    eyebrow: '2 · Confira',
-    title: 'Confira fonte, data e recorte',
-    body: 'Dados públicos podem usar anos-base e universos diferentes. Confira a origem e a referência antes de comparar.',
-    tone: 'violet' as const,
-  },
-  {
-    icon: ShieldCheck,
-    eyebrow: '3 · Use com segurança',
-    title: 'Use o dado com a ressalva',
-    body: 'Leve junto método, recorte, limitações e atualização. O contexto faz parte da informação, não é um detalhe opcional.',
-    tone: 'emerald' as const,
-  },
 ] as const;
 
 export function PublicUtilityGuide() {
@@ -59,9 +34,9 @@ export function PublicUtilityGuide() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="text-[10px] font-black uppercase tracking-[0.18em] text-sky-300/80 light:text-sky-700">Utilidade pública</div>
-            <h2 id="public-utility-title" className="mt-1 text-xl font-black text-white sm:text-2xl light:text-slate-900">Entenda o dado, confira a fonte e encontre o canal certo</h2>
+            <h2 id="public-utility-title" className="mt-1 text-xl font-black text-white sm:text-2xl light:text-slate-900">Encontre o canal certo para sua necessidade</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400 light:text-slate-600">
-              Comece pelo que você precisa. Os atalhos levam à busca de serviços; os cartões abaixo ajudam a conferir data, fonte e limites antes de usar qualquer número.
+              Acesse os serviços municipais por assunto. O atendimento e as informações atualizadas ficam nos canais dos órgãos responsáveis.
             </p>
           </div>
           <button type="button" onClick={() => goToServices()} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-sky-300/20 bg-sky-300/[0.06] px-4 text-sm font-bold text-sky-200 transition hover:bg-sky-300/[0.1] light:text-sky-800">
@@ -97,13 +72,7 @@ export function PublicUtilityGuide() {
             </button>
           ))}
         </div>
-        <div className="mt-3 grid gap-3 md:grid-cols-3">
-          {steps.map(step => (
-            <PremiumInfoCard key={step.title} icon={step.icon} eyebrow={step.eyebrow} title={step.title} tone={step.tone} compact>
-              <p>{step.body}</p>
-            </PremiumInfoCard>
-          ))}
-        </div>
+
       </div>
     </section>
   );

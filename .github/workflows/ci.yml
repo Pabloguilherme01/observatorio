@@ -81,6 +81,9 @@ jobs:
       - name: Test post-election transition contract
         run: npm run test:post-election
 
+      - name: Test audit guards against regressions
+        run: npm run test:audit-guards
+
       - name: Test source audit availability policy
         run: npm run test:source-audit-policy
 

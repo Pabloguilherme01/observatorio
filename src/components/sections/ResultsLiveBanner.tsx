@@ -1,4 +1,5 @@
 import { Database, ExternalLink, History, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
 import { useResultsFeed } from '../../hooks/useResultsFeed';
 import { observatorioData as d } from '../../data/observatorioData';
 import { RESULTS_DOCS_URL } from '../../data/resultsConfig';
@@ -12,6 +13,9 @@ const formatCapturedAt = (value: string) => new Date(value).toLocaleString('pt-B
 
 export function ResultsLiveBanner() {
   const { data, checking, phase } = useResultsFeed();
+  const [query, setQuery] = useState('');
+  const [cargo, setCargo] = useState('all');
+  const [limits, setLimits] = useState<Record<string, number>>({});
 
   if (phase === 'pre_open') return null;
 
@@ -48,7 +52,7 @@ export function ResultsLiveBanner() {
         : 'Resultado oficial · atualização';
 
   const integrity = data.integrity?.allVerified
-    ? `Fonte oficial e assinatura digital conferidas pelo TSE`
+    ? 'Fonte oficial e assinatura digital conferidas pelo Observatório com a chave pública do TSE'
     : 'verificação técnica incompleta; confira a fonte oficial';
 
   return (
@@ -76,8 +80,12 @@ export function ResultsLiveBanner() {
           </span>
         </div>
 
+        <div className="results-filters">
+          <label><span>Buscar nome ou partido</span><input type="search" aria-label="Buscar nos resultados eleitorais" value={query} onChange={event => { setQuery(event.target.value); setLimits({}); }} placeholder="Todos os nomes do arquivo, além dos cinco iniciais" /></label>
+          <label><span>Cargo</span><select aria-label="Filtrar resultados por cargo" value={cargo} onChange={event => setCargo(event.target.value)}><option value="all">Todos os cargos</option>{data.entries.map(entry => <option key={entry.cargo} value={entry.cargo}>{entry.cargo}</option>)}</select></label>
+        </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {data.entries.map(entry => {
+          {data.entries.filter(entry => cargo === 'all' || entry.cargo === cargo).map(entry => {
             const counted = entry.sectionsCounted;
             const total = entry.sectionsTotal;
             const percentage = total && counted != null
@@ -85,7 +93,10 @@ export function ResultsLiveBanner() {
                 ? 100
                 : Math.min(99.9, Math.floor((counted / total * 100) * 10) / 10)
               : null;
-            const sorted = [...entry.items].sort((a, b) => b.votes - a.votes);
+            const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+            const tokens = normalize(query).trim().split(/\s+/).filter(Boolean);
+            const sorted = [...entry.items].filter(item => tokens.every(token => normalize(`${item.candidate} ${item.party ?? ''}`).includes(token))).sort((a, b) => b.votes - a.votes || a.candidate.localeCompare(b.candidate, 'pt-BR'));
+            const limit = limits[entry.sourceFile] ?? 5;
             const listedVotes = entry.items.reduce((sum, item) => sum + item.votes, 0);
             const hasNominalAggregateDifference = entry.validVotes != null && listedVotes !== entry.validVotes;
             return (
@@ -96,16 +107,17 @@ export function ResultsLiveBanner() {
                   {entry.validVotes != null ? ` · ${formatVotes(entry.validVotes)} votos válidos` : ''}
                 </p>
                 {sorted.length ? (
-                  <ol className="mt-3 space-y-1 text-xs text-slate-300 light:text-slate-700">
-                    {sorted.slice(0, 5).map(item => (
+                  <ol className="mt-3 space-y-1 text-xs text-slate-300 light:text-slate-700" aria-label={`Resultados de ${entry.cargo}`}>
+                    {sorted.slice(0, limit).map(item => (
                       <li key={item.candidateId} className="flex justify-between gap-3">
                         <span>{item.candidate}{item.party ? ` · ${item.party}` : ''}</span>
                         <strong className="shrink-0">{formatVotes(item.votes)} votos</strong>
                       </li>
                     ))}
                   </ol>
-                ) : <p className="mt-2 text-xs text-slate-500">Sem candidatos no arquivo recebido.</p>}
-                {sorted.length > 5 && <p className="mt-2 text-[10px] text-slate-500">Exibindo 5 de {sorted.length} registros.</p>}
+                ) : <p className="mt-2 text-xs text-slate-500">{query ? 'Nenhum nome ou partido encontrado neste cargo.' : 'Sem candidatos no arquivo recebido.'}</p>}
+                <p className="mt-2 text-xs text-slate-500" role="status">Exibindo {Math.min(limit, sorted.length)} de {sorted.length} registros{query ? ` encontrados em ${entry.items.length} nomes` : ''}.</p>
+                {sorted.length > limit && <button type="button" className="results-show-more" onClick={() => setLimits(current => ({ ...current, [entry.sourceFile]: limit + 25 }))}>Ver mais resultados de {entry.cargo}</button>}
                 {hasNominalAggregateDifference && (
                   <p className="mt-2 text-[10px] leading-4 text-amber-300 light:text-amber-800">
                     O total de votos válidos é o agregado oficial do TSE. Os registros nominais recebidos neste cargo não devem ser somados para recomputar esse total.

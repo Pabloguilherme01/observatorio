@@ -734,7 +734,7 @@ test('inspetor bloqueia atalhos globais e usa links canônicos', async ({ page }
   expect(payload?.url).toMatch(/#dashboard$/);
 
   await page.evaluate(() => {
-    delete navigator.share;
+    Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
     window.__lastCopiedText = '';
   });
   await dialog.getByRole('button', { name: /Compartilhar/i }).click();

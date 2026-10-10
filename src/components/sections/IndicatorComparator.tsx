@@ -4,8 +4,9 @@ import { ArrowLeftRight, Copy, ExternalLink, Scale } from 'lucide-react';
 import { observatorioData as data } from '../../data/observatorioData';
 import type { MunicipalIndicator } from '../../types/observatorio';
 import { formatIndicatorStatus } from '../../utils/dataLabels';
-import { formatBudgetCurrency, formatDate, formatNumber, formatPercent } from '../../utils/formatters';
+import { formatBudgetCurrency, formatNumber, formatPercent } from '../../utils/formatters';
 import { copyText } from '../../lib/clipboard';
+import { indicatorReference } from '../../lib/indicatorReference';
 
 const comparableIndicators = data.indicators.filter(
   (indicator): indicator is MunicipalIndicator & { readonly value: number } =>
@@ -34,12 +35,6 @@ function formatIndicatorValue(indicator: MunicipalIndicator & { readonly value: 
   }
 }
 
-const temporalSignature = (indicator: MunicipalIndicator): string | null => {
-  if (indicator.referenceDate) return `date:${indicator.referenceDate}`;
-  const yearBase = indicator.note?.match(/Ano-base\s+(\d{4})/i)?.[1];
-  return yearBase ? `year:${yearBase}` : null;
-};
-
 function IndicatorCard({ indicator, side }: { readonly indicator: MunicipalIndicator & { readonly value: number }; readonly side: 'A' | 'B' }) {
   const source = data.sources.find(item => item.id === indicator.sourceId);
   const sourceUrl = source?.resourceUrl ?? source?.url;
@@ -51,7 +46,7 @@ function IndicatorCard({ indicator, side }: { readonly indicator: MunicipalIndic
       <p className="indicator-compare-value">{formatIndicatorValue(indicator)}</p>
       <dl className="indicator-compare-meta">
         <div><dt>Unidade</dt><dd>{indicator.unit}</dd></div>
-        <div><dt>Referência</dt><dd>{indicator.referenceDate ? formatDate(indicator.referenceDate) : 'Não informada'}</dd></div>
+        <div><dt>Referência</dt><dd>{indicatorReference(indicator, source).label}</dd></div>
         <div><dt>Natureza</dt><dd>{formatIndicatorStatus(indicator.status, 'Dado público')}</dd></div>
         <div><dt>Fonte</dt><dd>{source?.label ?? 'Fonte registrada no conjunto de dados'}</dd></div>
       </dl>
@@ -88,9 +83,11 @@ export function IndicatorComparator() {
 
   const alignment = useMemo(() => {
     if (!left || !right) return null;
+    const leftPeriod = indicatorReference(left, data.sources.find(source => source.id === left.sourceId));
+    const rightPeriod = indicatorReference(right, data.sources.find(source => source.id === right.sourceId));
     return {
       unit: left.unit === right.unit,
-      date: Boolean(temporalSignature(left) && temporalSignature(left) === temporalSignature(right)),
+      date: Boolean(leftPeriod.key && leftPeriod.key === rightPeriod.key),
       source: left.sourceId === right.sourceId,
     };
   }, [left, right]);
@@ -99,13 +96,14 @@ export function IndicatorComparator() {
 
   const matchedCount = Number(alignment.unit) + Number(alignment.date) + Number(alignment.source);
   const relation = matchedCount === 3
-    ? 'Unidade, data de referência e fonte coincidem. Ainda confira a definição e o denominador de cada indicador.'
+    ? 'Unidade, referência temporal e fonte coincidem. Isso não garante equivalência: confira a definição e o denominador de cada indicador.'
     : 'Há diferenças de unidade, data ou fonte. Use a comparação para entender o contexto; não subtraia nem ordene os valores como se fossem equivalentes.';
 
   const copyComparisonLink = async () => {
     const url = new URL(window.location.href);
     url.searchParams.set('comparar', left.id);
     url.searchParams.set('com', right.id);
+    url.hash = 'dashboard';
     const copied = await copyText(url.toString());
     setShareMessage(copied ? 'Link da comparação copiado.' : 'Não foi possível copiar. Copie o endereço da página.');
   };

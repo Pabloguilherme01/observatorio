@@ -2,6 +2,12 @@
 
 Aplicação web de dados públicos e contexto municipal, construída com Vite + React + TypeScript + Tailwind CSS + Lucide React.
 
+## Entrada pública e consulta de dados
+
+A entrada oferece seis caminhos: entender a cidade, encontrar serviços, acompanhar o dinheiro público, calcular transporte, consultar eleições e pesquisar dados. O catálogo em `#dados` permite buscar indicadores sem acentos, filtrar sua natureza, conferir período e fonte e exportar apenas a seleção em CSV. Os resultados em `#resultados` permitem buscar nomes e partidos e expandir os registros do arquivo oficial.
+
+Referências anuais aparecem como ano-base: não são convertidas em datas diárias artificiais. Unidade, período e fonte alinhados não garantem equivalência entre indicadores. A auditoria, as alterações e as pendências documentais estão em [auditoria da reformulação](docs/auditoria-reformulacao-2026-10-09.md). `npm run test:audit-guards` comprova que os controles de auditoria rejeitam regressões e processam arquivos LF e CRLF.
+
 ## Stack
 
 - Vite

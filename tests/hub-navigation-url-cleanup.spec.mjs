@@ -12,7 +12,7 @@ test('hub inicial limpa parâmetros transitórios ao navegar sem perder o modo',
     window.history.replaceState(null, '', '?servico=CRAS&dado=antigo&leitura=simple#descubra');
   });
 
-  await page.locator('#descubra').getByRole('button', { name: /Cidade.*População.*indicadores/i }).click();
+  await page.locator('#descubra').getByRole('link', { name: /Entender a cidade/i }).click();
 
   await expect(page).toHaveURL(/#dashboard$/);
   expect(new URL(page.url()).search).toBe('');

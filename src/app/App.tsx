@@ -316,12 +316,12 @@ export function App() {
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><PostElectionHero /></SectionErrorBoundary>
           <main id="main-content">
-            <SectionErrorBoundary label="Resultados oficiais"><Deferred><ResultsLiveBanner /></Deferred></SectionErrorBoundary>
+            <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Resumo principal"><Deferred><ExecutiveSummary /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
-            <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><Deferred><DashboardMetrics /></Deferred></SectionErrorBoundary></div>
+            <SectionErrorBoundary label="Resultados oficiais"><Deferred><ResultsLiveBanner /></Deferred></SectionErrorBoundary>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
             <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>

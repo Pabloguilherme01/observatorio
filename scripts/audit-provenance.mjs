@@ -3,9 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const dataText = readFileSync(path.join(root, 'src/data/observatorioData.ts'), 'utf8');
-const sourceText = readFileSync(path.join(root, 'src/data/sourceRegistry.ts'), 'utf8');
-const snapshotText = readFileSync(path.join(root, 'src/data/generated/tse2026-candidates.json'), 'utf8');
+const dataText = readFileSync(path.join(root, 'src/data/observatorioData.ts'), 'utf8').replaceAll('\r\n', '\n');
+const sourceText = readFileSync(path.join(root, 'src/data/sourceRegistry.ts'), 'utf8').replaceAll('\r\n', '\n');
+const snapshotText = readFileSync(path.join(root, 'src/data/generated/tse2026-candidates.json'), 'utf8').replaceAll('\r\n', '\n');
 
 const errors = [];
 const warnings = [];
@@ -56,6 +56,8 @@ else pass('todos os sourceId possuem registro de proveniência.');
 
 const indicatorSection = dataText.match(/indicators:\s*\[([\s\S]*?)\n  \],\n};/)?.[1] ?? '';
 const indicators = indicatorSection.split('\n').filter(line => line.trim().startsWith('{ id:') && line.includes('status:'));
+if (!indicators.length) fail('nenhum indicador foi encontrado para auditoria; verifique o parser.');
+
 const withoutReference = indicators
   .filter(line => !line.includes('referenceDate:'))
   .map(line => line.match(/id:\s*'([^']+)'/)?.[1])

@@ -14,7 +14,7 @@ const checks = [
   [hero.includes('resultado do 1º turno') || hero.includes('pós-1º turno'), 'hero identifica explicitamente o estado pós-1º turno'],
   [results.includes('id="resultados"'), 'resultados possuem âncora pública'],
   [results.includes('Resultado oficial') && results.includes('registro histórico'), 'resultado completo é apresentado como registro histórico'],
-  [results.includes('Fonte oficial e assinatura digital conferidas pelo TSE') || results.includes('verificação técnica incompleta'), 'status de verificação permanece compreensível ao público'],
+  [results.includes('conferidas pelo Observatório com a chave pública do TSE') && results.includes('verificação técnica incompleta'), 'status identifica o verificador e preserva a ressalva de verificação incompleta'],
   [packageJson.version === (version.match(/APP_VERSION = '([^']+)'/)?.[1] ?? ''), 'package.json e APP_VERSION estão sincronizados'],
   [version.includes("EDITION = 'V" + packageJson.version.split('.')[0] + "'"), 'EDITION acompanha o major da versão'],
   [version.includes("STORAGE_NAMESPACE = 'observatorio-v45'"), 'namespace V45 presente'],
@@ -29,7 +29,7 @@ const checks = [
   [resultsHook.includes('controller?.abort();'), 'request ativo é abortado no cleanup do hook'],
 ];
 
-const failures = checks.filter(([, ok]) => !ok).map(([, message]) => message);
+const failures = checks.filter(([ok]) => !ok).map(([, message]) => message);
 if (failures.length) {
   console.error('FAIL ' + failures.length);
   for (const failure of failures) console.error(' - ' + failure);

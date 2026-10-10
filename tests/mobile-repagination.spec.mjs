@@ -45,7 +45,7 @@ test('comparador de indicadores mostra fonte, período e alerta metodológico no
   await expect(comparator).toContainText('Acesso à água');
   await expect(comparator).toContainText('Coleta do esgoto gerado');
   await expect(comparator).toContainText('SINISA 2024');
-  await expect(comparator).toContainText(/Unidade, data de referência e fonte coincidem/i);
+  await expect(comparator).toContainText(/Unidade, referência temporal e fonte coincidem/i);
 
   await comparator.getByRole('combobox', { name: 'Escolha o primeiro indicador' }).selectOption('population-2026');
   await expect(comparator).toContainText('População 2026');

@@ -416,7 +416,7 @@ must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#d
 const audienceHub = read('src/components/AudienceHub.tsx');
 must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a âncora pública #dashboard');
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
-must(audienceHub.includes('Serviços públicos') && audienceHub.includes('Ver indicadores') && audienceHub.includes('Dados eleitorais'), 'Resumo oferece três caminhos públicos claros: serviços, cidade e eleições');
+must(['acao', 'dashboard', 'resultados', 'orcamento', 'transporte', 'dados'].every(id => audienceHub.includes("id: '" + id + "'")), 'entrada pública oferece seis necessidades com destino explícito');
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
 must(dashboardMetrics.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
@@ -433,10 +433,10 @@ must(allRuntimeText.includes('<CivicActionHub />') && allRuntimeText.includes('<
 must(allRuntimeText.includes('<PublicDataPulse />') && appSource.includes('<Footer />'), 'atualizações públicas e footer institucional montados');
 must(allRuntimeText.includes('<PoliticalResearch />'), 'candidaturas montadas');
 
-for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'fontes']) {
+for (const id of ['descubra', 'dashboard', 'acao', 'eleitoral360', 'dados', 'fontes']) {
   must(navigation.includes(`id: '${id}'`), `navegação pública contém #${id}`);
 }
-for (const id of ['principios', 'contexto', 'dados', 'qualidade', 'evidencias']) {
+for (const id of ['principios', 'contexto', 'qualidade', 'evidencias']) {
   must(!navigation.includes(`id: '${id}'`), `subcamada #${id} não polui a navegação pública`);
 }
 

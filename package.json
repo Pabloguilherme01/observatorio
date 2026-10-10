@@ -34,6 +34,7 @@
     "audit:deps": "npm audit --audit-level=high",
     "audit:bundle": "node scripts/audit-bundle.mjs",
     "audit:release": "node scripts/audit-release.mjs",
+    "test:audit-guards": "node scripts/test-audit-guards.mjs",
     "check:main-provenance": "node scripts/assert-main-provenance.mjs",
     "audit:workflows": "node scripts/audit-workflows.mjs",
     "audit:styles": "node scripts/audit-styles.mjs",

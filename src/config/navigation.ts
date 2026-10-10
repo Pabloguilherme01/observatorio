@@ -9,6 +9,7 @@ export const navigation = [
   { id: 'quiz', label: 'Teste seus conhecimentos', shortLabel: 'Quiz', description: 'Perguntas de educação cívica', shortcut: 'G QZ', group: 'more' },
   { id: 'orcamento', label: 'Orçamento', shortLabel: 'Orçamento', description: 'Receitas, despesas e valores por habitante', shortcut: 'G O', group: 'more' },
   { id: 'acao', label: 'Serviços públicos', shortLabel: 'Serviços', description: 'Encontre canais e serviços oficiais', shortcut: 'G U', group: 'more' },
+  { id: 'dados', label: 'Catálogo de indicadores', shortLabel: 'Catálogo', description: 'Pesquise e baixe indicadores com fonte e referência', shortcut: 'G A', group: 'more' },
   { id: 'fontes', label: 'Como sabemos', shortLabel: 'Fontes', description: 'Confira fonte, data, método e limitações', shortcut: 'G F', group: 'more' },
   { id: 'exportacao', label: 'Baixar dados', shortLabel: 'Baixar', description: 'Baixe indicadores, fontes e metadados', shortcut: 'G B', group: 'more' },
 ] as const;
