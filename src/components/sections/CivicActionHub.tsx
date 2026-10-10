@@ -5,7 +5,7 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { copyText } from '../../lib/clipboard';
 import { buildCanonicalUrl, getPublicServiceQuery, replaceCurrentUrl, urlParamKeys } from '../../lib/urlState';
 import { OfficialResourceCard } from './civic/OfficialResourceCard';
-import { additionalPublicServices, allMunicipalServices, normalizePublicServiceQuery, priorityPublicServices, publicServiceSearchAliases } from '../../data/publicServices';
+import { allMunicipalServices, normalizePublicServiceQuery, priorityPublicServices, publicServiceSearchAliases } from '../../data/publicServices';
 
 
 
@@ -15,6 +15,7 @@ export function CivicActionHub() {
   const summary = mode === 'summary';
   const [serviceQuery, setServiceQuery] = useState(getPublicServiceQuery);
   const [queryLinkCopied, setQueryLinkCopied] = useState(false);
+  const [showAllServices, setShowAllServices] = useState(false);
   const tesser = [
     ['situacao','Consultar situação eleitoral','Acesse situação do título, local de votação e serviços disponíveis.','https://www.tse.jus.br/servicos-eleitorais/titulo-eleitoral/autoatendimento-eleitoral','service'],
     ['candidaturas','Candidaturas e contas','Consulte registros, bens, receitas e despesas no DivulgaCandContas.','https://divulgacandcontas.tse.jus.br/divulga/#/','search'],
@@ -34,7 +35,7 @@ export function CivicActionHub() {
         const searchable = normalizePublicServiceQuery(service.title + ' ' + service.description + ' ' + ('cta' in service ? service.cta ?? '' : '') + ' ' + aliases);
         return serviceTerms.every(term => searchable.includes(term));
       })
-    : visiblePriority;
+    : showAllServices ? allMunicipalServices : visiblePriority;
 
   useEffect(() => {
     const onServiceSearch = (event: Event) => {
@@ -84,38 +85,6 @@ export function CivicActionHub() {
             ? 'Procure por uma necessidade e siga para o canal oficial responsável pelo atendimento.'
             : 'Consulte serviços, registros e fontes oficiais sem perder o contexto da informação.'}
       />
-
-      <div className="official-hub">
-        <div className="official-hub-head">
-          <div>
-            <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
-            <h3 className="official-hub-title">Recursos oficiais</h3>
-            <p className="official-hub-subtitle">{technical ? 'Bases e serviços oficiais para conferência detalhada.' : summary ? 'Serviços essenciais para consultar rapidamente.' : 'Serviços e consultas oficiais para continuar a leitura com segurança.'}</p>
-          </div>
-          <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
-            Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
-        </div>
-
-        <div className="official-resource-grid">
-          {tesser.slice(0, technical ? tesser.length : 4).map(([id,title,description,href,icon]) => (
-            <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
-              <span className="official-resource-icon" aria-hidden="true">
-                {icon === 'search' ? <SearchCheck className="h-5 w-5" /> :
-                 icon === 'results' ? <Landmark className="h-5 w-5" /> :
-                 icon === 'service' ? <Smartphone className="h-5 w-5" /> :
-                 icon === 'rules' ? <ClipboardCheck className="h-5 w-5" /> :
-                 <ShieldCheck className="h-5 w-5" />}
-              </span>
-              <span className="min-w-0 flex-1">
-                <strong>{title}</strong>
-                <small>{description}</small>
-              </span>
-              <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
-            </a>
-          ))}
-        </div>
-      </div>
 
       <div className="official-hub civic-local-hub">
         <div className="official-hub-head">
@@ -183,14 +152,41 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        {technical && !serviceQuery && <details className="official-more">
-          <summary>Mais serviços oficiais <span>+{Math.max(0, priorityPublicServices.length - 8 + additionalPublicServices.length)} caminhos</span></summary>
-          <div className="official-more-grid">
-            {[...priorityPublicServices.slice(8), ...additionalPublicServices].map(service => (
-              <OfficialResourceCard key={service.title} service={service} compact />
-            ))}
+        {!serviceQuery && <button type="button" onClick={() => setShowAllServices(value => !value)} aria-expanded={showAllServices} className="mt-4 min-h-11 rounded-xl border border-sky-300/30 px-4 text-sm font-bold text-sky-200 light:border-sky-700 light:text-sky-800">
+          {showAllServices ? 'Mostrar serviços principais' : `Ver todos os ${allMunicipalServices.length} serviços municipais`}
+        </button>}
+      </div>
+
+      <div className="official-hub">
+        <div className="official-hub-head">
+          <div>
+            <span className="official-hub-kicker">Justiça Eleitoral · TSE</span>
+            <h3 className="official-hub-title">Recursos oficiais</h3>
+            <p className="official-hub-subtitle">{technical ? 'Bases e serviços oficiais para conferência detalhada.' : summary ? 'Serviços essenciais para consultar rapidamente.' : 'Serviços e consultas oficiais para continuar a leitura com segurança.'}</p>
           </div>
-        </details>}
+          <a className="official-hub-all" href="https://www.tse.jus.br/eleicoes/eleicoes-2026" target="_blank" rel="noopener noreferrer">
+            Abrir portal do TSE <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        </div>
+
+        <div className="official-resource-grid">
+          {tesser.slice(0, technical ? tesser.length : 4).map(([id,title,description,href,icon]) => (
+            <a key={id} href={href} target="_blank" rel="noopener noreferrer" className="official-resource-card">
+              <span className="official-resource-icon" aria-hidden="true">
+                {icon === 'search' ? <SearchCheck className="h-5 w-5" /> :
+                 icon === 'results' ? <Landmark className="h-5 w-5" /> :
+                 icon === 'service' ? <Smartphone className="h-5 w-5" /> :
+                 icon === 'rules' ? <ClipboardCheck className="h-5 w-5" /> :
+                 <ShieldCheck className="h-5 w-5" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <strong>{title}</strong>
+                <small>{description}</small>
+              </span>
+              <ExternalLink className="official-resource-arrow h-4 w-4" aria-hidden="true" />
+            </a>
+          ))}
+        </div>
       </div>
 
       <div className="official-source-note">

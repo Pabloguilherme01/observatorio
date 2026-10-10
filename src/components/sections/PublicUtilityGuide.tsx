@@ -22,7 +22,6 @@ export function PublicUtilityGuide() {
       : {};
     navigateToSection('acao', {
       state: { ...currentState, publicServiceQuery: query },
-      replace: true,
       searchParams: { servico: query || null },
     });
     window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: query }));

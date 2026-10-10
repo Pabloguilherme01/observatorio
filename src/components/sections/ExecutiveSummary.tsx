@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 import { navigateToCleanSection } from '../../lib/sectionNavigation';
 import { copyText } from '../../lib/clipboard';
+import { buildCanonicalUrl, urlParamKeys } from '../../lib/urlState';
 import { buildExecutiveSummaryModel } from './summary/executiveSummaryModel';
 import '../../assets/styles/city-summary.css';
 
@@ -15,9 +16,10 @@ export function ExecutiveSummary() {
     if (shareBusy) return;
     setShareBusy(true);
     const text = publicFacts.map(fact => `${fact.label}: ${fact.value}. ${fact.referenceLabel}. Fonte: ${fact.source}.`).join('\n');
+    const url = buildCanonicalUrl({ [urlParamKeys.readingMode]: mode }, 'resumo');
     try {
-      if (navigator.share) { await navigator.share({ title:'Observatório de Águas Lindas', text, url:window.location.href }); setShareStatus('Compartilhado'); }
-      else setShareStatus(await copyText(text + '\n' + window.location.href) ? 'Link copiado' : 'Não foi possível copiar automaticamente');
+      if (navigator.share) { await navigator.share({ title:'Observatório de Águas Lindas', text, url }); setShareStatus('Compartilhado'); }
+      else setShareStatus(await copyText(text + '\n' + url) ? 'Resumo copiado' : 'Não foi possível copiar automaticamente');
     } catch(error) { if ((error as DOMException)?.name !== 'AbortError') setShareStatus('Não foi possível compartilhar'); }
     finally { setShareBusy(false); }
   };
