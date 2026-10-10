@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, BusFront, HeartHandshake, Landmark, Search, ShieldCheck, WalletCards } from 'lucide-react';
+import { ArrowRight, BarChart3, BusFront, HeartHandshake, Droplets, Search, ShieldCheck, WalletCards } from 'lucide-react';
 import { navigateToCleanSection } from '../lib/sectionNavigation';
 
 const topics = [
@@ -6,7 +6,7 @@ const topics = [
   { id: 'acao', label: 'Encontrar um serviço', description: 'Medicamentos, creches, assistência e canais oficiais.', icon: HeartHandshake },
   { id: 'orcamento', label: 'Acompanhar o dinheiro público', description: 'O que foi planejado e onde consultar os gastos.', icon: WalletCards },
   { id: 'transporte', label: 'Calcular meu transporte', description: 'Simule o custo mensal por rota, viagens e pessoas.', icon: BusFront },
-  { id: 'resultados', label: 'Consultar as eleições', description: 'Resultados por cargo, turno e município.', icon: Landmark },
+  { id: 'saude', label: 'Entender saúde e saneamento', description: 'Água, esgoto, resíduos e capacidade de atendimento.', icon: Droplets },
   { id: 'dados', label: 'Pesquisar e conferir dados', description: 'Catálogo de indicadores com referência e fonte.', icon: ShieldCheck },
 ] as const;
 

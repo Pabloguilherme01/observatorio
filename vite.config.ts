@@ -171,8 +171,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Observatório Águas Lindas 2026',
-        short_name: 'Observatório 2026',
+        name: 'Observatório Águas Lindas',
+        short_name: 'Observatório',
         description: 'Dados públicos eleitorais e municipais de Águas Lindas de Goiás, com fontes rastreáveis.',
         lang: 'pt-BR',
         dir: 'ltr',

@@ -116,7 +116,7 @@ must(
     ? 'workflows referenciam scripts inexistentes: ' + missingWorkflowScriptRefs.map(ref => ref.path + ' (' + ref.file + ')').join(', ')
     : 'workflows com chamadas node scripts referenciam somente arquivos existentes.',
 );
-must((appSource.match(/<ResultsLiveBanner \/>/g) ?? []).length === 1, 'Resultados oficiais possuem uma única montagem no fluxo principal');
+must((read('src/components/sections/DeferredArchiveGroup.tsx').match(/<ResultsLiveBanner \/>/g) ?? []).length === 1 && appSource.includes('activateOnScroll={false}'), 'Resultados oficiais possuem uma única montagem no fluxo principal');
 must(!deferredContextSource.includes('<ResultsLiveBanner />') && !deferredContextSource.includes("ResultsLiveBanner"), 'DeferredContextGroup não duplica o painel de resultados oficiais');
 
 const appVersion = versionSource.match(/APP_VERSION = '([^']+)'/)?.[1];
@@ -407,7 +407,7 @@ for (const group of deferredGroups) must(appSource.includes(group), 'App registr
 must(appSource.includes("import DeferredEvidenceGroup") && appSource.includes("<DeferredEvidenceGroup />") && !appSource.includes("loadEvidenceGroup"), 'fontes, exportação e evidências base montam sem depender de lazy loading');
 must(appSource.includes('IntersectionObserver'), 'App usa carregamento diferido por visibilidade');
 const contextSource = read('src/components/sections/DeferredContextGroup.tsx');
-must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && contextSource.includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
+must(appSource.includes("'saude'") && appSource.includes("'transporte'") && appSource.includes("'quiz'") && contextSource.includes('SanitationHealthSection') && read('src/components/sections/DeferredLearningGroup.tsx').includes('QuickQuiz'), 'deep links públicos preservam saúde, transporte e quiz');
 must(appSource.includes('navigateToHash') && appSource.includes("window.dispatchEvent(new CustomEvent('observatorio:navigate'"), 'navegação profunda reativa ao hash');
 must(appSource.includes('id="analise"') && appSource.includes('<DashboardMetrics />'), 'atalho legado #analise aponta para o dashboard montado diretamente');
 const dashboardIdCount = (dashboardMetrics.match(/id=["']dashboard["']/g) ?? []).length;
@@ -416,13 +416,14 @@ must(dashboardIdCount === 1 && dashboardMetrics.includes('dashboard-shell'), '#d
 const audienceHub = read('src/components/AudienceHub.tsx');
 must(/id:\s*['"]dashboard['"]/.test(audienceHub), 'atalho Cidade aponta para a âncora pública #dashboard');
 must(!audienceHub.includes("dashboard: 'analise'"), 'atalho Cidade não depende da âncora legada #analise');
-must(['acao', 'dashboard', 'resultados', 'orcamento', 'transporte', 'dados'].every(id => audienceHub.includes("id: '" + id + "'")), 'entrada pública oferece seis necessidades com destino explícito');
+must(['acao', 'dashboard', 'saude', 'orcamento', 'transporte', 'dados'].every(id => audienceHub.includes("id: '" + id + "'")), 'entrada pública oferece seis necessidades com destino explícito');
 must(analiseIdCount === 1, '#analise possui uma única âncora legada');
 must(dashboardMetrics.includes('id="dashboard"') && appSource.includes('id="analise"'), 'dashboard possui âncora pública e compatibilidade legada');
 must(appSource.includes('<LanguageModeProvider>') && appSource.includes('<AudienceHub />') && read('src/components/sections/DeferredEvidenceGroup.tsx').includes('<ProjectTrustPanel />'), 'descoberta, confiança e modo de linguagem montados');
 
 const allRuntimeText = [
   appSource,
+  read('src/components/sections/DeferredArchiveGroup.tsx'),
   read('src/components/sections/DeferredContextGroup.tsx'),
   read('src/components/sections/DeferredCivicGroup.tsx'),
   read('src/components/sections/DeferredPublicDataGroup.tsx'),

@@ -158,9 +158,9 @@ const summaryModel = read('src/components/sections/summary/executiveSummaryModel
 const summarySurface = summary + '\n' + summaryModel;
 if (
   summary.includes('buildExecutiveSummaryModel')
-  && summarySurface.includes('populationPoint?.referenceDate')
-  && summarySurface.includes('sanitationSource?.label')
-  && summarySurface.includes('budgetSource?.referenceDate')
+  && summarySurface.includes('if (!item) return []')
+  && summarySurface.includes('source?.label')
+  && summarySurface.includes('indicatorReference(item,source)')
 ) pass('Resumo executivo protege referências opcionais com optional chaining.');
 else fail('Resumo executivo possui referência opcional sem proteção.');
 

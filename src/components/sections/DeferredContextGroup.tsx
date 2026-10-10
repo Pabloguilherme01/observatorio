@@ -2,11 +2,9 @@ import { useLanguageMode } from '../../context/LanguageModeContext';
 import { FreshnessBanner } from './FreshnessBanner';
 import { SnapshotChanges } from './SnapshotChanges';
 import { ContextComparison } from './ContextComparison';
-import { ElectoralProfile } from './ElectoralProfile';
 import { DemographicDynamic } from './DemographicDynamic';
 import { TransportCalculator } from '../TransportCalculator';
 import { SanitationHealthSection } from './SanitationHealthSection';
-import { QuickQuiz } from './QuickQuiz';
 
 export default function DeferredContextGroup() {
   const { mode } = useLanguageMode();
@@ -18,8 +16,6 @@ export default function DeferredContextGroup() {
     {!summary && <DemographicDynamic />}
     {!summary && <TransportCalculator />}
     {!summary && <SanitationHealthSection />}
-    {!summary && <QuickQuiz />}
-    {!summary && <ElectoralProfile />}
 
     {technical && <SnapshotChanges />}
     {technical && <ContextComparison />}

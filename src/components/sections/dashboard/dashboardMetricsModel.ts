@@ -1,4 +1,5 @@
-import { Activity, Gauge, Map, Users } from 'lucide-react';
+import { Droplets, Gauge, Map, Users } from 'lucide-react';
+import { indicatorReference } from '../../../lib/indicatorReference';
 import { observatorioData as d } from '../../../data/observatorioData';
 import { formatBudgetCurrency, formatNumber, formatPercent } from '../../../utils/formatters';
 
@@ -10,6 +11,7 @@ interface MetricDetail {
   readonly icon: typeof Users;
   readonly sourceId: string;
   readonly referenceDate?: string;
+  readonly referenceLabel?: string;
   readonly status?: string;
   readonly note?: string;
   readonly nature: string;
@@ -22,10 +24,7 @@ export function buildDashboardMetricsModel() {
   const population2022 = d.populationSeries.find(p => p.year === 2022)?.value ?? 0;
   const population2026 = d.populationSeries.find(p => p.year === 2026)?.value ?? 0;
   const populationGrowthPct = population2022 ? ((population2026 - population2022) / population2022) * 100 : 0;
-  const electorateShare = population2026 ? (d.electoral.electorate / population2026) * 100 : 0;
-  const electorate2022 = d.electoral.electorate2022 ?? 0;
   const electorate2026 = d.electoral.electorate;
-  const electorateGrowthPct = electorate2022 ? ((electorate2026 - electorate2022) / electorate2022) * 100 : 0;
   const consolidatedElectorate = d.electoral.tseConsolidated ?? null;
   const municipalIndicator = (id: string) => d.indicators.find(i => i.id === id)?.value ?? 0;
   const indicatorMeta = (id: string) => d.indicators.find(i => i.id === id);
@@ -79,8 +78,12 @@ export function buildDashboardMetricsModel() {
 
   const metricDetails: readonly MetricDetail[] = [
     { label: 'Variação da população', value: '+' + formatPercent(populationGrowthPct, 2), caption: formatNumber(population2022) + ' → ' + formatNumber(population2026), simpleExplanation: 'Mudança percentual da população entre 2022 e 2026.', icon: Users, sourceId: 'ibge-estimativas-2026', referenceDate: sourceReferenceDate('ibge-estimativas-2026'), nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2022 → 2026' },
-    { label: 'Variação do eleitorado', value: '+' + formatPercent(electorateGrowthPct, 2), caption: formatNumber(electorate2022) + ' → ' + formatNumber(electorate2026), simpleExplanation: 'Mudança percentual do eleitorado entre os registros disponíveis.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE 2022 → 2026' },
-    { label: 'Eleitorado / população', value: formatPercent(electorateShare, 2), caption: 'relação estatística', simpleExplanation: 'Razão entre o eleitorado registrado e a população estimada. Não mede comparecimento.', icon: Activity, sourceId: 'tse-eleitorado-2026', referenceDate: d.electoral.snapshotDate, nature: 'Derivado', sourceLabel: 'Cálculo · TSE ÷ IBGE' },
+    ...['water-access-2024', 'public-sewer-service-2024'].flatMap(id => {
+      const item = indicatorMeta(id);
+      if (!item) return [];
+      const source = sourceMeta(item.sourceId);
+      return [{ label: item.label, value: formatPercent(Number(item.value), 1), caption: 'percentual publicado pelo SINISA', simpleExplanation: id.startsWith('water') ? 'Acesso à água no ano-base publicado. Não informa a continuidade do abastecimento.' : 'Acesso ao serviço público de esgoto. Não equivale a percentual de esgoto tratado.', icon: Droplets, sourceId: item.sourceId, referenceDate: item.referenceDate, referenceLabel: indicatorReference(item, source).label, status: item.status, note: item.note, nature: 'Observação', sourceLabel: source?.label ?? 'Fonte não informada' }];
+    }),
     { label: 'Densidade demográfica', value: formatNumber(density, 1) + ' hab/km²', caption: 'população ÷ área', simpleExplanation: 'Média estimada de habitantes por quilômetro quadrado.', icon: Gauge, sourceId: 'ibge-estimativas-2026', referenceDate: sourceReferenceDate('ibge-estimativas-2026'), nature: 'Derivado', sourceLabel: 'Cálculo · IBGE 2026' },
     { label: 'Área territorial', value: formatNumber(area, 3) + ' km²', caption: 'base territorial', simpleExplanation: 'Área usada nos cálculos de densidade e contexto municipal.', icon: Map, sourceId: 'ibge-cidades-2026', referenceDate: indicatorMeta('area')?.referenceDate ?? sourceReferenceDate('ibge-cidades-2026'), nature: 'Observação', sourceLabel: 'IBGE · perfil municipal' },
   ];

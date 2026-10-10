@@ -3,7 +3,8 @@ const DashboardMetrics = lazy(() => import('../components/sections/DashboardMetr
 import { Header } from '../components/layout/Header';
 import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { PostElectionHero } from '../components/sections/PostElectionHero';
-const ResultsLiveBanner = lazy(() => import('../components/sections/ResultsLiveBanner').then(module => ({ default: module.ResultsLiveBanner })));
+import { SupplementaryHub } from '../components/sections/SupplementaryHub';
+import '../assets/styles/city-purpose.css';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
@@ -23,6 +24,8 @@ const loadContextGroup = () => import('../components/sections/DeferredContextGro
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
 const loadElectionGroup = () => import('../components/sections/DeferredElectionGroup');
 const loadPublicDataGroup = () => import('../components/sections/DeferredPublicDataGroup');
+const loadArchiveGroup = () => import('../components/sections/DeferredArchiveGroup');
+const loadLearningGroup = () => import('../components/sections/DeferredLearningGroup');
 
 function Deferred({ children }: { readonly children: ReactNode }) {
   return (
@@ -205,10 +208,12 @@ function DeferredBlock({
   loader,
   anchorIds,
   errorLabel,
+  activateOnScroll = true,
 }: {
   readonly loader: () => Promise<{ default: ComponentType }>;
   readonly anchorIds: readonly string[];
   readonly errorLabel: string;
+  readonly activateOnScroll?: boolean;
 }) {
   const [ready, setReady] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -240,7 +245,7 @@ function DeferredBlock({
 
     if (anchorIds.includes(initialHash)) {
       activate();
-    } else {
+    } else if (activateOnScroll) {
       const node = ref.current;
       if (!node || typeof IntersectionObserver === 'undefined') {
         activate();
@@ -256,11 +261,11 @@ function DeferredBlock({
     }
 
     return cleanup;
-  }, [anchorIds]);
+  }, [anchorIds, activateOnScroll]);
 
   const Component = useMemo(() => lazy(loader), [loader]);
 
-  if (!ready) return <div ref={ref} className="min-h-24" aria-hidden="true" />;
+  if (!ready) return activateOnScroll ? <div ref={ref} className="min-h-24" aria-hidden="true" /> : null;
 
   return (
     <div ref={ref} className="deferred-section">
@@ -321,12 +326,14 @@ export function App() {
             <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><Deferred><DashboardMetrics /></Deferred></SectionErrorBoundary></div>
-            <SectionErrorBoundary label="Resultados oficiais"><Deferred><ResultsLiveBanner /></Deferred></SectionErrorBoundary>
-            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto, eleitorado e ferramentas" anchorIds={['contexto', 'eleitorado', 'demografia', 'transporte', 'saude', 'quiz']} /></div>
-            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Eleitoral e participação" anchorIds={['politica', 'candidaturas', 'linha-do-tempo', 'eleitoral360', 'acao']} /></div>
+            <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto municipal e ferramentas" anchorIds={['contexto', 'demografia', 'transporte', 'saude']} /></div>
+            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Serviços públicos" anchorIds={['acao']} /></div>
             <div className="mode-scope mode-scope-election"><DeferredBlock loader={loadElectionGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
             <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados']} /></div>
             <div className="mode-scope mode-scope-evidence"><SectionErrorBoundary label="Qualidade e evidências"><DeferredEvidenceGroup /></SectionErrorBoundary></div>
+            <SupplementaryHub />
+            <DeferredBlock loader={loadArchiveGroup} errorLabel="Registros eleitorais" anchorIds={['resultados', 'eleitorado', 'eleitoral360', 'candidaturas', 'politica', 'linha-do-tempo']} activateOnScroll={false} />
+            <DeferredBlock loader={loadLearningGroup} errorLabel="Quiz educativo" anchorIds={['quiz']} activateOnScroll={false} />
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>
           <SectionErrorBoundary label="Inspetor de dados"><Deferred><DataInspector /></Deferred></SectionErrorBoundary>

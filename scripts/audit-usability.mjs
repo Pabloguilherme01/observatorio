@@ -123,6 +123,7 @@ if (civic.includes('Consultar situação eleitoral') && civic.includes('Emitir c
 
 const mountedSources = [
   app,
+  texts.find(item => item.file === 'src/components/sections/DeferredLearningGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredCivicGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredPublicDataGroup.tsx')?.content ?? '',
   texts.find(item => item.file === 'src/components/sections/DeferredEvidenceGroup.tsx')?.content ?? '',
@@ -167,7 +168,7 @@ const mobileNav = texts.find(item => item.file === 'src/components/layout/Mobile
 if (!mobileNav.includes('Navegação principal no celular')) fail('Navegação mobile rotulada ausente');
 else pass('navegação mobile rotulada e integrada ao fluxo principal');
 const quizMenuOnly =
-  mobileNav.includes("const moreItems = [guidedItem, ...navigation.filter(item => item.group === 'more')];") &&
+  mobileNav.includes("const moreItems = [guidedItem, ...navigation.filter(item => !primaryItems.some(primary => primary.id === item.id))];") &&
   !mobileNav.includes('quizItem') &&
   !mobileNav.includes("label: 'Quiz'");
 if (!quizMenuOnly) fail('Quiz deve possuir uma única entrada no menu Mais da navegação mobile');

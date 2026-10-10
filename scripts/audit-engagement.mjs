@@ -119,12 +119,12 @@ must(electoral360Ui.includes('Captura com mais de 24h') && electoral360Ui.includ
 must(electoral360Ui.includes('className={`mb-4 rounded-2xl border ${snapshotWarning ?') && !electoral360Ui.includes('className=\"mb-4 rounded-2xl border ${snapshotWarning'), 'alerta de frescor do Eleitoral 360 usa interpolação JSX real');
 must(app.includes('id="main-content"') && (app.match(/skip-link/g) || []).length <= 2, 'acessibilidade mantém um único caminho de salto funcional');
 must(!(read('src/components/sections/PostElectionHero.tsx')).includes('Modo Eleição') && !(read('src/components/sections/PostElectionHero.tsx')).includes('electionMode'), 'Modo Eleição cosmético permanece removido');
-must((read('src/components/sections/PostElectionHero.tsx')).includes('hero-reference-card') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>Eleitorado</small><strong>TSE</strong>'), 'cards hero exibem fonte diretamente');
-must(executiveSurface.includes('Orçamento planejado por habitante') && executiveSurface.includes('budgetPerCapita') && executiveSurface.includes('budget / population'), 'Resumo calcula orçamento planejado por habitante');
+must((read('src/components/sections/PostElectionHero.tsx')).includes('hero-reference-card') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>População</small><strong>IBGE</strong>') && (read('src/components/sections/PostElectionHero.tsx')).includes('<small>Orçamento</small><strong>LOA municipal</strong>'), 'cards hero exibem fonte diretamente');
+must(executiveSurface.includes('Orçamento planejado por habitante') && executiveSurface.includes('budget-per-capita-') && executiveSurface.includes('item.value'), 'Resumo usa orçamento planejado por habitante do registro estruturado');
 must(
-  executiveSurface.includes('budgetPerCapitaIndicator') &&
-  executiveSurface.includes("status: budgetPerCapitaIndicator?.status ?? 'derived'") &&
-  executiveSurface.includes("note: budgetPerCapitaIndicator?.note ?? 'Razão de planejamento; não representa gasto executado por pessoa.'"),
+  executiveSurface.includes('budget-per-capita-') &&
+  executiveSurface.includes('formatIndicatorStatus(item.status)') &&
+  executiveSurface.includes('note:item.note'),
   'indicador per capita explicita fórmula e natureza'
 );
 must(read('src/components/sections/PostElectionHero.tsx').includes('<small>Transporte</small>') && read('src/components/sections/PostElectionHero.tsx').includes('Tarifa semiurbana · Entorno-DF'), 'tarifa do hero identifica o contexto do transporte');
@@ -156,10 +156,10 @@ must(
 );
 const executiveSummary = executiveSurface;
 must(
-  executiveSummary.includes("filter(point => point.kind === 'estimate')") &&
-  executiveSummary.includes('budgetPerCapitaIndicator') &&
-  executiveSummary.includes('sanitationIndicator') &&
-  executiveSummary.includes('dashboard-meta-chip') &&
+  executiveSummary.includes('d.populationSeries') &&
+  executiveSummary.includes('budget-per-capita-') &&
+  executiveSummary.includes('public-sewer-service-') &&
+  executiveSummary.includes('indicatorReference(item,source)') &&
   !executiveSummary.includes('find(point => point.year === 2026)') &&
   !executiveSummary.includes("'Cálculo · LOA 2026 ÷ IBGE 2026'"),
   'resumo executivo deriva anos e metadados do dataset estruturado'
@@ -197,5 +197,5 @@ const transportDomain = read('src/lib/transport.ts');
 must(transportSurface.includes('observatorio:transport-preferences:v1') && transportSurface.includes('JSON.parse'), 'simulador persiste preferências com cache local opcional');
 must(transportDomain.includes('Number.isFinite') && transportDomain.includes('clamp('), 'simulador valida números finitos e limites lógicos');
 must(read('src/components/ProjectTrustPanel.tsx').includes('dadosabertos.tse.jus.br') && read('src/components/ProjectTrustPanel.tsx').includes('Nota de neutralidade'), 'painel oferece validação oficial e nota de neutralidade');
-must(executiveSurface.includes('Fonte pública') && executiveSurface.includes('Derivado'), 'resumo exibe badges de proveniência');
+must(executiveSurface.includes('formatIndicatorStatus(item.status)') && executiveSurface.includes('fact.badge'), 'resumo exibe badges de proveniência');
 must(read('public/404.html').includes('data-obs-spa-fallback') && read('public/404.html').includes('encodeURIComponent') && read('public/404.html').includes("relative.indexOf('api/')") && read('index.html').includes('obsSpaRestored'), 'fallback SPA preserva rota virtual sem capturar APIs ou assets');

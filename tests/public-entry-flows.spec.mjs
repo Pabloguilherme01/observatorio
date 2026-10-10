@@ -10,7 +10,7 @@ async function openSection(page, id) {
 test.describe('Observatório smoke flows', () => {
   test('carrega, troca modo de leitura e navega por seções principais', async ({ page }) => {
     await page.goto('./');
-    await expect(page).toHaveTitle(/Observatório Eleitoral — Águas Lindas de Goiás 2026/);
+    await expect(page).toHaveTitle(/Observatório Público — Águas Lindas de Goiás/);
       await expect(page.locator('#root')).toBeVisible();
     const duplicateIds = await page.evaluate(() => {
     const counts = new Map();

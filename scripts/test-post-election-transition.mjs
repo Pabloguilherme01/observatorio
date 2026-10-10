@@ -11,7 +11,7 @@ const packageJson = JSON.parse(read('package.json'));
 
 const checks = [
   [!hero.includes('useCountdown'), 'hero não depende mais de contagem regressiva'],
-  [hero.includes('resultado do 1º turno') || hero.includes('pós-1º turno'), 'hero identifica explicitamente o estado pós-1º turno'],
+  [hero.includes('city-purpose') && !hero.includes('hero-election-panel') && read('src/components/sections/DeferredArchiveGroup.tsx').includes('<ResultsLiveBanner />'), 'entrada municipal preserva resultados em acervo sob demanda'],
   [results.includes('id="resultados"'), 'resultados possuem âncora pública'],
   [results.includes('Resultado oficial') && results.includes('registro histórico'), 'resultado completo é apresentado como registro histórico'],
   [results.includes('conferidas pelo Observatório com a chave pública do TSE') && results.includes('verificação técnica incompleta'), 'status identifica o verificador e preserva a ressalva de verificação incompleta'],

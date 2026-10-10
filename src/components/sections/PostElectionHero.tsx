@@ -1,4 +1,4 @@
-import { ArrowRight, Database, ExternalLink, Search } from 'lucide-react';
+import { ArrowRight, Database, Search } from 'lucide-react';
 import { observatorioData as d } from '../../data/observatorioData';
 import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
@@ -18,7 +18,7 @@ export function PostElectionHero() {
         <div className="hero-topline">
           <div className="hero-badges">
             <Badge>{technical ? EDITION + ' · arquivo + método' : 'Dados públicos · fontes rastreáveis'}</Badge>
-            {technical && <Badge>Resultados consolidados</Badge>}
+            {technical && <Badge>Dados e métodos</Badge>}
           </div>
           <span className="hero-updated"><Database aria-hidden="true" /> Conjunto publicado em {updatedAt}</span>
         </div>
@@ -30,10 +30,10 @@ export function PostElectionHero() {
               {summary
                 ? 'Entenda Águas Lindas de Goiás, encontre serviços e acompanhe o uso do dinheiro público. Cada número traz sua origem e seu período.'
                 : technical
-                  ? 'Uma visão completa do ciclo eleitoral, com resultados oficiais e fontes para quem quiser conferir cada detalhe.'
+                  ? 'Dados municipais com período, fonte e método para acompanhar a cidade, seus serviços e o uso dos recursos públicos.'
                   : guided
-                    ? 'Entenda os resultados e os números da cidade passo a passo, sem precisar conhecer termos técnicos.'
-                    : 'Dados públicos de Águas Lindas organizados para você consultar, entender e conferir depois da eleição.'}
+                    ? 'Aprenda a ler os números da cidade passo a passo e encontre o canal público adequado à sua necessidade.'
+                    : 'Entenda os indicadores de Águas Lindas, simule seu transporte e consulte os serviços e as contas públicas.'}
             </p>
             <div className="hero-actions">
               <a href="#descubra" className="hero-action primary">Explorar a cidade <ArrowRight aria-hidden="true" /></a>
@@ -46,32 +46,22 @@ export function PostElectionHero() {
             {technical && (
               <div className="hero-reference-strip" aria-label="Referências rápidas" role="list">
                 <span className="hero-reference-card" role="listitem"><small>População</small><strong>IBGE</strong></span>
-                <span className="hero-reference-card" role="listitem"><small>Eleitorado</small><strong>TSE</strong></span>
+                <span className="hero-reference-card" role="listitem"><small>Orçamento</small><strong>LOA municipal</strong></span>
                 <span className="hero-reference-card" role="listitem"><small>Transporte</small><strong>Tarifa semiurbana · Entorno-DF</strong></span>
               </div>
             )}
           </div>
-          <div className="hero-election-panel">
-            <div className="hero-election-card">
-              <div className="hero-election-heading">
-                <div>
-                  <span>Estado do ciclo</span>
-                  <strong>Eleição 2026 · resultado de Goiás definido no 1º turno</strong>
-                </div>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-slate-400">
-                O resultado do 1º turno de 4 de outubro já faz parte do histórico. Em Goiás, o governo estadual foi definido no 1º turno. Se houver 2º turno para outros cargos, o Observatório tratará essa nova apuração separadamente.
-              </p>
-              <div className="mt-4 grid gap-2 text-xs text-slate-400">
-                <span>• Registro histórico do 1º turno</span>
-                <span>• Fonte oficial identificada</span>
-                <span>• Dados da cidade separados do resultado eleitoral</span>
-              </div>
-              <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/daniel-vilela-mdb-e-eleito-governador-de-goias-no-1o-turno" target="_blank" rel="noopener noreferrer" className="hero-official-link">
-                TSE · resultado de Goiás no 1º turno <ExternalLink aria-hidden="true" />
-              </a>
-            </div>
-          </div>
+          <aside className="city-purpose" aria-labelledby="city-purpose-title">
+            <span className="civic-eyebrow">O propósito do Observatório</span>
+            <h2 id="city-purpose-title">Informação que ajuda no dia a dia.</h2>
+            <p>Um ponto de partida para entender Águas Lindas e encontrar informações públicas verificáveis.</p>
+            <ol>
+              <li><strong>Consulte um assunto</strong><span>Serviços, mobilidade, saúde, saneamento e orçamento.</span></li>
+              <li><strong>Confira o período e a fonte</strong><span>Estimativa, planejamento e execução têm significados diferentes.</span></li>
+              <li><strong>Continue no canal responsável</strong><span>Use o órgão oficial para atendimento e informações atualizadas.</span></li>
+            </ol>
+            <a href="#dados">Pesquisar o catálogo <ArrowRight aria-hidden="true" /></a>
+          </aside>
         </div>
       </div>
     </section>

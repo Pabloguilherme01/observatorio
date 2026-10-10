@@ -1,7 +1,0 @@
-/* Canonical summary polish layers.
- * Keep imports ordered to preserve the original cascade.
- */
-@import './summary-polish/foundation.css';
-@import './summary-polish/accessibility-public.css';
-@import './summary-polish/mobile-interaction.css';
-@import './summary-polish/final-system.css';

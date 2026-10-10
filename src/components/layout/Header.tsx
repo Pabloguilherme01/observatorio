@@ -171,7 +171,7 @@ export function Header() {
       <header className="site-header sticky top-0 z-40 border-b border-white/10 bg-[#0b1117]/90 backdrop-blur-xl light:bg-[#f5f7fa]/95" data-theme={theme}>
         <div className="site-header-inner mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5 sm:px-6">
           <a href="#descubra" className="site-brand min-w-0 flex-1 md:flex-none" aria-label="Observatório, início">
-            <span className="block truncate text-[9px] font-black uppercase tracking-[0.22em] text-slate-500">Águas Lindas · 2026</span>
+            <span className="block truncate text-[9px] font-black uppercase tracking-[0.22em] text-slate-500">Águas Lindas de Goiás</span>
             <span className="my-1 block h-px w-8 bg-slate-600/70" aria-hidden="true" />
             <span className="block truncate text-[15px] font-black tracking-tight text-white light:text-slate-900">Observatório</span>
           </a>

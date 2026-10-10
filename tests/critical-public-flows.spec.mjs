@@ -3,7 +3,7 @@ import { test, expect } from 'playwright/test';
 test.describe('Fluxos públicos críticos', () => {
   test('entrada pública carrega e expõe o controle de leitura adequado ao dispositivo', async ({ page, isMobile }) => {
     await page.goto('./');
-    await expect(page).toHaveTitle(/Observatório Eleitoral — Águas Lindas de Goiás 2026/);
+    await expect(page).toHaveTitle(/Observatório Público — Águas Lindas de Goiás/);
     await expect(page.locator('#root')).toBeVisible();
     await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
 
