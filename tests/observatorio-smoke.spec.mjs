@@ -1362,7 +1362,7 @@ test('painel de dados mostra cobertura dos indicadores e notas metodológicas', 
   await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
   await openSection(page, 'dados');
   const summary = page.getByLabel('Resumo do conjunto de dados');
-  await expect(summary.getByText('Indicadores com data de referência', { exact: true })).toBeVisible();
+  await expect(summary.getByText('Indicadores com período informado', { exact: true })).toBeVisible();
   await expect(summary.getByText('Indicadores com nota metodológica', { exact: true })).toBeVisible();
   await expect(summary.getByText('Cobertura temporal das fontes', { exact: true })).toBeVisible();
 });
