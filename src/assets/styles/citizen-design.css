@@ -38,7 +38,22 @@
 .citizen-saved-list a { display:flex; gap:8px; align-items:center; min-height:44px; color:#7dd3fc; font-size:15px; font-weight:650; text-decoration:underline; overflow-wrap:anywhere; }
 .citizen-saved-list a svg { width:16px; height:16px; flex-shrink:0; }
 .citizen-saved-list button { min-height:44px; padding:8px 12px; border:1px solid #64748b; border-radius:8px; font-size:14px; flex-shrink:0; }
-.citizen-save-status:empty { display:none; }
+.citizen-save-status:empty,.citizen-share-status:empty { display:none; }
+.citizen-saved-filter { display:flex; align-items:center; flex-wrap:wrap; gap:8px; min-height:44px; margin-top:16px; color:#e2e8f0; font-size:15px; }
+.citizen-saved-filter input { width:20px; height:20px; accent-color:#075985; }
+html.light .citizen-saved-filter { color:#172b40; }
+.citizen-list-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.citizen-list-actions button { display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; padding:10px 16px; border:1px solid #64748b; border-radius:10px; color:inherit; font-size:15px; font-weight:650; }
+.citizen-list-actions button:disabled { opacity:.65; cursor:wait; }
+.citizen-list-actions svg { width:18px; height:18px; flex-shrink:0; }
+.citizen-manual-copy { display:grid; gap:8px; margin-top:14px; font-size:15px; }
+.citizen-manual-copy textarea { width:100%; min-width:0; padding:12px; border:1px solid #64748b; border-radius:10px; background:#0c1725; color:#e2e8f0; font-size:16px; line-height:1.6; }
+html.light .citizen-manual-copy textarea { background:#fff; color:#172b40; }
+.citizen-catalog-actions { display:flex; flex-wrap:wrap; gap:10px; }
+.citizen-catalog-link-status { color:#cbd5e1; font-size:15px; line-height:1.6; margin-top:12px; }
+.citizen-catalog-link-status:empty { display:none; }
+html.light .citizen-catalog-link-status { color:#475569; }
+#acao :is(input,select,button):focus-visible,.citizen-manual-copy textarea:focus-visible { outline:3px solid #38bdf8; outline-offset:3px; }
 .citizen-preparation { border-top:1px solid #44566b; margin-top:18px; padding-top:14px; }
 .citizen-preparation summary { cursor:pointer; padding-block:10px; font-size:16px; font-weight:700; }
 .citizen-preparation label { display:flex; align-items:flex-start; gap:10px; margin-block:12px; font-size:15px; line-height:1.6; }

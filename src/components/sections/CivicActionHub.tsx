@@ -19,22 +19,23 @@ export function CivicActionHub() {
   const [serviceQuery, setServiceQuery] = useState(getPublicServiceQuery);
   const [queryLinkCopied, setQueryLinkCopied] = useState(false);
   const [showAllServices, setShowAllServices] = useState(false);
+  const [onlySaved, setOnlySaved] = useState(false);
   const [topic, setTopic] = useState<PublicServiceTopic>(getTopic);
   const visiblePriority = technical ? priorityPublicServices.slice(0, 8) : priorityPublicServices.slice(0, 6);
   const normalizedServiceQuery = normalizePublicServiceQuery(serviceQuery);
   const matchingServices = allMunicipalServices.filter(service =>
-    (topic === 'Todos' || publicServiceTopic(service) === topic) && matchesPublicService(service, serviceQuery),
+    (!onlySaved || saved.includes(service.title)) && (topic === 'Todos' || publicServiceTopic(service) === topic) && matchesPublicService(service, serviceQuery),
   );
-  const visibleMunicipalServices = normalizedServiceQuery || topic !== 'Todos' || showAllServices
+  const visibleMunicipalServices = normalizedServiceQuery || topic !== 'Todos' || showAllServices || onlySaved
     ? matchingServices : visiblePriority;
 
 
   useEffect(() => {
     const onServiceSearch = (event: Event) => {
       const detail = (event as CustomEvent<string>).detail;
-      if (typeof detail === 'string') { setServiceQuery(detail); setTopic('Todos'); }
+      if (typeof detail === 'string') { setServiceQuery(detail); setTopic('Todos'); setOnlySaved(false); }
     };
-    const syncFromLocation = () => { setServiceQuery(getPublicServiceQuery()); setTopic(getTopic()); };
+    const syncFromLocation = () => { setServiceQuery(getPublicServiceQuery()); setTopic(getTopic()); setOnlySaved(false); };
     window.addEventListener('observatorio:public-service-search', onServiceSearch);
     window.addEventListener('popstate', syncFromLocation);
     window.addEventListener('hashchange', syncFromLocation);
@@ -116,12 +117,13 @@ export function CivicActionHub() {
             </button>
           ))}
         </div>
-        {(serviceQuery || topic !== 'Todos') && (
+        <label className="citizen-saved-filter"><input type="checkbox" checked={onlySaved} onChange={event => setOnlySaved(event.target.checked)} /> Apenas meus serviços salvos <span>({saved.length})</span></label>
+        {(serviceQuery || topic !== 'Todos' || onlySaved) && (
           <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
             <p className="text-[11px] text-slate-500" role="status" aria-live="polite" aria-atomic="true">
-              {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'} {serviceQuery.trim() ? `para “${serviceQuery.trim()}”` : ''}{topic !== 'Todos' ? ` em ${topic}` : ''}.
+              {visibleMunicipalServices.length} serviço{visibleMunicipalServices.length === 1 ? '' : 's'} encontrado{visibleMunicipalServices.length === 1 ? '' : 's'} {serviceQuery.trim() ? `para “${serviceQuery.trim()}”` : ''}{topic !== 'Todos' ? ` em ${topic}` : ''}{onlySaved ? ' entre seus serviços salvos' : ''}.
             </p>
-            <button
+            {!onlySaved && <button
               type="button"
               onClick={copyServiceSearchLink}
               className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-white/10 px-3 text-[11px] font-bold text-sky-300 transition hover:bg-white/5 light:border-slate-200 light:text-sky-700 light:hover:bg-slate-100"
@@ -129,25 +131,25 @@ export function CivicActionHub() {
             >
               <Link2 className="h-3.5 w-3.5" aria-hidden="true" />
               {queryLinkCopied ? 'Link copiado' : 'Copiar link desta busca'}
-            </button>
+            </button>}
             <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
               {queryLinkCopied ? 'Link da busca de serviços copiado.' : ''}
             </span>
           </div>
         )}
 
-        {serviceQuery && visibleMunicipalServices.length === 0 && (
+        {(serviceQuery || topic !== 'Todos' || onlySaved) && visibleMunicipalServices.length === 0 && (
           <div className="mt-4 rounded-2xl border border-amber-300/15 bg-amber-300/[0.035] p-4" role="note">
-            <strong className="block text-sm text-amber-100 light:text-amber-900">Nenhum serviço corresponde a todos os termos.</strong>
-            <p className="mt-1 text-xs leading-5 text-slate-500">A busca combina os termos principais com o assunto selecionado. Tente uma necessidade mais curta ou escolha uma busca frequente:</p>
+            <strong className="block text-sm text-amber-100 light:text-amber-900">{onlySaved && saved.length === 0 ? 'Você ainda não salvou serviços.' : 'Nenhum serviço corresponde a todos os termos e filtros.'}</strong>
+            <p className="mt-1 text-sm leading-6 text-slate-500">{onlySaved && saved.length === 0 ? 'Abra os serviços principais e use “Salvar serviço” nos canais que você quer guardar. Você também pode começar por uma necessidade abaixo.' : 'A busca combina o texto, o assunto e a seleção de serviços salvos. Limpe os filtros ou escolha uma necessidade abaixo para consultar o catálogo completo.'}</p>
             <div className="mt-3 flex flex-wrap gap-2" aria-label="Buscas frequentes por serviço">
               {['medicamentos', 'emprego', 'creches', 'obras', 'contratos', 'ouvidoria'].map(suggestion => (
-                <button key={suggestion} type="button" onClick={() => { setServiceQuery(suggestion); setTopic('Todos'); }} className="min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-200 transition hover:bg-white/5 light:border-slate-200 light:text-sky-800 light:hover:bg-white">
+                <button key={suggestion} type="button" onClick={() => { setServiceQuery(suggestion); setTopic('Todos'); setOnlySaved(false); }} className="min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-200 transition hover:bg-white/5 light:border-slate-200 light:text-sky-800 light:hover:bg-white">
                   {suggestion[0].toUpperCase() + suggestion.slice(1)}
                 </button>
               ))}
             </div>
-            <button type="button" onClick={() => { setServiceQuery(''); setTopic('Todos'); }} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
+            <button type="button" onClick={() => { setServiceQuery(''); setTopic('Todos'); setOnlySaved(false); }} className="mt-2 min-h-10 rounded-xl border border-white/10 px-3 text-xs font-bold text-sky-300 light:border-slate-200 light:text-sky-700">Ver serviços principais</button>
           </div>
         )}
 
@@ -157,7 +159,7 @@ export function CivicActionHub() {
           ))}
         </div>
 
-        {!serviceQuery && topic === 'Todos' && <button type="button" onClick={() => setShowAllServices(value => !value)} aria-expanded={showAllServices} className="mt-4 min-h-11 rounded-xl border border-sky-300/30 px-4 text-sm font-bold text-sky-200 light:border-sky-700 light:text-sky-800">
+        {!serviceQuery && topic === 'Todos' && !onlySaved && <button type="button" onClick={() => setShowAllServices(value => !value)} aria-expanded={showAllServices} className="mt-4 min-h-11 rounded-xl border border-sky-300/30 px-4 text-sm font-bold text-sky-200 light:border-sky-700 light:text-sky-800">
           {showAllServices ? 'Mostrar serviços principais' : `Ver todos os ${allMunicipalServices.length} serviços municipais`}
         </button>}
       </div>

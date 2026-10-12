@@ -76,15 +76,22 @@ function alignHashScroll(hash: string) {
 function stabilizeHistoryScroll(hash: string) {
   if (!hash) return;
   scrollToHashWhenReady(hash);
-
+  let cancelled = false;
+  const timers: number[] = [];
+  const intentEvents = ['pointerdown', 'touchstart', 'wheel', 'keydown'] as const;
+  const cleanup = () => {
+    cancelled = true;
+    timers.forEach(timer => window.clearTimeout(timer));
+    intentEvents.forEach(event => window.removeEventListener(event, cleanup, true));
+  };
   const align = () => {
-    if (window.location.hash.slice(1) !== hash) return;
+    if (cancelled || window.location.hash.slice(1) !== hash) return;
     alignHashScroll(hash);
   };
-
+  intentEvents.forEach(event => window.addEventListener(event, cleanup, { capture: true, passive: true }));
   window.requestAnimationFrame(() => window.requestAnimationFrame(align));
-  window.setTimeout(align, 360);
-  window.setTimeout(align, 900);
+  timers.push(window.setTimeout(align, 360));
+  timers.push(window.setTimeout(() => { align(); cleanup(); }, 900));
 }
 
 function openDeepLinkedInspectorWhenReady() {
