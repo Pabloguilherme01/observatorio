@@ -17,6 +17,10 @@ const readStatus = () => {
   const value = getSearchParam(urlParamKeys.indicatorStatus) ?? '';
   return ['published', 'historical', 'snapshot', 'planned', 'derived'].includes(value) ? value : 'all';
 };
+const readOrder = () => {
+  const value = getSearchParam(urlParamKeys.indicatorOrder);
+  return value === 'name' || value === 'year' ? value : 'catalog';
+};
 const readMissingReference = () => getSearchParam(urlParamKeys.indicatorMissingReference) === '1';
 const formatValue = (item: MunicipalIndicator) => typeof item.value === 'string' ? item.value
   : item.unit === '%' ? formatPercent(item.value, 1)
@@ -27,11 +31,12 @@ export function IndicatorCatalog() {
   const [query, setQuery] = useState(readQuery);
   const [status, setStatus] = useState(readStatus);
   const [missingReference, setMissingReference] = useState(readMissingReference);
+  const [order, setOrder] = useState(readOrder);
   const [linkStatus, setLinkStatus] = useState('');
   const { mode } = useLanguageMode();
   const [limit, setLimit] = useState(12);
   useEffect(() => {
-    const restore = () => { setQuery(readQuery()); setStatus(readStatus()); setMissingReference(readMissingReference()); setLimit(12); };
+    const restore = () => { setQuery(readQuery()); setStatus(readStatus()); setMissingReference(readMissingReference()); setOrder(readOrder()); setLimit(12); };
     const onNavigate = (event: Event) => { if ((event as CustomEvent<string>).detail === 'dados') restore(); };
     window.addEventListener('popstate', restore);
     window.addEventListener('hashchange', restore);
@@ -43,23 +48,30 @@ export function IndicatorCatalog() {
     };
   }, []);
   useEffect(() => {
-    if (window.location.hash === '#dados') replaceCurrentUrl({ [urlParamKeys.indicatorQuery]: query.trim() || null, [urlParamKeys.indicatorStatus]: status === 'all' ? null : status, [urlParamKeys.indicatorMissingReference]: missingReference ? '1' : null });
+    if (window.location.hash === '#dados') replaceCurrentUrl({ [urlParamKeys.indicatorQuery]: query.trim() || null, [urlParamKeys.indicatorStatus]: status === 'all' ? null : status, [urlParamKeys.indicatorOrder]: order === 'catalog' ? null : order, [urlParamKeys.indicatorMissingReference]: missingReference ? '1' : null });
     setLinkStatus('');
-  }, [query, status, missingReference]);
+  }, [query, status, missingReference, order]);
   const copySelection = async () => {
-    const url = buildCanonicalUrl({ [urlParamKeys.indicatorQuery]: query.trim() || null, [urlParamKeys.indicatorStatus]: status === 'all' ? null : status, [urlParamKeys.indicatorMissingReference]: missingReference ? '1' : null, [urlParamKeys.readingMode]: mode }, 'dados');
+    const url = buildCanonicalUrl({ [urlParamKeys.indicatorQuery]: query.trim() || null, [urlParamKeys.indicatorStatus]: status === 'all' ? null : status, [urlParamKeys.indicatorOrder]: order === 'catalog' ? null : order, [urlParamKeys.indicatorMissingReference]: missingReference ? '1' : null, [urlParamKeys.readingMode]: mode }, 'dados');
     setLinkStatus(await copyText(url) ? 'Link da seleção copiado.' : 'Não foi possível copiar o link automaticamente.');
   };
   const matches = useMemo(() => {
     const tokens = normalize(query).split(/\s+/).filter(Boolean);
-    return data.indicators.filter(item => {
+    const selected = data.indicators.filter(item => {
       const source = sourceById.get(item.sourceId);
       const text = normalize(`${item.label} ${item.note ?? ''} ${source?.label ?? ''}`);
       return tokens.every(token => text.includes(token))
         && (status === 'all' || item.status === status)
         && (!missingReference || !indicatorReference(item, source).key);
     });
-  }, [query, status, missingReference]);
+    if (order === 'catalog') return selected;
+    const byName = (a: MunicipalIndicator, b: MunicipalIndicator) => a.label.localeCompare(b.label, 'pt-BR');
+    const year = (item: MunicipalIndicator) => {
+      const key = indicatorReference(item, sourceById.get(item.sourceId)).key;
+      return key ? Number(key.split(':')[1].slice(0, 4)) : 0;
+    };
+    return selected.sort((a, b) => order === 'year' ? year(b) - year(a) || byName(a, b) : byName(a, b));
+  }, [query, status, missingReference, order]);
 
   const exportSelection = () => {
     const rows = matches.map(item => {
@@ -83,10 +95,14 @@ export function IndicatorCatalog() {
         <label><span>Natureza do indicador</span><select value={status} onChange={event => { setStatus(event.target.value); setLimit(12); }}>
           <option value="all">Todos os tipos</option><option value="published">Publicado no conjunto</option><option value="historical">Histórico</option><option value="snapshot">Registro datado</option><option value="planned">Planejado</option><option value="derived">Calculado</option>
         </select></label>
+        <label><span>Ordenar indicadores</span><select value={order} onChange={event => { setOrder(event.target.value); setLimit(12); }}>
+          <option value="catalog">Ordem do catálogo</option><option value="name">Nome de A a Z</option><option value="year">Ano de referência mais recente</option>
+        </select></label>
         <label className="catalog-missing"><input type="checkbox" checked={missingReference} onChange={event => { setMissingReference(event.target.checked); setLimit(12); }} /> Apenas sem referência temporal</label>
       </div>
+      {order === 'year' && <p>Ordenação pelo ano de referência, sem comparar valores de unidades diferentes. No mesmo ano, os indicadores seguem o nome; dados sem período informado ficam ao final.</p>}
       <div className="catalog-result-status"><p role="status">{matches.length} de {data.indicators.length} indicadores · exibindo {Math.min(limit, matches.length)}</p>
-        {(query || status !== 'all' || missingReference) && <button type="button" onClick={() => { setQuery(''); setStatus('all'); setMissingReference(false); setLimit(12); }}><X aria-hidden="true" /> Limpar filtros</button>}
+        {(query || status !== 'all' || missingReference || order !== 'catalog') && <button type="button" onClick={() => { setQuery(''); setStatus('all'); setMissingReference(false); setOrder('catalog'); setLimit(12); }}><X aria-hidden="true" /> Limpar filtros</button>}
       </div>
       {matches.length ? <div className="catalog-grid">
         {matches.slice(0, limit).map(item => {

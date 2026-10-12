@@ -3,6 +3,7 @@ export const urlParamKeys = {
   publicServiceTopic: 'assunto',
   inspector: 'dado',
   readingMode: 'leitura',
+  indicatorOrder: 'ordem',
   indicatorQuery: 'indicadores',
   indicatorStatus: 'natureza',
   indicatorMissingReference: 'sem-periodo',
