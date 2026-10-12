@@ -17,3 +17,6 @@ O catálogo mantém assunto, natureza e filtro de referência temporal na URL en
 O conjunto municipal, API v2, valores publicados, fontes, progresso de aprendizado e preferências são preservados. As funcionalidades não dependem de contas, banco de dados ou novas requisições a serviços externos.
 
 Ao retornar por histórico, a página ajusta o destino durante o carregamento. Toque, rolagem ou teclado cancelam os realinhamentos pendentes, preservando a posição escolhida pela pessoa e evitando que um controle se mova durante a interação.
+
+
+O catálogo permite ordenar pelo nome ou pelo ano de referência. A ordenação por ano agrupa Censo, estimativas e registros conforme seu período declarado; dentro do mesmo ano usa o nome, sem inventar precisão mensal ou diária. Referências ausentes ficam ao final. O parâmetro `ordem=name|year` acompanha o link e a ordem das linhas no CSV; valores desconhecidos voltam à ordem original. Limpar filtros também restaura essa ordem.

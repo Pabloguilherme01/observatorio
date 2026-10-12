@@ -169,3 +169,43 @@ test('ferramentas cidadãs são acessíveis e cabem entre 320 e 1920 pixels', as
   const results = await new AxeBuilder({ page }).include('#acao').analyze();
   expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact))).toEqual([]);
 });
+
+test('ordenação por nome acompanha link, recarga e CSV', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async value => { window.__orderCopy = value; } } }));
+  await page.goto('./?leitura=technical#dados');
+  await page.getByLabel('Ordenar indicadores').selectOption('name');
+  const labels = await page.locator('.catalog-card h4').allTextContents();
+  expect(labels.length).toBe(12);
+  expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b, 'pt-BR')));
+  await page.getByRole('button', { name: 'Copiar link da seleção', exact: true }).click();
+  const link = await page.evaluate(() => window.__orderCopy);
+  expect(new URL(link).searchParams.get('ordem')).toBe('name');
+  await page.goto(link);
+  await expect(page.getByLabel('Ordenar indicadores')).toHaveValue('name');
+  await expect(page.locator('.catalog-card h4').first()).toHaveText(labels[0]);
+  const pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Baixar seleção CSV', exact: true }).click();
+  const csv = await readFile(await (await pending).path(), 'utf8');
+  expect(csv.indexOf(labels[0])).toBeLessThan(csv.indexOf(labels[1]));
+  await page.getByRole('button', { name: 'Limpar filtros', exact: true }).click();
+  await expect(page.getByLabel('Ordenar indicadores')).toHaveValue('catalog');
+  await expect.poll(() => new URL(page.url()).searchParams.has('ordem')).toBe(false);
+});
+
+test('ordenação anual mantém referências ausentes ao final e aceita somente opções conhecidas', async ({ page }) => {
+  await page.goto('./?ordem=valor#dados');
+  await expect(page.getByLabel('Ordenar indicadores')).toHaveValue('catalog');
+  await page.getByLabel('Ordenar indicadores').selectOption('year');
+  const more = page.getByRole('button', { name: 'Mostrar mais 12 indicadores', exact: true });
+  while (await more.count()) await more.click();
+  const refs = await page.locator('.catalog-card dl > div:first-child dd').allTextContents();
+  expect(refs.length).toBe(67);
+  const years = refs.map(value => Number(value.match(/\b(20\d{2}|19\d{2})\b/)?.[1] ?? 0));
+  expect(years).toEqual([...years].sort((a, b) => b - a));
+  expect(years.filter(year => year === 0)).toHaveLength(12);
+  await page.reload();
+  await expect(page.getByLabel('Ordenar indicadores')).toHaveValue('year');
+  await expect(page.locator('.catalog-card')).toHaveCount(12);
+  await page.getByLabel('Apenas sem referência temporal').check();
+  await expect(page.locator('.catalog-card')).toHaveCount(12);
+});
