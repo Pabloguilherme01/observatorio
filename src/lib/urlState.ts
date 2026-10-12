@@ -3,6 +3,9 @@ export const urlParamKeys = {
   publicServiceTopic: 'assunto',
   inspector: 'dado',
   readingMode: 'leitura',
+  indicatorQuery: 'indicadores',
+  indicatorStatus: 'natureza',
+  indicatorMissingReference: 'sem-periodo',
 } as const;
 
 export type UrlReadingMode = 'summary' | 'simple' | 'guided' | 'technical';
