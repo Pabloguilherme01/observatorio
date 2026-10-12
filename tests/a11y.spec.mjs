@@ -17,6 +17,7 @@ test.describe('Acessibilidade real no navegador', () => {
 
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
+    await expect(search).toBeFocused();
 
     const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
     const summary = modes.getByRole('button', { name: /^Resumo/ });

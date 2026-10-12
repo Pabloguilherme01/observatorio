@@ -1,5 +1,5 @@
 import { observatorioData as d } from '../../data/observatorioData';
-import { calculateTransportCost, formatBRL } from '../../lib/transport';
+import { calculateTransportCost, formatBRL, transportFareReference } from '../../lib/transport';
 
 type TransportRoute = (typeof d.transport.routes)[number];
 type TransportResult = ReturnType<typeof calculateTransportCost>;
@@ -50,6 +50,7 @@ export function TransportRouteComparisonGrid({
                   <div className="text-xs font-bold text-slate-300 light:text-slate-700">{route.label}</div>
                   <div className="mt-2 text-2xl font-black text-white light:text-slate-900">{formatBRL(result.monthlyPerPersonBrl)}</div>
                   <div className="mt-1 text-[11px] text-slate-500">por pessoa/mês · tarifa {formatBRL(route.fareBrl)}</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">{transportFareReference(d.sources.find(source => source.id === route.sourceId))}</p>
                 </div>
                 {isActive && <span className="rounded-full border border-sky-300/20 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-sky-300">Em uso</span>}
               </div>

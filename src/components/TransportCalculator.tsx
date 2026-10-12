@@ -1,7 +1,7 @@
 import { BusFront, Coins, ExternalLink, RotateCcw, Share2, Users } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { observatorioData as d } from '../data/observatorioData';
-import { calculateTransportCost, formatBRL } from '../lib/transport';
+import { calculateTransportCost, formatBRL, transportFareReference } from '../lib/transport';
 import { copyText } from '../lib/clipboard';
 import { Card } from './ui/Card';
 import { SectionHeader } from './ui/SectionHeader';
@@ -74,12 +74,13 @@ export function TransportCalculator() {
   );
 
   const source = d.sources.find(sourceItem => sourceItem.id === route.sourceId);
+  const fareReference = transportFareReference(source);
   const salaryShare = result.monthlyPctOfSalaryPerPerson ?? 0;
   const salaryIsDefault = Math.abs(salary - defaultSalary) < 0.01;
   const salaryBarWidth = Math.min(100, Math.max(0, salaryShare));
   const share = async () => {
     const shareUrl = window.location.href.split('#')[0] + '#transporte';
-    const text = `Simulação de transporte · ${route.label}. ${formatBRL(result.monthlyPerPersonBrl)} por pessoa/mês no cenário de ${daysPerWeek} dias/semana (~${days} dias/mês) e ${trips} trechos/dia. Tarifa usada: ${formatBRL(route.fareBrl)} por trecho. Veja e ajuste as premissas: ${shareUrl}`;
+    const text = `Simulação de transporte · ${route.label}. ${formatBRL(result.monthlyPerPersonBrl)} por pessoa/mês no cenário de ${daysPerWeek} dias/semana (~${days} dias/mês) e ${trips} trechos/dia. Tarifa usada: ${formatBRL(route.fareBrl)} por trecho. ${fareReference} Veja e ajuste as premissas: ${shareUrl}`;
     try {
       if (navigator.share) {
         await navigator.share({ title: 'Simulador de bolso · Águas Lindas', text, url: shareUrl });
@@ -142,6 +143,7 @@ export function TransportCalculator() {
               </div>
               <div className="mt-2 text-3xl font-black text-white light:text-slate-900">{formatBRL(result.monthlyTotalBrl)}</div>
               <div className="mt-1 text-xs text-slate-500">{formatBRL(route.fareBrl)} por trecho · valor calculado para {people} {people === 1 ? 'pessoa' : 'pessoas'}</div>
+              <p className="mt-2 text-sm leading-6 text-slate-300 light:text-slate-700">{fareReference}</p>
             </div>
             <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4 light:bg-white">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">

@@ -1,4 +1,11 @@
-import type { TransportCalculationInput, TransportCalculationResult } from '../types/observatorio';
+import type { SourceRef, TransportCalculationInput, TransportCalculationResult } from '../types/observatorio';
+import { formatDate } from '../utils/formatters';
+
+export function transportFareReference(source?: SourceRef): string {
+  return source?.referenceDate
+    ? `Referência da tarifa: ${formatDate(source.referenceDate)}. Confira o valor vigente na fonte antes de viajar.`
+    : 'Período da tarifa não informado. Confira o valor vigente na fonte antes de viajar.';
+}
 
 function finiteNumber(value: number, fallback = 0): number {
   return Number.isFinite(value) ? value : fallback;

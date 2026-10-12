@@ -3,6 +3,7 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { Card } from '../ui/Card';
 import { SectionHeader } from '../ui/SectionHeader';
 import { IndicatorCatalog } from './IndicatorCatalog';
+import { indicatorReference } from '../../lib/indicatorReference';
 
 export function PublicDataPulse() {
   const updates = [...d.budgetUpdates].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
@@ -10,7 +11,7 @@ export function PublicDataPulse() {
   const indicatorCount = d.indicators.length;
   const datedSources = d.sources.filter(source => source.referenceDate || source.publishedAt).length;
   const datedSourceCoverage = sourceCount ? (datedSources / sourceCount) * 100 : 0;
-  const datedIndicators = d.indicators.filter(item => item.referenceDate || d.sources.find(source => source.id === item.sourceId)?.referenceDate).length;
+  const datedIndicators = d.indicators.filter(item => indicatorReference(item, d.sources.find(source => source.id === item.sourceId)).key).length;
   const indicatorDateCoverage = indicatorCount ? (datedIndicators / indicatorCount) * 100 : 0;
   const indicatorsWithNotes = d.indicators.filter(item => Boolean(item.note?.trim())).length;
   const methodologicalCoverage = indicatorCount ? (indicatorsWithNotes / indicatorCount) * 100 : 0;
@@ -38,7 +39,7 @@ export function PublicDataPulse() {
         <DataStat label="Indicadores publicados" value={indicatorCount} hint="itens rastreáveis no catálogo" />
         <DataStat label="Fontes registradas" value={sourceCount} hint={datedSources + ' com data registrada'} />
         <DataStat label="Cobertura temporal das fontes" value={datedSourceCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={datedSources + ' de ' + sourceCount + ' fontes com referência ou publicação datada'} />
-        <DataStat label="Indicadores com data de referência" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={datedIndicators + ' de ' + indicatorCount + ' indicadores com referência temporal disponível'} />
+        <DataStat label="Indicadores com período informado" value={indicatorDateCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%'} hint={datedIndicators + ' de ' + indicatorCount + ' indicadores com data ou ano-base informado'} />
         <DataStat label="Indicadores com nota metodológica" value={indicatorsWithNotes} hint={methodologicalCoverage.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '% do catálogo'} />
         <DataStat label="Fontes com data registrada" value={datedSources} hint="apoio para conferir atualidade e contexto" />
       </div>

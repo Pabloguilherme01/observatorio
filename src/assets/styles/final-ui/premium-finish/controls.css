@@ -25,7 +25,8 @@
 }
 .hero-shell a[href="#descubra"]{
   border-color:rgba(125,211,252,.36)!important;
-  background:linear-gradient(135deg,rgba(56,189,248,.17),rgba(37,99,235,.08))!important;
+  background:#075985!important;
+  color:#ffffff!important;
 }
 .hero-shell a[href="#fontes"]{
   border-color:rgba(148,163,184,.17)!important;
