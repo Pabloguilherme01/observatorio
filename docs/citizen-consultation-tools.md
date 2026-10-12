@@ -15,3 +15,5 @@ O catálogo mantém assunto, natureza e filtro de referência temporal na URL en
 “Copiar link da seleção” gera um endereço limpo com esses filtros, o modo de leitura e a âncora `#dados`. Abrir o endereço ou recarregar restaura a seleção. A navegação por histórico restaura o estado correspondente. A ação “Limpar filtros” também remove seus parâmetros. O CSV inclui todos os resultados filtrados com unidade, natureza, período, fonte, URL e notas, preservando o contrato existente.
 
 O conjunto municipal, API v2, valores publicados, fontes, progresso de aprendizado e preferências são preservados. As funcionalidades não dependem de contas, banco de dados ou novas requisições a serviços externos.
+
+Ao retornar por histórico, a página ajusta o destino durante o carregamento. Toque, rolagem ou teclado cancelam os realinhamentos pendentes, preservando a posição escolhida pela pessoa e evitando que um controle se mova durante a interação.

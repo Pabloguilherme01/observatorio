@@ -2,6 +2,21 @@ import { test, expect } from 'playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFile } from 'node:fs/promises';
 
+test('retorno por histórico respeita o toque antes do realinhamento tardio', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto('./?servico=medicamentos#acao');
+  await expect(page.getByRole('button', { name: 'Salvar serviço: Estoque de medicamentos', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Conferir fontes', exact: true }).click();
+  await page.goBack();
+  const save = page.getByRole('button', { name: 'Salvar serviço: Estoque de medicamentos', exact: true });
+  await save.click();
+  await expect(save).toHaveAttribute('aria-pressed', 'true');
+  const position = await page.evaluate(() => scrollY);
+  // Observe the complete 360/900 ms history-alignment window after the tap.
+  await page.waitForTimeout(1050);
+  expect(Math.abs(await page.evaluate(() => scrollY) - position)).toBeLessThan(12);
+});
+
 test('link de indicadores restaura filtros e mantém a seleção CSV', async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async value => { window.__catalogCopy = value; } } }));
   await page.goto('./?leitura=technical&servico=medicamentos&protocolo=privado#dados');
