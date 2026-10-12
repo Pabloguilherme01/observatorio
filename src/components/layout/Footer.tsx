@@ -7,8 +7,8 @@ export function Footer() {
     <footer className="site-footer px-4 py-6 sm:py-8" aria-label="Informações do observatório">
       <div className="site-footer-panel mx-auto max-w-7xl">
         <div className="site-footer-brand">
-          <span className="site-footer-kicker">Observatório público</span>
-          <strong>Águas Lindas de Goiás · {d.meta.edition}</strong>
+          <span className="site-footer-kicker">Iniciativa independente · utilidade pública</span>
+          <strong>Águas Lindas de Goiás · serviços e dados municipais</strong>
           <small>Conjunto publicado em {formatDate(d.meta.updatedAt)} · cada indicador mantém sua própria referência temporal e fonte.</small>
         </div>
 

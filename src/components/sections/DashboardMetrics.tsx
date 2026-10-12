@@ -46,7 +46,7 @@ export function DashboardMetrics() {
           />
           <div className="flex flex-wrap items-center gap-2" aria-label="Estado do painel">
             {!isSummary && <span className="dashboard-status-chip"><Database className="h-3.5 w-3.5" aria-hidden="true" /> {languageMode === 'technical' ? 'Fonte e método disponíveis' : isGuided ? 'Fonte disponível para verificar' : 'Fontes disponíveis'}</span>}
-            <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Atualizado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
+            <span className="dashboard-status-chip"><Info className="h-3.5 w-3.5" aria-hidden="true" /> Conjunto publicado em {d.meta.updatedAt.split('-').reverse().join('/')}</span>
           </div>
         </div>
       </div>

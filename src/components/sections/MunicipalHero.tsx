@@ -3,9 +3,19 @@ import { observatorioData as d } from '../../data/observatorioData';
 import { EDITION } from '../../config/version';
 import { formatDate } from '../../utils/formatters';
 import { Badge } from '../ui/Badge';
+import { useState, type FormEvent } from 'react';
+import { navigateToSection } from '../../lib/sectionNavigation';
+import { urlParamKeys } from '../../lib/urlState';
 import { useLanguageMode } from '../../context/LanguageModeContext';
 
 export function MunicipalHero() {
+  const [serviceQuery, setServiceQuery] = useState('');
+  function findService(event: FormEvent) {
+    event.preventDefault();
+    const query = serviceQuery.trim();
+    navigateToSection('acao', { state: { publicServiceQuery: query }, searchParams: { [urlParamKeys.publicService]: query || null, [urlParamKeys.publicServiceTopic]: null } });
+    window.dispatchEvent(new CustomEvent('observatorio:public-service-search', { detail: query }));
+  }
   const updatedAt = formatDate(d.meta.updatedAt);
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
@@ -13,7 +23,7 @@ export function MunicipalHero() {
   const summary = mode === 'summary';
 
   return (
-    <section className="hero-shell relative overflow-hidden" aria-labelledby="hero-title">
+    <section className="hero-shell citizen-hero relative overflow-hidden" aria-labelledby="hero-title">
       <div className="hero-inner mx-auto max-w-7xl">
         <div className="hero-topline">
           <div className="hero-badges">
@@ -25,7 +35,7 @@ export function MunicipalHero() {
         <div className="hero-layout">
           <div className="hero-copy">
             <span className="hero-kicker">Observatório de Águas Lindas de Goiás</span>
-            <h1 id="hero-title">Sua cidade.<br />Dados para <em>participar.</em></h1>
+            <h1 id="hero-title">Sua cidade.<br />Informação para <em>o dia a dia.</em></h1>
             <p>
               {summary
                 ? 'Entenda Águas Lindas de Goiás, encontre serviços e acompanhe o uso do dinheiro público. Cada número traz sua origem e seu período.'
@@ -51,15 +61,16 @@ export function MunicipalHero() {
               </div>
             )}
           </div>
-          <aside className="city-purpose" aria-labelledby="city-purpose-title">
-            <span className="civic-eyebrow">O propósito do Observatório</span>
-            <h2 id="city-purpose-title">Informação que ajuda no dia a dia.</h2>
-            <p>Um ponto de partida para entender Águas Lindas e encontrar informações públicas verificáveis.</p>
-            <ol>
-              <li><strong>Consulte um assunto</strong><span>Serviços, mobilidade, saúde, saneamento e orçamento.</span></li>
-              <li><strong>Confira o período e a fonte</strong><span>Estimativa, planejamento e execução têm significados diferentes.</span></li>
-              <li><strong>Continue no canal responsável</strong><span>Use o órgão oficial para atendimento e informações atualizadas.</span></li>
-            </ol>
+          <aside className="city-purpose citizen-service-entry" aria-labelledby="city-purpose-title">
+            <span className="civic-eyebrow">Serviços públicos</span>
+            <h2 id="city-purpose-title">Qual serviço você procura?</h2>
+            <p>Encontre o canal oficial para resolver sua necessidade.</p>
+            <form onSubmit={findService} className="citizen-service-search">
+              <label htmlFor="citizen-service-query">Digite uma necessidade</label>
+              <input id="citizen-service-query" type="search" maxLength={160} value={serviceQuery} onChange={event => setServiceQuery(event.target.value)} placeholder="Medicamentos, creche, emprego…" />
+              <button type="submit"><Search aria-hidden="true" />Encontrar canal oficial</button>
+            </form>
+            <p className="citizen-entry-note">O atendimento acontece no órgão responsável. Confira horários, requisitos e disponibilidade no canal oficial.</p>
             <a href="#dados">Pesquisar o catálogo <ArrowRight aria-hidden="true" /></a>
           </aside>
         </div>

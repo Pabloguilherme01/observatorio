@@ -1,0 +1,64 @@
+/* Citizen entry, service tools and readable public information. */
+.citizen-hero { --citizen-surface:#111e2d; --citizen-border:#44566b; }
+.citizen-hero.hero-shell { background:#0c1725; background-image:none; }
+.citizen-hero .hero-inner { padding-block:40px; }
+.citizen-hero .hero-layout { gap:40px; align-items:center; }
+.citizen-hero .hero-copy h1 { font-size:clamp(32px,4.5vw,64px); line-height:1.12; letter-spacing:-.04em; }
+.citizen-hero .hero-copy > p { max-width:58ch; font-size:17px; line-height:1.7; color:#cbd5e1; }
+.citizen-hero .hero-copy h1 em { color:#7dd3fc; font-style:normal; }
+.citizen-hero .hero-actions { gap:12px; }
+.citizen-hero .city-purpose { border-radius:20px; background:var(--citizen-surface); border-color:var(--citizen-border); box-shadow:none; }
+.citizen-service-search { display:grid; gap:12px; margin-block:22px; }
+.citizen-service-search label { font-size:15px; font-weight:700; }
+.citizen-service-search input { min-width:0; width:100%; min-height:50px; border:1px solid #64748b; border-radius:10px; padding:12px; background:#0c1725; color:#f8fafc; font-size:16px; }
+.citizen-service-search input::placeholder { color:#cbd5e1; opacity:1; }
+.citizen-service-search button { min-height:50px; display:flex; justify-content:center; align-items:center; gap:10px; border-radius:10px; background:#075985; color:#fff; font-size:16px; font-weight:750; }
+.citizen-service-search button svg { width:20px; height:20px; }
+.citizen-hero .citizen-entry-note { font-size:14px; margin-block:12px; }
+.citizen-main .civic-topic-grid { gap:16px; }
+.citizen-main .civic-topic-card { border-radius:16px; padding:22px; background:#111e2d; border-color:#44566b; box-shadow:none; }
+.citizen-main .civic-topic-card h3 { font-size:18px; line-height:1.4; }
+.citizen-main .civic-topic-card p { font-size:15px; line-height:1.6; color:#cbd5e1; }
+.citizen-main :is(.public-utility-shortcut,.public-utility-secondary-copy) strong { font-size:16px; line-height:1.4; }
+.citizen-main :is(.public-utility-shortcut,.public-utility-secondary-copy) small { font-size:14px; line-height:1.6; color:#cbd5e1; }
+.citizen-main .official-resource-grid { align-items:stretch; }
+.citizen-service-card { display:flex; flex-direction:column; min-width:0; }
+.citizen-service-card .official-resource-card { flex:1; }
+.citizen-save-button { display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; margin-top:6px; padding:10px; border:1px solid #52677e; border-radius:10px; color:#e2e8f0; background:#111e2d; font-size:14px; font-weight:650; }
+.citizen-save-button svg { width:17px; height:17px; }
+.citizen-save-button[aria-pressed="true"] { background:#164e63; color:#fff; border-color:#67e8f9; }
+.citizen-saved { margin-top:24px; padding:24px; border:1px solid #52677e; border-radius:18px; background:#111e2d; color:#f8fafc; }
+.citizen-saved-heading { display:flex; align-items:center; gap:10px; }
+.citizen-saved-heading svg { width:22px; height:22px; color:#7dd3fc; }
+.citizen-saved h3 { font-size:20px; font-weight:750; }
+.citizen-saved h3 span { font-weight:500; }
+.citizen-saved p { font-size:15px; line-height:1.65; color:#cbd5e1; margin-block:12px; }
+.citizen-saved-list { display:grid; gap:10px; list-style:none; padding:0; margin-top:16px; }
+.citizen-saved-list li { display:flex; align-items:center; justify-content:space-between; gap:12px; padding-block:8px; border-bottom:1px solid #44566b; }
+.citizen-saved-list a { display:flex; gap:8px; align-items:center; min-height:44px; color:#7dd3fc; font-size:15px; font-weight:650; text-decoration:underline; overflow-wrap:anywhere; }
+.citizen-saved-list a svg { width:16px; height:16px; flex-shrink:0; }
+.citizen-saved-list button { min-height:44px; padding:8px 12px; border:1px solid #64748b; border-radius:8px; font-size:14px; flex-shrink:0; }
+.citizen-save-status:empty { display:none; }
+.citizen-preparation { border-top:1px solid #44566b; margin-top:18px; padding-top:14px; }
+.citizen-preparation summary { cursor:pointer; padding-block:10px; font-size:16px; font-weight:700; }
+.citizen-preparation label { display:flex; align-items:flex-start; gap:10px; margin-block:12px; font-size:15px; line-height:1.6; }
+.citizen-preparation input { width:20px; height:20px; margin-top:3px; flex-shrink:0; accent-color:#075985; }
+:is(.citizen-service-search,.citizen-saved,.citizen-service-card) :is(a,button,input,summary):focus-visible { outline:3px solid #38bdf8; outline-offset:4px; }
+html.light .citizen-hero.hero-shell { background:#f1f5f9; }
+html.light .citizen-hero .hero-copy > p,html.light .citizen-main .civic-topic-card p,html.light .citizen-saved p { color:#475569; }
+html.light .citizen-main :is(.public-utility-shortcut,.public-utility-secondary-copy) small { color:#475569; }
+html.light .citizen-hero .hero-copy h1 em { color:#075985; }
+html.light :is(.citizen-hero .city-purpose,.citizen-main .civic-topic-card,.citizen-saved,.citizen-save-button) { background:#fff; color:#172b40; border-color:#94a3b8; }
+html.light .citizen-service-search input { color:#172b40; background:#fff; }
+html.light .citizen-service-search input::placeholder { color:#475569; }
+html.light :is(.citizen-saved-list a,.citizen-saved-heading svg) { color:#075985; }
+html.light .citizen-save-button[aria-pressed="true"] { background:#075985; color:#fff; }
+html.light :is(.citizen-saved-list li,.citizen-preparation) { border-color:#94a3b8; }
+@media(max-width:767px) {
+  .citizen-hero .hero-inner { padding-block:28px; }
+  .citizen-hero .hero-layout { gap:24px; }
+  .citizen-main .civic-topic-card { padding:18px; }
+  .citizen-saved { padding:18px; }
+  .citizen-saved-list li { align-items:flex-start; }
+}
+@media(prefers-reduced-motion:reduce) { .citizen-main .civic-topic-card { transition:none; } }

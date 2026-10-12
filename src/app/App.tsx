@@ -5,6 +5,7 @@ import { ScrollTopButton } from '../components/layout/ScrollTopButton';
 import { MunicipalHero } from '../components/sections/MunicipalHero';
 import { SupplementaryHub } from '../components/sections/SupplementaryHub';
 import '../assets/styles/city-purpose.css';
+import '../assets/styles/citizen-design.css';
 import { ThemeProvider } from '../context/ThemeContext';
 import { ContrastProvider } from '../context/ContrastContext';
 import { ExperienceShell } from '../components/ExperienceShell';
@@ -322,19 +323,19 @@ export function App() {
           <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
           <SectionErrorBoundary label="Cabeçalho"><Header /></SectionErrorBoundary>
           <SectionErrorBoundary label="Resumo inicial"><MunicipalHero /></SectionErrorBoundary>
-          <main id="main-content">
+          <main id="main-content" className="citizen-main">
             {retiredNotice && <p role="status" className="mx-auto max-w-7xl px-4 py-4 text-slate-200 light:text-slate-800">Esta área foi retirada. Agora o Observatório reúne dados municipais e serviços públicos.</p>}
             <SectionErrorBoundary label="Exploração"><Deferred><AudienceHub /></Deferred></SectionErrorBoundary>
-            <SectionErrorBoundary label="Resumo principal"><Deferred><ExecutiveSummary /></Deferred></SectionErrorBoundary>
-            <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <SectionErrorBoundary label="Guia de utilidade pública"><Deferred><PublicUtilityGuide /></Deferred></SectionErrorBoundary>
+            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Serviços públicos" anchorIds={['acao']} /></div>
+            <SectionErrorBoundary label="Resumo principal"><Deferred><ExecutiveSummary /></Deferred></SectionErrorBoundary>
             <div id="analise" className="min-h-24"><SectionErrorBoundary label="Dashboard"><Deferred><DashboardMetrics /></Deferred></SectionErrorBoundary></div>
             <div className="mode-scope mode-scope-context"><DeferredBlock loader={loadContextGroup} errorLabel="Contexto municipal e ferramentas" anchorIds={['contexto', 'demografia', 'transporte', 'saude']} /></div>
-            <div className="mode-scope mode-scope-civic"><DeferredBlock loader={loadCivicGroup} errorLabel="Serviços públicos" anchorIds={['acao']} /></div>
             <div className="mode-scope mode-scope-budget"><DeferredBlock loader={loadBudgetGroup} errorLabel="Orçamento e impacto fiscal" anchorIds={['orcamento', 'orcamento-impacto']} /></div>
             <div className="mode-scope mode-scope-public"><DeferredBlock loader={loadPublicDataGroup} errorLabel="Dados públicos" anchorIds={['dados']} /></div>
             <div className="mode-scope mode-scope-evidence"><SectionErrorBoundary label="Qualidade e evidências"><DeferredEvidenceGroup /></SectionErrorBoundary></div>
             <SupplementaryHub />
+            <SectionErrorBoundary label="Aprendizado guiado"><Deferred><GuidedLearningPanel /></Deferred></SectionErrorBoundary>
             <DeferredBlock loader={loadLearningGroup} errorLabel="Quiz educativo" anchorIds={['quiz']} activateOnScroll={false} />
           </main>
           <SectionErrorBoundary label="Controles de navegação"><ScrollTopButton /></SectionErrorBoundary>

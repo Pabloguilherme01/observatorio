@@ -25,27 +25,27 @@ export default defineConfig({
     },
     {
       name: 'firefox-desktop',
-      testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|critical-public-flows|citizen-services)\.spec\.mjs/,
       use: { ...devices['Desktop Firefox'] },
     },
     {
       name: 'safari-desktop',
-      testMatch: /(cross-browser-ui|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|critical-public-flows|citizen-services)\.spec\.mjs/,
       use: { ...devices['Desktop Safari'] },
     },
     {
       name: 'chrome-android',
-      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows|municipal-purpose|municipal-v46)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows|municipal-purpose|municipal-v46|citizen-services)\.spec\.mjs/,
       use: { ...devices['Pixel 7'] },
     },
     {
       name: 'safari-iphone',
-      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-repagination|mobile-core|critical-public-flows|citizen-services)\.spec\.mjs/,
       use: { ...devices['iPhone 14'] },
     },
     {
       name: 'safari-iphone-se',
-      testMatch: /(cross-browser-ui|mobile-core|critical-public-flows)\.spec\.mjs/,
+      testMatch: /(cross-browser-ui|mobile-core|critical-public-flows|citizen-services)\.spec\.mjs/,
       use: { ...devices['iPhone SE'] },
     },
   ],
