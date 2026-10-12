@@ -559,8 +559,6 @@ main summary:focus-visible{
     align-items:flex-start!important;
     gap:10px!important;
   }
-  .official-resource-card strong{font-size:12px!important;line-height:1.24!important}
-  .official-resource-card small{font-size:10px!important;line-height:1.45!important}
   .official-resource-card.compact{min-height:82px!important}
 
   .summary-simple-grid{

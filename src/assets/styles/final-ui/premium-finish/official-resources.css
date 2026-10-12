@@ -32,7 +32,7 @@
   margin-top:5px;
   max-width:60ch;
   color:#718096;
-  font-size:12px;
+  font-size:14px;
   line-height:1.55;
 }
 .official-hub-all{
@@ -86,22 +86,22 @@
 .official-resource-card strong{
   display:block;
   color:#f8fafc;
-  font-size:12px;
+  font-size:15px;
   font-weight:900;
-  line-height:1.3;
+  line-height:1.4;
 }
 .official-resource-card small{
   display:block;
   margin-top:5px;
-  color:#718096;
-  font-size:10px;
-  line-height:1.5;
+  color:#cbd5e1;
+  font-size:14px;
+  line-height:1.6;
 }
 .official-resource-card em{
   display:block;
   margin-top:6px;
   color:#7dd3fc;
-  font-size:9px;
+  font-size:13px;
   font-style:normal;
   font-weight:900;
 }
@@ -196,6 +196,4 @@
 }
 @media(max-width:390px){
   .official-hub-title{font-size:1.15rem}
-  .official-resource-card strong{font-size:11px}
-  .official-resource-card small{font-size:9.5px}
 }
