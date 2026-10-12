@@ -98,7 +98,7 @@ if (
   && !read('playwright.config.mjs').includes("npm run build && npm run preview")
   && read('.github/workflows/browser.yml').includes('name: Browser · build production')
   && read('.github/workflows/browser.yml').includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
-  && read('.github/workflows/browser.yml').includes('actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131')
+  && read('.github/workflows/browser.yml').includes('actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c')
   && read('.github/workflows/browser.yml').includes('needs: build')
   && read('.github/workflows/browser.yml').includes('safari-desktop')
   && read('.github/workflows/browser.yml').includes('non_blocking: false')

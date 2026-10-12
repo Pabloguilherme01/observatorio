@@ -155,7 +155,7 @@ else fail('Safari desktop não está protegido como gate bloqueante.');
 if (
   /jobs:\s*\n\s+build:\s*\n[\s\S]*?actions\/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a/.test(browser)
   && /jobs:[\s\S]*?browser:\s*\n[\s\S]*?needs:\s*build/.test(browser)
-  && browser.includes('actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131')
+  && browser.includes('actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c')
   && browser.includes('run: npm exec vite -- build')
   && !browser.includes('run: npm run build')
   && browser.includes('run: npm run audit:bundle')

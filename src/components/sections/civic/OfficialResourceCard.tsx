@@ -1,17 +1,19 @@
-import { ExternalLink } from 'lucide-react';
+import { Bookmark, ExternalLink } from 'lucide-react';
 import type { PublicServiceResource } from '../../../data/publicServices';
 
 interface OfficialResourceCardProps {
   readonly service: PublicServiceResource;
   readonly compact?: boolean;
+  readonly saved?: boolean;
+  readonly onToggleSaved?: (service: PublicServiceResource) => void;
 }
 
-export function OfficialResourceCard({ service, compact = false }: OfficialResourceCardProps) {
+export function OfficialResourceCard({ service, compact = false, saved = false, onToggleSaved }: OfficialResourceCardProps) {
   const Icon = service.icon;
   const cta = typeof service.cta === 'string' ? service.cta : null;
 
   return (
-    <a
+    <div className="citizen-service-card"><a
       href={service.href}
       target="_blank"
       rel="noopener noreferrer"
@@ -28,5 +30,7 @@ export function OfficialResourceCard({ service, compact = false }: OfficialResou
       </span>
       <ExternalLink className={'official-resource-arrow ' + (compact ? 'h-3.5 w-3.5' : 'h-4 w-4')} aria-hidden="true" />
     </a>
+    {onToggleSaved && <button type="button" className="citizen-save-button" aria-label={`Salvar serviço: ${service.title}`} aria-pressed={saved} onClick={() => onToggleSaved(service)}><Bookmark aria-hidden="true" />{saved ? 'Serviço salvo' : 'Salvar serviço'}</button>}
+    </div>
   );
 }

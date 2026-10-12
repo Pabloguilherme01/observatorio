@@ -5,12 +5,14 @@ import { SectionHeader } from '../ui/SectionHeader';
 import { copyText } from '../../lib/clipboard';
 import { buildCanonicalUrl, getPublicServiceQuery, getSearchParam, replaceCurrentUrl, urlParamKeys } from '../../lib/urlState';
 import { OfficialResourceCard } from './civic/OfficialResourceCard';
+import { SavedServices, useSavedServices } from './civic/SavedServices';
 import { allMunicipalServices, normalizePublicServiceQuery, priorityPublicServices, matchesPublicService, publicServiceTopic, publicServiceTopics, type PublicServiceTopic } from '../../data/publicServices';
 function getTopic(): PublicServiceTopic {
   const value = getSearchParam(urlParamKeys.publicServiceTopic);
   return publicServiceTopics.find(topic => topic === value) ?? 'Todos';
 }
 export function CivicActionHub() {
+  const { saved, notice, toggle } = useSavedServices();
   const { mode } = useLanguageMode();
   const technical = mode === 'technical';
   const summary = mode === 'summary';
@@ -151,7 +153,7 @@ export function CivicActionHub() {
 
         <div className="official-resource-grid official-resource-grid-local">
           {visibleMunicipalServices.map(service => (
-            <OfficialResourceCard key={service.title} service={service} />
+            <OfficialResourceCard key={service.title} service={service} saved={saved.includes(service.title)} onToggleSaved={toggle} />
           ))}
         </div>
 
@@ -159,6 +161,8 @@ export function CivicActionHub() {
           {showAllServices ? 'Mostrar serviços principais' : `Ver todos os ${allMunicipalServices.length} serviços municipais`}
         </button>}
       </div>
+
+      <SavedServices saved={saved} notice={notice} onToggle={toggle} />
 
       <div className="official-source-note">
         <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-300" aria-hidden="true" />
