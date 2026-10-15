@@ -21,6 +21,7 @@ import { SectionErrorBoundary } from '../components/system/SectionErrorBoundary'
 import { modeForDestination } from '../config/readingModes';
 import { getReadingModeParam, getSearchParam, urlParamKeys } from '../lib/urlState';
 import { redirectRetiredDestination } from '../lib/retiredDestinations';
+import { waitForDom } from '../lib/domReadiness';
 
 const loadContextGroup = () => import('../components/sections/DeferredContextGroup');
 const loadCivicGroup = () => import('../components/sections/DeferredCivicGroup');
@@ -74,13 +75,14 @@ function alignHashScroll(hash: string) {
 }
 
 function stabilizeHistoryScroll(hash: string) {
-  if (!hash) return;
-  scrollToHashWhenReady(hash);
+  if (!hash) return () => {};
+  const cancelPendingScroll = scrollToHashWhenReady(hash);
   let cancelled = false;
   const timers: number[] = [];
   const intentEvents = ['pointerdown', 'touchstart', 'wheel', 'keydown'] as const;
   const cleanup = () => {
     cancelled = true;
+    cancelPendingScroll();
     timers.forEach(timer => window.clearTimeout(timer));
     intentEvents.forEach(event => window.removeEventListener(event, cleanup, true));
   };
@@ -92,78 +94,27 @@ function stabilizeHistoryScroll(hash: string) {
   window.requestAnimationFrame(() => window.requestAnimationFrame(align));
   timers.push(window.setTimeout(align, 360));
   timers.push(window.setTimeout(() => { align(); cleanup(); }, 900));
+  return cleanup;
 }
 
 function openDeepLinkedInspectorWhenReady() {
   const inspectId = getSearchParam(urlParamKeys.inspector);
-  if (!inspectId) return;
+  if (!inspectId) return () => {};
 
   const root = document.getElementById('main-content') ?? document.body;
-  let observer: MutationObserver | null = null;
-  let timeoutId = 0;
-  let checkRaf = 0;
-  let opened = false;
-
-  const cleanup = () => {
-    observer?.disconnect();
-    if (timeoutId) window.clearTimeout(timeoutId);
-    if (checkRaf) window.cancelAnimationFrame(checkRaf);
-  };
-
-  const check = () => {
-    checkRaf = 0;
-    if (opened) return;
+  return waitForDom(root, () => {
     const target = Array.from(document.querySelectorAll<HTMLElement>('[data-inspect-id]'))
       .find(node => node.dataset.inspectId === inspectId);
-    if (!target) return;
-    opened = true;
+    if (!target) return false;
     target.click();
-    cleanup();
-  };
-
-  const scheduleCheck = () => {
-    if (checkRaf || opened) return;
-    checkRaf = window.requestAnimationFrame(check);
-  };
-
-  observer = typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleCheck);
-  observer?.observe(root, { childList: true, subtree: true });
-  timeoutId = window.setTimeout(cleanup, 6000);
-  scheduleCheck();
+    return true;
+  }, 6000);
 }
 
 function scrollToHashWhenReady(hash: string) {
-  if (!hash) return;
-  if (performHashScroll(hash)) return;
-
+  if (!hash || performHashScroll(hash)) return () => {};
   const root = document.getElementById('main-content') ?? document.body;
-  let observer: MutationObserver | null = null;
-  let timeoutId = 0;
-  let checkRaf = 0;
-
-  const cleanup = () => {
-    observer?.disconnect();
-    if (timeoutId) window.clearTimeout(timeoutId);
-    if (checkRaf) window.cancelAnimationFrame(checkRaf);
-  };
-
-  const check = () => {
-    checkRaf = 0;
-    if (performHashScroll(hash)) cleanup();
-  };
-
-  const scheduleCheck = () => {
-    if (checkRaf) return;
-    checkRaf = window.requestAnimationFrame(check);
-  };
-
-  if (typeof MutationObserver !== 'undefined') {
-    observer = new MutationObserver(scheduleCheck);
-    observer.observe(root, { childList: true, subtree: true });
-    timeoutId = window.setTimeout(cleanup, 4000);
-  }
-
-  scheduleCheck();
+  return waitForDom(root, () => performHashScroll(hash), 4000);
 }
 
 function NavigationModeBridge() {
@@ -189,14 +140,16 @@ function NavigationModeBridge() {
     const onNavigate = (event: Event) => {
       prepareMode((event as CustomEvent<string>).detail ?? '');
     };
+    let cancelHistoryScroll = () => {};
     const restoreHistoryDestination = () => {
+      cancelHistoryScroll();
       const target = window.location.hash.slice(1);
       prepareMode(target);
       if (!target) return;
       // hashchange already dispatches observatorio:navigate for history entries.
       // Keep popstate responsible only for mode restoration and scrolling so
       // Back/Forward emits a single navigation event.
-      stabilizeHistoryScroll(target);
+      cancelHistoryScroll = stabilizeHistoryScroll(target);
     };
 
     window.addEventListener('observatorio:navigate', onNavigate);
@@ -206,6 +159,7 @@ function NavigationModeBridge() {
     return () => {
       window.removeEventListener('observatorio:navigate', onNavigate);
       window.removeEventListener('popstate', restoreHistoryDestination);
+      cancelHistoryScroll();
     };
   }, [mode, setMode]);
 
@@ -287,14 +241,17 @@ function DeferredBlock({
 export function App() {
   const [retiredNotice, setRetiredNotice] = useState(false);
   useEffect(() => {
+    let cancelPendingScroll = () => {};
     const navigateFromLocation = () => {
+      cancelPendingScroll();
       if (redirectRetiredDestination()) setRetiredNotice(true);
       const hash = window.location.hash.slice(1);
       if (hash) navigateToHash(hash);
     };
     const onNavigate = (event: Event) => {
       const hash = (event as CustomEvent<string>).detail;
-      if (hash) scrollToHashWhenReady(hash);
+      cancelPendingScroll();
+      if (hash) cancelPendingScroll = scrollToHashWhenReady(hash);
     };
     const onSameHashAnchor = (event: MouseEvent) => {
       if (!(event.target instanceof Element)) return;
@@ -305,11 +262,10 @@ export function App() {
       if (!target || window.location.hash !== '#' + target) return;
       event.preventDefault();
       navigateToHash(target);
-      scrollToHashWhenReady(target);
     };
 
     navigateFromLocation();
-    openDeepLinkedInspectorWhenReady();
+    const cancelInspector = openDeepLinkedInspectorWhenReady();
     window.addEventListener('hashchange', navigateFromLocation);
     window.addEventListener('observatorio:navigate', onNavigate);
     document.addEventListener('click', onSameHashAnchor);
@@ -317,6 +273,8 @@ export function App() {
       window.removeEventListener('hashchange', navigateFromLocation);
       window.removeEventListener('observatorio:navigate', onNavigate);
       document.removeEventListener('click', onSameHashAnchor);
+      cancelPendingScroll();
+      cancelInspector();
     };
   }, []);
 
