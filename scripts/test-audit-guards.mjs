@@ -2,6 +2,12 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 const cases = [
+ ['metadata.json','scripts/audit-municipal.mjs',text => {
+  const metadata=JSON.parse(text);metadata.name+=' Eleitoral';return JSON.stringify(metadata);
+ },'retired app name'],
+ ['metadata.json','scripts/audit-municipal.mjs',text => {
+  const metadata=JSON.parse(text);metadata.description+=' Informações eleitorais.';return JSON.stringify(metadata);
+ },'retired app description'],
  ['src/data/quiz/questionBank.ts','scripts/audit-quiz.mjs',text => text.replace('"q002"','"q001"'),'duplicate quiz ID'],
  ['src/data/quiz/questionBank.ts','scripts/audit-quiz.mjs',text => text.replace('"answerIndex": 0','"answerIndex": 8'),'invalid quiz answer'],
  ['src/data/quiz/questionBank.ts','scripts/audit-quiz.mjs',text => text.replace('"sourceId": "ibge-cidades-2026"','"sourceId": "unknown-source"'),'unresolved quiz source'],

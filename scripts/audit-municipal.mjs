@@ -46,7 +46,7 @@ const collect = dir => fs.readdirSync(dir,{withFileTypes:true}).flatMap(entry =>
   const file = path.join(dir,entry.name);return entry.isDirectory()?collect(file):[file];
 });
 
-for (const file of ['index.html',...collect('src'),...collect('public'),...collect('.github/workflows')]) {
+for (const file of ['index.html','metadata.json',...collect('src'),...collect('public'),...collect('.github/workflows')]) {
   if (file.endsWith('retiredDestinations.ts') || file.endsWith('storageMigration.ts') || !/\.(?:tsx?|json|html|ya?ml)$/.test(file)) continue;
   assert.doesNotMatch(fs.readFileSync(file,'utf8'), /\bTSE\b|tse\.jus\.br|eleitor|candidatur|api\/v1\//i, `retired runtime content: ${file}`);
 }
