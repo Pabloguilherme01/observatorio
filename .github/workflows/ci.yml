@@ -60,6 +60,9 @@ jobs:
       - name: Validate observatory data contracts
         run: npm run validate:observatorio
 
+      - name: Test delayed DOM lifecycle
+        run: npm run test:dom-readiness
+
       - name: Runtime hardening audit
         run: npm run audit:runtime
 
