@@ -155,8 +155,8 @@ must(
     && codeqlWorkflow.includes('languages: javascript-typescript')
     && codeqlWorkflow.includes('build-mode: none')
     && codeqlWorkflow.includes('queries: security-extended')
-    && codeqlWorkflow.includes('github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2')
-    && codeqlWorkflow.includes('github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2')
+    && codeqlWorkflow.includes('github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370')
+    && codeqlWorkflow.includes('github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370')
     && codeqlWorkflow.includes('pull_request:')
     && codeqlWorkflow.includes('branches: [main]')
     && codeqlWorkflow.includes('schedule:'),
