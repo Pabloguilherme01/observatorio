@@ -35,7 +35,7 @@ export function MunicipalHero() {
         <div className="hero-layout">
           <div className="hero-copy">
             <span className="hero-kicker">Observatório de Águas Lindas de Goiás</span>
-            <h1 id="hero-title">Sua cidade.<br />Informação para <em>o dia a dia.</em></h1>
+            <h1 id="hero-title">Serviços e dados de<br /><em>Águas Lindas de Goiás.</em></h1>
             <p>
               {summary
                 ? 'Entenda Águas Lindas de Goiás, encontre serviços e acompanhe o uso do dinheiro público. Cada número traz sua origem e seu período.'
@@ -47,7 +47,6 @@ export function MunicipalHero() {
             </p>
             <div className="hero-actions">
               <a href="#descubra" className="hero-action primary">Explorar a cidade <ArrowRight aria-hidden="true" /></a>
-              <a href="#acao" className="hero-action secondary">Encontrar serviços</a>
               <a href="#fontes" className="hero-action secondary">Conferir fontes</a>
               <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
                 <Search aria-hidden="true" /> Buscar
