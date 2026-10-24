@@ -165,6 +165,13 @@ if (
   pass('Browser constrói uma única vez, valida o artefato de produção e o compartilha entre os perfis.');
 } else fail('Browser ainda recompila a aplicação por perfil ou não compartilha o artefato de produção.');
 
+const completionTriggers = deploy.match(/workflows:\s*\[([^\]]+)\]/)?.[1]
+  .split(',').map(name => name.trim().replace(/^['"]|['"]$/g, '')) ?? [];
+for (const name of ['CI', 'Browser compatibility', 'CodeQL']) {
+  if (completionTriggers.includes(name)) pass('Deploy reage à conclusão de ' + name + '.');
+  else fail('Deploy não reage à conclusão de ' + name + '; um gate lento pode deixar a publicação sem nova tentativa.');
+}
+
 const ciRunCommands = [...ci.matchAll(/run:\s*npm run ([^\s]+)/g)].map(match => match[1]);
 
 if (/workflow_run/.test(deploy) && /conclusion == 'success'/.test(deploy) && /event.workflow_run.event == 'push'/.test(deploy) && /ref: \$\{\{ env.DEPLOY_SHA \}\}/.test(deploy)) {
