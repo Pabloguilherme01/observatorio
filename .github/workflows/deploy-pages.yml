@@ -1,10 +1,11 @@
 name: Deploy to GitHub Pages
-# Publication starts from CI completion; the build gate below still requires Browser compatibility and CodeQL for the exact main SHA.
+# Any release gate completion can retry publication after a slower gate finishes.
+# The build gate below still requires CI, Browser compatibility and CodeQL for the exact main SHA.
 # Manual dispatch uses the same complete release-gate check.
 
 on:
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI", "Browser compatibility", "CodeQL"]
     types: [completed]
     branches: [main]
   workflow_dispatch:

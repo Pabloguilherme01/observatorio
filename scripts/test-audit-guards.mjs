@@ -2,6 +2,11 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 const cases = [
+ ...['CI', 'Browser compatibility', 'CodeQL'].map(name => [
+  '.github/workflows/deploy-pages.yml', 'scripts/audit-workflows.mjs',
+  text => text.replace(JSON.stringify(name), JSON.stringify('missing-' + name)),
+  'missing release completion trigger: ' + name,
+ ]),
  ['metadata.json','scripts/audit-municipal.mjs',text => {
   const metadata=JSON.parse(text);metadata.name+=' Eleitoral';return JSON.stringify(metadata);
  },'retired app name'],
