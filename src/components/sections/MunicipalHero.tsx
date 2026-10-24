@@ -46,9 +46,9 @@ export function MunicipalHero() {
                     : 'Entenda os indicadores de Águas Lindas, simule seu transporte e consulte os serviços e as contas públicas.'}
             </p>
             <div className="hero-actions">
-              <a href="#descubra" className="hero-action primary">Consultar os temas <ArrowRight aria-hidden="true" /></a>
+              <a href="#descubra" className="hero-action primary">Explorar a cidade <ArrowRight aria-hidden="true" /></a>
               <a href="#fontes" className="hero-action secondary">Conferir fontes</a>
-              <button type="button" className="hero-action ghost" aria-label="Buscar no observatório" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
+              <button type="button" className="hero-action ghost" onClick={() => window.dispatchEvent(new CustomEvent('observatorio:search'))}>
                 <Search aria-hidden="true" /> Buscar
               </button>
             </div>
