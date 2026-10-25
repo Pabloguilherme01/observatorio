@@ -59,7 +59,7 @@ test.describe('bancada cross-browser de interface', () => {
       const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
       await mobileMenu.click();
       const readingModes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-      await readingModes.getByRole('button', { name: /^Resumo ·/ }).click();
+      await readingModes.getByRole('button', { name: /^Resumo leitura rápida Ativo/ }).click();
       await expect(root).toHaveAttribute('data-language-mode', 'summary');
       await page.getByRole('button', { name: 'Fechar menu' }).click();
       const shortcut = page.locator('.site-mode-shortcut');
