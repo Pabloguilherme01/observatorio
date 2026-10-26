@@ -109,7 +109,6 @@ export function QuickQuiz() {
               type="button"
               disabled={locked}
               aria-disabled={locked}
-              aria-label={locked ? 'Fase ' + (index + 1) + ', ' + phase.level + ', bloqueada. Libere com 60% na fase anterior.' : 'Fase ' + (index + 1) + ', ' + phase.level + ', disponível.'}
               onClick={() => startPhase(index)}
               className={'quiz-phase-card' + (isActive ? ' is-active' : '') + (locked ? ' is-locked' : '')}
             >
