@@ -99,7 +99,7 @@ test.describe('bancada cross-browser de interface', () => {
     // A navegação inicial pode restaurar o hash em até 900 ms.
     await page.waitForTimeout(1050);
     const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-    await modes.getByRole('button', { name: /^Explicado ·/ }).click();
+    await modes.getByRole('button', { name: /^Explicado(?: com contexto| ·)/ }).click();
     await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
     await expect(page).toHaveURL(/#dashboard$/);
 
