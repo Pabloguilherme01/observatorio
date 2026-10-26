@@ -291,3 +291,25 @@ test.describe('instalação PWA acessível', () => {
     await expect.poll(() => page.evaluate(() => document.body.style.overflow)).toBe('');
   });
 });
+
+test('modos de leitura podem ser alternados pelo teclado sem perder o foco', async ({ page, isMobile }) => {
+  await page.goto('./#dashboard');
+  if (isMobile) {
+    await page.getByRole('button', { name: 'Abrir menu' }).click();
+  }
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  const explained = modes.getByRole('button', { name: /^Explicado com contexto/ });
+  await explained.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
+  await expect(explained).toHaveAttribute('aria-pressed', 'true');
+  await expect(explained).toBeFocused();
+
+  const summary = modes.getByRole('button', { name: /^Resumo leitura rápida/ });
+  await summary.focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
+  await expect(summary).toHaveAttribute('aria-pressed', 'true');
+  await expect(summary).toBeFocused();
+});
