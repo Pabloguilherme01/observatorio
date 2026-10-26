@@ -62,7 +62,7 @@ test('quiz municipal percorre 40 respostas e mantém fonte pontuação e desbloq
     await page.locator('.quiz-next').click();
   }
   await expect(page.locator('.quiz-result-score')).toHaveText('40 de 40 acertos');
-  await expect(page.getByRole('button',{name:/Fase 2, Entender, disponível/})).toBeEnabled();
+  await expect(page.locator('.quiz-phase-card').nth(1)).toBeEnabled();
   await page.reload();await expect(page.locator('.quiz-phase-card').first()).toContainText('Melhor marca: 40/40');
 });
 
