@@ -91,6 +91,25 @@ test.describe('bancada cross-browser de interface', () => {
     }
   });
 
+  test('trocar modo de leitura não reativa o alinhamento tardio do hash', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'A troca por botões de leitura fica no cabeçalho desktop.');
+    await page.goto('./#dashboard');
+    await expect(page.locator('#dashboard')).toBeVisible();
+
+    // A navegação inicial pode restaurar o hash em até 900 ms.
+    await page.waitForTimeout(1050);
+    const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+    await modes.getByRole('button', { name: /^Explicado ·/ }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
+    await expect(page).toHaveURL(/#dashboard$/);
+
+    // Um ajuste explícito de rolagem após a interação não pode ser desfeito
+    // pelos timers que eram recriados pelo efeito a cada mudança de modo.
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await page.waitForTimeout(1050);
+    expect(await page.evaluate(() => window.scrollY)).toBeLessThan(25);
+  });
+
   test('controles de toque, modais e barra inferior permanecem utilizáveis', async ({ page, isMobile }) => {
     await page.goto('./');
 
