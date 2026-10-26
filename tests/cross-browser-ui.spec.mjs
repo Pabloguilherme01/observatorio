@@ -59,7 +59,7 @@ test.describe('bancada cross-browser de interface', () => {
       const mobileMenu = page.getByRole('button', { name: 'Abrir menu' });
       await mobileMenu.click();
       const readingModes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
-      await readingModes.getByRole('button', { name: /^Resumo ·/ }).click();
+      await readingModes.getByRole('button', { name: /^Resumo leitura rápida/ }).click();
       await expect(root).toHaveAttribute('data-language-mode', 'summary');
       await page.getByRole('button', { name: 'Fechar menu' }).click();
       const shortcut = page.locator('.site-mode-shortcut');
@@ -290,4 +290,24 @@ test.describe('instalação PWA acessível', () => {
     await expect(trigger).toBeFocused();
     await expect.poll(() => page.evaluate(() => document.body.style.overflow)).toBe('');
   });
+});
+
+test('modos de leitura podem ser alternados pelo teclado sem perder o foco', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Foco por teclado validado em desktop; VoiceOver/TalkBack no aparelho físico requer QA específico.');
+  await page.goto('./#dashboard');
+
+  const modes = page.getByRole('group', { name: 'Escolha como você quer ler os dados' });
+  const explained = modes.getByRole('button', { name: /^Explicado com contexto/ });
+  await explained.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'simple');
+  await expect(explained).toHaveAttribute('aria-pressed', 'true');
+  await expect(explained).toBeFocused();
+
+  const summary = modes.getByRole('button', { name: /^Resumo leitura rápida/ });
+  await summary.focus();
+  await page.keyboard.press('Space');
+  await expect(page.locator('html')).toHaveAttribute('data-language-mode', 'summary');
+  await expect(summary).toHaveAttribute('aria-pressed', 'true');
+  await expect(summary).toBeFocused();
 });

@@ -33,7 +33,7 @@ export function LanguageModeToggle() {
             type="button"
             onClick={() => setMode(id)}
             aria-pressed={mode === id}
-            aria-label={label + ' · ' + description}
+            aria-label={label + ' ' + sub + (mode === id ? ' Ativo' : '') + ' · ' + description}
             title={description}
             data-mode={id}
             className={mode === id ? 'is-active' : ''}
