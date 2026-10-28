@@ -18,7 +18,6 @@ export function OfficialResourceCard({ service, compact = false, saved = false, 
       target="_blank"
       rel="noopener noreferrer"
       className={'official-resource-card' + (compact ? ' compact' : '')}
-      aria-label={(cta ?? 'Abrir serviço') + ': ' + service.title + ' — canal oficial em nova aba'}
     >
       <span className={'official-resource-icon' + (compact ? ' small' : '')} aria-hidden="true">
         <Icon className={compact ? 'h-4 w-4' : 'h-5 w-5'} />
@@ -29,8 +28,9 @@ export function OfficialResourceCard({ service, compact = false, saved = false, 
         {cta && <em>{cta}</em>}
       </span>
       <ExternalLink className={'official-resource-arrow ' + (compact ? 'h-3.5 w-3.5' : 'h-4 w-4')} aria-hidden="true" />
+      <span className="sr-only">Canal oficial, abre em nova aba</span>
     </a>
-    {onToggleSaved && <button type="button" className="citizen-save-button" aria-label={`Salvar serviço: ${service.title}`} aria-pressed={saved} onClick={() => onToggleSaved(service)}><Bookmark aria-hidden="true" />{saved ? 'Serviço salvo' : 'Salvar serviço'}</button>}
+    {onToggleSaved && <button type="button" className="citizen-save-button" aria-label={saved ? `Serviço salvo: ${service.title} — remover da lista` : `Salvar serviço: ${service.title}`} aria-pressed={saved} onClick={() => onToggleSaved(service)}><Bookmark aria-hidden="true" />{saved ? 'Serviço salvo' : 'Salvar serviço'}</button>}
     </div>
   );
 }
