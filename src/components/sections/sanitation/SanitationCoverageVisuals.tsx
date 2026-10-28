@@ -90,6 +90,7 @@ export function SewerCurve() {
           >
             <span className="sewer-mobile-bar-value">{String(point.value).replace('.', ',')}%</span>
             <span className="sewer-mobile-bar-track"><span style={{ height: Math.max(4, point.value) + '%' }} /></span>
+            {' '}
             <span className="sewer-mobile-bar-year">{point.year}</span>
           </button>
         ))}

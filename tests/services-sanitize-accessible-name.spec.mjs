@@ -8,7 +8,9 @@ test('cartao oficial anuncia texto visivel e botao salvo anuncia o estado', asyn
   await expect(link).not.toHaveAttribute('aria-label', /.+/);
   await expect(link).toHaveAccessibleName(/Medicamentos SUS[\s\S]*Canal oficial, abre em nova aba/);
 
-  const save = page.locator('#acao .citizen-service-card').filter({ has: link }).locator('.citizen-save-button');
+  const save = page.locator('#acao .citizen-service-card').filter({
+    has: page.locator('a.official-resource-card').filter({ hasText: 'Medicamentos SUS' }),
+  }).locator('.citizen-save-button');
   await expect(save).toHaveAccessibleName('Salvar serviço: Medicamentos SUS');
   await expect(save).toHaveAttribute('aria-pressed', 'false');
   await save.click();
