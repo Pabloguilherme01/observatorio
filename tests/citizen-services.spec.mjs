@@ -10,7 +10,7 @@ test('retorno por histórico respeita o toque antes do realinhamento tardio', as
   await page.goBack();
   const save = page.getByRole('button', { name: 'Salvar serviço: Estoque de medicamentos', exact: true });
   await save.click();
-  await expect(save).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: 'Serviço salvo: Estoque de medicamentos — remover da lista', exact: true })).toHaveAttribute('aria-pressed', 'true');
   const position = await page.evaluate(() => scrollY);
   // Observe the complete 360/900 ms history-alignment window after the tap.
   await page.waitForTimeout(1050);
@@ -126,10 +126,10 @@ test('serviços salvos sobrevivem ao recarregamento sem mudar preferências ou a
   await page.goto('./?servico=medicamentos#acao');
   const save = page.getByRole('button', { name: 'Salvar serviço: Medicamentos SUS', exact: true });
   await save.click();
-  await expect(save).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: 'Serviço salvo: Medicamentos SUS — remover da lista', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.citizen-saved')).toContainText('Meus serviços (1)');
   await page.reload();
-  await expect(save).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: 'Serviço salvo: Medicamentos SUS — remover da lista', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('html')).toHaveClass(/light/);
   await expect(page.getByLabel('Buscar serviço municipal por necessidade')).toHaveValue('medicamentos');
   await page.getByRole('button', { name: 'Remover serviço salvo: Medicamentos SUS' }).click();
@@ -158,7 +158,7 @@ test('ferramentas cidadãs são acessíveis e cabem entre 320 e 1920 pixels', as
   for (const width of [320, 390, 768, 1280, 1920]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('./#acao');
-    const save = page.getByRole('button', { name: 'Salvar serviço: Medicamentos SUS', exact: true });
+    const save = page.locator('#acao .citizen-service-card').filter({ has: page.locator('a.official-resource-card').filter({ hasText: 'Medicamentos SUS' }) }).locator('.citizen-save-button');
     await expect(save).toBeVisible();
     if (await save.getAttribute('aria-pressed') !== 'true') await save.click();
     await expect(page.getByRole('button', { name: 'Compartilhar meus serviços', exact: true })).toBeVisible();
