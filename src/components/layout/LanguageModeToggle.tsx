@@ -39,7 +39,7 @@ export function LanguageModeToggle() {
             className={mode === id ? 'is-active' : ''}
           >
             <Icon aria-hidden="true" />
-            <span><strong>{label}</strong><small>{sub}</small></span>
+            <span><strong>{label}</strong>{' '}<small>{sub}</small></span>
             {mode === id && <em><Check aria-hidden="true" /> Ativo</em>}
           </button>
         ))}
