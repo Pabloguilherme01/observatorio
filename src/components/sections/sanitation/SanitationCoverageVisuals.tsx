@@ -87,7 +87,6 @@ export function SewerCurve() {
             className={'sewer-mobile-bar ' + (selectedYear === point.year ? 'is-selected' : '')}
             onClick={() => setSelectedYear(point.year)}
             aria-pressed={selectedYear === point.year}
-            aria-label={point.year + ': ' + String(point.value).replace('.', ',') + ' por cento'}
           >
             <span className="sewer-mobile-bar-value">{String(point.value).replace('.', ',')}%</span>
             <span className="sewer-mobile-bar-track"><span style={{ height: Math.max(4, point.value) + '%' }} /></span>
