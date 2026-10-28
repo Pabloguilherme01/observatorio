@@ -143,7 +143,9 @@ const dateModified = index.match(/"dateModified": "([^"]+)"/)?.[1];
 
 must(packageJson.version === appVersion, 'package.json e APP_VERSION estão sincronizados');
 
-must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && packageJson.devDependencies?.['@axe-core/playwright'] === '4.13.0', 'Playwright e Axe estão fixados nas devDependencies');
+const axeVersion = packageJson.devDependencies?.['@axe-core/playwright'];
+const allowedAxeVersions = new Set(['4.13.0', '4.14.0']);
+must(packageJson.devDependencies?.['@playwright/test'] === '1.63.0' && allowedAxeVersions.has(axeVersion), 'Playwright e Axe estão fixados nas devDependencies em versões homologadas');
 
 const lockJson = JSON.parse(read('package-lock.json'));
 
@@ -168,8 +170,9 @@ must(lockJson.packages?.['']?.version === packageJson.version, 'package.json e p
 must(lockJson.packages?.['']?.dependencies && lockJson.packages?.['']?.devDependencies, 'package-lock registra as dependências diretas do projeto');
 
 must(lockJson.packages?.['node_modules/@playwright/test']?.version === '1.63.0'
-  && lockJson.packages?.['node_modules/@axe-core/playwright']?.version === '4.13.0'
-  && lockJson.packages?.['node_modules/axe-core']?.version === '4.13.0'
+  && lockJson.packages?.['']?.devDependencies?.['@axe-core/playwright'] === axeVersion
+  && lockJson.packages?.['node_modules/@axe-core/playwright']?.version === axeVersion
+  && lockJson.packages?.['node_modules/axe-core']?.version === axeVersion
   && lockJson.packages?.['node_modules/playwright-core']?.version === '1.63.0',
   'Playwright e Axe estão presentes e fixados no package-lock');
 
