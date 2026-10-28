@@ -41,7 +41,11 @@ test('migração reinicia aprendizado e preserva tema contraste e leitura',async
   await expect(page.getByRole('progressbar',{name:'Progresso da rota de investigação'})).toHaveAttribute('aria-valuenow','0');
   await expect(page.getByRole('progressbar',{name:'Progresso da rota de investigação'})).toHaveAttribute('aria-valuemax','7');
   const state=await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage)));
-  expect(Object.keys(state).filter(key=>key.startsWith('observatorio-v45-')&&/quiz|guided-learning/.test(key))).toEqual([]);
+  expect(state['observatorio-v45-quiz-best-scores']).toBe('[40,40,40,40,40]');
+  expect(state['observatorio-v45-quiz-high-scores']).toBe('[{"score":40}]');
+  expect(state['observatorio-v45-guided-learning-visited']).toBe('["valor","referencia","contexto","utilidade","fonte","quiz"]');
+  expect(state['observatorio-v46-quiz-best-scores']).toBeUndefined();
+  expect(state['observatorio-v46-quiz-high-scores']).toBeUndefined();
   expect(state['observatorio-v46-language-mode']).toBe('guided');
   await page.locator('#aprendizado-guiado').getByRole('button',{name:'Ir ao resumo'}).click();
   await page.reload();
