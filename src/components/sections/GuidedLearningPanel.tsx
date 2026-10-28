@@ -191,14 +191,14 @@ export function GuidedLearningPanel() {
                     type="button"
                     className={`guided-learning-step ${done ? 'is-opened' : ''} ${isNext ? 'is-next' : ''}`}
                     onClick={() => openStep(step)}
-                    aria-label={`${done ? 'Revisar' : 'Abrir'}: ${step.title}. ${step.action}. Pergunta-guia: ${step.question}`}
                     aria-current={isNext ? 'step' : undefined}
                   >
+                    <span className="sr-only">{done ? 'Revisar' : 'Abrir'} etapa {index + 1}. </span>
                     <span className="guided-learning-copy">
-                      <em>{isNext ? 'Sua próxima parada' : done ? 'Destino aberto' : step.skill}</em>
-                      <strong>{step.title.replace(/^\d+\.\s*/, '')}</strong>
-                      <small className="guided-learning-question">{step.question}</small>
-                      <small>{step.description}</small>
+                      <em>{isNext ? 'Sua próxima parada' : done ? 'Destino aberto' : step.skill}</em>{' '}
+                      <strong>{step.title.replace(/^\d+\.\s*/, '')}</strong>{' '}
+                      <small className="guided-learning-question">{step.question}</small>{' '}
+                      <small>{step.description}</small>{' '}
                       <span className="guided-learning-step-action">{step.action}<ArrowRight aria-hidden="true" /></span>
                     </span>
                     <span className="guided-learning-check" aria-hidden="true">{done ? <BookOpen /> : <BookOpenCheck />}</span>
