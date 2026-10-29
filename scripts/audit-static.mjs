@@ -357,8 +357,8 @@ must(
     && browserWorkflow.includes('safari-desktop')
     && browserWorkflow.includes('non_blocking: false')
     && browserWorkflow.includes('name: Browser · build production')
-    && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a')
-    && browserWorkflow.includes('actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c')
+    && browserWorkflow.includes('actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9')
+    && browserWorkflow.includes('actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333')
     && browserWorkflow.includes('needs: build')
     && read('playwright.config.mjs').includes("npm run preview -- --host 127.0.0.1 --port 4173")
     && !read('playwright.config.mjs').includes("npm run build && npm run preview")
@@ -390,7 +390,7 @@ must(
     && browserWorkflow.includes('run: npm run audit:bundle')
     && browserWorkflow.includes('run: npm run audit:performance')
     && browserWorkflow.includes('run: npm run test:pwa')
-    && browserWorkflow.includes('actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'),
+    && browserWorkflow.includes('actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9'),
   'Browser é o único proprietário do build de produção e publica o artefato somente depois dos gates de bundle, performance e PWA',
 );
 
