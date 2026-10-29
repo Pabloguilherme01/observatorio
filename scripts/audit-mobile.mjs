@@ -47,7 +47,11 @@ must(files.app.includes('<DashboardMetrics />') && !files.app.includes('loadDash
 
 must(files.app.includes('observatorio:navigate') && files.app.includes("window.location.hash"), 'deep links e navegação por evento permanecem centralizados no App');
 
-must(files.app.includes('behavior: reduceMotion ? \'auto\' : \'smooth\''), 'rolagem central respeita redução de movimento');
+must(
+  files.app.includes("const immediate = restoringHistory || reduceMotion")
+    && files.app.includes("behavior: immediate ? 'instant' : 'smooth'"),
+  'rolagem central respeita redução de movimento e restaura histórico sem animação',
+);
 
 must(files.app.includes('<LanguageModeProvider>') && files.app.includes('<AudienceHub />'), 'descoberta e modos de leitura continuam montados');
 

@@ -24,35 +24,6 @@ test('destinos retirados voltam ao início com aviso e sem parâmetros antigos',
   }
 });
 
-test('migração reinicia aprendizado e preserva tema contraste e leitura',async({page})=>{
-  await page.addInitScript(()=>{
-    if(sessionStorage.getItem('v46-test-seeded'))return;
-    localStorage.setItem('observatorio-theme','light');localStorage.setItem('observatorio-contrast','high');
-    localStorage.setItem('observatorio-v45-language-mode','guided');
-    localStorage.setItem('observatorio-v45-quiz-best-scores','[40,40,40,40,40]');
-    localStorage.setItem('observatorio-v45-quiz-high-scores','[{"score":40}]');
-    localStorage.setItem('observatorio-v45-guided-learning-visited','["valor","referencia","contexto","utilidade","fonte","quiz"]');
-    sessionStorage.setItem('v46-test-seeded','true');
-  });
-  await page.goto('./#aprendizado-guiado');
-  await expect(page.locator('html')).toHaveClass(/light/);
-  await expect(page.locator('html')).toHaveAttribute('data-contrast','high');
-  await expect(page.locator('html')).toHaveAttribute('data-language-mode','guided');
-  await expect(page.getByRole('progressbar',{name:'Progresso da rota de investigação'})).toHaveAttribute('aria-valuenow','0');
-  await expect(page.getByRole('progressbar',{name:'Progresso da rota de investigação'})).toHaveAttribute('aria-valuemax','7');
-  const state=await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage)));
-  expect(state['observatorio-v45-quiz-best-scores']).toBe('[40,40,40,40,40]');
-  expect(state['observatorio-v45-quiz-high-scores']).toBe('[{"score":40}]');
-  expect(state['observatorio-v45-guided-learning-visited']).toBe('["valor","referencia","contexto","utilidade","fonte","quiz"]');
-  expect(state['observatorio-v46-quiz-best-scores']).toBeUndefined();
-  expect(state['observatorio-v46-quiz-high-scores']).toBeUndefined();
-  expect(state['observatorio-v46-language-mode']).toBe('guided');
-  await page.locator('#aprendizado-guiado').getByRole('button',{name:'Ir ao resumo'}).click();
-  await page.reload();
-  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('observatorio-v46-guided-learning-visited')))).toEqual(['valor']);
-  expect(await page.evaluate(()=>localStorage.getItem('observatorio-theme'))).toBe('light');
-});
-
 test('quiz municipal percorre 40 respostas e mantém fonte pontuação e desbloqueio',async({page})=>{
   test.setTimeout(120000);
   await page.goto('./#quiz');

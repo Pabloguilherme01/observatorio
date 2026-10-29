@@ -111,3 +111,20 @@ jobs:
 
       - name: Cross-browser audit
         run: npm exec -- playwright test --config=playwright.config.mjs --project="${{ matrix.project }}"
+
+      - name: Repeat iPhone SE CSV download regression
+        if: matrix.project == 'safari-iphone-se'
+        run: >-
+          npm exec -- playwright test --config=playwright.config.mjs
+          --project=safari-iphone-se tests/citizen-services.spec.mjs
+          --grep "link de indicadores restaura filtros e mantém a seleção CSV"
+          --repeat-each=5
+
+      - name: Save browser failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: browser-failure-${{ matrix.project }}-${{ github.run_attempt }}
+          path: test-results/
+          if-no-files-found: warn
+          retention-days: 7

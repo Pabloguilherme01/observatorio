@@ -8,7 +8,7 @@ A entrada oferece seis necessidades: cidade, serviços, orçamento, transporte, 
 
 Quatro modos de leitura: Resumo, Explicado, Guiado e Detalhado. A trilha tem sete passos: identificar indicador, conferir período, entender significado, comparar medidas compatíveis, encontrar serviço, conferir fonte e praticar.
 
-O quiz tem 200 perguntas municipais, cinco fases de 40: Começar, Entender, Comparar, Conferir e Aplicar. Cada pergunta tem quatro alternativas, uma resposta correta, explicação e fonte registrada. A versão 46 inicia o aprendizado sem reaproveitar o progresso anterior e preserva os dados antigos no navegador para recuperação, além das preferências de tema, contraste e leitura.
+O quiz tem 200 perguntas municipais, cinco fases de 40: Começar, Entender, Comparar, Conferir e Aplicar. Cada pergunta tem quatro alternativas, uma resposta correta, explicação e fonte registrada. A versão 46 inicia o aprendizado sem reaproveitar o progresso anterior. A migração corrigida conserva as chaves de aprendizado v45 ainda existentes no navegador, mas não recupera dados já apagados por uma migração anterior. Veja os limites e a validação em [migração do armazenamento](docs/migracao-armazenamento-v45-v46.md).
 
 ## Desenvolvimento e validação
 
@@ -28,4 +28,4 @@ npm run test:browser
 
 API estática gerada no build: dataset, fontes, saúde e OpenAPI em /observatorio/api/v2/. Consulte [migração da API](docs/api-v2-migracao.md), [metodologia](docs/metodologia.md), [confiabilidade](docs/arquitetura-confiabilidade.md) e [checklist](docs/release-checklist.md).
 
-O site usa GitHub Pages no subcaminho /observatorio/. Publicação depende de CI, sete perfis de navegador e CodeQL para o mesmo commit. A implementação da versão 46 ocorre na PR #356; merge e produção são etapas posteriores.
+O site usa GitHub Pages no subcaminho /observatorio/. A publicação depende de CI, sete perfis de navegador e CodeQL para o mesmo commit.
