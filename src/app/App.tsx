@@ -46,14 +46,15 @@ function navigateToHash(hash: string) {
   window.dispatchEvent(new CustomEvent('observatorio:navigate', { detail: hash }));
 }
 
-function performHashScroll(hash: string) {
+function performHashScroll(hash: string, restoringHistory = false) {
   if (!hash) return false;
   const target = document.getElementById(hash);
   if (!target) return false;
   const reduceMotion = document.documentElement.classList.contains('reduced-motion')
     || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const immediate = restoringHistory || reduceMotion;
   target.scrollIntoView({
-    behavior: reduceMotion ? 'auto' : 'smooth',
+    behavior: immediate ? 'instant' : 'smooth',
     block: 'start',
   });
   if (target instanceof HTMLElement) {
@@ -62,7 +63,7 @@ function performHashScroll(hash: string) {
       const active = document.activeElement;
       const focusIsUnclaimed = !active || active === document.body || active === document.documentElement || active === target;
       if (focusIsUnclaimed) target.focus({ preventScroll: true });
-    }, reduceMotion ? 0 : 180);
+    }, immediate ? 0 : 180);
   }
   return true;
 }
@@ -70,13 +71,13 @@ function performHashScroll(hash: string) {
 function alignHashScroll(hash: string) {
   const target = document.getElementById(hash);
   if (!target) return false;
-  target.scrollIntoView({ behavior: 'auto', block: 'start' });
+  target.scrollIntoView({ behavior: 'instant', block: 'start' });
   return true;
 }
 
 function stabilizeHistoryScroll(hash: string) {
   if (!hash) return () => {};
-  const cancelPendingScroll = scrollToHashWhenReady(hash);
+  const cancelPendingScroll = scrollToHashWhenReady(hash, true);
   let cancelled = false;
   const timers: number[] = [];
   const intentEvents = ['pointerdown', 'touchstart', 'wheel', 'keydown'] as const;
@@ -111,10 +112,10 @@ function openDeepLinkedInspectorWhenReady() {
   }, 6000);
 }
 
-function scrollToHashWhenReady(hash: string) {
-  if (!hash || performHashScroll(hash)) return () => {};
+function scrollToHashWhenReady(hash: string, restoringHistory = false) {
+  if (!hash || performHashScroll(hash, restoringHistory)) return () => {};
   const root = document.getElementById('main-content') ?? document.body;
-  return waitForDom(root, () => performHashScroll(hash), 4000);
+  return waitForDom(root, () => performHashScroll(hash, restoringHistory), 4000);
 }
 
 function NavigationModeBridge() {

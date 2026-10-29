@@ -118,7 +118,7 @@ jobs:
           npm exec -- playwright test --config=playwright.config.mjs
           --project=safari-iphone-se tests/citizen-services.spec.mjs
           --grep "link de indicadores restaura filtros e mantém a seleção CSV"
-          --repeat-each=3
+          --repeat-each=5
 
       - name: Save browser failure diagnostics
         if: failure()
