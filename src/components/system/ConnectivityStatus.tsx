@@ -34,6 +34,12 @@ export function ConnectivityStatus() {
     const controller = new AbortController();
     requestRef.current = controller;
     setState('checking');
+    // Evita o botão ficar preso em "Verificando..." em conexões instáveis.
+    let timedOut = false;
+    const timeoutId = window.setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, 8000);
 
     try {
       const response = await fetch(import.meta.env.BASE_URL + 'api/v2/health.json', {
@@ -44,9 +50,11 @@ export function ConnectivityStatus() {
       setState('restored');
       scheduleHide();
     } catch (error) {
-      if ((error as DOMException)?.name === 'AbortError') return;
-      setState('offline');
+      // Abortos por desmontagem/offline não devem alterar o estado mais recente.
+      if ((error as DOMException)?.name === 'AbortError' && !timedOut) return;
+      if (requestRef.current === controller) setState('offline');
     } finally {
+      window.clearTimeout(timeoutId);
       if (requestRef.current === controller) requestRef.current = null;
     }
   }, [clearHideTimer, scheduleHide]);

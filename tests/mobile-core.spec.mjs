@@ -100,3 +100,60 @@ test.describe('mobile layout and interaction', () => {
     expect(sewerMetrics.scroll).toBeLessThanOrEqual(sewerMetrics.viewport + 1);
   });
 });
+
+/** Simula um health check que fica pendente até ser abortado; o próximo responde. */
+async function simularHealthCheckInterrompido(page) {
+  await page.evaluate(() => {
+    const originalFetch = window.fetch.bind(window);
+    let consultas = 0;
+    window.fetch = (input, init) => {
+      const rawUrl = typeof input === 'string' ? input : input.url;
+      const url = new URL(rawUrl, window.location.href);
+      if (!url.pathname.endsWith('/api/v2/health.json')) return originalFetch(input, init);
+
+      consultas += 1;
+      if (consultas > 1) return Promise.resolve(new Response(null, { status: 204 }));
+      return new Promise((resolve, reject) => {
+        const signal = init?.signal;
+        if (!signal) {
+          reject(new Error('O health check precisa aceitar cancelamento'));
+          return;
+        }
+        const abortar = () => reject(new DOMException('Verificação interrompida', 'AbortError'));
+        if (signal.aborted) abortar();
+        else signal.addEventListener('abort', abortar, { once: true });
+      });
+    };
+  });
+}
+
+test('verificação lenta libera o botão e permite tentar novamente', async ({ page }) => {
+  await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
+  await simularHealthCheckInterrompido(page);
+
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  const status = page.getByRole('status', { name: 'Status de conexão' });
+  await expect(status).toContainText('Verificando conexão');
+  await expect(status.getByRole('button', { name: 'Verificando…' })).toBeDisabled();
+  await expect(status).toContainText('Sem conexão', { timeout: 12_000 });
+
+  const retry = status.getByRole('button', { name: 'Verificar', exact: true });
+  await expect(retry).toBeEnabled();
+  await retry.click();
+  await expect(status).toContainText('Conexão restabelecida');
+});
+
+test('uma verificação cancelada não substitui o estado da reconexão seguinte', async ({ page }) => {
+  await page.goto('./');
+  await expect(page.locator('html')).toHaveAttribute('data-observatorio-mounted', 'true');
+  await simularHealthCheckInterrompido(page);
+
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  const status = page.getByRole('status', { name: 'Status de conexão' });
+  await expect(status).toContainText('Verificando conexão');
+  await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+  await expect(status).toContainText('Sem conexão');
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await expect(status).toContainText('Conexão restabelecida');
+});
