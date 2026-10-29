@@ -120,6 +120,7 @@ function scrollToHashWhenReady(hash: string) {
 function NavigationModeBridge() {
   const { mode, setMode } = useLanguageMode();
   const initialSharedModeHandled = useRef(false);
+  const initialDestinationRestored = useRef(false);
 
   useEffect(() => {
     if (!initialSharedModeHandled.current) {
@@ -154,7 +155,13 @@ function NavigationModeBridge() {
 
     window.addEventListener('observatorio:navigate', onNavigate);
     window.addEventListener('popstate', restoreHistoryDestination);
-    restoreHistoryDestination();
+    // Mode changes rebuild this effect, but aren't browser history navigation.
+    // Re-arming delayed hash alignment on every mode change steals the viewport
+    // after the user's interaction, especially while WebKit settles layout.
+    if (!initialDestinationRestored.current) {
+      initialDestinationRestored.current = true;
+      restoreHistoryDestination();
+    }
 
     return () => {
       window.removeEventListener('observatorio:navigate', onNavigate);
