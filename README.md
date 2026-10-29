@@ -8,7 +8,7 @@ A entrada oferece seis necessidades: cidade, serviços, orçamento, transporte, 
 
 Quatro modos de leitura: Resumo, Explicado, Guiado e Detalhado. A trilha tem sete passos: identificar indicador, conferir período, entender significado, comparar medidas compatíveis, encontrar serviço, conferir fonte e praticar.
 
-O quiz tem 200 perguntas municipais, cinco fases de 40: Começar, Entender, Comparar, Conferir e Aplicar. Cada pergunta tem quatro alternativas, uma resposta correta, explicação e fonte registrada. A versão 46 reinicia somente o aprendizado anterior e preserva preferências de tema, contraste e leitura.
+O quiz tem 200 perguntas municipais, cinco fases de 40: Começar, Entender, Comparar, Conferir e Aplicar. Cada pergunta tem quatro alternativas, uma resposta correta, explicação e fonte registrada. A versão 46 inicia o aprendizado sem reaproveitar o progresso anterior e preserva os dados antigos no navegador para recuperação, além das preferências de tema, contraste e leitura.
 
 ## Desenvolvimento e validação
 

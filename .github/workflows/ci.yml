@@ -63,6 +63,9 @@ jobs:
       - name: Test delayed DOM lifecycle
         run: npm run test:dom-readiness
 
+      - name: Test storage migration safety
+        run: npm run test:storage-migration
+
       - name: Runtime hardening audit
         run: npm run audit:runtime
 

@@ -5,7 +5,8 @@ export function migrateMunicipalStorage() {
     if (localStorage.getItem(marker)) return;
     for (const key of Object.keys(localStorage)) {
       if (!key.startsWith('observatorio-v45-')) continue;
-      if (/quiz|guided-learning/.test(key)) { localStorage.removeItem(key); continue; }
+      // Leave the previous learning progress intact for recovery, but do not carry it into v46.
+      if (/quiz|guided-learning/.test(key)) continue;
       const next = key.replace('observatorio-v45-', 'observatorio-v46-');
       const value = localStorage.getItem(key);
       if (value !== null && localStorage.getItem(next) === null) localStorage.setItem(next, value);
