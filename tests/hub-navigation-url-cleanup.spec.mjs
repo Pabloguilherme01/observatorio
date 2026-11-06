@@ -27,7 +27,7 @@ test('resumo limpa parâmetros transitórios ao abrir contexto sem perder o modo
     window.history.replaceState(null, '', '?servico=despesas&dado=antigo&leitura=summary#resumo');
   });
 
-  await page.getByRole('button', { name: /Abrir contexto de População/i }).click();
+  await page.locator('#resumo').getByRole('button', { name: /^População estimada\b/i }).click();
 
   await expect(page).toHaveURL(/#dashboard$/);
   expect(new URL(page.url()).search).toBe('');

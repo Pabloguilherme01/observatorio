@@ -26,7 +26,7 @@ export function ExecutiveSummary() {
   return <section id="resumo" className={'city-summary executive-summary executive-summary--'+mode+' mx-auto max-w-7xl px-4 sm:px-6'} aria-labelledby="executive-summary-title">
     <div className="city-summary-heading"><div><span className="civic-eyebrow">Resumo principal</span><h2 id="executive-summary-title">Quatro referências para entender a cidade</h2><p>População, água, orçamento e esgoto. Cada indicador tem seu próprio período e significado.</p></div><button type="button" onClick={() => void share()} aria-label="Compartilhar resumo do observatório" disabled={shareBusy}><Share2 aria-hidden="true" /> {shareBusy ? 'Compartilhando…' : 'Compartilhar'}</button></div>
     {shareStatus && <p role="status">{shareStatus}</p>}
-    <div className="city-summary-grid">{publicFacts.map(fact => <button key={fact.id} type="button" className="city-summary-card" aria-label={'Abrir contexto de '+fact.label} onClick={() => navigateToCleanSection(fact.target)}>
+    <div className="city-summary-grid">{publicFacts.map(fact => <button key={fact.id} type="button" className="city-summary-card" onClick={() => navigateToCleanSection(fact.target)}>
       <span>{fact.label}</span><strong>{fact.value}</strong><small>{fact.badge} · {fact.referenceLabel}</small><span className="city-summary-source">{fact.source}</span>
       {mode !== 'summary' && <p>{fact.note}</p>}
       <span className="city-summary-next">Ver contexto <ArrowRight aria-hidden="true" /></span>
