@@ -7,6 +7,7 @@ import { captureObservatorioException } from './lib/sentry';
 import { Download, MoreVertical, Share2, X } from 'lucide-react';
 import { useDialogFocus } from './hooks/useDialogFocus';
 import { migrateMunicipalStorage } from './lib/storageMigration';
+import { attemptPwaInstall, type InstallPrompt } from './lib/pwaInstall';
 
 migrateMunicipalStorage();
 
@@ -62,10 +63,7 @@ function BootstrapFallback({ errorId, message }: { readonly errorId: string; rea
   );
 }
 
-type BeforeInstallPromptEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; }>;
-};
+type BeforeInstallPromptEvent = Event & InstallPrompt;
 
 function MountSignal() {
   useEffect(() => {
@@ -131,7 +129,7 @@ function PwaInstallPrompt() {
     onEscape: closeInstallGuide,
   });
 
-  if (installed || dismissed || (!platform.mobile && !installEvent)) return null;
+  if (installed || dismissed || (!platform.mobile && !installEvent && !open)) return null;
 
   const dismiss = () => {
     try { sessionStorage.setItem(PWA_INSTALL_DISMISSED_KEY, 'true'); } catch {}
@@ -140,18 +138,15 @@ function PwaInstallPrompt() {
   };
 
   const install = async () => {
-    if (installEvent) {
-      try {
-        await installEvent.prompt();
-        const choice = await installEvent.userChoice;
-        if (choice.outcome === 'accepted') setInstalled(true);
-      } finally {
-        setInstallEvent(null);
-        setOpen(false);
-      }
+    if (!installEvent) {
+      setOpen(true);
       return;
     }
-    setOpen(true);
+    const outcome = await attemptPwaInstall(installEvent);
+    setInstallEvent(null);
+    if (outcome === 'accepted') setInstalled(true);
+    // Em caso de rejeição do navegador, oferecer o guia manual sem exceção.
+    setOpen(outcome === 'unavailable');
   };
 
   return (
